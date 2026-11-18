@@ -32,6 +32,9 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+          log-accepted-android-sdk-licenses: false
       - name: Install Android 6 ARM system image
         run: sdkmanager 'platform-tools' 'build-tools;36.1.0' 'system-images;android-23;default;armeabi-v7a'
       - name: Install host compatibility libraries
