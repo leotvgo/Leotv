@@ -1,0 +1,54 @@
+name: Publish installable ordinary APK test release
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_run_id:
+        description: Successful fixed-signature build run
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve verified signed APKs and publish direct downloads
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_RUN_ID: ${{ inputs.build_run_id }}
+          EXPECTED_CERT: ${{ vars.APK_CERT_SHA256 }}
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          repo = os.environ['GITHUB_REPOSITORY']
+          run_id = os.environ['BUILD_RUN_ID']
+          data = json.loads(subprocess.check_output(['gh', 'api', f'repos/{repo}/actions/runs/{run_id}']))
+          if data['conclusion'] != 'success' or data['name'] != 'Build and audit ordinary APKs':
+              raise SystemExit('A successful ordinary APK build run is required.')
+          root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'publish-apks'
+          files = []
+          for variant in ['tv-v7a', 'tv-v8a', 'mobile-v7a', 'mobile-v8a']:
+              target = root / variant
+              target.mkdir(parents=True, exist_ok=True)
+              subprocess.run(['gh', 'run', 'download', run_id, '--repo', repo, '--name',
+                  f'ordinary-{variant}-signed', '--dir', str(target)], check=True)
+              report = json.loads((target / f'normal-{variant}.signature.json').read_text())
+              apk = target / f'normal-{variant}.apk'
+              if report['certificate_sha256'] != os.environ['EXPECTED_CERT'] or hashlib.sha256(apk.read_bytes()).hexdigest() != report['apk_sha256']:
+                  raise SystemExit('Signed APK identity verification failed.')
+              files.extend([str(apk), str(target / f'normal-{variant}.signature.json'),
+                  str(target / f'normal-{variant}-baseline-unsigned.audit.json')])
+          notes = root / 'notes.md'
+          notes.write_text(f'普通版恢复测试 APK，来自成功构建 #{run_id}。\n\n四个 APK 使用同一张固定签名证书，Android 6 V1 签名及代码/资源审计已通过。\n\nAndroid 6 实际运行测试仍单独记录，不能据编译成功保证所有功能可用。新签名不能覆盖原作者签名的已安装 APK。\n\n构建：https://github.com/{repo}/actions/runs/{run_id}\n')
+          tag = f'ordinary-5.1.6-build-{run_id}'
+          subprocess.run(['gh', 'release', 'create', tag, '--repo', repo, '--target', data['head_sha'],
+              '--title', '普通版恢复测试 APK（固定签名）', '--notes-file', str(notes),
+              '--prerelease', '--latest=false', *files], check=True)
+          print(f'https://github.com/{repo}/releases/tag/{tag}')
+          PY
