@@ -1,0 +1,73 @@
+name: Android 6 ARM rebuilt APK startup test
+
+on:
+  workflow_run:
+    workflows: [Build and audit ordinary APKs]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      build_run_id:
+        description: Completed build run containing ordinary-tv-v7a-signed
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  android6:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 40
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Install Android 6 ARM system image
+        run: sdkmanager 'platform-tools' 'build-tools;36.1.0' 'system-images;android-23;default;armeabi-v7a'
+      - name: Install host compatibility libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpulse0 libgl1 libglu1-mesa libxcursor1 libxcomposite1 libxi6 libxrandr2 libx11-6 libnss3 libncurses5
+      - name: Download classic emulator with Android 6 ARM support
+        run: |
+          curl -fLsS --retry 3 https://dl.google.com/android/repository/emulator-linux-4969155.zip -o "$RUNNER_TEMP/legacy-emulator.zip"
+          unzip -q "$RUNNER_TEMP/legacy-emulator.zip" -d "$RUNNER_TEMP/legacy-emulator"
+          "$RUNNER_TEMP/legacy-emulator/emulator/emulator" -version
+      - name: Download fixed-signature APK from the build run
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_RUN_ID: ${{ inputs.build_run_id || github.event.workflow_run.id }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/signed-input"
+          gh run download "$BUILD_RUN_ID" --repo "$GITHUB_REPOSITORY" \
+            --name ordinary-tv-v7a-signed --dir "$RUNNER_TEMP/signed-input"
+      - name: Install and observe on a clean Android 6 ARM device
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, subprocess
+          temp = pathlib.Path(os.environ['RUNNER_TEMP'])
+          artifact = temp / 'signed-input'
+          report = json.loads((artifact / 'normal-tv-v7a.signature.json').read_text())
+          subprocess.run(['python3', 'tools/android6_smoke.py', '--sdk', os.environ['ANDROID_SDK_ROOT'],
+              '--legacy-emulator', str(temp / 'legacy-emulator/emulator/emulator'),
+              '--apk', str(artifact / 'normal-tv-v7a.apk'), '--sha256', report['apk_sha256'],
+              '--work', str(temp / 'android6-test')], check=True)
+          PY
+      - name: Upload sanitized Android 6 test result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android6-arm-startup-report
+          path: ${{ runner.temp }}/android6-test/android6-smoke.json
+          if-no-files-found: warn
+          retention-days: 14

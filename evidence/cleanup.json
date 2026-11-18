@@ -1,0 +1,20 @@
+{
+  "removed_categories": [
+    "temporary JADX ZIP/JAR, compilation reference JARs and classes",
+    "temporary upstream clone and object reader",
+    "temporary extracted DEX and intermediate APKs",
+    "failed/reproducible Apktool build directories",
+    "Python bytecode",
+    "one duplicate aligned baseline APK and its duplicate audit"
+  ],
+  "reclaimed_mib": 511.2,
+  "retained": [
+    "four original ordinary APKs at their existing paths",
+    "four decoded bytecode projects and audited unsigned baseline APKs",
+    "ordinary TV Java reading view and restored core source",
+    "fixed upstream comparison source and 332 historical snapshots",
+    "provenance and audit reports",
+    "existing user configuration, credentials, source edits and release/rollback material"
+  ],
+  "test_servers_started": false
+}

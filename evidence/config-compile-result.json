@@ -1,0 +1,17 @@
+{
+  "javac_exit": 0,
+  "java_release": 8,
+  "android_api_reference": 23,
+  "gson_version": "2.13.2",
+  "reference_classes": 10701,
+  "source_sha256": "de6f59dbbc3252a1502b78b133bb0fd2de1471592c65bd4a5b9898d27d8a748c",
+  "source_adjustments": [
+    "Disabled JADX alias/constant replacements",
+    "Numeric anonymous helper renamed ConfigListType and made static; original DEX helper has no outer-instance capture"
+  ],
+  "scope": "Config Java compilation only; not applied to baseline APK",
+  "d8_exit": 0,
+  "d8_min_api": 23,
+  "emitted_dex_header": "dex\n035\\0",
+  "jvm_json_contract_exit": 0
+}

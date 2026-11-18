@@ -1,0 +1,9 @@
+{
+  "original_classes": 8655,
+  "rebuilt_classes": 8655,
+  "changed_classes": 33,
+  "equal": false,
+  "original_semantic_sha256": "bd2fb3c7acaefaf5dc8476849883577db4e17e3f4d19e91b3e3f3cea4d33ee65",
+  "rebuilt_semantic_sha256": "99153c767e3f148f9e7a55313b4a402c541eeeeaad2c44d13ac9e753c7f0e055",
+  "first_changed_class_names": ["LA6/a;","LB/e;","LC3/e;","LM2/g;","LQ2/e;","LZ2/p;","Lcom/bumptech/glide/d;","Lcom/fongmi/quickjs/bean/Req;","Lcom/fongmi/quickjs/utils/Crypto;","Lcom/google/protobuf/Q;","Lcom/google/zxing/client/result/ResultParser;","Lcom/google/zxing/common/CharacterSetECI;","Lcom/hierynomus/protocol/commons/Charsets;","Lcom/hierynomus/protocol/commons/backport/Jdk7HttpProxySocket;","Lcom/hierynomus/protocol/commons/buffer/Buffer;","Lfi/iki/elonen/NanoHTTPD$ContentType;","Lfi/iki/elonen/NanoWSD$WebSocketFrame;","Lh6/j;","Lh6/t;","Ljavax/xml/stream/FactoryFinder;","Lm6/e;","Lm6/f;","Lm6/v;","Lorg/fourthline/cling/model/Namespace;","Lorg/fourthline/cling/model/message/UpnpMessage;","Lorg/fourthline/cling/model/types/Base64Datatype;","Lorg/fourthline/cling/model/types/UDN;","Lorg/fourthline/cling/transport/impl/DatagramProcessorImpl;","Lorg/fourthline/cling/transport/impl/StreamClientImpl;","Lorg/fourthline/cling/transport/impl/jetty/StreamClientImpl$HttpContentExchange;"]
+}

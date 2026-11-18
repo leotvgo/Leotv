@@ -1,0 +1,10 @@
+{
+  "source_sha256": "de6f59dbbc3252a1502b78b133bb0fd2de1471592c65bd4a5b9898d27d8a748c",
+  "javac_exit": 0,
+  "java_release": 8,
+  "d8_exit": 0,
+  "d8_min_api": 23,
+  "jvm_json_contract_exit": 0,
+  "scope": "Config only; no APK code replacement or device validation",
+  "reference_jar_packaged": false
+}

@@ -1,0 +1,68 @@
+{
+  "build_revision": "a59ea6c6e17038f6f020b3427a33fcfce93e053b",
+  "vcs_metadata_sha256": "ae18b120c8480c53566a7a5c0d3afe8416fd1a03147634b85af17668a4f8240f",
+  "apk_samples": [
+    {
+      "file": "leanback-arm64_v8a.apk",
+      "bytes": 85666249,
+      "sha256": "72f3c12935852d35f4eeb28534e6a4e2d0bf29ac481c75f8383dd753b1d120e1",
+      "manifest": [
+        "package: name='com.fongmi.android.tv' versionCode='516' versionName='5.1.6' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'",
+        "sdkVersion:'23'",
+        "targetSdkVersion:'28'",
+        "application-label:'OKTV'",
+        "native-code: 'arm64-v8a'"
+      ],
+      "certificate": [
+        "Signer #1 certificate SHA-256 digest: 7223de1aae9e09110a3007c980af081b1609a3fec5bbbdfa7d9cedb3525110a1"
+      ]
+    },
+    {
+      "file": "leanback-armeabi_v7a.apk",
+      "bytes": 86782075,
+      "sha256": "f61b88eefa6dd34bb2ef13bab593af35e2af33d220c2f6b6deb9d08d285ee9ab",
+      "manifest": [
+        "package: name='com.fongmi.android.tv' versionCode='516' versionName='5.1.6' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'",
+        "sdkVersion:'23'",
+        "targetSdkVersion:'28'",
+        "application-label:'OKTV'",
+        "native-code: 'armeabi-v7a'"
+      ],
+      "certificate": [
+        "Signer #1 certificate SHA-256 digest: 7223de1aae9e09110a3007c980af081b1609a3fec5bbbdfa7d9cedb3525110a1"
+      ]
+    },
+    {
+      "file": "pro/mobile-arm64_v8a.apk",
+      "bytes": 81414523,
+      "sha256": "76fdb7edfc46cab43a3d6ead66822f97be2e6b06cf15e5bf200395360d372d17",
+      "manifest": [
+        "package: name='com.fongmi.android.tv' versionCode='516' versionName='5.1.6' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'",
+        "sdkVersion:'23'",
+        "targetSdkVersion:'28'",
+        "application-label:'OKTV'",
+        "native-code: 'arm64-v8a'"
+      ],
+      "certificate": [
+        "Signer #1 certificate SHA-256 digest: 7223de1aae9e09110a3007c980af081b1609a3fec5bbbdfa7d9cedb3525110a1"
+      ]
+    },
+    {
+      "file": "pro/mobile-armeabi_v7a.apk",
+      "bytes": 82202735,
+      "sha256": "d54b917ecfff10fd8d4a1959a95df1cdcf8e43cae8d3e96cb546d3f84c9e1148",
+      "manifest": [
+        "package: name='com.fongmi.android.tv' versionCode='516' versionName='5.1.6' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'",
+        "sdkVersion:'23'",
+        "targetSdkVersion:'28'",
+        "application-label:'OKTV'",
+        "native-code: 'armeabi-v7a'"
+      ],
+      "certificate": [
+        "Signer #1 certificate SHA-256 digest: 7223de1aae9e09110a3007c980af081b1609a3fec5bbbdfa7d9cedb3525110a1"
+      ]
+    }
+  ],
+  "comparison_commit": "ba306a35705f2d6ff9d9e88ec590fa3f4d882d86",
+  "source_workspace": "/Users/leiatai/Downloads/leowork/coos-recovery/oktv-normal-516"
+}

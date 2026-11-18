@@ -1,0 +1,16 @@
+{
+  "source_sha256": "de6f59dbbc3252a1502b78b133bb0fd2de1471592c65bd4a5b9898d27d8a748c",
+  "javac_exit": 0,
+  "java_release": 8,
+  "d8_exit": 0,
+  "d8_min_api": 23,
+  "jvm_json_contract_exit": 0,
+  "scope": "Core model scalar JSON only",
+  "apk_code_replacement": false,
+  "device_validation": false,
+  "model_source_count": 11,
+  "program_classfiles": 15,
+  "desugared_runtime_names_restored": true,
+  "emitted_dex_sha256": "1d1a2fb51b0d95c8554bafcc1f29d04a23a3466728dca5079ec20aeb43b100b5",
+  "reference_jar_packaged": false
+}

@@ -1,0 +1,29 @@
+{
+  "source_release": "apk-inputs-5.1.6-20261118",
+  "variants": {
+    "tv-v7a": {
+      "filename": "leanback-armeabi_v7a.apk",
+      "sha256": "f61b88eefa6dd34bb2ef13bab593af35e2af33d220c2f6b6deb9d08d285ee9ab",
+      "bytes": 86782075,
+      "project": "tv-armeabi-v7a/bytecode-project"
+    },
+    "tv-v8a": {
+      "filename": "leanback-arm64_v8a.apk",
+      "sha256": "72f3c12935852d35f4eeb28534e6a4e2d0bf29ac481c75f8383dd753b1d120e1",
+      "bytes": 85666249,
+      "project": "tv-arm64-v8a/bytecode-project"
+    },
+    "mobile-v7a": {
+      "filename": "mobile-armeabi_v7a.apk",
+      "sha256": "d54b917ecfff10fd8d4a1959a95df1cdcf8e43cae8d3e96cb546d3f84c9e1148",
+      "bytes": 82202735,
+      "project": "mobile-armeabi-v7a/bytecode-project"
+    },
+    "mobile-v8a": {
+      "filename": "mobile-arm64_v8a.apk",
+      "sha256": "76fdb7edfc46cab43a3d6ead66822f97be2e6b06cf15e5bf200395360d372d17",
+      "bytes": 81414523,
+      "project": "mobile-arm64-v8a/bytecode-project"
+    }
+  }
+}

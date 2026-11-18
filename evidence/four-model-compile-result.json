@@ -1,0 +1,32 @@
+{
+  "javac_exit": 0,
+  "java_release": 8,
+  "android_api_reference": 23,
+  "model_classes": [
+    "Config",
+    "History",
+    "Site",
+    "Result"
+  ],
+  "scope": "Standalone model recovery; no replacement in baseline APK",
+  "desugared_helper_aliases_pending_remap": false,
+  "helper_source_classes": [
+    "e"
+  ],
+  "simple_xml_version": "2.7.1",
+  "d8_exit": 0,
+  "d8_min_api": 23,
+  "program_classfiles": 15,
+  "desugared_runtime_names_restored": true,
+  "scalar_json_smoke_exit": 0,
+  "adapter_source_classes": [
+    "ExtAdapter",
+    "UrlAdapter",
+    "HeaderAdapter",
+    "DanmakuAdapter",
+    "FilterAdapter",
+    "MsgAdapter"
+  ],
+  "danmaku_catch_restored_from_smali": true,
+  "emitted_dex_sha256": "1d1a2fb51b0d95c8554bafcc1f29d04a23a3466728dca5079ec20aeb43b100b5"
+}

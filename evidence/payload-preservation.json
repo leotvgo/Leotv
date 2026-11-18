@@ -1,0 +1,14 @@
+{
+  "original_entries": 1724,
+  "preserved_entries": 1718,
+  "changed_entries": [
+    "classes.dex",
+    "classes2.dex",
+    "classes3.dex"
+  ],
+  "original_manifest_sha256": "97182b7ec5e20f716ea8aedb88cf1197d80d5105a882704876be80f604795329",
+  "rebuilt_manifest_sha256": "97182b7ec5e20f716ea8aedb88cf1197d80d5105a882704876be80f604795329",
+  "resource_asset_native_payload_exact": true,
+  "removed_old_signature_files": 3,
+  "unsigned": true
+}

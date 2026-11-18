@@ -1,0 +1,109 @@
+name: Build and audit ordinary APKs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  models:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit source tree
+        run: bash scripts/audit-release-tree.sh
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Install Android 6 compile references
+        run: sdkmanager 'platforms;android-23' 'build-tools;36.1.0'
+      - name: Fetch pinned inputs and dependencies
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 tools/ci_dependencies.py --output "$RUNNER_TEMP/deps"
+          python3 tools/ci_input.py --repo "$GITHUB_REPOSITORY" --variant tv-v7a --output "$RUNNER_TEMP/input"
+      - name: Compile restored Java and test scalar JSON contracts
+        run: |
+          python3 tools/check_config_source.py --all-models \
+            --apk "$RUNNER_TEMP/input/leanback-armeabi_v7a.apk" \
+            --apktool "$RUNNER_TEMP/deps/apktool_2.11.0.jar" \
+            --sdk "$ANDROID_SDK_ROOT" \
+            --gson-jar "$RUNNER_TEMP/deps/gson-2.13.2.jar" \
+            --xml-jar "$RUNNER_TEMP/deps/simple-xml-2.7.1.jar"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: restored-core-api23-check
+          path: evidence/core-source-check.json
+          retention-days: 14
+
+  apk:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - variant: tv-v7a
+            filename: leanback-armeabi_v7a.apk
+          - variant: tv-v8a
+            filename: leanback-arm64_v8a.apk
+          - variant: mobile-v7a
+            filename: mobile-armeabi_v7a.apk
+          - variant: mobile-v8a
+            filename: mobile-arm64_v8a.apk
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit source tree
+        run: bash scripts/audit-release-tree.sh
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Install Android build tools
+        run: sdkmanager 'build-tools;36.1.0'
+      - name: Fetch pinned inputs and dependencies
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VARIANT: ${{ matrix.variant }}
+        run: |
+          python3 tools/ci_dependencies.py --output "$RUNNER_TEMP/deps"
+          python3 tools/ci_input.py --repo "$GITHUB_REPOSITORY" --variant "$VARIANT" --output "$RUNNER_TEMP/input"
+      - name: Compile smali and verify original code and payloads
+        env:
+          VARIANT: ${{ matrix.variant }}
+          INPUT_FILENAME: ${{ matrix.filename }}
+        run: |
+          python3 tools/build_preserved.py --variant "$VARIANT" \
+            --apk "$RUNNER_TEMP/input/$INPUT_FILENAME" \
+            --apktool "$RUNNER_TEMP/deps/apktool_2.11.0.jar" \
+            --sdk "$ANDROID_SDK_ROOT"
+      - name: Sign installable APK with the fixed APK certificate
+        env:
+          VARIANT: ${{ matrix.variant }}
+          APK_KEYSTORE_BASE64: ${{ secrets.APK_KEYSTORE_BASE64 }}
+          APK_STORE_PASSWORD: ${{ secrets.APK_STORE_PASSWORD }}
+          APK_KEY_PASSWORD: ${{ secrets.APK_KEY_PASSWORD }}
+          APK_SIGNING_ALIAS: ${{ vars.APK_SIGNING_ALIAS }}
+          APK_CERT_SHA256: ${{ vars.APK_CERT_SHA256 }}
+        run: |
+          python3 tools/sign_ci_apk.py --sdk "$ANDROID_SDK_ROOT" \
+            --input "artifacts/normal-$VARIANT-baseline-unsigned.apk" \
+            --output "artifacts/normal-$VARIANT.apk"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ordinary-${{ matrix.variant }}-signed
+          path: |
+            artifacts/normal-${{ matrix.variant }}.apk
+            artifacts/normal-${{ matrix.variant }}.signature.json
+            artifacts/normal-${{ matrix.variant }}-baseline-unsigned.audit.json
+          retention-days: 14

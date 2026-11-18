@@ -1,0 +1,17 @@
+{
+  "original_classes": 10701,
+  "rebuilt_classes": 10701,
+  "changed_classes": 0,
+  "equal": true,
+  "original_semantic_sha256": "fb920ce388aa4c3cd6ec61ea360744478a41bb1cc408ba6b0297f3a5629e6556",
+  "rebuilt_semantic_sha256": "fb920ce388aa4c3cd6ec61ea360744478a41bb1cc408ba6b0297f3a5629e6556",
+  "first_changed_class_names": [],
+  "input_apk_sha256": "f61b88eefa6dd34bb2ef13bab593af35e2af33d220c2f6b6deb9d08d285ee9ab",
+  "output_apk_sha256": "a7e60f310e43145aae50bf2671c339b0d513ee3c084cd3644e99011044692a16",
+  "non_dex_entries_exact": 1718,
+  "unsigned": true,
+  "native_zip_alignment_kib": 16,
+  "android_min_sdk_retained": 23,
+  "resource_edits_applied": false,
+  "variant": "tv-v7a"
+}

@@ -1,0 +1,2032 @@
+[
+  {
+    "commit": "ba306a35705f2d6ff9d9e88ec590fa3f4d882d86",
+    "date": "2026-04-15T11:36:15+08:00",
+    "message": "Refactor the playback architecture",
+    "score": 0.77537,
+    "same_method_bodies": 125,
+    "parts": {
+      "Config": {
+        "blob": "2f887aeef7ac35b9595f85cfe62f2f6e66f14402",
+        "structural_score": 1.0,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "e743c60ceee3bb61e9feccc79fca83f830491030",
+        "structural_score": 0.9424,
+        "same_method_bodies": 39
+      },
+      "Result": {
+        "blob": "4aa62d215a2641f8451e152a817b3a69f1cd5882",
+        "structural_score": 0.8831,
+        "same_method_bodies": 36
+      },
+      "Site": {
+        "blob": "4888cd868122f7d8fce93b285cb7335dda82a998",
+        "structural_score": 0.8938,
+        "same_method_bodies": 23
+      }
+    }
+  },
+  {
+    "commit": "7264a5133d4d23475af186f2efb195f7bc0ea2de",
+    "date": "2026-04-16T18:20:52+08:00",
+    "message": "Optimize history save",
+    "score": 0.77537,
+    "same_method_bodies": 125,
+    "parts": {
+      "Config": {
+        "blob": "2f887aeef7ac35b9595f85cfe62f2f6e66f14402",
+        "structural_score": 1.0,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "901ac2ade3c9bc5e567efd2216f161cc08a643bc",
+        "structural_score": 0.9424,
+        "same_method_bodies": 39
+      },
+      "Result": {
+        "blob": "4aa62d215a2641f8451e152a817b3a69f1cd5882",
+        "structural_score": 0.8831,
+        "same_method_bodies": 36
+      },
+      "Site": {
+        "blob": "4888cd868122f7d8fce93b285cb7335dda82a998",
+        "structural_score": 0.8938,
+        "same_method_bodies": 23
+      }
+    }
+  },
+  {
+    "commit": "13b60380e8905c805360eaf475a14b223b403104",
+    "date": "2026-04-19T10:56:28+08:00",
+    "message": "Add history replace when update vod",
+    "score": 0.77462,
+    "same_method_bodies": 125,
+    "parts": {
+      "Config": {
+        "blob": "2f887aeef7ac35b9595f85cfe62f2f6e66f14402",
+        "structural_score": 1.0,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "d7b18eaae6a17fba1d46d7d63a800f9894dc1598",
+        "structural_score": 0.9374,
+        "same_method_bodies": 39
+      },
+      "Result": {
+        "blob": "4aa62d215a2641f8451e152a817b3a69f1cd5882",
+        "structural_score": 0.8831,
+        "same_method_bodies": 36
+      },
+      "Site": {
+        "blob": "4888cd868122f7d8fce93b285cb7335dda82a998",
+        "structural_score": 0.8938,
+        "same_method_bodies": 23
+      }
+    }
+  },
+  {
+    "commit": "8a022106b8b1f59764a34e826a47aa9c7d8d1d47",
+    "date": "2026-04-19T23:58:23+08:00",
+    "message": "Clean code",
+    "score": 0.76751,
+    "same_method_bodies": 124,
+    "parts": {
+      "Config": {
+        "blob": "2f887aeef7ac35b9595f85cfe62f2f6e66f14402",
+        "structural_score": 1.0,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "d7b18eaae6a17fba1d46d7d63a800f9894dc1598",
+        "structural_score": 0.9374,
+        "same_method_bodies": 39
+      },
+      "Result": {
+        "blob": "45c5f0db705b21347b8c6ae668a372b612e94ccc",
+        "structural_score": 0.8468,
+        "same_method_bodies": 35
+      },
+      "Site": {
+        "blob": "4888cd868122f7d8fce93b285cb7335dda82a998",
+        "structural_score": 0.8938,
+        "same_method_bodies": 23
+      }
+    }
+  },
+  {
+    "commit": "3a58644abdbdde9dca67b8dc0a498f62575809fd",
+    "date": "2026-03-05T01:53:51+08:00",
+    "message": "Optimize config code",
+    "score": 0.76546,
+    "same_method_bodies": 123,
+    "parts": {
+      "Config": {
+        "blob": "27a6c153764d3fb21de5217ea2d06411bce007e1",
+        "structural_score": 1.0,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "96133dc8ff77fe6068cc0101b0394e68d969ff55",
+        "structural_score": 0.8901,
+        "same_method_bodies": 37
+      },
+      "Result": {
+        "blob": "4b585e76e04f75dfce7099733ee57f98c7ee93d6",
+        "structural_score": 0.8881,
+        "same_method_bodies": 36
+      },
+      "Site": {
+        "blob": "1e3f799f5224789355f579f3c30d8530529c7d6b",
+        "structural_score": 0.8938,
+        "same_method_bodies": 23
+      }
+    }
+  },
+  {
+    "commit": "9086fe4fd65f9f5455aa625b9e2ff8d8478df06b",
+    "date": "2026-04-21T00:35:42+08:00",
+    "message": "Support danmaku search",
+    "score": 0.7562,
+    "same_method_bodies": 124,
+    "parts": {
+      "Config": {
+        "blob": "2f7777888748493bf18fa6284840c500aab10050",
+        "structural_score": 0.9246,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "d7b18eaae6a17fba1d46d7d63a800f9894dc1598",
+        "structural_score": 0.9374,
+        "same_method_bodies": 39
+      },
+      "Result": {
+        "blob": "45c5f0db705b21347b8c6ae668a372b612e94ccc",
+        "structural_score": 0.8468,
+        "same_method_bodies": 35
+      },
+      "Site": {
+        "blob": "4888cd868122f7d8fce93b285cb7335dda82a998",
+        "structural_score": 0.8938,
+        "same_method_bodies": 23
+      }
+    }
+  },
+  {
+    "commit": "bb6787e700d0c0d72e394d767dac73a23ae38449",
+    "date": "2026-04-28T02:27:30+08:00",
+    "message": "Clean setting code",
+    "score": 0.7562,
+    "same_method_bodies": 124,
+    "parts": {
+      "Config": {
+        "blob": "2f7777888748493bf18fa6284840c500aab10050",
+        "structural_score": 0.9246,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "d7b18eaae6a17fba1d46d7d63a800f9894dc1598",
+        "structural_score": 0.9374,
+        "same_method_bodies": 39
+      },
+      "Result": {
+        "blob": "8b7dfa1942ac8e4a02148de11b4cecbc4d20933c",
+        "structural_score": 0.8468,
+        "same_method_bodies": 35
+      },
+      "Site": {
+        "blob": "4888cd868122f7d8fce93b285cb7335dda82a998",
+        "structural_score": 0.8938,
+        "same_method_bodies": 23
+      }
+    }
+  },
+  {
+    "commit": "5edf0cbe1f845d53fb8e2c55bb1f1fa922a2af51",
+    "date": "2026-04-28T02:29:04+08:00",
+    "message": "Clean import",
+    "score": 0.7562,
+    "same_method_bodies": 124,
+    "parts": {
+      "Config": {
+        "blob": "2f7777888748493bf18fa6284840c500aab10050",
+        "structural_score": 0.9246,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "d7b18eaae6a17fba1d46d7d63a800f9894dc1598",
+        "structural_score": 0.9374,
+        "same_method_bodies": 39
+      },
+      "Result": {
+        "blob": "67bbd8e4bdb93e980f1e6fdf8e02c8af4a7a6496",
+        "structural_score": 0.8468,
+        "same_method_bodies": 35
+      },
+      "Site": {
+        "blob": "4888cd868122f7d8fce93b285cb7335dda82a998",
+        "structural_score": 0.8938,
+        "same_method_bodies": 23
+      }
+    }
+  },
+  {
+    "commit": "4d4cfcf99241f7c94d79e1e32319c454a9e323f1",
+    "date": "2026-02-09T12:11:33+08:00",
+    "message": "Update Result.java",
+    "score": 0.74548,
+    "same_method_bodies": 121,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "96133dc8ff77fe6068cc0101b0394e68d969ff55",
+        "structural_score": 0.8901,
+        "same_method_bodies": 37
+      },
+      "Result": {
+        "blob": "4b585e76e04f75dfce7099733ee57f98c7ee93d6",
+        "structural_score": 0.8881,
+        "same_method_bodies": 36
+      },
+      "Site": {
+        "blob": "1e3f799f5224789355f579f3c30d8530529c7d6b",
+        "structural_score": 0.8938,
+        "same_method_bodies": 23
+      }
+    }
+  },
+  {
+    "commit": "9e16c8fbd8034fa5324c149d9be5978dfcc4b329",
+    "date": "2026-05-14T03:10:21+08:00",
+    "message": "Optimize color system",
+    "score": 0.73974,
+    "same_method_bodies": 122,
+    "parts": {
+      "Config": {
+        "blob": "2f7777888748493bf18fa6284840c500aab10050",
+        "structural_score": 0.9246,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "d7b18eaae6a17fba1d46d7d63a800f9894dc1598",
+        "structural_score": 0.9374,
+        "same_method_bodies": 39
+      },
+      "Result": {
+        "blob": "67bbd8e4bdb93e980f1e6fdf8e02c8af4a7a6496",
+        "structural_score": 0.8468,
+        "same_method_bodies": 35
+      },
+      "Site": {
+        "blob": "27336b5358dfa2b0b7b6befbd497dc41e507cb5b",
+        "structural_score": 0.8102,
+        "same_method_bodies": 21
+      }
+    }
+  },
+  {
+    "commit": "ddf963321ec3e24d1e2c540c5722cf89ca507704",
+    "date": "2026-01-23T14:07:51+08:00",
+    "message": "Optimize hashCode",
+    "score": 0.73908,
+    "same_method_bodies": 120,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "96133dc8ff77fe6068cc0101b0394e68d969ff55",
+        "structural_score": 0.8901,
+        "same_method_bodies": 37
+      },
+      "Result": {
+        "blob": "596a50b4a7487953112855e869d02da0f3e5b14b",
+        "structural_score": 0.8565,
+        "same_method_bodies": 35
+      },
+      "Site": {
+        "blob": "1e3f799f5224789355f579f3c30d8530529c7d6b",
+        "structural_score": 0.8938,
+        "same_method_bodies": 23
+      }
+    }
+  },
+  {
+    "commit": "696dc992abebeec439fba2d6ea7fa62ec86caf18",
+    "date": "2026-06-12T02:13:06+08:00",
+    "message": "Fix youtube",
+    "score": 0.73905,
+    "same_method_bodies": 122,
+    "parts": {
+      "Config": {
+        "blob": "2f7777888748493bf18fa6284840c500aab10050",
+        "structural_score": 0.9246,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "d7b18eaae6a17fba1d46d7d63a800f9894dc1598",
+        "structural_score": 0.9374,
+        "same_method_bodies": 39
+      },
+      "Result": {
+        "blob": "d880909c93c9e140f62044f2354a373a5562b01c",
+        "structural_score": 0.8422,
+        "same_method_bodies": 35
+      },
+      "Site": {
+        "blob": "27336b5358dfa2b0b7b6befbd497dc41e507cb5b",
+        "structural_score": 0.8102,
+        "same_method_bodies": 21
+      }
+    }
+  },
+  {
+    "commit": "163214c47820bb2ed65043f35272224cd01745ca",
+    "date": "2026-06-25T00:42:18+08:00",
+    "message": "refactor(vod): move playback flow into controller",
+    "score": 0.73837,
+    "same_method_bodies": 122,
+    "parts": {
+      "Config": {
+        "blob": "2f7777888748493bf18fa6284840c500aab10050",
+        "structural_score": 0.9246,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "d7b18eaae6a17fba1d46d7d63a800f9894dc1598",
+        "structural_score": 0.9374,
+        "same_method_bodies": 39
+      },
+      "Result": {
+        "blob": "33ecfd41fc47564e507b1e0ac2b5d8a83d08c353",
+        "structural_score": 0.8377,
+        "same_method_bodies": 35
+      },
+      "Site": {
+        "blob": "27336b5358dfa2b0b7b6befbd497dc41e507cb5b",
+        "structural_score": 0.8102,
+        "same_method_bodies": 21
+      }
+    }
+  },
+  {
+    "commit": "a06e911f5029346bc5ae7fbd244f47e7cc6c6416",
+    "date": "2026-06-28T03:49:26+08:00",
+    "message": "Clean",
+    "score": 0.73837,
+    "same_method_bodies": 122,
+    "parts": {
+      "Config": {
+        "blob": "3310a07e0846b75199c130df6b5622e381781049",
+        "structural_score": 0.9246,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "96d67f191350e4be1df1009bcdb202401b84294b",
+        "structural_score": 0.9374,
+        "same_method_bodies": 39
+      },
+      "Result": {
+        "blob": "33ecfd41fc47564e507b1e0ac2b5d8a83d08c353",
+        "structural_score": 0.8377,
+        "same_method_bodies": 35
+      },
+      "Site": {
+        "blob": "27336b5358dfa2b0b7b6befbd497dc41e507cb5b",
+        "structural_score": 0.8102,
+        "same_method_bodies": 21
+      }
+    }
+  },
+  {
+    "commit": "364ea0d9426592440911325444d9fbde3a2c1bf0",
+    "date": "2026-01-22T11:19:12+08:00",
+    "message": "Clean code",
+    "score": 0.73571,
+    "same_method_bodies": 118,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "8346036a32c8daeed5ce527fb9886a70fe7eca59",
+        "structural_score": 0.8901,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "596a50b4a7487953112855e869d02da0f3e5b14b",
+        "structural_score": 0.8565,
+        "same_method_bodies": 35
+      },
+      "Site": {
+        "blob": "ffdca163808d14c3780c90786aef8155cbcde90f",
+        "structural_score": 0.8938,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "3792e6ce40b7f3c3c2c6e7e07dede9b97b9f3e05",
+    "date": "2026-01-04T01:44:53+08:00",
+    "message": "Support set artwork when get playerContent",
+    "score": 0.73558,
+    "same_method_bodies": 116,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "8346036a32c8daeed5ce527fb9886a70fe7eca59",
+        "structural_score": 0.8901,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "7e18ea97593f9dbb26948013aaf4c91ab156e0f4",
+        "structural_score": 0.8779,
+        "same_method_bodies": 33
+      },
+      "Site": {
+        "blob": "ffdca163808d14c3780c90786aef8155cbcde90f",
+        "structural_score": 0.8938,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "59b41396d860a140dd53987392acbfc28510d54d",
+    "date": "2026-01-06T01:27:21+08:00",
+    "message": "Optimize replay",
+    "score": 0.73068,
+    "same_method_bodies": 116,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "8346036a32c8daeed5ce527fb9886a70fe7eca59",
+        "structural_score": 0.8901,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "1ced44cd5ca72fb5e935c8229871486dd5589564",
+        "structural_score": 0.8452,
+        "same_method_bodies": 33
+      },
+      "Site": {
+        "blob": "ffdca163808d14c3780c90786aef8155cbcde90f",
+        "structural_score": 0.8938,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "e162a68487be2ef8663bd6ddc1bed48eaa4e0ff1",
+    "date": "2025-12-07T19:00:10+08:00",
+    "message": "Clean code",
+    "score": 0.72898,
+    "same_method_bodies": 115,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "8346036a32c8daeed5ce527fb9886a70fe7eca59",
+        "structural_score": 0.8901,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "5588ea153c86301a69bdcd31a48353ec04a217dd",
+        "structural_score": 0.845,
+        "same_method_bodies": 32
+      },
+      "Site": {
+        "blob": "ffdca163808d14c3780c90786aef8155cbcde90f",
+        "structural_score": 0.8938,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "9361c4a910817acff51035c296a4d9be31645ff7",
+    "date": "2025-12-08T14:54:55+08:00",
+    "message": "Clean code",
+    "score": 0.72898,
+    "same_method_bodies": 115,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "8346036a32c8daeed5ce527fb9886a70fe7eca59",
+        "structural_score": 0.8901,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "5d543a69d22a84f7b7ca1e7915fd7fd710e968ca",
+        "structural_score": 0.845,
+        "same_method_bodies": 32
+      },
+      "Site": {
+        "blob": "ffdca163808d14c3780c90786aef8155cbcde90f",
+        "structural_score": 0.8938,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "b802f538cb25bab7252bc170279101b6e409cec4",
+    "date": "2026-07-17T02:05:00+08:00",
+    "message": "Redesign playback settings and player effects",
+    "score": 0.72877,
+    "same_method_bodies": 122,
+    "parts": {
+      "Config": {
+        "blob": "5f17f6d3aa240f0d6114b24ff75ee9089692552a",
+        "structural_score": 0.8606,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "9bf3905f14e93322c6015ad6becf1efeb48d3720",
+        "structural_score": 0.9374,
+        "same_method_bodies": 39
+      },
+      "Result": {
+        "blob": "33ecfd41fc47564e507b1e0ac2b5d8a83d08c353",
+        "structural_score": 0.8377,
+        "same_method_bodies": 35
+      },
+      "Site": {
+        "blob": "27336b5358dfa2b0b7b6befbd497dc41e507cb5b",
+        "structural_score": 0.8102,
+        "same_method_bodies": 21
+      }
+    }
+  },
+  {
+    "commit": "f775eae2cbfb9085adecf9900389da5e0116f17e",
+    "date": "2025-12-05T23:36:55+08:00",
+    "message": "Optimize filter",
+    "score": 0.72644,
+    "same_method_bodies": 114,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "8346036a32c8daeed5ce527fb9886a70fe7eca59",
+        "structural_score": 0.8901,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "9185074fa4225646d54cfd2328ca729ea89caa34",
+        "structural_score": 0.8392,
+        "same_method_bodies": 31
+      },
+      "Site": {
+        "blob": "ffdca163808d14c3780c90786aef8155cbcde90f",
+        "structural_score": 0.8938,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "ca6b00160e2e770a485b9c1c27b9ad4ab8b15b0d",
+    "date": "2025-11-25T19:20:33+08:00",
+    "message": "Optimize header parse",
+    "score": 0.72311,
+    "same_method_bodies": 112,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "8346036a32c8daeed5ce527fb9886a70fe7eca59",
+        "structural_score": 0.8901,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "e522572c88aaeeead8bc42508e5729af5e5009cc",
+        "structural_score": 0.8392,
+        "same_method_bodies": 29
+      },
+      "Site": {
+        "blob": "29fc6083103bfef2f2c0f74f684ffd67f4017bde",
+        "structural_score": 0.8938,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "291268f9f4e8508841ce48654afaae34d5dff05b",
+    "date": "2025-11-25T22:13:14+08:00",
+    "message": "Optimize header parse",
+    "score": 0.72311,
+    "same_method_bodies": 112,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "8346036a32c8daeed5ce527fb9886a70fe7eca59",
+        "structural_score": 0.8901,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "9b5fe8da38e5276b7ff7766501da5607797ed927",
+        "structural_score": 0.8392,
+        "same_method_bodies": 29
+      },
+      "Site": {
+        "blob": "ffdca163808d14c3780c90786aef8155cbcde90f",
+        "structural_score": 0.8938,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "68b0e94b420bbf809cff24e7f540b29fa11d459f",
+    "date": "2025-11-09T14:50:34+08:00",
+    "message": "Convert channel to result",
+    "score": 0.72149,
+    "same_method_bodies": 112,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "8346036a32c8daeed5ce527fb9886a70fe7eca59",
+        "structural_score": 0.8901,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "9ea1c4bc167ec757e0f25e975237af0fadf57fac",
+        "structural_score": 0.8343,
+        "same_method_bodies": 29
+      },
+      "Site": {
+        "blob": "5a83694ad73317a362bc498a816dd45bcdbdd51d",
+        "structural_score": 0.8879,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "d9d32af0e6a3a4b18873d617e4b7821c93ac1eb9",
+    "date": "2025-11-09T22:31:45+08:00",
+    "message": "Fix bug",
+    "score": 0.72149,
+    "same_method_bodies": 112,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "8346036a32c8daeed5ce527fb9886a70fe7eca59",
+        "structural_score": 0.8901,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "bbf8ec13052254b11b462c4fa3a543e08877b907",
+        "structural_score": 0.8343,
+        "same_method_bodies": 29
+      },
+      "Site": {
+        "blob": "5a83694ad73317a362bc498a816dd45bcdbdd51d",
+        "structural_score": 0.8879,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "797c7bdaa7389d7c8577e0e05bf56665b5fcd9a9",
+    "date": "2025-11-15T20:41:18+08:00",
+    "message": "Clean code",
+    "score": 0.72149,
+    "same_method_bodies": 112,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "8346036a32c8daeed5ce527fb9886a70fe7eca59",
+        "structural_score": 0.8901,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "bbf8ec13052254b11b462c4fa3a543e08877b907",
+        "structural_score": 0.8343,
+        "same_method_bodies": 29
+      },
+      "Site": {
+        "blob": "fa22762b8407582458b9387d5e711d72f494c37c",
+        "structural_score": 0.8879,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "f9556a8c44946b09fe3f9bc9756453627fcd3615",
+    "date": "2025-11-16T11:35:54+08:00",
+    "message": "Clean code",
+    "score": 0.72149,
+    "same_method_bodies": 112,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "8346036a32c8daeed5ce527fb9886a70fe7eca59",
+        "structural_score": 0.8901,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "bbf8ec13052254b11b462c4fa3a543e08877b907",
+        "structural_score": 0.8343,
+        "same_method_bodies": 29
+      },
+      "Site": {
+        "blob": "62bf4414c6f0ee8f765cc7a8f2b01ed8b6e954d2",
+        "structural_score": 0.8879,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "92a446882b87be743d4fe972db7f2242e7db9bec",
+    "date": "2025-11-17T01:55:18+08:00",
+    "message": "Clean code",
+    "score": 0.72149,
+    "same_method_bodies": 112,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "8346036a32c8daeed5ce527fb9886a70fe7eca59",
+        "structural_score": 0.8901,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "28d47fd86b41b7432ffbac5e52e5bac07d6895a7",
+        "structural_score": 0.8343,
+        "same_method_bodies": 29
+      },
+      "Site": {
+        "blob": "62bf4414c6f0ee8f765cc7a8f2b01ed8b6e954d2",
+        "structural_score": 0.8879,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "5dbb6013839541ca8605a98b9e402cadcf6a22f4",
+    "date": "2025-11-20T11:35:02+08:00",
+    "message": "Clean code",
+    "score": 0.72149,
+    "same_method_bodies": 112,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "8346036a32c8daeed5ce527fb9886a70fe7eca59",
+        "structural_score": 0.8901,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "28d47fd86b41b7432ffbac5e52e5bac07d6895a7",
+        "structural_score": 0.8343,
+        "same_method_bodies": 29
+      },
+      "Site": {
+        "blob": "f95aabaafb1620e6592704d1701e1fdb47b816da",
+        "structural_score": 0.8879,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "c998307b3e288ef993629b05ec33411d27e50fa0",
+    "date": "2025-11-25T21:35:48+08:00",
+    "message": "Revert \"Optimize header parse\"",
+    "score": 0.72149,
+    "same_method_bodies": 112,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "8346036a32c8daeed5ce527fb9886a70fe7eca59",
+        "structural_score": 0.8901,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "28d47fd86b41b7432ffbac5e52e5bac07d6895a7",
+        "structural_score": 0.8343,
+        "same_method_bodies": 29
+      },
+      "Site": {
+        "blob": "f95aabaafb1620e6592704d1701e1fdb47b816da",
+        "structural_score": 0.8879,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "963a01f054b1472b1c68f0fcb32123a931ffd410",
+    "date": "2025-11-03T11:06:09+08:00",
+    "message": "Clean code",
+    "score": 0.71643,
+    "same_method_bodies": 110,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "8346036a32c8daeed5ce527fb9886a70fe7eca59",
+        "structural_score": 0.8901,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "19e821e39226bd51c0b67404d3e422e4890912a2",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "5a83694ad73317a362bc498a816dd45bcdbdd51d",
+        "structural_score": 0.8879,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "fd0d98607426717e25b58fcdbd36955332538e7d",
+    "date": "2025-11-02T22:11:36+08:00",
+    "message": "Clean code",
+    "score": 0.71543,
+    "same_method_bodies": 110,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "8346036a32c8daeed5ce527fb9886a70fe7eca59",
+        "structural_score": 0.8901,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "4fec120439f8ad2933da9d35501f90cf5542eb17",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "c9f2520643bf4c1f311da53ee8a7ea5f97dcf659",
+    "date": "2025-10-22T16:51:13+08:00",
+    "message": "Add hash code",
+    "score": 0.71472,
+    "same_method_bodies": 110,
+    "parts": {
+      "Config": {
+        "blob": "b65e934e2d7a03cb2dfad1fc6ddc8f211dc974ab",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "3bd82f607bb1baf665176f982d281ae45c093c5b",
+        "structural_score": 0.8854,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "0a5e9caa01d9f9e832cdaf13292606fbe1b8437a",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "99a96755b8ed0515a0c7c01b368809ec005ac8ed",
+    "date": "2025-10-22T17:55:35+08:00",
+    "message": "Clean code",
+    "score": 0.71472,
+    "same_method_bodies": 110,
+    "parts": {
+      "Config": {
+        "blob": "b65e934e2d7a03cb2dfad1fc6ddc8f211dc974ab",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "163f304c0a17d3acb0c427b5035dbc0347b0982e",
+        "structural_score": 0.8854,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "0a5e9caa01d9f9e832cdaf13292606fbe1b8437a",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "753e4dbc73cd443a4f295cf75eeab87befa455fa",
+    "date": "2025-10-31T01:25:03+08:00",
+    "message": "Optimize vod config load",
+    "score": 0.71472,
+    "same_method_bodies": 110,
+    "parts": {
+      "Config": {
+        "blob": "b65e934e2d7a03cb2dfad1fc6ddc8f211dc974ab",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "163f304c0a17d3acb0c427b5035dbc0347b0982e",
+        "structural_score": 0.8854,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "4fec120439f8ad2933da9d35501f90cf5542eb17",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "7b0124828ba90e63572074a25dcd4f08e395dde2",
+    "date": "2025-10-31T01:26:10+08:00",
+    "message": "Clean import",
+    "score": 0.71472,
+    "same_method_bodies": 110,
+    "parts": {
+      "Config": {
+        "blob": "0fcdf5f411d27fa66a7081bfd645be831c43ab38",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "0e94684886e915024ba9e15e0b8ed758c5f7e32e",
+        "structural_score": 0.8854,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "4fec120439f8ad2933da9d35501f90cf5542eb17",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "7645130eb250fc3b841cdf25045569fb76405138",
+    "date": "2025-10-22T15:25:45+08:00",
+    "message": "Optimize bean",
+    "score": 0.71393,
+    "same_method_bodies": 110,
+    "parts": {
+      "Config": {
+        "blob": "b65e934e2d7a03cb2dfad1fc6ddc8f211dc974ab",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "e7309f82fbf8d83c53a705f6505337c3b64502db",
+        "structural_score": 0.8801,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "0a5e9caa01d9f9e832cdaf13292606fbe1b8437a",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "6e6d36fb177484d53759201f1236a5ea60db8c9b",
+    "date": "2025-10-18T16:53:17+08:00",
+    "message": "Optimize history save",
+    "score": 0.71252,
+    "same_method_bodies": 109,
+    "parts": {
+      "Config": {
+        "blob": "b65e934e2d7a03cb2dfad1fc6ddc8f211dc974ab",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "0bd3898a52e54315f446a33cf1e3c8ebad24dda5",
+        "structural_score": 0.8801,
+        "same_method_bodies": 35
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "0a5e9caa01d9f9e832cdaf13292606fbe1b8437a",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "812212e15ff1e48b28685d718262956b766b69ee",
+    "date": "2025-10-18T03:24:58+08:00",
+    "message": "Optimize history save",
+    "score": 0.71111,
+    "same_method_bodies": 108,
+    "parts": {
+      "Config": {
+        "blob": "b65e934e2d7a03cb2dfad1fc6ddc8f211dc974ab",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "5cb04ccdcd713a8454bff1e68d5c788d1804bf68",
+        "structural_score": 0.8801,
+        "same_method_bodies": 34
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "0a5e9caa01d9f9e832cdaf13292606fbe1b8437a",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "2f8b1eeaecaba89ed3446d5468982c0f7bca0c5c",
+    "date": "2025-10-18T14:23:19+08:00",
+    "message": "Optimize history save",
+    "score": 0.71111,
+    "same_method_bodies": 108,
+    "parts": {
+      "Config": {
+        "blob": "b65e934e2d7a03cb2dfad1fc6ddc8f211dc974ab",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "7211fb87368d8ebdc5bece34d0208ccc48ec1a9a",
+        "structural_score": 0.8801,
+        "same_method_bodies": 34
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "0a5e9caa01d9f9e832cdaf13292606fbe1b8437a",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "5b6775003417cbb9d3dec68fc82cc60105f5e0aa",
+    "date": "2025-10-18T17:04:16+08:00",
+    "message": "Clean code",
+    "score": 0.71111,
+    "same_method_bodies": 108,
+    "parts": {
+      "Config": {
+        "blob": "b65e934e2d7a03cb2dfad1fc6ddc8f211dc974ab",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "541911ec6aab47d459d0caea06bf025329e79281",
+        "structural_score": 0.8801,
+        "same_method_bodies": 34
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "0a5e9caa01d9f9e832cdaf13292606fbe1b8437a",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "b7d33d43421ea7d471908d52d18bf2a8109b08df",
+    "date": "2025-10-18T00:10:22+08:00",
+    "message": "Optimize history",
+    "score": 0.7097,
+    "same_method_bodies": 107,
+    "parts": {
+      "Config": {
+        "blob": "b65e934e2d7a03cb2dfad1fc6ddc8f211dc974ab",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "00f97aae10c139e01993f1162aef5ce24b8937c3",
+        "structural_score": 0.8801,
+        "same_method_bodies": 33
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "0a5e9caa01d9f9e832cdaf13292606fbe1b8437a",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "8146efc17c91c4f75b1b8db36fbc11ceaf93b1a7",
+    "date": "2026-07-17T02:09:02+08:00",
+    "message": "Serialize and restore playback history",
+    "score": 0.70967,
+    "same_method_bodies": 119,
+    "parts": {
+      "Config": {
+        "blob": "5f17f6d3aa240f0d6114b24ff75ee9089692552a",
+        "structural_score": 0.8606,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "fd6ac988e14841ee4dde15b5c07b30df5e4d1148",
+        "structural_score": 0.8382,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "33ecfd41fc47564e507b1e0ac2b5d8a83d08c353",
+        "structural_score": 0.8377,
+        "same_method_bodies": 35
+      },
+      "Site": {
+        "blob": "27336b5358dfa2b0b7b6befbd497dc41e507cb5b",
+        "structural_score": 0.8102,
+        "same_method_bodies": 21
+      }
+    }
+  },
+  {
+    "commit": "f803adce0bfffebd05a2115a126aa3334ae99a11",
+    "date": "2026-07-30T01:46:27+08:00",
+    "message": "Refactor live and VOD playback coordination",
+    "score": 0.70529,
+    "same_method_bodies": 119,
+    "parts": {
+      "Config": {
+        "blob": "5f17f6d3aa240f0d6114b24ff75ee9089692552a",
+        "structural_score": 0.8606,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "fd6ac988e14841ee4dde15b5c07b30df5e4d1148",
+        "structural_score": 0.8382,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "33ecfd41fc47564e507b1e0ac2b5d8a83d08c353",
+        "structural_score": 0.8377,
+        "same_method_bodies": 35
+      },
+      "Site": {
+        "blob": "a88450f5316e9635fad56ffd715bc932d44599e2",
+        "structural_score": 0.781,
+        "same_method_bodies": 21
+      }
+    }
+  },
+  {
+    "commit": "6214d98376f5294299e1f8150ecee6a08c77b5a9",
+    "date": "2025-09-18T01:51:27+08:00",
+    "message": "Optimize keep and history",
+    "score": 0.70526,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "b5bbd307ae8257564c5f878cbbc7dd992229a7ec",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "b1e73ab1d5ae865936a65a499ad74379ec978d17",
+        "structural_score": 0.8599,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "0a5e9caa01d9f9e832cdaf13292606fbe1b8437a",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "e1f9c6bf37198aca0e2fc2004b7717957efda58d",
+    "date": "2025-09-20T19:02:27+08:00",
+    "message": "Clean ui",
+    "score": 0.70526,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "b5bbd307ae8257564c5f878cbbc7dd992229a7ec",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "f152b48c252a337f0dabfdc102a4b07000340b2e",
+        "structural_score": 0.8599,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "0a5e9caa01d9f9e832cdaf13292606fbe1b8437a",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "7819b90d51da99240e8b7a38dbd50d2fabba6453",
+    "date": "2025-09-29T16:03:45+08:00",
+    "message": "Fix bug",
+    "score": 0.70526,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "7cfb44a838cc399fb288d03b82895804940d0975",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "f152b48c252a337f0dabfdc102a4b07000340b2e",
+        "structural_score": 0.8599,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "0a5e9caa01d9f9e832cdaf13292606fbe1b8437a",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "2a048e466a6e4a3d3dd62fb2b5b6713d5aa3cbe8",
+    "date": "2025-10-12T21:15:43+08:00",
+    "message": "Add wall history",
+    "score": 0.70526,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "aebae6f7c100b76be80251e1f46485e5bc2ff050",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "f152b48c252a337f0dabfdc102a4b07000340b2e",
+        "structural_score": 0.8599,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "0a5e9caa01d9f9e832cdaf13292606fbe1b8437a",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "98a83356d1c8a0264f1d9b0295e2c0cab07969ac",
+    "date": "2025-10-13T21:52:56+08:00",
+    "message": "Fix icon",
+    "score": 0.70526,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "b65e934e2d7a03cb2dfad1fc6ddc8f211dc974ab",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "f152b48c252a337f0dabfdc102a4b07000340b2e",
+        "structural_score": 0.8599,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "0a5e9caa01d9f9e832cdaf13292606fbe1b8437a",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "bef28f7d5adcb9d23a7abb543cb95c68bfa9df73",
+    "date": "2025-09-18T00:57:39+08:00",
+    "message": "Clean",
+    "score": 0.70369,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "b5bbd307ae8257564c5f878cbbc7dd992229a7ec",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "2b77829777075df723e500632dacc929c3286932",
+        "structural_score": 0.8494,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "0a5e9caa01d9f9e832cdaf13292606fbe1b8437a",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "c381a75417c4a1c223594662984742a5ea01848f",
+    "date": "2025-03-30T16:44:44+08:00",
+    "message": "Support hide site",
+    "score": 0.70291,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "2c2e2dfb58b3a6cebeeda5d6a3bb003b6ea78fef",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "2e2bcc2216da57fff3716d179f7ec1e3df40e5cf",
+        "structural_score": 0.8442,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "f8a187ea5ab8c687c0de6e8da7fe180da89f9599",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "109e96f79d47deb4ca8cd75c9ec6f16dcafdc292",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "02ece8ff0bc7bac20b0b797ed8e7ce6c7996c5d0",
+    "date": "2025-04-22T12:09:33+08:00",
+    "message": "Check parse and jx first when start media",
+    "score": 0.70291,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "2c2e2dfb58b3a6cebeeda5d6a3bb003b6ea78fef",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "2e2bcc2216da57fff3716d179f7ec1e3df40e5cf",
+        "structural_score": 0.8442,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "91c8ba48cf1e7b604af7b44142282209d628f1f6",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "109e96f79d47deb4ca8cd75c9ec6f16dcafdc292",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "5e238d19dd7bba83052c7de3bdb46f7c91426ddd",
+    "date": "2025-05-22T12:44:14+08:00",
+    "message": "Adjust history day",
+    "score": 0.70291,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "2c2e2dfb58b3a6cebeeda5d6a3bb003b6ea78fef",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "84d8929c68d264fbaec714118a4f4359d189608a",
+        "structural_score": 0.8442,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "91c8ba48cf1e7b604af7b44142282209d628f1f6",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "109e96f79d47deb4ca8cd75c9ec6f16dcafdc292",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "8709537b70d4a924ed45ae13680cca7c6e481b1a",
+    "date": "2025-06-03T03:26:52+08:00",
+    "message": "Clean code",
+    "score": 0.70291,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "2c2e2dfb58b3a6cebeeda5d6a3bb003b6ea78fef",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "61b5e1c93692d86384f3ea27b31e754beeea40aa",
+        "structural_score": 0.8442,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "91c8ba48cf1e7b604af7b44142282209d628f1f6",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "109e96f79d47deb4ca8cd75c9ec6f16dcafdc292",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "db152b0662f1349a52fd9f16af3c23fcbdf2edb3",
+    "date": "2025-06-03T17:11:14+08:00",
+    "message": "Clean code",
+    "score": 0.70291,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "2c2e2dfb58b3a6cebeeda5d6a3bb003b6ea78fef",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "0ac2f21b499168880e2034e89c908230b51a9207",
+        "structural_score": 0.8442,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "91c8ba48cf1e7b604af7b44142282209d628f1f6",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "737a80796e461773046c411d5add4c50b2a9ea18",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "eccec715ce4a65c4cf4c805160f392deca825c37",
+    "date": "2025-08-23T01:08:44+08:00",
+    "message": "Update ui",
+    "score": 0.70291,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "2c2e2dfb58b3a6cebeeda5d6a3bb003b6ea78fef",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "0ac2f21b499168880e2034e89c908230b51a9207",
+        "structural_score": 0.8442,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "737a80796e461773046c411d5add4c50b2a9ea18",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "dead7ef279977a335f6f98b66ced88d0dc9b682e",
+    "date": "2025-08-28T02:46:18+08:00",
+    "message": "Clean",
+    "score": 0.70291,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "af40e055299a7a4c384cf70a8b30ad3ccfcfabe0",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "0ac2f21b499168880e2034e89c908230b51a9207",
+        "structural_score": 0.8442,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "7463651858ef8b253a8884a8e6a718457df6ec58",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "7e8f5e25f4dac0ffd8ef08686bf3e4d8e6c58610",
+        "structural_score": 0.8812,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "516c0cdc170c5e4832aa5897a135a3549fa36bf9",
+    "date": "2025-03-14T17:32:25+08:00",
+    "message": "Clean code",
+    "score": 0.69601,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "2c2e2dfb58b3a6cebeeda5d6a3bb003b6ea78fef",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "2e2bcc2216da57fff3716d179f7ec1e3df40e5cf",
+        "structural_score": 0.8442,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "f8a187ea5ab8c687c0de6e8da7fe180da89f9599",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "1b21f4d511ee8e107a3f361b9278b49a844f7734",
+        "structural_score": 0.8352,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "600276a1e481e2b98c6c9298f6df022d1a81f361",
+    "date": "2025-02-22T11:27:57+08:00",
+    "message": "Support danmaku",
+    "score": 0.695,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "2c2e2dfb58b3a6cebeeda5d6a3bb003b6ea78fef",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "2e2bcc2216da57fff3716d179f7ec1e3df40e5cf",
+        "structural_score": 0.8442,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "e720c1a6e317fb4798baa91b3de69cd9066fa5b5",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "a8b05dedba3acd3eb44446f9cb164714d0b70471",
+        "structural_score": 0.8285,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "96d46ef4dfe55b2e73ac0ac27ee4250b797f4752",
+    "date": "2025-02-22T18:41:24+08:00",
+    "message": "Add danmakuLoad switch",
+    "score": 0.695,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "2c2e2dfb58b3a6cebeeda5d6a3bb003b6ea78fef",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "2e2bcc2216da57fff3716d179f7ec1e3df40e5cf",
+        "structural_score": 0.8442,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "1c7039348d8e604e5d18284a7235edc4b403cdf8",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "a8b05dedba3acd3eb44446f9cb164714d0b70471",
+        "structural_score": 0.8285,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "11509cac73348d9b04ae535e4220af1220e953e4",
+    "date": "2025-02-24T11:22:02+08:00",
+    "message": "Support multiple danmaku",
+    "score": 0.695,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "2c2e2dfb58b3a6cebeeda5d6a3bb003b6ea78fef",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "2e2bcc2216da57fff3716d179f7ec1e3df40e5cf",
+        "structural_score": 0.8442,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "be74e63713c21835d55f28127dc6e2bc8d43cc19",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "a8b05dedba3acd3eb44446f9cb164714d0b70471",
+        "structural_score": 0.8285,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "1c9e89b47693563844fdc6a9f10dd7a5a19f433a",
+    "date": "2025-03-05T14:00:59+08:00",
+    "message": "Clean code",
+    "score": 0.695,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "2c2e2dfb58b3a6cebeeda5d6a3bb003b6ea78fef",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "2e2bcc2216da57fff3716d179f7ec1e3df40e5cf",
+        "structural_score": 0.8442,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "f8a187ea5ab8c687c0de6e8da7fe180da89f9599",
+        "structural_score": 0.8228,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "a8b05dedba3acd3eb44446f9cb164714d0b70471",
+        "structural_score": 0.8285,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "79ca9e18405ecd7d15a3818ae448284471500b41",
+    "date": "2025-02-02T23:20:10+08:00",
+    "message": "Clean code",
+    "score": 0.69008,
+    "same_method_bodies": 106,
+    "parts": {
+      "Config": {
+        "blob": "2c2e2dfb58b3a6cebeeda5d6a3bb003b6ea78fef",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "2e2bcc2216da57fff3716d179f7ec1e3df40e5cf",
+        "structural_score": 0.8442,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "0fb80b3d2ab12304eff273415937f9c990aed853",
+        "structural_score": 0.79,
+        "same_method_bodies": 27
+      },
+      "Site": {
+        "blob": "a8b05dedba3acd3eb44446f9cb164714d0b70471",
+        "structural_score": 0.8285,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "8e3d7543e8f7b4e53033e487e03f116f0209ecf3",
+    "date": "2025-01-11T00:12:50+08:00",
+    "message": "Fix bug",
+    "score": 0.68842,
+    "same_method_bodies": 105,
+    "parts": {
+      "Config": {
+        "blob": "2c2e2dfb58b3a6cebeeda5d6a3bb003b6ea78fef",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "e37ff733dbd6adcd880bc542b0e55a6eb8402e9d",
+        "structural_score": 0.8442,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "91e19366a2ae671e5970b56d19ad2e55b5023bd9",
+        "structural_score": 0.79,
+        "same_method_bodies": 26
+      },
+      "Site": {
+        "blob": "a8b05dedba3acd3eb44446f9cb164714d0b70471",
+        "structural_score": 0.8285,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "bfb91d8882a4ebddfbccb86bdcd821f491904e79",
+    "date": "2025-01-12T14:23:27+08:00",
+    "message": "Optimize position",
+    "score": 0.68842,
+    "same_method_bodies": 105,
+    "parts": {
+      "Config": {
+        "blob": "2c2e2dfb58b3a6cebeeda5d6a3bb003b6ea78fef",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "2e2bcc2216da57fff3716d179f7ec1e3df40e5cf",
+        "structural_score": 0.8442,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "91e19366a2ae671e5970b56d19ad2e55b5023bd9",
+        "structural_score": 0.79,
+        "same_method_bodies": 26
+      },
+      "Site": {
+        "blob": "a8b05dedba3acd3eb44446f9cb164714d0b70471",
+        "structural_score": 0.8285,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "6eaaeaa061db43e450e5ad09428c2a2b675d3279",
+    "date": "2025-01-04T13:54:48+08:00",
+    "message": "Clean code",
+    "score": 0.68783,
+    "same_method_bodies": 105,
+    "parts": {
+      "Config": {
+        "blob": "2c2e2dfb58b3a6cebeeda5d6a3bb003b6ea78fef",
+        "structural_score": 0.8952,
+        "same_method_bodies": 25
+      },
+      "History": {
+        "blob": "541f6e1cd5b774983585fba8ce258acf445692b3",
+        "structural_score": 0.8403,
+        "same_method_bodies": 32
+      },
+      "Result": {
+        "blob": "91e19366a2ae671e5970b56d19ad2e55b5023bd9",
+        "structural_score": 0.79,
+        "same_method_bodies": 26
+      },
+      "Site": {
+        "blob": "a8b05dedba3acd3eb44446f9cb164714d0b70471",
+        "structural_score": 0.8285,
+        "same_method_bodies": 22
+      }
+    }
+  },
+  {
+    "commit": "6a5d4b2e6176df819e8fa9b03b81d9ea23daa75f",
+    "date": "2026-10-19T17:02:43+08:00",
+    "message": "Refine playback controllers, tracks and TV/mobile controls",
+    "score": 0.68595,
+    "same_method_bodies": 119,
+    "parts": {
+      "Config": {
+        "blob": "7f9cd756a9afd1630589b2a4029066b25cd6ba9e",
+        "structural_score": 0.8606,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "6089398ba7755d3036aef7fe05e169f50dc68f56",
+        "structural_score": 0.8029,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "ea3c1246329a4a2e93d09fb34e3c378cc38024aa",
+        "structural_score": 0.7806,
+        "same_method_bodies": 35
+      },
+      "Site": {
+        "blob": "e9922feda644310c661174320b23232b1a1f1748",
+        "structural_score": 0.7445,
+        "same_method_bodies": 21
+      }
+    }
+  },
+  {
+    "commit": "16b1f3e10c3e9ca0877461b26c21308626fac77c",
+    "date": "2026-10-20T15:37:38+08:00",
+    "message": "Share source-scoped live authentication across Exo and mpv",
+    "score": 0.6821,
+    "same_method_bodies": 119,
+    "parts": {
+      "Config": {
+        "blob": "7f9cd756a9afd1630589b2a4029066b25cd6ba9e",
+        "structural_score": 0.8606,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "6089398ba7755d3036aef7fe05e169f50dc68f56",
+        "structural_score": 0.8029,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "bb65f61582f911530f513a3cd1e127b13306ea4c",
+        "structural_score": 0.7549,
+        "same_method_bodies": 35
+      },
+      "Site": {
+        "blob": "e9922feda644310c661174320b23232b1a1f1748",
+        "structural_score": 0.7445,
+        "same_method_bodies": 21
+      }
+    }
+  },
+  {
+    "commit": "43bf0b0f1d4673a81c815d72df50e547bb4bc4e6",
+    "date": "2026-10-24T00:17:26+08:00",
+    "message": "Support live timeshift in playback controls",
+    "score": 0.67848,
+    "same_method_bodies": 119,
+    "parts": {
+      "Config": {
+        "blob": "7f9cd756a9afd1630589b2a4029066b25cd6ba9e",
+        "structural_score": 0.8606,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "6089398ba7755d3036aef7fe05e169f50dc68f56",
+        "structural_score": 0.8029,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "9ea5174a37ca73a88be3b798f89eae8770df3f04",
+        "structural_score": 0.7308,
+        "same_method_bodies": 35
+      },
+      "Site": {
+        "blob": "e9922feda644310c661174320b23232b1a1f1748",
+        "structural_score": 0.7445,
+        "same_method_bodies": 21
+      }
+    }
+  },
+  {
+    "commit": "47a41c8ba6220f2274cfb792fa8a99990068b957",
+    "date": "2026-11-01T21:22:10+08:00",
+    "message": "Fix source resolution and native BT playback lifecycle",
+    "score": 0.66939,
+    "same_method_bodies": 119,
+    "parts": {
+      "Config": {
+        "blob": "7f9cd756a9afd1630589b2a4029066b25cd6ba9e",
+        "structural_score": 0.8606,
+        "same_method_bodies": 27
+      },
+      "History": {
+        "blob": "6089398ba7755d3036aef7fe05e169f50dc68f56",
+        "structural_score": 0.8029,
+        "same_method_bodies": 36
+      },
+      "Result": {
+        "blob": "076d0fcf2787a5bc8eee47ab15163ca8347b575b",
+        "structural_score": 0.6702,
+        "same_method_bodies": 35
+      },
+      "Site": {
+        "blob": "e9922feda644310c661174320b23232b1a1f1748",
+        "structural_score": 0.7445,
+        "same_method_bodies": 21
+      }
+    }
+  }
+]

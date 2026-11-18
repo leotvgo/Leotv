@@ -1,0 +1,5762 @@
+[
+  {
+    "commit": "ddaca786bb44f40ff6b6a76679c670a0231a08e6",
+    "date": "2024-01-03T00:40:15+08:00",
+    "message": "Update build.gradle",
+    "blob": "57f9d647b0b8ab275e4e38b17aabefcaec30cc45",
+    "min_sdk": 21,
+    "version": "0103"
+  },
+  {
+    "commit": "10f94f24dc3423d7f9523551e91b987a91af9f8d",
+    "date": "2024-01-03T16:05:47+08:00",
+    "message": "Update build.gradle",
+    "blob": "4f31450209d7f8387916623efcd30ac66aec7b73",
+    "min_sdk": 21,
+    "version": "0103#2"
+  },
+  {
+    "commit": "d7b69e88e8042e41e833101cdd7226790399ca6c",
+    "date": "2024-01-03T17:11:30+08:00",
+    "message": "Update build.gradle",
+    "blob": "c4049a17d09d8c22a735dd4cec16705ececd599b",
+    "min_sdk": 21,
+    "version": "0103#3"
+  },
+  {
+    "commit": "b6d8ede5e3b196f8f7bb73c984dcd579a54cd5b5",
+    "date": "2024-01-03T22:22:51+08:00",
+    "message": "Clean code",
+    "blob": "1f78bffcebec6c0ca257180f288fd30a9b5122fc",
+    "min_sdk": 21,
+    "version": "0103#4"
+  },
+  {
+    "commit": "90c0e7f46c08ae5fc088d8c801922a4a758ceaeb",
+    "date": "2024-01-03T22:32:28+08:00",
+    "message": "Merge branch 'dev' into release",
+    "blob": "7a868d1b89d508544c878824d49eb6271ce9e125",
+    "min_sdk": 21,
+    "version": "0103#4"
+  },
+  {
+    "commit": "39e2238f417e64c80cd8362c0909ecaec8cfde40",
+    "date": "2024-01-03T23:17:44+08:00",
+    "message": "Update build.gradle",
+    "blob": "5f2d17b7a76c65b8f59163531743e9ca67337179",
+    "min_sdk": 21,
+    "version": "final"
+  },
+  {
+    "commit": "a60217df8319714eec17c9443f8bc56851f09830",
+    "date": "2024-01-05T09:26:34+08:00",
+    "message": "Update build.gradle",
+    "blob": "6b1bdbe98aa630198cfc82c329aa2ae7b9f93a42",
+    "min_sdk": 21,
+    "version": "2.1.6"
+  },
+  {
+    "commit": "9728f26c6a85ec365cbc674d17d692ba01400102",
+    "date": "2024-01-05T09:48:29+08:00",
+    "message": "Merge branch 'dev' into release",
+    "blob": "d1c4503f5fef1cec19524ba1e44de603d9bace8c",
+    "min_sdk": 21,
+    "version": "2.1.6"
+  },
+  {
+    "commit": "00385f27bbb8555dd76f20478c6a830dea26ef22",
+    "date": "2024-01-08T17:39:23+08:00",
+    "message": "Update build.gradle",
+    "blob": "39ea3d3c124a64a51fe19ae80fbb423958fd8c48",
+    "min_sdk": 21,
+    "version": "2.1.7"
+  },
+  {
+    "commit": "d55801817fa3fff377fcd5b19817ac43a1710f4c",
+    "date": "2024-01-08T18:03:51+08:00",
+    "message": "Merge branch 'dev' into release",
+    "blob": "c43bdc1bda2abf2f8a4d18182e03b8205afa2aad",
+    "min_sdk": 21,
+    "version": "2.1.7"
+  },
+  {
+    "commit": "d002852305d820af43a1ebf0d3e5b99eebd98f3b",
+    "date": "2024-01-08T22:00:11+08:00",
+    "message": "Update build.gradle",
+    "blob": "fef4a27efa9fd55399943052c0d320ebdaa7f0f5",
+    "min_sdk": 21,
+    "version": "2.1.8"
+  },
+  {
+    "commit": "0eca2b5c5ffa4dd8120cd9ae2e1595c986a9272a",
+    "date": "2024-01-08T22:11:34+08:00",
+    "message": "Merge branch 'dev' into release",
+    "blob": "2841b28b8f2f12202ff296e3109ca94d7bc04140",
+    "min_sdk": 21,
+    "version": "2.1.8"
+  },
+  {
+    "commit": "72fcf5579f8446e7bd894ee76668f9065a298b77",
+    "date": "2024-01-09T16:25:59+08:00",
+    "message": "Update build.gradle",
+    "blob": "d4722cd2f30764385fb8855ba86d0da458beed47",
+    "min_sdk": 21,
+    "version": "2.1.9"
+  },
+  {
+    "commit": "066235a23194f919ce2db11ce2dd71027f64166c",
+    "date": "2024-01-09T16:37:16+08:00",
+    "message": "Merge branch 'dev' into release",
+    "blob": "659faa080b09348e1bba4be99a57559caddca353",
+    "min_sdk": 21,
+    "version": "2.1.9"
+  },
+  {
+    "commit": "b10bbf6ee5f2094018d8899ac91e68bb51a5da2f",
+    "date": "2024-01-10T16:30:14+08:00",
+    "message": "Update build.gradle",
+    "blob": "03c4385bf79f97fa058e9bbf080c5942653191c4",
+    "min_sdk": 21,
+    "version": "2.1.9"
+  },
+  {
+    "commit": "a499c8b5fa04fbe0d0f8d0ae1a0af95e4bdbf2a9",
+    "date": "2024-01-11T00:14:31+08:00",
+    "message": "Fix build",
+    "blob": "fe0efd5d635fee61ff0c58be2a6be36872f3b6a3",
+    "min_sdk": 21,
+    "version": "2.1.9"
+  },
+  {
+    "commit": "aef100cf2e2b0ea55286cf89e574a899bcf1214b",
+    "date": "2024-01-11T00:39:57+08:00",
+    "message": "Fix build",
+    "blob": "e2a021a0a5fae90804fd8c07bc35ceda4847af66",
+    "min_sdk": 21,
+    "version": "2.1.9"
+  },
+  {
+    "commit": "cdef639d8fc6a8c62e844b1366a6c8d36a7b44de",
+    "date": "2024-01-11T01:51:20+08:00",
+    "message": "Merge branch 'dev' into release",
+    "blob": "197d2a9e9087d2cacc2e2aeaddf4704694fb18c0",
+    "min_sdk": 21,
+    "version": "2.1.9"
+  },
+  {
+    "commit": "68839f09a6d8df69a8e6fc78e0e1eae4e8c3f4c5",
+    "date": "2024-01-11T10:18:09+08:00",
+    "message": "Fix bug",
+    "blob": "938bcb167cc14999119e914b8ab5bacc915017b9",
+    "min_sdk": 21,
+    "version": "2.2.0"
+  },
+  {
+    "commit": "6b98b864e44b26345f17f16ea9f9924231369c1b",
+    "date": "2024-01-11T10:28:56+08:00",
+    "message": "Merge branch 'dev' into release",
+    "blob": "de1a47b787f0afd6d9182c35e5c15ef2780532e2",
+    "min_sdk": 21,
+    "version": "2.2.0"
+  },
+  {
+    "commit": "28bf5b5cf2d143adc3c5887424ac9dbf34da5c54",
+    "date": "2024-01-12T09:00:18+08:00",
+    "message": "Update build.gradle",
+    "blob": "12d9999b8590980de5e59cf7ba6a6e1dfad79c16",
+    "min_sdk": 21,
+    "version": "2.2.0"
+  },
+  {
+    "commit": "b64b983699d121b15f75f6074d2192215931f307",
+    "date": "2024-01-12T09:10:06+08:00",
+    "message": "Merge branch 'dev' into release",
+    "blob": "f636213e53befbeb7cfbfa438117abed342b1778",
+    "min_sdk": 21,
+    "version": "2.2.0"
+  },
+  {
+    "commit": "9cfdbbe03ec3537c46ed805f6f744f723ff64d2c",
+    "date": "2024-01-12T11:05:08+08:00",
+    "message": "Update build.gradle",
+    "blob": "0b3a38a1d0ffd88838a9f7f8776c4607bf1a487b",
+    "min_sdk": 21,
+    "version": "2.2.0"
+  },
+  {
+    "commit": "abb16cdcf01e75a59e52a71ad7386645e92c5179",
+    "date": "2024-01-12T11:14:52+08:00",
+    "message": "Merge branch 'dev' into release",
+    "blob": "c5707926b90f7c8e69ac3cbc0aea126f5770e999",
+    "min_sdk": 21,
+    "version": "2.2.0"
+  },
+  {
+    "commit": "1066c7d36c7316a4f85959230a255962f1a3365f",
+    "date": "2024-01-12T13:55:37+08:00",
+    "message": "Update build.gradle",
+    "blob": "12d9999b8590980de5e59cf7ba6a6e1dfad79c16",
+    "min_sdk": 21,
+    "version": "2.2.0"
+  },
+  {
+    "commit": "917b4ae58f898481b44f211cc00297ced31204e1",
+    "date": "2024-01-12T14:02:30+08:00",
+    "message": "Merge branch 'dev' into release",
+    "blob": "f636213e53befbeb7cfbfa438117abed342b1778",
+    "min_sdk": 21,
+    "version": "2.2.0"
+  },
+  {
+    "commit": "8c680b1ce7263d02a2b669714ed334443f87de8d",
+    "date": "2024-01-13T16:21:44+08:00",
+    "message": "update",
+    "blob": "6b1a77d025ab600171cc78d6b34be51938b5a23d",
+    "min_sdk": 21,
+    "version": "20240113"
+  },
+  {
+    "commit": "3a63a59c4a13c260b10c5903b8655cf7c9fbac52",
+    "date": "2024-01-14T14:48:51+08:00",
+    "message": "build.gradle",
+    "blob": "a439239f7480b229fc62af4893dea39422824b31",
+    "min_sdk": 21,
+    "version": "20240114"
+  },
+  {
+    "commit": "f04f71e8b0964ca8121da14c8009438aebac738c",
+    "date": "2024-01-14T16:57:46+08:00",
+    "message": "build.gradle",
+    "blob": "572830ab3dc15cc1c260ee727531a9c0879c897b",
+    "min_sdk": 21,
+    "version": "2.2.1"
+  },
+  {
+    "commit": "e6bfb335a8b4e124c9a2e70ca0817471ef08fef2",
+    "date": "2024-01-14T17:04:39+08:00",
+    "message": "Merge pull request #210 from FongMi/dev",
+    "blob": "22e2f0a920b02fdb68ee4e496d5607614e2ab94a",
+    "min_sdk": 21,
+    "version": "2.2.1"
+  },
+  {
+    "commit": "b548d61404ba0fa71172db087b3289377be4311f",
+    "date": "2024-01-14T21:09:50+08:00",
+    "message": "build.gradle",
+    "blob": "572830ab3dc15cc1c260ee727531a9c0879c897b",
+    "min_sdk": 21,
+    "version": "2.2.1"
+  },
+  {
+    "commit": "0d49923e810faa3d91b4bb1504181dd202ed0b7b",
+    "date": "2024-01-14T21:25:01+08:00",
+    "message": "build.gradle",
+    "blob": "143e75d9f57bdf0577c6038febc8b40e37e98a3f",
+    "min_sdk": 21,
+    "version": "2.2.2"
+  },
+  {
+    "commit": "0a97b65ab5b395ccb3baec034bb2a96509103f6d",
+    "date": "2024-01-15T00:36:01+08:00",
+    "message": "Use bili danmaku",
+    "blob": "40fbbcd353f4f2832e045e2b5fd4b2aacfcc475e",
+    "min_sdk": 21,
+    "version": "2.2.2"
+  },
+  {
+    "commit": "0fc8ee661b3e801a2f112f51b2f31e59921aa791",
+    "date": "2024-01-16T00:59:09+08:00",
+    "message": "Update build.gradle",
+    "blob": "c4d7a025faad16e10f30721ba1ea9b3761ff8e58",
+    "min_sdk": 21,
+    "version": "0116"
+  },
+  {
+    "commit": "31b4be55560a0e1be3e57e77a0db90528207cf83",
+    "date": "2024-01-16T14:48:52+08:00",
+    "message": "build.gradle",
+    "blob": "f94db741e7b9803d3cb1e9db66efb3996cec880c",
+    "min_sdk": 21,
+    "version": "0116#2"
+  },
+  {
+    "commit": "505bbc2ccbf480c16205ea4c17858ef79c8da783",
+    "date": "2024-01-17T09:31:27+08:00",
+    "message": "build.gradle",
+    "blob": "b36edb34385c3e2f37af8840c6ab0547f68a80ac",
+    "min_sdk": 21,
+    "version": "0117"
+  },
+  {
+    "commit": "e362a3e84e762a82ad6eaac8b646f731c93b04ae",
+    "date": "2024-01-18T10:48:36+08:00",
+    "message": "build.gradle",
+    "blob": "0f909b5c6824cff6eeb6caf4a5b8e2ad94a3d9d0",
+    "min_sdk": 21,
+    "version": "0118"
+  },
+  {
+    "commit": "e9e82f5fc9b129aa596b803e976a5668bcd72c37",
+    "date": "2024-01-19T09:54:49+08:00",
+    "message": "Update build.gradle",
+    "blob": "cbc38667daaca5a1b17c2d11a94c00e82a7dbb71",
+    "min_sdk": 21,
+    "version": "0119"
+  },
+  {
+    "commit": "8458fbe8ef4bc4df92dd715c02b8cb50c72afd70",
+    "date": "2024-01-21T17:58:07+08:00",
+    "message": "Update build.gradle",
+    "blob": "7380d46521e957056575f01c6990b5b44b56a6a1",
+    "min_sdk": 21,
+    "version": "2.2.3"
+  },
+  {
+    "commit": "2ce41f985da982bdf0ff0e55ca098a2c3a56960f",
+    "date": "2024-01-21T20:07:57+08:00",
+    "message": "Clean code",
+    "blob": "6c8d9ffdb038cb7fbddab424d128ae61b4a33b1d",
+    "min_sdk": 21,
+    "version": "2.2.3"
+  },
+  {
+    "commit": "8ff8a52221e2f15e84864dac1654722a7f0e6681",
+    "date": "2024-01-21T20:31:28+08:00",
+    "message": "Update build.gradle",
+    "blob": "c9287ed0b97c021fe392588ace24528b9c51e8ae",
+    "min_sdk": 21,
+    "version": "2.2.4"
+  },
+  {
+    "commit": "fba0ca7ee0ec7f66fa07edb218699977eb32563c",
+    "date": "2024-01-22T13:52:58+08:00",
+    "message": "Update build.gradle",
+    "blob": "0beec779042873e068c861092cd163cedf18e890",
+    "min_sdk": 21,
+    "version": "0122"
+  },
+  {
+    "commit": "4a17bb6950b2a4df722cb95d46d60cf2f3549e74",
+    "date": "2024-01-22T15:23:22+08:00",
+    "message": "Update build.gradle",
+    "blob": "fc1c9937bd3cf27169a5d671d27ce18a1a892539",
+    "min_sdk": 21,
+    "version": "0122#2"
+  },
+  {
+    "commit": "60d6b8c23af003b42fd5ce46d6395c9394be54ee",
+    "date": "2024-01-22T17:15:27+08:00",
+    "message": "Update build.gradle",
+    "blob": "fb6e5aa6e7e6665e2412f3b80ea051dedb11afb1",
+    "min_sdk": 21,
+    "version": "0122#3"
+  },
+  {
+    "commit": "b228cfa4fae2135984854e93a1678bd1d8710041",
+    "date": "2024-01-22T18:08:03+08:00",
+    "message": "Update build.gradle",
+    "blob": "adb88720e4c9a08eb91bf6b444f7e34f4eaecd00",
+    "min_sdk": 21,
+    "version": "0122#4"
+  },
+  {
+    "commit": "f36e6c0b68dc999496699f611ae7fc8a1b4ce5b3",
+    "date": "2024-01-22T23:41:49+08:00",
+    "message": "Clean code",
+    "blob": "47d111453c31d3882325fe49813c0b29de9bb62e",
+    "min_sdk": 21,
+    "version": "0123"
+  },
+  {
+    "commit": "e12f065c200f2ae2590419b4dc8621c0d0b6bb64",
+    "date": "2024-01-23T15:43:55+08:00",
+    "message": "Update build.gradle",
+    "blob": "a39dd513706cc1a55e2a7bd1228313395052e95d",
+    "min_sdk": 21,
+    "version": "0123#2"
+  },
+  {
+    "commit": "e1017c3339af87890298723e6b95797b9c159899",
+    "date": "2024-01-23T15:59:55+08:00",
+    "message": "Update build.gradle",
+    "blob": "01599b06c61b5479a5d0013e5bc81fe41cbf1c91",
+    "min_sdk": 21,
+    "version": "fongmi-0123"
+  },
+  {
+    "commit": "ab4d472e3ccc76268059f0e604b9c4e9a087632b",
+    "date": "2024-01-23T16:03:49+08:00",
+    "message": "Update build.gradle",
+    "blob": "6539654badabc736bab1791488890675da19efa5",
+    "min_sdk": 21,
+    "version": "fongmi-0124"
+  },
+  {
+    "commit": "09fe6eb3dcfbd94d671e7dac4b8d102f49a68a50",
+    "date": "2024-01-25T23:29:24+08:00",
+    "message": "Update build.gradle",
+    "blob": "006e25ba7308ada6ddf770560e246a636416fc83",
+    "min_sdk": 21,
+    "version": "fongmi-0125"
+  },
+  {
+    "commit": "a78102692ea93d35529dd491ac33ba7400e2f1a6",
+    "date": "2024-01-25T23:31:51+08:00",
+    "message": "Update build.gradle",
+    "blob": "9079f7e0549b1b9e398d61a4486958122b424fce",
+    "min_sdk": 21,
+    "version": "fongmi-0126"
+  },
+  {
+    "commit": "b5cbb2c7cafc51b307ed20dbb6d49d01042806d9",
+    "date": "2024-01-26T13:23:16+08:00",
+    "message": "Fix bug",
+    "blob": "30cdbf36cbe80d30870fae78e6c60d66487d49a2",
+    "min_sdk": 21,
+    "version": "fongmi-0126#2"
+  },
+  {
+    "commit": "acc69b522724a30dcc802095c7b08545647a7d3a",
+    "date": "2024-01-27T00:03:15+08:00",
+    "message": "Update build.gradle",
+    "blob": "c777c9345160d0879245dfed813d2aaf53ce7e72",
+    "min_sdk": 21,
+    "version": "fongmi-0127"
+  },
+  {
+    "commit": "96a37fe37f1663d5572cdf24df84126d554404d8",
+    "date": "2024-01-27T00:34:12+08:00",
+    "message": "Update build.gradle",
+    "blob": "9f144668ea62f7fdc3d53df09eb6f0fc5a39c2a8",
+    "min_sdk": 21,
+    "version": "fongmi-0127#2"
+  },
+  {
+    "commit": "bfd1c11ed7dede09f051644ac41f7613f766094e",
+    "date": "2024-01-27T02:10:34+08:00",
+    "message": "Fix bug",
+    "blob": "dbb47fb1cc1fb8d4439b9752d39c1bb9c9c2bf7c",
+    "min_sdk": 21,
+    "version": "fongmi-0127#3"
+  },
+  {
+    "commit": "d13b7677747cea52044df47f8b4213d6105d6307",
+    "date": "2024-01-29T02:29:43+08:00",
+    "message": "Update build.gradle",
+    "blob": "9f7fe09783c7119db25382b54ed4ef0a56acd871",
+    "min_sdk": 21,
+    "version": "fongmi-0129"
+  },
+  {
+    "commit": "4705313a34f0f972f90a4b6bc7865987e0ddfe9d",
+    "date": "2024-01-29T17:53:25+08:00",
+    "message": "Update build.gradle",
+    "blob": "34f04d4c556cedcb6814ca308c88aab6616537ed",
+    "min_sdk": 21,
+    "version": "fongmi-0129#2"
+  },
+  {
+    "commit": "d0856cb18868cfb2b019a0d81030945a11396583",
+    "date": "2024-01-30T01:22:56+08:00",
+    "message": "Update build.gradle",
+    "blob": "894837394bf0e8f8f5506c0c0ab96f8223222bb9",
+    "min_sdk": 21,
+    "version": "fongmi-0130"
+  },
+  {
+    "commit": "08519e24c3c0714247d8c73a0d8c3a4012075979",
+    "date": "2024-01-30T23:09:58+08:00",
+    "message": "Update build.gradle",
+    "blob": "0d7f77c07a5064483d069e45d9598ef49ef2328d",
+    "min_sdk": 21,
+    "version": "fongmi-0131"
+  },
+  {
+    "commit": "8f243126cda4044675df2144dbf5b039837045e2",
+    "date": "2024-01-31T17:25:00+08:00",
+    "message": "Update build.gradle",
+    "blob": "8639d5e16ac328590afdc155d25e21e63ee19f4e",
+    "min_sdk": 21,
+    "version": "fongmi-0131#2"
+  },
+  {
+    "commit": "3c35861e4236a3eadc9ac69f857be1c7bf2f9586",
+    "date": "2024-02-01T11:41:54+08:00",
+    "message": "Update build.gradle",
+    "blob": "6bf5a4ae2d87f180868ae648e08b70cea03f444d",
+    "min_sdk": 21,
+    "version": "2.2.5"
+  },
+  {
+    "commit": "0ee2f35b2939b2e723b56704c74267b59825c55d",
+    "date": "2024-02-01T17:22:51+08:00",
+    "message": "Update build.gradle",
+    "blob": "bb3c1091b5ca74f07742da7e0d7d24147a7b9e84",
+    "min_sdk": 21,
+    "version": "0201"
+  },
+  {
+    "commit": "eff7e45330e6e3cbeb2fb801d696a6c7b10a77f8",
+    "date": "2024-02-02T11:33:09+08:00",
+    "message": "Update build.gradle",
+    "blob": "e6bd09d669be0449a3272f7f917123dee9665f03",
+    "min_sdk": 21,
+    "version": "0202"
+  },
+  {
+    "commit": "16d12fcf13c69cfbe097f5b044d3f072d790b851",
+    "date": "2024-02-02T17:28:23+08:00",
+    "message": "Update build.gradle",
+    "blob": "259da299465fd3a9093c876a281fab03d1a4a9cb",
+    "min_sdk": 21,
+    "version": "0202#2"
+  },
+  {
+    "commit": "44049fddecf71b01895a054ff94a2db2b6775ed0",
+    "date": "2024-02-02T23:21:16+08:00",
+    "message": "Remove danmu",
+    "blob": "d291a5fb5f8c578c98152a2798c7d9cf88197cd3",
+    "min_sdk": 21,
+    "version": "0202#2"
+  },
+  {
+    "commit": "401cd0532dfd9c784bff8804c1e1303389ea1995",
+    "date": "2024-02-02T23:31:03+08:00",
+    "message": "Update build.gradle",
+    "blob": "e3bfbea512f18239c98dc6bd3109c8920a7bb23b",
+    "min_sdk": 21,
+    "version": "0202#3"
+  },
+  {
+    "commit": "9ccc8be92c6b1d0881f50797a83cb344ebee3ba7",
+    "date": "2024-02-02T23:58:22+08:00",
+    "message": "Update build.gradle",
+    "blob": "bd76bc7dfe05ff8bce21541634aa11b154709583",
+    "min_sdk": 21,
+    "version": "fongmi-0203"
+  },
+  {
+    "commit": "a124f75de3044f69d55236612513317b9831caa8",
+    "date": "2024-02-03T15:02:20+08:00",
+    "message": "Update build.gradle",
+    "blob": "74a657b0f825c57496d535b74066a518f74c3c8a",
+    "min_sdk": 21,
+    "version": "fongmi-0203#2"
+  },
+  {
+    "commit": "97ab866a34a0cf970408d4f04dd0264cb6f35f5e",
+    "date": "2024-02-04T15:52:46+08:00",
+    "message": "Update build.gradle",
+    "blob": "27dd76fd6b777bbec4d39a4966247fbfad8ead09",
+    "min_sdk": 21,
+    "version": "fongmi-0204"
+  },
+  {
+    "commit": "c52cedffa67216abb6b70200b56109f931a372a5",
+    "date": "2024-02-06T14:44:36+08:00",
+    "message": "Update build.gradle",
+    "blob": "8786b9bfc66b5258c00c52ccac5ac7699ec40fd2",
+    "min_sdk": 21,
+    "version": "fongmi-0206"
+  },
+  {
+    "commit": "94022f07622965e14dcca463eb270357046a85c0",
+    "date": "2024-02-07T00:55:41+08:00",
+    "message": "Update build.gradle",
+    "blob": "e51aa344655eabb66058ccceb42747a78fcdc844",
+    "min_sdk": 21,
+    "version": "\u606d\u559c\u767c\u8ca1"
+  },
+  {
+    "commit": "edba355c316afbbcdf807b66b75d0945a0fbcad1",
+    "date": "2024-02-07T09:25:07+08:00",
+    "message": "Update build.gradle",
+    "blob": "d85bc394c153266217ad5173be85bcdeeac821f5",
+    "min_sdk": 21,
+    "version": "\u7d05\u5305\u62ff\u4f86"
+  },
+  {
+    "commit": "eab39543052afebc2bc6ecdcfed4a042fd60906e",
+    "date": "2024-02-07T17:20:52+08:00",
+    "message": "Update build.gradle",
+    "blob": "f8af9d0ce4ceac29558bdc50a29677ad7bf97d3e",
+    "min_sdk": 21,
+    "version": "\u65b0\u5e74\u5feb\u6a02"
+  },
+  {
+    "commit": "9d1e07bded9e8e2a4fe265d7f18efda76f4caed0",
+    "date": "2024-02-15T11:41:39+08:00",
+    "message": "Clean gradle",
+    "blob": "2ee26d068d78a5429584c6829d0e65a42fd2342d",
+    "min_sdk": 21,
+    "version": "\u65b0\u5e74\u5feb\u6a02"
+  },
+  {
+    "commit": "dbd09c8b267fe16d8085216f5a9638714ab66402",
+    "date": "2024-02-15T11:54:29+08:00",
+    "message": "Fix build",
+    "blob": "c098276b85b03a448a9e87a64a90da5c7dedfa7c",
+    "min_sdk": 21,
+    "version": "\u65b0\u5e74\u5feb\u6a02"
+  },
+  {
+    "commit": "50f145a1e4700d97426376b51b4c19cfe48d6dd0",
+    "date": "2024-02-15T13:35:30+08:00",
+    "message": "Update build.gradle",
+    "blob": "675dc0d94f512fd86dee54a81ce86ad46585407a",
+    "min_sdk": 21,
+    "version": "0215"
+  },
+  {
+    "commit": "fc4f975a733e65390b10b72eab1b9b6446398e52",
+    "date": "2024-02-15T16:18:30+08:00",
+    "message": "Update build.gradle",
+    "blob": "e2cdf4b194ecd37aea6ae308030ee089312c033b",
+    "min_sdk": 21,
+    "version": "fongmi-0215"
+  },
+  {
+    "commit": "ee28a4358849faf8d699a27fb047487ecf207732",
+    "date": "2024-02-15T17:13:04+08:00",
+    "message": "Update build.gradle",
+    "blob": "26023fd1b6595f5c243aa642a292fddd68ff15c6",
+    "min_sdk": 21,
+    "version": "fongmi-0215#2"
+  },
+  {
+    "commit": "5eed7cbba08c508d0f38eb08b9e37a2d12d95082",
+    "date": "2024-02-15T18:15:34+08:00",
+    "message": "Update build.gradle",
+    "blob": "73dfcd9a3c90ccb2df6dbcd4c590c328047ba56c",
+    "min_sdk": 21,
+    "version": "2.2.6"
+  },
+  {
+    "commit": "897826e9d4e17c514cf4881655a561c9406e2a80",
+    "date": "2024-02-16T12:03:58+08:00",
+    "message": "Update build.gradle",
+    "blob": "1277efc54b53c5d71aeca20ffb50e2643a1e4e1b",
+    "min_sdk": 21,
+    "version": "fongmi-0216"
+  },
+  {
+    "commit": "110885d4ef9a99948380a2a687922ea2bcb737ad",
+    "date": "2024-02-16T15:20:50+08:00",
+    "message": "Update build.gradle",
+    "blob": "ae85e6c531b083f77722c38916239d873d21a0b9",
+    "min_sdk": 21,
+    "version": "2.2.7"
+  },
+  {
+    "commit": "89aef4dbd67aa447c9c1c3ee408d8f68b1841724",
+    "date": "2024-02-16T18:44:41+08:00",
+    "message": "Update build.gradle",
+    "blob": "e560ed081acfbf04d693e8362621c914db0f7ded",
+    "min_sdk": 21,
+    "version": "fongmi-0216"
+  },
+  {
+    "commit": "415b8f88841b4eafc85c35a0bc348ffa1ad822b8",
+    "date": "2024-02-16T19:53:15+08:00",
+    "message": "Update build.gradle",
+    "blob": "f7ae7bc27791dc38c12ae97c87db83adeaa9b40e",
+    "min_sdk": 21,
+    "version": "fongmi-0216#2"
+  },
+  {
+    "commit": "7f9f44a20a6115b50c492a29cd29965f0b5afffd",
+    "date": "2024-02-17T01:40:32+08:00",
+    "message": "Update build.gradle",
+    "blob": "d79d0adbbfef81e067b70d57caea851b57d6fd24",
+    "min_sdk": 21,
+    "version": "fongmi-0217"
+  },
+  {
+    "commit": "abca61ebf75124c0e60760aea139bfbefedfd145",
+    "date": "2024-02-17T15:42:11+08:00",
+    "message": "Update build.gradle",
+    "blob": "1a30c45df7ce513ebb50e6e422d1c51463d5e1d7",
+    "min_sdk": 21,
+    "version": "fongmi-0217#2"
+  },
+  {
+    "commit": "119ba7bf65e784bc5e04f4c1187b15f7a36116e3",
+    "date": "2024-02-17T23:59:10+08:00",
+    "message": "Update build.gradle",
+    "blob": "87dbcb4071cce9716adf0bdadf778dc5f929b5e5",
+    "min_sdk": 21,
+    "version": "fongmi-0218"
+  },
+  {
+    "commit": "d451a5f09a9617f7de9fec0274d80faf2ebf7671",
+    "date": "2024-02-18T02:32:34+08:00",
+    "message": "Update build.gradle",
+    "blob": "8fb4718a171395aeb091896dc231846adae7076f",
+    "min_sdk": 21,
+    "version": "fongmi-0218#2"
+  },
+  {
+    "commit": "599176491b86bd62104dc721412fd0b9d9464b9f",
+    "date": "2024-02-20T01:52:16+08:00",
+    "message": "Update build.gradle",
+    "blob": "caa1cca87a8b542d3d02da95a96c197f66d469ae",
+    "min_sdk": 21,
+    "version": "fongmi-0220"
+  },
+  {
+    "commit": "921d7e702d28168d8fed9a224c6a4ff0020ebcae",
+    "date": "2024-02-20T11:25:07+08:00",
+    "message": "Update build.gradle",
+    "blob": "059f5ddf698f3dc0688c8118b9d8e35507e60eb2",
+    "min_sdk": 21,
+    "version": "fongmi-0220#2"
+  },
+  {
+    "commit": "9eb2bcee4c8e431fa4ac84c77fd841fa80e56196",
+    "date": "2024-02-20T14:03:27+08:00",
+    "message": "Update build.gradle",
+    "blob": "d952f8f93299843265eb0e723daf03972f38ac56",
+    "min_sdk": 21,
+    "version": "2.2.8"
+  },
+  {
+    "commit": "b50235efaf016ce4040b525fe40d9106f1100bef",
+    "date": "2024-02-21T16:20:52+08:00",
+    "message": "Update build.gradle",
+    "blob": "4c71a7dca43146c0aa1d131361f07233b2117c8c",
+    "min_sdk": 21,
+    "version": "0221"
+  },
+  {
+    "commit": "b6cc25ae8a45ecf1976e846c1f8988ec05cc7cd5",
+    "date": "2024-02-21T16:21:05+08:00",
+    "message": "Update build.gradle",
+    "blob": "a7d2c439046fc81746885e2b8a5fff32b7356a13",
+    "min_sdk": 21,
+    "version": "fongmi-0221"
+  },
+  {
+    "commit": "fa7469de7277ea745445bd6b2c2903bbe85c74c4",
+    "date": "2024-02-22T00:11:26+08:00",
+    "message": "Update build.gradle",
+    "blob": "0d5e16d42dfb0e68188d70d0da39232ce2f8db56",
+    "min_sdk": 21,
+    "version": "fongmi-0222"
+  },
+  {
+    "commit": "b37b6c264eae6175468d9817a8441e2a4d4956f6",
+    "date": "2024-02-22T10:34:00+08:00",
+    "message": "Update build.gradle",
+    "blob": "cb1313dad387f19bfbd77ff6e214e8c66f8bb779",
+    "min_sdk": 21,
+    "version": "fongmi-0222#2"
+  },
+  {
+    "commit": "281315dc43a5dbfae3bc819f2af99f83e6e9b6e5",
+    "date": "2024-02-23T10:46:03+08:00",
+    "message": "Update build.gradle",
+    "blob": "ece57706cff5d1c00e6205eb15a11ca4e0d1001d",
+    "min_sdk": 21,
+    "version": "fongmi-0223"
+  },
+  {
+    "commit": "bb6c7aad8c1586f885fa3c0d8c81e13ca5e46fb4",
+    "date": "2024-02-29T01:47:34+08:00",
+    "message": "Update build.gradle",
+    "blob": "3f3192694624446839b3e4f52092e8c443e7f65e",
+    "min_sdk": 21,
+    "version": "fongmi-0229"
+  },
+  {
+    "commit": "2ccf1e673661c9996f03df5cb5b32e8eaf1ea073",
+    "date": "2024-02-29T13:45:13+08:00",
+    "message": "Update build.gradle",
+    "blob": "6a51a64e986ed0c186a15473280c73d49b1fbb46",
+    "min_sdk": 21,
+    "version": "fongmi-0229#2"
+  },
+  {
+    "commit": "85552db8ef829bd6e90d4a05584164241f308bb9",
+    "date": "2024-02-29T13:58:04+08:00",
+    "message": "Update build.gradle",
+    "blob": "53e91f2fbd5ff6ddc0a2cb4bd73fa639d67ca60b",
+    "min_sdk": 21,
+    "version": "fongmi-0229#2"
+  },
+  {
+    "commit": "828a0f4cdb33b1d658e1b972a9f84d0bd3637429",
+    "date": "2024-02-29T17:37:44+08:00",
+    "message": "Update build.gradle",
+    "blob": "17e05a7bc841111f790c3508aa852b6f63688479",
+    "min_sdk": 21,
+    "version": "fongmi-0229#3"
+  },
+  {
+    "commit": "3201659c14f4bef6c89d9ea9c0139866752d6549",
+    "date": "2024-03-02T22:17:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "fa889c4de30fa875a4e856b557f3e64a0211f829",
+    "min_sdk": 21,
+    "version": "fongmi-0302"
+  },
+  {
+    "commit": "3d0c5bf1c545c252279b43d67f18ae480378491a",
+    "date": "2024-03-02T23:46:02+08:00",
+    "message": "Update build.gradle",
+    "blob": "d6c8af253841285ad27f5526256a23fbff2a46dc",
+    "min_sdk": 21,
+    "version": "fongmi-0303"
+  },
+  {
+    "commit": "dfe54355fbf5b55865839ff3a723391809d19e75",
+    "date": "2024-03-05T01:02:33+08:00",
+    "message": "Update build.gradle",
+    "blob": "67ac82163ca875c1827d86ebf20754e387a57a91",
+    "min_sdk": 21,
+    "version": "fongmi-0305"
+  },
+  {
+    "commit": "830dfb5d3457c32659ca425cabb1ec899da3174a",
+    "date": "2024-03-07T22:19:48+08:00",
+    "message": "Update build.gradle",
+    "blob": "7114a45db16ef652c4aad992da184105ceeee680",
+    "min_sdk": 21,
+    "version": "2.3.0"
+  },
+  {
+    "commit": "07ee371b184ce10cdcadc673180b1bbfe98a38f8",
+    "date": "2024-03-12T22:23:01+08:00",
+    "message": "Update build.gradle",
+    "blob": "bd50e01d98e3b74ce666d8721b46c206638e433f",
+    "min_sdk": 21,
+    "version": "tangsan-0312"
+  },
+  {
+    "commit": "3763c4b5d6abb3a6d04be3d16761119f7c5da0a9",
+    "date": "2024-03-14T00:31:18+08:00",
+    "message": "Update build.gradle",
+    "blob": "06caac4dec8e984a03658a476b0be231bab98da0",
+    "min_sdk": 21,
+    "version": "tangsan-0314"
+  },
+  {
+    "commit": "5b243fd1a7c8f35e3f7a8907a0e906445f57e24a",
+    "date": "2024-03-18T15:11:21+08:00",
+    "message": "Update build.gradle",
+    "blob": "cff90c665d74c01988cbaa10e937834196ad6e4c",
+    "min_sdk": 21,
+    "version": "2.3.1"
+  },
+  {
+    "commit": "65242339e9838c9dd3b805e12651534578a4bd58",
+    "date": "2024-03-19T13:53:54+08:00",
+    "message": "Update recyclerView",
+    "blob": "f154f5e39a680eb78d944ea8b3aa7195fb6f2737",
+    "min_sdk": 21,
+    "version": "2.3.1"
+  },
+  {
+    "commit": "857d5d9bec236b2aa7c5973e3fb81c999fb6ab75",
+    "date": "2024-03-19T13:54:56+08:00",
+    "message": "Update build.gradle",
+    "blob": "bcb0b7369417e337cd6288f64498931d3a1b6228",
+    "min_sdk": 21,
+    "version": "0319"
+  },
+  {
+    "commit": "43b933f962890210fa541a62cef2ff9be8a2241d",
+    "date": "2024-03-19T18:17:24+08:00",
+    "message": "Clean build",
+    "blob": "996a712152f717f1d4071692ff4474f472f9bb6d",
+    "min_sdk": 21,
+    "version": "0319"
+  },
+  {
+    "commit": "d9ed4de35df31e7472e5dfb2365b34239e0f1b2b",
+    "date": "2024-03-19T18:29:26+08:00",
+    "message": "Clean code",
+    "blob": "8d828fcc7adb88ececb8c511fedd80d3fbcd6ff3",
+    "min_sdk": 21,
+    "version": "0319"
+  },
+  {
+    "commit": "60ac7b90a6905c1f470175aab3a06713c9632bcd",
+    "date": "2024-03-19T18:54:10+08:00",
+    "message": "Update build.gradle",
+    "blob": "56b020eb6ae66c4fd6f9a795cde148ba849dc754",
+    "min_sdk": 21,
+    "version": "tangsan-0319"
+  },
+  {
+    "commit": "a935fccd62d57e7837ea8c379326693b4bc7e29d",
+    "date": "2024-03-29T15:37:20+08:00",
+    "message": "Update build.gradle",
+    "blob": "f4adc2fe628c908e0dd43521a072324e72b1ad37",
+    "min_sdk": 21,
+    "version": "tangsan-0329"
+  },
+  {
+    "commit": "af812476111244bf5e4f4025cb501eeb97c8d7c0",
+    "date": "2024-04-08T19:51:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "310068e77bb00bc17fb3f96de22d24de1f7ac8b0",
+    "min_sdk": 21,
+    "version": "tangsan-0408"
+  },
+  {
+    "commit": "6186905f5a2f5c9ca52e0f25f1504156c31e3f8e",
+    "date": "2024-04-10T16:19:45+08:00",
+    "message": "Update build.gradle",
+    "blob": "e553953c48c35b6f203a88a98655eacb972cfb46",
+    "min_sdk": 21,
+    "version": "2.3.2"
+  },
+  {
+    "commit": "e7d76b701c290ac256ef9e2a68d1662f953fed94",
+    "date": "2024-04-20T17:24:03+08:00",
+    "message": "Update build.gradle",
+    "blob": "abd2ca72dd0c98496b87eae0ccb4461f10ee4abf",
+    "min_sdk": 21,
+    "version": "2.3.3"
+  },
+  {
+    "commit": "03e8dee15c43a7c47bdeebb7da91b04b79fafc78",
+    "date": "2024-04-28T21:45:53+08:00",
+    "message": "Update build.gradle",
+    "blob": "0ca9e7db0e601239151fc157e7dc2d58af78d9c3",
+    "min_sdk": 21,
+    "version": "0428"
+  },
+  {
+    "commit": "05a79310382b8130283c0eef41af68805fc64689",
+    "date": "2024-04-29T00:27:56+08:00",
+    "message": "Update build.gradle",
+    "blob": "7b0954b8d457db7bb16eb5c23c5712829d2bc363",
+    "min_sdk": 21,
+    "version": "0429"
+  },
+  {
+    "commit": "85a207ec3a9e4775638931badaf10fd0f93cee53",
+    "date": "2024-05-02T20:26:53+08:00",
+    "message": "Update build.gradle",
+    "blob": "c69ec7e128056089700f9d742ea2f78d04a3a059",
+    "min_sdk": 21,
+    "version": "0429"
+  },
+  {
+    "commit": "6f3efca0ded99fc897f990bf11ef7ce444d5f08e",
+    "date": "2024-05-02T20:56:09+08:00",
+    "message": "Update build.gradle",
+    "blob": "f8967b3fae3d6eb847e908f48cf7fb47d0b26538",
+    "min_sdk": 21,
+    "version": "0502"
+  },
+  {
+    "commit": "6b74bbaafbf11b722c98b3c31ad45695fa4fd435",
+    "date": "2024-05-04T20:50:05+08:00",
+    "message": "Update build.gradle",
+    "blob": "599b81708502de35c6016930c74af896c08ec878",
+    "min_sdk": 21,
+    "version": "0504"
+  },
+  {
+    "commit": "0eccbd30e9b6b199ccb490465e22693128966c74",
+    "date": "2024-05-05T01:29:13+08:00",
+    "message": "Update build.gradle",
+    "blob": "8a0e727e868269442b2ab95bbd2a4b6e5cd71da2",
+    "min_sdk": 21,
+    "version": "0505"
+  },
+  {
+    "commit": "53eb3179b71a9a736ee25cd66f5a8529de7a2475",
+    "date": "2024-05-06T13:37:43+08:00",
+    "message": "Update build.gradle",
+    "blob": "44b0a1d9d3dea139250cf886f87bc931e158111f",
+    "min_sdk": 21,
+    "version": "0506"
+  },
+  {
+    "commit": "0acee072b65e4da6758287e0157ece763319e24f",
+    "date": "2024-05-08T19:42:12+08:00",
+    "message": "Update build.gradle",
+    "blob": "84f0cd92fc990013f3a6b5378b407bb0a7212292",
+    "min_sdk": 21,
+    "version": "0508"
+  },
+  {
+    "commit": "e330fbdeacde963ad3dace0643fcf112d828d2fe",
+    "date": "2024-05-11T03:42:57+08:00",
+    "message": "Update build.gradle",
+    "blob": "1af46916278927d04b456b0732cc7f3378e0f652",
+    "min_sdk": 21,
+    "version": "0511"
+  },
+  {
+    "commit": "d2a2487a81832c6dfb7a0be573b2a384f70ae520",
+    "date": "2024-05-11T16:07:55+08:00",
+    "message": "Update build.gradle",
+    "blob": "1e7a45a8a1f800f148c7afe62ee35e708279986d",
+    "min_sdk": 21,
+    "version": "0511-2"
+  },
+  {
+    "commit": "949ce62dd914297bce56b2864a7ff14a22d25761",
+    "date": "2024-05-12T22:16:51+08:00",
+    "message": "Update library",
+    "blob": "fe2fdd98f5b60fd8e297565f72fca9af7d99636a",
+    "min_sdk": 21,
+    "version": "0511-2"
+  },
+  {
+    "commit": "da8317c602f730183ffce465cf5b43fd218e64a8",
+    "date": "2024-05-12T22:29:51+08:00",
+    "message": "Update build.gradle",
+    "blob": "88c4a4aee1ad70997658fa35ce8bbcd4be0d733f",
+    "min_sdk": 21,
+    "version": "0512"
+  },
+  {
+    "commit": "c011ff1ede05e6a7e4ec3ba7b5b0588a301c33cb",
+    "date": "2024-05-14T03:46:21+08:00",
+    "message": "Update gradle",
+    "blob": "19db163a674a3dc77ca6d87fd3dd72e5e1bb7fe5",
+    "min_sdk": 21,
+    "version": "0512"
+  },
+  {
+    "commit": "5b4a212ffa8e52c656d76b9e093d1c7c47228594",
+    "date": "2024-05-14T04:06:47+08:00",
+    "message": "Revert \"Update gradle\"",
+    "blob": "88c4a4aee1ad70997658fa35ce8bbcd4be0d733f",
+    "min_sdk": 21,
+    "version": "0512"
+  },
+  {
+    "commit": "6ed09b71c95d09e93cde8c94421550c3ef49c24b",
+    "date": "2024-05-14T04:08:13+08:00",
+    "message": "Update build.gradle",
+    "blob": "cdce192fa9830a21aa4f5e87e140ba5b902a9efa",
+    "min_sdk": 21,
+    "version": "0514"
+  },
+  {
+    "commit": "6317ced3205c6193c787355973075aa3c93e95bc",
+    "date": "2024-05-14T23:48:07+08:00",
+    "message": "Update build.gradle",
+    "blob": "479cf88ae5a1d9e19d67cc96810eab3e2f4a92f1",
+    "min_sdk": 21,
+    "version": "2.3.4"
+  },
+  {
+    "commit": "284bfdf1247b96ee75b0ea7d40352c4cfe0bf51b",
+    "date": "2024-05-15T13:47:05+08:00",
+    "message": "Update build.gradle",
+    "blob": "7cf3853f519c1127b44f153c69614aa5deab28c9",
+    "min_sdk": 21,
+    "version": "2.3.5"
+  },
+  {
+    "commit": "2780ef13e00e562880f1ab096f99dfa20b3e3ebf",
+    "date": "2024-05-16T10:59:25+08:00",
+    "message": "Update build.gradle",
+    "blob": "bea4dddf9557b3635129177ea7f3ea972b5c922f",
+    "min_sdk": 21,
+    "version": "0516"
+  },
+  {
+    "commit": "351451fc3a3360fd2b790db52a37238d4f0cb901",
+    "date": "2024-05-16T12:07:18+08:00",
+    "message": "Update build.gradle",
+    "blob": "3ad7b4c0e878443d1753290bece518869fdb6a81",
+    "min_sdk": 21,
+    "version": "0516v2"
+  },
+  {
+    "commit": "85cdd645107c00300706a2f33cce34645f964b7c",
+    "date": "2024-05-16T18:21:39+08:00",
+    "message": "Update build.gradle",
+    "blob": "4dc127f0a42695081451b5354acfd60b728e3e99",
+    "min_sdk": 21,
+    "version": "0516v3"
+  },
+  {
+    "commit": "7ecab363a79d64e2b8476c5f46f724f20f356e13",
+    "date": "2024-05-17T13:34:14+08:00",
+    "message": "Update build.gradle",
+    "blob": "3d3a11fd156effdf939042b58a00e7966490887c",
+    "min_sdk": 21,
+    "version": "0517"
+  },
+  {
+    "commit": "6f3636b627eec2d788a05c416a8eb14c8c601d85",
+    "date": "2024-05-17T18:57:00+08:00",
+    "message": "Update build.gradle",
+    "blob": "0c88ed87a13f58a556d50d9af670ca9493e96fef",
+    "min_sdk": 21,
+    "version": "0517v2"
+  },
+  {
+    "commit": "8611061a410209d83914ed89b6f4b3fbb5065d2d",
+    "date": "2024-05-19T16:38:57+08:00",
+    "message": "Update build.gradle",
+    "blob": "f6e11e7aa9d0d383a3b0c2be7e4ee64749fdb816",
+    "min_sdk": 21,
+    "version": "0519"
+  },
+  {
+    "commit": "1da7593c7da18c6f6c897fb8b0173c8af42d541c",
+    "date": "2024-05-19T23:45:20+08:00",
+    "message": "okhttp dns ipv4 priority",
+    "blob": "bae8b46ad68e382288027d8777ae4f2608f35ce8",
+    "min_sdk": 21,
+    "version": "0520"
+  },
+  {
+    "commit": "a75a3c62060a2bded3e37a7c9dac0fd6bd01b541",
+    "date": "2024-05-20T11:32:08+08:00",
+    "message": "Update build.gradle",
+    "blob": "d19d5846141891716ada5e5162f002d46ae46c39",
+    "min_sdk": 21,
+    "version": "0520v2"
+  },
+  {
+    "commit": "173ead3aee300ddcee7045b6f58984e96475d5bf",
+    "date": "2024-05-22T16:47:10+08:00",
+    "message": "Update build.gradle",
+    "blob": "e140766efb3ce63cb0c1f536f0209ee29b087794",
+    "min_sdk": 21,
+    "version": "0522"
+  },
+  {
+    "commit": "c3be1ef86d99cc495fce9fb718a9f3d8fc4cba29",
+    "date": "2024-05-23T02:01:08+08:00",
+    "message": "Update build.gradle",
+    "blob": "d216b30109d3d00d4da94bef12277a719b1c7df9",
+    "min_sdk": 21,
+    "version": "0523"
+  },
+  {
+    "commit": "0c5ce1cbdb828c4e91b88c855b168f948209152d",
+    "date": "2024-05-23T05:06:20+08:00",
+    "message": "Optimize youtube parse",
+    "blob": "78fce0fbc111143471b3ef373f5394cbc153f437",
+    "min_sdk": 21,
+    "version": "0523"
+  },
+  {
+    "commit": "a9ce50789b0a2558e5ad454e9213faf08329e411",
+    "date": "2024-05-23T05:13:54+08:00",
+    "message": "Update build.gradle",
+    "blob": "78554929873f0bc3ead1c5b445f677b7ef27c474",
+    "min_sdk": 21,
+    "version": "0523v2"
+  },
+  {
+    "commit": "600d486f479da9afb563f0ba3492c4e92c4bb065",
+    "date": "2024-05-23T23:10:13+08:00",
+    "message": "Update build.gradle",
+    "blob": "95a94177c4e36b97db1a1c8e6d23ee227ca0d16c",
+    "min_sdk": 21,
+    "version": "0524"
+  },
+  {
+    "commit": "49060e31282dbad28b499450332464221e07205b",
+    "date": "2024-05-27T12:44:31+08:00",
+    "message": "Update build.gradle",
+    "blob": "af645c64225b41c76696bd11aeeba0dfcbfc1bb2",
+    "min_sdk": 21,
+    "version": "0527"
+  },
+  {
+    "commit": "8fc1dc18e5383883f99285d5ab8a02715271524c",
+    "date": "2024-05-27T14:54:33+08:00",
+    "message": "prepare to use bytedance danmaku",
+    "blob": "4e01066aba3f12dd38b76e687c21d7bcca6dca58",
+    "min_sdk": 21,
+    "version": "0527"
+  },
+  {
+    "commit": "42ffee6ac1f7b2b12dd4bc8de05658a4a3de5314",
+    "date": "2024-05-27T15:08:11+08:00",
+    "message": "Update build.gradle",
+    "blob": "6864234f7b8b5f7ac926a016bd864a1331a3d960",
+    "min_sdk": 21,
+    "version": "2.3.6"
+  },
+  {
+    "commit": "5b719a7a9a6e2744a29feffa2cdd9742084bd891",
+    "date": "2024-05-28T10:51:47+08:00",
+    "message": "Update build.gradle",
+    "blob": "24e70f957c14a00da8abba6772fa81e8d8bb4047",
+    "min_sdk": 21,
+    "version": "2.3.7"
+  },
+  {
+    "commit": "3fd5e38ef58ae10d4352a41d88d0ac7083021315",
+    "date": "2024-05-29T23:14:43+08:00",
+    "message": "Update build.gradle",
+    "blob": "7d1d86476dad446084710cb670dad7d20d1e8d70",
+    "min_sdk": 21,
+    "version": "0529"
+  },
+  {
+    "commit": "9a4e837862d633d508d5b26812cc895f22e5599b",
+    "date": "2024-05-30T14:29:38+08:00",
+    "message": "Update build.gradle",
+    "blob": "20d15aff2aabd3065423fae84495803cf34966c6",
+    "min_sdk": 21,
+    "version": "0530"
+  },
+  {
+    "commit": "ae9e8e5df2a509840bd1abbeade2cc7df62913d5",
+    "date": "2024-05-30T15:17:52+08:00",
+    "message": "Update build.gradle",
+    "blob": "e0b27e2fd4ac73f5da5f95281b1834d2c5039fcf",
+    "min_sdk": 21,
+    "version": "0530v2"
+  },
+  {
+    "commit": "16250d3dffa864d9c973ad4362157e5e345b6caf",
+    "date": "2024-05-31T10:42:22+08:00",
+    "message": "Update build.gradle",
+    "blob": "6ac3bce5e48dabbb92f20e9a4033c5c8b524cb8a",
+    "min_sdk": 21,
+    "version": "0531"
+  },
+  {
+    "commit": "d99c232ad43abbaf9de49853eaafb8ce785a9536",
+    "date": "2024-05-31T23:42:23+08:00",
+    "message": "Update build.gradle",
+    "blob": "b3de8d65053aee9dfbd4e05c516020d35f618f57",
+    "min_sdk": 21,
+    "version": "0531v2"
+  },
+  {
+    "commit": "0cfed45bbfd6bba357680d51de05ba53894d70a4",
+    "date": "2024-06-01T00:03:50+08:00",
+    "message": "Update build.gradle",
+    "blob": "4ba1e98ca3d981b5e7b5ab268760dc7648285624",
+    "min_sdk": 21,
+    "version": "0601"
+  },
+  {
+    "commit": "cc66e8392d8fdaa09c02574b936919991cf46364",
+    "date": "2024-06-01T00:20:58+08:00",
+    "message": "Update gradle",
+    "blob": "51146a9e1c5d1d4a2cad34e22ff8d3832ecb0084",
+    "min_sdk": 21,
+    "version": "0601"
+  },
+  {
+    "commit": "483385258b1e78fc0a13cdde94a8a3d9b34e027d",
+    "date": "2024-06-01T00:40:38+08:00",
+    "message": "Fix build",
+    "blob": "8f33642d4d5bc2c04356c551ec36890574d11e43",
+    "min_sdk": 21,
+    "version": "0601"
+  },
+  {
+    "commit": "93ea0d634b63571125c5eb4afa8a33525350353c",
+    "date": "2024-06-01T10:01:42+08:00",
+    "message": "Fix build",
+    "blob": "9f9333f70bd9751903e9ae78114801e55a8734d0",
+    "min_sdk": 21,
+    "version": "0601"
+  },
+  {
+    "commit": "012b5a9e811bb6b6c061d63e4a06cfc586a324ad",
+    "date": "2024-06-01T13:09:33+08:00",
+    "message": "Update build.gradle",
+    "blob": "af537fc38551147b51e4c0e54399b151fb4e4fb6",
+    "min_sdk": 21,
+    "version": "0601"
+  },
+  {
+    "commit": "07101da35def37069c98daede19565ae94513c26",
+    "date": "2024-06-01T13:29:42+08:00",
+    "message": "Update build.gradle",
+    "blob": "5bc4e337ba41fc8e4bc2dacbfcb0b0eb727b069a",
+    "min_sdk": 21,
+    "version": "0601"
+  },
+  {
+    "commit": "e0f95c287c544d1c44e3149ab778f762a4ebf4cf",
+    "date": "2024-06-01T16:01:59+08:00",
+    "message": "Update build.gradle",
+    "blob": "73e5d5e4cd264ad26bf4f0641d79e9da6b96af83",
+    "min_sdk": 21,
+    "version": "0601v2"
+  },
+  {
+    "commit": "2f6c500f7c59839f82d4b78615dda071027a9d47",
+    "date": "2024-06-01T16:54:09+08:00",
+    "message": "Update build.gradle",
+    "blob": "9b66e662a5b251b778afc5cc3dbba38f74e5f952",
+    "min_sdk": 21,
+    "version": "0601v3"
+  },
+  {
+    "commit": "c4062f8f37cef6fb26585e3c5cfa0c2fcf61a0c2",
+    "date": "2024-06-02T00:04:28+08:00",
+    "message": "Update build.gradle",
+    "blob": "283fb459441fcbaaee6c7c7cf2483b384887f938",
+    "min_sdk": 21,
+    "version": "0602"
+  },
+  {
+    "commit": "e358a22a8dd1281d0437b8b9c77e12cf8ff9276f",
+    "date": "2024-06-03T10:46:10+08:00",
+    "message": "Rename pyramid to chaquo",
+    "blob": "efb703eb26ab5cb7c42de123f24c490de24db717",
+    "min_sdk": 21,
+    "version": "0602"
+  },
+  {
+    "commit": "8220e5ce995f3b4558f5e2ec704e3c999eb513fb",
+    "date": "2024-06-03T23:24:22+08:00",
+    "message": "Update build.gradle",
+    "blob": "f73da2a1187e20b521cc227fa84dd3166c4757d7",
+    "min_sdk": 21,
+    "version": "0603"
+  },
+  {
+    "commit": "fd3fe62607723a0ffc75e1680a71ccbe928940d7",
+    "date": "2024-06-03T23:26:00+08:00",
+    "message": "Clean",
+    "blob": "af956449db0c37f9f0fb8d1e65d1ba04c6873cf1",
+    "min_sdk": 21,
+    "version": "0603"
+  },
+  {
+    "commit": "927d3ae2ae9efc2454937431de53b644b4d062b7",
+    "date": "2024-06-04T11:19:01+08:00",
+    "message": "Update build.gradle",
+    "blob": "6f47c5f6b016f0a28ba30a9ed412c00dbcf8e950",
+    "min_sdk": 21,
+    "version": "0604"
+  },
+  {
+    "commit": "d4ec58831ab85b135befa794085129f45f8260d5",
+    "date": "2024-06-05T00:51:43+08:00",
+    "message": "Remove ijkplayer",
+    "blob": "03d266125fcbb155efa43514f74a76dc1d586d67",
+    "min_sdk": 21,
+    "version": "0604"
+  },
+  {
+    "commit": "a29b2b51afe8ef4bf6887c248a933502ed783010",
+    "date": "2024-06-05T02:52:06+08:00",
+    "message": "Support next render",
+    "blob": "17e6c2a63dafbeb8219158e3b109dea99b277fcf",
+    "min_sdk": 21,
+    "version": "0604"
+  },
+  {
+    "commit": "3e3bf3ed597ddde7fdbba37386f10f6b6ba72c67",
+    "date": "2024-06-05T03:09:40+08:00",
+    "message": "Update build.gradle",
+    "blob": "8ef467eccded7b23f0dc3abdb206dcb9fb59d86c",
+    "min_sdk": 21,
+    "version": "0605"
+  },
+  {
+    "commit": "dc7d7db96ada7f759a11e7030c2f3cdb10eda91f",
+    "date": "2024-06-05T03:47:35+08:00",
+    "message": "Update build.gradle",
+    "blob": "87b1b13e2146cdaa5dd558cac395e91e9dc5034c",
+    "min_sdk": 21,
+    "version": "0605v2"
+  },
+  {
+    "commit": "3959a29e90c582024d6036d6c47e9a19cec4d1f9",
+    "date": "2024-06-05T12:39:18+08:00",
+    "message": "Update build.gradle",
+    "blob": "0bdb3889d7c4e7f5a89ce07ddec855fcd223d695",
+    "min_sdk": 21,
+    "version": "0605v3"
+  },
+  {
+    "commit": "36d9fd486c3d2a996ac1688d46eafc2cbc537280",
+    "date": "2024-06-06T01:53:23+08:00",
+    "message": "Clean code",
+    "blob": "158f46bedbe6e3b211aeb1ab8da1487a36c46cd8",
+    "min_sdk": 21,
+    "version": "0606"
+  },
+  {
+    "commit": "7ec345073aa266cedc16cbe589ea6acc62471662",
+    "date": "2024-06-06T21:20:50+08:00",
+    "message": "Update build.gradle",
+    "blob": "488534b2833eb7e1a9967f2becc9b276bd0e8730",
+    "min_sdk": 21,
+    "version": "0606v2"
+  },
+  {
+    "commit": "8455d76cbc0c1d8436df9aa9c599efdbd7f47481",
+    "date": "2024-06-07T01:33:00+08:00",
+    "message": "Update",
+    "blob": "2e5703a83c867d75eeb3ff4dd55392e5855d60dd",
+    "min_sdk": 21,
+    "version": "0607"
+  },
+  {
+    "commit": "67256305e27ffbd70dc014511c0b487c068139d2",
+    "date": "2024-06-07T21:04:04+08:00",
+    "message": "Update build.gradle",
+    "blob": "0cf0aa85c8d738353ae2b031bee67d840eab95f2",
+    "min_sdk": 21,
+    "version": "0607v2"
+  },
+  {
+    "commit": "dcfd76720a5638ac73f0e37379526734537727a8",
+    "date": "2024-06-07T23:04:38+08:00",
+    "message": "Update build.gradle",
+    "blob": "11672890adc29ee450f891b2ef55a376b9d195be",
+    "min_sdk": 21,
+    "version": "0607v3"
+  },
+  {
+    "commit": "a1f49227c2e8883cff5de9823104e046c1061274",
+    "date": "2024-06-08T01:00:48+08:00",
+    "message": "Update build.gradle",
+    "blob": "2177b6313cdd081be80a95950431cc2b7dac7568",
+    "min_sdk": 21,
+    "version": "0608"
+  },
+  {
+    "commit": "e310f9d124a7a6bc076b05dd396d5e62eaa8a3f0",
+    "date": "2024-06-08T09:32:44+08:00",
+    "message": "Update build.gradle",
+    "blob": "e05b6908f02a1b00b09365f76cf1032f40ff7f95",
+    "min_sdk": 21,
+    "version": "0608v2"
+  },
+  {
+    "commit": "48416b82bbd8db3ac3952846d331fb5c93adf8ae",
+    "date": "2024-06-08T23:24:44+08:00",
+    "message": "Update build.gradle",
+    "blob": "432dd3acffe96dcdea3b4f9956ade8bdc690594c",
+    "min_sdk": 21,
+    "version": "0608v2"
+  },
+  {
+    "commit": "6954f1265a0c1f0d123669e152ef3239ec699789",
+    "date": "2024-06-09T01:34:17+08:00",
+    "message": "Update build.gradle",
+    "blob": "f6818dd3c6d0cff8a4d1f033d693f378e0e074d2",
+    "min_sdk": 21,
+    "version": "0609"
+  },
+  {
+    "commit": "f9e6bcdfb160a6d1ae7389360707e1c9f2925fb8",
+    "date": "2024-06-09T02:15:30+08:00",
+    "message": "Update build.gradle",
+    "blob": "dc17bcc5fa99f4208ce3487391a7d02633d2f95c",
+    "min_sdk": 21,
+    "version": "0609v2"
+  },
+  {
+    "commit": "ae65a1a2a894b949674bdac91d02b4377192f4b2",
+    "date": "2024-06-09T11:31:14+08:00",
+    "message": "Update build.gradle",
+    "blob": "9b4f9e5622135142c93201090883e62af2acd02e",
+    "min_sdk": 21,
+    "version": "0609v3"
+  },
+  {
+    "commit": "7d9fe81919faa64899f74271a95885f2c0c29473",
+    "date": "2024-06-09T23:33:03+08:00",
+    "message": "Update build.gradle",
+    "blob": "bac2fe56b345c2b8ae225c27425041b1c35db8f4",
+    "min_sdk": 21,
+    "version": "0609v4"
+  },
+  {
+    "commit": "de9d6b7c19327d074c861975fa7e2991b5b8cba1",
+    "date": "2024-06-09T23:43:15+08:00",
+    "message": "Update build.gradle",
+    "blob": "f1d9f85616e25c74506d3ef6309a22c799f070a0",
+    "min_sdk": 21,
+    "version": "0610"
+  },
+  {
+    "commit": "990ab1ac80a0b363f06ad096225566688016234e",
+    "date": "2024-06-10T15:57:43+08:00",
+    "message": "Update build.gradle",
+    "blob": "891b49bb266a4420b04883d6a586ea1af07d5b71",
+    "min_sdk": 21,
+    "version": "0610v2"
+  },
+  {
+    "commit": "c2528a257f2fbef0321b9140cd5ff8fc4d27b7b6",
+    "date": "2024-06-11T14:36:27+08:00",
+    "message": "Update build.gradle",
+    "blob": "ae207d651ceaf5c96376a12342239a17d42dff43",
+    "min_sdk": 21,
+    "version": "2.3.8"
+  },
+  {
+    "commit": "7ad4c7d95bd860a13d5452ac40a3fa56d7786387",
+    "date": "2024-06-11T22:41:09+08:00",
+    "message": "Update build.gradle",
+    "blob": "ae34c5d49526981319dd4687dac7c46b30017f72",
+    "min_sdk": 21,
+    "version": "0611"
+  },
+  {
+    "commit": "e64539bc5e9da9029c5bdea6db97efc0568939e4",
+    "date": "2024-06-12T00:05:31+08:00",
+    "message": "Update build.gradle",
+    "blob": "8c032f883640dd9753455f5767b9ffe7e2c31784",
+    "min_sdk": 21,
+    "version": "0612"
+  },
+  {
+    "commit": "94b57e0551000d81a8db12b1566e4ffcc4fa3d44",
+    "date": "2024-06-12T22:07:16+08:00",
+    "message": "Update build.gradle",
+    "blob": "a7384503aa79febfd91a7a2f21ca51b38bc52486",
+    "min_sdk": 21,
+    "version": "0612v2"
+  },
+  {
+    "commit": "940dc0e6f5f1703c183f483ffff660d20d4b6801",
+    "date": "2024-06-13T02:20:26+08:00",
+    "message": "Update build.gradle",
+    "blob": "82ad34151b6679463a75997d6200ba02e6e3581e",
+    "min_sdk": 21,
+    "version": "0613"
+  },
+  {
+    "commit": "be8e5acb083d080ac8043ccdebfcc2160ab5157a",
+    "date": "2024-06-14T10:18:07+08:00",
+    "message": "Update build.gradle",
+    "blob": "ae5cda5e2b83cd8761f937e11c623f82a3e37b1b",
+    "min_sdk": 21,
+    "version": "0614"
+  },
+  {
+    "commit": "ac2ceeb12a275572dfb8071854d2eb2cfb8a22af",
+    "date": "2024-06-14T11:55:22+08:00",
+    "message": "Update build.gradle",
+    "blob": "36784b595fe9e1a860116974e8b60bf898db6041",
+    "min_sdk": 21,
+    "version": "0614v2"
+  },
+  {
+    "commit": "89efb5f771025d11462ce91c9ed1f61f1f7437b5",
+    "date": "2024-06-15T01:39:22+08:00",
+    "message": "Update build.gradle",
+    "blob": "b976d60671a6dd2dc1cbc569035bf4e175821e40",
+    "min_sdk": 21,
+    "version": "0615"
+  },
+  {
+    "commit": "13fdb086e81e945605309867558898bc1da75fc3",
+    "date": "2024-06-16T02:00:54+08:00",
+    "message": "Update build.gradle",
+    "blob": "93f7565070fe080850216fdd8668d714ddcfbcc3",
+    "min_sdk": 21,
+    "version": "0616"
+  },
+  {
+    "commit": "9d1ec540d7f36400a6260528d72e8b421b2e8f75",
+    "date": "2024-06-16T14:39:35+08:00",
+    "message": "Update build.gradle",
+    "blob": "3bc47e714d9ade914fd823d274cd2b060c29b0c2",
+    "min_sdk": 21,
+    "version": "2.3.9"
+  },
+  {
+    "commit": "88224d49db997a597d4fc18e5657394481c3a650",
+    "date": "2024-06-18T11:39:21+08:00",
+    "message": "Update build.gradle",
+    "blob": "bbea517aac79d1cb4c58f7fcab541947e951e77e",
+    "min_sdk": 21,
+    "version": "0618"
+  },
+  {
+    "commit": "d426c3c669d0b53f3ff8de924783dd4e145af8f4",
+    "date": "2024-06-18T19:38:58+08:00",
+    "message": "Update build.gradle",
+    "blob": "a904e35a0c0e89e0e37371a163d1e4ff677bd51b",
+    "min_sdk": 21,
+    "version": "0618v2"
+  },
+  {
+    "commit": "30f01d86482e0f6d9836af2dc45cb615f8d757dc",
+    "date": "2024-06-19T01:20:49+08:00",
+    "message": "Update build.gradle",
+    "blob": "e199b7ba8c8c8730cf7af87c5e8ad06330b14545",
+    "min_sdk": 21,
+    "version": "0619"
+  },
+  {
+    "commit": "73c354038d24638914dd1ccf6772428a35b58334",
+    "date": "2024-06-19T13:24:35+08:00",
+    "message": "Update build.gradle",
+    "blob": "674144167f8876ffc7a1aeeaa6fb8c45c6c5617e",
+    "min_sdk": 21,
+    "version": "0619v2"
+  },
+  {
+    "commit": "fcb503c963f5586775dd428587df2a2621fa9a79",
+    "date": "2024-06-19T18:41:52+08:00",
+    "message": "Fix bug",
+    "blob": "c463774cdd3fd814d121104cf42a330ba95fd6f9",
+    "min_sdk": 21,
+    "version": "0619v3"
+  },
+  {
+    "commit": "4ced75e1c4293a1d87f9a2ed28e3001064fe7ff1",
+    "date": "2024-06-19T21:39:45+08:00",
+    "message": "Update build.gradle",
+    "blob": "fb34c425395b5593c47b87860b6f1630a2471502",
+    "min_sdk": 21,
+    "version": "0619v4"
+  },
+  {
+    "commit": "7d159e83760d4cbf477fa9fed720e8453d7c8efa",
+    "date": "2024-06-20T00:06:34+08:00",
+    "message": "Update build.gradle",
+    "blob": "96990c324ed9daf479343d1914e04aec07118ef7",
+    "min_sdk": 21,
+    "version": "0620"
+  },
+  {
+    "commit": "fc93be0b0f11f9ca2a56417f83294c1b679f1150",
+    "date": "2024-06-20T13:01:44+08:00",
+    "message": "Update build.gradle",
+    "blob": "1e176ef8f4757022904008d75514674c2f1f5ad0",
+    "min_sdk": 21,
+    "version": "0620v2"
+  },
+  {
+    "commit": "4b957f3c3889979479cd07344c3f42192b1f2f0d",
+    "date": "2024-06-20T15:47:38+08:00",
+    "message": "Update build.gradle",
+    "blob": "4e613077f772bc9211dc3195b94e55f46f2d7dc5",
+    "min_sdk": 21,
+    "version": "2.4.0"
+  },
+  {
+    "commit": "bed1acf1ba1270c90e3dedfe63d1eacbbce3c4ef",
+    "date": "2024-06-20T23:22:17+08:00",
+    "message": "Update build.gradle",
+    "blob": "e79056940456561f0e6efe4a2bb1ae961b0da492",
+    "min_sdk": 21,
+    "version": "0621"
+  },
+  {
+    "commit": "b5666b01d995d40d6c336645186434895a5a124a",
+    "date": "2024-06-21T00:41:17+08:00",
+    "message": "Update build.gradle",
+    "blob": "3e3bdb21d2d62c4000d75f11397d34226d871383",
+    "min_sdk": 21,
+    "version": "0621v2"
+  },
+  {
+    "commit": "7c3e68e402bf6387adab6b8b2c11519b48d99e68",
+    "date": "2024-06-21T20:09:55+08:00",
+    "message": "Update build.gradle",
+    "blob": "b9cf556da9b6e73ab22e86ce3de5661c93358c7f",
+    "min_sdk": 21,
+    "version": "0621v3"
+  },
+  {
+    "commit": "90edf45d986e9b4054a85ece9d488268171d132c",
+    "date": "2024-06-23T02:44:15+08:00",
+    "message": "Update build.gradle",
+    "blob": "56ab8124b13a9b99a0c7dcd60be2f16bbbc9d938",
+    "min_sdk": 21,
+    "version": "0623"
+  },
+  {
+    "commit": "6fdbdf30329deaa62e120e5c96d4fb55c5882fa0",
+    "date": "2024-06-24T01:58:24+08:00",
+    "message": "Update build.gradle",
+    "blob": "eeb72ae6a18f7033bd4ea7a3a1f43b2b480bb873",
+    "min_sdk": 21,
+    "version": "0624"
+  },
+  {
+    "commit": "762e2e500bb4ab4d94db9731d8d17cd74899abba",
+    "date": "2024-06-25T11:07:34+08:00",
+    "message": "Update build.gradle",
+    "blob": "a576f03a69b0da0df10772c96acf712871331a6d",
+    "min_sdk": 21,
+    "version": "0625"
+  },
+  {
+    "commit": "489b334f8e7dc60f86a32154a787914ca8241624",
+    "date": "2024-06-25T23:42:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "61f7d78e31f75e5446bb6dd553a9d9f40f5ce0e2",
+    "min_sdk": 21,
+    "version": "0626"
+  },
+  {
+    "commit": "8d6b0db2a8a5ea2e2570049e880c146dfbe60dfc",
+    "date": "2024-06-26T02:15:12+08:00",
+    "message": "Update build.gradle",
+    "blob": "838d07e22611548055d2b140e0ade8d03ace24cb",
+    "min_sdk": 21,
+    "version": "0626v2"
+  },
+  {
+    "commit": "1c9e106ce5629eb01900d3f26002271f39f6f6eb",
+    "date": "2024-06-26T12:59:38+08:00",
+    "message": "Update build.gradle",
+    "blob": "23ae66b31c46a4cff41dea4e2677bdb6230926bc",
+    "min_sdk": 21,
+    "version": "0626v3"
+  },
+  {
+    "commit": "1d9a2f06d5a7c7a0bae7d8020419b10c7d053166",
+    "date": "2024-06-26T14:17:48+08:00",
+    "message": "Update build.gradle",
+    "blob": "4e613077f772bc9211dc3195b94e55f46f2d7dc5",
+    "min_sdk": 21,
+    "version": "2.4.0"
+  },
+  {
+    "commit": "4fa2e1df9e2ad497d75a1739c9615a2292845a7c",
+    "date": "2024-06-26T16:43:43+08:00",
+    "message": "Update build.gradle",
+    "blob": "022db641cdd3b2a4f973b7c4a80fc962c0391cbe",
+    "min_sdk": 21,
+    "version": "2.4.1"
+  },
+  {
+    "commit": "15691e3cf9dd529afa30127f8acb88b8fd2aaedf",
+    "date": "2024-06-29T00:05:40+08:00",
+    "message": "Update build.gradle",
+    "blob": "180e5f12d37d1ab302149945464e724e3556ba50",
+    "min_sdk": 21,
+    "version": "0628"
+  },
+  {
+    "commit": "2e7aa74545354127ae3c810f9b8e98068341a145",
+    "date": "2024-06-29T00:20:38+08:00",
+    "message": "Update build.gradle",
+    "blob": "b14a8125cb35770a61a91cc4e685248f3e7e6abb",
+    "min_sdk": 21,
+    "version": "0629"
+  },
+  {
+    "commit": "73aadf99036ccea00573eab431c861ccfe82058a",
+    "date": "2024-06-30T13:31:17+08:00",
+    "message": "Update gradle",
+    "blob": "75269c19f51f314653cbb821e706d13519d86f18",
+    "min_sdk": 21,
+    "version": "0629"
+  },
+  {
+    "commit": "2bd0798d2c6f2b246f2d9fa5b54f93f6573fde10",
+    "date": "2024-06-30T14:27:14+08:00",
+    "message": "Clean code",
+    "blob": "4ff6b97896f1fc74e7aa2889ca0916a04e8e0a23",
+    "min_sdk": 21,
+    "version": "0629"
+  },
+  {
+    "commit": "0da31c342825a452684786862190de745dec18de",
+    "date": "2024-06-30T17:09:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "99ed3c875f10e9343f8c689f7325ae0d0cee7f60",
+    "min_sdk": 21,
+    "version": "0629"
+  },
+  {
+    "commit": "78132ff9105529fee579622186b559d0d1491cbc",
+    "date": "2024-06-30T17:09:36+08:00",
+    "message": "Update build.gradle",
+    "blob": "09c4fdea95da3d0742690ece1d412825f86c5d5a",
+    "min_sdk": 21,
+    "version": "0630"
+  },
+  {
+    "commit": "d2cc1017cc2e278f21e519d7ba1bd70809efc79d",
+    "date": "2024-07-01T13:01:41+08:00",
+    "message": "Fix dependencies",
+    "blob": "11954bc139892dec2ff86accf138773839d94095",
+    "min_sdk": 21,
+    "version": "0630"
+  },
+  {
+    "commit": "641e0b5f10a1fd9396a84e07a7d3897570a2ec79",
+    "date": "2024-07-01T13:05:31+08:00",
+    "message": "Update build.gradle",
+    "blob": "1fa883f0fadfed14b1066060d89d57cf5fd36372",
+    "min_sdk": 21,
+    "version": "0701"
+  },
+  {
+    "commit": "858cc1af84ea867f2cd9ee32068750b31156d173",
+    "date": "2024-07-02T12:48:48+08:00",
+    "message": "Update build.gradle",
+    "blob": "397f45014038dc552846e3947cce76482be87d1b",
+    "min_sdk": 21,
+    "version": "0702"
+  },
+  {
+    "commit": "81ea4a7269ab61f2f28d2382839e450e8d93180e",
+    "date": "2024-07-02T13:17:31+08:00",
+    "message": "Update build.gradle",
+    "blob": "a626ce0f67928f2868eb9faf33c46f2cffc5cde3",
+    "min_sdk": 21,
+    "version": "0702v2"
+  },
+  {
+    "commit": "0a451ffbaf19efbc4f263f74b94173d3850a3e1e",
+    "date": "2024-07-02T15:14:23+08:00",
+    "message": "Update build.gradle",
+    "blob": "238fc95b06c1ddca9704d6afe449eb73b84f62e1",
+    "min_sdk": 21,
+    "version": "2.4.2"
+  },
+  {
+    "commit": "7a6f086679dc4575a5e517317877e4c192a3ad40",
+    "date": "2024-07-02T21:50:20+08:00",
+    "message": "Update build.gradle",
+    "blob": "1dc2996a5b39689bfe29c0f74ff01528f55d7e5b",
+    "min_sdk": 21,
+    "version": "0703"
+  },
+  {
+    "commit": "725047b020dfc5727656782e520d1ef1f4f207bf",
+    "date": "2024-07-05T15:12:29+08:00",
+    "message": "Update build.gradle",
+    "blob": "2c988b8b1833de63d1068bb10dc3d130adebfc78",
+    "min_sdk": 21,
+    "version": "0705"
+  },
+  {
+    "commit": "25b69f2a6787a143b391ea40097b34669c7db31b",
+    "date": "2024-07-06T17:36:31+08:00",
+    "message": "Update build.gradle",
+    "blob": "804688b052ee63d32f698ede06e01dff7b75139a",
+    "min_sdk": 21,
+    "version": "0706"
+  },
+  {
+    "commit": "a3bfb896e10fa39b1398af41c2fbd9337228d0a1",
+    "date": "2024-07-07T13:47:26+08:00",
+    "message": "Update build.gradle",
+    "blob": "125b4d6dcaa39c4dd3f9dd08b5e21162ddafdb1b",
+    "min_sdk": 21,
+    "version": "0707"
+  },
+  {
+    "commit": "7586204e1938d1e1a38f34962f3d258caa2f1b47",
+    "date": "2024-07-08T13:28:15+08:00",
+    "message": "Update build.gradle",
+    "blob": "5bb69d4f5e9c5673461b3a53b5401ec7285b7ac5",
+    "min_sdk": 21,
+    "version": "0708"
+  },
+  {
+    "commit": "b22cc68e05e47b29b005e35b0e3f5999a478bd48",
+    "date": "2024-07-08T23:47:40+08:00",
+    "message": "Update build.gradle",
+    "blob": "5225d5f3f700ac7a077003bf3093006449017dd9",
+    "min_sdk": 21,
+    "version": "2.4.3"
+  },
+  {
+    "commit": "218fded14e3bfea242c2a468b910433d326b5b85",
+    "date": "2024-07-10T16:38:30+08:00",
+    "message": "Update sdk",
+    "blob": "05fd3d8db8cba235fc8cff1beba205de09b0c7d5",
+    "min_sdk": 21,
+    "version": "2.4.3"
+  },
+  {
+    "commit": "7ec706aec1fb685fd8b59f9e38f1876592402b21",
+    "date": "2024-07-14T22:49:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "42b6165775c432687217a659c10e0b5b768510dc",
+    "min_sdk": 21,
+    "version": "2.4.3"
+  },
+  {
+    "commit": "8f0d40e22a97a23ffed91cd2a5aede1faff5bdc1",
+    "date": "2024-07-15T22:11:38+08:00",
+    "message": "Update build.gradle",
+    "blob": "43b43344abdb18efd2772c4461ce2957443fd620",
+    "min_sdk": 21,
+    "version": "0715"
+  },
+  {
+    "commit": "309a7e12ede526182a3091b6a9b504083108cbb3",
+    "date": "2024-07-16T00:53:16+08:00",
+    "message": "Update build.gradle",
+    "blob": "d8c65934ad37ff4a23553c8fee981fe4302209d8",
+    "min_sdk": 21,
+    "version": "0716"
+  },
+  {
+    "commit": "fde6ee8169cfa320cc6b0f69e5184080f6068433",
+    "date": "2024-07-16T11:48:52+08:00",
+    "message": "Update build.gradle",
+    "blob": "99c19256692d97e3167613cb9a5c3f68177f2a66",
+    "min_sdk": 21,
+    "version": "0716v2"
+  },
+  {
+    "commit": "3b78a0955b66b6a4c481ffc5cb3d3c1bb054647a",
+    "date": "2024-07-16T18:47:47+08:00",
+    "message": "Update build.gradle",
+    "blob": "0061005f40b33cc1e4aac4f11d5051c9ccecce69",
+    "min_sdk": 21,
+    "version": "0716v3"
+  },
+  {
+    "commit": "99e68c721b8c28459ab522f4cd8da269c63c513c",
+    "date": "2024-07-16T22:36:25+08:00",
+    "message": "Update build.gradle",
+    "blob": "c73398cf1a4e64753c345f1be4de0394cf6565df",
+    "min_sdk": 21,
+    "version": "0716v4"
+  },
+  {
+    "commit": "f359420e8dd29b87477617b0e6ef15e136617a4a",
+    "date": "2024-07-17T16:30:38+08:00",
+    "message": "Update build.gradle",
+    "blob": "83d343e64272d4c8772c6a62eb217062ee1fbdbc",
+    "min_sdk": 21,
+    "version": "0717"
+  },
+  {
+    "commit": "2c530d2846df4c50954187e205f8a02f8b275457",
+    "date": "2024-07-17T21:58:25+08:00",
+    "message": "Update build.gradle",
+    "blob": "7bc4913104414d1243a17fcd67e61ea93477d0f9",
+    "min_sdk": 21,
+    "version": "0717v2"
+  },
+  {
+    "commit": "f1f342cc711590d10cd9ff1533bf23b3c4c138f2",
+    "date": "2024-07-18T13:28:10+08:00",
+    "message": "Update build.gradle",
+    "blob": "194a92c86849e580bbf44c064dfb3a82042ce8e5",
+    "min_sdk": 21,
+    "version": "0718"
+  },
+  {
+    "commit": "a5b154a3f4b0d7e9c8ff097f5f8e5a3ac1153c85",
+    "date": "2024-07-18T15:52:31+08:00",
+    "message": "Update build.gradle",
+    "blob": "2e75f2188f913ec46f5670210fb93b86cab621bb",
+    "min_sdk": 21,
+    "version": "0718v2"
+  },
+  {
+    "commit": "7ef8696f879059bb6ff1e4676f2963903e5100e5",
+    "date": "2024-07-19T12:27:36+08:00",
+    "message": "Update build.gradle",
+    "blob": "43d9ce5dd3bd6dd5d7b8a83aec04565e5aab73d2",
+    "min_sdk": 21,
+    "version": "0719"
+  },
+  {
+    "commit": "0f575d445151e1f86a2beda9f83eecfe2407f15c",
+    "date": "2024-07-19T18:34:06+08:00",
+    "message": "Update build.gradle",
+    "blob": "0907ad34df63a68f0874cfa64dfba426d3d6d4b5",
+    "min_sdk": 21,
+    "version": "0719v2"
+  },
+  {
+    "commit": "df9caa0d3228cce168f74fbbeb8172ff2ab9a32e",
+    "date": "2024-07-21T15:43:28+08:00",
+    "message": "Update build.gradle",
+    "blob": "cd8182af232063e6e3649703d5c57a654eb664ea",
+    "min_sdk": 21,
+    "version": "2.4.4"
+  },
+  {
+    "commit": "edfa397e6481e92b8f7d7cd415fa653a9db66f54",
+    "date": "2024-07-23T15:06:55+08:00",
+    "message": "Update build.gradle",
+    "blob": "5e57433e6e19bca3fba3c794e4d2b8ffef9b2e67",
+    "min_sdk": 21,
+    "version": "0723"
+  },
+  {
+    "commit": "6e6dbdce13d54e8a6f3e7c7c34370470ad96358c",
+    "date": "2024-07-23T17:32:01+08:00",
+    "message": "Update build.gradle",
+    "blob": "1fea3a390155bf7ac16a0e0ad73ac63adee4aae1",
+    "min_sdk": 21,
+    "version": "0723v2"
+  },
+  {
+    "commit": "af35aec41a04be31bf2b9994a2d67452feb9fd8d",
+    "date": "2024-07-25T02:53:09+08:00",
+    "message": "Update dlna",
+    "blob": "ef7bf465a905e4962c19b0f9bfe305e7a6b62c29",
+    "min_sdk": 21,
+    "version": "0723v2"
+  },
+  {
+    "commit": "a16282901175c79f3b79a6e9ad0f28023d5b086c",
+    "date": "2024-07-25T14:27:37+08:00",
+    "message": "Update nanohttpd",
+    "blob": "4aaaca2612f01087637609cc0f05424247a3ec8e",
+    "min_sdk": 21,
+    "version": "0723v2"
+  },
+  {
+    "commit": "4a553f40f992e7cdb649965e23a34836c850c9ca",
+    "date": "2024-07-25T16:28:30+08:00",
+    "message": "Use aar for library",
+    "blob": "d2e25736ea7b2f9c2e995039da0038d375bab739",
+    "min_sdk": 21,
+    "version": "0723v2"
+  },
+  {
+    "commit": "69b2628bb27d9a10a5d8b9b8e7379cc9a0ac0ff2",
+    "date": "2024-07-25T16:43:55+08:00",
+    "message": "Update build.gradle",
+    "blob": "460d2c463244df39e5b08cf4578f713563bf2b07",
+    "min_sdk": 21,
+    "version": "0725"
+  },
+  {
+    "commit": "1ceffc95ca1aee80d3b61b67f1629705765c2ab0",
+    "date": "2024-07-25T23:49:56+08:00",
+    "message": "Update build.gradle",
+    "blob": "8e793f82049d247e6092bc43833fc1d2c8618a1a",
+    "min_sdk": 21,
+    "version": "0726"
+  },
+  {
+    "commit": "b5dae36975662da6b7853724a1cd03470032fca6",
+    "date": "2024-07-27T17:59:29+08:00",
+    "message": "Clean code",
+    "blob": "ea2e4b9086b3375a808065bc56ac3947d79f0265",
+    "min_sdk": 21,
+    "version": "0726"
+  },
+  {
+    "commit": "c6cbd5a3d98d99cdbce45ad4b60b88976e90bb10",
+    "date": "2024-07-27T18:54:26+08:00",
+    "message": "Fix build",
+    "blob": "818775653e482b894a56a52f3a4ce3793fa92609",
+    "min_sdk": 21,
+    "version": "0726"
+  },
+  {
+    "commit": "5111a03f4e5e67c5184d630f428bbe162e5c3ab3",
+    "date": "2024-07-27T19:43:20+08:00",
+    "message": "Update build.gradle",
+    "blob": "e3a72bfa685b8e7f6aaa2df54a9fdb16e21e19c4",
+    "min_sdk": 21,
+    "version": "0727"
+  },
+  {
+    "commit": "7be76b65e45ecbb070138765bf21c8e0dd51d556",
+    "date": "2024-07-27T23:42:37+08:00",
+    "message": "Update build.gradle",
+    "blob": "079c78dfd2dfb95c668395f94dc5c367be0b2374",
+    "min_sdk": 21,
+    "version": "2.4.5"
+  },
+  {
+    "commit": "ab6821e091aa86491e229e35787e3dd5ecb662c9",
+    "date": "2024-07-27T23:42:57+08:00",
+    "message": "Update build.gradle",
+    "blob": "3d168d8740393fd0e465717141ed2610505e486b",
+    "min_sdk": 21,
+    "version": "0728"
+  },
+  {
+    "commit": "bb6b227f4eb8b72ebc0b7162e63b8feba3afde74",
+    "date": "2024-07-29T18:58:01+08:00",
+    "message": "Update build.gradle",
+    "blob": "72c6c8c2881c63bf3827d004fb8124f0988d59fa",
+    "min_sdk": 21,
+    "version": "0729"
+  },
+  {
+    "commit": "3e93ec8a37915f6c943e890ba6cf6000cc3ad9f1",
+    "date": "2024-07-31T00:07:07+08:00",
+    "message": "Update build.gradle",
+    "blob": "079c78dfd2dfb95c668395f94dc5c367be0b2374",
+    "min_sdk": 21,
+    "version": "2.4.5"
+  },
+  {
+    "commit": "c5ef074f22cee6eb05d501ee196be93656835160",
+    "date": "2024-07-31T00:44:33+08:00",
+    "message": "Update build.gradle",
+    "blob": "6507fa321f8164085c87c24eeba4104b349a4a7d",
+    "min_sdk": 21,
+    "version": "2.4.6"
+  },
+  {
+    "commit": "dca66dd0e39044bcbe7ce7b32b6e4dce946bc294",
+    "date": "2024-07-31T15:16:15+08:00",
+    "message": "Update build.gradle",
+    "blob": "53a7f4e4182ac075c9154beef8f9dd748ee0aac4",
+    "min_sdk": 21,
+    "version": "0731"
+  },
+  {
+    "commit": "2c81c33a381643505a2048d31b29d417e4c298c6",
+    "date": "2024-07-31T16:36:22+08:00",
+    "message": "Update build.gradle",
+    "blob": "315d06ed2def30313eeeb49c297fafe94f4135fb",
+    "min_sdk": 21,
+    "version": "0731v2"
+  },
+  {
+    "commit": "958e899de1284e33e3fba0f9ecc175a14c088454",
+    "date": "2024-07-31T16:58:16+08:00",
+    "message": "Update build.gradle",
+    "blob": "b7243f856d1918d595809deaf57c801651117704",
+    "min_sdk": 21,
+    "version": "0731v3"
+  },
+  {
+    "commit": "98432615c74d8b7f3c5e0865558bb80f8d00ab72",
+    "date": "2024-07-31T18:08:39+08:00",
+    "message": "Update build.gradle",
+    "blob": "0725c770a1630b816b7dc106249e7ca80e30f88f",
+    "min_sdk": 21,
+    "version": "0731v4"
+  },
+  {
+    "commit": "4d7e16fa237dbea5f5f066429d31b94a5b037301",
+    "date": "2024-08-01T00:28:01+08:00",
+    "message": "Update build.gradle",
+    "blob": "859fc26571cc03df5a952a03e591626503662196",
+    "min_sdk": 21,
+    "version": "0801"
+  },
+  {
+    "commit": "c937e456ab9ab8ffbd9a6e55d3c24bfa5a62ff7b",
+    "date": "2024-08-01T16:01:39+08:00",
+    "message": "Update build.gradle",
+    "blob": "ef6d5ba86d13581fc18ed465dbb251545835caf5",
+    "min_sdk": 21,
+    "version": "0801v2"
+  },
+  {
+    "commit": "02e30262c775f294ef7dc79a847c1913afa001f1",
+    "date": "2024-08-02T00:49:07+08:00",
+    "message": "Update build.gradle",
+    "blob": "90697b0e4e4a9e99784b1d102797700ce72dd91e",
+    "min_sdk": 21,
+    "version": "0802"
+  },
+  {
+    "commit": "9f0098489da1bae26b4ef31656d7532b303d424d",
+    "date": "2024-08-02T16:17:37+08:00",
+    "message": "Update build.gradle",
+    "blob": "82848f9a390b5018e6665508194d11fc3e7dabe1",
+    "min_sdk": 21,
+    "version": "0802v2"
+  },
+  {
+    "commit": "52a6cfc2f5689461143cf29759a8c28a19563bd2",
+    "date": "2024-08-02T23:18:18+08:00",
+    "message": "Update build.gradle",
+    "blob": "6183a193b141a1c227dab6e783af78663f7d8bdb",
+    "min_sdk": 21,
+    "version": "0803"
+  },
+  {
+    "commit": "ae58f5328f86378aed214b1be328fe39b9ab1359",
+    "date": "2024-08-04T11:33:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "0a4e3d9bbf058e9cdb945e9cccba3a818ebf0388",
+    "min_sdk": 21,
+    "version": "0804"
+  },
+  {
+    "commit": "b7f4d01d70e6c5b17e4b3c4758e31e04dc7cb1c0",
+    "date": "2024-08-04T17:20:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "86fe3a938e1786fd51d9f524fce49c680fa4eb83",
+    "min_sdk": 21,
+    "version": "0804v2"
+  },
+  {
+    "commit": "d241ad673edcc7faf9c03bb98855ffb45b367032",
+    "date": "2024-08-06T17:18:00+08:00",
+    "message": "Update build.gradle",
+    "blob": "2d6a46a59206ec9905f836fabdc4e593569dc007",
+    "min_sdk": 21,
+    "version": "0806"
+  },
+  {
+    "commit": "7cdac0135232057d485b3bef4d23dec76f7ba3c3",
+    "date": "2024-08-06T21:14:29+08:00",
+    "message": "Update build.gradle",
+    "blob": "061b25b66be6a58a54c0f3624ffa68755e2732ba",
+    "min_sdk": 21,
+    "version": "0806v2"
+  },
+  {
+    "commit": "8d6fd3f828dc39ddb1266a2d5a12330b0b2a3c5e",
+    "date": "2024-08-06T22:25:45+08:00",
+    "message": "Update build.gradle",
+    "blob": "2a5d28bb1d8b28979b4851e20ff2143e79f31e02",
+    "min_sdk": 21,
+    "version": "0806v3"
+  },
+  {
+    "commit": "dacc3c356a60d3917098d26c251648efaa1ff32c",
+    "date": "2024-08-07T18:22:39+08:00",
+    "message": "Update build.gradle",
+    "blob": "890cafe5b5dcef151b97107dbaee840679efa20e",
+    "min_sdk": 21,
+    "version": "0807"
+  },
+  {
+    "commit": "37bf3c78e4b55e665bca716646594322d6ca1ce9",
+    "date": "2024-08-08T16:05:38+08:00",
+    "message": "Update build.gradle",
+    "blob": "5db2d4f7ff978b2b4c829cc397947bea943db433",
+    "min_sdk": 21,
+    "version": "0808"
+  },
+  {
+    "commit": "42bd3c69700d1d56b4d603434ab762f3b29193f2",
+    "date": "2024-08-09T13:53:57+08:00",
+    "message": "Update build.gradle",
+    "blob": "b0392b413b2ccff2c4c56ad4173793791a1f9f13",
+    "min_sdk": 21,
+    "version": "2.4.7"
+  },
+  {
+    "commit": "a28c1aa2c84d8dd808cf3bdfbf31215bcd18636e",
+    "date": "2024-08-09T13:58:24+08:00",
+    "message": "Use official nextlib",
+    "blob": "363cdb6f15339f9c46e60a933177f63184d6225c",
+    "min_sdk": 21,
+    "version": "2.4.7"
+  },
+  {
+    "commit": "2ce2a4222250bd198a67af6fe3c1176e9cfaf165",
+    "date": "2024-08-09T19:00:53+08:00",
+    "message": "Update nextlib",
+    "blob": "81e06786d6adff914276ac9d3a27611129dc1341",
+    "min_sdk": 21,
+    "version": "2.4.7"
+  },
+  {
+    "commit": "c8277fbd31ef70ac2504a71c5baab8c3579adba2",
+    "date": "2024-08-09T23:40:32+08:00",
+    "message": "Update build.gradle",
+    "blob": "5dfb13fb3cf2bf1ae4e0e319782a11012b45fa68",
+    "min_sdk": 21,
+    "version": "0810"
+  },
+  {
+    "commit": "2efa2e60cc75a89513c7a999077a8538a8b4806c",
+    "date": "2024-08-10T17:01:27+08:00",
+    "message": "Update build.gradle",
+    "blob": "9e12f31ab6b07b19ceedb6115a54bc77fea3e206",
+    "min_sdk": 21,
+    "version": "0810v2"
+  },
+  {
+    "commit": "d821dfd628d3372ca9d717667897e7f502691f40",
+    "date": "2024-08-10T18:10:16+08:00",
+    "message": "Update build.gradle",
+    "blob": "2f694ca8654a694ab4b66173a95357e5bee72fa1",
+    "min_sdk": 21,
+    "version": "0810v3"
+  },
+  {
+    "commit": "c02ddc5f09689f3ef770504ffa4da1c769428ac0",
+    "date": "2024-08-11T17:01:09+08:00",
+    "message": "Update build.gradle",
+    "blob": "45cd02b5fa1ccba57841e46f32621c4ffc049699",
+    "min_sdk": 21,
+    "version": "0811"
+  },
+  {
+    "commit": "4216734705f8d3ef98a622d1ca50002bf0eb4b7a",
+    "date": "2024-08-12T01:01:28+08:00",
+    "message": "Update build.gradle",
+    "blob": "108298047609c698a2e2d0a1b65b8fdb4a4f3dd3",
+    "min_sdk": 21,
+    "version": "0812"
+  },
+  {
+    "commit": "64a357f24530f0e4c9ed8f2a7b7870616cede31d",
+    "date": "2024-08-12T11:14:06+08:00",
+    "message": "Update build.gradle",
+    "blob": "66afc1138a581f5dd394dbb56af05e7dcfa266ce",
+    "min_sdk": 21,
+    "version": "0812v2"
+  },
+  {
+    "commit": "e37d22949220da78a77ee1d4cf84ae1a5ad51f87",
+    "date": "2024-08-15T01:06:31+08:00",
+    "message": "Update build.gradle",
+    "blob": "e7cc763942e9b9a6fde3e0489c5c08dec2edcac1",
+    "min_sdk": 21,
+    "version": "2.4.8"
+  },
+  {
+    "commit": "b5f52c7d45be69a3ae8d94470dc38ae020498a41",
+    "date": "2024-08-16T18:29:43+08:00",
+    "message": "Update ffmpeg",
+    "blob": "bdbc38590af1ec63517c7ac553781370caa8b8d1",
+    "min_sdk": 21,
+    "version": "2.4.8"
+  },
+  {
+    "commit": "872b82c48a0793dc525566b6ba817c2a2ab37053",
+    "date": "2024-08-16T18:40:47+08:00",
+    "message": "Update build.gradle",
+    "blob": "89da8e757242b67b44b5011bf5ff1f0b47d64714",
+    "min_sdk": 21,
+    "version": "0816"
+  },
+  {
+    "commit": "6db5da8a9895bdea8007fa4d365b697cad1d2e3e",
+    "date": "2024-08-16T22:52:01+08:00",
+    "message": "Update build.gradle",
+    "blob": "d3ee421b10eace83a126004ce6a8d1e863b05416",
+    "min_sdk": 21,
+    "version": "0816v2"
+  },
+  {
+    "commit": "15eb69d6660c13903d3e7af9ceab3a42ecc8ddc6",
+    "date": "2024-08-17T00:13:38+08:00",
+    "message": "Revert to next",
+    "blob": "e10b4087cb4637d65e5e46a17ede4a55f91b52ab",
+    "min_sdk": 21,
+    "version": "0816v2"
+  },
+  {
+    "commit": "75e949e28e6051ff3ea5b1bfb405672712a1f212",
+    "date": "2024-08-17T00:26:37+08:00",
+    "message": "Update build.gradle",
+    "blob": "7961681420ecb81488594b29807e7fd83051367d",
+    "min_sdk": 21,
+    "version": "0817"
+  },
+  {
+    "commit": "5cb083cb7545ba20fdef4c4f46419fae1ee8d790",
+    "date": "2024-08-17T17:43:47+08:00",
+    "message": "Update build.gradle",
+    "blob": "0e2ec7bbbcf7907bb2d65cd8b1cf864d6f74c40b",
+    "min_sdk": 21,
+    "version": "2.4.9"
+  },
+  {
+    "commit": "9858ae5ee9cbc327c52751a3fa98b71bbaa81a1c",
+    "date": "2024-08-19T20:08:56+08:00",
+    "message": "Remove next",
+    "blob": "37243794ff422c53b7b378af5505a34c83eb24c3",
+    "min_sdk": 21,
+    "version": "0819"
+  },
+  {
+    "commit": "cb0528786d59c1cf59a7391463efabf707832adb",
+    "date": "2024-08-19T20:12:06+08:00",
+    "message": "Update build.gradle",
+    "blob": "6dc327634b734591b604d97147ab84feedc74e2c",
+    "min_sdk": 21,
+    "version": "2.5.0"
+  },
+  {
+    "commit": "f18726f961427cfccdf980832740889238873641",
+    "date": "2024-08-21T14:12:26+08:00",
+    "message": "Revert to next",
+    "blob": "3c55b63e6a15b1a9152501d15e0ccd02dbbca1a4",
+    "min_sdk": 21,
+    "version": "2.5.0"
+  },
+  {
+    "commit": "93036ac47b956b5ec159a4b85f423eccd028f515",
+    "date": "2024-08-21T16:20:32+08:00",
+    "message": "Revert to ffmpeg",
+    "blob": "6dc327634b734591b604d97147ab84feedc74e2c",
+    "min_sdk": 21,
+    "version": "2.5.0"
+  },
+  {
+    "commit": "213ece64fe309b654f0954e4c2cb162a6ab01778",
+    "date": "2024-08-21T16:52:43+08:00",
+    "message": "Update build.gradle",
+    "blob": "b8293c6a0e09943bddc19c8f1a33d2f78aa4aa37",
+    "min_sdk": 21,
+    "version": "2.5.1"
+  },
+  {
+    "commit": "7ac1e80ae7d94af966f6b96047bbcf5feae5709e",
+    "date": "2024-08-22T16:49:34+08:00",
+    "message": "Update build.gradle",
+    "blob": "32a36a27a688e6547e614449346de6d06de13d8b",
+    "min_sdk": 21,
+    "version": "2.5.2"
+  },
+  {
+    "commit": "33f5e96e70b255830f001133278b1739e12da84b",
+    "date": "2024-08-24T20:46:55+08:00",
+    "message": "Update build.gradle",
+    "blob": "ff29467569161d2a716e38aa3aefe120533bb863",
+    "min_sdk": 21,
+    "version": "2.5.3"
+  },
+  {
+    "commit": "1ed8fc469563b6521d1dfde56df452e68531ba32",
+    "date": "2024-08-25T00:27:51+08:00",
+    "message": "Update build.gradle",
+    "blob": "c30b6c99fe16e2833b3ca81d8daf0eff13f54ff5",
+    "min_sdk": 21,
+    "version": "2.5.4"
+  },
+  {
+    "commit": "4cc8a371563b4ae1b3774eb0fa50fdcc5fbba2ea",
+    "date": "2024-08-27T12:03:23+08:00",
+    "message": "Fix build",
+    "blob": "bba460eba26c5ae6bec3f75bb3de91b3b199139a",
+    "min_sdk": 21,
+    "version": "2.5.4"
+  },
+  {
+    "commit": "2b087ef5a42ee6458d8b704f0286e6754b28a205",
+    "date": "2024-08-27T22:21:23+08:00",
+    "message": "Update build.gradle",
+    "blob": "94851c54d97e6eb10fc5b50eb2a734cb1fab6851",
+    "min_sdk": 21,
+    "version": "2.5.5"
+  },
+  {
+    "commit": "4f4ef6f90c12a017422ad1f1e576f089b500707e",
+    "date": "2024-08-29T11:25:16+08:00",
+    "message": "Update build.gradle",
+    "blob": "50e5c52e7c381124273cdf695c561dec0f36da13",
+    "min_sdk": 21,
+    "version": "2.5.6"
+  },
+  {
+    "commit": "4664ea2625f317e7f214773f5df917d24aeac7bc",
+    "date": "2024-08-29T19:58:49+08:00",
+    "message": "Update build.gradle",
+    "blob": "ce2ded6509c028015b9927f8fc563b88c45f98a3",
+    "min_sdk": 21,
+    "version": "2.5.7"
+  },
+  {
+    "commit": "8b71f66fdcbd1ebb8ea5be9be95709485901834f",
+    "date": "2024-09-02T19:33:00+08:00",
+    "message": "Update build.gradle",
+    "blob": "7e73d9ed2b38dd989c27f597534f0d5e961b3522",
+    "min_sdk": 21,
+    "version": "2.5.8"
+  },
+  {
+    "commit": "a9cbca4e08d27ff8c3291f2f8a9bf30d95546668",
+    "date": "2024-09-03T00:21:03+08:00",
+    "message": "Update build.gradle",
+    "blob": "e78bc35b3b2f0423a1e0289ab718ce7d1f1d8f77",
+    "min_sdk": 21,
+    "version": "0903"
+  },
+  {
+    "commit": "1c7bcd83e625ec7d05356ea97716feab4e73ed60",
+    "date": "2024-09-03T01:07:06+08:00",
+    "message": "Update build.gradle",
+    "blob": "5f52bf46f96b63561617abd720f6230445abd697",
+    "min_sdk": 21,
+    "version": "0903v2"
+  },
+  {
+    "commit": "2a0684ba0d4cc5564bf72b19cade49e7acd583c2",
+    "date": "2024-09-03T23:16:07+08:00",
+    "message": "Update build.gradle",
+    "blob": "664f225828657d4f789022b94be00ad6d98d3a79",
+    "min_sdk": 21,
+    "version": "0904"
+  },
+  {
+    "commit": "225fbd10f44cdebe7417b3cec547e2b197c3bd72",
+    "date": "2024-09-04T23:48:15+08:00",
+    "message": "Clean code",
+    "blob": "0243f2eb0b17254b7b601ba62264be8f06f8f906",
+    "min_sdk": 21,
+    "version": "0905"
+  },
+  {
+    "commit": "9768eaee221889756b02349a2a00423a3165f91f",
+    "date": "2024-09-06T11:51:18+08:00",
+    "message": "Add pressed for subtitle action",
+    "blob": "d48dfa16bdb71af7c33fbd66df2b9e164fc67a77",
+    "min_sdk": 21,
+    "version": "0906"
+  },
+  {
+    "commit": "804455f3940a5588b47f782a80f9b2eb6ed21700",
+    "date": "2024-09-10T17:05:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "1346325c5caf5e18cadcb65bc386310c537c05fa",
+    "min_sdk": 21,
+    "version": "2.5.9"
+  },
+  {
+    "commit": "9228dfe39b17de62e0df6896cdbcc82e2fefcc74",
+    "date": "2024-09-10T18:36:35+08:00",
+    "message": "Update build.gradle",
+    "blob": "f7aaf820a475ec2f58ec44683f85f61f050b4141",
+    "min_sdk": 21,
+    "version": "2.6.0"
+  },
+  {
+    "commit": "e07bfb43df9f8a811a0b35451addffbbbeb32e4f",
+    "date": "2024-09-11T12:40:10+08:00",
+    "message": "Revert zlive",
+    "blob": "154812c5acca1cd19647c1108ca439dac2bad0ac",
+    "min_sdk": 21,
+    "version": "2.6.0"
+  },
+  {
+    "commit": "9e3c6e4ee0fb7128000d8aaf2a6ca8d26637497b",
+    "date": "2024-09-11T22:32:23+08:00",
+    "message": "Update zlive",
+    "blob": "6132ad61eaca331db0d40d734f38b62438273bf5",
+    "min_sdk": 21,
+    "version": "2.6.0"
+  },
+  {
+    "commit": "33e89bf734b3255b29b922293d3ddff2599c58ea",
+    "date": "2024-09-14T16:17:56+08:00",
+    "message": "Update build.gradle",
+    "blob": "a1ee9c940ac695e4e6f55e2c2fbb0c96ca75978e",
+    "min_sdk": 21,
+    "version": "2.6.1"
+  },
+  {
+    "commit": "fc77a526ac35b0e1a0c2b4b6e6f59a7fa5b2f94e",
+    "date": "2024-09-25T16:33:56+08:00",
+    "message": "Update build.gradle",
+    "blob": "c4f8f8aaa53722bc0b85b0b850d6135cb443dbf3",
+    "min_sdk": 21,
+    "version": "2.6.2"
+  },
+  {
+    "commit": "ccc89c92b2875ef97835d95492d9a8cf83258da4",
+    "date": "2024-09-25T22:38:27+08:00",
+    "message": "Update build.gradle",
+    "blob": "7c59a873a4181b44dfc02e6df80f010905aabc86",
+    "min_sdk": 21,
+    "version": "2.6.3"
+  },
+  {
+    "commit": "e9d5b414698ca1b2dc8fa34d8d054b1f62d38fc5",
+    "date": "2024-09-26T01:20:15+08:00",
+    "message": "Update build.gradle",
+    "blob": "eb10c5991fe0aef277a998f9989837106b26c435",
+    "min_sdk": 21,
+    "version": "2.6.4"
+  },
+  {
+    "commit": "420cd9dc2b412efee74f1ae1e4a0594293a61fdb",
+    "date": "2024-11-06T12:49:17+08:00",
+    "message": "Update build.gradle",
+    "blob": "1009e070ab05a3e8461e30ba86252110556566d4",
+    "min_sdk": 21,
+    "version": "1106"
+  },
+  {
+    "commit": "0656ddd4f86ab0e1dc04bfee2a68c5832ee80c1a",
+    "date": "2024-11-16T23:40:33+08:00",
+    "message": "Update build.gradle",
+    "blob": "548d9a2d81956156bb0bfc7c09457df07078d705",
+    "min_sdk": 21,
+    "version": "1116"
+  },
+  {
+    "commit": "14b514afc8818f84c3eed04eb44374a42aad3ffa",
+    "date": "2024-11-18T23:18:57+08:00",
+    "message": "Update build.gradle",
+    "blob": "f12e95463ca15d0d1fbffc4be3a62c8a9a3c9468",
+    "min_sdk": 21,
+    "version": "1118"
+  },
+  {
+    "commit": "5ea0a8294bd9059dcaf6a7b565b03699abe91671",
+    "date": "2024-11-26T12:48:20+08:00",
+    "message": "Update build.gradle",
+    "blob": "cd995ecc7990d03f220b3ed61062c8dcff01d2cf",
+    "min_sdk": 21,
+    "version": "1126"
+  },
+  {
+    "commit": "c3ecabe7a42bee2d5af1e53513f3726e0be60c9a",
+    "date": "2024-11-26T15:43:28+08:00",
+    "message": "Update build.gradle",
+    "blob": "3d3ef2094eb3710342bdc22ecb3c5b5026a95dc5",
+    "min_sdk": 21,
+    "version": "2.6.5"
+  },
+  {
+    "commit": "4c130c90655d077c66e1edca8a6f4da1aee4ffa0",
+    "date": "2024-12-02T16:38:56+08:00",
+    "message": "Update build.gradle",
+    "blob": "eca27184be316ae7db3b671451170a549be77c4b",
+    "min_sdk": 21,
+    "version": "1202"
+  },
+  {
+    "commit": "e6b95d5d957aa120fa1aebd59b5c2d0321ad81aa",
+    "date": "2024-12-03T00:37:30+08:00",
+    "message": "Update build.gradle",
+    "blob": "12b0113334a2604d873e876b38384bedfabd2a3a",
+    "min_sdk": 21,
+    "version": "1203"
+  },
+  {
+    "commit": "86a4c2cc7ebf2b456aad01ea52c2a401ee05a57f",
+    "date": "2024-12-03T02:17:08+08:00",
+    "message": "Add url-tvg detect for m3u",
+    "blob": "efd57fd80bf540b99d834447cecca769aa45eba4",
+    "min_sdk": 21,
+    "version": "1203v2"
+  },
+  {
+    "commit": "bece34c0804a9944f35b5a67c64e0ddcec851ff3",
+    "date": "2024-12-04T14:34:48+08:00",
+    "message": "Update build.gradle",
+    "blob": "3fdeb204d477d2210132690696a0821dd5b45ca2",
+    "min_sdk": 21,
+    "version": "1204"
+  },
+  {
+    "commit": "338357779aeb52cc5ce5e2d2485336dc2e9919b7",
+    "date": "2024-12-05T21:54:37+08:00",
+    "message": "Update build.gradle",
+    "blob": "744e50461018854152affef4af88811995ec9b9e",
+    "min_sdk": 21,
+    "version": "1205"
+  },
+  {
+    "commit": "42bfb0d99d7ef0c1a810cdc07ab7d405f41579a8",
+    "date": "2024-12-07T11:39:50+08:00",
+    "message": "Update build.gradle",
+    "blob": "18f9ed3d6a5226268f9c35a04820e5e9b3c68a9e",
+    "min_sdk": 21,
+    "version": "1207"
+  },
+  {
+    "commit": "b059c39039c31b73bb098f23bd9e382ff63261fa",
+    "date": "2024-12-07T16:14:39+08:00",
+    "message": "Update build.gradle",
+    "blob": "4d00ac76e3650bb2692202617be50302d35e92ee",
+    "min_sdk": 21,
+    "version": "1207v2"
+  },
+  {
+    "commit": "891eeb9276c70f88c798a534602b3549a148d72f",
+    "date": "2024-12-07T17:55:03+08:00",
+    "message": "Update build.gradle",
+    "blob": "93534741126fd487d5141308f18e50ba6a841792",
+    "min_sdk": 21,
+    "version": "1207v3"
+  },
+  {
+    "commit": "c77d2aeb63fdba7f91d77200202eeb216a41368b",
+    "date": "2024-12-08T18:47:11+08:00",
+    "message": "Update build.gradle",
+    "blob": "17ba180b6526a22dd037b3148fa573bff49494a0",
+    "min_sdk": 21,
+    "version": "1208"
+  },
+  {
+    "commit": "b85a84465c0b09dc263e8e59642c9382081dcad7",
+    "date": "2024-12-08T21:04:12+08:00",
+    "message": "Support xtream vod",
+    "blob": "40947b2b9b11df2af62e9684a90cd865a2fab053",
+    "min_sdk": 21,
+    "version": "1208v2"
+  },
+  {
+    "commit": "7bb69cdf05d890a4261c984ade79b4ff6d81aa0e",
+    "date": "2024-12-09T22:56:16+08:00",
+    "message": "Optimize hls play",
+    "blob": "acbf23af7011a8ec4703cd111357c8a8f89b1784",
+    "min_sdk": 21,
+    "version": "1209"
+  },
+  {
+    "commit": "a6b21d56eb95a9cf392e58d8c088d1bb3fa6f831",
+    "date": "2024-12-12T14:35:02+08:00",
+    "message": "Update build.gradle",
+    "blob": "c3673ec6d9c06876db40e8c21aeb2b0a914ac1bc",
+    "min_sdk": 21,
+    "version": "2.6.6"
+  },
+  {
+    "commit": "3dc5ae9398fd7062d24f694c8540d96edde3962a",
+    "date": "2024-12-12T19:11:24+08:00",
+    "message": "Update build.gradle",
+    "blob": "c7d834d5b35888942ffd70506c3c9e150ad7b41c",
+    "min_sdk": 21,
+    "version": "1212"
+  },
+  {
+    "commit": "09c03745b8b0d301ae8097052845bd99feb26bea",
+    "date": "2024-12-13T09:01:08+08:00",
+    "message": "Update build.gradle",
+    "blob": "618593edb7a30c7aca4dbf1525aa09b90513595e",
+    "min_sdk": 21,
+    "version": "1213"
+  },
+  {
+    "commit": "ef0964dfc67a59e39bb7651f1c20c0bdacd239b0",
+    "date": "2024-12-13T13:21:42+08:00",
+    "message": "Update build.gradle",
+    "blob": "3f9a960575968a64855fc9fd2550115c1557009b",
+    "min_sdk": 21,
+    "version": "1213v2"
+  },
+  {
+    "commit": "58e7d5086dcc9299928dbbc52d8c84a73d7a4197",
+    "date": "2024-12-13T16:46:05+08:00",
+    "message": "Update build.gradle",
+    "blob": "6f68171d56273dcfaf60f2edae9351b868a3c9da",
+    "min_sdk": 21,
+    "version": "1213v3"
+  },
+  {
+    "commit": "a950d00b88c3837049d8363335636f5100807b7f",
+    "date": "2024-12-13T22:12:10+08:00",
+    "message": "Update build.gradle",
+    "blob": "2e56325cffc6028547c973a5b6cb981a67ddcd3b",
+    "min_sdk": 21,
+    "version": "2.6.7"
+  },
+  {
+    "commit": "cf5ebe8283da4e03c74cca7c559b622e25316f2a",
+    "date": "2024-12-14T14:21:06+08:00",
+    "message": "Update build.gradle",
+    "blob": "16b712a7fd97b62889148febc822e395af053b4d",
+    "min_sdk": 21,
+    "version": "2.6.8"
+  },
+  {
+    "commit": "97abbb37a39ddca5abe86146e2dc8250a06e4862",
+    "date": "2024-12-15T12:16:30+08:00",
+    "message": "Add iamf decoder",
+    "blob": "b073911e4583a9538c40e10fab3d75761845e69f",
+    "min_sdk": 21,
+    "version": "2.6.8"
+  },
+  {
+    "commit": "fcb352bce8a582511e07cd954fad1597fdaceeac",
+    "date": "2024-12-16T19:47:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "826aa0ed75d3eb6a54e109e6911849ecc894727b",
+    "min_sdk": 21,
+    "version": "2.6.9"
+  },
+  {
+    "commit": "0f8f018449a3dee09d3a8d4ccdd494a9d8837ff7",
+    "date": "2024-12-17T13:15:46+08:00",
+    "message": "Update build.gradle",
+    "blob": "8bbf93f46b1a476ddf72890e87fef818bc4622fb",
+    "min_sdk": 21,
+    "version": "1217"
+  },
+  {
+    "commit": "274ad1696523f01bc8ab9f7ecac3f97e2ac6e831",
+    "date": "2024-12-17T18:16:26+08:00",
+    "message": "Update build.gradle",
+    "blob": "5b1f75a517914c413b64e2c43fad675c3f9bb22c",
+    "min_sdk": 21,
+    "version": "2.7.0"
+  },
+  {
+    "commit": "6da7586730673550638582756b012c6c3365e5f6",
+    "date": "2024-12-18T11:54:17+08:00",
+    "message": "Update build.gradle",
+    "blob": "22242dd95aa0bf441c3d74e2352318c8780b5c7f",
+    "min_sdk": 21,
+    "version": "1218"
+  },
+  {
+    "commit": "6891ef8098cf51a5e9a9b396cdad7049210cc42f",
+    "date": "2024-12-19T15:41:32+08:00",
+    "message": "Update build.gradle",
+    "blob": "4d9bd275b9bebd425fb46c22359858f6295e0feb",
+    "min_sdk": 21,
+    "version": "1218"
+  },
+  {
+    "commit": "64971888c4bbf93f4cd6b44078f467e89240f329",
+    "date": "2024-12-19T16:47:41+08:00",
+    "message": "Update build.gradle",
+    "blob": "5c64130c854e1a61caec007109afe43d293ac589",
+    "min_sdk": 21,
+    "version": "1219"
+  },
+  {
+    "commit": "c9a0712714352b3c6e63d0110a5fb5c2a1c529d4",
+    "date": "2024-12-20T08:40:46+08:00",
+    "message": "Update build.gradle",
+    "blob": "6e4e0c503e7f293ee2ce85711b126460aea239ef",
+    "min_sdk": 21,
+    "version": "1220"
+  },
+  {
+    "commit": "98ddd272a90155d2a39f59cd00c12f591a17d0d5",
+    "date": "2024-12-20T09:41:44+08:00",
+    "message": "Update build.gradle",
+    "blob": "e5e4a59cb75295d94a5e155bff33ce66a4ebb5e7",
+    "min_sdk": 21,
+    "version": "2.7.1"
+  },
+  {
+    "commit": "3c65bd21838a8d494377385f6cbdc8745f09b9e6",
+    "date": "2024-12-20T11:18:54+08:00",
+    "message": "Update build.gradle",
+    "blob": "6e4e0c503e7f293ee2ce85711b126460aea239ef",
+    "min_sdk": 21,
+    "version": "1220"
+  },
+  {
+    "commit": "27b6341f4f1379f026a77f3291152a22d4741e7e",
+    "date": "2024-12-22T13:16:59+08:00",
+    "message": "Update build.gradle",
+    "blob": "095b6400af6de73493a41bab1558c26986d7f829",
+    "min_sdk": 21,
+    "version": "1222"
+  },
+  {
+    "commit": "2fe812b879548e37525e02dfa8dcc0b5043c91c7",
+    "date": "2024-12-24T16:50:41+08:00",
+    "message": "Update build.gradle",
+    "blob": "e5e4a59cb75295d94a5e155bff33ce66a4ebb5e7",
+    "min_sdk": 21,
+    "version": "2.7.1"
+  },
+  {
+    "commit": "86eaf7b5cea1ba5146255b34babdc4290c516a61",
+    "date": "2024-12-25T15:00:28+08:00",
+    "message": "Update build.gradle",
+    "blob": "967389ff9464fb4420e70ee262ff157c0915bdf4",
+    "min_sdk": 21,
+    "version": "1225"
+  },
+  {
+    "commit": "fe2e1817732b68a8314a6dd68565c6f0830da4a5",
+    "date": "2024-12-27T00:16:56+08:00",
+    "message": "Update build.gradle",
+    "blob": "e59df766e7e8fa641fd6948530785b251b749dd6",
+    "min_sdk": 21,
+    "version": "1227"
+  },
+  {
+    "commit": "8bbd1883ef3763578032668db1792b1bb7d760bf",
+    "date": "2024-12-27T00:49:36+08:00",
+    "message": "Update build.gradle",
+    "blob": "54daece78f498aab7922fe7e5ea2eb2017bbfe72",
+    "min_sdk": 21,
+    "version": "1227v2"
+  },
+  {
+    "commit": "f4c70ca2300e3d29e96b632419349dfa6c7905fe",
+    "date": "2024-12-27T01:22:51+08:00",
+    "message": "Update build.gradle",
+    "blob": "6ed5ab2ef3144091e0600c89d5e6d286db99f181",
+    "min_sdk": 21,
+    "version": "1227v3"
+  },
+  {
+    "commit": "a06d8d2c4140c173ae41eea98ab39a6f9aabd4e9",
+    "date": "2024-12-27T11:49:55+08:00",
+    "message": "Update build.gradle",
+    "blob": "038e9a04818b8cd12685aa7292f793a534c09b09",
+    "min_sdk": 21,
+    "version": "1227v4"
+  },
+  {
+    "commit": "6f8356eb59fd6b11adacf060172d98a3e738c7c4",
+    "date": "2024-12-27T17:03:35+08:00",
+    "message": "Update build.gradle",
+    "blob": "5ba4189827560b1b49611d29d02a40b8e3938f15",
+    "min_sdk": 21,
+    "version": "1227v5"
+  },
+  {
+    "commit": "538ad70d2c12f7cf43fa9e90583bb3521acf910e",
+    "date": "2024-12-27T23:16:55+08:00",
+    "message": "Update build.gradle",
+    "blob": "b783e325243b13582d366464835e99f0018592d0",
+    "min_sdk": 21,
+    "version": "1228"
+  },
+  {
+    "commit": "862d8c203bd084dbd851a90534fba8849fbad560",
+    "date": "2024-12-28T15:38:10+08:00",
+    "message": "Update build.gradle",
+    "blob": "7a7c67e566161f544826e18c12a90f447d8520d8",
+    "min_sdk": 21,
+    "version": "1228v2"
+  },
+  {
+    "commit": "a5a7f0600c62dd04f990f006fe154368b6d1b776",
+    "date": "2024-12-31T13:29:21+08:00",
+    "message": "Update build.gradle",
+    "blob": "1a9bbd514a54c2639923857f6396ba8955d164e6",
+    "min_sdk": 21,
+    "version": "2.7.2"
+  },
+  {
+    "commit": "729eb0f46a89bc82e02acf6cb1f74615d173ebc7",
+    "date": "2025-01-04T01:00:27+08:00",
+    "message": "Update build.gradle",
+    "blob": "5b83cfe3e12061ba6516a2507a3d0bad5adf46cc",
+    "min_sdk": 21,
+    "version": "0104"
+  },
+  {
+    "commit": "239761ec01e903b20c6bb61f6036428d41588b56",
+    "date": "2025-01-04T14:10:14+08:00",
+    "message": "Update build.gradle",
+    "blob": "df7b883307918b0dda41678df2b60b09e595033a",
+    "min_sdk": 21,
+    "version": "0104v2"
+  },
+  {
+    "commit": "095abcaaf535142df5bcbc5fa06083236e85ce0d",
+    "date": "2025-01-04T17:57:39+08:00",
+    "message": "Update build.gradle",
+    "blob": "87cc4158c2765fc3378558d0e4f01c8dd1475a0e",
+    "min_sdk": 21,
+    "version": "0104v3"
+  },
+  {
+    "commit": "1825841a060643ff56b53ebcf07fdd013ac4ea4a",
+    "date": "2025-01-06T01:00:09+08:00",
+    "message": "Fix eventbus crash",
+    "blob": "b0424c4dae90f3821e91f96298182f9c42887492",
+    "min_sdk": 21,
+    "version": "0104v3"
+  },
+  {
+    "commit": "c6f91af5226543eaeb969d93d1266ad29441fdcb",
+    "date": "2025-01-06T01:09:09+08:00",
+    "message": "Update build.gradle",
+    "blob": "5a39f93560583e9ba28ef356b8a3bc55e803eb73",
+    "min_sdk": 21,
+    "version": "0106"
+  },
+  {
+    "commit": "90fe1400c009d86ba905e04b5a2672ac7c4ea407",
+    "date": "2025-01-06T16:39:04+08:00",
+    "message": "Update build.gradle",
+    "blob": "1379f76e97e60c0054959062bf6854a4e352deb9",
+    "min_sdk": 21,
+    "version": "0106v2"
+  },
+  {
+    "commit": "a35744036d22b94f07b58f257ff2fd8ff96da845",
+    "date": "2025-01-07T16:01:45+08:00",
+    "message": "Clean code",
+    "blob": "52f3874f8c7109106cb02edfc5342124e4292eb9",
+    "min_sdk": 21,
+    "version": "0107"
+  },
+  {
+    "commit": "b0851c93891025bdead439648dead2fce04350e4",
+    "date": "2025-01-07T18:23:37+08:00",
+    "message": "Update build.gradle",
+    "blob": "674e0b2e95a65c80f8c665525881dd5ec0fdbc56",
+    "min_sdk": 21,
+    "version": "2.7.3"
+  },
+  {
+    "commit": "dc4355c3441ef3531397e0a0439ffdb260367b2e",
+    "date": "2025-01-08T01:00:59+08:00",
+    "message": "Update build.gradle",
+    "blob": "8eea0b84961a2a581383321afb630929ea5a5940",
+    "min_sdk": 21,
+    "version": "2.7.4"
+  },
+  {
+    "commit": "91188a939d153da38877cb4deb8f2d49442e0e4e",
+    "date": "2025-01-08T18:09:39+08:00",
+    "message": "Update build.gradle",
+    "blob": "c88af715b5ba102a71121dd04ffeea33b49cf6b4",
+    "min_sdk": 21,
+    "version": "2.7.5"
+  },
+  {
+    "commit": "02d7faa8354cba77ceff62c02f75a441fdb93118",
+    "date": "2025-01-09T01:23:31+08:00",
+    "message": "Update build.gradle",
+    "blob": "21abb4ab1346733cf1c45c4a947a67ef9de8e89c",
+    "min_sdk": 21,
+    "version": "2.7.6"
+  },
+  {
+    "commit": "ee2dea787726becfc692a3a861b13e9ce620ed43",
+    "date": "2025-01-10T16:21:32+08:00",
+    "message": "Update build.gradle",
+    "blob": "d1243a3b0494bcbe7f05e1a7cd6127d7fcf40da4",
+    "min_sdk": 21,
+    "version": "2.7.7"
+  },
+  {
+    "commit": "ed90588759079cdba50dd64ed4096ca9f7f370a2",
+    "date": "2025-01-11T00:20:14+08:00",
+    "message": "Update build.gradle",
+    "blob": "c19b59f724c546be9643622d7f8c3c85539ff45b",
+    "min_sdk": 21,
+    "version": "2.7.8"
+  },
+  {
+    "commit": "70997c62c4eaa8327099d54c139a0de2c15f8f45",
+    "date": "2025-01-11T16:01:59+08:00",
+    "message": "Update build.gradle",
+    "blob": "553a5feb15384a20356bc9531cf77b6de92b58ef",
+    "min_sdk": 21,
+    "version": "2.7.9"
+  },
+  {
+    "commit": "0fd4cd353739118b866fcf24f2d38546b79883e9",
+    "date": "2025-01-11T17:48:14+08:00",
+    "message": "Update build.gradle",
+    "blob": "884ededda512b7f832d69fa7479da8cab3cc2f7c",
+    "min_sdk": 21,
+    "version": "2.8.0"
+  },
+  {
+    "commit": "083755ff3543493d17521925c81895437ce5460c",
+    "date": "2025-01-12T01:04:37+08:00",
+    "message": "Update build.gradle",
+    "blob": "b44eb0b2e8c4c0989abbb15d39f79bc4c724fca7",
+    "min_sdk": 21,
+    "version": "2.8.1"
+  },
+  {
+    "commit": "fb21044b7bf505b74ab14ebed2e2cf366e722dea",
+    "date": "2025-01-13T17:32:10+08:00",
+    "message": "Update build.gradle",
+    "blob": "5f57594871199f1eced2e9da2ddfcb5498553658",
+    "min_sdk": 21,
+    "version": "2.8.2"
+  },
+  {
+    "commit": "7c6f06b9f91ab4d5f7aa8900512c622688b2307c",
+    "date": "2025-01-14T01:34:57+08:00",
+    "message": "Update build.gradle",
+    "blob": "2aba1364fb7568a4ea5944610e13da6e71675285",
+    "min_sdk": 21,
+    "version": "2.8.3"
+  },
+  {
+    "commit": "0623d982737764f676d0f782e0c23aa750de06b5",
+    "date": "2025-01-14T23:00:31+08:00",
+    "message": "Update build.gradle",
+    "blob": "f5724f5f906b7a54fac8bc014cde6423d045b99b",
+    "min_sdk": 21,
+    "version": "2.8.4"
+  },
+  {
+    "commit": "d04269b93eb369aa1f98cd6743f57adf05dfd989",
+    "date": "2025-01-15T01:09:56+08:00",
+    "message": "Update build.gradle",
+    "blob": "76b225935102b999301f18399e6bc93e6174fbbd",
+    "min_sdk": 21,
+    "version": "2.8.5"
+  },
+  {
+    "commit": "d6189544a577635443aff62c71182526c43dd6d7",
+    "date": "2025-01-16T01:11:42+08:00",
+    "message": "Update dlna",
+    "blob": "1b801b0281b86bc16cc4749b0a2df324c95d709a",
+    "min_sdk": 21,
+    "version": "2.8.5"
+  },
+  {
+    "commit": "91c0dc9a95cd425542eb36c7d4aba311b7402904",
+    "date": "2025-01-16T23:44:13+08:00",
+    "message": "Update build.gradle",
+    "blob": "7e121c15d961dae8d0f4d204f7f7360937f3ae30",
+    "min_sdk": 21,
+    "version": "2.8.6"
+  },
+  {
+    "commit": "1a8ef21a08c59c430d63b14345cd9cba3bfa9ebb",
+    "date": "2025-01-17T14:39:11+08:00",
+    "message": "Update build.gradle",
+    "blob": "d0f74fadf1d402a76c3c4ec3fae74b738bb12648",
+    "min_sdk": 21,
+    "version": "2.8.7"
+  },
+  {
+    "commit": "e5a74e75bc41fec9f3c4c61ba4e3ca342d550b0c",
+    "date": "2025-01-17T15:33:07+08:00",
+    "message": "Update build.gradle",
+    "blob": "e97f0b66c173aa439cb6865d698bec30aeba776c",
+    "min_sdk": 21,
+    "version": "2.8.7"
+  },
+  {
+    "commit": "5324cd8b16d4e4c235e04c86a2635fbadecfd642",
+    "date": "2025-01-17T15:38:42+08:00",
+    "message": "Update build.gradle",
+    "blob": "9f2bcaa8cc2ee7a3c76e1395402893c7b3d47afe",
+    "min_sdk": 21,
+    "version": "2.8.7"
+  },
+  {
+    "commit": "f23c35cb1940c504a437dd38cfe699fdea8eea11",
+    "date": "2025-01-18T01:20:41+08:00",
+    "message": "Update build.gradle",
+    "blob": "3c335927b9b0bc0004c7fdf5eb2b370caa47324b",
+    "min_sdk": 21,
+    "version": "2.8.7"
+  },
+  {
+    "commit": "32aea5980ba6c2b8df80c652e76215f17df67c72",
+    "date": "2025-01-18T21:37:05+08:00",
+    "message": "Update",
+    "blob": "16a1fe9170d4c9d4e8e5a600ca092ad5866c7395",
+    "min_sdk": 21,
+    "version": "2.8.7"
+  },
+  {
+    "commit": "39430386e8eabb3d5b61629ca7b25763332c4cd7",
+    "date": "2025-01-19T01:30:13+08:00",
+    "message": "Update build.gradle",
+    "blob": "b9a58e3f887fe37f3117f97a0cb072d580a625fe",
+    "min_sdk": 21,
+    "version": "2.8.8"
+  },
+  {
+    "commit": "7df325f3ddd8af4298ce69f664c1b0cce2fa1d7b",
+    "date": "2025-01-19T15:20:28+08:00",
+    "message": "Remove avif",
+    "blob": "a1ed9b458fab5f462467647bf33e9a2f6324dcfb",
+    "min_sdk": 21,
+    "version": "2.8.8"
+  },
+  {
+    "commit": "61057c9d8648f7c271fc4739fe64f345e6f68454",
+    "date": "2025-01-19T17:27:27+08:00",
+    "message": "Update build.gradle",
+    "blob": "356dad545d94321b6f1af0987819585fd0154edc",
+    "min_sdk": 21,
+    "version": "2.8.9"
+  },
+  {
+    "commit": "91bfdaf834dbadc708faf64bfde41c15f06660ed",
+    "date": "2025-01-23T01:25:45+08:00",
+    "message": "Update build.gradle",
+    "blob": "24b1f19ce763354a0fd9664b298e39a18cf80931",
+    "min_sdk": 21,
+    "version": "2.9.0"
+  },
+  {
+    "commit": "a37c3b7d40a9cb80ca4539ff0b572cd1419d457a",
+    "date": "2025-01-24T16:36:02+08:00",
+    "message": "Clean code",
+    "blob": "e4ded8ef734b2255dd4bbf70a2333f1655e18479",
+    "min_sdk": 21,
+    "version": "2.9.0"
+  },
+  {
+    "commit": "813e3eda0b33b91315dfca98b78da037e67859c8",
+    "date": "2025-01-24T17:27:10+08:00",
+    "message": "Update build.gradle",
+    "blob": "034175381d497b6e1633b7fad8e7f33798f557cb",
+    "min_sdk": 21,
+    "version": "2.9.1"
+  },
+  {
+    "commit": "a84754aa8988ce73566537bf9dcc728bdfd82ac9",
+    "date": "2025-01-24T17:39:28+08:00",
+    "message": "Clean code",
+    "blob": "9d37a09f5dfb923230bfc288fe8dad0383ff9555",
+    "min_sdk": 21,
+    "version": "2.9.1"
+  },
+  {
+    "commit": "187234502a4370baefa680d1100696cff42598b8",
+    "date": "2025-01-25T00:52:21+08:00",
+    "message": "Update build.gradle",
+    "blob": "d6a4b428e2b70fe2d6e61b4e0c17a719489ea48a",
+    "min_sdk": 21,
+    "version": "2.9.2"
+  },
+  {
+    "commit": "9733d6c0170b422ed30304a8f86f6a45a12e6435",
+    "date": "2025-01-25T10:42:15+08:00",
+    "message": "Use jbr-21",
+    "blob": "ecddbe9e0b0e6938a784c3f5b920325872bfa832",
+    "min_sdk": 21,
+    "version": "2.9.2"
+  },
+  {
+    "commit": "e19f16502418bf60c24b91360359143f655e8edd",
+    "date": "2025-01-25T11:50:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "16d29dc9352371606522cfb0e20f30f707af155f",
+    "min_sdk": 21,
+    "version": "2.9.3"
+  },
+  {
+    "commit": "768f829f431fef53da585aa34462ceb2567c901b",
+    "date": "2025-01-26T16:57:54+08:00",
+    "message": "Update build.gradle",
+    "blob": "9fb3ce9556cee988fa79b8e1908a2952fbc10b61",
+    "min_sdk": 21,
+    "version": "2.9.4"
+  },
+  {
+    "commit": "399d2c6d1f2bc46fd3fda74baa59c46c853f9fd4",
+    "date": "2025-01-26T22:58:38+08:00",
+    "message": "Update build.gradle",
+    "blob": "595c521c1466801af676677033080d233dccc710",
+    "min_sdk": 21,
+    "version": "2.9.5"
+  },
+  {
+    "commit": "9a813ed1cd293cafdcc827bb68e47dc7b1823967",
+    "date": "2025-01-27T17:41:48+08:00",
+    "message": "Update build.gradle",
+    "blob": "1f452bfc0be86b95d867a7cacc2b04c8ee1e7715",
+    "min_sdk": 21,
+    "version": "2.9.6"
+  },
+  {
+    "commit": "52682dfae8b1f36221723ed4fa25266f39816c94",
+    "date": "2025-01-27T18:51:02+08:00",
+    "message": "Update build.gradle",
+    "blob": "eb7681ce467e91a14482cd1d7e0d1e5acf749fa9",
+    "min_sdk": 21,
+    "version": "2.9.7"
+  },
+  {
+    "commit": "565725ab5cbcaeeb2c89ff86f6f1d418f233d8f9",
+    "date": "2025-01-29T15:05:20+08:00",
+    "message": "Update build.gradle",
+    "blob": "855ec117b221d23333a067dca6d5afa9bf4a4bcd",
+    "min_sdk": 21,
+    "version": "2.9.8"
+  },
+  {
+    "commit": "9c8cb918defc90746d7fbd845ed3036060c7d33e",
+    "date": "2025-01-30T02:38:44+08:00",
+    "message": "Update build.gradle",
+    "blob": "b6e1f26a0c3536b942f4e4979b8d4a9f429a35c6",
+    "min_sdk": 21,
+    "version": "2.9.9"
+  },
+  {
+    "commit": "9cf09b7f1cca53bf1383ce154533e17f9af3860a",
+    "date": "2025-01-30T22:56:47+08:00",
+    "message": "Update build.gradle",
+    "blob": "10f583516d2bbee83fdc1908a3565bb12877c0b6",
+    "min_sdk": 21,
+    "version": "3.0.0"
+  },
+  {
+    "commit": "83adde074ed44f278e197163ebb3a21648c5daec",
+    "date": "2025-02-01T18:32:22+08:00",
+    "message": "Update build.gradle",
+    "blob": "858358fcc6fdd84fcd4bc5c7c1dbd44131b71925",
+    "min_sdk": 21,
+    "version": "0201"
+  },
+  {
+    "commit": "a875b1d40ba34cc37f71bf3092a06d72cfc3c9ca",
+    "date": "2025-02-02T14:46:21+08:00",
+    "message": "Update quickjs and remove bb",
+    "blob": "23084ff59c9d66054101fe64882b26808ad085bb",
+    "min_sdk": 21,
+    "version": "0201"
+  },
+  {
+    "commit": "0c44b278711b18f079981204c4593d1455be2d5a",
+    "date": "2025-02-02T21:53:16+08:00",
+    "message": "Update build.gradle",
+    "blob": "537ed4401181d5b3e08eeb89327d2b368e5f317d",
+    "min_sdk": 21,
+    "version": "0202"
+  },
+  {
+    "commit": "bd33a06378ed4892c10cdbe83fa0e8164586181a",
+    "date": "2025-02-02T23:05:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "92b7ee35c1704c1814af14cde2ac90895feff7e9",
+    "min_sdk": 21,
+    "version": "3.0.1"
+  },
+  {
+    "commit": "b6be3730d0fdcb5ad76d5f66803c41053b9ca749",
+    "date": "2025-02-03T02:20:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "6f48dc0c233e89ccba419e47456cab554d7eb700",
+    "min_sdk": 21,
+    "version": "3.0.2"
+  },
+  {
+    "commit": "678b1aedcf1e2a8cb989d8092f35a395e50722c7",
+    "date": "2025-02-03T10:43:45+08:00",
+    "message": "Fix bug",
+    "blob": "f9d5248a5c8bbea460317b49105684076fca9b79",
+    "min_sdk": 21,
+    "version": "3.0.3"
+  },
+  {
+    "commit": "a1c57d5c67a4397a1055a4d09ea4f0a90ef3b466",
+    "date": "2025-02-03T15:44:22+08:00",
+    "message": "Update build.gradle",
+    "blob": "c3106cabd06c0de8ed86dc03f3ac82f0ec477cea",
+    "min_sdk": 21,
+    "version": "3.0.4"
+  },
+  {
+    "commit": "0c39df9c003a6cdbbebcd0bb005f30fcfbabc973",
+    "date": "2025-02-05T01:05:02+08:00",
+    "message": "Remove zlive",
+    "blob": "1415b44ef2a056e0286179f7a3b7b62afdcd45e3",
+    "min_sdk": 21,
+    "version": "3.0.4"
+  },
+  {
+    "commit": "443ee2af40bda467884202cb7474d4c4a844e63c",
+    "date": "2025-02-05T01:26:42+08:00",
+    "message": "Remove cronet",
+    "blob": "9ff0c96935d38c99c7d99654e7293bb54c27833f",
+    "min_sdk": 21,
+    "version": "3.0.4"
+  },
+  {
+    "commit": "35d9e2f774dfddaa73962be54eae65f10964d332",
+    "date": "2025-02-06T01:34:15+08:00",
+    "message": "Add newpipe",
+    "blob": "ae8f18993cdd6411e7fe4a1c6191cfa38e045d09",
+    "min_sdk": 21,
+    "version": "3.0.4"
+  },
+  {
+    "commit": "1c12c97dee49489fa8e53b75038d30528a6a730c",
+    "date": "2025-02-06T01:36:11+08:00",
+    "message": "Update build.gradle",
+    "blob": "5baf495b60f5c4a466641f28a692c68c6f837ec3",
+    "min_sdk": 21,
+    "version": "3.0.5"
+  },
+  {
+    "commit": "affa7a16dfa6f868f945612b286f91380dc35c00",
+    "date": "2025-02-09T01:05:50+08:00",
+    "message": "Update build.gradle",
+    "blob": "58900d72e797f88c3716dd1ee2989ad7403b316f",
+    "min_sdk": 21,
+    "version": "3.0.6"
+  },
+  {
+    "commit": "2c908c815a389dc075280f597821227b5d5fd37c",
+    "date": "2025-02-12T00:17:23+08:00",
+    "message": "Update build.gradle",
+    "blob": "cc17c43ab57dcbdd3e22556fab2e91f96897223b",
+    "min_sdk": 21,
+    "version": "3.0.7"
+  },
+  {
+    "commit": "9b7bf391e5f482bf2acbb1dc3f600f4085b6116d",
+    "date": "2025-02-12T17:24:43+08:00",
+    "message": "Update build.gradle",
+    "blob": "fb8588d756166b3e171e5bdf3e70eae4cde7fea3",
+    "min_sdk": 21,
+    "version": "3.0.8"
+  },
+  {
+    "commit": "66cc8c8333a78de38bf9c4d90701873ff050e303",
+    "date": "2025-02-13T10:50:55+08:00",
+    "message": "Update build.gradle",
+    "blob": "23c6821c58d94d9ec384f7ac2f9e83700eb00d2e",
+    "min_sdk": 21,
+    "version": "3.0.9"
+  },
+  {
+    "commit": "d109947730e715051310ab7479f6536b053c3def",
+    "date": "2025-02-13T11:42:43+08:00",
+    "message": "Update build.gradle",
+    "blob": "cde462ec092e36165310780230eed8041fe6e040",
+    "min_sdk": 21,
+    "version": "3.1.0"
+  },
+  {
+    "commit": "64497624799684b9dd7c786283d80e78c2b4b9a5",
+    "date": "2025-02-13T17:57:59+08:00",
+    "message": "Update build.gradle",
+    "blob": "483e9a2012a03e3d7c76d8332fd08a444a546581",
+    "min_sdk": 21,
+    "version": "3.1.1"
+  },
+  {
+    "commit": "0401d3ee733f0dfb2852c0ac48f59264ff3486d3",
+    "date": "2025-02-15T01:51:59+08:00",
+    "message": "Update build.gradle",
+    "blob": "8e892409c2eae0db6de4da6e7119a5d8d3db8318",
+    "min_sdk": 21,
+    "version": "0215"
+  },
+  {
+    "commit": "db2d3ae335e07f1c6de16cc64332715aa394befd",
+    "date": "2025-02-15T02:37:28+08:00",
+    "message": "Update build.gradle",
+    "blob": "d7f29ee1633949c7652e8b313dfc143a9908b595",
+    "min_sdk": 21,
+    "version": "0215v2"
+  },
+  {
+    "commit": "08cc6797de2e48918190e10d800bd24e483522fc",
+    "date": "2025-02-16T01:04:46+08:00",
+    "message": "Update build.gradle",
+    "blob": "f45bd7bdfcc7769d6e6d864e7156f58028c67d93",
+    "min_sdk": 21,
+    "version": "3.1.2"
+  },
+  {
+    "commit": "959397b4a23b739fff70acec2af48afa4adbe200",
+    "date": "2025-02-19T00:46:59+08:00",
+    "message": "Update build.gradle",
+    "blob": "91ab64a46b93b9a62b3187380ce3910460deecd2",
+    "min_sdk": 21,
+    "version": "3.1.3"
+  },
+  {
+    "commit": "c7a1acae911f9e44dcf1698fa8b6d0c46d0ab2e7",
+    "date": "2025-02-20T00:30:12+08:00",
+    "message": "Update build.gradle",
+    "blob": "1496344607a04063e1c3757730a935a6e9feb09c",
+    "min_sdk": 21,
+    "version": "3.1.4"
+  },
+  {
+    "commit": "ccb502081f8b821ad46ba765172046240e3072a0",
+    "date": "2025-02-21T12:34:49+08:00",
+    "message": "Update build.gradle",
+    "blob": "0571780698e436e6db14e0b972f8fc48a311bee0",
+    "min_sdk": 21,
+    "version": "3.1.5"
+  },
+  {
+    "commit": "8a7cb0a87cd7736ca402846ed48df5c599bf2241",
+    "date": "2025-02-23T18:07:50+08:00",
+    "message": "Update build.gradle",
+    "blob": "5b85419611ae5b8498006408fb1c8f8feed3b29b",
+    "min_sdk": 21,
+    "version": "0223"
+  },
+  {
+    "commit": "a922c406bb05d33d78aaf0bc703b4756cf744960",
+    "date": "2025-02-23T18:38:47+08:00",
+    "message": "Update build.gradle",
+    "blob": "b4bd6c0343614528da62bb7550e294a61f3cea62",
+    "min_sdk": 21,
+    "version": "0223v2"
+  },
+  {
+    "commit": "6734d79002b6b52c9b30f7d28c875126a0983c2c",
+    "date": "2025-02-24T23:22:49+08:00",
+    "message": "Update build.gradle",
+    "blob": "fb7566695b4c220774f7f8366ac9439ec4d16901",
+    "min_sdk": 21,
+    "version": "0224"
+  },
+  {
+    "commit": "944a1fd39d802bc32c6ed618b5c0e49dc349e3ff",
+    "date": "2025-02-25T01:05:50+08:00",
+    "message": "Update build.gradle",
+    "blob": "bcf8831fe226d608c56230b5da403406125aa9ec",
+    "min_sdk": 21,
+    "version": "0224v2"
+  },
+  {
+    "commit": "ae9c31671b7e5161fe623efac8fa8fee34a4367f",
+    "date": "2025-02-25T01:06:43+08:00",
+    "message": "Update build.gradle",
+    "blob": "48522c59e8cd979f6b4776bffc4027cf5e7a7284",
+    "min_sdk": 21,
+    "version": "0225"
+  },
+  {
+    "commit": "02bb21efb327c011d7715930aa14b58ca43a4fa1",
+    "date": "2025-02-25T17:01:26+08:00",
+    "message": "Update build.gradle",
+    "blob": "30ae9e8e3e518915b554e8a5b81306a6f056a8e1",
+    "min_sdk": 21,
+    "version": "0225v2"
+  },
+  {
+    "commit": "dd31bad0e24adc35bf3db7c1c9392254cf628bc7",
+    "date": "2025-02-25T23:00:15+08:00",
+    "message": "Update build.gradle",
+    "blob": "68bede929a3b0691a4bc0d9387ff0be26d4f09a8",
+    "min_sdk": 21,
+    "version": "0225v2"
+  },
+  {
+    "commit": "833a32ea374d0e862fb90c44be3c892fa6b54ea2",
+    "date": "2025-02-26T11:09:14+08:00",
+    "message": "Update build.gradle",
+    "blob": "0cb51167d74bd8de7f3ad895ac428fc53d4d8515",
+    "min_sdk": 21,
+    "version": "0226"
+  },
+  {
+    "commit": "01effbaa4f1f86e7cf73e443284f0a68549df76a",
+    "date": "2025-02-26T11:45:27+08:00",
+    "message": "Update build.gradle",
+    "blob": "e5d332c1a80f53bf07c5a2b5a887f31dba8e8f6e",
+    "min_sdk": 21,
+    "version": "0226v2"
+  },
+  {
+    "commit": "6f6b1d34a2645c9d5f6d66578af61e2eb72614d1",
+    "date": "2025-02-26T16:16:25+08:00",
+    "message": "Update build.gradle",
+    "blob": "e781d21adb7b677bb2fc262593836ab28641d443",
+    "min_sdk": 21,
+    "version": "0226v3"
+  },
+  {
+    "commit": "89705a3c40e8e17ac8d19a82fd7b0a4b34f2d677",
+    "date": "2025-02-26T16:46:36+08:00",
+    "message": "Update build.gradle",
+    "blob": "67c6ebf265bbdc419f22e5770d9412ebf9f664e3",
+    "min_sdk": 21,
+    "version": "3.1.6"
+  },
+  {
+    "commit": "21b950de418f7ef50afbb4e07c6e3d9981667098",
+    "date": "2025-02-26T20:12:25+08:00",
+    "message": "Update build.gradle",
+    "blob": "8c129a288803f2589dd6c312272672ead9889ba2",
+    "min_sdk": 21,
+    "version": "3.1.7"
+  },
+  {
+    "commit": "adddc1b3b5b67fb77c84de2360ef85b725344095",
+    "date": "2025-02-27T14:11:34+08:00",
+    "message": "Update build.gradle",
+    "blob": "0286e7448a09dcabb54b8545b9f747d38ff451b4",
+    "min_sdk": 21,
+    "version": "0227"
+  },
+  {
+    "commit": "5e3a13ad081bf9b16d410e99bc2cdfe98e6b1141",
+    "date": "2025-02-27T15:46:20+08:00",
+    "message": "Update build.gradle",
+    "blob": "236f1d79f022350a04f5c1968ae53feddf4ad0cc",
+    "min_sdk": 21,
+    "version": "3.1.8"
+  },
+  {
+    "commit": "a1c7efb46a3b68b77cbee20de4eaae137e55091a",
+    "date": "2025-02-27T17:12:52+08:00",
+    "message": "Update build.gradle",
+    "blob": "30f95503b19790feba5cbb9b5c61bb0c4fa83011",
+    "min_sdk": 21,
+    "version": "3.1.9"
+  },
+  {
+    "commit": "ebdc17d39c43f43d3c1b2ddebeaa838416f921dd",
+    "date": "2025-03-01T10:43:57+08:00",
+    "message": "Update build.gradle",
+    "blob": "ab4aa85a7579e58c063d223ed3b9c4492ae66bed",
+    "min_sdk": 21,
+    "version": "3.2.0"
+  },
+  {
+    "commit": "5112ce5b58db1473deb1c602a280b7deddeaf1b6",
+    "date": "2025-03-02T17:33:52+08:00",
+    "message": "Update build.gradle",
+    "blob": "90077c5aa9bd7a3aa38b4a8ed6c505ebca495216",
+    "min_sdk": 21,
+    "version": "3.2.1"
+  },
+  {
+    "commit": "40a31d4694c358c019bfcdbd006ec420af599fe5",
+    "date": "2025-03-02T21:46:27+08:00",
+    "message": "Update build.gradle",
+    "blob": "43e1709845a67b56fbe634babc8a533808db544f",
+    "min_sdk": 21,
+    "version": "3.2.2"
+  },
+  {
+    "commit": "3863b5c034ab953b45eda0d7e0c49a2635ca8759",
+    "date": "2025-03-04T11:35:31+08:00",
+    "message": "Update build.gradle",
+    "blob": "6a19209bacad8161f03fbe8c5ed022f11c98230a",
+    "min_sdk": 21,
+    "version": "3.2.2"
+  },
+  {
+    "commit": "c5f5cb86f8f84546836ef3362bcc81f835d83a86",
+    "date": "2025-03-04T11:40:42+08:00",
+    "message": "Update build.gradle",
+    "blob": "02519be16d0b6d629f5a5058f04ac235af85429f",
+    "min_sdk": 21,
+    "version": "3.2.3"
+  },
+  {
+    "commit": "eb2eaacf9df7e1600559abd6a51693b68e2840ac",
+    "date": "2025-03-04T15:50:53+08:00",
+    "message": "Update build.gradle",
+    "blob": "0fcd0544a49b2ccf9991bf16b8824b7d65fdeac8",
+    "min_sdk": 21,
+    "version": "3.2.4"
+  },
+  {
+    "commit": "f41b1a9c97125e8f5124086d39e4e37487ff0bcd",
+    "date": "2025-03-05T14:34:33+08:00",
+    "message": "Support drm header",
+    "blob": "76b2e312674239555968a2ed928858480ce9dc7a",
+    "min_sdk": 21,
+    "version": "3.2.5"
+  },
+  {
+    "commit": "9e54cdc51aa942ec2abfc2fdbfa6f1b58d09be50",
+    "date": "2025-03-12T01:32:04+08:00",
+    "message": "Update build.gradle",
+    "blob": "b23b0d8f0080fb001c39c1fd8e20a6ccc8f0fb36",
+    "min_sdk": 21,
+    "version": "3.2.6"
+  },
+  {
+    "commit": "11671e3f60f8cd46594c07336254f84619fa6b90",
+    "date": "2025-03-13T16:48:34+08:00",
+    "message": "Update build.gradle",
+    "blob": "62777826a22aa9386363544456d245b30e3a6f83",
+    "min_sdk": 21,
+    "version": "3.2.6"
+  },
+  {
+    "commit": "05f50e0f8cfe1a5cd8b890145fe1e36649eea3d3",
+    "date": "2025-03-14T13:05:48+08:00",
+    "message": "Update build.gradle",
+    "blob": "2ad665c869dc4657b97aab9a75951e79a5664c3d",
+    "min_sdk": 21,
+    "version": "3.2.7"
+  },
+  {
+    "commit": "e1b1c377facf40049440d294b3bad7507348c506",
+    "date": "2025-03-14T17:32:34+08:00",
+    "message": "Update build.gradle",
+    "blob": "6e9f243439b3d9d57c73c53c2b5a84d823b766c2",
+    "min_sdk": 21,
+    "version": "3.2.8"
+  },
+  {
+    "commit": "d2fcad9b36163ea8dd8e6852dbba67952ebf4755",
+    "date": "2025-03-15T12:39:06+08:00",
+    "message": "Update build.gradle",
+    "blob": "14f01e87f248083ad43f41ac379830499e6b9d4a",
+    "min_sdk": 21,
+    "version": "3.2.9"
+  },
+  {
+    "commit": "0b2102b1712a91d8d9850fb5ad11b5f41533e3a0",
+    "date": "2025-03-16T12:33:01+08:00",
+    "message": "Update build.gradle",
+    "blob": "79abd2cc313530362be563f5926684e35a58965a",
+    "min_sdk": 21,
+    "version": "3.3.0"
+  },
+  {
+    "commit": "9e10622857cd94eccffa82454dabb1f4fef42b46",
+    "date": "2025-03-16T17:30:32+08:00",
+    "message": "Update build.gradle",
+    "blob": "8cba18a97ed08e745e06d246b94532aece2cd52a",
+    "min_sdk": 21,
+    "version": "3.3.1"
+  },
+  {
+    "commit": "891d90335ad40f06781508dde185ae4df6b66dec",
+    "date": "2025-03-17T00:43:27+08:00",
+    "message": "Update build.gradle",
+    "blob": "ede44b05a827aafc059152e0b0084c49d90ef51b",
+    "min_sdk": 21,
+    "version": "3.3.2"
+  },
+  {
+    "commit": "2a5dc14252a8b9911334efd74d3425167d1b1aff",
+    "date": "2025-03-17T20:24:56+08:00",
+    "message": "Update build.gradle",
+    "blob": "cdc66b56c14bd9fba24bf35139722e965a5413e9",
+    "min_sdk": 21,
+    "version": "3.3.3"
+  },
+  {
+    "commit": "2cf429de0b995971522acc8df4d5f132b7290067",
+    "date": "2025-03-24T16:06:12+08:00",
+    "message": "Update build.gradle",
+    "blob": "2af4da936469c4bdcf7f08b1a04923279f85ed22",
+    "min_sdk": 21,
+    "version": "3.3.4"
+  },
+  {
+    "commit": "16fbf1961ade275820e2c7513b1d81034d523705",
+    "date": "2025-03-25T13:56:39+08:00",
+    "message": "Update build.gradle",
+    "blob": "40803152ee006160cd0a616f2413aacde1207c0b",
+    "min_sdk": 21,
+    "version": "3.3.5"
+  },
+  {
+    "commit": "a15d1968008d2da5f7cab01e3fd66cf693fedfc7",
+    "date": "2025-03-27T15:23:08+08:00",
+    "message": "Update build.gradle",
+    "blob": "11cbfa6b20550b4648c3ed53ad9238b03d159d94",
+    "min_sdk": 21,
+    "version": "3.3.6"
+  },
+  {
+    "commit": "e01d5c490fe48eaa0fc7f6001d447f05de43cf41",
+    "date": "2025-03-28T17:04:53+08:00",
+    "message": "Add libass",
+    "blob": "68f61d605feb253c26ab041e80a0c86f0ae6d7bb",
+    "min_sdk": 21,
+    "version": "3.3.6"
+  },
+  {
+    "commit": "ca08871520e0818cf74b42944b27f0fcc6c171f4",
+    "date": "2025-03-28T17:27:19+08:00",
+    "message": "Add libass - part 3",
+    "blob": "f8ab7886e9b0bda34794e83915f5e6fa6f328313",
+    "min_sdk": 21,
+    "version": "3.3.6"
+  },
+  {
+    "commit": "8680fcbf8e123f6d93786fc599abaf1800175631",
+    "date": "2025-03-28T18:00:48+08:00",
+    "message": "Update build.gradle",
+    "blob": "631805fa9a2b5bd858ab8b2a9cf4971547916443",
+    "min_sdk": 21,
+    "version": "3.3.7"
+  },
+  {
+    "commit": "1295656a33b950bc32c61aa818bfd0413e809015",
+    "date": "2025-03-28T22:14:48+08:00",
+    "message": "Update build.gradle",
+    "blob": "d55fc7ac205cb6cf8297b22fc2bff74e75347d6e",
+    "min_sdk": 21,
+    "version": "3.3.7"
+  },
+  {
+    "commit": "fd23dcbd84635652a0e55ada32bbb5d8dcfb0027",
+    "date": "2025-03-29T01:05:28+08:00",
+    "message": "Update build.gradle",
+    "blob": "62eda29c80ab097f3db18d046665eed079f5c44c",
+    "min_sdk": 21,
+    "version": "3.3.8"
+  },
+  {
+    "commit": "ac406cef789068d720883960b84ef50b33b1fa53",
+    "date": "2025-03-29T20:04:59+08:00",
+    "message": "Clean code",
+    "blob": "a02c06d29c156ede062c68a23859c2edc49a383c",
+    "min_sdk": 21,
+    "version": "3.3.8"
+  },
+  {
+    "commit": "ef476fd79d4863126550498c263bb49516bc92c9",
+    "date": "2025-03-29T20:36:25+08:00",
+    "message": "Update build.gradle",
+    "blob": "5f7bba3ce67fd7d31f5de5f7cc45085a3bc348d2",
+    "min_sdk": 21,
+    "version": "3.3.9"
+  },
+  {
+    "commit": "00961cddcef96d209a786a19a65f51888009cffd",
+    "date": "2025-03-30T12:33:30+08:00",
+    "message": "Update build.gradle",
+    "blob": "1ca7386261a37ed42561ef53be0cb5e9cf2b6220",
+    "min_sdk": 21,
+    "version": "3.4.0"
+  },
+  {
+    "commit": "bae964dc5bc5536624f8a8a3755f1773827205b7",
+    "date": "2025-03-30T16:47:47+08:00",
+    "message": "Update build.gradle",
+    "blob": "3efc34cba875c9e71df11fdeddf33b7501a4cb07",
+    "min_sdk": 21,
+    "version": "3.4.1"
+  },
+  {
+    "commit": "6ffd6f25ae4e6a8843c549b507e9759db3fdd2e8",
+    "date": "2025-03-30T20:11:57+08:00",
+    "message": "Update build.gradle",
+    "blob": "a056fe1036757285f001f25d83d64a4f2bd22baa",
+    "min_sdk": 21,
+    "version": "3.4.2"
+  },
+  {
+    "commit": "9e86229762b17b43788b42e07b84b06a831b01e5",
+    "date": "2025-03-31T13:04:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "a8ecef5c14130b571d42080d13771ea880b1d692",
+    "min_sdk": 21,
+    "version": "3.4.3"
+  },
+  {
+    "commit": "e69967581586f3f52ccfcf8d82bbcf14621ea81b",
+    "date": "2025-03-31T14:14:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "760cbcde7eca810cb25d15d22b16bd1031405f0a",
+    "min_sdk": 21,
+    "version": "3.4.4"
+  },
+  {
+    "commit": "dcabc556940885de39e4c2c4e3c12574e13d5520",
+    "date": "2025-04-03T13:02:00+08:00",
+    "message": "Clean code",
+    "blob": "b7d9b7a4fa12788461ddab0c7db929b6b4c4ade2",
+    "min_sdk": 21,
+    "version": "3.4.4"
+  },
+  {
+    "commit": "3cf0afbe0d79c9bced91aaf587a204416ce8435c",
+    "date": "2025-04-03T16:34:52+08:00",
+    "message": "Update build.gradle",
+    "blob": "0b76b0921376102123b080ecc448a5e0faee592a",
+    "min_sdk": 21,
+    "version": "3.4.5"
+  },
+  {
+    "commit": "2ffe384ed065cca465e8ae5122c3e0ec7a24b712",
+    "date": "2025-04-04T14:01:57+08:00",
+    "message": "Update build.gradle",
+    "blob": "a2a3c53eb815aad5341a246d59afa6c67da9089f",
+    "min_sdk": 21,
+    "version": "3.4.6"
+  },
+  {
+    "commit": "1513f59f8a32cd672646f58ab37f61e6e75d8479",
+    "date": "2025-04-04T17:13:24+08:00",
+    "message": "Clean code",
+    "blob": "1e6cb2cd863ef8468337ae1cdfcdaa3aa1c01980",
+    "min_sdk": 21,
+    "version": "3.4.7"
+  },
+  {
+    "commit": "2a95690b384e4970ff269e7da3382b3fcbe559c1",
+    "date": "2025-04-04T18:49:54+08:00",
+    "message": "Update build.gradle",
+    "blob": "048fa11eb40a2771b14ceef84148be16bd83119f",
+    "min_sdk": 21,
+    "version": "3.4.8"
+  },
+  {
+    "commit": "f0f2530975a9005b9ee52539ab407fc0cc816432",
+    "date": "2025-04-05T00:46:34+08:00",
+    "message": "Update build.gradle",
+    "blob": "dae04e3972a7e63c1f84d299fea1808753f2c992",
+    "min_sdk": 21,
+    "version": "3.4.8"
+  },
+  {
+    "commit": "d762e7c6292807cc64d7d5a1961b71b800e17281",
+    "date": "2025-04-05T01:04:23+08:00",
+    "message": "Update build.gradle",
+    "blob": "d09c7295e57a6a4d0c474f931130c2e4b367d0eb",
+    "min_sdk": 21,
+    "version": "3.4.9"
+  },
+  {
+    "commit": "f48a079dca200b84f595b19e0486e2cc38625fd8",
+    "date": "2025-04-06T10:21:39+08:00",
+    "message": "Update build.gradle",
+    "blob": "17b3f41e440a220ebfd4e94d67b05fad9e0f58b7",
+    "min_sdk": 21,
+    "version": "3.5.0"
+  },
+  {
+    "commit": "0726659f76fad3f9a78cb8386ba0afc7cba814ed",
+    "date": "2025-04-07T12:31:04+08:00",
+    "message": "Update build.gradle",
+    "blob": "93de84fe5170cf50e0fb4143d45b858cd735a959",
+    "min_sdk": 21,
+    "version": "3.5.1"
+  },
+  {
+    "commit": "c271599485603c7166d2bf4e294db7bb88855929",
+    "date": "2025-04-07T22:01:47+08:00",
+    "message": "Update build.gradle",
+    "blob": "b5c61c2e3d49e071fd65ccab68b2208b49d8ce48",
+    "min_sdk": 21,
+    "version": "3.5.2"
+  },
+  {
+    "commit": "74abdf6a6122409b0ca6e6b864fb39e00a857f3c",
+    "date": "2025-04-08T00:30:38+08:00",
+    "message": "Update build.gradle",
+    "blob": "9fd028fafff3c864ca7699125c2412a58cf7c151",
+    "min_sdk": 21,
+    "version": "3.5.3"
+  },
+  {
+    "commit": "5b45c8071e5866192e35d3c28a83b552e9603925",
+    "date": "2025-04-08T13:48:41+08:00",
+    "message": "Update build.gradle",
+    "blob": "fae91b55097ab88ee39e3efa5b05ed9038df99dc",
+    "min_sdk": 21,
+    "version": "3.5.4"
+  },
+  {
+    "commit": "cbbad32edd701865e6287e3c24a13cc4c8592e8b",
+    "date": "2025-04-08T14:27:09+08:00",
+    "message": "Update build.gradle",
+    "blob": "6031e556e8765764d5e381e25de5d3a1fab76406",
+    "min_sdk": 21,
+    "version": "3.5.5"
+  },
+  {
+    "commit": "0fab88953fd6e25c2ea25744e7b0c4527ce0e0c9",
+    "date": "2025-04-08T19:52:03+08:00",
+    "message": "Update build.gradle",
+    "blob": "823eea22ea66147d81c0706bbb21d9adf7ecf9fa",
+    "min_sdk": 21,
+    "version": "3.5.6"
+  },
+  {
+    "commit": "43dae8c07641b0af2ba31114ba2440c9571d197a",
+    "date": "2025-04-08T22:26:40+08:00",
+    "message": "Update build.gradle",
+    "blob": "aa20c5bf566e97d5d108751606e79bac2aa95b6a",
+    "min_sdk": 21,
+    "version": "3.5.7"
+  },
+  {
+    "commit": "d164c51f3bdfb07533f5b2c501cdc5d37d46416f",
+    "date": "2025-04-09T10:42:05+08:00",
+    "message": "Update build.gradle",
+    "blob": "c308f3fba28f8a4981a1b3de6b2f82debfd57bae",
+    "min_sdk": 21,
+    "version": "3.5.8"
+  },
+  {
+    "commit": "f9377f4fa550feed0b48f05bbd7e7b9efd35a105",
+    "date": "2025-04-09T21:13:58+08:00",
+    "message": "Update build.gradle",
+    "blob": "bc81cc753f05fd4d10617a90a51c721bd60a9287",
+    "min_sdk": 21,
+    "version": "3.5.9"
+  },
+  {
+    "commit": "3710c0636935bbe3020aa677c1cb8830c4516b2b",
+    "date": "2025-04-10T22:54:08+08:00",
+    "message": "Update build.gradle",
+    "blob": "56f176017a71b6dcaf85558a9171b55cbdbab038",
+    "min_sdk": 21,
+    "version": "3.6.0"
+  },
+  {
+    "commit": "f783b101e580bb8fbf7588cf0c314db26b1866c8",
+    "date": "2025-04-11T16:31:59+08:00",
+    "message": "Update build.gradle",
+    "blob": "8937235ec03c1e40256286785726692ba2517ead",
+    "min_sdk": 21,
+    "version": "3.6.1"
+  },
+  {
+    "commit": "5d97221355272cda0c3b92bce1ab75ed46267459",
+    "date": "2025-04-11T20:44:24+08:00",
+    "message": "Update gradle",
+    "blob": "fbdedfe522639c0882ba6eb2f596431381061510",
+    "min_sdk": 21,
+    "version": "3.6.1"
+  },
+  {
+    "commit": "736d7ce4f88673620854216a0e8fe80561edb944",
+    "date": "2025-04-11T20:53:18+08:00",
+    "message": "Update build.gradle",
+    "blob": "4093cfac2593199950e627e428cc3989538341b4",
+    "min_sdk": 21,
+    "version": "3.6.2"
+  },
+  {
+    "commit": "ba2f30ef39000056c373b95377a57d615f0c0317",
+    "date": "2025-04-14T23:30:35+08:00",
+    "message": "Update build.gradle",
+    "blob": "76b7826ad4f77c709d4d7e4d19f549ed61a89336",
+    "min_sdk": 21,
+    "version": "3.6.3"
+  },
+  {
+    "commit": "1e55b55094e6a6f1010109dfd3cf02ceccba4eab",
+    "date": "2025-04-16T11:44:56+08:00",
+    "message": "Update build.gradle",
+    "blob": "35f2c149d26531b44a7da5e13b59a4229cf68cfc",
+    "min_sdk": 21,
+    "version": "3.6.4"
+  },
+  {
+    "commit": "2eccac197e5505a1d487f7ddfb1e0338f3a5ee52",
+    "date": "2025-04-16T18:43:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "405765fdca4377e64c8900d5b5ffc691e9edb14d",
+    "min_sdk": 21,
+    "version": "3.6.5"
+  },
+  {
+    "commit": "d8af6f385573b713e39fcf2d5b9a39be03c6a0f5",
+    "date": "2025-04-17T10:06:30+08:00",
+    "message": "Update build.gradle",
+    "blob": "613e2e80bc23bc24db4b474a94d2e152e3039e92",
+    "min_sdk": 21,
+    "version": "3.6.6"
+  },
+  {
+    "commit": "4786028162297ad949436e73147795017f169cf9",
+    "date": "2025-04-17T21:58:15+08:00",
+    "message": "Update build.gradle",
+    "blob": "1cc56a1d5cd7c3adce992ba8d02f3d7df03556d5",
+    "min_sdk": 21,
+    "version": "3.6.7"
+  },
+  {
+    "commit": "3b0fb51c0419cdae8781cb803490fe2021e23a48",
+    "date": "2025-04-20T18:27:24+08:00",
+    "message": "Update build.gradle",
+    "blob": "f68f5884a9142ee912b1591d0ba66742bfaaabcb",
+    "min_sdk": 21,
+    "version": "3.6.8"
+  },
+  {
+    "commit": "13f28bebc138f0fade279333523e37890ed473ee",
+    "date": "2025-04-20T22:41:29+08:00",
+    "message": "Update build.gradle",
+    "blob": "245accc3a5fa96e6c12f76d328257daf590cba98",
+    "min_sdk": 21,
+    "version": "3.6.9"
+  },
+  {
+    "commit": "71e006aa0bda58fd4d785d370872db38944a84ab",
+    "date": "2025-04-21T15:58:13+08:00",
+    "message": "Update build.gradle",
+    "blob": "48fb158a3d8220903b177aaaaa133c7793541938",
+    "min_sdk": 21,
+    "version": "3.7.0"
+  },
+  {
+    "commit": "6ed1c7254043b98130f39dd0b460098b5a69dbf7",
+    "date": "2025-04-21T23:09:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "cd344e489988f37df8797f1bbbd3ed711876e3f7",
+    "min_sdk": 21,
+    "version": "3.7.1"
+  },
+  {
+    "commit": "ef255b626c3820318afeee2227d9e356b3f31d43",
+    "date": "2025-04-22T12:11:12+08:00",
+    "message": "Update build.gradle",
+    "blob": "3e9328123df5c8def1f4fa9e1725eb0993abf0c7",
+    "min_sdk": 21,
+    "version": "3.7.2"
+  },
+  {
+    "commit": "00dbf99ec74466d0a5a3068f5898a6e252b52d65",
+    "date": "2025-04-22T17:23:09+08:00",
+    "message": "Update build.gradle",
+    "blob": "88b85a5275a737b4d1aabd3492ff3a6db41d0a16",
+    "min_sdk": 21,
+    "version": "3.7.3"
+  },
+  {
+    "commit": "dd45795175560163cfa01540c9b8f4b19de339f2",
+    "date": "2025-04-23T02:02:13+08:00",
+    "message": "Update build.gradle",
+    "blob": "25091314434f6247ff490a0586b8b0dcb15252a3",
+    "min_sdk": 21,
+    "version": "3.7.4"
+  },
+  {
+    "commit": "b1aaaee0f0cad0668d9cc637abffd9f1fb1335ff",
+    "date": "2025-04-23T22:09:49+08:00",
+    "message": "Update build.gradle",
+    "blob": "8a9238ded6053ed728070cd180138fb446afd1c2",
+    "min_sdk": 21,
+    "version": "3.7.5"
+  },
+  {
+    "commit": "3804238a8d035800b6e5562d1155acdf71750858",
+    "date": "2025-04-24T14:50:35+08:00",
+    "message": "Update build.gradle",
+    "blob": "d4a9fd4a931d8be6a44f60d9f6c177573040c3f2",
+    "min_sdk": 21,
+    "version": "3.7.6"
+  },
+  {
+    "commit": "ff8be7922c677db63c7b6c0e1081d20f0dbbd49b",
+    "date": "2025-04-24T15:44:46+08:00",
+    "message": "Support 9978 too",
+    "blob": "442481790423d4fab6c9a7bfc35317c0c17b2581",
+    "min_sdk": 21,
+    "version": "3.7.6"
+  },
+  {
+    "commit": "dfe502934575931e863bc92c412719d1f8887f2e",
+    "date": "2025-04-24T20:42:55+08:00",
+    "message": "Fix bug",
+    "blob": "57361db2295f641fa8a1d128892652925e2a9d51",
+    "min_sdk": 21,
+    "version": "3.7.7"
+  },
+  {
+    "commit": "00ceb91bc58fdd8d01ef46bf1c26d3e2043f60d0",
+    "date": "2025-04-24T21:44:18+08:00",
+    "message": "Clean code",
+    "blob": "dda83e6dd9f518d6493bb1964d2fea4cc1a6f3ca",
+    "min_sdk": 21,
+    "version": "3.7.7"
+  },
+  {
+    "commit": "cbee0e7eaa3088245a81189c20ee51effee3d479",
+    "date": "2025-04-24T21:47:37+08:00",
+    "message": "Update build.gradle",
+    "blob": "549ff0f657916fc83ee840e7787b462f12eeee3e",
+    "min_sdk": 21,
+    "version": "3.7.8"
+  },
+  {
+    "commit": "bba386cbb5ac782b208fc9679ef2adbe5b15499b",
+    "date": "2025-04-24T22:08:53+08:00",
+    "message": "Update build.gradle",
+    "blob": "cec218518ff5c7f39cd479d1a56d0e50631203d3",
+    "min_sdk": 21,
+    "version": "3.7.9"
+  },
+  {
+    "commit": "f6aa1336f21bfbf71b93307c7ec1ef638d8a35fb",
+    "date": "2025-04-27T13:01:30+08:00",
+    "message": "Revert logo",
+    "blob": "adbbb7e9a430d447edd073ca6505cb3954643599",
+    "min_sdk": 21,
+    "version": "3.8.0"
+  },
+  {
+    "commit": "b612b97d8f7d380dba202e88acbd75afaf3ac309",
+    "date": "2025-05-02T21:27:15+08:00",
+    "message": "Update build.gradle",
+    "blob": "e610896bc94f58e847d260528a75afb1c8e3e42c",
+    "min_sdk": 21,
+    "version": "3.8.1"
+  },
+  {
+    "commit": "51895961375527a25c0a65d43832e79c17eef7aa",
+    "date": "2025-05-10T15:54:27+08:00",
+    "message": "Update build.gradle",
+    "blob": "d133b0f9a20fcae30275c224311c2e7677d68f9b",
+    "min_sdk": 21,
+    "version": "3.8.1"
+  },
+  {
+    "commit": "39948151eef6dd896aaf9540e92622e17628f1da",
+    "date": "2025-05-11T09:26:42+08:00",
+    "message": "Update build.gradle",
+    "blob": "01128fc0cc4409dc49e7a6a699abfe66d8c6a7bc",
+    "min_sdk": 21,
+    "version": "3.8.2"
+  },
+  {
+    "commit": "9ffb819d517f7eed2b25caedfe8c1b6d8dcb8fa0",
+    "date": "2025-05-11T11:07:16+08:00",
+    "message": "Update build.gradle",
+    "blob": "cf50f865bdccbcea856083c972f003aef3d17ae7",
+    "min_sdk": 21,
+    "version": "3.8.3"
+  },
+  {
+    "commit": "89a19cadd23ec999cdb66361996c22e77ca0b1df",
+    "date": "2025-05-11T18:33:33+08:00",
+    "message": "Update build.gradle",
+    "blob": "30eae298c02f5490060219cd27fdd16d223acf5c",
+    "min_sdk": 21,
+    "version": "3.8.4"
+  },
+  {
+    "commit": "8116c380ce3ab0a0114ab9d3acec2fa9f77fa1eb",
+    "date": "2025-05-13T20:05:09+08:00",
+    "message": "Update build.gradle",
+    "blob": "9baa03eb853d333b37e9506945319a3d0c22b1da",
+    "min_sdk": 21,
+    "version": "3.8.5"
+  },
+  {
+    "commit": "b193e934382d63a63aac3bb257c0bf84cb86514c",
+    "date": "2025-05-19T02:04:44+08:00",
+    "message": "Update build.gradle",
+    "blob": "04bfec69382419e51f8d10f1094b3a59a7ff3e28",
+    "min_sdk": 21,
+    "version": "3.8.6"
+  },
+  {
+    "commit": "5d866ac3ebe5d2f25bbb0355eb2db6c57154d6c2",
+    "date": "2025-05-19T02:45:11+08:00",
+    "message": "Update build.gradle",
+    "blob": "8fc58afd91de1e74a75e6ccffc5673d1912a3c36",
+    "min_sdk": 21,
+    "version": "3.8.7"
+  },
+  {
+    "commit": "8ec4dd63515579ff1d6d428f255bc0b0622a59ee",
+    "date": "2025-05-19T22:46:50+08:00",
+    "message": "Update build.gradle",
+    "blob": "ab08bfee5c65755a275c41b0dd15d934351f670c",
+    "min_sdk": 21,
+    "version": "3.8.8"
+  },
+  {
+    "commit": "b55879e46133a87243803dcfffbfae51b39e6158",
+    "date": "2025-05-20T23:04:25+08:00",
+    "message": "Update build.gradle",
+    "blob": "dd224e10ca8f92711270529f2e0a51460fde521d",
+    "min_sdk": 21,
+    "version": "3.8.9"
+  },
+  {
+    "commit": "5ff39c7167254535a346202379a4fdbe5332781c",
+    "date": "2025-05-21T19:55:46+08:00",
+    "message": "Update build.gradle",
+    "blob": "415072672edec9552c0118a32aaf60bda11d77a2",
+    "min_sdk": 21,
+    "version": "3.9.0"
+  },
+  {
+    "commit": "9a5fbc12cdbf5bf27063c0c5a2e87623ca4d6426",
+    "date": "2025-05-22T13:47:26+08:00",
+    "message": "Update build.gradle",
+    "blob": "4d0eab3552f7594fb60e1ea7b682ba00e8151c2a",
+    "min_sdk": 21,
+    "version": "3.9.1"
+  },
+  {
+    "commit": "d50377837319bdb2fad48d86092ec60499434793",
+    "date": "2025-05-28T12:02:57+08:00",
+    "message": "Update build.gradle",
+    "blob": "0861ca0c9d10e755e7d2a505221aba457dc9b3ef",
+    "min_sdk": 21,
+    "version": "3.9.2"
+  },
+  {
+    "commit": "29861aa54ce16abeb991132371d38d8419820df0",
+    "date": "2025-05-28T14:02:55+08:00",
+    "message": "Fix bug",
+    "blob": "38b96f5d5f0993f156819c31d1b4a37a40260cd4",
+    "min_sdk": 21,
+    "version": "3.9.3"
+  },
+  {
+    "commit": "d996e0fc3b516cbd68f391693b621884e865f911",
+    "date": "2025-06-01T19:32:42+08:00",
+    "message": "Update build.gradle",
+    "blob": "b9aa9c57529c324c06622b36e251bb3b798bcef6",
+    "min_sdk": 21,
+    "version": "3.9.4"
+  },
+  {
+    "commit": "0eaa31ab20b466d63a2f8ebff88a92535bde6700",
+    "date": "2025-06-03T16:52:42+08:00",
+    "message": "Update build.gradle",
+    "blob": "64fdcf9b0c1f4509dc0639875131baf9d0987c7e",
+    "min_sdk": 21,
+    "version": "3.9.5"
+  },
+  {
+    "commit": "af0d39229246d1c006e94fb92f2444b71a90cbca",
+    "date": "2025-06-03T20:46:40+08:00",
+    "message": "Update build.gradle",
+    "blob": "d8c62f00425233bff2f01b1cb63767840240ab24",
+    "min_sdk": 21,
+    "version": "3.9.6"
+  },
+  {
+    "commit": "6914b3be5fc162bad718545ed7a161fb6d921ec3",
+    "date": "2025-06-06T11:31:53+08:00",
+    "message": "Update build.gradle",
+    "blob": "8baf9422c0cf5fab84932bdb048a397ee8aa1223",
+    "min_sdk": 21,
+    "version": "3.9.7"
+  },
+  {
+    "commit": "a873c08cd0fee6292655a824bf51e1407d5efca6",
+    "date": "2025-06-06T15:16:55+08:00",
+    "message": "Update build.gradle",
+    "blob": "e7f0f81ed54a0daa47f99c0e55e2e050914a08d5",
+    "min_sdk": 21,
+    "version": "3.9.8"
+  },
+  {
+    "commit": "fa49d20bc5f53c6bb5aa9d6fc3938683a528c59c",
+    "date": "2025-06-06T19:50:52+08:00",
+    "message": "Update build.gradle",
+    "blob": "76cc18be2e894744d215a68724c48823e856c852",
+    "min_sdk": 21,
+    "version": "3.9.9"
+  },
+  {
+    "commit": "f8dd13a7d525dac991574473effa75f6504b851a",
+    "date": "2025-06-11T15:04:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "dbafcd6d165dc7cf6491504c09fc6f8df7e79fa4",
+    "min_sdk": 21,
+    "version": "4.0.0"
+  },
+  {
+    "commit": "6fb43ddc3288e0618632ae1d34c183798c9d6032",
+    "date": "2025-06-14T18:08:46+08:00",
+    "message": "Update build.gradle",
+    "blob": "c3c461a274a102d1c463e9ef82c64111d23a10f3",
+    "min_sdk": 21,
+    "version": "4.0.1"
+  },
+  {
+    "commit": "77d8323a73f081dfe21da0a4bb6603dc16068ec3",
+    "date": "2025-06-14T21:31:28+08:00",
+    "message": "Update build.gradle",
+    "blob": "bc6ec6f224af14fcc888e78efb717528e2fb34e7",
+    "min_sdk": 21,
+    "version": "4.0.2"
+  },
+  {
+    "commit": "8986d9b7fb9971c183b0300cf92e6363444bf680",
+    "date": "2025-06-15T01:40:42+08:00",
+    "message": "Update build.gradle",
+    "blob": "0c3d26f5cf09a0a02831abdafb8e0a346aa04a2a",
+    "min_sdk": 21,
+    "version": "4.0.3"
+  },
+  {
+    "commit": "a702b20a5ad604a4f1706b57fda2a074fa55f7e7",
+    "date": "2025-06-15T21:13:50+08:00",
+    "message": "Update build.gradle",
+    "blob": "a030b9858673e9ac1b2b7584a51208bf3cdff5cb",
+    "min_sdk": 21,
+    "version": "4.0.4"
+  },
+  {
+    "commit": "1d23a67d7bf48089c87923a3ba9c688ebef40e1b",
+    "date": "2025-07-01T23:52:24+08:00",
+    "message": "Update room",
+    "blob": "98bc61a824b608eb04169d3431b06de02164fc49",
+    "min_sdk": 21,
+    "version": "4.0.4"
+  },
+  {
+    "commit": "1759c217e8fad83a2060d433f2c52dda90c245b9",
+    "date": "2025-07-01T23:59:32+08:00",
+    "message": "Update sdk to 36",
+    "blob": "19e6c9c958ac2b646f8c493e01022102f93309c8",
+    "min_sdk": 21,
+    "version": "4.0.5"
+  },
+  {
+    "commit": "5c48b2cf120aa57968475a0904b336b0a7eb9b8b",
+    "date": "2025-07-04T06:17:33+08:00",
+    "message": "Update library",
+    "blob": "46e431c40c16c7f3228bb1bc6fca223636d7f70e",
+    "min_sdk": 21,
+    "version": "4.0.5"
+  },
+  {
+    "commit": "86ac498813f09f911b4f333097ce7b98037a07a6",
+    "date": "2025-08-01T09:17:39+08:00",
+    "message": "Update build.gradle",
+    "blob": "3e2c91879eaba8d1dd7854a939a12d209cc0e491",
+    "min_sdk": 21,
+    "version": "4.0.5"
+  },
+  {
+    "commit": "795669e11baac25c6969b88bd08368c373fa3eea",
+    "date": "2025-08-01T09:58:38+08:00",
+    "message": "Update build.gradle",
+    "blob": "b92e549187affbefe1223948c1f8ba3531cc28b2",
+    "min_sdk": 21,
+    "version": "4.0.6"
+  },
+  {
+    "commit": "a3aabf8c8f02a4cbf3d895806cb79bf094823114",
+    "date": "2025-08-01T13:29:04+08:00",
+    "message": "Update build.gradle",
+    "blob": "45bb53487dc281254c401119d8849e8ac88525f5",
+    "min_sdk": 21,
+    "version": "4.0.6"
+  },
+  {
+    "commit": "6f0d2b5a08e0f324502d480e3b0f83232b9c3947",
+    "date": "2025-08-01T14:18:11+08:00",
+    "message": "Update build.gradle",
+    "blob": "16c976975fea8ffa6d4ff4ee487264c09d6fa0f3",
+    "min_sdk": 21,
+    "version": "4.0.7"
+  },
+  {
+    "commit": "801be8c2b3a83ed60a0b529eb8b4023e687747f3",
+    "date": "2025-08-04T16:23:28+08:00",
+    "message": "Update gradle",
+    "blob": "11962a7f5685ef120b0eb35e3b056a50016f9b14",
+    "min_sdk": 24,
+    "version": "4.0.7"
+  },
+  {
+    "commit": "de786caaa628f3432b0226ebfb83113f269c9d70",
+    "date": "2025-08-04T16:46:26+08:00",
+    "message": "Update gradle",
+    "blob": "7b15c0652bfc45d550a75e916cc9d01251f62768",
+    "min_sdk": 24,
+    "version": "4.0.7"
+  },
+  {
+    "commit": "e52cc0390d3cf6a5afc74dcadcfc6a6f3fe44e6f",
+    "date": "2025-08-15T13:34:06+08:00",
+    "message": "Update build.gradle",
+    "blob": "f7177c40082e3088205e282d1fb00211f9a332b6",
+    "min_sdk": 24,
+    "version": "4.0.7"
+  },
+  {
+    "commit": "363fc45fe6e9eb064f09bc9e1d90639955552061",
+    "date": "2025-08-22T19:12:11+08:00",
+    "message": "Update build.gradle",
+    "blob": "e350d8e69748b27fdaa6933a9c8858eff7ea0f6d",
+    "min_sdk": 24,
+    "version": "4.0.7"
+  },
+  {
+    "commit": "14e7196b1824e6bdaac53ebec1cb9d7ab26c47e3",
+    "date": "2025-08-24T17:16:06+08:00",
+    "message": "Update build.gradle",
+    "blob": "d737ca6bcb84051fde0f53cd5ce4021fb33e76f0",
+    "min_sdk": 24,
+    "version": "4.0.8"
+  },
+  {
+    "commit": "8f007d6a27d14f063039ed8bb15767e87ad12e83",
+    "date": "2025-08-24T19:55:29+08:00",
+    "message": "Update build.gradle",
+    "blob": "60bb29d6b609370e44aa447aae3f88bf52e5581e",
+    "min_sdk": 24,
+    "version": "4.0.9"
+  },
+  {
+    "commit": "0b03cef167e3a6a50b770d092b1884193e817384",
+    "date": "2025-08-25T01:21:30+08:00",
+    "message": "Update build.gradle",
+    "blob": "7baad2788d1b4e9514068aea4c20b302253cfaab",
+    "min_sdk": 24,
+    "version": "4.1.0"
+  },
+  {
+    "commit": "1fe94d5da69365d1d0bf4ab343b3aa06c84b646e",
+    "date": "2025-08-25T13:40:59+08:00",
+    "message": "Update build.gradle",
+    "blob": "6f1b2c536ad8f256e54ea33d4075c350358a7b51",
+    "min_sdk": 24,
+    "version": "4.1.1"
+  },
+  {
+    "commit": "45922a0cbf606a926a04dd996aedc9243b90a89e",
+    "date": "2025-08-28T02:52:21+08:00",
+    "message": "Update build.gradle",
+    "blob": "0f9dede8498324878bb36a0bb608b7b9658a739c",
+    "min_sdk": 24,
+    "version": "4.1.2"
+  },
+  {
+    "commit": "544d69bd88ba9e0b56653e8776b08d82897210d9",
+    "date": "2025-08-31T18:04:44+08:00",
+    "message": "Update glide",
+    "blob": "27ce03c78d5fb3e35bfbb2383f0a44279d27af5d",
+    "min_sdk": 24,
+    "version": "4.1.3"
+  },
+  {
+    "commit": "86fe1cd517b1b3f491ecb548f158e8ded41d9063",
+    "date": "2025-09-02T16:06:33+08:00",
+    "message": "Update",
+    "blob": "9defca3027147a988e7f85c3e421a66fdd419904",
+    "min_sdk": 24,
+    "version": "4.1.4"
+  },
+  {
+    "commit": "da41a1365a23b6bcb41014e50ca17d8c78c00536",
+    "date": "2025-09-02T19:14:26+08:00",
+    "message": "Update build.gradle",
+    "blob": "84d21a07d6685b45faafab8256baac3b1ed6e12c",
+    "min_sdk": 24,
+    "version": "4.1.5"
+  },
+  {
+    "commit": "3f2a78a2a4edf9f57c48eb1967d92694810bec9a",
+    "date": "2025-09-03T01:15:12+08:00",
+    "message": "Update build.gradle",
+    "blob": "e591bfaffcec85ec0bd138a6b9e1a20595cf5db7",
+    "min_sdk": 24,
+    "version": "4.1.6"
+  },
+  {
+    "commit": "e680c26042e4bce0602cf0c4a08ddb6a98ed9fd1",
+    "date": "2025-09-07T21:24:25+08:00",
+    "message": "Update gradle",
+    "blob": "d9b1f4d7a426599dbbcf462b9ed1f3c065a78e3e",
+    "min_sdk": 24,
+    "version": "4.1.6"
+  },
+  {
+    "commit": "47f9af10d51435fdee5f18287b0dbc87928fcefe",
+    "date": "2025-09-08T13:49:57+08:00",
+    "message": "Update gradle",
+    "blob": "e484b628f4658058acf96bc8a96bb952a2a2da6c",
+    "min_sdk": 24,
+    "version": "4.1.7"
+  },
+  {
+    "commit": "918b45e2665eb8ccf7305b3b56e0dc0702a7f917",
+    "date": "2025-09-09T12:25:29+08:00",
+    "message": "Set targetSdk 36",
+    "blob": "4d731900c8752425f16db4adcb58a4ea166c72e5",
+    "min_sdk": 24,
+    "version": "4.1.7"
+  },
+  {
+    "commit": "2c81f34476c1490409075bb6a5e8f406d89275a1",
+    "date": "2025-09-10T16:40:07+08:00",
+    "message": "Update build.gradle",
+    "blob": "8a824263aac49708bb0d73340d343e7461c987d0",
+    "min_sdk": 24,
+    "version": "4.1.8"
+  },
+  {
+    "commit": "240b541a7f2bef3341eef7b0ce6a94705a2ed099",
+    "date": "2025-09-11T15:23:59+08:00",
+    "message": "Update build.gradle",
+    "blob": "f547d849b56b0b935e72d923c1b19dd48fdda7fb",
+    "min_sdk": 24,
+    "version": "4.1.8"
+  },
+  {
+    "commit": "e7fddf8734bf8b527ad1083e0e009041941eb199",
+    "date": "2025-09-16T00:59:50+08:00",
+    "message": "Update empty ui",
+    "blob": "dae257dcb2daa2591403e35ec15ec5b45ca485da",
+    "min_sdk": 24,
+    "version": "4.1.8"
+  },
+  {
+    "commit": "8a41328d6523c897ab88426cc7adb694adecaef8",
+    "date": "2025-09-16T16:55:46+08:00",
+    "message": "Use styles",
+    "blob": "da0cab1b72ad769279d8dd2f9070713c9876f57f",
+    "min_sdk": 24,
+    "version": "4.1.8"
+  },
+  {
+    "commit": "54b8d4aa9684e423b8a0357201402cff223f469d",
+    "date": "2025-09-17T19:44:34+08:00",
+    "message": "Update build.gradle",
+    "blob": "e625a7b3a1ceda44f8a28f40439b4cd221e7cdfc",
+    "min_sdk": 24,
+    "version": "4.1.9"
+  },
+  {
+    "commit": "904f27da01a59b26647f57892fa25265610b9797",
+    "date": "2025-09-19T15:08:43+08:00",
+    "message": "Fix build",
+    "blob": "47c98d41f98084ca6fee1131ae3db1e23f367540",
+    "min_sdk": 24,
+    "version": "4.2.0"
+  },
+  {
+    "commit": "ce34e203830d193b0c635bfb36e1ebc868e78875",
+    "date": "2025-09-20T02:15:27+08:00",
+    "message": "Update build.gradle",
+    "blob": "97f5f5544abdb969b854fce8e39ae5669cd1d889",
+    "min_sdk": 24,
+    "version": "4.2.1"
+  },
+  {
+    "commit": "7938dcc3cb6adf0757ef8be82f1ad0bfe60cd1e4",
+    "date": "2025-09-20T06:38:00+08:00",
+    "message": "Update build.gradle",
+    "blob": "17bc21004da5f3579aa3a9ede043991dff7f5256",
+    "min_sdk": 24,
+    "version": "4.2.2"
+  },
+  {
+    "commit": "94eefe22919b560d332e48eb0e333d0e0ea49c1d",
+    "date": "2025-09-22T02:22:22+08:00",
+    "message": "Update build.gradle",
+    "blob": "a35a1c155cf7bac86beb35c08ab76ee071e28228",
+    "min_sdk": 24,
+    "version": "4.2.3"
+  },
+  {
+    "commit": "a6070af26c1ff51824ddc4f8c2a67f3b129969bf",
+    "date": "2025-09-23T10:53:50+08:00",
+    "message": "Update build.gradle",
+    "blob": "c834e66badd6f866cca1b5f3e9a57bdc6593ef42",
+    "min_sdk": 24,
+    "version": "4.2.4"
+  },
+  {
+    "commit": "eedb53ab02bb85e1f43c32c774bf3bfa3fb06568",
+    "date": "2025-09-23T12:20:46+08:00",
+    "message": "Update build.gradle",
+    "blob": "8244b42612ec6e2ca989ab84a11cac08618f0554",
+    "min_sdk": 24,
+    "version": "4.2.5"
+  },
+  {
+    "commit": "796df66fd7b978b1f7086a8fb4ad6228943bee8c",
+    "date": "2025-09-23T15:55:26+08:00",
+    "message": "Update build.gradle",
+    "blob": "338ec63157def10d0c7b1c94f0182148556f3682",
+    "min_sdk": 24,
+    "version": "4.2.6"
+  },
+  {
+    "commit": "65fbcda77e864d541d34e3abee4dfdd904cfbbfb",
+    "date": "2025-09-25T12:05:55+08:00",
+    "message": "Release cache",
+    "blob": "106b25b94f8d64b0cd0d31d90155a1a6f131a90a",
+    "min_sdk": 24,
+    "version": "4.2.6"
+  },
+  {
+    "commit": "3435695ff8ee07c1a34cdc8f1e7ec282a63bf7b9",
+    "date": "2025-09-25T12:30:12+08:00",
+    "message": "Update build.gradle",
+    "blob": "4e00ff707e0ad38a95500bdf080b29a465d0a6a7",
+    "min_sdk": 24,
+    "version": "4.2.7"
+  },
+  {
+    "commit": "006f45a168e2ab836ff6e31113fe226200083be4",
+    "date": "2025-09-26T04:01:59+08:00",
+    "message": "Update build.gradle",
+    "blob": "8a46ff12431c78ccacc22b893ee9a6f1d05f41cb",
+    "min_sdk": 24,
+    "version": "4.2.8"
+  },
+  {
+    "commit": "83eedfe82718343ca53ac9c11aeaa0c48cd65002",
+    "date": "2025-09-26T13:23:57+08:00",
+    "message": "Add adblock setting",
+    "blob": "93dfcbcda068ebc72c64923b47a972af2755dc18",
+    "min_sdk": 24,
+    "version": "4.2.9"
+  },
+  {
+    "commit": "66ad24b81c89fb07eeff4e359f50ab0ad4867bb3",
+    "date": "2025-09-26T19:41:02+08:00",
+    "message": "Revert shadow",
+    "blob": "e381a385cb56f060855e4db7b341955a556f1193",
+    "min_sdk": 24,
+    "version": "4.3.0"
+  },
+  {
+    "commit": "466d11d02017a57dc9aefd626cff8069852b2375",
+    "date": "2025-09-27T15:44:04+08:00",
+    "message": "Update build.gradle",
+    "blob": "11d57adb7640d1ed7b42b45a93f6dea9ec86bc39",
+    "min_sdk": 24,
+    "version": "4.3.1"
+  },
+  {
+    "commit": "1cd36e87fb102def78746490a3b4ff802c2fafea",
+    "date": "2025-09-29T01:39:34+08:00",
+    "message": "Optimize wallpaper",
+    "blob": "7de6fd6868704c87abea6a0cc77a089fe915f0b7",
+    "min_sdk": 24,
+    "version": "4.3.2"
+  },
+  {
+    "commit": "5e8840d61732dedaaf2a3b56025532e7b60cc66a",
+    "date": "2025-09-30T00:41:12+08:00",
+    "message": "Update build.gradle",
+    "blob": "01125e7e9df71639ee37790c3b675675abbd491f",
+    "min_sdk": 24,
+    "version": "4.3.3"
+  },
+  {
+    "commit": "74deb7da83340a8a43e6b88630a92e7a71687811",
+    "date": "2025-09-30T10:39:03+08:00",
+    "message": "Update build.gradle",
+    "blob": "d612ae74c4b588988e178e4d9b7a750e582e4e89",
+    "min_sdk": 24,
+    "version": "4.3.4"
+  },
+  {
+    "commit": "9783c60227f0496c4adc2200993ae018359095e0",
+    "date": "2025-10-01T00:54:08+08:00",
+    "message": "Update gradle",
+    "blob": "9e7c7469ad145237c502a684d1d864e8e6d5ae55",
+    "min_sdk": 24,
+    "version": "4.3.4"
+  },
+  {
+    "commit": "5ec64c65f9ed7ff894c1fdb0bd63dbab79a72519",
+    "date": "2025-10-01T01:38:07+08:00",
+    "message": "Update build.gradle",
+    "blob": "c1cc151cf4e7710e380cbf25260d9f5165976e6b",
+    "min_sdk": 24,
+    "version": "4.3.5"
+  },
+  {
+    "commit": "00b36dde5fa342c3d9b4fd2fce2b02faa2f74cb2",
+    "date": "2025-10-02T13:09:16+08:00",
+    "message": "Update build.gradle",
+    "blob": "f8c4ed943df1d3d09ece95939d7400d4190f6635",
+    "min_sdk": 24,
+    "version": "4.3.6"
+  },
+  {
+    "commit": "36f6e39d59641434cedc7f699c92a99ff385122a",
+    "date": "2025-10-03T00:02:32+08:00",
+    "message": "Update build.gradle",
+    "blob": "ed5c0203451b2ca7274965a1bd9f3e4ce244a1c3",
+    "min_sdk": 24,
+    "version": "4.3.7"
+  },
+  {
+    "commit": "dfa9dd1bf805dd5feec92235efbae3c5f436cb75",
+    "date": "2025-10-03T16:34:38+08:00",
+    "message": "Update build.gradle",
+    "blob": "bba76acd1372589cacf89b50cf246b414f4f4aeb",
+    "min_sdk": 24,
+    "version": "4.3.8"
+  },
+  {
+    "commit": "23b7e498db56ce6f30d674b48c409c5853617d9f",
+    "date": "2025-10-03T16:52:51+08:00",
+    "message": "Update build.gradle",
+    "blob": "ef2f4556afb63c860c91a420b42cf14897c2fc47",
+    "min_sdk": 24,
+    "version": "4.3.9"
+  },
+  {
+    "commit": "d1410a4cf2c2e0b01835b7ca75ce6100110135f8",
+    "date": "2025-10-04T15:44:35+08:00",
+    "message": "Update build.gradle",
+    "blob": "ca2a5f6f33d8516b10b45b57b37bedd458a75169",
+    "min_sdk": 24,
+    "version": "4.4.0"
+  },
+  {
+    "commit": "f29cafba4931948df6150b13f7413b5dfa3a9210",
+    "date": "2025-10-04T15:45:43+08:00",
+    "message": "Remove x86",
+    "blob": "ef476d4e825b1cf54407ed628c82c19da399b47a",
+    "min_sdk": 24,
+    "version": "4.4.0"
+  },
+  {
+    "commit": "d7a5094afb9db94028e5d85419c6d919e814fcca",
+    "date": "2025-10-05T23:45:50+08:00",
+    "message": "Update build.gradle",
+    "blob": "7f05c69522a169354691d3158e5dd52380cd1c9a",
+    "min_sdk": 24,
+    "version": "4.4.1"
+  },
+  {
+    "commit": "46c9bade632f74b0d22cd993332e03e0a49a4f6e",
+    "date": "2025-10-08T01:52:12+08:00",
+    "message": "Update build.gradle",
+    "blob": "806bda7c98aa29358efeb8d9f074c0cbb621783c",
+    "min_sdk": 24,
+    "version": "4.4.2"
+  },
+  {
+    "commit": "1b2d4726d403e204e370cdabc3b2f14495b0c8e2",
+    "date": "2025-10-09T17:47:20+08:00",
+    "message": "Optimize gif wall",
+    "blob": "17c7aced1c2195ec10a432ef1fce8cf8748a81ec",
+    "min_sdk": 24,
+    "version": "4.4.2"
+  },
+  {
+    "commit": "24bd5ac43aedfb05794b58362c81f772dd64adbe",
+    "date": "2025-10-09T17:52:53+08:00",
+    "message": "Update build.gradle",
+    "blob": "eb1f459e9801d3916ef7fbbef9526148aac95e65",
+    "min_sdk": 24,
+    "version": "4.4.4"
+  },
+  {
+    "commit": "b66b28ffeef2d04a3440ab7ebbe3c531b34f57eb",
+    "date": "2025-10-10T20:35:55+08:00",
+    "message": "Update build.gradle",
+    "blob": "8d2340b07614ee5267b0f0820a2fd7d22d43c533",
+    "min_sdk": 24,
+    "version": "4.4.5"
+  },
+  {
+    "commit": "9b2ed0acb782c9343eadfe79edf8433302b2b4a3",
+    "date": "2025-10-12T21:39:29+08:00",
+    "message": "Optimize glide",
+    "blob": "b96e609e9c481e8a4cd1894795770492d0eca38b",
+    "min_sdk": 24,
+    "version": "4.4.6"
+  },
+  {
+    "commit": "e9faf6b546fb7dbae97012042a2fa11362936439",
+    "date": "2025-10-13T12:56:41+08:00",
+    "message": "Update build.gradle",
+    "blob": "8535eb2de65a99d1b7e9ad28e47f62a1d69722fa",
+    "min_sdk": 24,
+    "version": "4.4.7"
+  },
+  {
+    "commit": "40ce3b8be2e10c5606a4668e447de7d550457ed1",
+    "date": "2025-10-13T16:05:15+08:00",
+    "message": "Update build.gradle",
+    "blob": "7eedd3b75c109a0e82d43790e9d9b136c9cd5008",
+    "min_sdk": 24,
+    "version": "4.4.8"
+  },
+  {
+    "commit": "704d0f93741c3ea6819a5ee5dd6705049a8286ae",
+    "date": "2025-10-14T15:51:01+08:00",
+    "message": "Update build.gradle",
+    "blob": "3fada763b6382859457ce6c8bc352a344f98910d",
+    "min_sdk": 24,
+    "version": "4.4.9"
+  },
+  {
+    "commit": "9b140310abb94ead6ce2db610e8a209bd17a596e",
+    "date": "2025-10-16T01:52:29+08:00",
+    "message": "Update build.gradle",
+    "blob": "16a456edf0182294a0e10a24bf29b4fbc17cbb5f",
+    "min_sdk": 24,
+    "version": "4.5.0"
+  },
+  {
+    "commit": "475b20d333f69e934d960ba163671b82d56241dc",
+    "date": "2025-10-16T13:17:54+08:00",
+    "message": "Clean update code",
+    "blob": "a8354506a54918a86e20530ea815dabd4b3c678c",
+    "min_sdk": 24,
+    "version": "4.5.1"
+  },
+  {
+    "commit": "4af24dd7a3e1807a4e8d926bb0396c784892da70",
+    "date": "2025-10-16T21:04:35+08:00",
+    "message": "Use palette",
+    "blob": "f0e789b685c9dad3ea4aa938e2d07c90e3cce0a3",
+    "min_sdk": 24,
+    "version": "4.5.1"
+  },
+  {
+    "commit": "7c3dca7e137c6153d523178f29535cbd23611309",
+    "date": "2025-10-16T23:40:38+08:00",
+    "message": "Update",
+    "blob": "a07e722c289b3b5fe6eb71d10c26145ed719776d",
+    "min_sdk": 24,
+    "version": "4.5.2"
+  },
+  {
+    "commit": "fb7b97b67b68e94f66bfa56c3b8478c2926e9132",
+    "date": "2025-10-18T03:27:06+08:00",
+    "message": "Update build.gradle",
+    "blob": "aa208de6121c0893d5ae4c8f7993552e78645e1a",
+    "min_sdk": 24,
+    "version": "4.5.3"
+  },
+  {
+    "commit": "fd3c5706041b11ec8b549985ba143d51b4d122f0",
+    "date": "2025-10-18T14:53:01+08:00",
+    "message": "Update build.gradle",
+    "blob": "6e9d96f09aea21e2f00f92ab354db952feac270e",
+    "min_sdk": 24,
+    "version": "4.5.4"
+  },
+  {
+    "commit": "3ccd5541a9919c793644ba524adedfd672f0b8c7",
+    "date": "2025-10-19T00:27:33+08:00",
+    "message": "Update build.gradle",
+    "blob": "19ce0c4605b5d1dde161e5f341eb807fe9732632",
+    "min_sdk": 24,
+    "version": "4.5.5"
+  },
+  {
+    "commit": "7dfa011b010648362bc2a94ab23a066cfc002105",
+    "date": "2025-10-19T01:25:06+08:00",
+    "message": "Update build.gradle",
+    "blob": "795de8bd00104400f62551c734ab66606159bb8f",
+    "min_sdk": 24,
+    "version": "4.5.6"
+  },
+  {
+    "commit": "ba7ab9d6caaf296796538e3766b6e3d1946a8d9a",
+    "date": "2025-10-20T19:52:57+08:00",
+    "message": "Remove bold and shadow",
+    "blob": "9a05f17577b94d82651962c10fdc1a2ebe0ee2a3",
+    "min_sdk": 24,
+    "version": "4.5.6"
+  },
+  {
+    "commit": "d9b462f4be566f55f0ddcdbda9d3cfb7390f828c",
+    "date": "2025-10-21T02:26:56+08:00",
+    "message": "Update build.gradle",
+    "blob": "4c1d9ccf8f077b111feae7401f18a13deaa1d9c7",
+    "min_sdk": 24,
+    "version": "4.5.7"
+  },
+  {
+    "commit": "ed3ca981f04486fa648bf2c8526e64da3a774304",
+    "date": "2025-10-21T03:30:45+08:00",
+    "message": "Update build.gradle",
+    "blob": "c581ccd110dcd3eea31095013c185ac5f0c329d1",
+    "min_sdk": 24,
+    "version": "4.5.7"
+  },
+  {
+    "commit": "f44fa27bcde5ce5a7c05fc803260980e5c118d75",
+    "date": "2025-10-21T04:02:28+08:00",
+    "message": "Update gradle",
+    "blob": "400cb3befd3d155a384ee52fe77eacb0c96faae1",
+    "min_sdk": 24,
+    "version": "4.5.7"
+  },
+  {
+    "commit": "483ed993cbcbe0c78cd477d7e12c182cbce5a196",
+    "date": "2025-10-21T04:26:28+08:00",
+    "message": "Fix proguard",
+    "blob": "64df7bcebbd44ba612221e034a6112710a895ced",
+    "min_sdk": 24,
+    "version": "4.5.8"
+  },
+  {
+    "commit": "ff21254528cb46590e106e3e2d43e39dc4997c3d",
+    "date": "2025-10-21T18:42:20+08:00",
+    "message": "Update build.gradle",
+    "blob": "8d4d38630a1c2cc2cbb9129a223f5ca413d1ed4c",
+    "min_sdk": 24,
+    "version": "4.5.9"
+  },
+  {
+    "commit": "33fc2e4b6c40ae1abecd9138a689e2e9ca041dbb",
+    "date": "2025-10-22T17:56:20+08:00",
+    "message": "Update build.gradle",
+    "blob": "b0f85a7f18635c887b6bac774df387a57de696aa",
+    "min_sdk": 24,
+    "version": "4.6.0"
+  },
+  {
+    "commit": "962b8bd2b1403c39fdc24cae5777a3041fdd86ad",
+    "date": "2025-10-24T03:48:38+08:00",
+    "message": "Add swipe refresh for tv",
+    "blob": "dbf45d0b367678377394232f9eb8ae579271485c",
+    "min_sdk": 24,
+    "version": "4.6.0"
+  },
+  {
+    "commit": "c2fde50cd66db24be6b6c6027cad4017863473ce",
+    "date": "2025-10-24T03:54:10+08:00",
+    "message": "Update build.gradle",
+    "blob": "0ed2f2065d4a787d21091771a45ca2dc0327294c",
+    "min_sdk": 24,
+    "version": "4.6.1"
+  },
+  {
+    "commit": "bb9dec73f7786cd5f05ac7aaaafe2f82e9a1e44f",
+    "date": "2025-10-24T16:34:50+08:00",
+    "message": "Update build.gradle",
+    "blob": "e1f82f5a93ded606b840620a88060af0e4cf72cf",
+    "min_sdk": 24,
+    "version": "4.6.2"
+  },
+  {
+    "commit": "5b212b4e1841ac0a9a76764c899c4d893d7a04d6",
+    "date": "2025-10-25T21:03:34+08:00",
+    "message": "Update build.gradle",
+    "blob": "8fd3d398658982487b038573354a5946fc133d38",
+    "min_sdk": 24,
+    "version": "4.6.3"
+  },
+  {
+    "commit": "41c76c0fb56a9182ffea3b033ce227d52697a253",
+    "date": "2025-10-27T03:08:15+08:00",
+    "message": "Update build.gradle",
+    "blob": "7713aaf175821042a8a0a5b1f676831f295a63a5",
+    "min_sdk": 24,
+    "version": "4.6.4"
+  },
+  {
+    "commit": "da50513de97486279d7e1979eb3e91ee063ed323",
+    "date": "2025-10-27T17:54:46+08:00",
+    "message": "Update build.gradle",
+    "blob": "f6ae4bf2ffcea1928b45c9cdd5ffb534c70e6267",
+    "min_sdk": 24,
+    "version": "4.6.5"
+  },
+  {
+    "commit": "ef6afddafc1ba8c70918fcfbcd2882d7d0b49116",
+    "date": "2025-10-30T02:58:55+08:00",
+    "message": "Update build.gradle",
+    "blob": "2ea3cf28e3244a9867974508568467321bdb2f1a",
+    "min_sdk": 24,
+    "version": "4.6.6"
+  },
+  {
+    "commit": "2e9ef31ee64a00d1c9cdf87959cb926d8b0e9193",
+    "date": "2025-11-01T13:04:22+08:00",
+    "message": "Update",
+    "blob": "66982984c867e52ec499160f175ec9adfacaf668",
+    "min_sdk": 24,
+    "version": "4.6.7"
+  },
+  {
+    "commit": "b58b1259eff259b580cb554517d4007cd3987ed0",
+    "date": "2025-11-02T01:15:55+08:00",
+    "message": "Update gradle",
+    "blob": "688fbdf30e61fbaecbff3791dcc9dd5a62d87551",
+    "min_sdk": 24,
+    "version": "4.6.7"
+  },
+  {
+    "commit": "af0649e1e0500bd9d48a15944b15d41a7b9ccf9d",
+    "date": "2025-11-03T12:36:56+08:00",
+    "message": "Update build.gradle",
+    "blob": "81e38b1320f621aac3dfaa3b929d3ea0b248ec14",
+    "min_sdk": 24,
+    "version": "4.6.8"
+  },
+  {
+    "commit": "b68be7cb5b95e310f3736939cbc0b44139d7cfda",
+    "date": "2025-11-03T13:39:14+08:00",
+    "message": "Update build.gradle",
+    "blob": "614b60ae135f0db2d4689d87dbbdc1a12a4e8bfe",
+    "min_sdk": 24,
+    "version": "4.6.9"
+  },
+  {
+    "commit": "578f07d321a41449ed3297fb54258565081cad52",
+    "date": "2025-11-03T14:45:35+08:00",
+    "message": "Update okhttp",
+    "blob": "f23522c64968e0e1ebeaea1ca2b2716b88d630cd",
+    "min_sdk": 24,
+    "version": "4.7.0"
+  },
+  {
+    "commit": "93d48d7d7f8860e8d9f8f46e98bbe5e4e808fc05",
+    "date": "2025-11-03T19:34:03+08:00",
+    "message": "Update build.gradle",
+    "blob": "be149bddcbb1c18091023813f4c981930843431f",
+    "min_sdk": 24,
+    "version": "4.7.1"
+  },
+  {
+    "commit": "a938caa588246147098548fe1e1879f8d4cdf604",
+    "date": "2025-11-04T01:38:56+08:00",
+    "message": "Update build.gradle",
+    "blob": "1fac3fb0de093064d1d27952a52e4369cca3f7e9",
+    "min_sdk": 24,
+    "version": "4.7.2"
+  },
+  {
+    "commit": "eb0f7e882f87b74d2c7360c21c4911cde8800c14",
+    "date": "2025-11-04T19:06:01+08:00",
+    "message": "Update build.gradle",
+    "blob": "23d66b4671bd475432dbaa6a75a10e05dbd06270",
+    "min_sdk": 24,
+    "version": "4.7.3"
+  },
+  {
+    "commit": "71eb5e4b0b66f4cfdb10027396b76140c1337d22",
+    "date": "2025-11-05T13:16:40+08:00",
+    "message": "Update build.gradle",
+    "blob": "3a9a6e1266970ea4c65c05e687b8db6dcd0a2695",
+    "min_sdk": 24,
+    "version": "4.7.4"
+  },
+  {
+    "commit": "34c651b68b2775dfc005199e56c12ce5fd45ff2c",
+    "date": "2025-11-06T14:00:07+08:00",
+    "message": "Use app startup",
+    "blob": "1b64308243f3675ec2c559f5f3cc606b37849b05",
+    "min_sdk": 24,
+    "version": "4.7.4"
+  },
+  {
+    "commit": "801aad81774923968de6dd57770678e39f210189",
+    "date": "2025-11-06T14:02:28+08:00",
+    "message": "Update build.gradle",
+    "blob": "bb7bea44380bc720f3af6bd6ad21a2f071b0d67f",
+    "min_sdk": 24,
+    "version": "4.7.5"
+  },
+  {
+    "commit": "cac4b8df1d00bc18d4eb7b7cb6a790868c58dee4",
+    "date": "2025-11-06T19:44:37+08:00",
+    "message": "Update build.gradle",
+    "blob": "6ed98306f45de44f2d92dfc93dfd8029dccbcc93",
+    "min_sdk": 24,
+    "version": "4.7.6"
+  },
+  {
+    "commit": "847435260c93e5a7207740f8fb2ea47ae6be2b38",
+    "date": "2025-11-07T01:50:57+08:00",
+    "message": "Update build.gradle",
+    "blob": "203f70c076e4cd87d868409d7a27d1b59568a903",
+    "min_sdk": 24,
+    "version": "4.7.7"
+  },
+  {
+    "commit": "317315fcd7e00a32ac3850605a8315244476eb2c",
+    "date": "2025-11-07T16:18:33+08:00",
+    "message": "Update build.gradle",
+    "blob": "afcc2f59e4dc447925e90caa67d43edaca2ba255",
+    "min_sdk": 24,
+    "version": "4.7.8"
+  },
+  {
+    "commit": "8e26857dbd7ea79c28da19d4b9b0ec06f72d6abb",
+    "date": "2025-11-07T18:22:05+08:00",
+    "message": "Update build.gradle",
+    "blob": "c6a0f1f8ab9c4ce05de7652efaa0496303a70abf",
+    "min_sdk": 24,
+    "version": "4.7.9"
+  },
+  {
+    "commit": "5392889e99ab59ba69d2c7ea6976edf2b6bd4c21",
+    "date": "2025-11-07T19:45:37+08:00",
+    "message": "Update build.gradle",
+    "blob": "d22fe7cefb8cca78bedd4a5fdf52e630cb76a65d",
+    "min_sdk": 24,
+    "version": "4.8.0"
+  },
+  {
+    "commit": "86c7ea6648514494a606770b9d8aed18e4a99880",
+    "date": "2025-11-07T21:37:51+08:00",
+    "message": "Update build.gradle",
+    "blob": "2e08ec205957a1aed13771645e5c5cf6c5d696d0",
+    "min_sdk": 24,
+    "version": "4.8.1"
+  },
+  {
+    "commit": "d2df1266b350875dcf2798e231c9fb19aff6a648",
+    "date": "2025-11-08T18:53:07+08:00",
+    "message": "Update build.gradle",
+    "blob": "ed2acbf0bc957226a2684300a7dd086c00b0bed8",
+    "min_sdk": 24,
+    "version": "4.8.2"
+  },
+  {
+    "commit": "f751c8dce510ee34cc6de5e23596de94cd8ff7e7",
+    "date": "2025-11-09T23:46:49+08:00",
+    "message": "Update build.gradle",
+    "blob": "7b1ea54e663996511cdb99ba512c1ebb51c6386d",
+    "min_sdk": 24,
+    "version": "4.8.3"
+  },
+  {
+    "commit": "8b03dca300c4782096e4723a64471534daf8a186",
+    "date": "2025-11-10T12:33:17+08:00",
+    "message": "Update build.gradle",
+    "blob": "f3797f6fe8126d235da381f5cddc432b73a5b918",
+    "min_sdk": 24,
+    "version": "4.8.4"
+  },
+  {
+    "commit": "19d53d45ef30d0fb25a1adb5012a7f27cf16bbaf",
+    "date": "2025-11-12T18:48:22+08:00",
+    "message": "Fix bug",
+    "blob": "50a60e0b443b410fc5c05408ff5b0cb87b2a8fc0",
+    "min_sdk": 24,
+    "version": "4.8.4"
+  },
+  {
+    "commit": "1d76c7a5c9e2e1f6c9b52f254da50ec98eb0c9d2",
+    "date": "2025-11-12T19:08:41+08:00",
+    "message": "Update build.gradle",
+    "blob": "44d4a3273176af5a01f007ea208e50b5ef1f858e",
+    "min_sdk": 24,
+    "version": "4.8.5"
+  },
+  {
+    "commit": "a537ebf2f88d3ea31543a85e1e10c5820d99fe03",
+    "date": "2025-11-13T17:44:15+08:00",
+    "message": "Update build.gradle",
+    "blob": "85f9d086847b58109c79d0ee89587292c1ad3eb4",
+    "min_sdk": 24,
+    "version": "4.8.6"
+  },
+  {
+    "commit": "5ea7fd1c60fe34f3dce16a1c7263734b6ea82640",
+    "date": "2025-11-14T18:33:29+08:00",
+    "message": "Update build.gradle",
+    "blob": "4cfe0b4cde72306f4439dd85e7f1a16b016e2eff",
+    "min_sdk": 24,
+    "version": "4.8.7"
+  },
+  {
+    "commit": "313134509d4c6a4ac0d15653ff870f1052150343",
+    "date": "2025-11-17T16:01:46+08:00",
+    "message": "Update build.gradle",
+    "blob": "e1336283d0e5a759402fb252f68d3f6af51949c0",
+    "min_sdk": 24,
+    "version": "4.8.8"
+  },
+  {
+    "commit": "5c65667abbcfd90a886c16a465eb107367ddacb7",
+    "date": "2025-11-19T12:25:51+08:00",
+    "message": "Update gradle",
+    "blob": "da7dc0f129186e63687ce52a3ac77f5996d11dc9",
+    "min_sdk": 24,
+    "version": "4.8.8"
+  },
+  {
+    "commit": "5a2d4b9fa07f26c6648bd8283ea492c4213b5e3e",
+    "date": "2025-11-19T12:28:08+08:00",
+    "message": "Update gradle",
+    "blob": "b618889bdb631b2f8e0c288cfee4023d51130d9f",
+    "min_sdk": 24,
+    "version": "4.8.8"
+  },
+  {
+    "commit": "6383ffdbe18b8ba6c97d4e64f6271116ac9b4df6",
+    "date": "2025-11-19T12:29:51+08:00",
+    "message": "Update build.gradle",
+    "blob": "9ef09a95ec9f824ad9262e3b19258ad1ae865b55",
+    "min_sdk": 24,
+    "version": "4.8.9"
+  },
+  {
+    "commit": "872df933c90a82165e32049be01d0478d105f781",
+    "date": "2025-11-21T09:45:30+08:00",
+    "message": "Update build.gradle",
+    "blob": "ea5b9446f32f7729da83c57d4b38a2517a33b993",
+    "min_sdk": 24,
+    "version": "4.8.9"
+  },
+  {
+    "commit": "a0de0f8dcd7909ef2a17cb95c152b215df940a7d",
+    "date": "2025-11-21T09:51:20+08:00",
+    "message": "Update build.gradle",
+    "blob": "15bfbbb2a7d00e3e584d47c8822ff1be0631d964",
+    "min_sdk": 24,
+    "version": "4.9.0"
+  },
+  {
+    "commit": "d3435189e4767baa787bd29897a996c545d80a46",
+    "date": "2025-11-22T00:49:39+08:00",
+    "message": "Fix armeabi-v7a py load",
+    "blob": "c83114164f4cf6c7ba2e3a3d158c2dcfba37b39d",
+    "min_sdk": 24,
+    "version": "4.9.0"
+  },
+  {
+    "commit": "358e37f3c557d3dd5d5e1ad15d8d7f1a5669e71e",
+    "date": "2025-11-22T00:50:16+08:00",
+    "message": "Update build.gradle",
+    "blob": "39e6c081b6765a39b694efceb3628e68c88121e7",
+    "min_sdk": 24,
+    "version": "4.9.1"
+  },
+  {
+    "commit": "b9d8beacabe8d11acda222b68fb8a2d3b53c8d18",
+    "date": "2025-11-24T01:34:54+08:00",
+    "message": "Update build.gradle",
+    "blob": "d4c70f001756337c20048401e4acad20140f84b6",
+    "min_sdk": 24,
+    "version": "4.9.2"
+  },
+  {
+    "commit": "70a1225191273543274d5d95b2c76d20e27e356a",
+    "date": "2025-11-24T15:11:01+08:00",
+    "message": "Update build.gradle",
+    "blob": "e01f43f53a8981c1600efd56ec648c3863c85727",
+    "min_sdk": 24,
+    "version": "4.9.3"
+  },
+  {
+    "commit": "f86f188cd5ac9400e2ae7d44d7632c8d1949c766",
+    "date": "2025-11-25T12:48:34+08:00",
+    "message": "Update build.gradle",
+    "blob": "ca4c6f6f3ee0ce836129916eb9bbdb3a7a45db59",
+    "min_sdk": 24,
+    "version": "4.9.4"
+  },
+  {
+    "commit": "e30a75b95acad71e1a972c41c17b64f5dfe5eda2",
+    "date": "2025-11-25T22:27:29+08:00",
+    "message": "Update build.gradle",
+    "blob": "54ecc257f66f032fc12b4320ac475c8a4f88bdae",
+    "min_sdk": 24,
+    "version": "4.9.5"
+  },
+  {
+    "commit": "90c3c5a6856a44528cbbe34e710b674c49061c8d",
+    "date": "2025-11-26T00:33:41+08:00",
+    "message": "Update build.gradle",
+    "blob": "257379f5d30cd2243d154aa57b91359aae726230",
+    "min_sdk": 24,
+    "version": "4.9.6"
+  },
+  {
+    "commit": "ded1e366f9ef030235f826309099560ff2541c18",
+    "date": "2025-12-03T15:00:42+08:00",
+    "message": "Update gradle",
+    "blob": "445294d46e0ea11bbe818be40cce0b0feb36f7df",
+    "min_sdk": 24,
+    "version": "4.9.6"
+  },
+  {
+    "commit": "df3f6108d42c5a2c519fea9f2e0eae3ae4125509",
+    "date": "2025-12-04T12:40:39+08:00",
+    "message": "Update build.gradle",
+    "blob": "4ed42ae0dc44aafcd6a438f91c5952c909ac382c",
+    "min_sdk": 24,
+    "version": "4.9.6"
+  },
+  {
+    "commit": "d3340270f73207f232da65577b39dbc39bffc3bf",
+    "date": "2025-12-05T20:56:25+08:00",
+    "message": "Update build.gradle",
+    "blob": "474de918dfc690166abb8511fd4a3bb0020bf573",
+    "min_sdk": 24,
+    "version": "4.9.6"
+  },
+  {
+    "commit": "af8f0941af748b7bc76d9b9f6ccd0c8387789e00",
+    "date": "2025-12-05T23:55:23+08:00",
+    "message": "Update build.gradle",
+    "blob": "0cce4395034c2583a75ab10c0da2b4fea331d68f",
+    "min_sdk": 24,
+    "version": "4.9.7"
+  },
+  {
+    "commit": "7bff3d06ae9432b9c0732969cadcfba2adec849f",
+    "date": "2025-12-06T10:24:05+08:00",
+    "message": "Fix type bug",
+    "blob": "88fa8785be9079224c236b8cb0723680f390ad36",
+    "min_sdk": 24,
+    "version": "4.9.8"
+  },
+  {
+    "commit": "5766822667a51521bcf205aeaf6d53befd44b475",
+    "date": "2025-12-07T18:40:06+08:00",
+    "message": "Update build.gradle",
+    "blob": "f032f2409c0fd2961cb8c3d67e5eefc20376117a",
+    "min_sdk": 24,
+    "version": "4.9.9"
+  },
+  {
+    "commit": "e162a68487be2ef8663bd6ddc1bed48eaa4e0ff1",
+    "date": "2025-12-07T19:00:10+08:00",
+    "message": "Clean code",
+    "blob": "662bd38b70a1c329701695b7dfffcb5a0c4705b4",
+    "min_sdk": 24,
+    "version": "4.9.9"
+  },
+  {
+    "commit": "fe297ce4280a91b406ede29b409209473fd85294",
+    "date": "2025-12-08T15:17:06+08:00",
+    "message": "Update sdk to 36.1",
+    "blob": "9ed5dad0c10851a75d7ff50511a0cbb76257fdc5",
+    "min_sdk": 24,
+    "version": "4.9.9"
+  },
+  {
+    "commit": "6859abca5a337f144f736c886c26deff067da2ad",
+    "date": "2025-12-17T00:37:07+08:00",
+    "message": "Update build.gradle",
+    "blob": "444bfb5c6f2dc4d60f779ee94c21e4f534dea486",
+    "min_sdk": 24,
+    "version": "5.0.0"
+  },
+  {
+    "commit": "c4a4b50a2cbc5a2a6d1eec26f624f437e8daf5b8",
+    "date": "2025-12-18T13:20:24+08:00",
+    "message": "Update build.gradle",
+    "blob": "ef3900fa8e0b526d02307ebb5f4e4db0826031ae",
+    "min_sdk": 24,
+    "version": "5.0.1"
+  },
+  {
+    "commit": "6c025e60b0007cda31a22b44c5b8173086e517c9",
+    "date": "2025-12-18T19:24:34+08:00",
+    "message": "Update build.gradle",
+    "blob": "98fd52d535e05236c04278e6b21724a443a50130",
+    "min_sdk": 24,
+    "version": "5.0.2"
+  },
+  {
+    "commit": "ac05265e76e71f612b30f7a313fad3823c63743a",
+    "date": "2025-12-19T20:06:36+08:00",
+    "message": "Update build.gradle",
+    "blob": "601c9bcc7d4f97670b068c8b78624515817b1027",
+    "min_sdk": 24,
+    "version": "5.0.3"
+  },
+  {
+    "commit": "80c55db1a8bba59d4956ad2190b8b1850a4801e6",
+    "date": "2025-12-21T13:09:37+08:00",
+    "message": "Update build.gradle",
+    "blob": "f2a7c7ee326f72ff9847d2a50eceb4bcc0847583",
+    "min_sdk": 24,
+    "version": "5.0.4"
+  },
+  {
+    "commit": "ed59a352b4c68a37f19e0afc627068e659fa022e",
+    "date": "2025-12-31T14:47:42+08:00",
+    "message": "Update build.gradle",
+    "blob": "bc791fed5b8061f5feb8a474f161ac2764154259",
+    "min_sdk": 24,
+    "version": "5.0.5"
+  },
+  {
+    "commit": "3699f7acd84aea269705a4d491424375ab8d6cc0",
+    "date": "2025-12-31T19:29:21+08:00",
+    "message": "Update build.gradle",
+    "blob": "b2b79ee7c40ac44d4499e582f9611a3e9fe62c53",
+    "min_sdk": 24,
+    "version": "5.0.6"
+  },
+  {
+    "commit": "f61b23e497529e77152bcedd3a08a081ac278ff9",
+    "date": "2026-01-01T02:27:56+08:00",
+    "message": "Update build.gradle",
+    "blob": "7b814b9e7865111fb08458c5f3d3cf3aad412649",
+    "min_sdk": 24,
+    "version": "5.0.7"
+  },
+  {
+    "commit": "586aecda3fe1c907c43f3d51c85b255d99a6eab7",
+    "date": "2026-01-04T01:58:02+08:00",
+    "message": "Update build.gradle",
+    "blob": "5ffc8b51a0e81124b508d359bda9a0081990ba7e",
+    "min_sdk": 24,
+    "version": "5.0.8"
+  },
+  {
+    "commit": "dac7d12516011a194f1d1357548d8e09946746bf",
+    "date": "2026-01-05T00:20:00+08:00",
+    "message": "Update build.gradle",
+    "blob": "3259a3afc472fb807a405502b75f0fd5c74ca9a3",
+    "min_sdk": 24,
+    "version": "5.0.9"
+  },
+  {
+    "commit": "337bd186c9efd4c1446a9c7ed4e5990382557ecb",
+    "date": "2026-01-05T15:29:00+08:00",
+    "message": "Update build.gradle",
+    "blob": "c74cb1ae626c4c1514d4ef25b0e5c2a0a2f96a79",
+    "min_sdk": 24,
+    "version": "5.1.0"
+  },
+  {
+    "commit": "6e0d1d3d13c8c3f27e41ae6fbf510a44b7293f00",
+    "date": "2026-01-06T01:33:02+08:00",
+    "message": "Update build.gradle",
+    "blob": "c8af3e0c8bd8a693bbae03ceb9c72992c1d22119",
+    "min_sdk": 24,
+    "version": "5.1.1"
+  },
+  {
+    "commit": "73b29e88662ab333f5a09d180c10312afbfc5935",
+    "date": "2026-01-12T11:27:48+08:00",
+    "message": "Update build.gradle",
+    "blob": "3accbac8419ac7827ad3fb28da1660ec6d33b332",
+    "min_sdk": 24,
+    "version": "5.1.1"
+  },
+  {
+    "commit": "dc1b443ba87cd6ab41af70aff04819d996c7e402",
+    "date": "2026-01-12T13:03:48+08:00",
+    "message": "Update build.gradle",
+    "blob": "3b40753b5d232910585151b62f09cde1259c4231",
+    "min_sdk": 24,
+    "version": "5.1.2"
+  },
+  {
+    "commit": "8c1ec44928d5ca318eeb0f6003326a62c784270d",
+    "date": "2026-01-13T01:23:22+08:00",
+    "message": "Update build.gradle",
+    "blob": "59c8a2fb657de65e3f3732b72a352d28f6c4561b",
+    "min_sdk": 24,
+    "version": "5.1.3"
+  },
+  {
+    "commit": "f6ce47b25e6c3fb6dc5306f6e878c6e7c9e42618",
+    "date": "2026-01-21T18:24:52+08:00",
+    "message": "Update build.gradle",
+    "blob": "e8a7a312682d829c51ede95caad6ed64691b7aef",
+    "min_sdk": 24,
+    "version": "5.1.4"
+  },
+  {
+    "commit": "65b4f8074c142fe218cbac7108dd07d630c7f05e",
+    "date": "2026-01-27T15:20:21+08:00",
+    "message": "Update build.gradle",
+    "blob": "15f3f47ba746a11f633475a303f534e3e88869f1",
+    "min_sdk": 24,
+    "version": "5.1.5"
+  },
+  {
+    "commit": "0848ae16a1f99bc1360d285c23df3bfdf63567fe",
+    "date": "2026-01-28T16:38:14+08:00",
+    "message": "Update yt lib",
+    "blob": "8fad710b5ca87511a2e4e7cd2f3f077542514cc9",
+    "min_sdk": 24,
+    "version": "5.1.6"
+  },
+  {
+    "commit": "86b9ab7c116ea03c2462c37c96b80e42e55ca7a9",
+    "date": "2026-02-02T12:05:56+08:00",
+    "message": "Update build.gradle",
+    "blob": "f16830890f8ee0acf5b7e5fe77d6df41115a9e4f",
+    "min_sdk": 24,
+    "version": "5.1.7"
+  },
+  {
+    "commit": "a2589b497e4a670ddddc34366f543985063bb2f0",
+    "date": "2026-02-09T00:29:18+08:00",
+    "message": "Update gradle",
+    "blob": "31ec3b2e0fbcad4c4e6360895ede1a7f917e4d3f",
+    "min_sdk": 24,
+    "version": "5.1.8"
+  },
+  {
+    "commit": "b320514e83abe60c027c4305b855aa6dde0cfe82",
+    "date": "2026-02-16T13:20:06+08:00",
+    "message": "Update build.gradle",
+    "blob": "1a1b7b77f1e64b61bd11a9b3eba36d0b2df28a6b",
+    "min_sdk": 24,
+    "version": "5.1.8"
+  },
+  {
+    "commit": "b1f370da07183c3c57a434d9776f7a2a1b9c7692",
+    "date": "2026-02-16T13:20:21+08:00",
+    "message": "Update build.gradle",
+    "blob": "00d352c7410ef5737489396600bfc03c8ababa50",
+    "min_sdk": 24,
+    "version": "5.1.9"
+  },
+  {
+    "commit": "fed43db1c61ec98b780334bb6a5810b7133a46cb",
+    "date": "2026-02-23T02:30:00+08:00",
+    "message": "Update build.gradle",
+    "blob": "86e3848d1dc25bce2ffa1ad29e5504a484d95e5e",
+    "min_sdk": 24,
+    "version": "5.2.0"
+  },
+  {
+    "commit": "d3f5fc8b3f174532e1a29c2011035af4501b62f0",
+    "date": "2026-02-25T01:13:58+08:00",
+    "message": "Update build.gradle",
+    "blob": "73f1c72815235419c283db769061911df5671eeb",
+    "min_sdk": 24,
+    "version": "5.2.0"
+  },
+  {
+    "commit": "415a96c1bb61889146d2841d3eda2dc99f91bc34",
+    "date": "2026-02-26T13:44:42+08:00",
+    "message": "Update build.gradle",
+    "blob": "4898bca28975a33de032f1ee851a68256826efe3",
+    "min_sdk": 24,
+    "version": "5.2.1"
+  },
+  {
+    "commit": "92947552983f8572db973da360ca3c04e2642f1a",
+    "date": "2026-02-27T18:07:47+08:00",
+    "message": "Update build.gradle",
+    "blob": "1497e623cd5323b0799ea0e48dacce55594027c1",
+    "min_sdk": 24,
+    "version": "5.2.2"
+  },
+  {
+    "commit": "8edefa83dacd077f11927cd9d4d8a63bb7cc331a",
+    "date": "2026-02-27T19:23:15+08:00",
+    "message": "Update build.gradle",
+    "blob": "7b8133ec04f000b9c92fc6e91deac37fd5e22a5a",
+    "min_sdk": 24,
+    "version": "5.2.3"
+  },
+  {
+    "commit": "6ddc9836564a1cbf714066021772b3cabef85420",
+    "date": "2026-02-28T17:21:14+08:00",
+    "message": "Update build.gradle",
+    "blob": "942ebaeb0173284e71e5112667dea12e083fa5f1",
+    "min_sdk": 24,
+    "version": "5.2.4"
+  },
+  {
+    "commit": "4fcdc773b4c7b20c81b7bf4524b744362a0fa7b5",
+    "date": "2026-03-05T02:30:02+08:00",
+    "message": "Update build.gradle",
+    "blob": "9de4cc392572a41a1b1832ecfcd9057e3da4ef1a",
+    "min_sdk": 24,
+    "version": "5.2.5"
+  },
+  {
+    "commit": "bc04bdb575b5be9ddd5dbc93487b9d4c63e12e64",
+    "date": "2026-03-05T13:31:38+08:00",
+    "message": "Update build.gradle",
+    "blob": "589b1c24baba783779103c9818f33e334f7127e8",
+    "min_sdk": 24,
+    "version": "5.2.6"
+  },
+  {
+    "commit": "68641bb14bd5148e7aa55346c39a08546b808b61",
+    "date": "2026-03-13T01:22:29+08:00",
+    "message": "Update proguard rule",
+    "blob": "dde161d004d7e71c697de36d9c390642d1df743e",
+    "min_sdk": 24,
+    "version": "5.2.6"
+  },
+  {
+    "commit": "9bbd5d5a14daed54cb9c95ae87894661a917c774",
+    "date": "2026-03-14T18:44:23+08:00",
+    "message": "Update build.gradle",
+    "blob": "3cf1453d31ed13c32a331ac1b3d1df35ec0b7d23",
+    "min_sdk": 24,
+    "version": "5.2.7"
+  },
+  {
+    "commit": "cc9b5e3218c52a619645679c67717b639d640ff9",
+    "date": "2026-03-15T03:10:14+08:00",
+    "message": "Update build.gradle",
+    "blob": "21cca9c93157df96a24c2192342f9edf40c3da57",
+    "min_sdk": 24,
+    "version": "5.2.8"
+  },
+  {
+    "commit": "b4d953040969e3436f5ec886556ccadddc9aff1f",
+    "date": "2026-03-15T15:09:21+08:00",
+    "message": "Update build.gradle",
+    "blob": "e2a181b94712dd0a655ba64b330345c3e700e971",
+    "min_sdk": 24,
+    "version": "5.2.9"
+  },
+  {
+    "commit": "1d5766640b4e4df9a162e9dcae0e6ed26c8bb852",
+    "date": "2026-03-18T11:57:32+08:00",
+    "message": "Support title select",
+    "blob": "b3c13efec6b41899e4c56e3329be59dc84d5f504",
+    "min_sdk": 24,
+    "version": "5.3.0"
+  },
+  {
+    "commit": "10dd3ca81a7ced3b4b583b475ac3bf43911f8e6e",
+    "date": "2026-03-23T15:18:20+08:00",
+    "message": "Update build.gradle",
+    "blob": "22a327acd1e5353f294a5cd61efe5438b3b3378e",
+    "min_sdk": 24,
+    "version": "5.3.1"
+  },
+  {
+    "commit": "ae4a369fa0a1234d637683f6e720affc273339d1",
+    "date": "2026-03-23T22:48:30+08:00",
+    "message": "Update build.gradle",
+    "blob": "b10809dd886f316d8cd801006b1840396c2bdc74",
+    "min_sdk": 24,
+    "version": "5.3.2"
+  },
+  {
+    "commit": "1551b6648ddd1f2b93daea6a63dedc78736deaef",
+    "date": "2026-03-28T00:25:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "ae6df9c40a32cb23e491363c2ced684639c1b1f6",
+    "min_sdk": 24,
+    "version": "5.3.3"
+  },
+  {
+    "commit": "82447217f71b161860f74f72554f8657b49fe2dd",
+    "date": "2026-03-29T02:37:23+08:00",
+    "message": "Update build.gradle",
+    "blob": "035bb41e311451b6c3cd51d38a922886277f92c1",
+    "min_sdk": 24,
+    "version": "5.3.4"
+  },
+  {
+    "commit": "593a5feb10c1411b6047a5dd9a8c59fc1c21a2d3",
+    "date": "2026-03-29T09:52:29+08:00",
+    "message": "Update build.gradle",
+    "blob": "6df6c2a3be6aee9accf9a12f896bbeadd1ce71c2",
+    "min_sdk": 24,
+    "version": "5.3.5"
+  },
+  {
+    "commit": "1ec739e7414266188a4e1f6137bd45283bc8350e",
+    "date": "2026-03-30T10:39:19+08:00",
+    "message": "Update build.gradle",
+    "blob": "5b26bd367b8d85440584f3df1d93687481d50a39",
+    "min_sdk": 24,
+    "version": "5.3.6"
+  },
+  {
+    "commit": "ba306a35705f2d6ff9d9e88ec590fa3f4d882d86",
+    "date": "2026-04-15T11:36:15+08:00",
+    "message": "Refactor the playback architecture",
+    "blob": "4eaba219afad893e2e78004cc40b4b12186817a8",
+    "min_sdk": 24,
+    "version": "5.3.7"
+  },
+  {
+    "commit": "110be2084b0ee83fbb0e09f9abfbe4ec56597aa6",
+    "date": "2026-04-16T00:54:59+08:00",
+    "message": "Update gradle",
+    "blob": "fe5321cc5c17b4c6422465acdc5680902a1fa1b0",
+    "min_sdk": 24,
+    "version": "5.3.7"
+  },
+  {
+    "commit": "0fad33dfcfa5418e6ccff977928ccf20139808a5",
+    "date": "2026-04-16T02:07:07+08:00",
+    "message": "Update gradle",
+    "blob": "fad3baa0600634959884861c25fdb1c665a132a1",
+    "min_sdk": 24,
+    "version": "5.3.7"
+  },
+  {
+    "commit": "94d09ffda53735955d511bbbcf36ca0bcd9617b3",
+    "date": "2026-04-16T14:21:41+08:00",
+    "message": "Update build.gradle",
+    "blob": "e73555d27de5886c33470edaf5851f7f90d2f7f3",
+    "min_sdk": 24,
+    "version": "5.3.8"
+  },
+  {
+    "commit": "03d27b27cb7563709ab19edcc6096d553176b177",
+    "date": "2026-04-16T14:58:06+08:00",
+    "message": "Update build.gradle",
+    "blob": "077a76b841ce81fcfb1ecbb3d89bcae83e611f8e",
+    "min_sdk": 24,
+    "version": "5.3.9"
+  },
+  {
+    "commit": "4cf530896af9b0c3a96bdb34831890e57b4a3ce2",
+    "date": "2026-04-18T12:08:00+08:00",
+    "message": "Update build.gradle",
+    "blob": "5b8bbb21aa6393ae6be28b5916cb8a8bbf16fa88",
+    "min_sdk": 24,
+    "version": "5.4.0"
+  },
+  {
+    "commit": "a93aa996addc70011ac844cafb0a3fe30de5aa51",
+    "date": "2026-04-19T23:59:06+08:00",
+    "message": "Update build.gradle",
+    "blob": "c0c55853d264cf554846b4d33f26a738b5fbd9fd",
+    "min_sdk": 24,
+    "version": "5.4.1"
+  },
+  {
+    "commit": "6e017d1c5ca4e8055e3bbc1978d978de9304c9b7",
+    "date": "2026-04-21T00:42:17+08:00",
+    "message": "Update build.gradle",
+    "blob": "42aba295a5fe1377da4f2ae9c7877453ff97bcc4",
+    "min_sdk": 24,
+    "version": "5.4.2"
+  }
+]

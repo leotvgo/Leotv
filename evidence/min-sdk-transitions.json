@@ -1,0 +1,18 @@
+[
+  {
+    "commit": "ddaca786bb44f40ff6b6a76679c670a0231a08e6",
+    "date": "2024-01-03T00:40:15+08:00",
+    "message": "Update build.gradle",
+    "blob": "57f9d647b0b8ab275e4e38b17aabefcaec30cc45",
+    "min_sdk": 21,
+    "version": "0103"
+  },
+  {
+    "commit": "801be8c2b3a83ed60a0b529eb8b4023e687747f3",
+    "date": "2025-08-04T16:23:28+08:00",
+    "message": "Update gradle",
+    "blob": "11962a7f5685ef120b0eb35e3b056a50016f9b14",
+    "min_sdk": 24,
+    "version": "4.0.7"
+  }
+]

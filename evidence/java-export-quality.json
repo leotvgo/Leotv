@@ -1,0 +1,136 @@
+{
+  "total_java_files": 10671,
+  "named_app_java_files": 240,
+  "named_app_problems": [
+    {
+      "file": "com/fongmi/android/p217tv/R.java",
+      "failed_methods": 0,
+      "warnings": 485
+    },
+    {
+      "file": "com/fongmi/android/p217tv/App.java",
+      "failed_methods": 0,
+      "warnings": 1
+    },
+    {
+      "file": "com/fongmi/android/p217tv/bean/Filter$2.java",
+      "failed_methods": 0,
+      "warnings": 2
+    },
+    {
+      "file": "com/fongmi/android/p217tv/bean/Style$1.java",
+      "failed_methods": 0,
+      "warnings": 2
+    },
+    {
+      "file": "com/fongmi/android/p217tv/bean/Flag$1.java",
+      "failed_methods": 0,
+      "warnings": 2
+    },
+    {
+      "file": "com/fongmi/android/p217tv/bean/Site$1.java",
+      "failed_methods": 0,
+      "warnings": 2
+    },
+    {
+      "file": "com/fongmi/android/p217tv/bean/Result$1.java",
+      "failed_methods": 0,
+      "warnings": 2
+    },
+    {
+      "file": "com/fongmi/android/p217tv/bean/Class$1.java",
+      "failed_methods": 0,
+      "warnings": 2
+    },
+    {
+      "file": "com/fongmi/android/p217tv/bean/Collect$1.java",
+      "failed_methods": 0,
+      "warnings": 2
+    },
+    {
+      "file": "com/fongmi/android/p217tv/bean/Vod$2.java",
+      "failed_methods": 0,
+      "warnings": 2
+    },
+    {
+      "file": "com/fongmi/android/p217tv/bean/Episode$1.java",
+      "failed_methods": 0,
+      "warnings": 2
+    },
+    {
+      "file": "com/fongmi/android/p217tv/bean/Cate$1.java",
+      "failed_methods": 0,
+      "warnings": 2
+    },
+    {
+      "file": "com/fongmi/android/p217tv/bean/Value$1.java",
+      "failed_methods": 0,
+      "warnings": 2
+    },
+    {
+      "file": "com/fongmi/android/p217tv/p219ui/activity/C3048M.java",
+      "failed_methods": 0,
+      "warnings": 2
+    },
+    {
+      "file": "com/fongmi/android/p217tv/p219ui/activity/LiveActivity.java",
+      "failed_methods": 0,
+      "warnings": 6
+    },
+    {
+      "file": "com/fongmi/android/p217tv/p219ui/activity/VideoActivity.java",
+      "failed_methods": 0,
+      "warnings": 7
+    },
+    {
+      "file": "com/fongmi/android/p217tv/p219ui/activity/CastActivity.java",
+      "failed_methods": 0,
+      "warnings": 2
+    },
+    {
+      "file": "com/fongmi/android/p217tv/p219ui/activity/HomeActivity.java",
+      "failed_methods": 0,
+      "warnings": 1
+    },
+    {
+      "file": "com/fongmi/android/p217tv/p219ui/adapter/ViewOnClickListenerC3100i.java",
+      "failed_methods": 0,
+      "warnings": 1
+    },
+    {
+      "file": "com/fongmi/android/p217tv/p219ui/adapter/ViewOnClickListenerC3090K.java",
+      "failed_methods": 0,
+      "warnings": 1
+    },
+    {
+      "file": "com/fongmi/android/p217tv/p219ui/adapter/ViewOnClickListenerC3089J.java",
+      "failed_methods": 0,
+      "warnings": 1
+    },
+    {
+      "file": "com/fongmi/android/p217tv/p219ui/adapter/C3108q.java",
+      "failed_methods": 0,
+      "warnings": 2
+    },
+    {
+      "file": "com/fongmi/android/p217tv/p219ui/adapter/ViewOnClickListenerC3080A.java",
+      "failed_methods": 0,
+      "warnings": 1
+    },
+    {
+      "file": "com/fongmi/android/p217tv/p219ui/custom/CustomTypeView.java",
+      "failed_methods": 0,
+      "warnings": 1
+    },
+    {
+      "file": "com/fongmi/android/p217tv/p219ui/custom/CustomViewPager.java",
+      "failed_methods": 0,
+      "warnings": 1
+    },
+    {
+      "file": "com/fongmi/android/p217tv/service/PlaybackService.java",
+      "failed_methods": 0,
+      "warnings": 12
+    }
+  ]
+}
