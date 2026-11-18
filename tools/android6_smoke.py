@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import re
 import signal
+import shutil
 import subprocess
 import time
 import xml.etree.ElementTree as ET
@@ -23,6 +24,7 @@ if not re.fullmatch('[0-9a-f]{64}', args.sha256) or hashlib.sha256(args.apk.read
 args.work.mkdir(parents=True, exist_ok=True)
 env = os.environ.copy()
 env['ANDROID_AVD_HOME'] = str(args.work / 'avd')
+Path(env['ANDROID_AVD_HOME']).mkdir(parents=True, exist_ok=True)
 adb = args.sdk / 'platform-tools/adb'
 serial = 'emulator-5560'
 report = {'android_api': 23, 'requested_abi': 'armeabi-v7a', 'apk_sha256': args.sha256,
@@ -43,11 +45,16 @@ def shell(*parts, check=True):
 
 
 try:
-    avdmanager = args.sdk / 'cmdline-tools/latest/bin/avdmanager'
-    subprocess.run([str(avdmanager), 'create', 'avd', '-n', 'recovery_api23_arm', '-k',
-                    'system-images;android-23;default;armeabi-v7a', '--device', 'Nexus One'],
-                   input='no\n', text=True, env=env, check=True, timeout=90,
-                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    sdkmanager = shutil.which('sdkmanager')
+    avdmanager = Path(sdkmanager).with_name('avdmanager') if sdkmanager else args.sdk / 'cmdline-tools/latest/bin/avdmanager'
+    create = subprocess.run([str(avdmanager), 'create', 'avd', '-n', 'recovery_api23_arm', '-k',
+                             'system-images;android-23;default;armeabi-v7a'],
+                            input='no\n', text=True, env=env, timeout=90,
+                            capture_output=True)
+    if create.returncode:
+        report['avd_tool_exit'] = create.returncode
+        report['avd_tool_diagnostic'] = (create.stdout + create.stderr)[-1500:]
+        raise RuntimeError('Clean Android 6 AVD creation failed.')
     report['stage'] = 'boot-android6-arm'
     emulator_log = (args.work / 'emulator.log').open('w')
     process = subprocess.Popen([str(args.legacy_emulator), '-avd', 'recovery_api23_arm',
