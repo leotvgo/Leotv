@@ -1,0 +1,45 @@
+name: Inspect rebuilt APK host fingerprints
+on:
+  workflow_dispatch:
+    inputs:
+      build_run_id:
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inspect:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read immutable built APK DEX identities
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_RUN_ID: ${{ inputs.build_run_id }}
+        run: |
+          python3 - <<'PY'
+          import pathlib, os, subprocess, json, zipfile, hashlib
+          root=pathlib.Path(os.environ['RUNNER_TEMP'])/'host-profiles'
+          rows=[]
+          for variant in ['tv-v7a','tv-v8a','mobile-v7a','mobile-v8a']:
+              target=root/variant
+              target.mkdir(parents=True)
+              subprocess.run(['gh','run','download',os.environ['BUILD_RUN_ID'],'--repo',os.environ['GITHUB_REPOSITORY'],
+                  '--name',f'ordinary-{variant}-signed','--dir',str(target)],check=True)
+              apk=target/f'normal-{variant}.apk'
+              signature=json.loads((target/f'normal-{variant}.signature.json').read_text())
+              if hashlib.sha256(apk.read_bytes()).hexdigest()!=signature['apk_sha256']:raise SystemExit('APK hash changed')
+              with zipfile.ZipFile(apk) as archive:
+                  dex=[{'entry':entry.filename,'bytes':entry.file_size,'crc':entry.CRC,
+                      'sha256':hashlib.sha256(archive.read(entry)).hexdigest()} for entry in archive.infolist()
+                      if entry.filename.startswith('classes') and entry.filename.endswith('.dex')]
+              rows.append({'variant':variant,'apk_sha256':signature['apk_sha256'],
+                  'certificate_sha256':signature['certificate_sha256'],'dex':dex})
+          (root/'built-host-profiles.json').write_text(json.dumps(rows,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: built-host-profiles
+          path: ${{ runner.temp }}/host-profiles/built-host-profiles.json

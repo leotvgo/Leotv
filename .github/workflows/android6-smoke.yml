@@ -1,10 +1,6 @@
 name: Android 6 ARM rebuilt APK startup test
 
 on:
-  workflow_run:
-    workflows: [Build and audit ordinary APKs]
-    types: [completed]
-    branches: [main]
   workflow_dispatch:
     inputs:
       build_run_id:
