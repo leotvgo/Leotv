@@ -1,0 +1,10 @@
+{
+  "checked_original_inputs": [
+    "leanback-armeabi_v7a.apk",
+    "leanback-arm64_v8a.apk",
+    "mobile-armeabi_v7a.apk",
+    "mobile-arm64_v8a.apk"
+  ],
+  "bundle_sha256": "d56be78aef538ca4491b74c9a224c98b9706ccffb40b8f358ecdc53cc5198732",
+  "lossless": true
+}

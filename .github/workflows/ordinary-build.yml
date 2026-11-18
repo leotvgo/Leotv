@@ -23,7 +23,9 @@ jobs:
           java-version: '17'
       - uses: android-actions/setup-android@v3
       - name: Install Android 6 compile references
-        run: sdkmanager 'platforms;android-23' 'build-tools;36.1.0'
+        run: |
+          sdkmanager 'platforms;android-23' 'build-tools;36.1.0'
+          command -v zstd || sudo apt-get install -y zstd
       - name: Fetch pinned inputs and dependencies
         env:
           GH_TOKEN: ${{ github.token }}
@@ -70,7 +72,9 @@ jobs:
           java-version: '17'
       - uses: android-actions/setup-android@v3
       - name: Install Android build tools
-        run: sdkmanager 'build-tools;36.1.0'
+        run: |
+          sdkmanager 'build-tools;36.1.0'
+          command -v zstd || sudo apt-get install -y zstd
       - name: Fetch pinned inputs and dependencies
         env:
           GH_TOKEN: ${{ github.token }}

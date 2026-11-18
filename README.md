@@ -11,6 +11,10 @@
 GitHub 从这些已提交的 smali 编译 DEX，原 APK 只提供需要保留的资源与 native 资产。
 APK、依赖 JAR、构建缓存、签名密钥和用户运行数据不进入 Git。
 
+release 中约 4.2 MB 的 `.partNNN` 是四个完整原 APK 的压缩包按 4 MiB 切出的传输分块，
+并不代表功能模块或“没有拿到源码”的组件。CI 拼接并验证分块/整体/原 APK 三层校验值后，
+从 Git 的 smali 编译 DEX，复用原始资源和 native 库。目前 `.so` 没有恢复对应 C/C++/Go 原始源码。
+
 ```sh
 gh workflow run ordinary-build.yml --repo leotvgo/oktv-normal-recovery --ref main
 ```

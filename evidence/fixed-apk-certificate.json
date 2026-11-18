@@ -1,0 +1,8 @@
+{
+  "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+  "algorithm": "RSA 2048",
+  "purpose": "Dedicated fixed APK signature",
+  "private_key_in_git": false,
+  "private_key_store": "GitHub Secrets and protected local backup",
+  "authorized_ci_signing": true
+}
