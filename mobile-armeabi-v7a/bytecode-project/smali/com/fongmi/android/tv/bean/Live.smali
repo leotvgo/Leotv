@@ -1,0 +1,2185 @@
+.class public Lcom/fongmi/android/tv/bean/Live;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+
+# instance fields
+.field private activated:Z
+
+.field private api:Ljava/lang/String;
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "api"
+    .end annotation
+.end field
+
+.field private boot:Z
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "boot"
+    .end annotation
+.end field
+
+.field private catchup:Lcom/fongmi/android/tv/bean/Catchup;
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "catchup"
+    .end annotation
+.end field
+
+.field private click:Ljava/lang/String;
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "click"
+    .end annotation
+.end field
+
+.field private core:Lcom/fongmi/android/tv/bean/Core;
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "core"
+    .end annotation
+.end field
+
+.field private epg:Ljava/lang/String;
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "epg"
+    .end annotation
+.end field
+
+.field private ext:Ljava/lang/String;
+    .annotation runtime Lcom/google/gson/annotations/JsonAdapter;
+        value = Lcom/fongmi/android/tv/gson/ExtAdapter;
+    .end annotation
+
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "ext"
+    .end annotation
+.end field
+
+.field private groups:Ljava/util/List;
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "groups"
+    .end annotation
+
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "Ljava/util/List<",
+            "Lcom/fongmi/android/tv/bean/Group;",
+            ">;"
+        }
+    .end annotation
+.end field
+
+.field private header:Ljava/util/Map;
+    .annotation runtime Lcom/google/gson/annotations/JsonAdapter;
+        value = Lcom/fongmi/android/tv/gson/HeaderAdapter;
+    .end annotation
+
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "header"
+    .end annotation
+
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "Ljava/util/Map<",
+            "Ljava/lang/String;",
+            "Ljava/lang/String;",
+            ">;"
+        }
+    .end annotation
+.end field
+
+.field private jar:Ljava/lang/String;
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "jar"
+    .end annotation
+.end field
+
+.field private keep:Ljava/lang/String;
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "keep"
+    .end annotation
+.end field
+
+.field private logo:Ljava/lang/String;
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "logo"
+    .end annotation
+.end field
+
+.field private name:Ljava/lang/String;
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "name"
+    .end annotation
+.end field
+
+.field private origin:Ljava/lang/String;
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "origin"
+    .end annotation
+.end field
+
+.field private pass:Z
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "pass"
+    .end annotation
+.end field
+
+.field private playerType:Ljava/lang/Integer;
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "playerType"
+    .end annotation
+.end field
+
+.field private referer:Ljava/lang/String;
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "referer"
+    .end annotation
+.end field
+
+.field private timeZone:Ljava/lang/String;
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "timeZone"
+    .end annotation
+.end field
+
+.field private timeout:Ljava/lang/Integer;
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "timeout"
+    .end annotation
+.end field
+
+.field private ua:Ljava/lang/String;
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "ua"
+    .end annotation
+.end field
+
+.field private url:Ljava/lang/String;
+    .annotation runtime Lcom/google/gson/annotations/SerializedName;
+        value = "url"
+    .end annotation
+.end field
+
+.field private width:I
+
+
+# direct methods
+.method public constructor <init>()V
+    .locals 0
+
+    .line 1
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+.method public constructor <init>(Ljava/lang/String;Ljava/lang/String;)V
+    .locals 0
+
+    .line 2
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 3
+    iput-object p1, p0, Lcom/fongmi/android/tv/bean/Live;->name:Ljava/lang/String;
+
+    .line 4
+    iput-object p2, p0, Lcom/fongmi/android/tv/bean/Live;->url:Ljava/lang/String;
+
+    return-void
+.end method
+
+.method public static find(Ljava/lang/String;)Lcom/fongmi/android/tv/bean/Live;
+    .locals 3
+
+    .line 1
+    invoke-static {}, Lcom/fongmi/android/tv/db/AppDatabase;->n()Lcom/fongmi/android/tv/db/AppDatabase;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Lcom/fongmi/android/tv/db/AppDatabase;->t()Ly3/t;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+
+    .line 2
+    new-instance v1, LM5/j;
+
+    const/4 v2, 0x5
+
+    invoke-direct {v1, p0, v2}, LM5/j;-><init>(Ljava/lang/String;I)V
+
+    iget-object p0, v0, Ly3/t;->f:Lcom/fongmi/android/tv/db/AppDatabase_Impl;
+
+    const/4 v0, 0x1
+
+    const/4 v2, 0x0
+
+    invoke-static {p0, v0, v2, v1}, Lcom/bumptech/glide/c;->G(LX1/C;ZZLkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+
+    move-result-object p0
+
+    check-cast p0, Lcom/fongmi/android/tv/bean/Live;
+
+    return-object p0
+.end method
+
+.method public static findAll()Ljava/util/List;
+    .locals 4
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()",
+            "Ljava/util/List<",
+            "Lcom/fongmi/android/tv/bean/Live;",
+            ">;"
+        }
+    .end annotation
+
+    .line 1
+    invoke-static {}, Lcom/fongmi/android/tv/db/AppDatabase;->n()Lcom/fongmi/android/tv/db/AppDatabase;
+
+    .line 2
+    .line 3
+    .line 4
+    move-result-object v0
+
+    .line 5
+    invoke-virtual {v0}, Lcom/fongmi/android/tv/db/AppDatabase;->t()Ly3/t;
+
+    .line 6
+    .line 7
+    .line 8
+    move-result-object v0
+
+    .line 9
+    new-instance v1, LO5/q;
+
+    .line 10
+    .line 11
+    const/16 v2, 0x11
+
+    .line 12
+    .line 13
+    invoke-direct {v1, v2}, LO5/q;-><init>(I)V
+
+    .line 14
+    .line 15
+    .line 16
+    iget-object v0, v0, Ly3/t;->f:Lcom/fongmi/android/tv/db/AppDatabase_Impl;
+
+    .line 17
+    .line 18
+    const/4 v2, 0x1
+
+    .line 19
+    const/4 v3, 0x0
+
+    .line 20
+    invoke-static {v0, v2, v3, v1}, Lcom/bumptech/glide/c;->G(LX1/C;ZZLkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+
+    .line 21
+    .line 22
+    .line 23
+    move-result-object v0
+
+    .line 24
+    check-cast v0, Ljava/util/List;
+
+    .line 25
+    .line 26
+    return-object v0
+.end method
+
+.method public static objectFrom(Lcom/google/gson/JsonElement;Ljava/lang/String;)Lcom/fongmi/android/tv/bean/Live;
+    .locals 2
+
+    .line 1
+    :try_start_0
+    sget-object v0, Lcom/fongmi/android/tv/App;->t:Lcom/fongmi/android/tv/App;
+
+    .line 2
+    .line 3
+    iget-object v0, v0, Lcom/fongmi/android/tv/App;->n:Lcom/google/gson/Gson;
+
+    .line 4
+    .line 5
+    const-class v1, Lcom/fongmi/android/tv/bean/Live;
+
+    .line 6
+    .line 7
+    invoke-virtual {v0, p0, v1}, Lcom/google/gson/Gson;->fromJson(Lcom/google/gson/JsonElement;Ljava/lang/Class;)Ljava/lang/Object;
+
+    .line 8
+    .line 9
+    .line 10
+    move-result-object p0
+
+    .line 11
+    check-cast p0, Lcom/fongmi/android/tv/bean/Live;
+
+    .line 12
+    .line 13
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getJar()Ljava/lang/String;
+
+    .line 14
+    .line 15
+    .line 16
+    move-result-object v0
+
+    .line 17
+    invoke-virtual {v0}, Ljava/lang/String;->isEmpty()Z
+
+    .line 18
+    .line 19
+    .line 20
+    move-result v0
+
+    .line 21
+    if-eqz v0, :cond_0
+
+    .line 22
+    .line 23
+    invoke-virtual {p0, p1}, Lcom/fongmi/android/tv/bean/Live;->setJar(Ljava/lang/String;)V
+
+    .line 24
+    .line 25
+    .line 26
+    :cond_0
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getApi()Ljava/lang/String;
+
+    .line 27
+    .line 28
+    .line 29
+    move-result-object p1
+
+    .line 30
+    invoke-static {p1}, LU3/f;->a(Ljava/lang/String;)Ljava/lang/String;
+
+    .line 31
+    .line 32
+    .line 33
+    move-result-object p1
+
+    .line 34
+    invoke-virtual {p0, p1}, Lcom/fongmi/android/tv/bean/Live;->setApi(Ljava/lang/String;)V
+
+    .line 35
+    .line 36
+    .line 37
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getExt()Ljava/lang/String;
+
+    .line 38
+    .line 39
+    .line 40
+    move-result-object p1
+
+    .line 41
+    invoke-static {p1}, LU3/f;->a(Ljava/lang/String;)Ljava/lang/String;
+
+    .line 42
+    .line 43
+    .line 44
+    move-result-object p1
+
+    .line 45
+    invoke-virtual {p0, p1}, Lcom/fongmi/android/tv/bean/Live;->setExt(Ljava/lang/String;)V
+    :try_end_0
+    .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_0} :catch_0
+
+    .line 46
+    .line 47
+    .line 48
+    return-object p0
+
+    .line 49
+    :catch_0
+    new-instance p0, Lcom/fongmi/android/tv/bean/Live;
+
+    .line 50
+    .line 51
+    invoke-direct {p0}, Lcom/fongmi/android/tv/bean/Live;-><init>()V
+
+    .line 52
+    .line 53
+    .line 54
+    return-object p0
+.end method
+
+
+# virtual methods
+.method public boot(Z)Lcom/fongmi/android/tv/bean/Live;
+    .locals 0
+
+    .line 1
+    invoke-virtual {p0, p1}, Lcom/fongmi/android/tv/bean/Live;->setBoot(Z)V
+
+    .line 2
+    .line 3
+    .line 4
+    return-object p0
+.end method
+
+.method public equals(Ljava/lang/Object;)Z
+    .locals 1
+
+    .line 1
+    if-ne p0, p1, :cond_0
+
+    .line 2
+    .line 3
+    const/4 p1, 0x1
+
+    .line 4
+    return p1
+
+    .line 5
+    :cond_0
+    instance-of v0, p1, Lcom/fongmi/android/tv/bean/Live;
+
+    .line 6
+    .line 7
+    if-nez v0, :cond_1
+
+    .line 8
+    .line 9
+    const/4 p1, 0x0
+
+    .line 10
+    return p1
+
+    .line 11
+    :cond_1
+    check-cast p1, Lcom/fongmi/android/tv/bean/Live;
+
+    .line 12
+    .line 13
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getName()Ljava/lang/String;
+
+    .line 14
+    .line 15
+    .line 16
+    move-result-object v0
+
+    .line 17
+    invoke-virtual {p1}, Lcom/fongmi/android/tv/bean/Live;->getName()Ljava/lang/String;
+
+    .line 18
+    .line 19
+    .line 20
+    move-result-object p1
+
+    .line 21
+    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    .line 22
+    .line 23
+    .line 24
+    move-result p1
+
+    .line 25
+    return p1
+.end method
+
+.method public find(Lcom/fongmi/android/tv/bean/Group;)Lcom/fongmi/android/tv/bean/Group;
+    .locals 4
+
+    .line 3
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getGroups()Ljava/util/List;
+
+    move-result-object v0
+
+    invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object v0
+
+    :cond_0
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_1
+
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Lcom/fongmi/android/tv/bean/Group;
+
+    invoke-virtual {v1}, Lcom/fongmi/android/tv/bean/Group;->getName()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {p1}, Lcom/fongmi/android/tv/bean/Group;->getName()Ljava/lang/String;
+
+    move-result-object v3
+
+    invoke-virtual {v2, v3}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v2
+
+    if-eqz v2, :cond_0
+
+    return-object v1
+
+    .line 4
+    :cond_1
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getGroups()Ljava/util/List;
+
+    move-result-object v0
+
+    invoke-interface {v0, p1}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    return-object p1
+.end method
+
+.method public getApi()Ljava/lang/String;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->api:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    .line 4
+    .line 5
+    .line 6
+    move-result v0
+
+    .line 7
+    if-eqz v0, :cond_0
+
+    .line 8
+    .line 9
+    const-string v0, ""
+
+    .line 10
+    .line 11
+    goto :goto_0
+
+    .line 12
+    :cond_0
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->api:Ljava/lang/String;
+
+    .line 13
+    .line 14
+    :goto_0
+    return-object v0
+.end method
+
+.method public getBootIcon()I
+    .locals 1
+
+    .line 1
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->isBoot()Z
+
+    .line 2
+    .line 3
+    .line 4
+    move-result v0
+
+    .line 5
+    if-eqz v0, :cond_0
+
+    .line 6
+    .line 7
+    const v0, 0x7f080120
+
+    .line 8
+    .line 9
+    .line 10
+    goto :goto_0
+
+    .line 11
+    :cond_0
+    const v0, 0x7f08011f
+
+    .line 12
+    .line 13
+    .line 14
+    :goto_0
+    return v0
+.end method
+
+.method public getCatchup()Lcom/fongmi/android/tv/bean/Catchup;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->catchup:Lcom/fongmi/android/tv/bean/Catchup;
+
+    .line 2
+    .line 3
+    if-nez v0, :cond_0
+
+    .line 4
+    .line 5
+    new-instance v0, Lcom/fongmi/android/tv/bean/Catchup;
+
+    .line 6
+    .line 7
+    invoke-direct {v0}, Lcom/fongmi/android/tv/bean/Catchup;-><init>()V
+
+    .line 8
+    .line 9
+    .line 10
+    :cond_0
+    return-object v0
+.end method
+
+.method public getClick()Ljava/lang/String;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->click:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    .line 4
+    .line 5
+    .line 6
+    move-result v0
+
+    .line 7
+    if-eqz v0, :cond_0
+
+    .line 8
+    .line 9
+    const-string v0, ""
+
+    .line 10
+    .line 11
+    goto :goto_0
+
+    .line 12
+    :cond_0
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->click:Ljava/lang/String;
+
+    .line 13
+    .line 14
+    :goto_0
+    return-object v0
+.end method
+
+.method public getCore()Lcom/fongmi/android/tv/bean/Core;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->core:Lcom/fongmi/android/tv/bean/Core;
+
+    .line 2
+    .line 3
+    if-nez v0, :cond_0
+
+    .line 4
+    .line 5
+    new-instance v0, Lcom/fongmi/android/tv/bean/Core;
+
+    .line 6
+    .line 7
+    invoke-direct {v0}, Lcom/fongmi/android/tv/bean/Core;-><init>()V
+
+    .line 8
+    .line 9
+    .line 10
+    :cond_0
+    return-object v0
+.end method
+
+.method public getEpg()Ljava/lang/String;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->epg:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    .line 4
+    .line 5
+    .line 6
+    move-result v0
+
+    .line 7
+    if-eqz v0, :cond_0
+
+    .line 8
+    .line 9
+    const-string v0, ""
+
+    .line 10
+    .line 11
+    goto :goto_0
+
+    .line 12
+    :cond_0
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->epg:Ljava/lang/String;
+
+    .line 13
+    .line 14
+    :goto_0
+    return-object v0
+.end method
+
+.method public getEpgApi()Ljava/lang/String;
+    .locals 5
+
+    .line 1
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getEpg()Ljava/lang/String;
+
+    .line 2
+    .line 3
+    .line 4
+    move-result-object v0
+
+    .line 5
+    const-string v1, ","
+
+    .line 6
+    .line 7
+    invoke-virtual {v0, v1}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
+
+    .line 8
+    .line 9
+    .line 10
+    move-result-object v0
+
+    .line 11
+    array-length v1, v0
+
+    .line 12
+    const/4 v2, 0x0
+
+    .line 13
+    :goto_0
+    if-ge v2, v1, :cond_1
+
+    .line 14
+    .line 15
+    aget-object v3, v0, v2
+
+    .line 16
+    .line 17
+    const-string v4, "{"
+
+    .line 18
+    .line 19
+    invoke-virtual {v3, v4}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
+
+    .line 20
+    .line 21
+    .line 22
+    move-result v4
+
+    .line 23
+    if-eqz v4, :cond_0
+
+    .line 24
+    .line 25
+    return-object v3
+
+    .line 26
+    :cond_0
+    add-int/lit8 v2, v2, 0x1
+
+    .line 27
+    .line 28
+    goto :goto_0
+
+    .line 29
+    :cond_1
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getEpg()Ljava/lang/String;
+
+    .line 30
+    .line 31
+    .line 32
+    move-result-object v0
+
+    .line 33
+    return-object v0
+.end method
+
+.method public getEpgXml()Ljava/util/List;
+    .locals 6
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()",
+            "Ljava/util/List<",
+            "Ljava/lang/String;",
+            ">;"
+        }
+    .end annotation
+
+    .line 1
+    new-instance v0, Ljava/util/ArrayList;
+
+    .line 2
+    .line 3
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
+
+    .line 4
+    .line 5
+    .line 6
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getEpg()Ljava/lang/String;
+
+    .line 7
+    .line 8
+    .line 9
+    move-result-object v1
+
+    .line 10
+    const-string v2, ","
+
+    .line 11
+    .line 12
+    invoke-virtual {v1, v2}, Ljava/lang/String;->split(Ljava/lang/String;)[Ljava/lang/String;
+
+    .line 13
+    .line 14
+    .line 15
+    move-result-object v1
+
+    .line 16
+    array-length v2, v1
+
+    .line 17
+    const/4 v3, 0x0
+
+    .line 18
+    :goto_0
+    if-ge v3, v2, :cond_2
+
+    .line 19
+    .line 20
+    aget-object v4, v1, v3
+
+    .line 21
+    .line 22
+    const-string v5, "{"
+
+    .line 23
+    .line 24
+    invoke-virtual {v4, v5}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
+
+    .line 25
+    .line 26
+    .line 27
+    move-result v5
+
+    .line 28
+    if-nez v5, :cond_1
+
+    .line 29
+    .line 30
+    const-string v5, "xml"
+
+    .line 31
+    .line 32
+    invoke-virtual {v4, v5}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
+
+    .line 33
+    .line 34
+    .line 35
+    move-result v5
+
+    .line 36
+    if-nez v5, :cond_0
+
+    .line 37
+    .line 38
+    const-string v5, "gz"
+
+    .line 39
+    .line 40
+    invoke-virtual {v4, v5}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
+
+    .line 41
+    .line 42
+    .line 43
+    move-result v5
+
+    .line 44
+    if-eqz v5, :cond_1
+
+    .line 45
+    .line 46
+    :cond_0
+    invoke-virtual {v0, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+
+    .line 47
+    .line 48
+    .line 49
+    :cond_1
+    add-int/lit8 v3, v3, 0x1
+
+    .line 50
+    .line 51
+    goto :goto_0
+
+    .line 52
+    :cond_2
+    return-object v0
+.end method
+
+.method public getExt()Ljava/lang/String;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->ext:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    .line 4
+    .line 5
+    .line 6
+    move-result v0
+
+    .line 7
+    if-eqz v0, :cond_0
+
+    .line 8
+    .line 9
+    const-string v0, ""
+
+    .line 10
+    .line 11
+    goto :goto_0
+
+    .line 12
+    :cond_0
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->ext:Ljava/lang/String;
+
+    .line 13
+    .line 14
+    :goto_0
+    return-object v0
+.end method
+
+.method public getGroups()Ljava/util/List;
+    .locals 1
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()",
+            "Ljava/util/List<",
+            "Lcom/fongmi/android/tv/bean/Group;",
+            ">;"
+        }
+    .end annotation
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->groups:Ljava/util/List;
+
+    .line 2
+    .line 3
+    if-nez v0, :cond_0
+
+    .line 4
+    .line 5
+    new-instance v0, Ljava/util/ArrayList;
+
+    .line 6
+    .line 7
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
+
+    .line 8
+    .line 9
+    .line 10
+    :cond_0
+    iput-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->groups:Ljava/util/List;
+
+    .line 11
+    .line 12
+    return-object v0
+.end method
+
+.method public getHeader()Ljava/util/Map;
+    .locals 1
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()",
+            "Ljava/util/Map<",
+            "Ljava/lang/String;",
+            "Ljava/lang/String;",
+            ">;"
+        }
+    .end annotation
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->header:Ljava/util/Map;
+
+    .line 2
+    .line 3
+    if-nez v0, :cond_0
+
+    .line 4
+    .line 5
+    new-instance v0, Ljava/util/HashMap;
+
+    .line 6
+    .line 7
+    invoke-direct {v0}, Ljava/util/HashMap;-><init>()V
+
+    .line 8
+    .line 9
+    .line 10
+    :cond_0
+    return-object v0
+.end method
+
+.method public getHeaders()Ljava/util/Map;
+    .locals 3
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()",
+            "Ljava/util/Map<",
+            "Ljava/lang/String;",
+            "Ljava/lang/String;",
+            ">;"
+        }
+    .end annotation
+
+    .line 1
+    new-instance v0, Ljava/util/HashMap;
+
+    .line 2
+    .line 3
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getHeader()Ljava/util/Map;
+
+    .line 4
+    .line 5
+    .line 6
+    move-result-object v1
+
+    .line 7
+    invoke-direct {v0, v1}, Ljava/util/HashMap;-><init>(Ljava/util/Map;)V
+
+    .line 8
+    .line 9
+    .line 10
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getUa()Ljava/lang/String;
+
+    .line 11
+    .line 12
+    .line 13
+    move-result-object v1
+
+    .line 14
+    invoke-virtual {v1}, Ljava/lang/String;->isEmpty()Z
+
+    .line 15
+    .line 16
+    .line 17
+    move-result v1
+
+    .line 18
+    if-nez v1, :cond_0
+
+    .line 19
+    .line 20
+    const-string v1, "User-Agent"
+
+    .line 21
+    .line 22
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getUa()Ljava/lang/String;
+
+    .line 23
+    .line 24
+    .line 25
+    move-result-object v2
+
+    .line 26
+    invoke-virtual {v0, v1, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 27
+    .line 28
+    .line 29
+    :cond_0
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getOrigin()Ljava/lang/String;
+
+    .line 30
+    .line 31
+    .line 32
+    move-result-object v1
+
+    .line 33
+    invoke-virtual {v1}, Ljava/lang/String;->isEmpty()Z
+
+    .line 34
+    .line 35
+    .line 36
+    move-result v1
+
+    .line 37
+    if-nez v1, :cond_1
+
+    .line 38
+    .line 39
+    const-string v1, "Origin"
+
+    .line 40
+    .line 41
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getOrigin()Ljava/lang/String;
+
+    .line 42
+    .line 43
+    .line 44
+    move-result-object v2
+
+    .line 45
+    invoke-virtual {v0, v1, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 46
+    .line 47
+    .line 48
+    :cond_1
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getReferer()Ljava/lang/String;
+
+    .line 49
+    .line 50
+    .line 51
+    move-result-object v1
+
+    .line 52
+    invoke-virtual {v1}, Ljava/lang/String;->isEmpty()Z
+
+    .line 53
+    .line 54
+    .line 55
+    move-result v1
+
+    .line 56
+    if-nez v1, :cond_2
+
+    .line 57
+    .line 58
+    const-string v1, "Referer"
+
+    .line 59
+    .line 60
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getReferer()Ljava/lang/String;
+
+    .line 61
+    .line 62
+    .line 63
+    move-result-object v2
+
+    .line 64
+    invoke-virtual {v0, v1, v2}, Ljava/util/HashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 65
+    .line 66
+    .line 67
+    :cond_2
+    return-object v0
+.end method
+
+.method public getJar()Ljava/lang/String;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->jar:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    .line 4
+    .line 5
+    .line 6
+    move-result v0
+
+    .line 7
+    if-eqz v0, :cond_0
+
+    .line 8
+    .line 9
+    const-string v0, ""
+
+    .line 10
+    .line 11
+    goto :goto_0
+
+    .line 12
+    :cond_0
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->jar:Ljava/lang/String;
+
+    .line 13
+    .line 14
+    :goto_0
+    return-object v0
+.end method
+
+.method public getKeep()Ljava/lang/String;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->keep:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    .line 4
+    .line 5
+    .line 6
+    move-result v0
+
+    .line 7
+    if-eqz v0, :cond_0
+
+    .line 8
+    .line 9
+    const-string v0, ""
+
+    .line 10
+    .line 11
+    goto :goto_0
+
+    .line 12
+    :cond_0
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->keep:Ljava/lang/String;
+
+    .line 13
+    .line 14
+    :goto_0
+    return-object v0
+.end method
+
+.method public getLogo()Ljava/lang/String;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->logo:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    .line 4
+    .line 5
+    .line 6
+    move-result v0
+
+    .line 7
+    if-eqz v0, :cond_0
+
+    .line 8
+    .line 9
+    const-string v0, ""
+
+    .line 10
+    .line 11
+    goto :goto_0
+
+    .line 12
+    :cond_0
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->logo:Ljava/lang/String;
+
+    .line 13
+    .line 14
+    :goto_0
+    return-object v0
+.end method
+
+.method public getName()Ljava/lang/String;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->name:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    .line 4
+    .line 5
+    .line 6
+    move-result v0
+
+    .line 7
+    if-eqz v0, :cond_0
+
+    .line 8
+    .line 9
+    const-string v0, ""
+
+    .line 10
+    .line 11
+    goto :goto_0
+
+    .line 12
+    :cond_0
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->name:Ljava/lang/String;
+
+    .line 13
+    .line 14
+    :goto_0
+    return-object v0
+.end method
+
+.method public getOrigin()Ljava/lang/String;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->origin:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    .line 4
+    .line 5
+    .line 6
+    move-result v0
+
+    .line 7
+    if-eqz v0, :cond_0
+
+    .line 8
+    .line 9
+    const-string v0, ""
+
+    .line 10
+    .line 11
+    goto :goto_0
+
+    .line 12
+    :cond_0
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->origin:Ljava/lang/String;
+
+    .line 13
+    .line 14
+    :goto_0
+    return-object v0
+.end method
+
+.method public getPassIcon()I
+    .locals 1
+
+    .line 1
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->isPass()Z
+
+    .line 2
+    .line 3
+    .line 4
+    move-result v0
+
+    .line 5
+    if-eqz v0, :cond_0
+
+    .line 6
+    .line 7
+    const v0, 0x7f08011f
+
+    .line 8
+    .line 9
+    .line 10
+    goto :goto_0
+
+    .line 11
+    :cond_0
+    const v0, 0x7f080121
+
+    .line 12
+    .line 13
+    .line 14
+    :goto_0
+    return v0
+.end method
+
+.method public getPlayerType()I
+    .locals 2
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->playerType:Ljava/lang/Integer;
+
+    .line 2
+    .line 3
+    if-nez v0, :cond_0
+
+    .line 4
+    .line 5
+    const/4 v0, -0x1
+
+    .line 6
+    goto :goto_0
+
+    .line 7
+    :cond_0
+    invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
+
+    .line 8
+    .line 9
+    .line 10
+    move-result v0
+
+    .line 11
+    const/4 v1, 0x2
+
+    .line 12
+    invoke-static {v0, v1}, Ljava/lang/Math;->min(II)I
+
+    .line 13
+    .line 14
+    .line 15
+    move-result v0
+
+    .line 16
+    :goto_0
+    return v0
+.end method
+
+.method public getReferer()Ljava/lang/String;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->referer:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    .line 4
+    .line 5
+    .line 6
+    move-result v0
+
+    .line 7
+    if-eqz v0, :cond_0
+
+    .line 8
+    .line 9
+    const-string v0, ""
+
+    .line 10
+    .line 11
+    goto :goto_0
+
+    .line 12
+    :cond_0
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->referer:Ljava/lang/String;
+
+    .line 13
+    .line 14
+    :goto_0
+    return-object v0
+.end method
+
+.method public getTimeZone()Ljava/lang/String;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->timeZone:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    .line 4
+    .line 5
+    .line 6
+    move-result v0
+
+    .line 7
+    if-eqz v0, :cond_0
+
+    .line 8
+    .line 9
+    const-string v0, ""
+
+    .line 10
+    .line 11
+    goto :goto_0
+
+    .line 12
+    :cond_0
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->timeZone:Ljava/lang/String;
+
+    .line 13
+    .line 14
+    :goto_0
+    return-object v0
+.end method
+
+.method public getTimeout()J
+    .locals 4
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->timeout:Ljava/lang/Integer;
+
+    .line 2
+    .line 3
+    if-nez v0, :cond_0
+
+    .line 4
+    .line 5
+    sget-wide v0, Lr3/a;->f:J
+
+    .line 6
+    .line 7
+    goto :goto_0
+
+    .line 8
+    :cond_0
+    sget-object v1, Ljava/util/concurrent/TimeUnit;->SECONDS:Ljava/util/concurrent/TimeUnit;
+
+    .line 9
+    .line 10
+    invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
+
+    .line 11
+    .line 12
+    .line 13
+    move-result v0
+
+    .line 14
+    const/4 v2, 0x1
+
+    .line 15
+    invoke-static {v0, v2}, Ljava/lang/Math;->max(II)I
+
+    .line 16
+    .line 17
+    .line 18
+    move-result v0
+
+    .line 19
+    int-to-long v2, v0
+
+    .line 20
+    invoke-virtual {v1, v2, v3}, Ljava/util/concurrent/TimeUnit;->toMillis(J)J
+
+    .line 21
+    .line 22
+    .line 23
+    move-result-wide v0
+
+    .line 24
+    :goto_0
+    return-wide v0
+.end method
+
+.method public getUa()Ljava/lang/String;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->ua:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    .line 4
+    .line 5
+    .line 6
+    move-result v0
+
+    .line 7
+    if-eqz v0, :cond_0
+
+    .line 8
+    .line 9
+    const-string v0, ""
+
+    .line 10
+    .line 11
+    goto :goto_0
+
+    .line 12
+    :cond_0
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->ua:Ljava/lang/String;
+
+    .line 13
+    .line 14
+    :goto_0
+    return-object v0
+.end method
+
+.method public getUrl()Ljava/lang/String;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->url:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    .line 4
+    .line 5
+    .line 6
+    move-result v0
+
+    .line 7
+    if-eqz v0, :cond_0
+
+    .line 8
+    .line 9
+    const-string v0, ""
+
+    .line 10
+    .line 11
+    goto :goto_0
+
+    .line 12
+    :cond_0
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->url:Ljava/lang/String;
+
+    .line 13
+    .line 14
+    :goto_0
+    return-object v0
+.end method
+
+.method public getWidth()I
+    .locals 1
+
+    .line 1
+    iget v0, p0, Lcom/fongmi/android/tv/bean/Live;->width:I
+
+    .line 2
+    .line 3
+    return v0
+.end method
+
+.method public isActivated()Z
+    .locals 1
+
+    .line 1
+    iget-boolean v0, p0, Lcom/fongmi/android/tv/bean/Live;->activated:Z
+
+    .line 2
+    .line 3
+    return v0
+.end method
+
+.method public isBoot()Z
+    .locals 1
+
+    .line 1
+    iget-boolean v0, p0, Lcom/fongmi/android/tv/bean/Live;->boot:Z
+
+    .line 2
+    .line 3
+    return v0
+.end method
+
+.method public isEmpty()Z
+    .locals 1
+
+    .line 1
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getName()Ljava/lang/String;
+
+    .line 2
+    .line 3
+    .line 4
+    move-result-object v0
+
+    .line 5
+    invoke-virtual {v0}, Ljava/lang/String;->isEmpty()Z
+
+    .line 6
+    .line 7
+    .line 8
+    move-result v0
+
+    .line 9
+    return v0
+.end method
+
+.method public isPass()Z
+    .locals 1
+
+    .line 1
+    iget-boolean v0, p0, Lcom/fongmi/android/tv/bean/Live;->pass:Z
+
+    .line 2
+    .line 3
+    return v0
+.end method
+
+.method public keep(Lcom/fongmi/android/tv/bean/Channel;)Lcom/fongmi/android/tv/bean/Live;
+    .locals 3
+
+    .line 1
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    .line 2
+    .line 3
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    .line 4
+    .line 5
+    .line 6
+    invoke-virtual {p1}, Lcom/fongmi/android/tv/bean/Channel;->getGroup()Lcom/fongmi/android/tv/bean/Group;
+
+    .line 7
+    .line 8
+    .line 9
+    move-result-object v1
+
+    .line 10
+    invoke-virtual {v1}, Lcom/fongmi/android/tv/bean/Group;->getName()Ljava/lang/String;
+
+    .line 11
+    .line 12
+    .line 13
+    move-result-object v1
+
+    .line 14
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 15
+    .line 16
+    .line 17
+    const-string v1, "@@@"
+
+    .line 18
+    .line 19
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 20
+    .line 21
+    .line 22
+    invoke-virtual {p1}, Lcom/fongmi/android/tv/bean/Channel;->getName()Ljava/lang/String;
+
+    .line 23
+    .line 24
+    .line 25
+    move-result-object v2
+
+    .line 26
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 27
+    .line 28
+    .line 29
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 30
+    .line 31
+    .line 32
+    invoke-virtual {p1}, Lcom/fongmi/android/tv/bean/Channel;->getCurrent()Ljava/lang/String;
+
+    .line 33
+    .line 34
+    .line 35
+    move-result-object p1
+
+    .line 36
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 37
+    .line 38
+    .line 39
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    .line 40
+    .line 41
+    .line 42
+    move-result-object p1
+
+    .line 43
+    invoke-virtual {p0, p1}, Lcom/fongmi/android/tv/bean/Live;->setKeep(Ljava/lang/String;)V
+
+    .line 44
+    .line 45
+    .line 46
+    return-object p0
+.end method
+
+.method public pass(Z)Lcom/fongmi/android/tv/bean/Live;
+    .locals 1
+
+    .line 1
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getGroups()Ljava/util/List;
+
+    .line 2
+    .line 3
+    .line 4
+    move-result-object v0
+
+    .line 5
+    invoke-interface {v0}, Ljava/util/List;->clear()V
+
+    .line 6
+    .line 7
+    .line 8
+    invoke-virtual {p0, p1}, Lcom/fongmi/android/tv/bean/Live;->setPass(Z)V
+
+    .line 9
+    .line 10
+    .line 11
+    return-object p0
+.end method
+
+.method public recent()Lcom/fongmi/android/tv/bean/Live;
+    .locals 4
+
+    .line 1
+    sget-object v0, Lu3/a;->a:Lg6/c;
+
+    .line 2
+    .line 3
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getName()Ljava/lang/String;
+
+    .line 4
+    .line 5
+    .line 6
+    move-result-object v1
+
+    .line 7
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getApi()Ljava/lang/String;
+
+    .line 8
+    .line 9
+    .line 10
+    move-result-object v2
+
+    .line 11
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getJar()Ljava/lang/String;
+
+    .line 12
+    .line 13
+    .line 14
+    move-result-object v3
+
+    .line 15
+    invoke-virtual {v0, v1, v2, v3}, Lg6/c;->S(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+
+    .line 16
+    .line 17
+    .line 18
+    return-object p0
+.end method
+
+.method public save()V
+    .locals 4
+
+    .line 1
+    invoke-static {}, Lcom/fongmi/android/tv/db/AppDatabase;->n()Lcom/fongmi/android/tv/db/AppDatabase;
+
+    .line 2
+    .line 3
+    .line 4
+    move-result-object v0
+
+    .line 5
+    invoke-virtual {v0}, Lcom/fongmi/android/tv/db/AppDatabase;->t()Ly3/t;
+
+    .line 6
+    .line 7
+    .line 8
+    move-result-object v0
+
+    .line 9
+    invoke-virtual {v0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+
+    .line 10
+    .line 11
+    .line 12
+    new-instance v1, Ly3/s;
+
+    .line 13
+    .line 14
+    const/4 v2, 0x0
+
+    .line 15
+    invoke-direct {v1, v0, p0, v2}, Ly3/s;-><init>(Ly3/t;Lcom/fongmi/android/tv/bean/Live;I)V
+
+    .line 16
+    .line 17
+    .line 18
+    iget-object v0, v0, Ly3/t;->f:Lcom/fongmi/android/tv/db/AppDatabase_Impl;
+
+    .line 19
+    .line 20
+    const/4 v3, 0x1
+
+    .line 21
+    invoke-static {v0, v2, v3, v1}, Lcom/bumptech/glide/c;->G(LX1/C;ZZLkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+
+    .line 22
+    .line 23
+    .line 24
+    return-void
+.end method
+
+.method public setActivated(Lcom/fongmi/android/tv/bean/Live;)V
+    .locals 0
+
+    .line 2
+    invoke-virtual {p1, p0}, Lcom/fongmi/android/tv/bean/Live;->equals(Ljava/lang/Object;)Z
+
+    move-result p1
+
+    iput-boolean p1, p0, Lcom/fongmi/android/tv/bean/Live;->activated:Z
+
+    return-void
+.end method
+
+.method public setActivated(Z)V
+    .locals 0
+
+    .line 1
+    iput-boolean p1, p0, Lcom/fongmi/android/tv/bean/Live;->activated:Z
+
+    return-void
+.end method
+
+.method public setApi(Ljava/lang/String;)V
+    .locals 0
+
+    .line 1
+    iput-object p1, p0, Lcom/fongmi/android/tv/bean/Live;->api:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    return-void
+.end method
+
+.method public setBoot(Z)V
+    .locals 0
+
+    .line 1
+    iput-boolean p1, p0, Lcom/fongmi/android/tv/bean/Live;->boot:Z
+
+    .line 2
+    .line 3
+    return-void
+.end method
+
+.method public setEpg(Ljava/lang/String;)V
+    .locals 0
+
+    .line 1
+    iput-object p1, p0, Lcom/fongmi/android/tv/bean/Live;->epg:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    return-void
+.end method
+
+.method public setExt(Ljava/lang/String;)V
+    .locals 0
+
+    .line 1
+    invoke-virtual {p1}, Ljava/lang/String;->trim()Ljava/lang/String;
+
+    .line 2
+    .line 3
+    .line 4
+    move-result-object p1
+
+    .line 5
+    iput-object p1, p0, Lcom/fongmi/android/tv/bean/Live;->ext:Ljava/lang/String;
+
+    .line 6
+    .line 7
+    return-void
+.end method
+
+.method public setJar(Ljava/lang/String;)V
+    .locals 0
+
+    .line 1
+    iput-object p1, p0, Lcom/fongmi/android/tv/bean/Live;->jar:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    return-void
+.end method
+
+.method public setKeep(Ljava/lang/String;)V
+    .locals 0
+
+    .line 1
+    iput-object p1, p0, Lcom/fongmi/android/tv/bean/Live;->keep:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    return-void
+.end method
+
+.method public setName(Ljava/lang/String;)V
+    .locals 0
+
+    .line 1
+    iput-object p1, p0, Lcom/fongmi/android/tv/bean/Live;->name:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    return-void
+.end method
+
+.method public setPass(Z)V
+    .locals 0
+
+    .line 1
+    iput-boolean p1, p0, Lcom/fongmi/android/tv/bean/Live;->pass:Z
+
+    .line 2
+    .line 3
+    return-void
+.end method
+
+.method public setUrl(Ljava/lang/String;)V
+    .locals 0
+
+    .line 1
+    iput-object p1, p0, Lcom/fongmi/android/tv/bean/Live;->url:Ljava/lang/String;
+
+    .line 2
+    .line 3
+    return-void
+.end method
+
+.method public setWidth(I)V
+    .locals 0
+
+    .line 1
+    iput p1, p0, Lcom/fongmi/android/tv/bean/Live;->width:I
+
+    .line 2
+    .line 3
+    return-void
+.end method
+
+.method public spider()Lcom/github/catvod/crawler/Spider;
+    .locals 5
+
+    .line 1
+    sget-object v0, Lu3/a;->a:Lg6/c;
+
+    .line 2
+    .line 3
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getName()Ljava/lang/String;
+
+    .line 4
+    .line 5
+    .line 6
+    move-result-object v1
+
+    .line 7
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getApi()Ljava/lang/String;
+
+    .line 8
+    .line 9
+    .line 10
+    move-result-object v2
+
+    .line 11
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getExt()Ljava/lang/String;
+
+    .line 12
+    .line 13
+    .line 14
+    move-result-object v3
+
+    .line 15
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getJar()Ljava/lang/String;
+
+    .line 16
+    .line 17
+    .line 18
+    move-result-object v4
+
+    .line 19
+    invoke-virtual {v0, v1, v2, v3, v4}, Lg6/c;->J(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/github/catvod/crawler/Spider;
+
+    .line 20
+    .line 21
+    .line 22
+    move-result-object v0
+
+    .line 23
+    return-object v0
+.end method
+
+.method public sync()Lcom/fongmi/android/tv/bean/Live;
+    .locals 1
+
+    .line 1
+    invoke-virtual {p0}, Lcom/fongmi/android/tv/bean/Live;->getName()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v0}, Lcom/fongmi/android/tv/bean/Live;->find(Ljava/lang/String;)Lcom/fongmi/android/tv/bean/Live;
+
+    move-result-object v0
+
+    invoke-virtual {p0, v0}, Lcom/fongmi/android/tv/bean/Live;->sync(Lcom/fongmi/android/tv/bean/Live;)Lcom/fongmi/android/tv/bean/Live;
+
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.method public sync(Lcom/fongmi/android/tv/bean/Live;)Lcom/fongmi/android/tv/bean/Live;
+    .locals 1
+
+    if-nez p1, :cond_0
+
+    return-object p0
+
+    .line 2
+    :cond_0
+    invoke-virtual {p1}, Lcom/fongmi/android/tv/bean/Live;->isBoot()Z
+
+    move-result v0
+
+    invoke-virtual {p0, v0}, Lcom/fongmi/android/tv/bean/Live;->setBoot(Z)V
+
+    .line 3
+    invoke-virtual {p1}, Lcom/fongmi/android/tv/bean/Live;->isPass()Z
+
+    move-result v0
+
+    invoke-virtual {p0, v0}, Lcom/fongmi/android/tv/bean/Live;->setPass(Z)V
+
+    .line 4
+    invoke-virtual {p1}, Lcom/fongmi/android/tv/bean/Live;->getKeep()Ljava/lang/String;
+
+    move-result-object p1
+
+    invoke-virtual {p0, p1}, Lcom/fongmi/android/tv/bean/Live;->setKeep(Ljava/lang/String;)V
+
+    return-object p0
+.end method
+
+.method public trans()Lcom/fongmi/android/tv/bean/Live;
+    .locals 1
+
+    .line 1
+    sget-boolean v0, Ld4/b;->c:Z
+
+    .line 2
+    .line 3
+    if-nez v0, :cond_0
+
+    .line 4
+    .line 5
+    return-object p0
+
+    .line 6
+    :cond_0
+    iget-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->name:Ljava/lang/String;
+
+    .line 7
+    .line 8
+    invoke-static {v0}, Ld4/b;->b(Ljava/lang/String;)Ljava/lang/String;
+
+    .line 9
+    .line 10
+    .line 11
+    move-result-object v0
+
+    .line 12
+    iput-object v0, p0, Lcom/fongmi/android/tv/bean/Live;->name:Ljava/lang/String;
+
+    .line 13
+    .line 14
+    return-object p0
+.end method

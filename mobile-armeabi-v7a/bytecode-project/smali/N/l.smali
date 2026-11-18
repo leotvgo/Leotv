@@ -1,0 +1,106 @@
+.class public final LN/l;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Ljava/util/concurrent/ThreadFactory;
+
+
+# instance fields
+.field public final synthetic a:I
+
+
+# direct methods
+.method public synthetic constructor <init>(I)V
+    .locals 0
+
+    .line 1
+    iput p1, p0, LN/l;->a:I
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final newThread(Ljava/lang/Runnable;)Ljava/lang/Thread;
+    .locals 3
+
+    .line 1
+    iget v0, p0, LN/l;->a:I
+
+    .line 2
+    .line 3
+    packed-switch v0, :pswitch_data_0
+
+    .line 4
+    .line 5
+    .line 6
+    new-instance v0, LY2/a;
+
+    .line 7
+    .line 8
+    const-string v1, "video_download_worker_pool_thread"
+
+    .line 9
+    .line 10
+    invoke-direct {v0, p1, v1}, LY2/a;-><init>(Ljava/lang/Runnable;Ljava/lang/String;)V
+
+    .line 11
+    .line 12
+    .line 13
+    return-object v0
+
+    .line 14
+    :pswitch_0
+    new-instance v0, Ljava/lang/Thread;
+
+    .line 15
+    .line 16
+    new-instance v1, LB6/f;
+
+    .line 17
+    .line 18
+    const/4 v2, 0x3
+
+    .line 19
+    invoke-direct {v1, p1, v2}, LB6/f;-><init>(Ljava/lang/Object;I)V
+
+    .line 20
+    .line 21
+    .line 22
+    const-string p1, "glide-active-resources"
+
+    .line 23
+    .line 24
+    invoke-direct {v0, v1, p1}, Ljava/lang/Thread;-><init>(Ljava/lang/Runnable;Ljava/lang/String;)V
+
+    .line 25
+    .line 26
+    .line 27
+    return-object v0
+
+    .line 28
+    :pswitch_1
+    new-instance v0, LN/k;
+
+    .line 29
+    .line 30
+    invoke-direct {v0, p1}, LN/k;-><init>(Ljava/lang/Runnable;)V
+
+    .line 31
+    .line 32
+    .line 33
+    return-object v0
+
+    .line 34
+    nop
+
+    .line 35
+    :pswitch_data_0
+    .packed-switch 0x0
+        :pswitch_1
+        :pswitch_0
+    .end packed-switch
+.end method

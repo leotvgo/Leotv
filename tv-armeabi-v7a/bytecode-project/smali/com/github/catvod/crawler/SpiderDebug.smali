@@ -1,0 +1,75 @@
+.class public Lcom/github/catvod/crawler/SpiderDebug;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+
+# static fields
+.field private static final TAG:Ljava/lang/String; = "SpiderDebug"
+
+
+# direct methods
+.method public constructor <init>()V
+    .locals 0
+
+    .line 1
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 2
+    .line 3
+    .line 4
+    return-void
+.end method
+
+.method public static log(Ljava/lang/String;)V
+    .locals 1
+
+    .line 2
+    invoke-static {p0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    move-result v0
+
+    if-nez v0, :cond_0
+
+    sget-object v0, Lcom/github/catvod/crawler/SpiderDebug;->TAG:Ljava/lang/String;
+
+    invoke-static {v0}, LO4/c;->a(Ljava/lang/String;)LO4/d;
+
+    move-result-object v0
+
+    invoke-virtual {v0, p0}, LO4/d;->L(Ljava/lang/String;)V
+
+    :cond_0
+    return-void
+.end method
+
+.method public static varargs log(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+    .locals 1
+
+    .line 3
+    invoke-static {p1}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    move-result v0
+
+    if-nez v0, :cond_0
+
+    invoke-static {p0}, LO4/c;->a(Ljava/lang/String;)LO4/d;
+
+    move-result-object p0
+
+    invoke-virtual {p0, p1, p2}, LO4/d;->M(Ljava/lang/String;[Ljava/lang/Object;)V
+
+    :cond_0
+    return-void
+.end method
+
+.method public static log(Ljava/lang/Throwable;)V
+    .locals 0
+
+    if-eqz p0, :cond_0
+
+    .line 1
+    invoke-virtual {p0}, Ljava/lang/Throwable;->printStackTrace()V
+
+    :cond_0
+    return-void
+.end method

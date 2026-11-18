@@ -1,0 +1,437 @@
+.class public Lb1/k;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Lb1/A;
+
+
+# instance fields
+.field public final a:J
+
+.field public final b:J
+
+.field public final c:I
+
+.field public final d:J
+
+.field public final e:I
+
+.field public final f:J
+
+.field public final g:Z
+
+.field public final h:Z
+
+
+# direct methods
+.method public constructor <init>(IIJJ)V
+    .locals 9
+
+    const/4 v8, 0x1
+
+    const/4 v7, 0x0
+
+    move-object v0, p0
+
+    move-wide v1, p3
+
+    move-wide v3, p5
+
+    move v5, p1
+
+    move v6, p2
+
+    .line 1
+    invoke-direct/range {v0 .. v8}, Lb1/k;-><init>(JJIIZZ)V
+
+    return-void
+.end method
+
+.method public constructor <init>(JJIIZZ)V
+    .locals 1
+
+    .line 2
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 3
+    iput-wide p1, p0, Lb1/k;->a:J
+
+    .line 4
+    iput-wide p3, p0, Lb1/k;->b:J
+
+    const/4 v0, -0x1
+
+    if-ne p6, v0, :cond_0
+
+    const/4 p6, 0x1
+
+    .line 5
+    :cond_0
+    iput p6, p0, Lb1/k;->c:I
+
+    .line 6
+    iput p5, p0, Lb1/k;->e:I
+
+    .line 7
+    iput-boolean p7, p0, Lb1/k;->g:Z
+
+    .line 8
+    iput-boolean p8, p0, Lb1/k;->h:Z
+
+    const-wide/16 p6, -0x1
+
+    cmp-long p8, p1, p6
+
+    if-nez p8, :cond_1
+
+    .line 9
+    iput-wide p6, p0, Lb1/k;->d:J
+
+    const-wide p1, -0x7fffffffffffffffL    # -4.9E-324
+
+    .line 10
+    iput-wide p1, p0, Lb1/k;->f:J
+
+    goto :goto_0
+
+    :cond_1
+    sub-long/2addr p1, p3
+
+    .line 11
+    iput-wide p1, p0, Lb1/k;->d:J
+
+    const-wide/16 p3, 0x0
+
+    .line 12
+    invoke-static {p3, p4, p1, p2}, Ljava/lang/Math;->max(JJ)J
+
+    move-result-wide p1
+
+    const-wide/32 p3, 0x7a1200
+
+    mul-long/2addr p1, p3
+
+    int-to-long p3, p5
+
+    div-long/2addr p1, p3
+
+    .line 13
+    iput-wide p1, p0, Lb1/k;->f:J
+
+    :goto_0
+    return-void
+.end method
+
+
+# virtual methods
+.method public final a()Z
+    .locals 4
+
+    .line 1
+    iget-wide v0, p0, Lb1/k;->d:J
+
+    .line 2
+    .line 3
+    const-wide/16 v2, -0x1
+
+    .line 4
+    .line 5
+    cmp-long v0, v0, v2
+
+    .line 6
+    .line 7
+    if-nez v0, :cond_1
+
+    .line 8
+    .line 9
+    iget-boolean v0, p0, Lb1/k;->g:Z
+
+    .line 10
+    .line 11
+    if-eqz v0, :cond_0
+
+    .line 12
+    .line 13
+    goto :goto_0
+
+    .line 14
+    :cond_0
+    const/4 v0, 0x0
+
+    .line 15
+    goto :goto_1
+
+    .line 16
+    :cond_1
+    :goto_0
+    const/4 v0, 0x1
+
+    .line 17
+    :goto_1
+    return v0
+.end method
+
+.method public final b()Z
+    .locals 1
+
+    .line 1
+    iget-boolean v0, p0, Lb1/k;->h:Z
+
+    .line 2
+    .line 3
+    return v0
+.end method
+
+.method public final c(J)Lb1/z;
+    .locals 15
+
+    .line 1
+    move-object v0, p0
+
+    .line 2
+    const-wide/16 v1, -0x1
+
+    .line 3
+    .line 4
+    iget-wide v3, v0, Lb1/k;->d:J
+
+    .line 5
+    .line 6
+    cmp-long v1, v3, v1
+
+    .line 7
+    .line 8
+    iget-wide v5, v0, Lb1/k;->b:J
+
+    .line 9
+    .line 10
+    const-wide/16 v7, 0x0
+
+    .line 11
+    .line 12
+    if-nez v1, :cond_0
+
+    .line 13
+    .line 14
+    iget-boolean v2, v0, Lb1/k;->g:Z
+
+    .line 15
+    .line 16
+    if-nez v2, :cond_0
+
+    .line 17
+    .line 18
+    new-instance v1, Lb1/z;
+
+    .line 19
+    .line 20
+    new-instance v2, Lb1/B;
+
+    .line 21
+    .line 22
+    invoke-direct {v2, v7, v8, v5, v6}, Lb1/B;-><init>(JJ)V
+
+    .line 23
+    .line 24
+    .line 25
+    invoke-direct {v1, v2, v2}, Lb1/z;-><init>(Lb1/B;Lb1/B;)V
+
+    .line 26
+    .line 27
+    .line 28
+    return-object v1
+
+    .line 29
+    :cond_0
+    iget v2, v0, Lb1/k;->e:I
+
+    .line 30
+    .line 31
+    int-to-long v9, v2
+
+    .line 32
+    mul-long v9, v9, p1
+
+    .line 33
+    .line 34
+    const-wide/32 v11, 0x7a1200
+
+    .line 35
+    .line 36
+    .line 37
+    div-long/2addr v9, v11
+
+    .line 38
+    iget v13, v0, Lb1/k;->c:I
+
+    .line 39
+    .line 40
+    int-to-long v13, v13
+
+    .line 41
+    div-long/2addr v9, v13
+
+    .line 42
+    mul-long/2addr v9, v13
+
+    .line 43
+    if-eqz v1, :cond_1
+
+    .line 44
+    .line 45
+    sub-long/2addr v3, v13
+
+    .line 46
+    invoke-static {v9, v10, v3, v4}, Ljava/lang/Math;->min(JJ)J
+
+    .line 47
+    .line 48
+    .line 49
+    move-result-wide v9
+
+    .line 50
+    :cond_1
+    invoke-static {v9, v10, v7, v8}, Ljava/lang/Math;->max(JJ)J
+
+    .line 51
+    .line 52
+    .line 53
+    move-result-wide v3
+
+    .line 54
+    add-long/2addr v3, v5
+
+    .line 55
+    sub-long v9, v3, v5
+
+    .line 56
+    .line 57
+    invoke-static {v7, v8, v9, v10}, Ljava/lang/Math;->max(JJ)J
+
+    .line 58
+    .line 59
+    .line 60
+    move-result-wide v9
+
+    .line 61
+    mul-long/2addr v9, v11
+
+    .line 62
+    int-to-long v11, v2
+
+    .line 63
+    div-long/2addr v9, v11
+
+    .line 64
+    new-instance v11, Lb1/B;
+
+    .line 65
+    .line 66
+    invoke-direct {v11, v9, v10, v3, v4}, Lb1/B;-><init>(JJ)V
+
+    .line 67
+    .line 68
+    .line 69
+    if-eqz v1, :cond_3
+
+    .line 70
+    .line 71
+    cmp-long v1, v9, p1
+
+    .line 72
+    .line 73
+    if-gez v1, :cond_3
+
+    .line 74
+    .line 75
+    add-long/2addr v3, v13
+
+    .line 76
+    iget-wide v9, v0, Lb1/k;->a:J
+
+    .line 77
+    .line 78
+    cmp-long v1, v3, v9
+
+    .line 79
+    .line 80
+    if-ltz v1, :cond_2
+
+    .line 81
+    .line 82
+    goto :goto_0
+
+    .line 83
+    :cond_2
+    sub-long v5, v3, v5
+
+    .line 84
+    .line 85
+    invoke-static {v7, v8, v5, v6}, Ljava/lang/Math;->max(JJ)J
+
+    .line 86
+    .line 87
+    .line 88
+    move-result-wide v5
+
+    .line 89
+    const-wide/32 v7, 0x7a1200
+
+    .line 90
+    .line 91
+    .line 92
+    mul-long/2addr v5, v7
+
+    .line 93
+    int-to-long v1, v2
+
+    .line 94
+    div-long/2addr v5, v1
+
+    .line 95
+    new-instance v1, Lb1/B;
+
+    .line 96
+    .line 97
+    invoke-direct {v1, v5, v6, v3, v4}, Lb1/B;-><init>(JJ)V
+
+    .line 98
+    .line 99
+    .line 100
+    new-instance v2, Lb1/z;
+
+    .line 101
+    .line 102
+    invoke-direct {v2, v11, v1}, Lb1/z;-><init>(Lb1/B;Lb1/B;)V
+
+    .line 103
+    .line 104
+    .line 105
+    return-object v2
+
+    .line 106
+    :cond_3
+    :goto_0
+    new-instance v1, Lb1/z;
+
+    .line 107
+    .line 108
+    invoke-direct {v1, v11, v11}, Lb1/z;-><init>(Lb1/B;Lb1/B;)V
+
+    .line 109
+    .line 110
+    .line 111
+    return-object v1
+.end method
+
+.method public final d()J
+    .locals 2
+
+    .line 1
+    iget-wide v0, p0, Lb1/k;->f:J
+
+    .line 2
+    .line 3
+    return-wide v0
+.end method

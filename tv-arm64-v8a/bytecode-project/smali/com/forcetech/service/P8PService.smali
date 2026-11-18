@@ -1,0 +1,28 @@
+.class public Lcom/forcetech/service/P8PService;
+.super LW3/a;
+.source "SourceFile"
+
+
+# direct methods
+.method public constructor <init>()V
+    .locals 0
+
+    .line 1
+    invoke-direct {p0}, Landroid/app/Service;-><init>()V
+
+    .line 2
+    .line 3
+    .line 4
+    return-void
+.end method
+
+
+# virtual methods
+.method public final a()I
+    .locals 1
+
+    .line 1
+    const/16 v0, 0x26b8
+
+    return v0
+.end method

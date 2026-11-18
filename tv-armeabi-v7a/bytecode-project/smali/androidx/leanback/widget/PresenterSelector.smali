@@ -1,0 +1,35 @@
+.class public abstract Landroidx/leanback/widget/PresenterSelector;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+
+# direct methods
+.method public constructor <init>()V
+    .locals 0
+
+    .line 1
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 2
+    .line 3
+    .line 4
+    return-void
+.end method
+
+
+# virtual methods
+.method public abstract getPresenter(Ljava/lang/Object;)Landroidx/leanback/widget/Presenter;
+.end method
+
+.method public getPresenters()[Landroidx/leanback/widget/Presenter;
+    .locals 1
+    .annotation build Landroid/annotation/SuppressLint;
+        value = {
+            "NullableCollection"
+        }
+    .end annotation
+
+    const/4 v0, 0x0
+
+    return-object v0
+.end method

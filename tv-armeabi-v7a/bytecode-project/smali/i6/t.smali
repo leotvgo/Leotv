@@ -1,0 +1,75 @@
+.class public final Li6/t;
+.super Li6/u;
+.source "SourceFile"
+
+# interfaces
+.implements Li6/e;
+
+
+# virtual methods
+.method public final equals(Ljava/lang/Object;)Z
+    .locals 1
+
+    .line 1
+    if-eq p0, p1, :cond_2
+
+    .line 2
+    .line 3
+    instance-of v0, p1, Li6/f;
+
+    .line 4
+    .line 5
+    if-eqz v0, :cond_0
+
+    .line 6
+    .line 7
+    move-object v0, p1
+
+    .line 8
+    check-cast v0, Li6/f;
+
+    .line 9
+    .line 10
+    invoke-interface {v0, p0}, Li6/f;->g(Li6/f;)Z
+
+    .line 11
+    .line 12
+    .line 13
+    move-result v0
+
+    .line 14
+    if-nez v0, :cond_2
+
+    .line 15
+    .line 16
+    :cond_0
+    invoke-super {p0, p1}, Li6/u;->equals(Ljava/lang/Object;)Z
+
+    .line 17
+    .line 18
+    .line 19
+    move-result p1
+
+    .line 20
+    if-eqz p1, :cond_1
+
+    .line 21
+    .line 22
+    goto :goto_0
+
+    .line 23
+    :cond_1
+    const/4 p1, 0x0
+
+    .line 24
+    goto :goto_1
+
+    .line 25
+    :cond_2
+    :goto_0
+    const/4 p1, 0x1
+
+    .line 26
+    :goto_1
+    return p1
+.end method

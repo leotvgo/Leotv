@@ -1,0 +1,1118 @@
+.class public final Lo0/p;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Lo0/o;
+
+
+# instance fields
+.field public final a:[S
+
+.field public b:[S
+
+.field public c:[S
+
+.field public d:[S
+
+.field public e:I
+
+.field public f:I
+
+.field public g:I
+
+.field public final synthetic h:Lo0/q;
+
+
+# direct methods
+.method public constructor <init>(Lo0/q;)V
+    .locals 2
+
+    .line 1
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 2
+    .line 3
+    .line 4
+    iput-object p1, p0, Lo0/p;->h:Lo0/q;
+
+    .line 5
+    .line 6
+    iget v0, p1, Lo0/q;->h:I
+
+    .line 7
+    .line 8
+    new-array v1, v0, [S
+
+    .line 9
+    .line 10
+    iput-object v1, p0, Lo0/p;->a:[S
+
+    .line 11
+    .line 12
+    iget p1, p1, Lo0/q;->b:I
+
+    .line 13
+    .line 14
+    mul-int v1, v0, p1
+
+    .line 15
+    .line 16
+    new-array v1, v1, [S
+
+    .line 17
+    .line 18
+    iput-object v1, p0, Lo0/p;->b:[S
+
+    .line 19
+    .line 20
+    mul-int v1, v0, p1
+
+    .line 21
+    .line 22
+    new-array v1, v1, [S
+
+    .line 23
+    .line 24
+    iput-object v1, p0, Lo0/p;->c:[S
+
+    .line 25
+    .line 26
+    mul-int/2addr v0, p1
+
+    .line 27
+    new-array p1, v0, [S
+
+    .line 28
+    .line 29
+    iput-object p1, p0, Lo0/p;->d:[S
+
+    .line 30
+    .line 31
+    return-void
+.end method
+
+
+# virtual methods
+.method public final a(II)V
+    .locals 4
+
+    .line 1
+    const/4 v0, 0x0
+
+    .line 2
+    move v1, v0
+
+    .line 3
+    :goto_0
+    iget-object v2, p0, Lo0/p;->h:Lo0/q;
+
+    .line 4
+    .line 5
+    iget v2, v2, Lo0/q;->b:I
+
+    .line 6
+    .line 7
+    mul-int/2addr v2, p2
+
+    .line 8
+    if-ge v1, v2, :cond_0
+
+    .line 9
+    .line 10
+    iget-object v2, p0, Lo0/p;->b:[S
+
+    .line 11
+    .line 12
+    add-int v3, p1, v1
+
+    .line 13
+    .line 14
+    aput-short v0, v2, v3
+
+    .line 15
+    .line 16
+    add-int/lit8 v1, v1, 0x1
+
+    .line 17
+    .line 18
+    goto :goto_0
+
+    .line 19
+    :cond_0
+    return-void
+.end method
+
+.method public final b(II)V
+    .locals 7
+
+    .line 1
+    iget-object v0, p0, Lo0/p;->b:[S
+
+    .line 2
+    .line 3
+    iget-object v1, p0, Lo0/p;->h:Lo0/q;
+
+    .line 4
+    .line 5
+    iget v2, v1, Lo0/q;->h:I
+
+    .line 6
+    .line 7
+    div-int/2addr v2, p2
+
+    .line 8
+    iget v1, v1, Lo0/q;->b:I
+
+    .line 9
+    .line 10
+    mul-int/2addr p2, v1
+
+    .line 11
+    mul-int/2addr p1, v1
+
+    .line 12
+    const/4 v1, 0x0
+
+    .line 13
+    move v3, v1
+
+    .line 14
+    :goto_0
+    if-ge v3, v2, :cond_1
+
+    .line 15
+    .line 16
+    move v4, v1
+
+    .line 17
+    move v5, v4
+
+    .line 18
+    :goto_1
+    if-ge v4, p2, :cond_0
+
+    .line 19
+    .line 20
+    mul-int v6, v3, p2
+
+    .line 21
+    .line 22
+    add-int/2addr v6, p1
+
+    .line 23
+    add-int/2addr v6, v4
+
+    .line 24
+    aget-short v6, v0, v6
+
+    .line 25
+    .line 26
+    add-int/2addr v5, v6
+
+    .line 27
+    add-int/lit8 v4, v4, 0x1
+
+    .line 28
+    .line 29
+    goto :goto_1
+
+    .line 30
+    :cond_0
+    div-int/2addr v5, p2
+
+    .line 31
+    iget-object v4, p0, Lo0/p;->a:[S
+
+    .line 32
+    .line 33
+    int-to-short v5, v5
+
+    .line 34
+    aput-short v5, v4, v3
+
+    .line 35
+    .line 36
+    add-int/lit8 v3, v3, 0x1
+
+    .line 37
+    .line 38
+    goto :goto_0
+
+    .line 39
+    :cond_1
+    return-void
+.end method
+
+.method public final c(III)I
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lo0/p;->b:[S
+
+    .line 2
+    .line 3
+    invoke-virtual {p0, v0, p1, p2, p3}, Lo0/p;->s([SIII)I
+
+    .line 4
+    .line 5
+    .line 6
+    move-result p1
+
+    .line 7
+    return p1
+.end method
+
+.method public final d()V
+    .locals 1
+
+    .line 1
+    iget v0, p0, Lo0/p;->e:I
+
+    .line 2
+    .line 3
+    iput v0, p0, Lo0/p;->g:I
+
+    .line 4
+    .line 5
+    return-void
+.end method
+
+.method public final e()Ljava/lang/Object;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lo0/p;->b:[S
+
+    .line 2
+    .line 3
+    return-object v0
+.end method
+
+.method public final f()Ljava/lang/Object;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lo0/p;->c:[S
+
+    .line 2
+    .line 3
+    return-object v0
+.end method
+
+.method public final flush()V
+    .locals 1
+
+    .line 1
+    const/4 v0, 0x0
+
+    .line 2
+    iput v0, p0, Lo0/p;->g:I
+
+    .line 3
+    .line 4
+    iput v0, p0, Lo0/p;->e:I
+
+    .line 5
+    .line 6
+    iput v0, p0, Lo0/p;->f:I
+
+    .line 7
+    .line 8
+    return-void
+.end method
+
+.method public final g(JJI)V
+    .locals 13
+
+    .line 1
+    move-object v0, p0
+
+    .line 2
+    const/4 v1, 0x0
+
+    .line 3
+    :goto_0
+    iget-object v2, v0, Lo0/p;->h:Lo0/q;
+
+    .line 4
+    .line 5
+    iget v3, v2, Lo0/q;->b:I
+
+    .line 6
+    .line 7
+    if-ge v1, v3, :cond_0
+
+    .line 8
+    .line 9
+    iget-object v4, v0, Lo0/p;->c:[S
+
+    .line 10
+    .line 11
+    iget v5, v2, Lo0/q;->k:I
+
+    .line 12
+    .line 13
+    mul-int/2addr v5, v3
+
+    .line 14
+    add-int/2addr v5, v1
+
+    .line 15
+    iget-object v6, v0, Lo0/p;->d:[S
+
+    .line 16
+    .line 17
+    mul-int v7, p5, v3
+
+    .line 18
+    .line 19
+    add-int/2addr v7, v1
+
+    .line 20
+    aget-short v8, v6, v7
+
+    .line 21
+    .line 22
+    add-int/2addr v7, v3
+
+    .line 23
+    aget-short v3, v6, v7
+
+    .line 24
+    .line 25
+    iget v6, v2, Lo0/q;->n:I
+
+    .line 26
+    .line 27
+    int-to-long v6, v6
+
+    .line 28
+    mul-long/2addr v6, p1
+
+    .line 29
+    iget v2, v2, Lo0/q;->m:I
+
+    .line 30
+    .line 31
+    int-to-long v9, v2
+
+    .line 32
+    mul-long v9, v9, p3
+
+    .line 33
+    .line 34
+    add-int/lit8 v2, v2, 0x1
+
+    .line 35
+    .line 36
+    int-to-long v11, v2
+
+    .line 37
+    mul-long v11, v11, p3
+
+    .line 38
+    .line 39
+    sub-long v6, v11, v6
+
+    .line 40
+    .line 41
+    sub-long/2addr v11, v9
+
+    .line 42
+    int-to-long v8, v8
+
+    .line 43
+    mul-long/2addr v8, v6
+
+    .line 44
+    sub-long v6, v11, v6
+
+    .line 45
+    .line 46
+    int-to-long v2, v3
+
+    .line 47
+    mul-long/2addr v6, v2
+
+    .line 48
+    add-long/2addr v6, v8
+
+    .line 49
+    div-long/2addr v6, v11
+
+    .line 50
+    long-to-int v2, v6
+
+    .line 51
+    int-to-short v2, v2
+
+    .line 52
+    aput-short v2, v4, v5
+
+    .line 53
+    .line 54
+    add-int/lit8 v1, v1, 0x1
+
+    .line 55
+    .line 56
+    goto :goto_0
+
+    .line 57
+    :cond_0
+    return-void
+.end method
+
+.method public final h(I)V
+    .locals 2
+
+    .line 1
+    iget-object v0, p0, Lo0/p;->c:[S
+
+    .line 2
+    .line 3
+    iget-object v1, p0, Lo0/p;->h:Lo0/q;
+
+    .line 4
+    .line 5
+    iget v1, v1, Lo0/q;->k:I
+
+    .line 6
+    .line 7
+    invoke-virtual {p0, v0, v1, p1}, Lo0/p;->r([SII)[S
+
+    .line 8
+    .line 9
+    .line 10
+    move-result-object p1
+
+    .line 11
+    iput-object p1, p0, Lo0/p;->c:[S
+
+    .line 12
+    .line 13
+    return-void
+.end method
+
+.method public final i()Z
+    .locals 4
+
+    .line 1
+    iget v0, p0, Lo0/p;->e:I
+
+    .line 2
+    .line 3
+    const/4 v1, 0x0
+
+    .line 4
+    if-eqz v0, :cond_3
+
+    .line 5
+    .line 6
+    iget-object v2, p0, Lo0/p;->h:Lo0/q;
+
+    .line 7
+    .line 8
+    iget v2, v2, Lo0/q;->p:I
+
+    .line 9
+    .line 10
+    if-nez v2, :cond_0
+
+    .line 11
+    .line 12
+    goto :goto_0
+
+    .line 13
+    :cond_0
+    iget v2, p0, Lo0/p;->f:I
+
+    .line 14
+    .line 15
+    mul-int/lit8 v3, v0, 0x3
+
+    .line 16
+    .line 17
+    if-le v2, v3, :cond_1
+
+    .line 18
+    .line 19
+    return v1
+
+    .line 20
+    :cond_1
+    mul-int/lit8 v0, v0, 0x2
+
+    .line 21
+    .line 22
+    iget v2, p0, Lo0/p;->g:I
+
+    .line 23
+    .line 24
+    mul-int/lit8 v2, v2, 0x3
+
+    .line 25
+    .line 26
+    if-gt v0, v2, :cond_2
+
+    .line 27
+    .line 28
+    return v1
+
+    .line 29
+    :cond_2
+    const/4 v0, 0x1
+
+    .line 30
+    return v0
+
+    .line 31
+    :cond_3
+    :goto_0
+    return v1
+.end method
+
+.method public final j()Ljava/lang/Object;
+    .locals 1
+
+    .line 1
+    iget-object v0, p0, Lo0/p;->d:[S
+
+    .line 2
+    .line 3
+    return-object v0
+.end method
+
+.method public final k(IIIII)V
+    .locals 10
+
+    .line 1
+    iget-object v0, p0, Lo0/p;->c:[S
+
+    .line 2
+    .line 3
+    iget-object v1, p0, Lo0/p;->b:[S
+
+    .line 4
+    .line 5
+    const/4 v2, 0x0
+
+    .line 6
+    move v3, v2
+
+    .line 7
+    :goto_0
+    if-ge v3, p2, :cond_1
+
+    .line 8
+    .line 9
+    mul-int v4, p3, p2
+
+    .line 10
+    .line 11
+    add-int/2addr v4, v3
+
+    .line 12
+    mul-int v5, p5, p2
+
+    .line 13
+    .line 14
+    add-int/2addr v5, v3
+
+    .line 15
+    mul-int v6, p4, p2
+
+    .line 16
+    .line 17
+    add-int/2addr v6, v3
+
+    .line 18
+    move v7, v2
+
+    .line 19
+    :goto_1
+    if-ge v7, p1, :cond_0
+
+    .line 20
+    .line 21
+    aget-short v8, v1, v6
+
+    .line 22
+    .line 23
+    sub-int v9, p1, v7
+
+    .line 24
+    .line 25
+    mul-int/2addr v9, v8
+
+    .line 26
+    aget-short v8, v1, v5
+
+    .line 27
+    .line 28
+    mul-int/2addr v8, v7
+
+    .line 29
+    add-int/2addr v8, v9
+
+    .line 30
+    div-int/2addr v8, p1
+
+    .line 31
+    int-to-short v8, v8
+
+    .line 32
+    aput-short v8, v0, v4
+
+    .line 33
+    .line 34
+    add-int/2addr v4, p2
+
+    .line 35
+    add-int/2addr v6, p2
+
+    .line 36
+    add-int/2addr v5, p2
+
+    .line 37
+    add-int/lit8 v7, v7, 0x1
+
+    .line 38
+    .line 39
+    goto :goto_1
+
+    .line 40
+    :cond_0
+    add-int/lit8 v3, v3, 0x1
+
+    .line 41
+    .line 42
+    goto :goto_0
+
+    .line 43
+    :cond_1
+    return-void
+.end method
+
+.method public final l(Ljava/nio/ByteBuffer;I)V
+    .locals 4
+
+    .line 1
+    invoke-virtual {p1}, Ljava/nio/ByteBuffer;->asShortBuffer()Ljava/nio/ShortBuffer;
+
+    .line 2
+    .line 3
+    .line 4
+    move-result-object v0
+
+    .line 5
+    iget-object v1, p0, Lo0/p;->b:[S
+
+    .line 6
+    .line 7
+    iget-object v2, p0, Lo0/p;->h:Lo0/q;
+
+    .line 8
+    .line 9
+    iget v3, v2, Lo0/q;->j:I
+
+    .line 10
+    .line 11
+    iget v2, v2, Lo0/q;->b:I
+
+    .line 12
+    .line 13
+    mul-int/2addr v3, v2
+
+    .line 14
+    div-int/lit8 v2, p2, 0x2
+
+    .line 15
+    .line 16
+    invoke-virtual {v0, v1, v3, v2}, Ljava/nio/ShortBuffer;->get([SII)Ljava/nio/ShortBuffer;
+
+    .line 17
+    .line 18
+    .line 19
+    invoke-virtual {p1}, Ljava/nio/Buffer;->position()I
+
+    .line 20
+    .line 21
+    .line 22
+    move-result v0
+
+    .line 23
+    add-int/2addr v0, p2
+
+    .line 24
+    invoke-virtual {p1, v0}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+
+    .line 25
+    .line 26
+    .line 27
+    return-void
+.end method
+
+.method public final m(I)V
+    .locals 2
+
+    .line 1
+    iget-object v0, p0, Lo0/p;->d:[S
+
+    .line 2
+    .line 3
+    iget-object v1, p0, Lo0/p;->h:Lo0/q;
+
+    .line 4
+    .line 5
+    iget v1, v1, Lo0/q;->l:I
+
+    .line 6
+    .line 7
+    invoke-virtual {p0, v0, v1, p1}, Lo0/p;->r([SII)[S
+
+    .line 8
+    .line 9
+    .line 10
+    move-result-object p1
+
+    .line 11
+    iput-object p1, p0, Lo0/p;->d:[S
+
+    .line 12
+    .line 13
+    return-void
+.end method
+
+.method public final n()I
+    .locals 1
+
+    .line 1
+    const/4 v0, 0x2
+
+    .line 2
+    return v0
+.end method
+
+.method public final o(I)V
+    .locals 2
+
+    .line 1
+    iget-object v0, p0, Lo0/p;->b:[S
+
+    .line 2
+    .line 3
+    iget-object v1, p0, Lo0/p;->h:Lo0/q;
+
+    .line 4
+    .line 5
+    iget v1, v1, Lo0/q;->j:I
+
+    .line 6
+    .line 7
+    invoke-virtual {p0, v0, v1, p1}, Lo0/p;->r([SII)[S
+
+    .line 8
+    .line 9
+    .line 10
+    move-result-object p1
+
+    .line 11
+    iput-object p1, p0, Lo0/p;->b:[S
+
+    .line 12
+    .line 13
+    return-void
+.end method
+
+.method public final p(Ljava/nio/ByteBuffer;I)V
+    .locals 5
+
+    .line 1
+    invoke-virtual {p1}, Ljava/nio/ByteBuffer;->asShortBuffer()Ljava/nio/ShortBuffer;
+
+    .line 2
+    .line 3
+    .line 4
+    move-result-object v0
+
+    .line 5
+    iget-object v1, p0, Lo0/p;->c:[S
+
+    .line 6
+    .line 7
+    iget-object v2, p0, Lo0/p;->h:Lo0/q;
+
+    .line 8
+    .line 9
+    iget v3, v2, Lo0/q;->b:I
+
+    .line 10
+    .line 11
+    mul-int/2addr v3, p2
+
+    .line 12
+    const/4 v4, 0x0
+
+    .line 13
+    invoke-virtual {v0, v1, v4, v3}, Ljava/nio/ShortBuffer;->put([SII)Ljava/nio/ShortBuffer;
+
+    .line 14
+    .line 15
+    .line 16
+    invoke-virtual {p1}, Ljava/nio/Buffer;->position()I
+
+    .line 17
+    .line 18
+    .line 19
+    move-result v0
+
+    .line 20
+    mul-int/lit8 p2, p2, 0x2
+
+    .line 21
+    .line 22
+    iget v1, v2, Lo0/q;->b:I
+
+    .line 23
+    .line 24
+    mul-int/2addr p2, v1
+
+    .line 25
+    add-int/2addr p2, v0
+
+    .line 26
+    invoke-virtual {p1, p2}, Ljava/nio/ByteBuffer;->position(I)Ljava/nio/Buffer;
+
+    .line 27
+    .line 28
+    .line 29
+    return-void
+.end method
+
+.method public final q(II)I
+    .locals 2
+
+    .line 1
+    iget-object v0, p0, Lo0/p;->a:[S
+
+    .line 2
+    .line 3
+    const/4 v1, 0x0
+
+    .line 4
+    invoke-virtual {p0, v0, v1, p1, p2}, Lo0/p;->s([SIII)I
+
+    .line 5
+    .line 6
+    .line 7
+    move-result p1
+
+    .line 8
+    return p1
+.end method
+
+.method public final r([SII)[S
+    .locals 2
+
+    .line 1
+    array-length v0, p1
+
+    .line 2
+    iget-object v1, p0, Lo0/p;->h:Lo0/q;
+
+    .line 3
+    .line 4
+    iget v1, v1, Lo0/q;->b:I
+
+    .line 5
+    .line 6
+    div-int/2addr v0, v1
+
+    .line 7
+    add-int/2addr p2, p3
+
+    .line 8
+    if-gt p2, v0, :cond_0
+
+    .line 9
+    .line 10
+    return-object p1
+
+    .line 11
+    :cond_0
+    mul-int/lit8 v0, v0, 0x3
+
+    .line 12
+    .line 13
+    div-int/lit8 v0, v0, 0x2
+
+    .line 14
+    .line 15
+    add-int/2addr v0, p3
+
+    .line 16
+    mul-int/2addr v0, v1
+
+    .line 17
+    invoke-static {p1, v0}, Ljava/util/Arrays;->copyOf([SI)[S
+
+    .line 18
+    .line 19
+    .line 20
+    move-result-object p1
+
+    .line 21
+    return-object p1
+.end method
+
+.method public final s([SIII)I
+    .locals 9
+
+    .line 1
+    iget-object v0, p0, Lo0/p;->h:Lo0/q;
+
+    .line 2
+    .line 3
+    iget v0, v0, Lo0/q;->b:I
+
+    .line 4
+    .line 5
+    mul-int/2addr p2, v0
+
+    .line 6
+    const/4 v0, 0x0
+
+    .line 7
+    const/16 v1, 0xff
+
+    .line 8
+    .line 9
+    const/4 v2, 0x1
+
+    .line 10
+    move v3, v0
+
+    .line 11
+    move v4, v3
+
+    .line 12
+    :goto_0
+    if-gt p3, p4, :cond_3
+
+    .line 13
+    .line 14
+    move v5, v0
+
+    .line 15
+    move v6, v5
+
+    .line 16
+    :goto_1
+    if-ge v5, p3, :cond_0
+
+    .line 17
+    .line 18
+    add-int v7, p2, v5
+
+    .line 19
+    .line 20
+    aget-short v7, p1, v7
+
+    .line 21
+    .line 22
+    add-int v8, p2, p3
+
+    .line 23
+    .line 24
+    add-int/2addr v8, v5
+
+    .line 25
+    aget-short v8, p1, v8
+
+    .line 26
+    .line 27
+    sub-int/2addr v7, v8
+
+    .line 28
+    invoke-static {v7}, Ljava/lang/Math;->abs(I)I
+
+    .line 29
+    .line 30
+    .line 31
+    move-result v7
+
+    .line 32
+    add-int/2addr v6, v7
+
+    .line 33
+    add-int/lit8 v5, v5, 0x1
+
+    .line 34
+    .line 35
+    goto :goto_1
+
+    .line 36
+    :cond_0
+    mul-int v5, v6, v3
+
+    .line 37
+    .line 38
+    mul-int v7, v2, p3
+
+    .line 39
+    .line 40
+    if-ge v5, v7, :cond_1
+
+    .line 41
+    .line 42
+    move v3, p3
+
+    .line 43
+    move v2, v6
+
+    .line 44
+    :cond_1
+    mul-int v5, v6, v1
+
+    .line 45
+    .line 46
+    mul-int v7, v4, p3
+
+    .line 47
+    .line 48
+    if-le v5, v7, :cond_2
+
+    .line 49
+    .line 50
+    move v1, p3
+
+    .line 51
+    move v4, v6
+
+    .line 52
+    :cond_2
+    add-int/lit8 p3, p3, 0x1
+
+    .line 53
+    .line 54
+    goto :goto_0
+
+    .line 55
+    :cond_3
+    div-int/2addr v2, v3
+
+    .line 56
+    iput v2, p0, Lo0/p;->e:I
+
+    .line 57
+    .line 58
+    div-int/2addr v4, v1
+
+    .line 59
+    iput v4, p0, Lo0/p;->f:I
+
+    .line 60
+    .line 61
+    return v3
+.end method

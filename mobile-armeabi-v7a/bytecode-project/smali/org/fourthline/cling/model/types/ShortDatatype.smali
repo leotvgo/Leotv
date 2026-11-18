@@ -1,0 +1,160 @@
+.class public Lorg/fourthline/cling/model/types/ShortDatatype;
+.super Lorg/fourthline/cling/model/types/AbstractDatatype;
+.source "SourceFile"
+
+
+# annotations
+.annotation system Ldalvik/annotation/Signature;
+    value = {
+        "Lorg/fourthline/cling/model/types/AbstractDatatype<",
+        "Ljava/lang/Short;",
+        ">;"
+    }
+.end annotation
+
+
+# direct methods
+.method public constructor <init>()V
+    .locals 0
+
+    .line 1
+    invoke-direct {p0}, Lorg/fourthline/cling/model/types/AbstractDatatype;-><init>()V
+
+    .line 2
+    .line 3
+    .line 4
+    return-void
+.end method
+
+
+# virtual methods
+.method public isHandlingJavaType(Ljava/lang/Class;)Z
+    .locals 1
+
+    .line 1
+    sget-object v0, Ljava/lang/Short;->TYPE:Ljava/lang/Class;
+
+    .line 2
+    .line 3
+    if-eq p1, v0, :cond_1
+
+    .line 4
+    .line 5
+    const-class v0, Ljava/lang/Short;
+
+    .line 6
+    .line 7
+    invoke-virtual {v0, p1}, Ljava/lang/Class;->isAssignableFrom(Ljava/lang/Class;)Z
+
+    .line 8
+    .line 9
+    .line 10
+    move-result p1
+
+    .line 11
+    if-eqz p1, :cond_0
+
+    .line 12
+    .line 13
+    goto :goto_0
+
+    .line 14
+    :cond_0
+    const/4 p1, 0x0
+
+    .line 15
+    goto :goto_1
+
+    .line 16
+    :cond_1
+    :goto_0
+    const/4 p1, 0x1
+
+    .line 17
+    :goto_1
+    return p1
+.end method
+
+.method public bridge synthetic valueOf(Ljava/lang/String;)Ljava/lang/Object;
+    .locals 0
+
+    .line 1
+    invoke-virtual {p0, p1}, Lorg/fourthline/cling/model/types/ShortDatatype;->valueOf(Ljava/lang/String;)Ljava/lang/Short;
+
+    move-result-object p1
+
+    return-object p1
+.end method
+
+.method public valueOf(Ljava/lang/String;)Ljava/lang/Short;
+    .locals 3
+
+    .line 2
+    const-string v0, "Not a valid short: "
+
+    const-string v1, ""
+
+    invoke-virtual {p1, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_0
+
+    const/4 p1, 0x0
+
+    return-object p1
+
+    .line 3
+    :cond_0
+    :try_start_0
+    invoke-virtual {p1}, Ljava/lang/String;->trim()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {v1}, Ljava/lang/Short;->parseShort(Ljava/lang/String;)S
+
+    move-result v1
+
+    invoke-static {v1}, Ljava/lang/Short;->valueOf(S)Ljava/lang/Short;
+
+    move-result-object v1
+
+    .line 4
+    invoke-virtual {p0, v1}, Lorg/fourthline/cling/model/types/AbstractDatatype;->isValid(Ljava/lang/Object;)Z
+
+    move-result v2
+
+    if-eqz v2, :cond_1
+
+    return-object v1
+
+    .line 5
+    :cond_1
+    new-instance v1, Lorg/fourthline/cling/model/types/InvalidValueException;
+
+    invoke-virtual {v0, p1}, Ljava/lang/String;->concat(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-direct {v1, v0}, Lorg/fourthline/cling/model/types/InvalidValueException;-><init>(Ljava/lang/String;)V
+
+    throw v1
+    :try_end_0
+    .catch Ljava/lang/NumberFormatException; {:try_start_0 .. :try_end_0} :catch_0
+
+    :catch_0
+    move-exception v0
+
+    .line 6
+    new-instance v1, Lorg/fourthline/cling/model/types/InvalidValueException;
+
+    const-string v2, "Can\'t convert string to number: "
+
+    invoke-virtual {v2, p1}, Ljava/lang/String;->concat(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object p1
+
+    invoke-direct {v1, p1, v0}, Lorg/fourthline/cling/model/types/InvalidValueException;-><init>(Ljava/lang/String;Ljava/lang/Throwable;)V
+
+    throw v1
+.end method
