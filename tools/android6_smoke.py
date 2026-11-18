@@ -33,6 +33,8 @@ process = None
 
 
 def command(argv, timeout=30, check=True):
+    if str(adb) in str(argv[0]):
+        report['operation'] = ' '.join(str(x) for x in argv[3:5])
     result = subprocess.run([str(x) for x in argv], capture_output=True, text=True,
                             timeout=timeout, env=env)
     if check and result.returncode:
@@ -40,8 +42,8 @@ def command(argv, timeout=30, check=True):
     return result
 
 
-def shell(*parts, check=True):
-    return command([adb, '-s', serial, 'shell', *parts], timeout=20, check=check)
+def shell(*parts, check=True, timeout=60):
+    return command([adb, '-s', serial, 'shell', *parts], timeout=timeout, check=check)
 
 
 try:
@@ -65,7 +67,7 @@ try:
     deadline, next_update = time.monotonic() + 1500, time.monotonic()
     while time.monotonic() < deadline:
         try:
-            boot = shell('getprop', 'sys.boot_completed', check=False)
+            boot = shell('getprop', 'sys.boot_completed', check=False, timeout=15)
             if boot.stdout.strip() == '1':
                 break
         except subprocess.TimeoutExpired:
@@ -84,18 +86,19 @@ try:
         raise RuntimeError('The test device is not Android 6 ARM.')
     report['actual_api'], report['actual_abi'] = api, abi
     report['stage'] = 'install-rebuilt-apk'
+    time.sleep(45)
     shell('settings', 'put', 'global', 'airplane_mode_on', '1')
     shell('am', 'broadcast', '-a', 'android.intent.action.AIRPLANE_MODE', '--ez', 'state', 'true', check=False)
     shell('svc', 'wifi', 'disable', check=False)
     shell('svc', 'data', 'disable', check=False)
-    command([adb, '-s', serial, 'install', '-g', str(args.apk)], timeout=120)
+    command([adb, '-s', serial, 'install', '-g', str(args.apk)], timeout=900)
     badging = command([args.sdk / 'build-tools/36.1.0/aapt', 'dump', 'badging', args.apk]).stdout
     package = re.search(r"package: name='([^']+)'", badging).group(1)
     activity = re.search(r"(?:leanback-)?launchable-activity: name='([^']+)'", badging).group(1)
     report['package'], report['launcher'] = package, activity
     command([adb, '-s', serial, 'logcat', '-c'])
     report['stage'] = 'launch-and-observe'
-    start = shell('am', 'start', '-W', '-n', package + '/' + activity)
+    start = shell('am', 'start', '-W', '-n', package + '/' + activity, timeout=180)
     if 'Error:' in start.stdout:
         raise RuntimeError('The rebuilt APK launcher did not start.')
     time.sleep(75)
