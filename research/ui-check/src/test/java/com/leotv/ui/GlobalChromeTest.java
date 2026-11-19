@@ -140,7 +140,7 @@ public class GlobalChromeTest {
         chrome.attach(); layout();
         assertNotSame(top, host.toolbar.getBackground());
         assertNotSame(bottom, host.navigation.getBackground());
-        assertNotSame(focus, host.button.getBackground());
+        assertSame(focus, host.button.getBackground());
         assertTrue(host.button.requestFocus()); assertTrue(host.button.performClick()); assertEquals(1, host.clicks);
         assertTrue(host.button.getBackground().isStateful());
         assertSame(tree.parent, host.scroll.getParent());
@@ -153,8 +153,8 @@ public class GlobalChromeTest {
         assertEquals(Color.TRANSPARENT, host.getWindow().getNavigationBarColor());
         chrome.resume(); layout();
         chrome.close();
-        assertEquals(Color.TRANSPARENT, ((android.graphics.drawable.ColorDrawable) host.toolbar.getBackground()).getColor());
-        assertEquals(Color.TRANSPARENT, ((android.graphics.drawable.ColorDrawable) host.navigation.getBackground()).getColor());
+        assertSame(top, host.toolbar.getBackground());
+        assertSame(bottom, host.navigation.getBackground());
         assertNull(host.findViewById(android.R.id.content).findViewWithTag("leotv_global_chrome"));
     }
 
@@ -193,7 +193,7 @@ public class GlobalChromeTest {
         assertEquals(0, chrome.statusHeight);
         assertNull(chrome.navigation);
         assertTrue(host.button.requestFocus());
-        assertNotSame(focus, host.button.getBackground());
+        assertSame(focus, host.button.getBackground());
         assertTrue(host.button.performClick());
         assertEquals(1, host.clicks);
         assertEquals(1280, chrome.width);
@@ -233,21 +233,31 @@ public class GlobalChromeTest {
     }
 
     @Test @Config(sdk = 35) @GraphicsMode(GraphicsMode.Mode.NATIVE)
-    public void restingButtonSkinIsTransparentAndFreshLeotvFocusOutlineDraws() {
+    public void nativeButtonDrawableAndEveryStateRemainIdentical() {
+        Drawable original = host.button.getBackground();
+        original.setBounds(0, 0, 120, 56);
         chrome.attach(); layout();
-        host.root.setFocusableInTouchMode(true); host.root.requestFocus(); host.button.clearFocus();
-        Drawable background = host.button.getBackground();
-        background.setBounds(0, 0, 120, 56);
-        Bitmap bitmap = Bitmap.createBitmap(120, 56, Bitmap.Config.ARGB_8888);
-        background.draw(new Canvas(bitmap));
-        assertEquals(0, Color.alpha(bitmap.getPixel(80, 30)));
-        host.button.requestFocus(); bitmap.eraseColor(Color.TRANSPARENT);
-        background.draw(new Canvas(bitmap));
-        int inside = bitmap.getPixel(80, 30);
-        assertTrue(Color.alpha(inside) > 0 && Color.alpha(inside) < 80);
-        assertTrue(Color.blue(inside) > 200);
-        assertTrue(Math.max(Color.alpha(bitmap.getPixel(0, 28)), Color.alpha(bitmap.getPixel(1, 28))) > 120);
-        bitmap.recycle();
+        assertSame(original, host.button.getBackground());
+        for (int[] state : new int[][]{new int[0], {android.R.attr.state_selected}, {android.R.attr.state_activated},
+                {android.R.attr.state_focused}, {android.R.attr.state_pressed}}) {
+            original.setState(state);
+            Bitmap expected=Bitmap.createBitmap(120,56,Bitmap.Config.ARGB_8888);
+            original.draw(new Canvas(expected));
+            Bitmap actual=Bitmap.createBitmap(120,56,Bitmap.Config.ARGB_8888);
+            host.button.getBackground().draw(new Canvas(actual));
+            assertTrue(expected.sameAs(actual)); expected.recycle(); actual.recycle();
+        }
+    }
+
+    @Test public void wallpaperDrawableIsNeverReplacedAndUpdatesRemainVisible() {
+        Drawable original=host.root.getBackground();
+        chrome.attach(); layout();
+        assertSame(original,host.root.getBackground());
+        host.root.setBackgroundColor(0xff35704a);
+        Drawable updated=host.root.getBackground(); layout();
+        assertSame(updated,host.root.getBackground());
+        chrome.pause();chrome.trim();chrome.resume();layout();
+        assertSame(updated,host.root.getBackground());
     }
 
     @Test @Config(sdk = 35) @GraphicsMode(GraphicsMode.Mode.NATIVE)

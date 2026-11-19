@@ -2,7 +2,6 @@ package com.leotv.ui;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,14 +9,11 @@ import android.graphics.ColorFilter;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.VectorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -55,6 +51,7 @@ public final class GlobalChrome {
             Controller existing = active.get(activity);
             if (existing != null) { existing.resume(); return; }
             View view = activity.findViewById(android.R.id.content);
+            if (view != null && view.findViewWithTag("leotv_jar_detail_page") != null) return;
             if (!(view instanceof FrameLayout)) return;
             Controller controller = new Controller(activity, (FrameLayout) view);
             active.put(activity, controller);
@@ -102,6 +99,7 @@ public final class GlobalChrome {
         final Map<String, Integer> ids = new java.util.HashMap<>();
         View root, toolbar, navigation, source;
         Padding padding;
+        NativeViewport viewport;
         boolean dirty = true, discovery = true, closed, windowAdjusted, running;
         int width, height, statusHeight, navigationHeight, lastScrollX, lastScrollY, sourceArea;
         float topStart, topEnd, bottomStart;
@@ -283,27 +281,6 @@ public final class GlobalChrome {
             for (View bar : bars) borrow(bar, true);
         }
 
-        private void transparentControls(View view, View bar) {
-            if (view != bar) {
-                Drawable background = view.getBackground();
-                boolean skin = view.isClickable() || view.isFocusable() || view instanceof ViewGroup;
-                if (view instanceof ImageView && ((ImageView) view).getDrawable() == null && background != null) {
-                    Drawable current = background.getCurrent();
-                    // Some original ImageViews use background as their actual glyph.
-                    // Keep that artwork; only a button's resting skin becomes clear.
-                    if (current instanceof BitmapDrawable || current instanceof VectorDrawable
-                            || current != null && current.getClass().getName().endsWith("VectorDrawableCompat")) skin = false;
-                }
-                if (skin && background != null && !(background instanceof ControlBackground)
-                        && !(background instanceof Frost)) view.setBackground(new ControlBackground(background,
-                                view.getResources().getDisplayMetrics().density));
-            }
-            if (view instanceof ViewGroup) {
-                ViewGroup group = (ViewGroup) view;
-                for (int i = 0; i < group.getChildCount(); i++) transparentControls(group.getChildAt(i), bar);
-            }
-        }
-
         @Override public boolean onPreDraw() {
             if (closed || !running || content.getWidth() <= 0 || content.getHeight() <= 0) return true;
             int nextWidth = content.getWidth(), nextHeight = content.getHeight();
@@ -348,11 +325,10 @@ public final class GlobalChrome {
             if (ui != decor.getSystemUiVisibility()) decor.setSystemUiVisibility(ui);
             if (root != null) {
                 int index = content.indexOfChild(root);
-                if (portal.getParent() != content || content.indexOfChild(portal) > index) {
+                if (portal.getParent() != content) {
                     if (portal.getParent() == content) content.removeView(portal);
-                    content.addView(portal, Math.max(0, content.indexOfChild(root)), new FrameLayout.LayoutParams(-1, -1));
+                    content.addView(portal, new FrameLayout.LayoutParams(-1, -1));
                 }
-                borrow(root, false);
                 if (padding == null || padding.view != root) {
                     if (padding != null) padding.restore();
                     padding = new Padding(root);
@@ -375,18 +351,36 @@ public final class GlobalChrome {
             dirty |= nextTopStart != topStart || nextTopEnd != topEnd || nextBottomStart != bottomStart;
             topStart = nextTopStart; topEnd = nextTopEnd; bottomStart = nextBottomStart;
             reconcile();
-            if (discovery) for (View bar : bars) transparentControls(bar, bar);
             if (discovery || source == null || !source.isShown()) {
                 sourceArea = 0;
                 View nextSource = discoverSource(content, null);
-                if (nextSource != source) { restoreClips(); source = nextSource; dirty = true; }
-                if (source instanceof ViewGroup && !(source instanceof ScrollView)) {
-                    ViewGroup group = (ViewGroup) source;
-                    if (!clips.containsKey(group)) { Clip clip = new Clip(group); clips.put(group, clip); clip.apply(); }
+                if (nextSource != source) {
+                    if (viewport != null) viewport.close(); viewport = null;
+                    restoreClips(); source = nextSource; dirty = true;
+                }
+                if (source instanceof ViewGroup) {
+                    if (viewport == null && !(source instanceof ScrollView) && source.getParent() instanceof ViewGroup
+                            && source.getLayoutParams() instanceof ViewGroup.MarginLayoutParams)
+                        viewport = NativeViewport.borrow((ViewGroup) source);
+                    for (View current = source instanceof ScrollView ? null : source; current != null && current != content;
+                            current = current.getParent() instanceof View ? (View) current.getParent() : null) {
+                        if (current instanceof ViewGroup && !clips.containsKey(current)) {
+                            Clip clip = new Clip((ViewGroup) current); clips.put((ViewGroup) current, clip); clip.apply();
+                        }
+                    }
+
                 }
                 discovery = false;
             }
             if (source != null) {
+                if (viewport != null) {
+                    viewport.viewport.getLocationOnScreen(at);
+                    int above = Math.max(0, at[1] - origin[1]);
+                    int header = (toolbar == null ? 0 : toolbar.getHeight()) + (category == null ? 0 : category.getHeight());
+                    above = Math.max(above, header + (padding == null ? 0 : padding.view.getPaddingTop()));
+                    int below = (navigation == null ? 0 : navigation.getHeight()) + navigationHeight;
+                    if (viewport.update(above, below)) { dirty = true; return false; }
+                }
                 dirty |= source.isDirty() || source.getScrollX() != lastScrollX || source.getScrollY() != lastScrollY;
                 lastScrollX = source.getScrollX(); lastScrollY = source.getScrollY();
             }
@@ -399,30 +393,42 @@ public final class GlobalChrome {
         }
 
         void background(Canvas canvas) {
-            canvas.drawColor(0xff141a22);
-            for (int i = 0; i < content.getChildCount(); i++) {
-                View child = content.getChildAt(i);
-                if (child == root || child == portal) continue;
-                if (child instanceof ImageView && child.isShown()) drawView(canvas, child);
-            }
-            Background original = backgrounds.get(root);
-            if (original != null && original.original != null) {
-                Drawable drawable = original.original;
-                Rect bounds = new Rect(drawable.getBounds());
-                int save = canvas.save();
-                root.getLocationOnScreen(at); canvas.translate(at[0] - origin[0], at[1] - origin[1]);
-                drawable.setBounds(0, 0, root.getWidth(), root.getHeight()); drawable.draw(canvas);
-                drawable.setBounds(bounds); canvas.restoreToCount(save);
-            }
+            ArrayList<View> ancestors = new ArrayList<>();
+            for (View view = content; view != null; view = view.getParent() instanceof View ? (View) view.getParent() : null)
+                ancestors.add(view);
+            for (int i = ancestors.size() - 1; i >= 0; i--) drawBackground(canvas, ancestors.get(i));
         }
 
         void scene(Canvas canvas) {
             background(canvas);
-            if (source != null) {
-                View drawing = source instanceof ScrollView && ((ScrollView) source).getChildCount() > 0
-                        ? ((ScrollView) source).getChildAt(0) : source;
-                drawView(canvas, drawing);
+            for (int i = 0; i < content.getChildCount(); i++) drawScene(canvas, content.getChildAt(i));
+        }
+
+        private void drawScene(Canvas canvas, View view) {
+            if (!view.isShown() || view == portal || bars.contains(view)) return;
+            if (view instanceof ScrollView) {
+                drawBackground(canvas, view);
+                ScrollView scrolling = (ScrollView) view;
+                for (int i = 0; i < scrolling.getChildCount(); i++) drawScene(canvas, scrolling.getChildAt(i));
+                return;
             }
+            boolean containsBar = false;
+            for (View bar : bars) if (inside(bar, view)) containsBar = true;
+            if (view instanceof ViewGroup && (containsBar || view == root)) {
+                drawBackground(canvas, view);
+                ViewGroup group = (ViewGroup) view;
+                for (int i = 0; i < group.getChildCount(); i++) drawScene(canvas, group.getChildAt(i));
+            } else drawView(canvas, view);
+        }
+
+        private void drawBackground(Canvas canvas, View view) {
+            Drawable drawable = view.getBackground();
+            if (drawable == null || drawable instanceof Frost) return;
+            Rect bounds = new Rect(drawable.getBounds());
+            int save = canvas.save();
+            view.getLocationOnScreen(at); canvas.translate(at[0] - origin[0], at[1] - origin[1]);
+            drawable.setBounds(0, 0, view.getWidth(), view.getHeight()); drawable.draw(canvas);
+            drawable.setBounds(bounds); canvas.restoreToCount(save);
         }
 
         private void drawView(Canvas canvas, View view) {
@@ -442,7 +448,10 @@ public final class GlobalChrome {
             pause();
             closed = true;
             for (Background background : backgrounds.values()) background.discard();
-            backgrounds.clear(); restoreClips();
+            backgrounds.clear();
+            if (viewport != null) viewport.close(); viewport = null;
+            restoreClips();
+            if (padding != null) padding.restore();
             if (portal.getParent() == content) content.removeView(portal);
             status.release(); systemNavigation.release();
             source = root = toolbar = navigation = null;
@@ -452,7 +461,6 @@ public final class GlobalChrome {
             pause();
             status.release(); systemNavigation.release();
             for (Background background : backgrounds.values()) background.release();
-            source = null;
             // The native transparent backgrounds, window flags and controls stay
             // installed. Only computation and heavyweight buffers are released.
         }
@@ -476,8 +484,7 @@ public final class GlobalChrome {
         }
         @Override protected void onDraw(Canvas canvas) {
             if (owner.closed) return;
-            owner.background(canvas);
-            int end = owner.toolbar == null ? owner.statusHeight : Math.max(0, owner.y(owner.toolbar));
+            int end = owner.toolbar == null ? owner.statusHeight : Math.max(owner.statusHeight, owner.y(owner.toolbar));
             owner.status.draw(canvas, 0, end, true);
             owner.systemNavigation.draw(canvas, owner.height - owner.navigationHeight, owner.height, false);
         }
@@ -594,63 +601,9 @@ public final class GlobalChrome {
         }
         void release() { if (installed instanceof Frost) ((Frost) installed).band.release(); }
         void discard() {
-            if (band && view.getBackground() == installed) view.setBackground(new ColorDrawable(Color.TRANSPARENT));
+            restore();
             release();
         }
-    }
-
-    /** Leotv's clear button skin and fresh glass outline; retain only native sizing. */
-    private static final class ControlBackground extends Drawable {
-        final Rect padding = new Rect();
-        final RectF shape = new RectF();
-        final Paint fill = new Paint(Paint.ANTI_ALIAS_FLAG), border = new Paint(Paint.ANTI_ALIAS_FLAG);
-        final int intrinsicWidth, intrinsicHeight, minimumWidth, minimumHeight;
-        final boolean hasPadding;
-        final float radius, stroke;
-        boolean feedback, pressed;
-        int alpha = 255;
-        ControlBackground(Drawable previous, float density) {
-            hasPadding = previous.getPadding(padding);
-            intrinsicWidth = previous.getIntrinsicWidth(); intrinsicHeight = previous.getIntrinsicHeight();
-            minimumWidth = previous.getMinimumWidth(); minimumHeight = previous.getMinimumHeight();
-            radius = 10 * density; stroke = Math.max(1, 1.5f * density);
-            border.setStyle(Paint.Style.STROKE); border.setStrokeWidth(stroke);
-        }
-        @Override public void draw(Canvas canvas) {
-            if (!feedback) return;
-            fill.setColor(pressed ? 0x3035dbff : 0x1835dbff);
-            fill.setAlpha((pressed ? 48 : 24) * alpha / 255);
-            border.setAlpha((pressed ? 255 : 230) * alpha / 255);
-            canvas.drawRoundRect(shape, radius, radius, fill);
-            canvas.drawRoundRect(shape, radius, radius, border);
-        }
-        @Override protected void onBoundsChange(Rect bounds) {
-            float inset = stroke * .5f;
-            shape.set(bounds.left + inset, bounds.top + inset, bounds.right - inset, bounds.bottom - inset);
-            border.setShader(new LinearGradient(shape.left, shape.top, shape.right, shape.bottom,
-                    0xff35e4ff, 0xffaa79ff, Shader.TileMode.CLAMP));
-        }
-        @Override public boolean isStateful() { return true; }
-        @Override protected boolean onStateChange(int[] states) {
-            boolean next = false, down = false;
-            for (int state : states) {
-                if (state == android.R.attr.state_pressed) down = true;
-                if (state == android.R.attr.state_focused || state == android.R.attr.state_pressed
-                        || state == android.R.attr.state_hovered) next = true;
-            }
-            boolean changed = next != feedback || down != pressed;
-            feedback = next; pressed = down; return changed;
-        }
-        @Override public boolean getPadding(Rect result) { result.set(padding); return hasPadding; }
-        @Override public int getIntrinsicWidth() { return intrinsicWidth; }
-        @Override public int getIntrinsicHeight() { return intrinsicHeight; }
-        @Override public int getMinimumWidth() { return minimumWidth; }
-        @Override public int getMinimumHeight() { return minimumHeight; }
-        @Override public void setAlpha(int value) { alpha = value; invalidateSelf(); }
-        @Override public void setColorFilter(ColorFilter filter) { fill.setColorFilter(filter); border.setColorFilter(filter); }
-        @Override public void setTintList(ColorStateList tint) {}
-        @Override public void setTintMode(PorterDuff.Mode mode) {}
-        @Override public int getOpacity() { return PixelFormat.TRANSLUCENT; }
     }
 
     private static final class Clip {

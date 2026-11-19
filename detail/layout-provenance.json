@@ -1,0 +1,56 @@
+{
+  "reference": "detail/java/com/leotv/detail/TvDetailPage.java",
+  "apply_theme_sha256": "6d1e91ce7f07ef127ccdbd54b7fe08756e0d96d2461c50affe8ce3d174017b1e",
+  "client_layouts": [
+    "mobile",
+    "tv"
+  ],
+  "method_changes": [
+    "standalone page owner references",
+    "client constant",
+    "native preference lookup"
+  ],
+  "reference_modules": {
+    "DetailEpisodeCards": {
+      "reference_sha256": "aaf390f089b9a5dd29e1d9e1493156a633ee28f9674c92371148399c5976ecee",
+      "runtime_sha256": "aaf390f089b9a5dd29e1d9e1493156a633ee28f9674c92371148399c5976ecee"
+    },
+    "DetailMatchPopup": {
+      "reference_sha256": "6ac1b444c4b50db00cd1216470d6f04ab1ce7d3f8f6c8a8294e2d847f78f6f55",
+      "runtime_sha256": "6ac1b444c4b50db00cd1216470d6f04ab1ce7d3f8f6c8a8294e2d847f78f6f55"
+    },
+    "DetailSiteDirectory": {
+      "reference_sha256": "e665d841d1fc78c5e6c5650a66c7ba61a664f5fbba3cf2e6bc20d73a7b1f6b3c",
+      "runtime_sha256": "e665d841d1fc78c5e6c5650a66c7ba61a664f5fbba3cf2e6bc20d73a7b1f6b3c"
+    },
+    "DetailSitePicker": {
+      "reference_sha256": "a9afb802b79509937dc64b5033e7b991d5f35b241aaa6587f8631a304dbd3d2c",
+      "runtime_sha256": "912dd475a97dfa9cf211a2e2f21be1dae088a324f9033b87a0660ee5bf949af2"
+    },
+    "DetailStills": {
+      "reference_sha256": "fcb0aa1107962ca7a19c00151f8e33f30ae83d2e2cdf55a062861fde724c1be0",
+      "runtime_sha256": "fcb0aa1107962ca7a19c00151f8e33f30ae83d2e2cdf55a062861fde724c1be0"
+    },
+    "DetailReviews": {
+      "reference_sha256": "1d64d46a27fce3cf4faa393be7ffe024c7ecb2ffab3d42483112902686098320",
+      "runtime_sha256": "1d64d46a27fce3cf4faa393be7ffe024c7ecb2ffab3d42483112902686098320"
+    },
+    "TvDetailScroll": {
+      "reference_sha256": "97af371abd0a2ed26ca03237c9f516b76f9396a117cfb72ed41980826fb89d61",
+      "runtime_sha256": "97af371abd0a2ed26ca03237c9f516b76f9396a117cfb72ed41980826fb89d61"
+    },
+    "TvDetailNavigation": {
+      "reference_sha256": "798db9ca696d22045e40d899cc77b98e3e06d2eb79f757883b02f53ed9f33037",
+      "runtime_sha256": "798db9ca696d22045e40d899cc77b98e3e06d2eb79f757883b02f53ed9f33037"
+    },
+    "DetailPage": {
+      "reference_sha256": "b9408045416931ea93829d43d9b10cf492b43fb0cb534889a8783c6f1cbc007f",
+      "runtime_sha256": "b9408045416931ea93829d43d9b10cf492b43fb0cb534889a8783c6f1cbc007f"
+    },
+    "LibraryDetailLayout": {
+      "reference_sha256": "6c7f117afdd9403652f9ad0dcfe7542abf4bbc13aed61966a8534b5bb51a7313",
+      "runtime_sha256": "6c7f117afdd9403652f9ad0dcfe7542abf4bbc13aed61966a8534b5bb51a7313"
+    }
+  },
+  "validation": "Unchanged original widgets; only API 23 casts and native host integration differ."
+}

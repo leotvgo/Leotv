@@ -6,6 +6,10 @@ import java.util.List;
 
 /** Keeps ordinary favorites and history in their existing models, DAO and configuration namespace. */
 final class NativeLibrary {
+    static final class Progress {
+        final long position,duration;
+        Progress(long position,long duration){this.position=position;this.duration=duration;}
+    }
     private NativeLibrary() {}
     private static Class<?> model(Context context, String name) throws ClassNotFoundException {
         return Class.forName("com.fongmi.android.tv.bean." + name, true, context.getClassLoader());
@@ -55,5 +59,17 @@ final class NativeLibrary {
             for (SourceGateway.Episode episode : episodes) if (name.equals(episode.name)) return episode;
         }
         return episodes.get(0);
+    }
+    static Progress progress(Context context,SourceGateway.Detail detail,SourceGateway.Episode episode){
+        if(detail==null||episode==null)return null;
+        try{
+            Class<?> type=model(context,"History");Object history=type.getMethod("find",String.class).invoke(null,key(detail,cid(context)));
+            if(history==null||!episode.name.equals(type.getMethod("getVodRemarks").invoke(history)))return null;
+            Object flag=type.getMethod("getFlag").invoke(history);
+            if(flag!=null&&!episode.flag.equals(String.valueOf(flag.getClass().getMethod("getFlag").invoke(flag))))return null;
+            long position=Math.max(0,((Number)type.getMethod("getPosition").invoke(history)).longValue());
+            long duration=Math.max(0,((Number)type.getMethod("getDuration").invoke(history)).longValue());
+            return position>0?new Progress(position,duration):null;
+        }catch(ReflectiveOperationException unavailable){return null;}
     }
 }

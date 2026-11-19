@@ -56,7 +56,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: native-detail-api23-check
-          path: research/detail-check/build/*/test-results/test/*.xml
+          path: |
+            research/detail-check/build/*/test-results/test/*.xml
+            artifacts/detail-preview/*.png
           retention-days: 14
       - uses: actions/upload-artifact@v4
         with:

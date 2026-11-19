@@ -41,6 +41,7 @@ test {
     classpath += files(provider { fileTree(aarClasses).matching { include '**/*.jar' } })
     systemProperty 'robolectric.dependency.repo.url', 'https://repo.maven.apache.org/maven2'
     systemProperty 'leotv.detail.client', client
+    systemProperty 'leotv.detail.preview.dir', file('../../artifacts/detail-preview').absolutePath
     maxHeapSize = '1g'
     maxParallelForks = 1
     testLogging { events 'passed', 'failed'; exceptionFormat 'full' }

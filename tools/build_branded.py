@@ -193,10 +193,10 @@ def compile_overlays(project, profile, spec, apk, sdk, apktool, work, log):
     added = set()
     for source in emitted:
         descriptor = re.search(r'(?m)^\.class[^\n]* (L[^;]+;)$', source.read_text()).group(1)
-        if descriptor != LOGO_CLASS and not re.fullmatch(r'Lcom/leotv/ui/(?:GlobalChrome(?:\$[\w]+)?|ProgressiveBlur);', descriptor) \
-                and not any(re.fullmatch(r'Lcom/leotv/detail/' + re.escape(name) + r'(?:\$[A-Za-z0-9_$]+)?;', descriptor)
+        if descriptor != LOGO_CLASS and not re.fullmatch(r'Lcom/leotv/ui/(?:GlobalChrome(?:\$[\w]+)?|ProgressiveBlur|NativeViewport(?:\$[\w]+)?);', descriptor) \
+                and not any(re.fullmatch(r'Lcom/leotv/detail/' + re.escape(name) + r'(?:\$[A-Za-z0-9_$]+)?(?:\$-(?:CC|EL))?;', descriptor)
                             for name in native_class_roots):
-            raise ValueError('Overlay compilation emitted an undeclared program class.')
+            raise ValueError('Overlay compilation emitted an undeclared program class: ' + descriptor)
         target = project / ('smali' if target_dex == 'classes.dex' else 'smali_' + target_dex[:-4]) / (descriptor[1:-1] + '.smali')
         if target.exists():
             raise ValueError('Overlay helper class already exists in the original project.')

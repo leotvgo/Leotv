@@ -1,92 +1,45 @@
 package com.leotv.detail;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.graphics.Color;
-import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
-import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.List;
 
-/** Adds only this client's detail themes and editable metadata settings to its native settings page. */
+/** The native custom-settings row styles and dialog theme are shared by the new preferences. */
 public final class Personalization {
-    private Personalization() {}
-    public static void attach(Activity activity, View root) {
-        if (activity == null || root == null || root.findViewWithTag("leotv_detail_settings") != null) return;
-        ViewGroup target = container(root);
-        if (!(target instanceof LinearLayout)) return;
-        Context context = new ContextThemeWrapper(activity, android.R.style.Theme_Material_NoActionBar);
-        LinearLayout rows = new LinearLayout(context); rows.setOrientation(LinearLayout.VERTICAL);
-        rows.setTag("leotv_detail_settings");
-        int padding = dp(activity, 16); rows.setPadding(padding, padding, padding, padding);
-        add(context, rows, "详情页主题", Device.THEME_NAMES[MetadataSettings.theme(activity)], () ->
-                new AlertDialog.Builder(activity).setTitle("详情页主题")
-                        .setSingleChoiceItems(Device.THEME_NAMES, MetadataSettings.theme(activity), (dialog, which) -> {
-                            MetadataSettings.setTheme(activity, which); dialog.dismiss(); refresh(activity, root);
-                        }).setNegativeButton("取消", null).show());
-        add(context, rows, "TMDB API Key", MetadataSettings.customKey(activity) ? "已设置自定义 Key" : "使用内置 Key",
-                () -> edit(activity, root, true));
-        add(context, rows, "TMDB API 域名", MetadataSettings.base(activity), () -> edit(activity, root, false));
-        target.addView(rows, new LinearLayout.LayoutParams(-1, -2));
-        int id = activity.getResources().getIdentifier("smallWindowBackKey", "id", activity.getApplicationInfo().packageName);
-        View obsolete = id == 0 ? null : root.findViewById(id);
-        if (obsolete != null) obsolete.setVisibility(View.GONE);
+    private static final String TAG="leotv_detail_settings";
+    private Personalization(){}
+    public static void attach(Activity activity,View root){
+        if(activity==null||root==null||root.findViewWithTag(TAG)!=null)return;
+        View value=NativeViews.find(activity,"size");View template=value!=null&&value.getParent() instanceof ViewGroup?(View)value.getParent():null;
+        ViewGroup target=template!=null&&template.getParent() instanceof ViewGroup?(ViewGroup)template.getParent():container(root);
+        if(target==null)return;
+        LinearLayout rows=new LinearLayout(activity);rows.setOrientation(LinearLayout.VERTICAL);rows.setTag(TAG);
+        View prototype=template;
+        add(activity,rows,prototype,value,"详情页主题",Device.THEME_NAMES[MetadataSettings.theme(activity)],()->NativeDialogs.choose(activity,"详情页主题",Device.THEME_NAMES,MetadataSettings.theme(activity),index->{MetadataSettings.setTheme(activity,index);refresh(activity,root);}));
+        add(activity,rows,prototype,value,"TMDB API Key",MetadataSettings.customKey(activity)?"已设置自定义 Key":"使用内置 Key",()->NativeDialogs.edit(activity,"TMDB API Key",MetadataSettings.customKey(activity)?MetadataSettings.key(activity):"","留空使用内置 Key",true,text->{MetadataSettings.setKey(activity,text);refresh(activity,root);},()->{MetadataSettings.setKey(activity,"");refresh(activity,root);}));
+        add(activity,rows,prototype,value,"TMDB API 域名",MetadataSettings.base(activity),()->NativeDialogs.edit(activity,"TMDB API 域名",MetadataSettings.base(activity),"api.tmdb.org",false,text->{MetadataSettings.setBase(activity,text);refresh(activity,root);},()->{MetadataSettings.setBase(activity,"");refresh(activity,root);}));
+        int position=template==null?target.getChildCount():target.indexOfChild(template);
+        target.addView(rows,Math.max(0,position),new ViewGroup.LayoutParams(-1,-2));
+        View obsolete=NativeViews.find(activity,"smallWindowBackKey");if(obsolete!=null)obsolete.setVisibility(View.GONE);
     }
-    private static void refresh(Activity activity, View root) {
-        View old = root.findViewWithTag("leotv_detail_settings");
-        if (old != null && old.getParent() instanceof ViewGroup) ((ViewGroup) old.getParent()).removeView(old);
-        attach(activity, root);
+    private static void refresh(Activity activity,View root){View previous=root.findViewWithTag(TAG);if(previous!=null&&previous.getParent() instanceof ViewGroup)((ViewGroup)previous.getParent()).removeView(previous);attach(activity,root);}
+    private static void add(Activity activity,LinearLayout rows,View template,View value,String title,String summary,Runnable action){
+        View row;
+        if(template!=null){
+            row=NativeViews.copy(template,activity);List<TextView> texts=new ArrayList<>();collect(row,texts);
+            TextView content=null,heading=null;for(TextView text:texts){if(value!=null&&Integer.valueOf(value.getId()).equals(text.getTag()))content=text;else if(heading==null)heading=text;}
+            if(heading!=null)heading.setText(title);if(content!=null)content.setText(summary);
+            descendants(row);
+        }else{LinearLayout fallback=new LinearLayout(activity);fallback.setOrientation(LinearLayout.HORIZONTAL);TextView heading=new TextView(activity);heading.setText(title);TextView content=new TextView(activity);content.setText(summary);fallback.addView(heading,new LinearLayout.LayoutParams(0,-2,1));fallback.addView(content);row=fallback;}
+        row.setTag(title);row.setFocusable(true);row.setClickable(true);row.setOnClickListener(view->action.run());
+        ViewGroup.LayoutParams params=template==null?new LinearLayout.LayoutParams(-1,-2):template.getLayoutParams();
+        if(params instanceof ViewGroup.MarginLayoutParams)rows.addView(row,new LinearLayout.LayoutParams((ViewGroup.MarginLayoutParams)params));else rows.addView(row,new LinearLayout.LayoutParams(params));
     }
-    private static ViewGroup container(View root) {
-        if (root instanceof ScrollView && ((ScrollView) root).getChildCount() > 0)
-            return container(((ScrollView) root).getChildAt(0));
-        if (root instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) root;
-            if (root.getClass().getName().contains("NestedScrollView") && group.getChildCount() > 0)
-                return container(group.getChildAt(0));
-            if (group instanceof LinearLayout && ((LinearLayout) group).getOrientation() == LinearLayout.VERTICAL) return group;
-            for (int i = 0; i < group.getChildCount(); i++) {
-                ViewGroup found = container(group.getChildAt(i));
-                if (found != null) return found;
-            }
-        }
-        return null;
-    }
-    private static void add(Context context, LinearLayout parent, String title, String value, Runnable action) {
-        TextView row = new TextView(context); row.setText(title + "\n" + value); row.setTextColor(Color.WHITE);
-        row.setTextSize(16); row.setPadding(0, dp(context, 12), 0, dp(context, 12));
-        row.setFocusable(true); row.setFocusableInTouchMode(true); row.setClickable(true);
-        row.setOnClickListener(view -> action.run()); parent.addView(row, new LinearLayout.LayoutParams(-1, -2));
-    }
-    private static void edit(Activity activity, View root, boolean key) {
-        EditText input = new EditText(activity);
-        input.setSingleLine(true);
-        input.setInputType(key ? InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
-                : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
-        if (key) input.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        input.setHint(key ? "留空使用内置 Key" : "例如 api.tmdb.org 或完整 API 地址");
-        input.setText(key ? MetadataSettings.customKey(activity) ? MetadataSettings.key(activity) : "" : MetadataSettings.base(activity));
-        AlertDialog dialog = new AlertDialog.Builder(activity).setTitle(key ? "TMDB API Key" : "TMDB API 域名")
-                .setView(input).setPositiveButton("保存", null).setNegativeButton("取消", null)
-                .setNeutralButton("恢复默认", (d, which) -> {
-                    if (key) MetadataSettings.setKey(activity, ""); else MetadataSettings.setBase(activity, "");
-                    refresh(activity, root);
-                }).create();
-        dialog.setOnShowListener(d -> dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(view -> {
-            try {
-                if (key) MetadataSettings.setKey(activity, input.getText().toString());
-                else MetadataSettings.setBase(activity, input.getText().toString());
-                dialog.dismiss(); refresh(activity, root);
-            } catch (IllegalArgumentException invalid) { Toast.makeText(activity, invalid.getMessage(), Toast.LENGTH_SHORT).show(); }
-        }));
-        dialog.show();
-    }
-    private static int dp(Context context, int value) { return Math.round(value * context.getResources().getDisplayMetrics().density); }
+    private static void descendants(View root){if(root instanceof ViewGroup)for(int i=0;i<((ViewGroup)root).getChildCount();i++){View child=((ViewGroup)root).getChildAt(i);child.setFocusable(false);child.setClickable(false);descendants(child);}}
+    private static void collect(View view,List<TextView> list){if(view instanceof TextView)list.add((TextView)view);if(view instanceof ViewGroup)for(int i=0;i<((ViewGroup)view).getChildCount();i++)collect(((ViewGroup)view).getChildAt(i),list);}
+    private static ViewGroup container(View view){if(view instanceof LinearLayout&&((LinearLayout)view).getOrientation()==LinearLayout.VERTICAL)return (ViewGroup)view;if(view instanceof ViewGroup)for(int i=0;i<((ViewGroup)view).getChildCount();i++){ViewGroup result=container(((ViewGroup)view).getChildAt(i));if(result!=null)return result;}return null;}
 }
