@@ -1,0 +1,122 @@
+{
+  "launcher_source": "../leotv-build/icons",
+  "default_logo_source": "../coos/coos-js/assets/tvbox/logo.gif",
+  "assets": {
+    "res/drawable-hdpi/ic_launcher_background.png": {
+      "sha256": "25c5eb8444ac098b55302f37f4a44a2d867676f27fb0437a907f3fda1b0157e5",
+      "derivation": "original bytes"
+    },
+    "res/drawable-hdpi/ic_launcher_foreground.png": {
+      "sha256": "8993b0038514aaca432af10022e5b5e120efd5b4e0f13983cd287cbfe6cf7c37",
+      "derivation": "original bytes"
+    },
+    "res/drawable-mdpi/ic_launcher_background.png": {
+      "sha256": "75562f5e3adf6a388380137ea64b6e25ffaef226e4983e411a3fa5da74498459",
+      "derivation": "original bytes"
+    },
+    "res/drawable-mdpi/ic_launcher_foreground.png": {
+      "sha256": "0eeaf9b4cbe7af92e0f9ba8add5c9abc1ac28cd927417bc71a8e426ccc9de050",
+      "derivation": "original bytes"
+    },
+    "res/drawable-xhdpi/ic_launcher_background.png": {
+      "sha256": "295aacb0ae5cd9f15429d3f5d2cfda91ff5c2f6ff50ba2eed5701fa349def9dc",
+      "derivation": "original bytes"
+    },
+    "res/drawable-xhdpi/ic_launcher_foreground.png": {
+      "sha256": "be29553e462c7c6c337a27c2390bb0cc5ecbf1641127972ee124d8ac53b3b9a9",
+      "derivation": "original bytes"
+    },
+    "res/drawable-xxhdpi/ic_launcher_background.png": {
+      "sha256": "f74940070b7bdb1306d53ccba9a34d6e9c939619ca91b1a5487f7b835dbe174a",
+      "derivation": "original bytes"
+    },
+    "res/drawable-xxhdpi/ic_launcher_foreground.png": {
+      "sha256": "c30f0c01ba2d7b4e582e46ab5325a8c2f838e3a7ff27fa8cb01bde697b75c064",
+      "derivation": "original bytes"
+    },
+    "res/drawable-xxxhdpi/ic_launcher_background.png": {
+      "sha256": "efd964e1b0f6ed705997125b75312eb6aebbec8d288f47b65a7be1efbfb0dfe1",
+      "derivation": "original bytes"
+    },
+    "res/drawable-xxxhdpi/ic_launcher_foreground.png": {
+      "sha256": "fe0fcf8a26843a94e0f6b5a7a2bc7048aa4a72a5344228462062c3296100a39b",
+      "derivation": "original bytes"
+    },
+    "res/mipmap-hdpi/ic_banner.png": {
+      "sha256": "59202ea968b2438babfc7b5074738b7a2b55b3c5e49a449ea1e1d60b3ad51a9b",
+      "derivation": "original bytes"
+    },
+    "res/mipmap-hdpi/ic_launcher.png": {
+      "sha256": "41c57abb080562ea742fe2b458c3a62cd5f9b9f73831a0a56cd903d38aa0f243",
+      "derivation": "original bytes"
+    },
+    "res/mipmap-hdpi/ic_launcher_round.png": {
+      "sha256": "d5545485a375750fec3d95dbef848df1e973c4e7e696f7d17f7bfab074b79b3f",
+      "derivation": "original bytes"
+    },
+    "res/mipmap-mdpi/ic_banner.png": {
+      "sha256": "ec978235ecff57effb370ffa8603e98ea092955c3e34c57e279e6d7f16d48846",
+      "derivation": "original bytes"
+    },
+    "res/mipmap-mdpi/ic_launcher.png": {
+      "sha256": "0204ab673bbda63ed2ff62401f0762a66927550b2aeae677ef4aba4447e8f462",
+      "derivation": "original bytes"
+    },
+    "res/mipmap-mdpi/ic_launcher_round.png": {
+      "sha256": "7554970036ae24077b0864a69595d4b1de2f680f355e6936d0d65e5cb75cf575",
+      "derivation": "original bytes"
+    },
+    "res/mipmap-xhdpi/ic_banner.png": {
+      "sha256": "645c61ac3a0b76338058c2ae4742abf34ba81409ec237e0a5856dfb747b545d2",
+      "derivation": "original bytes"
+    },
+    "res/mipmap-xhdpi/ic_launcher.png": {
+      "sha256": "fa98c44f02d239d3a36bab6992a54899f028b366e3cb7fc35f81c147505e5cce",
+      "derivation": "original bytes"
+    },
+    "res/mipmap-xhdpi/ic_launcher_round.png": {
+      "sha256": "09a0872b79f24b55c4366f840638e5ef3e4ef90cbe412200c92c8eb28f6a5b75",
+      "derivation": "original bytes"
+    },
+    "res/mipmap-xxhdpi/ic_banner.png": {
+      "sha256": "74e3a7dfe76e7bd8ca58f7bd93bbfcf18bf81aaee4018524c1af82da3410ceb0",
+      "derivation": "original bytes"
+    },
+    "res/mipmap-xxhdpi/ic_launcher.png": {
+      "sha256": "76e619ff43b00649cfdb7501ea2ff5907f34dc94c62fa101736f1a870d4a19f3",
+      "derivation": "original bytes"
+    },
+    "res/mipmap-xxhdpi/ic_launcher_round.png": {
+      "sha256": "a27e6778c1add827cf9e625cfc656f97201e4d61b65d7b340c1f0a1a3e697ef4",
+      "derivation": "original bytes"
+    },
+    "res/mipmap-xxxhdpi/ic_banner.png": {
+      "sha256": "e3614148fb4981f090e74ef519a959437892e1fdca29a03450811fb976989d1a",
+      "derivation": "original bytes"
+    },
+    "res/mipmap-xxxhdpi/ic_launcher.png": {
+      "sha256": "f018c9df8514d3577dc2ca23a6f7e70cb9810eba81c375c7b44d68b2f6f520ab",
+      "derivation": "original bytes"
+    },
+    "res/mipmap-xxxhdpi/ic_launcher_round.png": {
+      "sha256": "8e766ccc0fb4a4fd2bceafad0195b7a5aa1e417afbd66c9b1421dda5cbbcd767",
+      "derivation": "original bytes"
+    },
+    "assets/leotv/logo.gif": {
+      "sha256": "19fd402f18ee8741a7e9bb8d1d4206290d99cacab5ebc52f8447995dc34c5333",
+      "derivation": "original bytes",
+      "width": 600,
+      "height": 300,
+      "frames": 30,
+      "loop": 0
+    },
+    "res/drawable-nodpi/ic_logo.png": {
+      "sha256": "48a627582c3504b2a40919a802649e8f5a274aa7bc77e29318879c508cef1a20",
+      "derivation": "first frame of assets/leotv/logo.gif; static XML/poster/notification fallback"
+    },
+    "res/drawable/ic_launcher_foreground.png": {
+      "sha256": "e60910c1f47b20fb6f6b5ca3f1a14053cfc2eb5980d7e6d89eafe31d03b6d0b7",
+      "derivation": "lossless alpha composite of supplied xxxhdpi adaptive background and foreground; retains existing resource ID"
+    }
+  }
+}

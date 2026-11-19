@@ -139,23 +139,37 @@ public final class DexSemanticAudit {
     }
 
     public static void main(String[] args) throws Exception {
-        if (args.length > 3) inspect = new HashSet<>(Arrays.asList(args[3].split(",")));
+        Set<String> expectedChanges = null;
+        if (args.length > 3 && args[3].equals("--expected-changes")) {
+            if (args.length != 5) throw new IllegalArgumentException("Expected an exact changed-class list");
+            expectedChanges = new TreeSet<>(Arrays.asList(args[4].split(",")));
+        } else if (args.length > 3) {
+            inspect = new HashSet<>(Arrays.asList(args[3].split(",")));
+        }
         Map<String, String> before = read(args[0]), after = read(args[1]);
         SortedSet<String> names = new TreeSet<>(before.keySet());
         names.addAll(after.keySet());
         List<String> changed = new ArrayList<>();
         for (String name : names) if (!Objects.equals(before.get(name), after.get(name))) changed.add(name);
         boolean equal = changed.isEmpty();
+        boolean expected = expectedChanges != null && new TreeSet<>(changed).equals(expectedChanges)
+                && after.keySet().containsAll(before.keySet());
         String changes = String.join(",", changed.stream().limit(30).map(DexSemanticAudit::quote).toList());
+        String additions = String.join(",", after.keySet().stream().filter(name -> !before.containsKey(name))
+                .map(DexSemanticAudit::quote).toList());
         String json = "{\n  \"original_classes\": " + before.size()
                 + ",\n  \"rebuilt_classes\": " + after.size()
                 + ",\n  \"changed_classes\": " + changed.size()
                 + ",\n  \"equal\": " + equal
                 + ",\n  \"original_semantic_sha256\": " + quote(sha(before.toString()))
                 + ",\n  \"rebuilt_semantic_sha256\": " + quote(sha(after.toString()))
-                + ",\n  \"first_changed_class_names\": [" + changes + "]\n}\n";
+                + ",\n  \"first_changed_class_names\": [" + changes + "]"
+                + (expectedChanges == null ? "" : ",\n  \"expected_changes_match\": " + expected
+                    + ",\n  \"removed_classes\": " + before.keySet().stream().filter(name -> !after.containsKey(name)).count()
+                    + ",\n  \"added_class_names\": [" + additions + "]")
+                + "\n}\n";
         Files.writeString(Path.of(args[2]), json);
         System.out.println(json);
-        if (!equal) System.exit(1);
+        if (!equal && !expected) System.exit(1);
     }
 }

@@ -43,6 +43,28 @@ jobs:
             --sdk "$ANDROID_SDK_ROOT" \
             --gson-jar "$RUNNER_TEMP/deps/gson-2.13.2.jar" \
             --xml-jar "$RUNNER_TEMP/deps/simple-xml-2.7.1.jar"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.14.3'
+      - name: Verify native chrome geometry and progressive blur
+        run: gradle --no-daemon --console=plain --max-workers=2 -p research/ui-check test
+      - name: Verify native detail routing, playback, metadata and client themes on API 23
+        run: |
+          python3 tools/check_native_details.py --all-variants
+          gradle --no-daemon --console=plain --max-workers=2 -p research/detail-check -Pclient=mobile test
+          gradle --no-daemon --console=plain --max-workers=2 -p research/detail-check -Pclient=tv test
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-detail-api23-check
+          path: research/detail-check/build/*/test-results/test/*.xml
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-chrome-api23-and-render-check
+          path: |
+            research/ui-check/build/test-results/test/*.xml
+            artifacts/ui-preview/*.png
+          retention-days: 14
       - uses: actions/upload-artifact@v4
         with:
           name: restored-core-api23-check
@@ -79,7 +101,7 @@ jobs:
           log-accepted-android-sdk-licenses: false
       - name: Install Android build tools
         run: |
-          sdkmanager 'build-tools;36.1.0'
+          sdkmanager 'platforms;android-23' 'build-tools;36.1.0'
           command -v zstd || sudo apt-get install -y zstd
       - name: Fetch pinned inputs and dependencies
         env:
@@ -88,15 +110,16 @@ jobs:
         run: |
           python3 tools/ci_dependencies.py --output "$RUNNER_TEMP/deps"
           python3 tools/ci_input.py --repo "$GITHUB_REPOSITORY" --variant "$VARIANT" --output "$RUNNER_TEMP/input"
-      - name: Compile smali and verify original code and payloads
+      - name: Build Leotv and verify the baseline plus declared identity and UI changes
         env:
           VARIANT: ${{ matrix.variant }}
           INPUT_FILENAME: ${{ matrix.filename }}
         run: |
-          python3 tools/build_preserved.py --variant "$VARIANT" \
+          python3 tools/build_branded.py --variant "$VARIANT" \
             --apk "$RUNNER_TEMP/input/$INPUT_FILENAME" \
             --apktool "$RUNNER_TEMP/deps/apktool_2.11.0.jar" \
-            --sdk "$ANDROID_SDK_ROOT"
+            --sdk "$ANDROID_SDK_ROOT" \
+            --output "artifacts/leotv-$VARIANT-unsigned.apk"
       - name: Sign installable APK with the fixed APK certificate
         env:
           VARIANT: ${{ matrix.variant }}
@@ -107,13 +130,13 @@ jobs:
           APK_CERT_SHA256: ${{ vars.APK_CERT_SHA256 }}
         run: |
           python3 tools/sign_ci_apk.py --sdk "$ANDROID_SDK_ROOT" \
-            --input "artifacts/normal-$VARIANT-baseline-unsigned.apk" \
-            --output "artifacts/normal-$VARIANT.apk"
+            --input "artifacts/leotv-$VARIANT-unsigned.apk" \
+            --output "artifacts/leotv-$VARIANT.apk"
       - uses: actions/upload-artifact@v4
         with:
           name: ordinary-${{ matrix.variant }}-signed
           path: |
-            artifacts/normal-${{ matrix.variant }}.apk
-            artifacts/normal-${{ matrix.variant }}.signature.json
-            artifacts/normal-${{ matrix.variant }}-baseline-unsigned.audit.json
+            artifacts/leotv-${{ matrix.variant }}.apk
+            artifacts/leotv-${{ matrix.variant }}.signature.json
+            artifacts/leotv-${{ matrix.variant }}-unsigned.audit.json
           retention-days: 14

@@ -1,0 +1,323 @@
+{
+  "source_project": "../coos/coos-master",
+  "classes": {
+    "BackdropHttp": {
+      "original_sha256": "512e5519c2a8442da96a4010b8e5ef144c8c66fbf5ad1d68455af3f004ce330d",
+      "relocated_sha256": "7373b61dd5f90e182fe3cc01db2a23db3a9c7e659eb3782b107aa34625f8e5bd"
+    },
+    "BackdropIdentity": {
+      "original_sha256": "02cd860646af8ed8d332f63bb5f292ba523685963cc45010a02df9ea9a9227ae",
+      "relocated_sha256": "efa8e1b9ec1c9980b7bc030504f5778a4003bdc7e0601b15bdef7eaf3525bbd7"
+    },
+    "BackdropImages": {
+      "original_sha256": "a50cf439c47c24a40f79ab39125062437fb74f3a7db98491ae9fd6ea44600c65",
+      "relocated_sha256": "f1034471127c90e4514de85b2c9530c37e7a5d469a02a928551b8f7f65953bca"
+    },
+    "BackdropResolver": {
+      "original_sha256": "b39960ef478985c468842e382f9a82f40633ebefb8d097bc6d928c0edf99a201",
+      "relocated_sha256": "624641e700cae98f685e49be585d9be4ec8f25d1b71ed256bc38255487a870bc"
+    },
+    "BackdropSettings": {
+      "original_sha256": "acc765c5d4e1e5ed21cc3eda49ecd590ee2c8f40aad5312c2921c8dca47f0329",
+      "relocated_sha256": "0e4efd69fe0b9031c9116ed19712eb5d013db346277640c7d63b86fd1b4fd39e"
+    },
+    "BackdropTls": {
+      "original_sha256": "a5c4bce2de9a0d973a1ef03d1c5c73e1010b54b38d3f121cd4fa992ce4f982b3",
+      "relocated_sha256": "730715addd0f1355e0d3a70cfbfd74f7d3b02426a2a9388bf0b91cf6774bee05"
+    },
+    "DetailActionButton": {
+      "original_sha256": "94ecb478c44fdee3e8d8152e4a55d4e76f786268b1a5f610f087e7633fc55b87",
+      "relocated_sha256": "b61b368a74096f83bdc4147d40189979e5f9dd27162c59528f54ed2760c78974"
+    },
+    "DetailBadges": {
+      "original_sha256": "3346468d57f1f34b3ab0c75d33b4248e1bc734fb0ac7bfa806a4139319bc1a9d",
+      "relocated_sha256": "694e5f96422cc6d5cdfb7f76be41e826f2b043490ad551aef45c2b10073fd938"
+    },
+    "DetailEpisodeCards": {
+      "original_sha256": "38909b292603ab68b93b260d163c72ae17f6bf0ba0255f5d0080f5c317a46688",
+      "relocated_sha256": "aaf390f089b9a5dd29e1d9e1493156a633ee28f9674c92371148399c5976ecee"
+    },
+    "DetailHero": {
+      "original_sha256": "7e7dc87441a8ec5136e61e6151eff869ffa40a2fb585de0b2c795119a65bff1d",
+      "relocated_sha256": "d02e02eeaffebf615f1bd3796196e573034befe52c233f85e0c3f96ed669ffcb"
+    },
+    "DetailImageView": {
+      "original_sha256": "7c309324e6173145f53eeb791308a439ec59116dbf685acad5da3d58cebcfcce",
+      "relocated_sha256": "8d3f6bc5c5e7874b571df6a0b7d26705abf60db61f9367a2ce2d184c7d6e56c6"
+    },
+    "DetailMatchPopup": {
+      "original_sha256": "d44bb6a28a438ea8155bb4aa6ae9a4419cf64d8ef44c1eb4354d457ffcb82241",
+      "relocated_sha256": "6ac1b444c4b50db00cd1216470d6f04ab1ce7d3f8f6c8a8294e2d847f78f6f55"
+    },
+    "DetailPage": {
+      "original_sha256": "703f28a125422a5f4e4d61d64bb115502173ecd1154a1c57baddf299a6c37415",
+      "relocated_sha256": "b9408045416931ea93829d43d9b10cf492b43fb0cb534889a8783c6f1cbc007f"
+    },
+    "DetailPersonPopup": {
+      "original_sha256": "50f77b5ad070ff69b521b7098c61e7e514c262191932dc3fc230779e7fc0cbbb",
+      "relocated_sha256": "550e9177425de2e9be05652d0fa8b9aead1100c94df9b2f7fb10865e25cc2112"
+    },
+    "DetailPlayButton": {
+      "original_sha256": "4bf3e41c55366b19144d8871efe0ef06f7f4755349ddf8716c4ddd9a72d69d96",
+      "relocated_sha256": "5fd50bc22487db3c31458f4b6aaf870fdb2e2998bb846003474d6604381a2308"
+    },
+    "DetailRecommendations": {
+      "original_sha256": "2731c0e696a54c2b2ca79589baf63edcfa9f92a778c5f37432013efdb4ad6e0b",
+      "relocated_sha256": "00612fe98462b3a09c8c6e7b7ab4e3f9cc4343f8bacf6a97bfbbb081ddcc409e"
+    },
+    "DetailResourceSettings": {
+      "original_sha256": "00a5167ce56971a326c9fc852079ecb8f3c5a23fc99fff66724e0e8b686cc699",
+      "relocated_sha256": "66ebfe1b13c911e2dbb8cc3a9e3d59af3cd899fd239c64d7eedbd55606891e2c"
+    },
+    "DetailReviews": {
+      "original_sha256": "f39750c34f3f49292f8eb24d0616d599875b144cf127b1100e4f6ef9f35eea03",
+      "relocated_sha256": "1d64d46a27fce3cf4faa393be7ffe024c7ecb2ffab3d42483112902686098320"
+    },
+    "DetailSiteDirectory": {
+      "original_sha256": "7010f301df96bb7a3a5b0d81247423eb6c685535158ae139855d8558dcf9b13b",
+      "relocated_sha256": "e665d841d1fc78c5e6c5650a66c7ba61a664f5fbba3cf2e6bc20d73a7b1f6b3c"
+    },
+    "DetailSitePicker": {
+      "original_sha256": "09166ceebfe284a5cd2e8b402388e7b16d383825c828c2b7073488e6c03c0593",
+      "relocated_sha256": "a9afb802b79509937dc64b5033e7b991d5f35b241aaa6587f8631a304dbd3d2c"
+    },
+    "DetailSiteSearch": {
+      "original_sha256": "43e8a0a303cc61207ae2f4e765f3483da07291536d13d8afb94567414afb1f88",
+      "relocated_sha256": "08f2c8d509b6132d7f899bb82168f5dcd172bf703d26f402d274834fd2f38dea"
+    },
+    "DetailSourcePopup": {
+      "original_sha256": "56d13f4c9f4e717b074d818069b7957b6791f1398ca4f851ea21a80587bb0ce5",
+      "relocated_sha256": "ce6e9088b98644d22da9584cbef699d315cf5ee42f87ad222db3746fe95fc84a"
+    },
+    "DetailStills": {
+      "original_sha256": "d775a1790904a773bec9452ac340c76595428276a92562b4b2d287f61d5726bf",
+      "relocated_sha256": "fcb0aa1107962ca7a19c00151f8e33f30ae83d2e2cdf55a062861fde724c1be0"
+    },
+    "DetailSurface": {
+      "original_sha256": "9b24950ac4267f3c82b49a1fc82dbcbd5c39d43de668094270c029ca8956c522",
+      "relocated_sha256": "fcae464445b50ce4f8732a65d7024dc67545c93546d54b6fe01670d3fef8e086"
+    },
+    "DetailTheme": {
+      "original_sha256": "ada019447d17796993ff9df927b6f064a2cda2e464118ba7e471ea409d6d7d02",
+      "relocated_sha256": "a094b8b284b5e8997169e1fd0b730b1f52e40c7934551045631e5b7e8fea0b1d"
+    },
+    "DetailThumbnails": {
+      "original_sha256": "825fc870c4140ebc62dc75c54408a6ca56396d2c4421dcd12d910c0f7ebbbaee",
+      "relocated_sha256": "0dc0e4fdecdd01c0d96eb8e9cc94d79dd2bcb3ce7a694f564ff3b8c7b6603f63"
+    },
+    "DetailTitleArt": {
+      "original_sha256": "9a7173cd4307c588d28684f92aebc606ace80dcbb3cdc05c21e0d8604fdb9756",
+      "relocated_sha256": "928939245176f2507498016c23e9332d92a899e25f58240551f9ec2c516bf600"
+    },
+    "DoubanDetailMetadata": {
+      "original_sha256": "6c0866e9ce723845fbb530c2f020c17e63d81c85f19e6c0b1824b44aa8e104aa",
+      "relocated_sha256": "8388411e0faef4563f0de3f54bb4d473f09ed4700a698202eeb998867272de56"
+    },
+    "DoubanReviewMetadata": {
+      "original_sha256": "10ab058fb122e56c863c20846e325f8ae24643cb93a5a36e12ddd1e37fad7a58",
+      "relocated_sha256": "4ae44061f05d9068ee7c5d3f1c10cec89ac29f2f907290b633576108df9d72aa"
+    },
+    "FollowStore": {
+      "original_sha256": "78b30ae0312c6b260c6ff239e89bb8b967740892f703c793e1a2f022840a2db8",
+      "relocated_sha256": "d410e48e06120972b2ecc9ce622c0deb4be72ac17ff7ff05ddcaecba05141db3"
+    },
+    "Guard": {
+      "original_sha256": "dfcfd0e6909bd74a35e1dc6c292a1f66d6e1c1fe083261e5bb276a33f834d6ec",
+      "relocated_sha256": "ab8f7414fa3b18a892799fa8c3ddca1e4b4eda395eb85c8ecb2e87559af5535d"
+    },
+    "HomeStyle": {
+      "original_sha256": "57f88c466545ccd3c58f9d95369edc4ac506af0228809c41af7c86df5228aeff",
+      "relocated_sha256": "28b536095863fca8da6cbe52d7118f3e281a8d2948823e68e71592e55323d9bc"
+    },
+    "HostAbi": {
+      "original_sha256": "9acd33cb155deae034a0734335ccaab55e30122968165da8710a20aa4974af62",
+      "relocated_sha256": "a8ea524fce2e3e98f680a17d919b4d8fb57de9d42a8cb3dd61e08db60ab43c1e"
+    },
+    "LibraryDetailLayout": {
+      "original_sha256": "eb9789cebfd0bf5f6d37ba0f3d19629d05554029246170490af99ab38d65a219",
+      "relocated_sha256": "6c7f117afdd9403652f9ad0dcfe7542abf4bbc13aed61966a8534b5bb51a7313"
+    },
+    "LibraryStyle": {
+      "original_sha256": "3f8d198cdbb642eab0163dafeabf20eec1bb2781998037bac6fcb9aada8e570e",
+      "relocated_sha256": "76b128e6aeb6e64932f761e19b390ee490f8b9d53541d782d2264dfcbba0d473"
+    },
+    "MetadataMatchStore": {
+      "original_sha256": "043d125cdf88fce546451f41cf7e5f2c8983639bb3e37d662443ec145b2fd5c4",
+      "relocated_sha256": "140bd2572978e348930f1446568375f87a35cd039b6a5859975314551393c4a8"
+    },
+    "MetadataPrefetch": {
+      "original_sha256": "72510d4a0b81c6cc4b0abe95ce94b5c0ca674e13c0f54600af8033cfbd95d1e9",
+      "relocated_sha256": "96766c6b4b1e084c15bf6d3b5b8072709a72cd80fff98c3bbb2f410344a8c958"
+    },
+    "MobileDetailMetadata": {
+      "original_sha256": "0caaabd593a13e828065bfb2e79035ba41ed707235ca5c32854bf8b377aec853",
+      "relocated_sha256": "78ff58f57df1ee83f6ddac37fec2c0a34cc77bd35a45c7887c0a239c22860e28"
+    },
+    "MobileDetailPage": {
+      "original_sha256": "ab704b79fe77f3896a818a0dca136cf78798f510f8b529b8f040a79f34819f3f",
+      "relocated_sha256": "dfb5a57aedfcd10a14eacc5c4f9dd9d4fb2fc3e29acf6d451db654dad2481a98"
+    },
+    "MobileEpisodeKey": {
+      "original_sha256": "3677cdbc5252d59e47e1b320e5871bbd28e4ed6384be1405855e2ef5e4a32e02",
+      "relocated_sha256": "c9e3bf72cb8a890bd7b68d79fabefce6a4ba0728026e9dc95f1f1ed3ee7a1e83"
+    },
+    "MobileGridRow": {
+      "original_sha256": "1d7fba1f0b0892b67d0d5a414668eeafbf0f3e2293a9202ff2afb34876fd180c",
+      "relocated_sha256": "49237ac88b4bdc52f0048eb5cf8a9b26f3f0d12a6bdf2fda96e12e51f0db4e72"
+    },
+    "MobileListSpacing": {
+      "original_sha256": "4cb971a8434612c1b22c6dbb94a972826ffc1084fea0b74c9a268b066d7aaa30",
+      "relocated_sha256": "8d055bca5d425cc0f3f0fc4e6960856dfcd9a5d4df60fe8bafb2ab34d4ba8706"
+    },
+    "MobileSourceBar": {
+      "original_sha256": "f4a0c12cca2ea28bec1e3055de84fc4d42e5d0c8ec5eed8d35aa643fc353e65d",
+      "relocated_sha256": "8d26628160936d5581c9614e4b5e5cd0f0cd915ab1ef7ddab13ab5e01083c5a5"
+    },
+    "MusicText": {
+      "original_sha256": "0ec44907b9380bd991b635055f420cc510c494c155bc9d5382f64e9fe896362b",
+      "relocated_sha256": "93c76c71c360a160a8fd58c8b5723e6dcbcd4a11b7fd5eee5a02d139a1dc7128"
+    },
+    "NativeKeep": {
+      "original_sha256": "3b2f7d465720cc768c96c769453c4f70b8457ad0b208466c0c7d6b9edb685631",
+      "relocated_sha256": "0bf1e00bc2f6963c9b387c9d18dc3b8f39228b5c3a9796631ceb0f1625ef2524"
+    },
+    "NativeMusicImages": {
+      "original_sha256": "7308f1eebbf0bb9ba3d83fbc6cfbee34c55f41d47b8895401287575575822440",
+      "relocated_sha256": "a6af796160f8222a326df7fc8072e76742d544fdb342bdcc7c80664c1c66aa50"
+    },
+    "PlayerBadgeTheme": {
+      "original_sha256": "40e65ced5522114783a976fb6c516d363953951a7d39ebb6aa6c4533f00c7f28",
+      "relocated_sha256": "afb84d6e08d2c5152350d112cbbcf0e9c14615c582693526ef20778e797de073"
+    },
+    "PlayerOverlayPosition": {
+      "original_sha256": "403b9fcbd21ccf4b06fe3dd6b3fe0f308bbf161fc5005788c27d79d86ead2101",
+      "relocated_sha256": "7e8cc250c57e35ed987f38a9859e3e8f1b50f6d1d638716ed34804ad4bced907"
+    },
+    "PlayerOverlaySettings": {
+      "original_sha256": "e13f925c7d5cb1510692f62d170bbaca40e17cad6e3c3dffacfab8517e0c0967",
+      "relocated_sha256": "118e519287c0b125da408e561eca36b2d9023c7f80ed779c900409d9cbb99cb0"
+    },
+    "RelatedDetail": {
+      "original_sha256": "90228dacaacafd8d75fb5ecadc56fb65a47c941a752d28cfbe136c0f1b4d7d12",
+      "relocated_sha256": "bf12a337d39b3eba0e322297505591f570de73d54c5d9df506923ea7446ab8fe"
+    },
+    "SignedHostAbi": {
+      "original_sha256": "73bb8ae3ff30642a584ed8b128d8dccccfc832f4d6de02930df1b5263ac14902",
+      "relocated_sha256": "61ce22018e2e480b7b6e310a36c3ba02a86a1b55c194fe4aa2efb70159093412"
+    },
+    "SiteFeed": {
+      "original_sha256": "bef976bb3cfed4f05c22495f6a7d3d46d3b666a46359e5fa778a6018d8c57635",
+      "relocated_sha256": "a6c84d3f55b5dc5f3804d23215dd79b6537229a686985c52f6b2b2b1b0462a67"
+    },
+    "SourceArtwork": {
+      "original_sha256": "c5db19189d6d004e41bf99c2c6b3bcaa9e684999434e40746c2b4027418b9018",
+      "relocated_sha256": "a3c2b7dbe243f5e5a75744c93c4c813965b8d85cca2e8184beeab17e2d1c1e5f"
+    },
+    "TmdbDefaults": {
+      "original_sha256": "2d310aca34d4eab82bb33107e5b04fe531aa9d0d40da6a67b52e889002f02935",
+      "relocated_sha256": "a08a4c37422bfce2bf890189ee855a84606862bc8a9772d696cc54b52d64053b"
+    },
+    "TvDetailNavigation": {
+      "original_sha256": "e782d08f2514d0d95bf1404aa90eed862d7bb6e2ae263f323b71d54940a5ba0a",
+      "relocated_sha256": "798db9ca696d22045e40d899cc77b98e3e06d2eb79f757883b02f53ed9f33037"
+    },
+    "TvDetailPage": {
+      "original_sha256": "b56c7c0a03a1009d83e932c3b1db8a7ff136bed8539ab067b27901a109b53128",
+      "relocated_sha256": "0953bcca18d505802b076d5e3032700db6654242fec8a311be350938fe21b39e"
+    },
+    "TvDetailScroll": {
+      "original_sha256": "d579bc032ab142db6ec61f2d03bb43a7c57359f4555bd3a47879aa8a4d906a02",
+      "relocated_sha256": "97af371abd0a2ed26ca03237c9f516b76f9396a117cfb72ed41980826fb89d61"
+    },
+    "TvEpisodeMore": {
+      "original_sha256": "916c7ed40b03f0ca574f067bb43916ae3f032b1ac188366582e22dd037c5396f",
+      "relocated_sha256": "32e7344c4130f48329bfd81fb19bf249a9f4e355395e7ff5ff5d26f15cfffb2d"
+    },
+    "TvGridRow": {
+      "original_sha256": "94478d3069b8a94e3393d0e0770f2747b57c7673b6974f47d2d8241443bd98fe",
+      "relocated_sha256": "9d7a573a20e2d8f031321912e4fbc87ee0dc41278ca7ee904b82da43919cc1cd"
+    },
+    "TvPlaybackBridge": {
+      "original_sha256": "ddda680f6e0f7db74f96c729e9cf440971e02c7a762882428ee3c47ec1bc386f",
+      "relocated_sha256": "c3ec9771e31f840f4ff225ec121eef9f0d1ed73fc4b8a351546c20d1aab92edf"
+    },
+    "UiDefaults": {
+      "original_sha256": "ea5bf0844e846ea0b2fd93ae5793b99083d0db4a5826f73ef178e364d76346e1",
+      "relocated_sha256": "fa2e9dc83b0b95264830bdaea10cd4f8de7721c88e1f27837c691cd3a5ccf18c"
+    }
+  },
+  "integration_boundaries": {
+    "MobileDetailUi": [
+      "TvDetailPage",
+      "MobileDetailPage",
+      "TvPlaybackBridge",
+      "TvEpisodeMore",
+      "MobileSourceBar",
+      "MobileGridRow",
+      "DetailSourcePopup"
+    ],
+    "YouTubeDetailSource": [
+      "TvDetailPage",
+      "DetailRecommendations"
+    ],
+    "HostSurfaceDiagnostics": [
+      "TvDetailPage",
+      "TvPlaybackBridge"
+    ],
+    "NativeVideoController": [
+      "TvDetailPage",
+      "DetailRecommendations"
+    ],
+    "NativeBiliController": [
+      "TvDetailPage"
+    ],
+    "DoubanNativeController": [
+      "TvDetailPage"
+    ],
+    "NativeMusicController": [
+      "TvDetailPage"
+    ],
+    "DetailBackdropController": [
+      "TvDetailPage",
+      "MobileDetailPage",
+      "TvPlaybackBridge",
+      "BackdropSettings"
+    ],
+    "NativeVideoStyle": [
+      "TvDetailPage",
+      "DetailRecommendations"
+    ],
+    "WebHtvPlaybackBridge": [
+      "TvPlaybackBridge"
+    ],
+    "WebHtvHost": [
+      "TvPlaybackBridge",
+      "SignedHostAbi",
+      "HostAbi",
+      "SiteFeed"
+    ],
+    "HomeFeed": [
+      "SiteFeed",
+      "DetailResourceSettings",
+      "DetailSiteSearch",
+      "MetadataPrefetch"
+    ],
+    "ProSiteFeed": [
+      "SiteFeed"
+    ],
+    "HostHome": [
+      "DetailPersonPopup",
+      "DetailRecommendations"
+    ],
+    "PairMusicTvHighlight": [
+      "LibraryStyle"
+    ],
+    "HomeCard": [
+      "LibraryStyle",
+      "HomeStyle"
+    ],
+    "HomeTheme": [
+      "HomeStyle"
+    ]
+  }
+}

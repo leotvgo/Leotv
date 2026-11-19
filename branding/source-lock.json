@@ -1,0 +1,38 @@
+{
+  "tv-v7a": {
+    "smali/com/fongmi/android/tv/App.smali": "570c5ca68470dbba42c2b4642b73e8f3b8d3071e9d5e784251e1b48f3f278cf4",
+    "smali/com/fongmi/android/tv/ui/activity/A.smali": "b15fecc99e70e2807ce6112394943b5973b7889df9c32d519167761bee5822f2",
+    "smali/com/fongmi/android/tv/ui/activity/C.smali": "bb8e820a64fd992dea2b1c1fac824ad2b66e29792e0a19674aaf2ab87934961b",
+    "smali/com/fongmi/android/tv/ui/activity/HomeActivity.smali": "39217602cbbb3c4e300165ea8590c57a7af139c5f701056d92df36abb9ea6e70",
+    "smali/com/fongmi/android/tv/ui/activity/SettingActivity.smali": "d78c4be122b9c13dc48512614dec0102928d8095d1a5ba4d738debbcc497f815",
+    "smali/w3.1/a.smali": "87e00acf8294c0a10f87d5c5483990441e9c7ba37ecb4eda2610933a4f64ba6c"
+  },
+  "tv-v8a": {
+    "smali/com/fongmi/android/tv/App.smali": "570c5ca68470dbba42c2b4642b73e8f3b8d3071e9d5e784251e1b48f3f278cf4",
+    "smali/com/fongmi/android/tv/ui/activity/A.smali": "b15fecc99e70e2807ce6112394943b5973b7889df9c32d519167761bee5822f2",
+    "smali/com/fongmi/android/tv/ui/activity/C.smali": "615340a3bdaf9f881242da1f7747fee20798cb5f2546db4302aa493601b6c962",
+    "smali/com/fongmi/android/tv/ui/activity/HomeActivity.smali": "39217602cbbb3c4e300165ea8590c57a7af139c5f701056d92df36abb9ea6e70",
+    "smali/com/fongmi/android/tv/ui/activity/SettingActivity.smali": "5132ea32732ed1b4b21f634f703ce3aa69a95df2943c3a15295c730103ec2e85",
+    "smali/w3.1/a.smali": "87e00acf8294c0a10f87d5c5483990441e9c7ba37ecb4eda2610933a4f64ba6c"
+  },
+  "mobile-v7a": {
+    "smali/N6/m.smali": "9cec499aebe0fd68a9c87c848851adffff1a62ca827cbd273e20efe2a30b1aa0",
+    "smali/R3/O.smali": "2d37c51e872d36e10c2484ad68a215fd1054ce828520d6983d047d48ebdc867f",
+    "smali/S3/G.smali": "640210752126caf999cd5ab00596cd3dda6dd9d85c7510b5a14d3931ed4d0a1d",
+    "smali/S3/q.smali": "ae8c9d331bc6dec68ff5c6665d68d4aff69e85026369e766a03b7d925e2117e4",
+    "smali/S3/u.smali": "aa8c02822f38f41e15f8da00d4a43699eba1a812bab850df69b0aab6c449f7d2",
+    "smali/com/fongmi/android/tv/App.smali": "e24d84a4122d5c66398b853c7ef40bd1ac87f4109e3e913fb7855cebf6c98a66",
+    "smali/com/fongmi/android/tv/service/DownloadService.smali": "d87fcf2505633918a57370627d6f6f88966fbd06dc536e93b45ff2d6a7d64b2f",
+    "smali/z3.1/a.smali": "97ad9c423f4256eea66680b5fb48a0078a82c298ef671009d6811cc5c6dac6d5"
+  },
+  "mobile-v8a": {
+    "smali/N6/m.smali": "9cec499aebe0fd68a9c87c848851adffff1a62ca827cbd273e20efe2a30b1aa0",
+    "smali/R3/O.smali": "0816682add38ccc31adc96eb0d4b467c738d19b69897d6f198bea96b27a1ac35",
+    "smali/S3/G.smali": "640210752126caf999cd5ab00596cd3dda6dd9d85c7510b5a14d3931ed4d0a1d",
+    "smali/S3/q.smali": "ae8c9d331bc6dec68ff5c6665d68d4aff69e85026369e766a03b7d925e2117e4",
+    "smali/S3/u.smali": "9d54f9069bdcdfc7739df27d446d7652d4fa3c98185011b3249d58159c9d7d73",
+    "smali/com/fongmi/android/tv/App.smali": "e24d84a4122d5c66398b853c7ef40bd1ac87f4109e3e913fb7855cebf6c98a66",
+    "smali/com/fongmi/android/tv/service/DownloadService.smali": "d87fcf2505633918a57370627d6f6f88966fbd06dc536e93b45ff2d6a7d64b2f",
+    "smali/z3.1/a.smali": "97ad9c423f4256eea66680b5fb48a0078a82c298ef671009d6811cc5c6dac6d5"
+  }
+}

@@ -56,10 +56,10 @@ jobs:
           import json, os, pathlib, subprocess
           temp = pathlib.Path(os.environ['RUNNER_TEMP'])
           artifact = temp / 'signed-input'
-          report = json.loads((artifact / 'normal-tv-v7a.signature.json').read_text())
+          report = json.loads((artifact / 'leotv-tv-v7a.signature.json').read_text())
           subprocess.run(['python3', 'tools/android6_smoke.py', '--sdk', os.environ['ANDROID_SDK_ROOT'],
               '--legacy-emulator', str(temp / 'legacy-emulator/emulator/emulator'),
-              '--apk', str(artifact / 'normal-tv-v7a.apk'), '--sha256', report['apk_sha256'],
+              '--apk', str(artifact / 'leotv-tv-v7a.apk'), '--sha256', report['apk_sha256'],
               '--work', str(temp / 'android6-test')], check=True)
           PY
       - name: Upload sanitized Android 6 test result

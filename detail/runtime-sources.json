@@ -1,0 +1,71 @@
+{
+  "shared_from_jar": [
+    "BackdropHttp",
+    "BackdropIdentity",
+    "BackdropImages",
+    "BackdropResolver",
+    "BackdropTls",
+    "MobileDetailMetadata",
+    "DoubanDetailMetadata",
+    "DoubanReviewMetadata",
+    "MetadataMatchStore",
+    "TmdbDefaults",
+    "DetailHero",
+    "DetailTitleArt",
+    "DetailThumbnails",
+    "DetailBadges",
+    "DetailActionButton",
+    "DetailPlayButton",
+    "DetailImageView",
+    "DetailSurface",
+    "Guard"
+  ],
+  "tv_theme_count": 5,
+  "mobile_theme_count": 4,
+  "source_sets": {
+    "common": [
+      "detail/runtime/common/com/leotv/detail/BackdropHttp.java",
+      "detail/runtime/common/com/leotv/detail/BackdropIdentity.java",
+      "detail/runtime/common/com/leotv/detail/BackdropImages.java",
+      "detail/runtime/common/com/leotv/detail/BackdropResolver.java",
+      "detail/runtime/common/com/leotv/detail/BackdropSettings.java",
+      "detail/runtime/common/com/leotv/detail/BackdropTls.java",
+      "detail/runtime/common/com/leotv/detail/DetailActionButton.java",
+      "detail/runtime/common/com/leotv/detail/DetailActivity.java",
+      "detail/runtime/common/com/leotv/detail/DetailBadges.java",
+      "detail/runtime/common/com/leotv/detail/DetailHero.java",
+      "detail/runtime/common/com/leotv/detail/DetailImageView.java",
+      "detail/runtime/common/com/leotv/detail/DetailPlayButton.java",
+      "detail/runtime/common/com/leotv/detail/DetailSurface.java",
+      "detail/runtime/common/com/leotv/detail/DetailTheme.java",
+      "detail/runtime/common/com/leotv/detail/DetailThumbnails.java",
+      "detail/runtime/common/com/leotv/detail/DetailTitleArt.java",
+      "detail/runtime/common/com/leotv/detail/DoubanDetailMetadata.java",
+      "detail/runtime/common/com/leotv/detail/DoubanReviewMetadata.java",
+      "detail/runtime/common/com/leotv/detail/FollowStore.java",
+      "detail/runtime/common/com/leotv/detail/Guard.java",
+      "detail/runtime/common/com/leotv/detail/HomeFeed.java",
+      "detail/runtime/common/com/leotv/detail/MetadataMatchStore.java",
+      "detail/runtime/common/com/leotv/detail/MetadataPrefetch.java",
+      "detail/runtime/common/com/leotv/detail/MetadataSettings.java",
+      "detail/runtime/common/com/leotv/detail/MobileDetailMetadata.java",
+      "detail/runtime/common/com/leotv/detail/MobileEpisodeKey.java",
+      "detail/runtime/common/com/leotv/detail/MusicText.java",
+      "detail/runtime/common/com/leotv/detail/NativeLibrary.java",
+      "detail/runtime/common/com/leotv/detail/NativeRouting.java",
+      "detail/runtime/common/com/leotv/detail/Personalization.java",
+      "detail/runtime/common/com/leotv/detail/Playback.java",
+      "detail/runtime/common/com/leotv/detail/SourceArtwork.java",
+      "detail/runtime/common/com/leotv/detail/SourceGateway.java",
+      "detail/runtime/common/com/leotv/detail/TmdbDefaults.java"
+    ],
+    "mobile": [
+      "detail/runtime/mobile/com/leotv/detail/Device.java",
+      "detail/runtime/mobile/com/leotv/detail/ThemeLayout.java"
+    ],
+    "tv": [
+      "detail/runtime/tv/com/leotv/detail/Device.java",
+      "detail/runtime/tv/com/leotv/detail/ThemeLayout.java"
+    ]
+  }
+}

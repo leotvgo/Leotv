@@ -1,0 +1,42 @@
+plugins { id 'java' }
+
+repositories { mavenCentral(); google() }
+
+sourceSets {
+    main.java.srcDirs = ['../../ui/java']
+    test.java.srcDirs = ['src/test/java']
+}
+
+dependencies {
+    compileOnly 'org.robolectric:android-all:15-robolectric-12650502'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.robolectric:robolectric:4.14.1'
+    testImplementation 'org.robolectric:android-all:15-robolectric-12650502'
+}
+
+def aarClasses = layout.buildDirectory.dir('aar-classes')
+tasks.register('extractAars') {
+    inputs.files(configurations.testRuntimeClasspath)
+    outputs.dir(aarClasses)
+    doLast {
+        configurations.testRuntimeClasspath.files.findAll { it.name.endsWith('.aar') }.each { aar ->
+            copy {
+                from zipTree(aar)
+                include 'classes.jar'
+                into aarClasses.get().dir(aar.name)
+                filePermissions { unix('0644') }
+            }
+        }
+    }
+}
+
+test {
+    timeout = java.time.Duration.ofMinutes(3)
+    dependsOn 'extractAars'
+    classpath += files(provider { fileTree(aarClasses).matching { include '**/*.jar' } })
+    systemProperty 'robolectric.dependency.repo.url', 'https://repo.maven.apache.org/maven2'
+    systemProperty 'leotv.preview.dir', file('../../artifacts/ui-preview').absolutePath
+    maxHeapSize = '1g'
+    maxParallelForks = 1
+    testLogging { events 'passed', 'failed'; exceptionFormat 'full' }
+}

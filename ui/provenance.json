@@ -1,0 +1,15 @@
+{
+  "reference_project": "../coos/coos-master",
+  "reference_sources": {
+    "HomeGlassChrome.java": "3a7d282437931b01916d6c5a4435c446b13403ef743de2541d66a53c7223366f",
+    "HomePhoneChrome.java": "8a47438d4510b24aeca3896e05ec4fda40c467f12d6170491dabe0b6894a1b4f",
+    "HomeNativeViewport.java": "b4f5255af44c9531ff7fc6f3b8607cf4ca24d05b100889d1ff0674291db29ebc"
+  },
+  "implementation": "Platform-only global Activity chrome in ui/java; no JAR runtime dependency",
+  "changes": [
+    "Native permanent transparent system bars and chrome buttons, with fresh Leotv focus/press outlines",
+    "Frame-synchronous progressive blur, with no return to the old button skin on pause/resume",
+    "Pause frame callbacks in background; release only bitmap/pixel buffers on stop and renderer resources on destroy"
+  ],
+  "device_validation": false
+}

@@ -1,8 +1,15 @@
-# Leotv — 普通版 5.1.6 恢复工程
+# Leotv — 普通版 5.1.8 开发工程
 
 本工作区以现有普通版为功能和 Android 6 基准。当前已得到四个样本的可重建 smali 工程，
 普通 TV 的完整 Java 阅读视图，以及第一组能够独立编译的 Java 恢复代码。
 完整 Java/Gradle 应用工程仍在恢复；不能将这里的 Java 阅读视图直接当作已可编译的原始工程。
+
+当前应用名为 **Leotv**，版本 **5.1.8 / 518**，独立安装包名 **com.leotv.app**。
+启动图标、TV 横幅、默认线路动图、关于页与全局常态透明/实时渐变模糊已接入专用构建。
+独立原生详情页、个性设置内的本端详情主题/TMDB 配置，以及手机按视频尺寸自动旋转已接入。
+资源入口统一进入详情页；选择剧集后进入保留的全屏播放器，收藏和续播继续使用原数据库模型。
+普通版 5.1.6 保留为不变的恢复基准；详见
+[Leotv 5.1.8 开发记录](docs/LEOTV-5.1.8-20261119.md)。
 
 项目根目录为 `/Users/leiatai/Downloads/leowork/Leotv`；后续请从此目录独立开发。
 GitHub：[leotvgo/Leotv](https://github.com/leotvgo/Leotv)。
@@ -11,7 +18,8 @@ GitHub：[leotvgo/Leotv](https://github.com/leotvgo/Leotv)。
 
 独立私有仓库为 `leotvgo/Leotv`。Git 记录四个变体的完整 smali、恢复中的 Java、
 构建/检查工具与取证；原 APK 作为 `apk-inputs-5.1.6-20261118` 私有 release 输入，按 SHA-256 验证。
-GitHub 从这些已提交的 smali 编译 DEX，原 APK 只提供需要保留的资源与 native 资产。
+GitHub 从已提交的 smali 和新 Java 模块编译 DEX，原 APK 提供保留的资源与 native 资产；
+`branding/` 提供新的身份/图片资源，`ui/java/` 提供原生全局上下栏绘制。
 APK、依赖 JAR、构建缓存、签名密钥和用户运行数据不进入 Git。
 
 release 中约 4.2 MB 的 `.partNNN` 是四个完整原 APK 的压缩包按 4 MiB 切出的传输分块，
@@ -22,7 +30,8 @@ release 中约 4.2 MB 的 `.partNNN` 是四个完整原 APK 的压缩包按 4 Mi
 gh workflow run ordinary-build.yml --repo leotvgo/Leotv --ref main
 ```
 
-该工作流执行四个普通 APK 的编译/语义/资产审计，以及恢复核心 Java 的 API 23 编译与标量 JSON 测试。
+该工作流先审计四个普通原样基准，再编译 Leotv 覆盖层并核对精确声明的类与资源变化；
+同时执行核心 Java 的 API 23 编译/JSON 测试，以及透明按钮、上下栏绘图和生命周期检查。
 产物为固定签名、可安装的 APK 和对应报告。APK 专用签名密钥由 GitHub Secrets 提供，
 不提交到 Git，也不进入日志/产物；此流程按用户 2026-11-18 的新签名要求执行。
 `android6-smoke.yml` 已按用户要求关闭自动触发；仅在另行要求时手动使用构建产物，
@@ -48,11 +57,36 @@ gh workflow run ordinary-build.yml --repo leotvgo/Leotv --ref main
 | `tv-armeabi-v7a/java-drafts` | 正在恢复的 Java 模块，已编译部分列于下文 |
 | `upstream-comparison-20260415` | 固定 `ba306a35705f…` 的 829 份比较源码/配置；未包含上游二进制资产 |
 | `artifacts` | 四个已审计、未签名的基础 APK |
+| `branding` | 名称/包名/版本、原图标与 GIF、资源和代码变更清单 |
+| `ui/java` | API 23 原生透明上下栏、逐帧渐进模糊与新按钮反馈源码 |
+| `detail/runtime` | 独立详情页、原播放器桥接、收藏/续播与本端主题源码 |
+| `detail/java` | 从 JAR 保留的详情模块比较快照；不直接进入 APK |
+| `research/ui-check` | 独立的 UI、像素、焦点与生命周期检查 |
+| `research/detail-check` | API 23 的详情入口、选集、方向、收藏/续播与配置检查 |
 | `evidence` | 代码来源比较、原样重建、源码编译与测试记录 |
 | `tools`、`research` | 可重复执行的构建和恢复工具 |
 
 原始 APK 留在同级 `coos` 仓库原位置，本地基准工具默认读取该目录；APK 工程源码独立存放在 Leotv。
-工作区没有复制用户运行配置。GitHub 已发布四个固定签名的测试 APK，手机64位和TV32位由用户确认可安装使用。
+工作区没有复制用户运行配置。历史普通版 5.1.6 的四个固定签名测试 APK 已发布，
+其中手机64位和TV32位由用户确认可安装使用；新 Leotv 5.1.8 的设备验收需另行记录。
+
+## 构建 Leotv 5.1.8
+
+```sh
+python3 tools/build_branded.py --variant tv-v7a
+python3 tools/build_branded.py --variant tv-v8a
+python3 tools/build_branded.py --variant mobile-v7a
+python3 tools/build_branded.py --variant mobile-v8a
+gradle --no-daemon -p research/ui-check test
+python3 tools/check_native_details.py --all-variants
+gradle --no-daemon -p research/detail-check -Pclient=mobile test
+gradle --no-daemon -p research/detail-check -Pclient=tv test
+```
+
+本地输出为 `artifacts/leotv-5.1.8-<variant>-unsigned.apk` 及审计报告。
+GitHub 使用同一构建器，再以既有 APK 专用固定密钥签名；产物为 `leotv-<variant>.apk`。
+新包名、provider、私有权限及媒体控制标识独立，可与原 OK影视同时安装。
+原组件类名保留，以保护 JNI、反射及站点 JAR 的 ABI。
 
 ## 重建普通版基准
 
@@ -111,6 +145,7 @@ Parcel、数据库、列表/过滤器、弹幕异常路径、网络、UI 和播�
 
 完整 Java 视图仍有 60 个未成功恢复的方法，且多处存在 R8 内联、泛型和成员命名问题。
 下一阶段需恢复真实类型/名称、播放器与 UI，按模块替换字节码，验证 JNI/反射 ABI，并与基准逐项对照。
-所有基础 APK 均未签名；没有安装、播放、遥控、数据库升级或 Android 6 真机验收结果。
+原样基础 APK 均未签名。本轮 Leotv 的编译/绘图检查不代替签名后的安装、播放、
+数据库升级、遥控/触摸和 Android 6 真机验收。
 
 本轮交接清理记录见 coos 仓库的 `coos-master/docs/OKTV-NORMAL-RECOVERY-20261118.md`。

@@ -1,0 +1,58 @@
+{
+  "original_package": "com.fongmi.android.tv",
+  "original_version_name": "5.1.6",
+  "original_version_code": 516,
+  "default_logo_asset": "assets/leotv/logo.gif",
+  "ui_source_root": "ui/java/com/leotv/ui",
+  "ui_application_file": "smali/com/fongmi/android/tv/App.smali",
+  "ui_application_trigger": "invoke-virtual {p0, p0}, Landroid/app/Application;->registerActivityLifecycleCallbacks(Landroid/app/Application$ActivityLifecycleCallbacks;)V",
+  "allowed_resources": [
+    "string/app_name",
+    "string/app_version",
+    "drawable/ic_launcher_foreground",
+    "drawable/ic_banner_foreground",
+    "drawable/ic_logo",
+    "mipmap/ic_launcher",
+    "mipmap/ic_launcher_round",
+    "mipmap/ic_banner"
+  ],
+  "tv": {
+    "literal_edits": [
+      {"file": "smali/com/fongmi/android/tv/ui/activity/SettingActivity.smali", "old": "5.1.6", "new": "@version_name"},
+      {"file": "smali/com/fongmi/android/tv/ui/activity/SettingActivity.smali", "old": "@flavor", "new": "@app_name"},
+      {"file": "smali/com/fongmi/android/tv/ui/activity/A.smali", "old": "公众号-OK猫开发", "new": "@app_name"},
+      {"file": "smali/com/fongmi/android/tv/ui/activity/C.smali", "old": "@flavor", "new": "@app_name"},
+      {"file": "smali/w3.1/a.smali", "old": "com.fongmi.android.tv", "new": "@package"}
+    ],
+    "logo_file": "smali/com/fongmi/android/tv/ui/activity/HomeActivity.smali",
+    "logo_method": "onConfigEvent(Lw3/d;)V",
+    "logo_view_register": "p1",
+    "logo_model_register": "v0",
+    "config_class": "Lq3/a;",
+    "config_holder": "Lq3/h;->a:Lq3/i;",
+    "url_normalizer": "Lcom/bumptech/glide/f;->j",
+    "logo_startup_method": "L()V",
+    "logo_startup_before": "invoke-virtual {p0}, Lcom/fongmi/android/tv/ui/activity/HomeActivity;->X()V",
+    "logo_binding": "Lt3/a;->s:Landroid/widget/ImageView;",
+    "java_source": "java/tv/com/leotv/branding/LogoLoader.java"
+  },
+  "mobile": {
+    "literal_edits": [
+      {"file": "smali/S3/u.smali", "old": "5.1.6", "new": "@version_name"},
+      {"file": "smali/S3/u.smali", "old": "@flavor", "new": "@app_name"},
+      {"file": "smali/S3/q.smali", "old": "公众号-OK猫开发", "new": "@app_name"},
+      {"file": "smali/R3/O.smali", "old": "@flavor", "new": "@app_name"},
+      {"file": "smali/z3.1/a.smali", "old": "com.fongmi.android.tv", "new": "@package"},
+      {"file": "smali/com/fongmi/android/tv/service/DownloadService.smali", "old": "com.fongmi.android.tv.DOWNLOAD", "new": "@download_channel"},
+      {"file": "smali/N6/m.smali", "old": "请先去 公众号-OK猫开发 下载1dm", "new": "请先安装1DM下载器"}
+    ],
+    "logo_file": "smali/S3/G.smali",
+    "logo_method": "z0()V",
+    "logo_view_register": "v0",
+    "logo_model_register": "v1",
+    "config_class": "Lt3/a;",
+    "config_holder": "Lt3/h;->a:Lt3/i;",
+    "url_normalizer": "LU3/f;->a",
+    "java_source": "java/mobile/com/leotv/branding/LogoLoader.java"
+  }
+}

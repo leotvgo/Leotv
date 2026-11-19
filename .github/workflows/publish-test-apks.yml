@@ -33,22 +33,29 @@ jobs:
               raise SystemExit('A successful ordinary APK build run is required.')
           root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'publish-apks'
           files = []
+          version = None
           for variant in ['tv-v7a', 'tv-v8a', 'mobile-v7a', 'mobile-v8a']:
               target = root / variant
               target.mkdir(parents=True, exist_ok=True)
               subprocess.run(['gh', 'run', 'download', run_id, '--repo', repo, '--name',
                   f'ordinary-{variant}-signed', '--dir', str(target)], check=True)
-              report = json.loads((target / f'normal-{variant}.signature.json').read_text())
-              apk = target / f'normal-{variant}.apk'
+              report = json.loads((target / f'leotv-{variant}.signature.json').read_text())
+              audit = json.loads((target / f'leotv-{variant}-unsigned.audit.json').read_text())
+              apk = target / f'leotv-{variant}.apk'
               if report['certificate_sha256'] != os.environ['EXPECTED_CERT'] or hashlib.sha256(apk.read_bytes()).hexdigest() != report['apk_sha256']:
                   raise SystemExit('Signed APK identity verification failed.')
-              files.extend([str(apk), str(target / f'normal-{variant}.signature.json'),
-                  str(target / f'normal-{variant}-baseline-unsigned.audit.json')])
+              if audit['package'] != 'com.leotv.app' or not audit['expected_changes_match'] or not audit['baseline_audit']['equal']:
+                  raise SystemExit('Leotv identity/source audit verification failed.')
+              if version is not None and version != audit['version_name']:
+                  raise SystemExit('Four APK variants must use the same Leotv version.')
+              version = audit['version_name']
+              files.extend([str(apk), str(target / f'leotv-{variant}.signature.json'),
+                  str(target / f'leotv-{variant}-unsigned.audit.json')])
           notes = root / 'notes.md'
-          notes.write_text(f'普通版恢复测试 APK，来自成功构建 #{run_id}。\n\n四个 APK 使用同一张固定签名证书，Android 6 V1 签名及代码/资源审计已通过。\n\nAndroid 6 实际运行测试仍单独记录，不能据编译成功保证所有功能可用。新签名不能覆盖原作者签名的已安装 APK。\n\n构建：https://github.com/{repo}/actions/runs/{run_id}\n')
-          tag = f'ordinary-5.1.6-build-{run_id}'
+          notes.write_text(f'Leotv {version} 测试 APK，来自成功构建 #{run_id}。\n\n应用包名 com.leotv.app，可与原 OK影视同时安装；四个 TV/手机、32/64 位 APK 使用同一张固定签名证书。包含 Leotv 图标/动态 logo、常态透明上下栏与实时渐进模糊、独立原生详情页、本端主题及 TMDB 设置；手机按视频尺寸自动切换方向，收藏和续播继续使用原数据库模型。\n\nAndroid 6 V1 签名、原样基准和声明的代码/资源变更审计已通过。Android 6 真机、播放和界面视觉验收仍单独记录。\n\n构建：https://github.com/{repo}/actions/runs/{run_id}\n')
+          tag = f'leotv-{version}-build-{run_id}'
           subprocess.run(['gh', 'release', 'create', tag, '--repo', repo, '--target', data['head_sha'],
-              '--title', '普通版恢复测试 APK（固定签名）', '--notes-file', str(notes),
+              '--title', f'Leotv {version}（固定签名测试）', '--notes-file', str(notes),
               '--prerelease', '--latest=false', *files], check=True)
           print(f'https://github.com/{repo}/releases/tag/{tag}')
           PY
