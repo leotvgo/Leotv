@@ -71,10 +71,20 @@ jobs:
           notes.write_text(f'Leotv {version} 测试 APK，来自成功构建 #{run_id}。\n\n应用包名 com.leotv.app，可与原 OK影视同时安装；四个 TV/手机、32/64 位 APK 使用同一张固定签名证书。包含 Leotv 图标/动态 logo、常态透明上下栏与实时渐进模糊、独立原生详情页、本端主题及 TMDB 设置；手机按视频尺寸自动切换方向，收藏和续播继续使用原数据库模型。\n\nAndroid 6 V1 签名、原样基准和声明的代码/资源变更审计已通过。Android 6 真机、播放和界面视觉验收仍单独记录。\n\n构建：https://github.com/{repo}/actions/runs/{run_id}\n')
           tag = f'leotv-{version}-build-{run_id}'
           endpoint = f'repos/{repo}/releases/tags/{tag}'
-          existing = subprocess.run(['gh', 'api', endpoint], capture_output=True, text=True)
-          release = json.loads(existing.stdout) if existing.returncode == 0 else None
-          if release is None and 'HTTP 404' not in existing.stderr:
-              raise SystemExit('Unable to inspect the target APK release.')
+          def find_release():
+              existing = subprocess.run(['gh', 'api', endpoint], capture_output=True, text=True)
+              if existing.returncode == 0:
+                  return json.loads(existing.stdout)
+              if 'HTTP 404' not in existing.stderr:
+                  raise SystemExit('Unable to inspect the target APK release.')
+              # GitHub may not resolve a new draft through releases/tags until publication.
+              pages = json.loads(subprocess.check_output(['gh', 'api',
+                  f'repos/{repo}/releases?per_page=100', '--paginate', '--slurp']))
+              matches = [item for page in pages for item in page if item['tag_name'] == tag]
+              if len(matches) > 1:
+                  raise SystemExit('Multiple APK drafts use the same release tag.')
+              return matches[0] if matches else None
+          release = find_release()
           expected = {pathlib.Path(file).name: (pathlib.Path(file).stat().st_size,
               'sha256:' + hashlib.sha256(pathlib.Path(file).read_bytes()).hexdigest()) for file in files}
           def verify_assets(release):
@@ -99,9 +109,14 @@ jobs:
               if release['target_commitish'] != data['head_sha']:
                   raise SystemExit('Existing APK draft targets a different source commit.')
               subprocess.run(['gh', 'release', 'upload', tag, '--repo', repo, '--clobber', *files], check=True)
-          release = json.loads(subprocess.check_output(['gh', 'api', endpoint]))
+          release = find_release()
+          if release is None:
+              raise SystemExit('Unable to locate the uploaded APK draft.')
+          release_endpoint = f"repos/{repo}/releases/{release['id']}"
+          release = json.loads(subprocess.check_output(['gh', 'api', release_endpoint]))
           verify_assets(release)
-          subprocess.run(['gh', 'release', 'edit', tag, '--repo', repo,
-              '--draft=false', '--prerelease', '--latest=false'], check=True)
+          subprocess.run(['gh', 'api', release_endpoint, '--method', 'PATCH',
+              '--field', 'draft=false', '--field', 'prerelease=true',
+              '--raw-field', 'make_latest=false', '--silent'], check=True)
           print(f'https://github.com/{repo}/releases/tag/{tag}')
           PY

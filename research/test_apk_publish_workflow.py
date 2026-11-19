@@ -19,19 +19,23 @@ BODY = textwrap.dedent(re.search(r"(?ms)^\s*python3 - <<'PY'\n(.*?)^\s*PY\s*$", 
 VARIANTS = ['tv-v7a', 'tv-v8a', 'mobile-v7a', 'mobile-v8a']
 CERT = 'a' * 64
 COMMIT = 'b' * 40
+TAG = 'leotv-5.1.8-build-12345'
+RELEASE_ID = 42
 
 
 class GitHub:
     def __init__(self, existing=None, invalid=None, conclusion='success'):
         self.existing, self.invalid, self.conclusion = existing, invalid, conclusion
-        self.mutations, self.files = [], {}
+        self.mutations, self.files, self.api_requests = [], {}, []
 
     def assets(self):
         return [{'name': name, 'size': len(data), 'state': 'uploaded',
-                 'digest': 'sha256:' + hashlib.sha256(data).hexdigest()} for name, data in self.files.items()]
+                 'digest': 'sha256:' + ('wrong' if self.invalid == 'release_hash' else
+                                       hashlib.sha256(data).hexdigest())} for name, data in self.files.items()]
 
     def release(self):
-        return {'draft': self.existing == 'draft', 'target_commitish': COMMIT,
+        return {'id': RELEASE_ID, 'tag_name': TAG, 'draft': self.existing == 'draft',
+                'target_commitish': 'wrong' if self.invalid == 'target' else COMMIT,
                 'html_url': 'https://github.com/example/fixture/releases/tag/fixture', 'assets': self.assets()}
 
     def run(self, command, **kwargs):
@@ -50,7 +54,18 @@ class GitHub:
                 (folder / name).write_bytes(data)
                 self.files[name] = data
         elif command[:2] == ['gh', 'api']:
-            if self.existing is None:
+            endpoint = command[2]
+            self.api_requests.append(endpoint)
+            if '--method' in command and command[command.index('--method') + 1] == 'PATCH':
+                assert endpoint == f'repos/example/fixture/releases/{RELEASE_ID}'
+                assert 'draft=false' in command and 'prerelease=true' in command
+                assert 'make_latest=false' in command
+                assert len(self.assets()) == 12
+                self.mutations.append(('edit', list(command)))
+                self.existing = 'published'
+                return subprocess.CompletedProcess(command, 0, '', '')
+            assert endpoint.endswith('/releases/tags/' + TAG)
+            if self.existing != 'published':
                 return subprocess.CompletedProcess(command, 1, '', 'gh: Not Found (HTTP 404)')
             return subprocess.CompletedProcess(command, 0, json.dumps(self.release()), '')
         elif command[:2] == ['gh', 'release']:
@@ -59,17 +74,24 @@ class GitHub:
             if action == 'create':
                 assert '--draft' in command
                 self.existing = 'draft'
-            elif action == 'edit':
-                assert len(self.assets()) == 12
-                self.existing = 'published'
+            else:
+                assert action == 'upload'
         else:
             raise AssertionError(command)
         return subprocess.CompletedProcess(command, 0, '', '')
 
     def output(self, command):
+        self.api_requests.append(command[2])
         if command[-1].endswith('/actions/runs/12345'):
             return json.dumps({'conclusion': self.conclusion, 'name': 'Build and audit ordinary APKs',
                                'head_sha': COMMIT}).encode()
+        if command[2].endswith('/releases?per_page=100'):
+            assert '--paginate' in command and '--slurp' in command
+            if self.existing is None:
+                return b'[[]]'
+            other = dict(self.release(), id=RELEASE_ID - 1, tag_name='unrelated-release')
+            return json.dumps([[other], [self.release()]]).encode()
+        assert command[2] == f'repos/example/fixture/releases/{RELEASE_ID}'
         return json.dumps(self.release()).encode()
 
 
@@ -100,6 +122,25 @@ class PublishWorkflowTest(unittest.TestCase):
         github = GitHub(existing='draft')
         self.execute(github)
         self.assertEqual([action for action, _ in github.mutations], ['upload', 'edit'])
+
+    def test_tag_lookup_404_finds_paginated_draft_and_verifies_by_release_id(self):
+        github = GitHub(existing='draft')
+        self.execute(github)
+        self.assertIn('repos/example/fixture/releases?per_page=100', github.api_requests)
+        self.assertIn(f'repos/example/fixture/releases/{RELEASE_ID}', github.api_requests)
+        self.assertEqual(github.mutations[-1][1][2], f'repos/example/fixture/releases/{RELEASE_ID}')
+
+    def test_draft_from_another_commit_never_uploads_or_publishes(self):
+        github = GitHub(existing='draft', invalid='target')
+        with self.assertRaises(SystemExit):
+            self.execute(github)
+        self.assertEqual(github.mutations, [])
+
+    def test_published_asset_with_a_changed_digest_is_never_replaced(self):
+        github = GitHub(existing='published', invalid='release_hash')
+        with self.assertRaises(SystemExit):
+            self.execute(github)
+        self.assertEqual(github.mutations, [])
 
     def test_bad_signature_hash_or_audit_never_creates_a_release(self):
         for invalid in ['certificate', 'hash', 'audit']:
