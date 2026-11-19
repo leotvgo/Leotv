@@ -56,7 +56,9 @@ final class TvDetailPage implements DetailPage {
 
     TvDetailPage(Activity activity,Actions actions) {
         this.activity=activity;this.actions=actions;
+        edgeToEdge(activity);
         content=(ViewGroup)activity.findViewById(android.R.id.content);
+        content.setFitsSystemWindows(false);
         scroll=new TvDetailScroll(activity);scroll.setTag("leotv_jar_detail_page");scroll.setFillViewport(true);
         scroll.setClipChildren(false);scroll.setVerticalScrollBarEnabled(false);scroll.setFocusable(false);
         page=column();page.setClipChildren(false);scroll.addView(page,new ScrollView.LayoutParams(-1,-2));
@@ -158,6 +160,21 @@ final class TvDetailPage implements DetailPage {
         });
         activity.getWindow().setCallback(callback);content.getViewTreeObserver().addOnPreDrawListener(preDraw);
         ThemeLayout.apply(this);if(!mobile)navigation.start();
+    }
+
+    private static void edgeToEdge(Activity activity) {
+        Window window = activity.getWindow();
+        window.setFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS,
+                WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
+                        | WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        window.setStatusBarColor(Color.TRANSPARENT); window.setNavigationBarColor(Color.TRANSPARENT);
+        View decor = window.getDecorView();
+        decor.setSystemUiVisibility(decor.getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        for (String method : new String[]{"setDecorFitsSystemWindows", "setStatusBarContrastEnforced", "setNavigationBarContrastEnforced"}) {
+            try { Window.class.getMethod(method, boolean.class).invoke(window, false); }
+            catch (ReflectiveOperationException unavailable) { /* API 23 uses the layout flags above. */ }
+        }
     }
 
     private void addSourceActions(){

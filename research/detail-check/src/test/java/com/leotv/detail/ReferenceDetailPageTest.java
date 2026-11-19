@@ -61,6 +61,17 @@ public class ReferenceDetailPageTest {
             assertEquals("重新匹配元数据",page.matchButton.getContentDescription());
         }finally{close();}
     }
+    @Test @Config(sdk = {23, 35}) public void posterStartsAtTheWindowTopWithTransparentSystemBars(){
+        open(Device.MOBILE?360:1280,Device.MOBILE?800:720);
+        try {
+            int[] position = new int[2]; page.heroFrame.getLocationOnScreen(position);
+            assertEquals("poster frame reaches the physical top", 0, position[1]);
+            assertEquals(android.graphics.Color.TRANSPARENT, host.getWindow().getStatusBarColor());
+            assertEquals(android.graphics.Color.TRANSPARENT, host.getWindow().getNavigationBarColor());
+            assertFalse(page.content.getFitsSystemWindows());
+            assertTrue((host.getWindow().getDecorView().getSystemUiVisibility() & View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN) != 0);
+        } finally { close(); }
+    }
     @Test public void clientThemeGeometryMatchesTheJarComposition(){
         open(Device.MOBILE?360:1280,Device.MOBILE?800:720);
         try{

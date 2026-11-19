@@ -19,6 +19,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.HorizontalScrollView;
+import android.widget.ListView;
+import android.widget.BaseAdapter;
 import com.google.android.material.appbar.AppBarLayout;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -118,6 +121,7 @@ public class GlobalChromeTest {
         chrome = new GlobalChrome.Controller(host, (FrameLayout) host.findViewById(android.R.id.content));
     }
     @After public void cleanup() {
+        HardwareBitmapShadow.tagged = null;
         chrome.close(); activity.pause().stop().destroy();
     }
     void layout() {
@@ -126,11 +130,16 @@ public class GlobalChromeTest {
     void layout(int width, int height) {
         for (int i = 0; i < 5; i++) {
             View decor = host.getWindow().getDecorView();
+            forceLayout(decor);
             decor.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
                     View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
             decor.layout(0, 0, width, height);
             decor.getViewTreeObserver().dispatchOnPreDraw();
         }
+    }
+    private static void forceLayout(View view) {
+        view.forceLayout();
+        if (view instanceof ViewGroup) for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) forceLayout(((ViewGroup) view).getChildAt(i));
     }
     @Test public void transparentControlsKeepFocusAndParentsAndStayStyledWhenPaused() {
         Drawable top = host.toolbar.getBackground(), bottom = host.navigation.getBackground();
@@ -302,6 +311,116 @@ public class GlobalChromeTest {
     }
     private static int contrast(Bitmap image, int y) {
         return Math.abs(Color.red(image.getPixel(200, y)) - Color.red(image.getPixel(208, y)));
+    }
+    private HorizontalScrollView cachedPages() {
+        android.view.ViewGroup.LayoutParams original = host.scroll.getLayoutParams();
+        host.column.removeView(host.scroll); host.scroll.setId(View.NO_ID);
+        HorizontalScrollView pager = new HorizontalScrollView(host); pager.setId(310);
+        LinearLayout pages = new LinearLayout(host); pages.setOrientation(LinearLayout.HORIZONTAL);
+        pages.addView(host.scroll, new LinearLayout.LayoutParams(360, -1));
+        ListView list = new ListView(host); list.setDivider(null);
+        list.setAdapter(new BaseAdapter() {
+            public int getCount() { return 40; }
+            public Object getItem(int position) { return position; }
+            public long getItemId(int position) { return position; }
+            public View getView(int position, View recycled, ViewGroup parent) {
+                View stripes = new View(host) {
+                    final Paint paint = new Paint();
+                    @Override protected void onDraw(Canvas canvas) {
+                        for (int x = 0; x < getWidth(); x += 8) {
+                            paint.setColor(x % 16 == 0 ? Color.WHITE : Color.BLACK);
+                            canvas.drawRect(x, 0, x + 8, getHeight(), paint);
+                        }
+                    }
+                };
+                stripes.setLayoutParams(new android.widget.AbsListView.LayoutParams(-1, 96)); return stripes;
+            }
+        });
+        pages.addView(list, new LinearLayout.LayoutParams(360, -1));
+        pager.addView(pages, new HorizontalScrollView.LayoutParams(-2, -1));
+        host.column.addView(pager, original); layout(); return pager;
+    }
+    @org.robolectric.annotation.Implements(value = Bitmap.class, minSdk = 26, isInAndroidSdk = false, callNativeMethodsByDefault = true)
+    public static class HardwareBitmapShadow extends org.robolectric.shadows.ShadowNativeBitmap {
+        static Bitmap tagged;
+        @org.robolectric.annotation.RealObject Bitmap real;
+        @org.robolectric.annotation.Implementation protected Bitmap.Config getConfig() {
+            if (real == tagged) return Bitmap.Config.HARDWARE;
+            return org.robolectric.shadow.api.Shadow.directlyOn(real, Bitmap.class, "getConfig");
+        }
+    }
+    @Test @Config(sdk = 35, shadows = HardwareBitmapShadow.class) @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    public void hardwareArtworkCanBeSampledWithoutLosingItsOriginalDrawable() {
+        Bitmap pixels = Bitmap.createBitmap(360, 600, Bitmap.Config.ARGB_8888);
+        pixels.eraseColor(Color.MAGENTA);
+        // The host Skia renderer has no GPU storage; tag native pixels with the
+        // same hardware-only configuration exposed by device-decoded artwork.
+        Bitmap hardware = pixels.copy(Bitmap.Config.ARGB_8888, false); assertNotNull(hardware);
+        HardwareBitmapShadow.tagged = hardware;
+        assertEquals(Bitmap.Config.HARDWARE, hardware.getConfig());
+        ImageView image = new ImageView(host); image.setImageBitmap(hardware);
+        Drawable original = image.getDrawable(); host.root.addView(image, new FrameLayout.LayoutParams(360, 600));
+        chrome.attach(); org.robolectric.shadows.ShadowLooper.shadowMainLooper().idleFor(16, java.util.concurrent.TimeUnit.MILLISECONDS); layout();
+        Bitmap sample = Bitmap.createBitmap(360, 800, Bitmap.Config.ARGB_8888);
+        chrome.scene(new Canvas(sample));
+        assertSame(original, image.getDrawable()); assertFalse(chrome.softwareImages.isEmpty());
+        assertEquals(Color.MAGENTA, sample.getPixel(180, 300));
+        sample.recycle(); pixels.recycle();
+    }
+    @Test public void cachedPagesSwitchSourcesEvenWhileTheOldPageRemainsShown() {
+        HorizontalScrollView pager = cachedPages(); ListView list = (ListView) ((ViewGroup) pager.getChildAt(0)).getChildAt(1);
+        chrome.attach();
+        org.robolectric.shadows.ShadowLooper.shadowMainLooper().idleFor(16, java.util.concurrent.TimeUnit.MILLISECONDS);
+        layout();
+        Rect first = new Rect(); boolean firstVisible = host.scroll.getGlobalVisibleRect(first);
+        System.out.println("Cached pager diagnostic: scrollX=" + pager.getScrollX() + ", pager=" + pager.getWidth() + "x" + pager.getHeight()
+                + ", first=" + firstVisible + ":" + first + ", bars=" + chrome.bars + ", source=" + chrome.source);
+        for (View node = host.scroll; node != null; node = node.getParent() instanceof View ? (View) node.getParent() : null)
+            System.out.println("Ancestor: " + node.getClass().getSimpleName() + " " + node.getWidth() + "x" + node.getHeight() + " shown=" + node.isShown() + " attached=" + node.isAttachedToWindow());
+        assertSame(host.scroll, chrome.source);
+        pager.scrollTo(360, 0); assertTrue(host.scroll.isShown());
+        chrome.onPreDraw(); assertSame(list, chrome.source); layout();
+        int[] position = new int[2]; list.getLocationOnScreen(position);
+        assertTrue("second category extends to the window edge", position[1] <= 0);
+        NativeViewport borrowed = chrome.viewport;
+        for (int i = 0; i < 4; i++) {
+            pager.scrollTo(0, 0); chrome.onPreDraw(); assertSame(host.scroll, chrome.source);
+            pager.scrollTo(360, 0); chrome.onPreDraw(); assertSame(list, chrome.source); assertSame(borrowed, chrome.viewport);
+        }
+        assertTrue("native pager still clips neighboring pages", pager.getClipChildren());
+    }
+    @Test @Config(sdk = 35) @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    public void otherCategoriesBlurAtBothEdgesAndKeepTabsAboveTheirContent() {
+        HorizontalScrollView pager = cachedPages(); ListView list = (ListView) ((ViewGroup) pager.getChildAt(0)).getChildAt(1);
+        View marker = new View(host); marker.setBackgroundColor(Color.RED);
+        LinearLayout.LayoutParams markerParams = new LinearLayout.LayoutParams(24, 32); markerParams.leftMargin = 196;
+        host.tabs.addView(marker, markerParams);
+        chrome.attach();
+        org.robolectric.shadows.ShadowLooper.shadowMainLooper().idleFor(16, java.util.concurrent.TimeUnit.MILLISECONDS);
+        layout(); pager.scrollTo(360, 0); layout();
+        list.setSelectionFromTop(8, -48); layout();
+        Bitmap image = render();
+        int[] location = new int[2]; marker.getLocationOnScreen(location);
+        System.out.println("Tab diagnostic: category=" + chrome.bars.contains(host.tabs) + ", marker=" + location[0] + ":" + location[1]
+                + ", source=" + chrome.source + ", topEnd=" + chrome.topEnd);
+        assertEquals("native category stays in front", Color.RED, image.getPixel(location[0] + 8, location[1] + 8));
+        int clear = Math.min(image.getHeight() - 1, (int) chrome.topEnd + 2);
+        int middle = Math.round((chrome.topStart + chrome.topEnd) * .5f);
+        int strong = Math.max(0, (int) chrome.topStart - 2);
+        assertTrue("second category retains sharp content", contrastAt(image, clear, 264) > 220);
+        assertTrue("top blur has a transition", contrastAt(image, middle, 264) < contrastAt(image, clear, 264));
+        assertTrue("top outer edge is softer", contrastAt(image, strong, 264) < contrastAt(image, middle, 264));
+        int lowerClear = Math.max(0, (int) chrome.bottomStart - 2);
+        int lowerMiddle = Math.round((chrome.bottomStart + chrome.height) * .5f);
+        assertTrue("bottom blur has a transition", contrastAt(image, lowerMiddle, 264) < contrastAt(image, lowerClear, 264));
+        assertTrue("bottom outer edge is softer", contrastAt(image, image.getHeight() - 2, 264) < contrastAt(image, lowerMiddle, 264));
+        File directory = new File(System.getProperty("leotv.preview.dir")); directory.mkdirs();
+        try (FileOutputStream stream = new FileOutputStream(new File(directory, "cached-category-chrome.png"))) { image.compress(Bitmap.CompressFormat.PNG, 100, stream); }
+        catch (java.io.IOException failure) { throw new AssertionError(failure); }
+        image.recycle();
+    }
+    private static int contrastAt(Bitmap image, int y, int x) {
+        return Math.abs(Color.red(image.getPixel(x, y)) - Color.red(image.getPixel(x + 8, y)));
     }
     private static final class ViewParentSnapshot {
         final android.view.ViewParent parent;

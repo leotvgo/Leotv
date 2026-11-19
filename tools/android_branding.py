@@ -372,7 +372,7 @@ class BinaryXml:
             raise ValueError('An old provider authority survived.')
         return bytes(output), report
 
-    def add_native_activity(self, class_name):
+    def add_native_activity(self, class_name, landscape=False):
         """Append one internal Activity using existing Android attribute names/IDs."""
         pool = self.pool
         android = pool.strings.index(ANDROID)
@@ -384,6 +384,9 @@ class BinaryXml:
             struct.pack('<IIIHBBI', android, name, value, 8, 0, 3, value),
             struct.pack('<IIIHBBI', android, exported, NO_INDEX, 8, 0, 0x12, 0),
         ]
+        if landscape:
+            orientation = pool.strings.index('screenOrientation')
+            attributes.append(struct.pack('<IIIHBBI', android, orientation, NO_INDEX, 8, 0, 0x10, 6))
         begin = struct.pack('<HHIII', 0x102, 16, 36 + 20 * len(attributes), 0, NO_INDEX)
         begin += struct.pack('<IIHHHHHH', NO_INDEX, tag, 20, 20, len(attributes), 0, 0, 0)
         begin += b''.join(attributes)
@@ -405,8 +408,10 @@ class BinaryXml:
             item for item in result.attributes if item['path'].endswith('/activity')
             and item['name'] == 'name' and item['value'] == class_name
         ]
-        if len(added) != 1 or len(result.attributes) != len(self.attributes) + 2:
+        if len(added) != 1 or len(result.attributes) != len(self.attributes) + len(attributes):
             raise ValueError('Native activity insertion changed unrelated attributes.')
+        if landscape and result.attributes[-1]['value'] != 6:
+            raise ValueError('Native TV detail activity must remain in landscape.')
         return bytes(output)
 
 

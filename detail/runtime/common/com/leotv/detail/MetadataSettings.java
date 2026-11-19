@@ -16,13 +16,20 @@ public final class MetadataSettings {
     public static String key(Context context) { return TmdbDefaults.key(prefs(context).getString("tmdb_key", "")); }
     public static boolean customKey(Context context) { return !prefs(context).getString("tmdb_key", "").trim().isEmpty(); }
     public static void setKey(Context context, String value) {
+        prefs(context).edit().putString("tmdb_key", normalizeKey(value)).apply();
+    }
+    private static String normalizeKey(String value) {
         String key = value == null ? "" : value.trim();
         if (key.indexOf('\n') >= 0 || key.indexOf('\r') >= 0) throw new IllegalArgumentException("Key 不能包含换行");
-        prefs(context).edit().putString("tmdb_key", key).apply();
+        return key;
     }
     public static String base(Context context) { return normalizeBase(prefs(context).getString("tmdb_base", "")); }
     static String base() { return application == null ? DEFAULT_BASE : base(application); }
     public static void setBase(Context context, String value) { prefs(context).edit().putString("tmdb_base", normalizeBase(value)).apply(); }
+    public static void setEndpoint(Context context, String key, String base) {
+        String validatedKey = normalizeKey(key), validatedBase = normalizeBase(base);
+        prefs(context).edit().putString("tmdb_key", validatedKey).putString("tmdb_base", validatedBase).apply();
+    }
     public static int theme(Context context) {
         int selected = prefs(context).getInt("detail_theme", Device.DEFAULT_THEME);
         return selected >= 0 && selected < Device.THEME_NAMES.length ? selected : Device.DEFAULT_THEME;

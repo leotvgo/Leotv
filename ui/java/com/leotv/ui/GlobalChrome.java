@@ -100,6 +100,8 @@ public final class GlobalChrome {
         View root, toolbar, navigation, source;
         Padding padding;
         NativeViewport viewport;
+        final Map<ViewGroup, NativeViewport> viewports = new IdentityHashMap<>();
+        final Map<Bitmap, Bitmap> softwareImages = new IdentityHashMap<>();
         boolean dirty = true, discovery = true, closed, windowAdjusted, running;
         int width, height, statusHeight, navigationHeight, lastScrollX, lastScrollY, sourceArea;
         float topStart, topEnd, bottomStart;
@@ -241,12 +243,21 @@ public final class GlobalChrome {
             return false;
         }
 
+        private boolean singleChildScroller(View view) {
+            if (view instanceof ScrollView) return true;
+            for (Class<?> type = view.getClass(); type != null; type = type.getSuperclass())
+                if (type.getName().equals("androidx.core.widget.NestedScrollView")) return true;
+            return false;
+        }
+
         private View discoverSource(View view, View best) {
             if (!view.isShown() || view == portal) return best;
             for (View bar : bars) if (inside(view, bar)) return best;
             if (scrollable(view) && view.getHeight() > dp(100) && view.getGlobalVisibleRect(visible)) {
+                if (!visible.intersect(origin[0], origin[1], origin[0] + width, origin[1] + height)) return best;
                 int area = visible.width() * visible.height();
                 if (area > content.getWidth() * dp(80) && area > sourceArea) { best = view; sourceArea = area; }
+                return best;
             }
             if (view instanceof ViewGroup) {
                 ViewGroup parent = (ViewGroup) view;
@@ -260,7 +271,8 @@ public final class GlobalChrome {
         private int y(View view) { view.getLocationOnScreen(at); return at[1] - origin[1]; }
 
         private void borrow(View view, boolean band) {
-            if (view == null || view == content || view == portal || (view.isFocusable() && view.getBackground() != null && view.getBackground().isStateful())) return;
+            if (view == null || view == content || view == portal || (!(view instanceof ViewGroup)
+                    && view.isFocusable() && view.getBackground() != null && view.getBackground().isStateful())) return;
             Background state = backgrounds.get(view);
             if (state == null || state.band != band) {
                 if (state != null) state.restore();
@@ -284,8 +296,14 @@ public final class GlobalChrome {
         @Override public boolean onPreDraw() {
             if (closed || !running || content.getWidth() <= 0 || content.getHeight() <= 0) return true;
             int nextWidth = content.getWidth(), nextHeight = content.getHeight();
+            boolean resized = width > 0 && height > 0 && (nextWidth != width || nextHeight != height);
             dirty |= nextWidth != width || nextHeight != height;
             width = nextWidth; height = nextHeight; content.getLocationOnScreen(origin);
+            if (resized && !viewports.isEmpty()) {
+                for (NativeViewport borrowed : viewports.values()) borrowed.close();
+                viewports.clear(); viewport = null;
+                return false;
+            }
             toolbar = toolbar(); navigation = find("navigation");
             if (!validBar(navigation)) navigation = null;
             View category = strip();
@@ -311,6 +329,10 @@ public final class GlobalChrome {
                 Window window = activity.getWindow();
                 contrast(window, "setStatusBarContrastEnforced", false);
                 contrast(window, "setNavigationBarContrastEnforced", false);
+                if (Build.VERSION.SDK_INT >= 30) {
+                    try { Window.class.getMethod("setDecorFitsSystemWindows", boolean.class).invoke(window, false); }
+                    catch (ReflectiveOperationException unavailable) { }
+                }
                 window.setFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS, WINDOW_FLAGS);
                 window.setStatusBarColor(Color.TRANSPARENT); window.setNavigationBarColor(Color.TRANSPARENT);
                 decor.setSystemUiVisibility(decor.getSystemUiVisibility() | LAYOUT_FLAGS);
@@ -329,6 +351,7 @@ public final class GlobalChrome {
                     if (portal.getParent() == content) content.removeView(portal);
                     content.addView(portal, new FrameLayout.LayoutParams(-1, -1));
                 }
+                portal.setElevation(dp(64));
                 if (padding == null || padding.view != root) {
                     if (padding != null) padding.restore();
                     padding = new Padding(root);
@@ -345,27 +368,37 @@ public final class GlobalChrome {
             if ((activity.getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0) statusHeight = 0;
             if ((decor.getSystemUiVisibility() & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) != 0) navigationHeight = 0;
             float nextTopStart = Math.max(0, statusHeight - origin[1]);
-            float nextTopEnd = toolbar == null ? nextTopStart + dp(24) : Math.min(Math.max(nextTopStart, y(toolbar) + toolbar.getHeight()),
-                    Math.max(nextTopStart + dp(24), y(toolbar) + toolbar.getHeight() * .5f));
-            float nextBottomStart = navigation == null ? height - navigationHeight : y(navigation) + navigation.getHeight() * .5f;
+            float headerEnd = toolbar == null ? nextTopStart : y(toolbar) + toolbar.getHeight();
+            if (category != null) headerEnd = Math.max(headerEnd, y(category) + category.getHeight());
+            float nextTopEnd = Math.min(height, Math.max(nextTopStart, headerEnd) + dp(24));
+            float nextBottomStart = Math.max(0, navigation == null
+                    ? height - navigationHeight - dp(48) : y(navigation) - dp(24));
             dirty |= nextTopStart != topStart || nextTopEnd != topEnd || nextBottomStart != bottomStart;
             topStart = nextTopStart; topEnd = nextTopEnd; bottomStart = nextBottomStart;
             reconcile();
-            if (discovery || source == null || !source.isShown()) {
+            // Cached ViewPager pages remain shown while offscreen; select by their
+            // actual visible rectangle every frame, including swipes without a layout.
+            {
                 sourceArea = 0;
                 View nextSource = discoverSource(content, null);
                 if (nextSource != source) {
-                    if (viewport != null) viewport.close(); viewport = null;
                     restoreClips(); source = nextSource; dirty = true;
                 }
+                Iterator<Map.Entry<ViewGroup, NativeViewport>> borrowed = viewports.entrySet().iterator();
+                while (borrowed.hasNext()) {
+                    Map.Entry<ViewGroup, NativeViewport> entry = borrowed.next();
+                    if (!entry.getKey().isAttachedToWindow() || entry.getKey().getParent() != entry.getValue().viewport) {
+                        entry.getValue().close(); borrowed.remove();
+                    }
+                }
+                viewport = null;
                 if (source instanceof ViewGroup) {
-                    if (viewport == null && !(source instanceof ScrollView) && source.getParent() instanceof ViewGroup
-                            && source.getLayoutParams() instanceof ViewGroup.MarginLayoutParams)
-                        viewport = NativeViewport.borrow((ViewGroup) source);
-                    for (View current = source instanceof ScrollView ? null : source; current != null && current != content;
-                            current = current.getParent() instanceof View ? (View) current.getParent() : null) {
-                        if (current instanceof ViewGroup && !clips.containsKey(current)) {
-                            Clip clip = new Clip((ViewGroup) current); clips.put((ViewGroup) current, clip); clip.apply();
+                    if (!singleChildScroller(source) && source.getParent() instanceof ViewGroup
+                            && source.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+                        viewport = viewports.get(source);
+                        if (viewport == null) {
+                            viewport = NativeViewport.borrow((ViewGroup) source);
+                            viewports.put((ViewGroup) source, viewport);
                         }
                     }
 
@@ -400,21 +433,66 @@ public final class GlobalChrome {
         }
 
         void scene(Canvas canvas) {
+            ArrayList<ImageSwap> swaps = new ArrayList<>();
+            try {
+                if (!canvas.isHardwareAccelerated()) prepareImages(content, swaps);
+                scenePixels(canvas);
+            } finally {
+                for (int i = swaps.size() - 1; i >= 0; i--) swaps.get(i).restore();
+            }
+        }
+
+        private void scenePixels(Canvas canvas) {
             background(canvas);
             for (int i = 0; i < content.getChildCount(); i++) drawScene(canvas, content.getChildAt(i));
         }
 
+        private Drawable softwareDrawable(Drawable drawable, View view) {
+            if (!(drawable instanceof android.graphics.drawable.BitmapDrawable)) return drawable;
+            android.graphics.drawable.BitmapDrawable original = (android.graphics.drawable.BitmapDrawable) drawable;
+            Bitmap bitmap = original.getBitmap();
+            if (bitmap == null || bitmap.getConfig() == null || !"HARDWARE".equals(bitmap.getConfig().name())) return drawable;
+            Bitmap pixels = softwareImages.get(bitmap);
+            if (pixels == null || pixels.isRecycled()) {
+                pixels = bitmap.copy(Bitmap.Config.ARGB_8888, false);
+                if (pixels == null) throw new IllegalStateException("Image readback unavailable");
+                int bytes = pixels.getAllocationByteCount(), capacity = 8 * 1024 * 1024;
+                int used = 0; for (Bitmap image : softwareImages.values()) used += image.getAllocationByteCount();
+                Iterator<Bitmap> keys = softwareImages.keySet().iterator();
+                while (used + bytes > capacity && keys.hasNext()) {
+                    Bitmap key = keys.next(); used -= softwareImages.get(key).getAllocationByteCount(); keys.remove();
+                }
+                if (bytes <= capacity) softwareImages.put(bitmap, pixels);
+            }
+            android.graphics.drawable.BitmapDrawable copy = new android.graphics.drawable.BitmapDrawable(view.getResources(), pixels);
+            copy.getPaint().set(original.getPaint()); copy.setGravity(original.getGravity());
+            copy.setTileModeXY(original.getTileModeX(), original.getTileModeY()); copy.setAutoMirrored(original.isAutoMirrored());
+            copy.setBounds(original.getBounds()); return copy;
+        }
+
+        private void prepareImages(View view, ArrayList<ImageSwap> swaps) {
+            if (!view.isShown() || view == portal || bars.contains(view)) return;
+            Drawable background = view.getBackground(), converted = softwareDrawable(background, view);
+            if (converted != background) { swaps.add(new ImageSwap(view, background, true)); view.setBackground(converted); }
+            if (view instanceof ImageView) {
+                ImageView image = (ImageView) view; Drawable original = image.getDrawable();
+                converted = softwareDrawable(original, view);
+                if (converted != original) { swaps.add(new ImageSwap(view, original, false)); image.setImageDrawable(converted); }
+            }
+            if (view instanceof ViewGroup) for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) prepareImages(((ViewGroup) view).getChildAt(i), swaps);
+        }
+
         private void drawScene(Canvas canvas, View view) {
             if (!view.isShown() || view == portal || bars.contains(view)) return;
-            if (view instanceof ScrollView) {
+            if (singleChildScroller(view)) {
                 drawBackground(canvas, view);
-                ScrollView scrolling = (ScrollView) view;
+                ViewGroup scrolling = (ViewGroup) view;
                 for (int i = 0; i < scrolling.getChildCount(); i++) drawScene(canvas, scrolling.getChildAt(i));
                 return;
             }
             boolean containsBar = false;
             for (View bar : bars) if (inside(bar, view)) containsBar = true;
-            if (view instanceof ViewGroup && (containsBar || view == root)) {
+            if (view instanceof ViewGroup && (containsBar || view == root || inside(source, view))) {
                 drawBackground(canvas, view);
                 ViewGroup group = (ViewGroup) view;
                 for (int i = 0; i < group.getChildCount(); i++) drawScene(canvas, group.getChildAt(i));
@@ -449,7 +527,9 @@ public final class GlobalChrome {
             closed = true;
             for (Background background : backgrounds.values()) background.discard();
             backgrounds.clear();
-            if (viewport != null) viewport.close(); viewport = null;
+            for (NativeViewport borrowed : viewports.values()) borrowed.close();
+            viewports.clear(); viewport = null;
+            softwareImages.clear();
             restoreClips();
             if (padding != null) padding.restore();
             if (portal.getParent() == content) content.removeView(portal);
@@ -459,6 +539,7 @@ public final class GlobalChrome {
 
         void trim() {
             pause();
+            softwareImages.clear();
             status.release(); systemNavigation.release();
             for (Background background : backgrounds.values()) background.release();
             // The native transparent backgrounds, window flags and controls stay
@@ -475,6 +556,14 @@ public final class GlobalChrome {
         }
     }
 
+    private static final class ImageSwap {
+        final View view;
+        final Drawable original;
+        final boolean background;
+        ImageSwap(View view, Drawable original, boolean background) { this.view = view; this.original = original; this.background = background; }
+        void restore() { if (background) view.setBackground(original); else ((ImageView) view).setImageDrawable(original); }
+    }
+
     private static final class Portal extends View {
         final Controller owner;
         Portal(Activity activity, Controller owner) {
@@ -484,25 +573,20 @@ public final class GlobalChrome {
         }
         @Override protected void onDraw(Canvas canvas) {
             if (owner.closed) return;
-            int end = owner.toolbar == null ? owner.statusHeight : Math.max(owner.statusHeight, owner.y(owner.toolbar));
-            owner.status.draw(canvas, 0, end, true);
-            owner.systemNavigation.draw(canvas, owner.height - owner.navigationHeight, owner.height, false);
+            if (owner.source == null && owner.bars.isEmpty()) return;
+            owner.status.draw(canvas, 0, (int) Math.ceil(owner.topEnd), true);
+            owner.systemNavigation.draw(canvas, (int) Math.floor(owner.bottomStart), owner.height, false);
+            for (View bar : owner.bars) owner.drawView(canvas, bar);
         }
     }
 
     private static final class Frost extends Drawable {
         final Controller owner;
         final View view;
-        final Band band;
-        Frost(Controller owner, View view) { this.owner = owner; this.view = view; band = new Band(owner); }
+        Frost(Controller owner, View view) { this.owner = owner; this.view = view; }
         @Override public void draw(Canvas canvas) {
-            if (owner.closed) return;
-            view.getLocationOnScreen(owner.at);
-            int x = owner.at[0] - owner.origin[0], y = owner.at[1] - owner.origin[1];
-            int save = canvas.save(); canvas.translate(-x, -y);
-            canvas.clipRect(x, y, x + view.getWidth(), y + view.getHeight());
-            band.draw(canvas, y, y + view.getHeight(), view != owner.navigation);
-            canvas.restoreToCount(save);
+            // One continuous backdrop is drawn by Portal; native controls are
+            // then replayed above it with their original drawable states.
         }
         @Override public void setAlpha(int alpha) {}
         @Override public void setColorFilter(ColorFilter filter) {}
@@ -593,13 +677,11 @@ public final class GlobalChrome {
         }
         void apply() {
             if (view.getBackground() != installed) { original = view.getBackground(); view.setBackground(installed); }
-            if (band && view.getElevation() != 0) view.setElevation(0);
         }
         void restore() {
             if (view.getBackground() == installed) view.setBackground(original);
-            if (band && view.getElevation() == 0) view.setElevation(elevation);
         }
-        void release() { if (installed instanceof Frost) ((Frost) installed).band.release(); }
+        void release() {}
         void discard() {
             restore();
             release();

@@ -363,9 +363,13 @@ def main():
                 manifest, manifest_report = BinaryXml(original.read('AndroidManifest.xml')).edit_identity(
                     spec['original_package'], values['package'], spec['original_version_name'], values['version_name'],
                     spec['original_version_code'], values['version_code'])
-                manifest = BinaryXml(manifest).add_native_activity('com.leotv.detail.DetailActivity')
+                landscape = args.variant.startswith('tv-')
+                manifest = BinaryXml(manifest).add_native_activity('com.leotv.detail.DetailActivity', landscape=landscape)
                 manifest_report.append({'path': 'manifest/application/activity', 'attribute': 'name',
                                         'before': None, 'after': 'com.leotv.detail.DetailActivity'})
+                if landscape:
+                    manifest_report.append({'path': 'manifest/application/activity', 'attribute': 'screenOrientation',
+                                            'before': None, 'after': 6})
                 resources, resource_report, files = resource_overlay(original.read('resources.arsc'), values, spec['allowed_resources'])
             expected = {'AndroidManifest.xml': manifest, 'resources.arsc': resources}
             expected.update({item['path']: item['bytes'] for item in files.values()})

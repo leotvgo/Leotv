@@ -19,6 +19,7 @@ public final class DetailActivity extends Activity implements TvDetailPage.Actio
     private int generation;
 
     @Override public void onCreate(Bundle saved){
+        if(!Device.MOBILE)setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         super.onCreate(saved);
         MetadataSettings.initialize(this);MetadataMatchStore.install(this);SiteFeed.initialize(this);
         page=new TvDetailPage(this,this);

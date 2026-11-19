@@ -11,7 +11,7 @@ final class NativeViewport implements AutoCloseable {
     final ViewGroup list, viewport;
     private final ViewGroup.MarginLayoutParams params;
     private final int height, marginTop, marginBottom, left, top, right, bottom;
-    private final boolean clip;
+    private final boolean clip, clipChildren;
     private final float weight;
     private final int measuredHeight;
     private int insetTop=-1, insetBottom=-1;
@@ -20,6 +20,7 @@ final class NativeViewport implements AutoCloseable {
         this.list=list;viewport=(ViewGroup)list.getParent();params=(ViewGroup.MarginLayoutParams)list.getLayoutParams();
         height=params.height;marginTop=params.topMargin;marginBottom=params.bottomMargin;
         left=list.getPaddingLeft();top=list.getPaddingTop();right=list.getPaddingRight();bottom=list.getPaddingBottom();clip=list.getClipToPadding();
+        clipChildren=list.getClipChildren();
         weight=params instanceof android.widget.LinearLayout.LayoutParams?((android.widget.LinearLayout.LayoutParams)params).weight:0;
         measuredHeight=list.getHeight();
     }
@@ -33,7 +34,7 @@ final class NativeViewport implements AutoCloseable {
         insetTop=above;insetBottom=below;
         params.height=base+above+below;params.topMargin=marginTop-above;params.bottomMargin=marginBottom-below;
         if(params instanceof android.widget.LinearLayout.LayoutParams)((android.widget.LinearLayout.LayoutParams)params).weight=0;
-        list.setPadding(left,top+above,right,bottom+below);list.setClipToPadding(false);list.setLayoutParams(params);return true;
+        list.setPadding(left,top+above,right,bottom+below);list.setClipToPadding(false);list.setClipChildren(false);list.setLayoutParams(params);return true;
     }
     /** RecyclerView retains the old child's local offset across padding changes. Compensate after its
      * layout, before drawing, using View.scrollBy (a stable host API) rather than private manager names. */
@@ -69,6 +70,6 @@ final class NativeViewport implements AutoCloseable {
     @Override public void close(){
         if(list.getLayoutParams()==params){Anchor.shift(list,-Math.max(0,insetTop));params.height=height;params.topMargin=marginTop;params.bottomMargin=marginBottom;list.setLayoutParams(params);}
         if(params instanceof android.widget.LinearLayout.LayoutParams)((android.widget.LinearLayout.LayoutParams)params).weight=weight;
-        list.setPadding(left,top,right,bottom);list.setClipToPadding(clip);
+        list.setPadding(left,top,right,bottom);list.setClipToPadding(clip);list.setClipChildren(clipChildren);
     }
 }

@@ -183,6 +183,8 @@ public class NativeDetailTest {
     @Test public void detailsWithoutAnIdentityCanOpenAndCloseWithoutStartingAPlayer() {
         ActivityController<DetailActivity> controller = Robolectric.buildActivity(DetailActivity.class, new Intent());
         DetailActivity detail = controller.create().start().resume().visible().get();
+        assertEquals(Device.MOBILE ? ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED : ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE,
+                detail.getRequestedOrientation());
         assertNull(Shadows.shadowOf(detail).getNextStartedActivity());
         assertNotNull(detail.findViewById(android.R.id.content));
         controller.pause().stop().destroy();

@@ -16,6 +16,7 @@ import android.widget.TextView;
 final class NativeDialogs {
     interface Choice { void selected(int index); }
     interface Saved { void value(String text); }
+    interface EndpointSaved { void value(String key, String base); }
     private static Object builder(Activity activity) throws ReflectiveOperationException {
         return Class.forName("l4.b",true,activity.getClassLoader()).getConstructor(Context.class).newInstance(activity);
     }
@@ -59,6 +60,49 @@ final class NativeDialogs {
             });
             dialog.show();
         }catch(ReflectiveOperationException failure){throw new IllegalStateException("Native input dialog unavailable",failure);}
+    }
+    static void endpoint(Activity activity, String key, String base, EndpointSaved saved, Runnable reset) {
+        try {
+            Object builder = builder(activity); Context context = context(builder);
+            LinearLayout panel = new LinearLayout(context); panel.setOrientation(LinearLayout.VERTICAL);
+            EditText keyInput = endpointInput(context, panel, "TMDB API Key（留空使用内置 Key）", key, true);
+            EditText baseInput = endpointInput(context, panel, "TMDB API 域名", base, false);
+            keyInput.setId(View.generateViewId()); baseInput.setId(View.generateViewId());
+            keyInput.setNextFocusDownId(baseInput.getId()); baseInput.setNextFocusUpId(keyInput.getId());
+            baseInput.setNextFocusDownId(android.R.id.button1);
+            keyInput.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_NEXT);
+            baseInput.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_DONE);
+            Object params = builder.getClass().getField("a").get(builder);
+            params.getClass().getField("k").set(params, "恢复默认");
+            builder.getClass().getMethod("setPositiveButton", int.class, DialogInterface.OnClickListener.class)
+                    .invoke(builder, android.R.string.ok, null);
+            Dialog dialog = create(builder, "TMDB 配置", panel);
+            dialog.setOnShowListener(ignored -> {
+                android.widget.Button save = (android.widget.Button) dialog.findViewById(android.R.id.button1);
+                if (save != null) save.setOnClickListener(view -> {
+                    try { saved.value(keyInput.getText().toString(), baseInput.getText().toString()); dialog.dismiss(); }
+                    catch (IllegalArgumentException invalid) {
+                        (invalid.getMessage() != null && invalid.getMessage().startsWith("Key") ? keyInput : baseInput).setError(invalid.getMessage());
+                    }
+                });
+                android.widget.Button defaults = (android.widget.Button) dialog.findViewById(android.R.id.button3);
+                if (defaults != null) defaults.setOnClickListener(view -> { reset.run(); dialog.dismiss(); });
+            });
+            dialog.show();
+        } catch (ReflectiveOperationException unavailable) { throw new IllegalStateException("Native metadata dialog unavailable", unavailable); }
+    }
+    private static EditText endpointInput(Context context, LinearLayout panel, String hint, String value, boolean secret) {
+        View body = NativeViews.layout(context, "dialog_ua"); EditText input = findInput(body);
+        if (input == null) { body = NativeViews.layout(context, "preference_dialog_edittext"); input = findInput(body); }
+        if (input == null) input = new EditText(context);
+        if (input.getParent() instanceof ViewGroup) ((ViewGroup) input.getParent()).removeView(input);
+        input.setSingleLine(true); input.setHint(hint); input.setText(value);
+        input.setInputType(android.text.InputType.TYPE_CLASS_TEXT | (secret
+                ? android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD : android.text.InputType.TYPE_TEXT_VARIATION_URI));
+        if (secret) input.setTransformationMethod(android.text.method.PasswordTransformationMethod.getInstance());
+        int inset = Math.round(16 * context.getResources().getDisplayMetrics().density);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, -2); params.setMargins(inset, inset / 2, inset, inset / 2);
+        panel.addView(input, params); return input;
     }
     private static EditText findInput(View view){if(view instanceof EditText)return (EditText)view;if(view instanceof ViewGroup)for(int i=0;i<((ViewGroup)view).getChildCount();i++){EditText result=findInput(((ViewGroup)view).getChildAt(i));if(result!=null)return result;}return null;}
     private NativeDialogs(){}
