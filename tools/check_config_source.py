@@ -18,7 +18,7 @@ def run(argv, log):
 def main():
     root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--repo', type=Path, default=Path(__file__).resolve().parents[3] / 'coos')
+    parser.add_argument('--repo', type=Path, default=root.parent / 'coos')
     parser.add_argument('--sdk', type=Path, default=Path.home() / 'Library/Android/sdk')
     parser.add_argument('--gson-jar', type=Path)
     parser.add_argument('--xml-jar', type=Path)

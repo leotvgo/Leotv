@@ -1,5 +1,14 @@
 # 普通版 APK 来源定位与恢复进度（2026-11-18）
 
+## 2026-11-19 独立工程位置与仓库改名
+
+APK 恢复工程已整体迁移至 `/Users/leiatai/Downloads/leowork/Leotv`，后续从此目录开发。
+GitHub 私有仓库已改名为 [leotvgo/Leotv](https://github.com/leotvgo/Leotv)，本地 origin 已同步。
+Git 历史、未跟踪/忽略的阅读和取证资料、基础 APK 均随整个目录保留；两处本地构建默认路径已适配同级 coos。
+原始 APK 继续保留在 coos 原位置，固定 APK 签名备份不迁移、不重新生成；既有 releases/CI 签名配置保留。
+此次仅调整工程位置、仓库名称及对应路径/文档，不重新打包 APK 或启动 Android 6 测试。
+
+
 本轮以现有普通版全部功能和 Android 6 为基准，不将最新 FongMi/TV 直接替换为宿主。
 四个普通样本已经形成可重复重建、代码和资源不丢失的字节码工程。
 Java 恢复已完成第一组可独立编译的核心模块，完整 Java/Gradle 应用工程尚未完成。
@@ -126,7 +135,7 @@ Parcel、数据库、完整 Url/过滤器/弹幕列表、网络和 UI 不在该 
 恢复工作区位于仓库外：
 
 ```text
-/Users/leiatai/Downloads/leowork/coos-recovery/oktv-normal-516
+/Users/leiatai/Downloads/leowork/Leotv
 ```
 
 入口说明是该目录的 `README.md`。`tools/build_preserved.py --variant <样本>` 可重复重建基准；

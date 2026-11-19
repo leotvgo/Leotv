@@ -1,12 +1,15 @@
-# 普通版 5.1.6 恢复工作区
+# Leotv — 普通版 5.1.6 恢复工程
 
 本工作区以现有普通版为功能和 Android 6 基准。当前已得到四个样本的可重建 smali 工程，
 普通 TV 的完整 Java 阅读视图，以及第一组能够独立编译的 Java 恢复代码。
 完整 Java/Gradle 应用工程仍在恢复；不能将这里的 Java 阅读视图直接当作已可编译的原始工程。
 
+项目根目录为 `/Users/leiatai/Downloads/leowork/Leotv`；后续请从此目录独立开发。
+GitHub：[leotvgo/Leotv](https://github.com/leotvgo/Leotv)。
+
 ## GitHub 编译与测试
 
-独立私有仓库为 `leotvgo/oktv-normal-recovery`。Git 记录四个变体的完整 smali、恢复中的 Java、
+独立私有仓库为 `leotvgo/Leotv`。Git 记录四个变体的完整 smali、恢复中的 Java、
 构建/检查工具与取证；原 APK 作为 `apk-inputs-5.1.6-20261118` 私有 release 输入，按 SHA-256 验证。
 GitHub 从这些已提交的 smali 编译 DEX，原 APK 只提供需要保留的资源与 native 资产。
 APK、依赖 JAR、构建缓存、签名密钥和用户运行数据不进入 Git。
@@ -16,13 +19,14 @@ release 中约 4.2 MB 的 `.partNNN` 是四个完整原 APK 的压缩包按 4 Mi
 从 Git 的 smali 编译 DEX，复用原始资源和 native 库。目前 `.so` 没有恢复对应 C/C++/Go 原始源码。
 
 ```sh
-gh workflow run ordinary-build.yml --repo leotvgo/oktv-normal-recovery --ref main
+gh workflow run ordinary-build.yml --repo leotvgo/Leotv --ref main
 ```
 
 该工作流执行四个普通 APK 的编译/语义/资产审计，以及恢复核心 Java 的 API 23 编译与标量 JSON 测试。
 产物为固定签名、可安装的 APK 和对应报告。APK 专用签名密钥由 GitHub Secrets 提供，
 不提交到 Git，也不进入日志/产物；此流程按用户 2026-11-18 的新签名要求执行。
-`android6-smoke.yml` 自动使用构建产物，在全新 Android 6 ARM 镜像上检查安装、离线启动和
+`android6-smoke.yml` 已按用户要求关闭自动触发；仅在另行要求时手动使用构建产物，
+在全新 Android 6 ARM 镜像上检查安装、离线启动和
 75 秒进程稳定性。这个测试 job 不接收签名私钥。
 此测试仍不覆盖真实账户、播放、网络驱动和完整遥控交互。
 
@@ -47,7 +51,8 @@ gh workflow run ordinary-build.yml --repo leotvgo/oktv-normal-recovery --ref mai
 | `evidence` | 代码来源比较、原样重建、源码编译与测试记录 |
 | `tools`、`research` | 可重复执行的构建和恢复工具 |
 
-原始 APK 留在旁边的 `coos` 仓库原位置。工作区没有复制用户运行配置，也没有安装或发布 APK。
+原始 APK 留在同级 `coos` 仓库原位置，本地基准工具默认读取该目录；APK 工程源码独立存放在 Leotv。
+工作区没有复制用户运行配置。GitHub 已发布四个固定签名的测试 APK，手机64位和TV32位由用户确认可安装使用。
 
 ## 重建普通版基准
 

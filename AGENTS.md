@@ -1,6 +1,8 @@
-# 普通版恢复工作规则
+# Leotv 普通版恢复工作规则
 
-读取 `README.md` 和相邻 coos 仓库的 `coos-master/docs/OKTV-NORMAL-RECOVERY-20261118.md`。
+读取 `README.md` 和本仓库的 `docs/OKTV-NORMAL-RECOVERY-20261118.md`。
+项目根目录为 `/Users/leiatai/Downloads/leowork/Leotv`，GitHub 为 `leotvgo/Leotv`。
+本地原 APK 和 Apktool 仍由同级 `coos/` 提供，CI 使用本仓库的固定 release 输入。
 本任务基准是现有普通版全部功能和 Android 6（API 23），保持 TV/手机、两个 ABI 的交付区别。
 
 - 原 APK 的 SHA-256、构建 revision 和比较记录在 `evidence/`；原始文件留在 coos 根目录及 `pro/`。

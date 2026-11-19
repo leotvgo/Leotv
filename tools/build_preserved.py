@@ -36,7 +36,7 @@ def is_signature(name):
 def main():
     root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--repo', type=Path, default=Path(__file__).resolve().parents[3] / 'coos')
+    parser.add_argument('--repo', type=Path, default=root.parent / 'coos')
     parser.add_argument('--variant', choices=VARIANTS, default='tv-v7a')
     parser.add_argument('--apk', type=Path)
     parser.add_argument('--project', type=Path)
