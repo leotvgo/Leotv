@@ -18,7 +18,7 @@ final class NativeDialogs {
     interface Saved { void value(String text); }
     interface EndpointSaved { void value(String key, String base); }
     private static Object builder(Activity activity) throws ReflectiveOperationException {
-        return Class.forName("l4.b",true,activity.getClassLoader()).getConstructor(Context.class).newInstance(activity);
+        return Class.forName(Device.DIALOG_BUILDER,true,activity.getClassLoader()).getConstructor(Context.class).newInstance(activity);
     }
     private static Context context(Object builder) throws ReflectiveOperationException {
         return (Context)builder.getClass().getMethod("getContext").invoke(builder);

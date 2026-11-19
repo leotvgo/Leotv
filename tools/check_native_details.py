@@ -79,6 +79,19 @@ def check_contract(root, variant, project=None):
         return paths[0].read_text()
 
     contracts = dict(COMMON)
+    builder = 'o4/b' if mobile else 'l4/b'
+    device_source = root / 'detail/runtime' / ('mobile' if mobile else 'tv') / 'com/leotv/detail/Device.java'
+    if not re.search(r'DIALOG_BUILDER\s*=\s*"' + re.escape(builder.replace('/', '.')) + r'"', device_source.read_text()):
+        raise ValueError('Native dialog builder differs from its client ABI: ' + variant)
+    contracts[builder] = (['<init>(Landroid/content/Context;)V', 'create()Landroidx/appcompat/app/g;'], [])
+    contracts['androidx/appcompat/app/f'] = ([
+        'getContext()Landroid/content/Context;',
+        'setTitle(Ljava/lang/CharSequence;)Landroidx/appcompat/app/f;',
+        'setView(Landroid/view/View;)Landroidx/appcompat/app/f;',
+        'setPositiveButton(ILandroid/content/DialogInterface$OnClickListener;)Landroidx/appcompat/app/f;',
+        'setNegativeButton(ILandroid/content/DialogInterface$OnClickListener;)Landroidx/appcompat/app/f;'],
+        ['a:Landroidx/appcompat/app/b;'])
+    contracts['androidx/appcompat/app/b'] = ([], ['k:Ljava/lang/CharSequence;'])
     contracts[('E3' if mobile else 'B3') + '/n'] = (['<init>(Ljava/lang/String;Ljava/lang/String;I)V', 'call()Ljava/lang/Object;'], [])
     contracts[('t3' if mobile else 'q3') + '/i'] = (['m()I'], [])
     video_methods = ['b0()V', 'w0(L' + BEANS + 'Flag;ZZ)V', 'd(L' + BEANS + 'Episode;)V', 'T0(Z)V'] if mobile else [

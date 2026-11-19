@@ -42,7 +42,7 @@ public final class Personalization {
             anchor = (View) anchor.getParent();
         int index = anchor != null && anchor.getParent() == target ? target.indexOfChild(anchor) + 1 : target.getChildCount();
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, -2);
-        if (!Device.MOBILE) params.topMargin = rowSpacing(target);
+        params.topMargin = rowSpacing(target);
         target.addView(rows, index, params);
         refresh(activity, rows);
     }
@@ -86,7 +86,10 @@ public final class Personalization {
                 : original instanceof ViewGroup.MarginLayoutParams
                 ? new LinearLayout.LayoutParams((ViewGroup.MarginLayoutParams) original)
                 : new LinearLayout.LayoutParams(-1, -2);
-        if (Device.MOBILE) { params.width = -1; params.weight = 0; }
+        if (Device.MOBILE) {
+            params.width = -1; params.weight = 0;
+            params.topMargin = rows.getChildCount() == 0 ? 0 : rowSpacing(template == null ? rows : (ViewGroup) template.getParent());
+        }
         else {
             params.width = 0; params.weight = 1;
             params.leftMargin = params.rightMargin = 0; params.setMarginStart(0);

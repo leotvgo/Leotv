@@ -422,6 +422,46 @@ public class GlobalChromeTest {
     private static int contrastAt(Bitmap image, int y, int x) {
         return Math.abs(Color.red(image.getPixel(x, y)) - Color.red(image.getPixel(x + 8, y)));
     }
+    private Bitmap overlay(boolean upper) throws Exception {
+        Object band = upper ? chrome.status : chrome.systemNavigation;
+        java.lang.reflect.Field field = band.getClass().getDeclaredField("overlay"); field.setAccessible(true);
+        return (Bitmap) field.get(band);
+    }
+    @Test @Config(sdk = 35) @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    public void phoneGradientStaysNearStatusAndFullyCollapsedLogoIsNotReplayed() {
+        host.logo.setImageDrawable(new android.graphics.drawable.ColorDrawable(Color.MAGENTA));
+        chrome.attach(); org.robolectric.shadows.ShadowLooper.shadowMainLooper().idleFor(16, java.util.concurrent.TimeUnit.MILLISECONDS); layout();
+        assertTrue(chrome.phone); assertEquals(12, chrome.topEnd - chrome.topStart, .01f);
+        assertTrue(chrome.topPaintEnd > chrome.topEnd);
+        host.appbar.setTranslationY(-host.toolbar.getHeight()); host.scroll.scrollTo(0, 500); layout();
+        assertEquals(-host.toolbar.getHeight(), host.appbar.getTranslationY(), .01f);
+        Bitmap image = render();
+        for (int y = 0; y < Math.min(80, image.getHeight()); y++)
+            for (int x = 0; x < 32; x++) assertNotEquals("collapsed native logo remains hidden", Color.MAGENTA, image.getPixel(x, y));
+        image.recycle();
+    }
+    @Test @Config(sdk = 35) @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    public void pauseAndPageReplacementDiscardBothOldBlurFramesAndIgnoreTransparentPages() throws Exception {
+        chrome.attach(); org.robolectric.shadows.ShadowLooper.shadowMainLooper().idleFor(16, java.util.concurrent.TimeUnit.MILLISECONDS); layout();
+        host.scroll.scrollTo(0, 500); layout(); Bitmap before = render();
+        Bitmap oldTop = overlay(true), oldBottom = overlay(false); assertNotNull(oldTop); assertNotNull(oldBottom); before.recycle();
+        chrome.pause(); assertNull(overlay(true)); assertNull(overlay(false));
+        host.root.setAlpha(0);
+        FrameLayout next = new FrameLayout(host); next.setBackgroundColor(Color.GREEN);
+        LinearLayout bar = new LinearLayout(host); bar.setId(301);
+        next.addView(bar, new FrameLayout.LayoutParams(-1, 56));
+        ScrollView scroll = new ScrollView(host); View green = new View(host); green.setBackgroundColor(Color.GREEN);
+        scroll.addView(green, new ScrollView.LayoutParams(-1, 1800));
+        FrameLayout.LayoutParams body = new FrameLayout.LayoutParams(-1, -1); body.topMargin = 56; next.addView(scroll, body);
+        ((FrameLayout) host.findViewById(android.R.id.content)).addView(next, new FrameLayout.LayoutParams(-1, -1));
+        chrome.resume(); org.robolectric.shadows.ShadowLooper.shadowMainLooper().idleFor(16, java.util.concurrent.TimeUnit.MILLISECONDS); layout();
+        assertSame(bar, chrome.toolbar); assertSame(scroll, chrome.source);
+        Bitmap after = render();
+        assertNotSame(oldTop, overlay(true)); assertNotSame(oldBottom, overlay(false));
+        int colour = after.getPixel(200, 6);
+        assertTrue("new page replaces old top pixels", Color.green(colour) > 180 && Color.red(colour) < 50 && Color.blue(colour) < 50);
+        after.recycle();
+    }
     private static final class ViewParentSnapshot {
         final android.view.ViewParent parent;
         ViewParentSnapshot(View view) { parent = view.getParent(); }

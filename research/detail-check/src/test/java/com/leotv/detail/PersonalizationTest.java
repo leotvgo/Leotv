@@ -108,6 +108,12 @@ public class PersonalizationTest {
         assertSame(host.size, host.findViewById(701)); assertEquals("大", ((TextView) host.findViewById(702)).getText().toString());
         assertEquals("简体中文", ((TextView) host.language.getChildAt(1)).getText().toString());
         assertEquals(View.VISIBLE, host.smallWindow.getVisibility());
+        if (Device.MOBILE) {
+            assertTrue(((LinearLayout.LayoutParams) rows.getLayoutParams()).topMargin > 0);
+            assertEquals(0, ((LinearLayout.LayoutParams) rows.getChildAt(0).getLayoutParams()).topMargin);
+            assertTrue(((LinearLayout.LayoutParams) rows.getChildAt(1).getLayoutParams()).topMargin > 0);
+            assertEquals("o4.b", Device.DIALOG_BUILDER);
+        } else assertEquals("l4.b", Device.DIALOG_BUILDER);
         host.size.performClick(); assertEquals(1, host.sizeClicks);
         if (!Device.MOBILE) {
             LinearLayout.LayoutParams left = (LinearLayout.LayoutParams) rows.getChildAt(0).getLayoutParams();
@@ -128,6 +134,13 @@ public class PersonalizationTest {
         assertEquals("fictional-new-key", MetadataSettings.key(host)); assertEquals("https://new.example.invalid/3", MetadataSettings.base(host));
         assertSame(rows, host.root.findViewWithTag("leotv_detail_settings")); assertSame(row, rows.findViewWithTag("TMDB 配置"));
         assertFalse(dialog.isShowing());
+    }
+    @Test public void mobileCarouselClassCannotBeMistakenForTheDialogBuilder() throws Exception {
+        if (Device.MOBILE) {
+            try { Class.forName("l4.b").getConstructor(android.content.Context.class); fail(); }
+            catch (NoSuchMethodException expected) { }
+        } else assertEquals("l4.b", Device.DIALOG_BUILDER);
+        assertNotNull(Class.forName(Device.DIALOG_BUILDER).getConstructor(android.content.Context.class));
     }
     @Test public void invalidDomainKeepsBothExistingValuesAndTheDialogOpen() {
         MetadataSettings.setEndpoint(host, "fictional-existing-key", "old.example.invalid");
