@@ -34,6 +34,10 @@ gh workflow run ordinary-build.yml --repo leotvgo/Leotv --ref main
 同时执行核心 Java 的 API 23 编译/JSON 测试，以及透明按钮、上下栏绘图和生命周期检查。
 产物为固定签名、可安装的 APK 和对应报告。APK 专用签名密钥由 GitHub Secrets 提供，
 不提交到 Git，也不进入日志/产物；此流程按用户 2026-11-18 的新签名要求执行。
+`main` 的整轮构建成功后，`publish-test-apks.yml` 自动核对四个 APK 的固定证书、SHA-256
+和原样/变更审计，并发布到 [Releases](https://github.com/leotvgo/Leotv/releases)，可直接下载 APK。
+文件全部上传并核对完成后才公开发布；同一构建重复触发会核对已有发布，保留已发布文件。
+手动发布入口继续保留，用于补发已有成功构建。
 `android6-smoke.yml` 已按用户要求关闭自动触发；仅在另行要求时手动使用构建产物，
 在全新 Android 6 ARM 镜像上检查安装、离线启动和
 75 秒进程稳定性。这个测试 job 不接收签名私钥。
