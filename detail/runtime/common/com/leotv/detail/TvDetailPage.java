@@ -14,6 +14,7 @@ final class TvDetailPage implements DetailPage {
         void changeSource(SiteFeed.Site site, org.json.JSONObject vod);
         void rematch();
         void download();
+        default void automaticSource(SiteFeed.Site site, SourceGateway.Detail detail) { changeSource(site, detail.json); }
     }
     final Activity activity;
     final boolean mobile=Device.MOBILE;
@@ -50,7 +51,7 @@ final class TvDetailPage implements DetailPage {
     String selectedFlag="";
     String metadataSite="",metadataId="";
     int surfaceColour=DetailHero.DEFAULT_COLOR, theme=-1, themeWidth, themeHeight;
-    boolean mounted=true, reversed;
+    boolean mounted=true, reversed, manualSource;
     boolean metadataResolved, artworkRevealed;
     private final android.graphics.drawable.Drawable loadingBackdrop;
     private final Window.Callback originalCallback;
@@ -131,10 +132,13 @@ final class TvDetailPage implements DetailPage {
         actorScroll.addView(actors);controls.addView(actorScroll);navigation.add(actors,actorScroll);
         flags=column();NativeViews.identify(activity,flags,"flag");
         flagScroll=new HorizontalScrollView(activity);flagScroll.setHorizontalScrollBarEnabled(false);flagScroll.addView(flags);
-        siteSearch=new DetailSiteSearch(new DetailSiteSearch.Listener(){
+        siteSearch=new DetailSiteSearch(activity,new DetailSiteSearch.Listener(){
             public void changed(){sitePicker.changed();}
-            public void loading(SiteFeed.Site site){sitePicker.loading(site.name);}
-            public void ready(SiteFeed.Site site,org.json.JSONObject vod){actions.changeSource(site,vod);}
+            public void loading(SiteFeed.Site site){sitePicker.loading(site.name);if(source!=null&&source.episodes.isEmpty())playButton.idle("正在获取播放线路…");}
+            public void ready(SiteFeed.Site site,org.json.JSONObject vod){manualSource=true;actions.changeSource(site,vod);}
+            public boolean automaticAllowed(){return mounted&&!sitePicker.showing();}
+            public void resolved(SiteFeed.Site site,SourceGateway.Detail detail){actions.automaticSource(site,detail);}
+            public void unavailable(){if(source!=null&&source.episodes.isEmpty()){sitePicker.failed();playButton.idle("未找到可播放资源，可选择站点");}}
         });
         sitePicker=new DetailSitePicker(activity,mobile,siteSearch,this::searchSources);
         if(mobile){
@@ -252,7 +256,7 @@ final class TvDetailPage implements DetailPage {
         String[] labels=new String[values.size()];for(int i=0;i<labels.length;i++)labels[i]=values.get(i).name;
         NativeDialogs.choose(activity,"选集",labels,0,index->actions.play(values.get(index)));
     }
-    void searchSources(){if(source!=null)siteSearch.begin(new BackdropIdentity(source.site,source.id,source.name,source.year,source.type));}
+    void searchSources(){if(source!=null){boolean automatic=source.episodes.isEmpty()&&!manualSource&&!NativeLibrary.hasSavedSource(activity,source);if(automatic)playButton.idle("正在寻找播放资源…");siteSearch.begin(new BackdropIdentity(source.site,source.id,source.name,source.year,source.type),automatic);}}
     void resume(){hero.setActive(true);ThemeLayout.apply(this);if(source!=null){preferred=NativeLibrary.resume(activity,source,null);refreshActions();showEpisodes();}refresh(BackdropSettings.read(activity).proxy);}
     private void updatePlayButton(){
         NativeLibrary.Progress saved=NativeLibrary.progress(activity,source,preferred);
@@ -260,7 +264,7 @@ final class TvDetailPage implements DetailPage {
         else playButton.idle(preferred==null?"暂无可播放剧集":"播放");
     }
     void suspend(){hero.setActive(false);if(mobileSources!=null)mobileSources.dismiss();sitePicker.dismiss();if(personPopup!=null)personPopup.close();personPopup=null;if(matchPopup!=null)matchPopup.dismiss();matchPopup=null;}
-    private boolean beforeDraw(){if(!mounted)return true;ThemeLayout.apply(this);libraryLayout.sync();applyTitleArt();loadingState();return true;}
+    private boolean beforeDraw(){if(!mounted)return true;SourceGateway.Detail previous=source;siteSearch.tryAutomatic();if(previous!=source)return false;ThemeLayout.apply(this);libraryLayout.sync();applyTitleArt();loadingState();return true;}
     private boolean key(KeyEvent event){
         if(event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP){if(sitePicker.showing())sitePicker.dismiss();else if(personPopup!=null&&personPopup.showing())personPopup.handleBack();else activity.finish();}return true;}
         if(!mobile&&sitePicker.showing()&&sitePicker.moveFocus(event.getKeyCode()))return true;

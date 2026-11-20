@@ -51,6 +51,10 @@ final class NativeLibrary {
         } catch (ReflectiveOperationException unavailable) { }
         return preferred(detail.episodes, flag, name);
     }
+    static boolean hasSavedSource(Context context, SourceGateway.Detail detail) {
+        try { return model(context,"History").getMethod("find",String.class).invoke(null,key(detail,cid(context)))!=null; }
+        catch(ReflectiveOperationException unavailable){return false;}
+    }
     static SourceGateway.Episode preferred(List<SourceGateway.Episode> episodes, String flag, String name) {
         if (episodes.isEmpty()) return null;
         if (name != null && !name.isEmpty()) {

@@ -66,6 +66,15 @@ public final class DetailActivity extends Activity implements TvDetailPage.Actio
         getIntent().putExtra("key",site.key).putExtra("id",vod.optString("vod_id")).putExtra("name",vod.optString("vod_name")).putExtra("pic",vod.optString("vod_pic"));
         load();
     }
+    @Override public void automaticSource(SiteFeed.Site site,SourceGateway.Detail detail){
+        if(isFinishing()||isDestroyed()||source==null||!source.episodes.isEmpty())return;
+        if(sourceTask!=null)sourceTask.cancel(true);if(metadataTask!=null)metadataTask.cancel(true);if(metadataRequest!=null)metadataRequest.cancel();
+        int token=++generation;
+        getIntent().putExtra("key",site.key).putExtra("id",detail.id).putExtra("name",detail.name).putExtra("pic",detail.picture);
+        getIntent().removeExtra("mark");
+        source=detail;page.bindSource(detail);
+        if(metadata!=null)page.render(metadata);else enrich(token);
+    }
     @Override public void download(){
         if(source==null||page.preferred==null)return;getIntent().putExtra("download",true);play(page.preferred);getIntent().removeExtra("download");
     }
