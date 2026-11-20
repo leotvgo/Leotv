@@ -7,7 +7,7 @@ if (!(client in ['mobile', 'tv'])) throw new GradleException('client must be mob
 
 layout.buildDirectory = file("build/${client}")
 sourceSets {
-    main.java.srcDirs = ['../../detail/runtime/common', "../../detail/runtime/${client}", '../../ui/java']
+    main.java.srcDirs = ['../../detail/runtime/common', "../../detail/runtime/${client}", '../../ui/java', 'src/stub/java']
     test.java.srcDirs = ['src/test/java', "src/test/${client}"]
 }
 

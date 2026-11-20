@@ -1,10 +1,10 @@
-# Leotv — 普通版 5.1.22 开发工程
+# Leotv — 普通版 5.1.23 开发工程
 
 本工作区以现有普通版为功能和 Android 6 基准。当前已得到四个样本的可重建 smali 工程，
 普通 TV 的完整 Java 阅读视图，以及第一组能够独立编译的 Java 恢复代码。
 完整 Java/Gradle 应用工程仍在恢复；不能将这里的 Java 阅读视图直接当作已可编译的原始工程。
 
-当前应用名为 **Leotv**，版本 **5.1.22 / 532**，独立安装包名 **com.leotv.app**。
+当前应用名为 **Leotv**，版本 **5.1.23 / 533**，独立安装包名 **com.leotv.app**。
 启动图标、TV 横幅、默认线路动图、关于页与全局常态透明/实时渐变模糊已接入专用构建。
 独立原生详情页、个性设置内的本端详情主题/TMDB 配置，以及手机按视频尺寸自动旋转已接入。
 5.1.10 修正缓存分类页的滚动取景、上下渐变模糊和分类控件层次；详情海报铺到窗口顶端，TV 详情固定横屏。
@@ -22,6 +22,7 @@
 手机底栏第二位新增追更；TV 首分类左键唤醒追更入口。追更日历保留手机/TV 两套布局，和 JAR 共用追更库，支持删除同步。
 5.1.21 手机底栏透明独立于线路渐变，切换直播/设置/追更后保持；追更页使用宿主当前背景、铺满窗口并保留四个原生导航按钮，修正手机标题重叠和 TV 网格重排。
 5.1.22 手机追更改为主页内的日历，复用原来的导航实例、位置和宿主背景；底栏透明覆盖点击和离开主页的过渡帧。播放使用独立的全屏请求和已加载的原生详情对象，保留选集、续播与下载参数，移除详情截图过渡。详见[原生底栏与全屏播放修复](docs/LEOTV-5.1.22-NATIVE-NAVIGATION-AND-FULLSCREEN-PLAYBACK-20261120.md)。
+5.1.23 TV 选集接回宿主分组条、排序和播放顺序按钮及原生更多窗口，手机下载/更多使用原生选集和下载链路；修正底栏离开线路页时的渐变闪动、TV 详情入口与全屏加载衔接，恢复元数据加载阶段的宿主背景。详见[原生选集与页面衔接修复](docs/LEOTV-5.1.23-NATIVE-EPISODES-AND-HANDOFF-20261121.md)。
 资源入口统一进入详情页；选择剧集后进入保留的全屏播放器，收藏和续播继续使用原数据库模型。
 普通版 5.1.6 保留为不变的恢复基准；详见
 [Leotv 5.1.8 开发记录](docs/LEOTV-5.1.8-20261119.md)、[5.1.9 UI 修正记录](docs/LEOTV-5.1.9-UI-CORRECTIONS-20261119.md)和[5.1.10 修正记录](docs/LEOTV-5.1.10-EDGE-AND-SETTINGS-20261119.md)和[5.1.11 手机修正记录](docs/LEOTV-5.1.11-PHONE-CHROME-20261120.md)和[5.1.12 交互与艺术字记录](docs/LEOTV-5.1.12-INTERACTION-AND-ARTWORK-20261120.md)和[5.1.13 内容区与播放衔接记录](docs/LEOTV-5.1.13-CONTENT-ONLY-BLUR-20261120.md)和[5.1.14 手机顶部淡出记录](docs/LEOTV-5.1.14-PHONE-TOP-FADE-20261120.md)和[5.1.15 状态栏下滚动记录](docs/LEOTV-5.1.15-PHONE-STATUS-SCROLL-20261120.md)和[5.1.16 当前页面背景记录](docs/LEOTV-5.1.16-LIVE-PAGE-BACKDROP-20261120.md)和[5.1.17 背景协议修正](docs/LEOTV-5.1.17-LIVE-BACKDROP-CONTRACT-20261120.md)和[5.1.18 全分类背景与追更桥](docs/LEOTV-5.1.18-JAR-FEATURE-BRIDGE-20261120.md)和[5.1.19 自动获取播放资源](docs/LEOTV-5.1.19-AUTO-PLAYABLE-SOURCE-20261120.md)和[5.1.20 基础功能与追更日历](docs/LEOTV-5.1.20-FOUNDATION-AND-FOLLOWING-20261120.md)和[5.1.21 透明导航与日历背景](docs/LEOTV-5.1.21-CALENDAR-AND-TRANSPARENT-NAVIGATION-20261120.md)。
@@ -91,7 +92,7 @@ gh workflow run ordinary-build.yml --repo leotvgo/Leotv --ref main
 工作区没有复制用户运行配置。历史普通版 5.1.6 的四个固定签名测试 APK 已发布，
 其中手机64位和TV32位由用户确认可安装使用；新 Leotv 的设备验收需另行记录。
 
-## 构建 Leotv 5.1.22
+## 构建 Leotv 5.1.23
 
 ```sh
 python3 tools/build_branded.py --variant tv-v7a
@@ -104,7 +105,7 @@ gradle --no-daemon -p research/detail-check -Pclient=mobile test
 gradle --no-daemon -p research/detail-check -Pclient=tv test
 ```
 
-本地输出为 `artifacts/leotv-5.1.22-<variant>-unsigned.apk` 及审计报告。
+本地输出为 `artifacts/leotv-5.1.23-<variant>-unsigned.apk` 及审计报告。
 GitHub 使用同一构建器，再以既有 APK 专用固定密钥签名；产物为 `leotv-<variant>.apk`。
 新包名、provider、私有权限及媒体控制标识独立，可与原 OK影视同时安装。
 原组件类名保留，以保护 JNI、反射及站点 JAR 的 ABI。

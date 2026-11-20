@@ -14,9 +14,12 @@ BEANS = 'com/fongmi/android/tv/bean/'
 COMMON = {
     BEANS + 'Result': (['getVod()L' + BEANS + 'Vod;','fromJson(Ljava/lang/String;)L'+BEANS+'Result;'], []),
     BEANS + 'Flag': (['getFlag()Ljava/lang/String;', 'getEpisodes()Ljava/util/List;'], []),
-    BEANS + 'Episode': (['getUrl()Ljava/lang/String;'], []),
+    BEANS + 'Vod': (['getFlags()Ljava/util/List;'], []),
+    BEANS + 'Episode': (['getUrl()Ljava/lang/String;', '<init>(Landroid/os/Parcel;)V',
+                        'setActivated(Z)V', 'setSelected(Z)V', 'writeToParcel(Landroid/os/Parcel;I)V'], []),
     BEANS + 'History': (['find(Ljava/lang/String;)L' + BEANS + 'History;',
-                        'getFlag()L' + BEANS + 'Flag;', 'getVodRemarks()Ljava/lang/String;'], []),
+                        'getFlag()L' + BEANS + 'Flag;', 'getVodRemarks()Ljava/lang/String;',
+                        'isRevSort()Z', 'isRevPlay()Z', 'setRevSort(Z)V', 'setRevPlay(Z)V'], []),
     BEANS + 'Keep': (['<init>()V', 'find(ILjava/lang/String;)L' + BEANS + 'Keep;',
                      'delete()L' + BEANS + 'Keep;', 'save()V', 'setCid(I)V', 'setType(I)V',
                      'setKey(Ljava/lang/String;)V', 'setSiteName(Ljava/lang/String;)V',
@@ -46,6 +49,7 @@ def check_contract(root, variant, project=None):
     expected_paths.update({'smali/P3/b.smali', 'smali/S3/p.smali', 'smali/O3/t.smali', 'smali/F3/f.smali'} if mobile else {
         'smali/M3/b.smali', 'smali/com/fongmi/android/tv/ui/activity/SettingCustomActivity.smali',
         'smali/com/fongmi/android/tv/ui/activity/M.smali'})
+    expected_paths.update({'smali/S3/f.1.smali'} if mobile else {'smali/A0/a.smali', 'smali/O3/l.smali'})
     if set(lock) != expected_paths:
         raise ValueError('Native ordinary source edit list differs from its declaration: ' + variant)
     for name, digest in lock.items():
@@ -79,7 +83,7 @@ def check_contract(root, variant, project=None):
             raise ValueError('Expected exactly one ordinary ABI class: ' + name)
         return paths[0].read_text()
 
-    contracts = dict(COMMON)
+    contracts = {name: (list(methods), list(fields)) for name, (methods, fields) in COMMON.items()}
     builder = 'o4/b' if mobile else 'l4/b'
     device_source = root / 'detail/runtime' / ('mobile' if mobile else 'tv') / 'com/leotv/detail/Device.java'
     if not re.search(r'DIALOG_BUILDER\s*=\s*"' + re.escape(builder.replace('/', '.')) + r'"', device_source.read_text()):
@@ -107,9 +111,37 @@ def check_contract(root, variant, project=None):
     video_methods = ['b0()V', 'w0(L' + BEANS + 'Flag;ZZ)V', 'd(L' + BEANS + 'Episode;)V', 'T0(Z)V'] if mobile else [
         'Y()V', 'O0(L' + BEANS + 'Flag;ZZ)V', 'L0(L' + BEANS + 'Episode;)V']
     video_fields = ['d0:Z', 'l0:Z', 'Z:Lcom/fongmi/android/tv/ui/adapter/u;',
-                    'S:Lcom/fongmi/android/tv/ui/adapter/q;', 'c0:LF3/f;'] if mobile else [
-                        'i0:Z', 'U:Landroidx/leanback/widget/ArrayObjectAdapter;']
+                    'S:Lcom/fongmi/android/tv/ui/adapter/q;', 'c0:LF3/f;', 'b0:L'+BEANS+'History;'] if mobile else [
+                        'i0:Z', 'U:Landroidx/leanback/widget/ArrayObjectAdapter;', 'g0:L'+BEANS+'History;']
     contracts['com/fongmi/android/tv/ui/activity/VideoActivity'] = (video_methods, video_fields)
+    contracts['androidx/appcompat/app/j'] = (
+        ['<init>()V', ('C' if mobile else 'A') + '()Landroidx/fragment/app/S;'], [])
+    if mobile:
+        contracts['R3/t'] = (['<init>()V', 'y0(Landroidx/appcompat/app/j;)V'], ['A0:Ljava/util/List;', 'C0:Z', 'D0:Z'])
+        contracts['S3/f'] = (['t0()V'], ['m0:LE3/r;'])
+        contracts['androidx/fragment/app/v'] = (['y()Landroidx/appcompat/app/j;'], [])
+        contracts['androidx/fragment/app/m'] = (['p0(ZZ)V'], [])
+        contracts['E3/k'] = (['<init>(Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;)V', 'call()Ljava/lang/Object;'], [])
+        contracts['E3/r'] = ([], ['f:Landroidx/lifecycle/A;', 'g:Landroidx/lifecycle/A;'])
+        contracts['androidx/lifecycle/A'] = (['d(Landroidx/lifecycle/t;Landroidx/lifecycle/B;)V', 'g(Landroidx/lifecycle/B;)V'], [])
+        contracts['U3/f'] = ([], ['a:LN6/m;'])
+        contracts['t3/h'] = ([], ['a:Lt3/i;'])
+        contracts['t3/i'][0].append('o()Ljava/util/List;')
+        contracts['t3/i'][1].append('l:Ljava/util/ArrayList;')
+        contracts['B0/t'] = (['<init>(LC3/g;)V', 'y(L'+BEANS+'Result;Z)V', 'A()V'], [])
+        contracts[BEANS+'Result'][0].extend(['getJx()Ljava/lang/Integer;', 'getParse()Ljava/lang/Integer;',
+            'getFlag()Ljava/lang/String;', 'getPlayUrl()Ljava/lang/String;', 'getRealUrl()Ljava/lang/String;',
+            'getHeader()Ljava/util/Map;', 'getMsg()Ljava/lang/String;', 'hasMsg()Z'])
+        contracts['N6/m'] = (['c(Ljava/lang/String;Ljava/util/Map;)V'], ['i:Z', 'n:Ljava/lang/Object;', 'o:Ljava/lang/Object;', 'p:Ljava/lang/Object;', 'q:Ljava/io/Serializable;'])
+    else:
+        contracts['O3/o'] = (['<init>()V'], ['C0:Ljava/util/List;'])
+        contracts['androidx/fragment/app/m'] = (['a0(Landroidx/fragment/app/S;)V', 'X(ZZ)V'], [])
+        contracts['R3/b'] = (['c(Landroid/widget/TextView;)V', 'd()V', 'k()V'], [])
+        contracts['R3/d'] = (['<init>(LR3/b;)V'], ['n:Ljava/lang/String;', 'o:Ljava/lang/String;', 'p:Ljava/lang/String;', 'q:I', 'r:I'])
+        contracts['androidx/leanback/widget/HorizontalGridView'] = (['<init>(Landroid/content/Context;Landroid/util/AttributeSet;)V', 'setRowHeight(I)V'], [])
+        contracts['androidx/leanback/widget/BaseGridView'] = (['setHorizontalSpacing(I)V', 'getSelectedPosition()I', 'setSelectedPosition(I)V'], [])
+        contracts['androidx/leanback/widget/ItemBridgeAdapter'] = (['<init>(Landroidx/leanback/widget/ObjectAdapter;)V'], [])
+        contracts['com/fongmi/android/tv/ui/custom/ProgressLayout'] = (['b(I)V'], [])
     contracts['androidx/recyclerview/widget/RecyclerView'] = (['i0(I)V'] if mobile else ['scrollToPosition(I)V'], [])
     if mobile:
         contracts.update({
@@ -120,7 +152,9 @@ def check_contract(root, variant, project=None):
             'n0/d0': ([], ['a:I', 'b:I']),
         })
     else:
-        contracts['androidx/leanback/widget/ArrayObjectAdapter'] = (['size()I', 'get(I)Ljava/lang/Object;'], [])
+        contracts['androidx/leanback/widget/ArrayObjectAdapter'] = (['size()I', 'get(I)Ljava/lang/Object;',
+            '<init>(Landroidx/leanback/widget/Presenter;)V',
+            'setItems(Ljava/util/List;Landroidx/leanback/widget/DiffCallback;)V'], [])
     checked = 0
     for name, (methods, fields) in contracts.items():
         body = text(name)

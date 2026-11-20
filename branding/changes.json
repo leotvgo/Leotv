@@ -17,6 +17,11 @@
     "mipmap/ic_banner"
   ],
   "tv": {
+    "fixed_landscape_activities": [
+      "com.fongmi.android.tv.ui.activity.VideoActivity",
+      "com.leotv.detail.DetailActivity",
+      "com.leotv.detail.FollowingActivity"
+    ],
     "literal_edits": [
       {"file": "smali/com/fongmi/android/tv/ui/activity/SettingActivity.smali", "old": "5.1.6", "new": "@version_name"},
       {"file": "smali/com/fongmi/android/tv/ui/activity/SettingActivity.smali", "old": "@flavor", "new": "@app_name"},

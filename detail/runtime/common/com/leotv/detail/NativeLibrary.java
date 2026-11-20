@@ -55,6 +55,12 @@ final class NativeLibrary {
         try { return model(context,"History").getMethod("find",String.class).invoke(null,key(detail,cid(context)))!=null; }
         catch(ReflectiveOperationException unavailable){return false;}
     }
+    static boolean[] order(Context context,SourceGateway.Detail detail){
+        try{Class<?> type=model(context,"History");Object history=type.getMethod("find",String.class).invoke(null,key(detail,cid(context)));
+            if(history!=null)return new boolean[]{Boolean.TRUE.equals(type.getMethod("isRevSort").invoke(history)),Boolean.TRUE.equals(type.getMethod("isRevPlay").invoke(history))};
+        }catch(ReflectiveOperationException ignored){}
+        return new boolean[]{false,false};
+    }
     static SourceGateway.Episode preferred(List<SourceGateway.Episode> episodes, String flag, String name) {
         if (episodes.isEmpty()) return null;
         if (name != null && !name.isEmpty()) {

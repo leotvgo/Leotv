@@ -10,6 +10,7 @@ public class VideoActivity extends Activity {
     public final Flags Z = new Flags(), U = Z;
     public final Episodes S = new Episodes();
     public Player c0 = new Player();
+    public com.fongmi.android.tv.bean.History b0=new com.fongmi.android.tv.bean.History("", ""),g0=b0;
     public Flag selectedFlag;
     public Episode selectedEpisode;
     public int selectionCalls, fullscreenCalls;

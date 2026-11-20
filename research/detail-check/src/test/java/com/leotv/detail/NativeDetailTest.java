@@ -97,6 +97,37 @@ public class NativeDetailTest {
         assertEquals(0, player.selectionCalls);
     }
 
+    @Test public void nativeEpisodeOrderSurvivesTheFullscreenRequest() {
+        Intent request=resource();request.removeExtra("download");
+        Activity activity=Robolectric.buildActivity(Activity.class,request).create().get();
+        activity.getIntent().putExtra("leotv.episode.reverseSort",true).putExtra("leotv.episode.reversePlay",true);
+        NativeRouting.play(activity,"fictional-csp-line","fictional-film","示例影片","","线路乙","fictional:selected$opaque","第七集");
+        Intent next=Shadows.shadowOf(activity).getNextStartedActivity();assertFalse(next.hasExtra("download"));
+        VideoActivity player=player(next);playlist(player);Playback.applyOrder(player);
+        assertTrue(player.b0.isRevSort());assertTrue(player.b0.isRevPlay());
+        assertTrue(Playback.select(player));assertEquals("fictional:selected$opaque",player.selectedEpisode.getUrl());
+        Playback.release(player);
+    }
+
+    @Test public void directResourceLaunchPreservesTheLoadingBackdropAcrossThemeChanges() throws Exception {
+        java.lang.reflect.Field cache=com.leotv.ui.GlobalChrome.class.getDeclaredField("hostBackdrop");cache.setAccessible(true);Object previous=cache.get(null);cache.set(null,null);
+        ActivityController<Activity> host=Robolectric.buildActivity(Activity.class).create().start().resume().visible();
+        Activity activity=host.get();int colour=0xff274d69;activity.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(colour));
+        ActivityController<DetailActivity> details=null;
+        try{
+            NativeRouting.openResource(activity,new Intent().putExtra("name","虚构影片"));
+            Intent next=Shadows.shadowOf(activity).getNextStartedActivity();assertEquals(DetailActivity.class.getName(),next.getComponent().getClassName());
+            assertFalse(next.getBooleanExtra(NativeRouting.PLAYER,false));assertFalse(activity.isFinishing());assertNull(Shadows.shadowOf(activity).getNextStartedActivity());
+            details=Robolectric.buildActivity(DetailActivity.class,next).create().start().resume().visible();
+            DetailActivity detail=details.get();android.view.View scroll=detail.findViewById(android.R.id.content).findViewWithTag("leotv_jar_detail_page");
+            MetadataSettings.setTheme(detail,Device.THEME_NAMES.length-1);Shadows.shadowOf(android.os.Looper.getMainLooper()).idle();
+            detail.findViewById(android.R.id.content).getViewTreeObserver().dispatchOnPreDraw();
+            assertTrue(scroll.getBackground() instanceof android.graphics.drawable.ColorDrawable);
+            assertEquals(colour,((android.graphics.drawable.ColorDrawable)scroll.getBackground()).getColor());
+            assertEquals(colour,((android.graphics.drawable.ColorDrawable)com.leotv.ui.GlobalChrome.loadingBackground(detail)).getColor());
+        }finally{if(details!=null)details.pause().stop().destroy();host.pause().stop().destroy();cache.set(null,previous);}
+    }
+
     @Test public void detailLoadingDelegatesToTheOrdinaryClientCallable() throws Exception {
         Activity activity = Robolectric.buildActivity(Activity.class, resource()).create().get();
         com.leotv.detail.fixtures.OrdinaryDetailFixture.calls = 0;
@@ -206,7 +237,7 @@ public class NativeDetailTest {
     @Test public void detailsWithoutAnIdentityCanOpenAndCloseWithoutStartingAPlayer() {
         ActivityController<DetailActivity> controller = Robolectric.buildActivity(DetailActivity.class, new Intent());
         DetailActivity detail = controller.create().start().resume().visible().get();
-        assertEquals(Device.MOBILE ? ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED : ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE,
+        assertEquals(Device.MOBILE ? ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED : ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE,
                 detail.getRequestedOrientation());
         assertNull(Shadows.shadowOf(detail).getNextStartedActivity());
         assertNotNull(detail.findViewById(android.R.id.content));

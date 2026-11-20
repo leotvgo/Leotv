@@ -8,7 +8,7 @@ import android.os.Looper;
 import java.util.concurrent.*;
 
 /** Standalone resource/detail controller; the JAR composition owns the rendered page. */
-public final class DetailActivity extends Activity implements TvDetailPage.Actions {
+public final class DetailActivity extends androidx.appcompat.app.j implements TvDetailPage.Actions {
     private final Handler main=new Handler(Looper.getMainLooper());
     private final ExecutorService worker=Executors.newFixedThreadPool(2);
     private Future<?> sourceTask,metadataTask;
@@ -19,7 +19,7 @@ public final class DetailActivity extends Activity implements TvDetailPage.Actio
     private int generation;
 
     @Override public void onCreate(Bundle saved){
-        if(!Device.MOBILE)setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+        if(!Device.MOBILE)setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         super.onCreate(saved);
         if(saved!=null&&saved.containsKey("leotv.detail.site"))getIntent().putExtra("key",saved.getString("leotv.detail.site")).putExtra("id",saved.getString("leotv.detail.id")).putExtra("name",saved.getString("leotv.detail.name")).putExtra("pic",saved.getString("leotv.detail.pic"));
         MetadataSettings.initialize(this);MetadataMatchStore.install(this);FollowStore.install(this);SiteFeed.initialize(this);
@@ -64,6 +64,7 @@ public final class DetailActivity extends Activity implements TvDetailPage.Actio
         if(source==null)return;
         cacheState();DetailSessionCache.pin(this,source);
         Playback.prepareSource(this,source);
+        getIntent().putExtra("leotv.episode.reverseSort",page.reversed).putExtra("leotv.episode.reversePlay",page.reversePlay);
         if(metadata!=null)getIntent().putStringArrayListExtra(NativeRouting.TITLE_LOGOS,new java.util.ArrayList<>(metadata.branding.logos));
         else getIntent().removeExtra(NativeRouting.TITLE_LOGOS);
         NativeRouting.play(this,source.site,source.id,source.name,source.picture,episode.flag,episode.url,episode.name);
@@ -83,11 +84,12 @@ public final class DetailActivity extends Activity implements TvDetailPage.Actio
         if(metadata!=null)page.render(metadata);else enrich(token);
     }
     @Override public void download(){
-        if(source==null||page.preferred==null)return;getIntent().putExtra("download",true);play(page.preferred);getIntent().removeExtra("download");
+        if(page!=null)page.nativeEpisodes.open(true);
     }
     @Override public void onResume(){super.onResume();if(page!=null)page.resume();}
     @Override public void onPause(){cacheState();if(page!=null)page.suspend();super.onPause();}
-    @Override public void onSaveInstanceState(Bundle saved){super.onSaveInstanceState(saved);saved.putString("leotv.detail.site",getIntent().getStringExtra("key"));saved.putString("leotv.detail.id",getIntent().getStringExtra("id"));saved.putString("leotv.detail.name",getIntent().getStringExtra("name"));saved.putString("leotv.detail.pic",getIntent().getStringExtra("pic"));}
+    /** The preserved AppCompat callback is final; the application lifecycle saves these extras. */
+    public void saveDetailState(Bundle saved){saved.putString("leotv.detail.site",getIntent().getStringExtra("key"));saved.putString("leotv.detail.id",getIntent().getStringExtra("id"));saved.putString("leotv.detail.name",getIntent().getStringExtra("name"));saved.putString("leotv.detail.pic",getIntent().getStringExtra("pic"));}
     @Override public void onConfigurationChanged(android.content.res.Configuration configuration){super.onConfigurationChanged(configuration);if(page!=null){page.theme=-1;page.content.requestLayout();page.refresh(BackdropSettings.read(this).proxy);}}
     @Override public void onDestroy(){
         JarIntegration.release(this);

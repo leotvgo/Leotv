@@ -397,6 +397,9 @@ def main():
                     manifest_report.append({'path': 'manifest/application/activity', 'attribute': 'screenOrientation',
                                             'before': None, 'after': 6})
                     manifest_report.append({'path':'manifest/application/activity','attribute':'screenOrientation','before':None,'after':6})
+                    for activity_name in profile['fixed_landscape_activities']:
+                        manifest, change = BinaryXml(manifest).set_activity_orientation(activity_name, 0)
+                        manifest_report.append(change)
                 resources, resource_report, files = resource_overlay(original.read('resources.arsc'), values, spec['allowed_resources'])
             expected = {'AndroidManifest.xml': manifest, 'resources.arsc': resources}
             expected.update({item['path']: item['bytes'] for item in files.values()})

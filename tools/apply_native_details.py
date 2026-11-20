@@ -44,11 +44,16 @@ def apply(project, root, variant):
     result_path = 'smali/O3/t.smali' if mobile else 'smali/com/fongmi/android/tv/ui/activity/M.smali'
     player_path = 'smali/F3/f.smali'
     source_path = 'smali/E3/n.smali' if mobile else 'smali/B3/n.smali'
+    episode_path = 'smali/S3/f.1.smali'
+    tv_episode_callback = 'smali/A0/a.smali'
+    tv_episode_key = 'smali/O3/l.smali'
     lock = json.loads((root / 'detail/native-source-lock.json').read_text())[variant]
     changes, descriptors = {}, set()
     paths = [base_path, settings_path, VIDEO, result_path,source_path]
     if mobile:
-        paths.append(player_path)
+        paths.extend([player_path, episode_path])
+    else:
+        paths.extend([tv_episode_callback, tv_episode_key])
     for path in paths:
         file = project / path
         original = file.read_bytes()
@@ -92,6 +97,13 @@ def apply(project, root, variant):
     invoke-static {p0, v0}, Lcom/leotv/detail/Personalization;->attach(Landroid/app/Activity;Landroid/view/View;)V'''
             text = replace_method(text, signature, lambda body: append_call(body, call))
         elif path == VIDEO:
+            launcher = 'c1(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZ)V'
+            def direct_resource(body):
+                ordinary = '    invoke-virtual {p0, v0}, Landroid/app/Activity;->startActivity(Landroid/content/Intent;)V'
+                if body.count(ordinary) != 1:
+                    raise ValueError('Expected one pinned native resource launch.')
+                return body.replace(ordinary, '    invoke-static {p0, v0}, Lcom/leotv/detail/NativeRouting;->openResource(Landroid/app/Activity;Landroid/content/Intent;)V')
+            text = replace_method(text, launcher, direct_resource)
             text = replace_method(text, 'onDestroy()V', lambda body: append_call(body,
                 '    invoke-static {p0}, Lcom/leotv/detail/Playback;->release(Landroid/app/Activity;)V'))
             callbacks = ['onStart()V', 'onStop()V', 'onPause()V', 'onResume()V', 'onDestroy()V']
@@ -139,6 +151,11 @@ def apply(project, root, variant):
             def selection(body):
                 if body.count(ordinary) != 1 or 'Lcom/fongmi/android/tv/bean/Vod;->getFlags()Ljava/util/List;' not in body:
                     raise ValueError('Expected one initialized ordinary detail selection.')
+                reverse = re.search(r'(?m)^    invoke-virtual \{[^}]+\}, Lcom/fongmi/android/tv/bean/History;->isRevSort\(\)Z$', body)
+                if reverse is None or body.count('->isRevSort()Z') != 1:
+                    raise ValueError('Expected one pinned ordinary reverse-sort decision.')
+                body = body[:reverse.start()] + ('    invoke-static {' + activity_register +
+                    '}, Lcom/leotv/detail/Playback;->applyOrder(Landroid/app/Activity;)V\n\n') + body[reverse.start():]
                 replacement = ('    invoke-static {' + activity_register + '}, Lcom/leotv/detail/Playback;->select(Landroid/app/Activity;)Z\n\n'
                                '    move-result ' + scratch + '\n\n    if-nez ' + scratch + ', :leotv_episode_selected\n\n'
                                + ordinary + '\n\n    :leotv_episode_selected')
@@ -167,6 +184,52 @@ def apply(project, root, variant):
     :leotv_source_original\n'''
                 return body[:position.end()]+added+body[position.end():]
             text=replace_method(text,'call()Ljava/lang/Object;',source_cache)
+        elif path == episode_path:
+            text = replace_method(text, 't0()V', lambda body: append_call(body,
+                '    invoke-static {p0}, Lcom/leotv/detail/NativeEpisodeUi;->watch(Ljava/lang/Object;)V'))
+        elif path == tv_episode_callback:
+            def select_native(body):
+                position = re.search(r'(?m)^    \.locals (\d+)', body)
+                if not position or int(position.group(1)) < 2:
+                    raise ValueError('Expected native TV episode callback scratch registers.')
+                added = '''
+
+    iget-object v0, p0, LA0/a;->n:Ljava/lang/Object;
+
+    invoke-static {v0, p1}, Lcom/leotv/detail/NativeEpisodeUi;->selectNative(Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-eqz v1, :leotv_native_episode_original
+
+    return-void
+
+    :leotv_native_episode_original
+'''
+                return body[:position.end()] + added + body[position.end():]
+            text = replace_method(text, 'b(Lcom/fongmi/android/tv/bean/Episode;)V', select_native)
+        elif path == tv_episode_key:
+            def native_key(body):
+                if body.count('    .locals 0') != 1:
+                    raise ValueError('Expected native TV episode key callback.')
+                body = body.replace('    .locals 0', '''    .locals 1
+
+    iget-object v0, p0, LO3/l;->i:LO3/o;
+
+    invoke-static {v0}, Lcom/leotv/detail/NativeEpisodeUi;->owned(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    if-eqz v0, :leotv_native_episode_key
+
+    const/4 v0, 0x0
+
+    return v0
+
+    :leotv_native_episode_key
+''')
+                return body
+            text = replace_method(text, 'onKey(Landroid/content/DialogInterface;ILandroid/view/KeyEvent;)Z', native_key)
         elif path == player_path:
             def media3_size(body):
                 if body.count('    .locals 0') != 1:

@@ -66,6 +66,37 @@ public final class GlobalChrome {
                 : hostBackdrop.getConstantState().newDrawable(context.getResources()).mutate();
     }
 
+    /** Preserve the actual shared background before a resource leaves home/search/library. */
+    public static void rememberBackground(Activity activity) {
+        String name=activity.getClass().getName();
+        if(name.equals("com.leotv.detail.DetailActivity")||name.equals("com.leotv.detail.FollowingActivity")||name.equals("com.fongmi.android.tv.ui.activity.VideoActivity"))return;
+        Controller controller=lifecycle==null?null:lifecycle.active.get(activity);
+        if(controller!=null){controller.rememberBackdrop();return;}
+        View content=activity.findViewById(android.R.id.content);
+        if(!(content instanceof ViewGroup))return;
+        ViewGroup group=(ViewGroup)content;
+        for(int i=group.getChildCount()-1;i>=0;i--){
+            View layer=group.getChildAt(i);
+            if(!layer.isShown()||layer.getAlpha()<=.001f||!"leotv_shared_backdrop".equals(layer.getTag())||layer.getWidth()<=0||layer.getHeight()<=0)continue;
+            try{
+                float scale=Math.min(1f,1080f/layer.getWidth());
+                Bitmap pixels=Bitmap.createBitmap(Math.max(1,Math.round(layer.getWidth()*scale)),Math.max(1,Math.round(layer.getHeight()*scale)),Bitmap.Config.ARGB_8888);
+                Canvas canvas=new Canvas(pixels);canvas.scale(scale,scale);layer.draw(canvas);
+                synchronized(GlobalChrome.class){hostBackdrop=new android.graphics.drawable.BitmapDrawable(activity.getResources(),pixels);}
+                return;
+            }catch(RuntimeException|OutOfMemoryError unavailable){}
+        }
+        Drawable background=activity.getWindow().getDecorView().getBackground();
+        synchronized(GlobalChrome.class){if(usableBackground(hostBackdrop))return;}
+        if(usableBackground(background)&&background.getConstantState()!=null)
+            synchronized(GlobalChrome.class){hostBackdrop=background.getConstantState().newDrawable(activity.getResources()).mutate();}
+    }
+
+    private static boolean usableBackground(Drawable drawable) {
+        return drawable!=null&&drawable.getOpacity()!=PixelFormat.TRANSPARENT
+                &&(!(drawable instanceof ColorDrawable)||Color.alpha(((ColorDrawable)drawable).getColor())!=0);
+    }
+
     private GlobalChrome() {}
 
     public static synchronized void install(Application app) {
@@ -96,6 +127,7 @@ public final class GlobalChrome {
         @Override public void onActivityPaused(Activity activity) {
             Controller controller = active.get(activity);
             if (controller != null) controller.pause();
+            else rememberBackground(activity);
         }
         @Override public void onActivityDestroyed(Activity activity) { remove(activity); }
         @Override public void onActivityStopped(Activity activity) {
@@ -110,6 +142,9 @@ public final class GlobalChrome {
         @Override public void onActivitySaveInstanceState(Activity activity, Bundle state) {
             Controller controller = active.get(activity);
             if (controller != null) state.putBoolean(FOLLOWING, controller.following.calendar != null);
+            if(activity.getClass().getName().equals("com.leotv.detail.DetailActivity"))try{
+                activity.getClass().getMethod("saveDetailState",Bundle.class).invoke(activity,state);
+            }catch(ReflectiveOperationException unavailable){android.util.Log.w("LeotvDetails","Detail state save unavailable");}
         }
     }
 
@@ -189,6 +224,7 @@ public final class GlobalChrome {
         }
 
         private boolean contentScreen(View view) {
+            if(following.contentSwitchPending)return false;
             if (!shown(view)) return false;
             if (!phone) return true;
             View navigation = find("navigation");
@@ -244,6 +280,7 @@ public final class GlobalChrome {
             if (closed || running) return;
             clearSamples();
             running = dirty = discovery = true;
+            following.contentSwitchPending=false;
             following.resumePage();
             ViewTreeObserver observer = decor.getViewTreeObserver();
             observer.addOnPreDrawListener(this); observer.addOnScrollChangedListener(this);
@@ -336,8 +373,11 @@ public final class GlobalChrome {
             }
             Drawable chosen = backdropImage(content);
             if (chosen == null && root != null) chosen = root.getBackground();
-            if (chosen == null || chosen instanceof Frost) chosen = decor.getBackground();
-            if (chosen == null || chosen.getConstantState() == null) return;
+            if (!usableBackground(chosen) || chosen instanceof Frost) {
+                synchronized (GlobalChrome.class) { if (usableBackground(hostBackdrop)) return; }
+                chosen = decor.getBackground();
+            }
+            if (!usableBackground(chosen) || chosen.getConstantState() == null) return;
             try {
                 Drawable copy = chosen.getConstantState().newDrawable(content.getResources()).mutate();
                 if (chosen instanceof android.graphics.drawable.BitmapDrawable) {
@@ -962,7 +1002,7 @@ public final class GlobalChrome {
         int previousItem, containerVisibility;
         java.lang.ref.WeakReference<View> previousFocus=new java.lang.ref.WeakReference<>(null);
         Window.Callback installed, delegate;
-        boolean closed,left;
+        boolean closed,left,contentSwitchPending;
         FollowingNavigation(Controller owner){
             this.owner=owner;
             if(owner.phone)owner.decor.getViewTreeObserver().addOnPreDrawListener(this);
@@ -1044,12 +1084,16 @@ public final class GlobalChrome {
                     int old=i==0?0:i-1;
                     menu.add(0,ids[old],i,titles[old]).setIcon(icons[old]).setCheckable(true).setChecked(checked[old])
                             .setVisible(visible[old]).setEnabled(enabled[old]).setOnMenuItemClickListener(item->{
+                                int vod=owner.activity.getResources().getIdentifier("vod","id",owner.activity.getPackageName());
+                                contentSwitchPending=item.getItemId()!=vod;
+                                if(contentSwitchPending&&owner.contentEnabled){owner.rememberBackdrop();owner.disableContent();}
                                 if(calendar!=null){
                                     int prior=previousItem;dismissCalendar();
                                     int live=owner.activity.getResources().getIdentifier("live","id",owner.activity.getPackageName());
                                     // Live is a separate native Activity and does not select a home tab.
                                     if(item.getItemId()==live)selectNative(prior);
                                 }
+                                contentSwitchPending=item.getItemId()!=vod;
                                 transparent();return false;
                             });
                 }

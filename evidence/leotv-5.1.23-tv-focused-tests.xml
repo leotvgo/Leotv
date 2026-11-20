@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.leotv.detail.NativeDetailTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-20T18:49:47.272Z" hostname="leiyutingdeMacBook-Pro.local" time="5.08">
+  <properties/>
+  <testcase name="cachedNativeDetailRetainsTheLoadedPlaylistWithoutReparsingIt" classname="com.leotv.detail.NativeDetailTest" time="3.364"/>
+  <testcase name="directResourceLaunchPreservesTheLoadingBackdropAcrossThemeChanges" classname="com.leotv.detail.NativeDetailTest" time="1.517"/>
+  <testcase name="nativeEpisodeOrderSurvivesTheFullscreenRequest" classname="com.leotv.detail.NativeDetailTest" time="0.038"/>
+  <testcase name="detailsWithoutAnIdentityCanOpenAndCloseWithoutStartingAPlayer" classname="com.leotv.detail.NativeDetailTest" time="0.136"/>
+  <testcase name="playPreservesDownloadContextAndSelectsTheExplicitEpisode" classname="com.leotv.detail.NativeDetailTest" time="0.025"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

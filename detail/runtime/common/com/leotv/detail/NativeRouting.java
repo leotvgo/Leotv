@@ -13,7 +13,13 @@ public final class NativeRouting {
     private NativeRouting() {}
 
     public static boolean redirect(Activity activity) {
-        if (isFullscreenPlayer(activity)) return false;
+        if (isFullscreenPlayer(activity)) {
+            if(!Device.MOBILE){
+                activity.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.BLACK));
+                activity.setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            }
+            return false;
+        }
         if (!"com.fongmi.android.tv.ui.activity.VideoActivity".equals(activity.getClass().getName())
                 || activity.getIntent() == null || isFullscreenPlayer(activity)) return false;
         if (redirected(activity)) return true;
@@ -23,12 +29,19 @@ public final class NativeRouting {
         return true;
     }
     private static void openDetail(Activity activity, Intent incoming) {
+        openResource(activity,incoming);
+    }
+    /** Native resource launchers call this before creating an unnecessary VideoActivity window. */
+    public static void openResource(Activity activity, Intent incoming) {
+        com.leotv.ui.GlobalChrome.rememberBackground(activity);
         Intent next = new Intent(incoming);
         next.setClass(activity, DetailActivity.class);
         next.removeExtra(REDIRECTED);
         next.removeExtra(PLAYER); next.removeExtra(APPLIED);
         next.removeExtra(EPISODE); next.removeExtra(FLAG);
+        next.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         activity.startActivity(next);
+        activity.overridePendingTransition(0,0);
     }
     /** A running fullscreen player can receive another resource through onNewIntent. */
     public static boolean redirectNewIntent(Activity activity, Intent incoming) {
@@ -58,6 +71,8 @@ public final class NativeRouting {
                 intent.setClipData(incoming.getClipData());
             }
             if (incoming.getBooleanExtra("download", false)) intent.putExtra("download", true);
+            intent.putExtra("leotv.episode.reverseSort",incoming.getBooleanExtra("leotv.episode.reverseSort",false));
+            intent.putExtra("leotv.episode.reversePlay",incoming.getBooleanExtra("leotv.episode.reversePlay",false));
             java.util.ArrayList<String> logos = incoming.getStringArrayListExtra(TITLE_LOGOS);
             if (logos != null) intent.putStringArrayListExtra(TITLE_LOGOS, new java.util.ArrayList<>(logos));
         }

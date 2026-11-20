@@ -16,7 +16,7 @@ public final class FollowingActivity extends Activity {
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
         if (Device.MOBILE) { GlobalChrome.openFollowing(this); finish(); return; }
-        setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+        setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         edgeToEdge();
         initialize(this);
         FrameLayout root = new FrameLayout(this); root.setFitsSystemWindows(false);

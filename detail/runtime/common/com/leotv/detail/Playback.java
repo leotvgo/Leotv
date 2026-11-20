@@ -19,8 +19,35 @@ public final class Playback {
     private static long pendingUntil;
     private Playback() {}
     static synchronized void prepareSource(android.content.Context context,SourceGateway.Detail detail){
+        normalizeEpisodes(detail);
         pendingContext=new WeakReference<>(context.getApplicationContext());pendingSite=detail.site;pendingId=detail.id;pendingResult=detail.nativeResult;
         pendingConfig=SiteFeed.configId();pendingUntil=android.os.SystemClock.elapsedRealtime()+15000;
+    }
+    private static void normalizeEpisodes(SourceGateway.Detail detail){
+        if(detail.nativeResult==null)return;
+        try{
+            Object vod=detail.nativeResult.getClass().getMethod("getVod").invoke(detail.nativeResult);
+            for(Object flag:(List<?>)vod.getClass().getMethod("getFlags").invoke(vod)){
+                String name=String.valueOf(flag.getClass().getMethod("getFlag").invoke(flag));
+                @SuppressWarnings("unchecked") List<Object> items=(List<Object>)flag.getClass().getMethod("getEpisodes").invoke(flag);
+                java.util.Map<String,java.util.ArrayDeque<Object>> originals=new java.util.HashMap<>();
+                for(Object item:items){String url=String.valueOf(item.getClass().getMethod("getUrl").invoke(item));java.util.ArrayDeque<Object> same=originals.get(url);if(same==null){same=new java.util.ArrayDeque<>();originals.put(url,same);}same.add(item);}
+                java.util.ArrayList<Object> ordered=new java.util.ArrayList<>();
+                for(SourceGateway.Episode episode:detail.episodes)if(name.equals(episode.flag)){java.util.ArrayDeque<Object> same=originals.get(episode.url);if(same!=null&&!same.isEmpty())ordered.add(same.removeFirst());}
+                if(ordered.size()==items.size()){items.clear();items.addAll(ordered);}
+            }
+        }catch(ReflectiveOperationException|RuntimeException unavailable){android.util.Log.w("LeotvPlayer","Native episode order unavailable");}
+    }
+    /** Called before the ordinary result controller applies its native reverse-sort branch. */
+    public static void applyOrder(Activity activity){
+        if(!NativeRouting.isFullscreenPlayer(activity))return;
+        try{
+            Object history=activity.getClass().getField(Device.MOBILE?"b0":"g0").get(activity);
+            if(history!=null){
+                if(activity.getIntent().hasExtra("leotv.episode.reverseSort"))history.getClass().getMethod("setRevSort",boolean.class).invoke(history,activity.getIntent().getBooleanExtra("leotv.episode.reverseSort",false));
+                if(activity.getIntent().hasExtra("leotv.episode.reversePlay"))history.getClass().getMethod("setRevPlay",boolean.class).invoke(history,activity.getIntent().getBooleanExtra("leotv.episode.reversePlay",false));
+            }
+        }catch(ReflectiveOperationException unavailable){}
     }
     public static synchronized Object consumeNativeDetail(String site,String id){
         android.content.Context context=pendingContext.get();
@@ -36,6 +63,13 @@ public final class Playback {
     public static void initialize(Activity activity) {
         if (!NativeRouting.isFullscreenPlayer(activity)) return;
         try {
+            if(!Device.MOBILE){
+                int id=activity.getResources().getIdentifier("progressLayout","id",activity.getPackageName());
+                android.view.View root=id==0?null:activity.findViewById(id);
+                // TV's detail-loading state hides every content child, including the player.
+                // Keep the native fullscreen surface visible; its own loading indicator remains.
+                if(root!=null)root.getClass().getMethod("b",int.class).invoke(root,1);
+            }
             boolean fullscreen = activity.getClass().getField(Device.MOBILE ? "d0" : "i0").getBoolean(activity);
             if (!fullscreen) activity.getClass().getMethod(Device.MOBILE ? "b0" : "Y").invoke(activity);
             if (Device.MOBILE) {
@@ -47,6 +81,11 @@ public final class Playback {
             throw new IllegalStateException("全屏播放器初始化失败", failure);
         }
         titleArtwork(activity);
+        if(!Device.MOBILE){
+            int id=activity.getResources().getIdentifier("video","id",activity.getPackageName());
+            android.view.View video=id==0?null:activity.findViewById(id);
+            if(video!=null)video.setBackground(new android.graphics.drawable.ColorDrawable(android.graphics.Color.BLACK));
+        }
     }
     private static void titleArtwork(Activity activity) {
         List<String> logos = activity.getIntent().getStringArrayListExtra(NativeRouting.TITLE_LOGOS);
@@ -79,6 +118,7 @@ public final class Playback {
         String url = activity.getIntent().getStringExtra(NativeRouting.EPISODE);
         if (url == null || url.isEmpty()) return false;
         try {
+            applyOrder(activity);
             Object flags = activity.getClass().getField(Device.MOBILE ? "Z" : "U").get(activity);
             List<?> mobileFlags = Device.MOBILE ? (List<?>) flags.getClass().getField("f").get(flags) : null;
             int size = Device.MOBILE ? mobileFlags.size() : ((Number) flags.getClass().getMethod("size").invoke(flags)).intValue();

@@ -372,6 +372,31 @@ class BinaryXml:
             raise ValueError('An old provider authority survived.')
         return bytes(output), report
 
+    def set_activity_orientation(self, class_name, orientation):
+        data = bytearray(self.data)
+        changed = []
+        for position, kind, _, _ in self.parts:
+            if kind != 0x102 or self.pool.strings[u32(data, position + 20)] != 'activity':
+                continue
+            start, size, count = u16(data, position + 24), u16(data, position + 26), u16(data, position + 28)
+            attributes = {}
+            for index in range(count):
+                offset = position + 16 + start + index * size
+                attributes[self.pool.strings[u32(data, offset + 4)]] = offset
+            name = attributes.get('name')
+            if name is None or data[name + 15] != 3 or self.pool.strings[u32(data, name + 16)] != class_name:
+                continue
+            target = attributes.get('screenOrientation')
+            if target is None or data[target + 15] != 0x10:
+                raise ValueError('Expected the pinned Activity orientation attribute: ' + class_name)
+            before = u32(data, target + 16)
+            put32(data, target + 16, orientation)
+            changed.append({'path': 'manifest/application/activity', 'activity': class_name,
+                            'attribute': 'screenOrientation', 'before': before, 'after': orientation})
+        if len(changed) != 1:
+            raise ValueError('Expected one pinned Activity: ' + class_name)
+        return bytes(data), changed[0]
+
     def add_native_activity(self, class_name, landscape=False, config_changes=0):
         """Append one internal Activity using existing Android attribute names/IDs."""
         pool = self.pool
