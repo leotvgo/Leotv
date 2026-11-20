@@ -72,6 +72,7 @@ public final class DetailActivity extends Activity implements TvDetailPage.Actio
     @Override public void onResume(){super.onResume();if(page!=null)page.resume();}
     @Override public void onPause(){if(page!=null)page.suspend();super.onPause();}
     @Override public void onDestroy(){
+        JarIntegration.release(this);
         generation++;if(sourceTask!=null)sourceTask.cancel(true);if(metadataTask!=null)metadataTask.cancel(true);if(metadataRequest!=null)metadataRequest.cancel();
         worker.shutdownNow();main.removeCallbacksAndMessages(null);if(page!=null)page.close();if(metadata!=null)metadata.release();super.onDestroy();
     }

@@ -680,6 +680,10 @@ public final class GlobalChrome {
 
         private void updatePageBackdrop() {
             pageBackdrop = taggedBackdrop(visiblePage, "leotv_page_backdrop");
+            if (pageBackdrop == null) for (int i = content.getChildCount() - 1; i >= 0; i--) {
+                View shared = content.getChildAt(i);
+                if (shown(shared) && "leotv_shared_backdrop".equals(shared.getTag())) { pageBackdrop = shared; break; }
+            }
             View artwork = taggedBackdrop(visiblePage, "leotv_page_artwork");
             Object tag = artwork == null ? null : artwork.getTag();
             Object renderer = tag instanceof Map ? ((Map<?, ?>) tag).get("leotv_page_artwork") : null;

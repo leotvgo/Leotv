@@ -56,6 +56,7 @@
       "detail/runtime/common/com/leotv/detail/FollowStore.java",
       "detail/runtime/common/com/leotv/detail/Guard.java",
       "detail/runtime/common/com/leotv/detail/HomeFeed.java",
+      "detail/runtime/common/com/leotv/detail/JarIntegration.java",
       "detail/runtime/common/com/leotv/detail/LibraryDetailLayout.java",
       "detail/runtime/common/com/leotv/detail/LibraryStyle.java",
       "detail/runtime/common/com/leotv/detail/MetadataMatchStore.java",

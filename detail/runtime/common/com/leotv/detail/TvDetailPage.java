@@ -48,6 +48,7 @@ final class TvDetailPage implements DetailPage {
     DetailMatchPopup matchPopup;
     SourceGateway.Episode preferred;
     String selectedFlag="";
+    String metadataSite="",metadataId="";
     int surfaceColour=DetailHero.DEFAULT_COLOR, theme=-1, themeWidth, themeHeight;
     boolean mounted=true, reversed;
     boolean metadataResolved, artworkRevealed;
@@ -56,6 +57,7 @@ final class TvDetailPage implements DetailPage {
     private final Window.Callback callback;
     private final ViewTreeObserver.OnPreDrawListener preDraw=this::beforeDraw;
     private final android.content.SharedPreferences.OnSharedPreferenceChangeListener themeChanges;
+    private final Runnable followRefresh = this::refreshActions;
 
     TvDetailPage(Activity activity,Actions actions) {
         this.activity=activity;this.actions=actions;
@@ -113,7 +115,8 @@ final class TvDetailPage implements DetailPage {
         matchButton=action(DetailActionButton.Kind.MATCH,"手动匹配元数据");
         followButton.setContentDescription("追更，加入我的追更");keepButton.setContentDescription("收藏到原生我的收藏");
         matchButton.setContentDescription("手动匹配 TMDB 元数据");
-        followButton.setOnClickListener(view->message("追更暂未开放"));
+        followButton.setOnClickListener(view->toggleFollow());
+        JarIntegration.watch(activity, followRefresh);
         keepButton.setOnClickListener(view->toggleKeep());matchButton.setOnClickListener(view->openMatch());
         for(DetailActionButton button:new DetailActionButton[]{followButton,keepButton,matchButton}){
             LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(0,dp(52),1);if(actionRow.getChildCount()>0)params.leftMargin=dp(8);actionRow.addView(button,params);
@@ -269,6 +272,7 @@ final class TvDetailPage implements DetailPage {
     }
     @Override public void render(MobileDetailMetadata.Result value){
         metadata=value;metadataResolved=true;
+        metadataSite=value!=null&&source!=null?source.site:"";metadataId=value!=null&&source!=null?source.id:"";
         if(value==null){hero.finishLoading();actorFallback.setText("暂无演员资料");loadingState();return;}
         stills.render(value.stills.isEmpty()?value.backdropPaths:value.stills);collection.render(value.collectionParts);
         recommendations.render(value.recommendations);reviews.render(value.reviews);
@@ -312,10 +316,27 @@ final class TvDetailPage implements DetailPage {
     void applyTitleArt(){boolean artwork=titleArt.ready();titleArt.setVisibility(artwork?View.VISIBLE:View.GONE);title.setVisibility(artwork?View.GONE:View.VISIBLE);if(artwork)brandingHeader.setVisibility(View.GONE);}
     void actorTheme(){boolean thunder=!mobile&&theme==DetailTheme.TV_THUNDER;boolean library=DetailTheme.library(activity,mobile);
         for(Portrait portrait:portraits){((DetailImageView)portrait.view).circular(thunder||library);ViewGroup.LayoutParams params=portrait.view.getLayoutParams();params.width=dp(library?72:64);params.height=dp(library?72:thunder?64:68);portrait.view.setLayoutParams(params);}}
-    private void refreshActions(){followButton.active(false);followButton.label("追更");boolean kept=false;
+    private android.os.Bundle bridgeMetadata(){
+        if(!bridgeSourceReady())return new android.os.Bundle();
+        boolean current=source!=null&&source.site.equals(metadataSite)&&source.id.equals(metadataId);
+        return JarIntegration.metadata(source,current?metadata:null);
+    }
+    private boolean bridgeSourceReady(){return source!=null&&source.site.equals(activity.getIntent().getStringExtra("key"))&&source.id.equals(activity.getIntent().getStringExtra("id"));}
+    private void refreshActions(){
+        android.os.Bundle data=bridgeMetadata();
+        if(bridgeSourceReady())JarIntegration.publish(activity,data);
+        android.os.Bundle state=JarIntegration.call(activity,"follow.status",data);
+        boolean followed=state!=null&&state.getBoolean("followed",false);
+        followButton.active(followed);followButton.label(followed?"已追更":"追更");followButton.setEnabled(bridgeSourceReady());boolean kept=false;
         if(source!=null)try{kept=NativeLibrary.isKept(activity,source);}catch(ReflectiveOperationException ignored){}
         keepButton.active(kept);keepButton.label(kept?"已收藏":"收藏");matchButton.label(metadata!=null&&metadata.tmdbId>0?"重新匹配元数据":"手动匹配元数据");}
     private void toggleKeep(){if(source==null)return;try{boolean added=NativeLibrary.toggle(activity,source);refreshActions();message(added?"已加入我的收藏":"已取消收藏");}catch(ReflectiveOperationException error){message("收藏暂不可用");}}
+    private void toggleFollow(){
+        if(!bridgeSourceReady()){message("片源信息尚未就绪");return;}
+        android.os.Bundle reply=JarIntegration.call(activity,"follow.toggle",bridgeMetadata());
+        if(reply==null||!reply.getBoolean("available",false)){message("当前 JAR 尚未提供追更接口，请更新核心");return;}
+        refreshActions();message(reply.getString("message","追更状态已更新"));
+    }
     private void openMatch(){if(source==null||matchPopup!=null)return;BackdropIdentity work=new BackdropIdentity(source.site,source.id,source.name,source.year,source.type);
         matchPopup=new DetailMatchPopup(activity,mobile,work,actions::rematch,()->matchPopup=null);matchPopup.show();}
     private void openPerson(MobileDetailMetadata.Actor actor){if(personPopup==null||!personPopup.showing())personPopup=new DetailPersonPopup(activity,!mobile,null,null,item->activity.startActivity(RelatedDetail.intent(activity,item)));personPopup.show(actor);}
