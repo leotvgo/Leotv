@@ -84,6 +84,8 @@ def check_contract(root, variant, project=None):
     if not re.search(r'DIALOG_BUILDER\s*=\s*"' + re.escape(builder.replace('/', '.')) + r'"', device_source.read_text()):
         raise ValueError('Native dialog builder differs from its client ABI: ' + variant)
     contracts[builder] = (['<init>(Landroid/content/Context;)V', 'create()Landroidx/appcompat/app/g;'], [])
+    if mobile:
+        contracts[builder][0].append('f([Ljava/lang/CharSequence;ILandroid/content/DialogInterface$OnClickListener;)V')
     contracts['androidx/appcompat/app/f'] = ([
         'getContext()Landroid/content/Context;',
         'setTitle(Ljava/lang/CharSequence;)Landroidx/appcompat/app/f;',

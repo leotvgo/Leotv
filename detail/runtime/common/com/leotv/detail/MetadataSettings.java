@@ -13,6 +13,7 @@ public final class MetadataSettings {
     private MetadataSettings() {}
     public static void initialize(Context context) { application = context.getApplicationContext(); }
     private static SharedPreferences prefs(Context context) { return context.getSharedPreferences(PREFS, Context.MODE_PRIVATE); }
+    static SharedPreferences preferences(Context context) { return prefs(context); }
     public static String key(Context context) { return TmdbDefaults.key(prefs(context).getString("tmdb_key", "")); }
     public static boolean customKey(Context context) { return !prefs(context).getString("tmdb_key", "").trim().isEmpty(); }
     public static void setKey(Context context, String value) {

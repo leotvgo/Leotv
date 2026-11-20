@@ -35,6 +35,12 @@ import java.util.Map;
 /** Native chrome shared by every Activity/site; its controls and content remain in their own tree. */
 public final class GlobalChrome {
     private static java.lang.ref.WeakReference<Application> installed;
+    private static Drawable hostBackdrop;
+
+    public static synchronized Drawable loadingBackground(android.content.Context context) {
+        return hostBackdrop == null || hostBackdrop.getConstantState() == null ? null
+                : hostBackdrop.getConstantState().newDrawable(context.getResources()).mutate();
+    }
 
     private GlobalChrome() {}
 
@@ -100,6 +106,8 @@ public final class GlobalChrome {
         final Map<String, Integer> ids = new java.util.HashMap<>();
         View root, toolbar, navigation, source;
         View sampledRoot;
+        View pager, visiblePage;
+        int pageIndex = -1, pageOffset = Integer.MIN_VALUE;
         Padding padding;
         NativeViewport viewport;
         final Map<ViewGroup, NativeViewport> viewports = new IdentityHashMap<>();
@@ -153,6 +161,7 @@ public final class GlobalChrome {
 
         void pause() {
             if (!running) return;
+            rememberBackdrop();
             running = false;
             clearSamples();
             choreographer.removeFrameCallback(this);
@@ -191,6 +200,51 @@ public final class GlobalChrome {
                 }
             }
             return view.getId() == id ? view : null;
+        }
+
+        private View pageAtCentre(View view) {
+            if (!(view instanceof ViewGroup) || view.getWidth() <= 0) return null;
+            ViewGroup group = (ViewGroup) view; int centre = view.getScrollX() + view.getWidth() / 2;
+            for (int i = group.getChildCount() - 1; i >= 0; i--) {
+                View child = group.getChildAt(i);
+                if (shown(child) && child.getHeight() > dp(100) && child.getLeft() <= centre && child.getRight() > centre) return child;
+            }
+            return null;
+        }
+
+        private int currentPage(View view) {
+            if (view == null) return -1;
+            try { return ((Number) view.getClass().getMethod("getCurrentItem").invoke(view)).intValue(); }
+            catch (ReflectiveOperationException unavailable) { return view.getWidth() <= 0 ? 0 : Math.round(view.getScrollX() / (float) view.getWidth()); }
+        }
+
+        private void rememberBackdrop() {
+            if (!activity.getClass().getName().equals("com.fongmi.android.tv.ui.activity.HomeActivity")) return;
+            Drawable chosen = backdropImage(content);
+            if (chosen == null && root != null) chosen = root.getBackground();
+            if (chosen == null || chosen instanceof Frost) chosen = decor.getBackground();
+            if (chosen == null || chosen.getConstantState() == null) return;
+            try {
+                Drawable copy = chosen.getConstantState().newDrawable(content.getResources()).mutate();
+                if (chosen instanceof android.graphics.drawable.BitmapDrawable) {
+                    Bitmap original = ((android.graphics.drawable.BitmapDrawable) chosen).getBitmap();
+                    if (original != null && !original.isRecycled()) {
+                        Bitmap pixels = original.copy(Bitmap.Config.ARGB_8888, false);
+                        if (pixels != null) copy = new android.graphics.drawable.BitmapDrawable(content.getResources(), pixels);
+                    }
+                }
+                synchronized (GlobalChrome.class) { hostBackdrop = copy; }
+            } catch (RuntimeException | OutOfMemoryError unavailable) { }
+        }
+
+        private Drawable backdropImage(View view) {
+            if (!shown(view) || view == portal || scrollable(view) || bars.contains(view)) return null;
+            if (view instanceof ImageView && view.getWidth() >= width * .9f && view.getHeight() >= height * .6f)
+                return ((ImageView) view).getDrawable();
+            if (view instanceof ViewGroup) for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                Drawable found = backdropImage(((ViewGroup) view).getChildAt(i)); if (found != null) return found;
+            }
+            return null;
         }
 
         private boolean validBar(View view) {
@@ -289,6 +343,7 @@ public final class GlobalChrome {
 
         private View discoverSource(View view, View best) {
             if (!shown(view) || view == portal) return best;
+            if (view == pager && visiblePage != null) return discoverSource(visiblePage, best);
             for (View bar : bars) if (inside(view, bar)) return best;
             if (scrollable(view) && view.getHeight() > dp(100) && view.getGlobalVisibleRect(visible)) {
                 if (!visible.intersect(origin[0], origin[1], origin[0] + width, origin[1] + height)) return best;
@@ -336,6 +391,12 @@ public final class GlobalChrome {
             boolean resized = width > 0 && height > 0 && (nextWidth != width || nextHeight != height);
             dirty |= nextWidth != width || nextHeight != height;
             width = nextWidth; height = nextHeight; content.getLocationOnScreen(origin);
+            View nextPager = find("pager"), nextPage = pageAtCentre(nextPager);
+            int nextIndex = currentPage(nextPager), nextOffset = nextPager == null ? 0 : nextPager.getScrollX();
+            if (pager != nextPager || visiblePage != nextPage || pageIndex != nextIndex || pageOffset != nextOffset) {
+                clearSamples(); source = null; dirty = discovery = true;
+                pager = nextPager; visiblePage = nextPage; pageIndex = nextIndex; pageOffset = nextOffset;
+            }
             if (resized && !viewports.isEmpty()) {
                 for (NativeViewport borrowed : viewports.values()) borrowed.close();
                 viewports.clear(); viewport = null;
@@ -524,6 +585,12 @@ public final class GlobalChrome {
 
         private void drawScene(Canvas canvas, View view) {
             if (!shown(view) || view == portal || bars.contains(view)) return;
+            if (view == pager && visiblePage != null) {
+                drawBackground(canvas, view);
+                view.getLocationOnScreen(at); int left = at[0] - origin[0];
+                int save = canvas.save(); canvas.clipRect(left, 0, left + view.getWidth(), height);
+                drawScene(canvas, visiblePage); canvas.restoreToCount(save); return;
+            }
             if (singleChildScroller(view)) {
                 drawBackground(canvas, view);
                 ViewGroup scrolling = (ViewGroup) view;

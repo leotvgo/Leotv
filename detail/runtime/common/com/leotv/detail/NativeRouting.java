@@ -9,6 +9,7 @@ public final class NativeRouting {
     private static final String REDIRECTED = "leotv.detail.redirected";
     static final String EPISODE = "leotv.episode.url", FLAG = "leotv.episode.flag";
     static final String APPLIED = "leotv.selection.applied";
+    static final String TITLE_LOGOS = "leotv.title.logos";
     private NativeRouting() {}
 
     public static boolean redirect(Activity activity) {

@@ -2,6 +2,12 @@ name: Build and audit ordinary APKs
 
 on:
   workflow_dispatch:
+    inputs:
+      run_validation_tests:
+        description: Run model and UI regression suites
+        required: false
+        default: true
+        type: boolean
 
 permissions:
   contents: read
@@ -11,6 +17,7 @@ env:
 
 jobs:
   models:
+    if: ${{ inputs.run_validation_tests }}
     runs-on: ubuntu-22.04
     timeout-minutes: 20
     steps:

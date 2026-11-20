@@ -55,7 +55,12 @@ public final class DetailActivity extends Activity implements TvDetailPage.Actio
         });
     }
     @Override public void rematch(){enrich(generation);}
-    @Override public void play(SourceGateway.Episode episode){if(source!=null)NativeRouting.play(this,source.site,source.id,source.name,source.picture,episode.flag,episode.url,episode.name);}
+    @Override public void play(SourceGateway.Episode episode){
+        if(source==null)return;
+        if(metadata!=null)getIntent().putStringArrayListExtra(NativeRouting.TITLE_LOGOS,new java.util.ArrayList<>(metadata.branding.logos));
+        else getIntent().removeExtra(NativeRouting.TITLE_LOGOS);
+        NativeRouting.play(this,source.site,source.id,source.name,source.picture,episode.flag,episode.url,episode.name);
+    }
     @Override public void changeSource(SiteFeed.Site site,org.json.JSONObject vod){
         if(sourceTask!=null)sourceTask.cancel(true);
         getIntent().putExtra("key",site.key).putExtra("id",vod.optString("vod_id")).putExtra("name",vod.optString("vod_name")).putExtra("pic",vod.optString("vod_pic"));

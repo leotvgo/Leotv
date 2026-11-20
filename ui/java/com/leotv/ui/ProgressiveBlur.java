@@ -2,7 +2,7 @@ package com.leotv.ui;
 
 /** Reusable, platform-independent pixels for a continuously growing chrome blur. */
 final class ProgressiveBlur {
-    private final int[][] levels = new int[3][];
+    private final int[][] levels = new int[5][];
     private int[] scratch, result;
     private int capacity;
 
@@ -25,7 +25,7 @@ final class ProgressiveBlur {
         }
         for (int i = 0; i < levels.length; i++) {
             System.arraycopy(sharp, 0, levels[i], 0, size);
-            int r = Math.max(1, Math.round(radius * (i + 1) / 3f));
+            int r = Math.max(1, Math.round(radius * (i + 1) / (float) levels.length));
             // Two separable box passes approximate a Gaussian without RenderScript
             // or an Android 12 dependency. Work and storage are bounded by the band.
             for (int pass = 0; pass < 2; pass++) {
@@ -34,9 +34,9 @@ final class ProgressiveBlur {
             }
         }
         for (int y = 0; y < height; y++) {
-            float amount = progress(sampleTop + (y + .5f) / scale, start, end, upper);
-            float step = amount * 3;
-            int lower = Math.min(2, (int) step);
+            float amount = (float) Math.sqrt(progress(sampleTop + (y + .5f) / scale, start, end, upper));
+            float step = amount * levels.length;
+            int lower = Math.min(levels.length - 1, (int) step);
             float fraction = step - lower;
             int[] from = lower == 0 ? sharp : levels[lower - 1];
             int[] to = levels[lower];

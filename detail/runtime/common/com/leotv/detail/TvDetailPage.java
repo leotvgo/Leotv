@@ -50,21 +50,27 @@ final class TvDetailPage implements DetailPage {
     String selectedFlag="";
     int surfaceColour=DetailHero.DEFAULT_COLOR, theme=-1, themeWidth, themeHeight;
     boolean mounted=true, reversed;
+    boolean metadataResolved, artworkRevealed;
+    private final android.graphics.drawable.Drawable loadingBackdrop;
     private final Window.Callback originalCallback;
     private final Window.Callback callback;
     private final ViewTreeObserver.OnPreDrawListener preDraw=this::beforeDraw;
+    private final android.content.SharedPreferences.OnSharedPreferenceChangeListener themeChanges;
 
     TvDetailPage(Activity activity,Actions actions) {
         this.activity=activity;this.actions=actions;
         edgeToEdge(activity);
         content=(ViewGroup)activity.findViewById(android.R.id.content);
         content.setFitsSystemWindows(false);
+        loadingBackdrop = hostBackdrop(activity);
         scroll=new TvDetailScroll(activity);scroll.setTag("leotv_jar_detail_page");scroll.setFillViewport(true);
         scroll.setClipChildren(false);scroll.setVerticalScrollBarEnabled(false);scroll.setFocusable(false);
         page=column();page.setClipChildren(false);scroll.addView(page,new ScrollView.LayoutParams(-1,-2));
-        scroll.setBackgroundColor(DetailHero.FLOOR);content.addView(scroll,new ViewGroup.LayoutParams(-1,-1));
+        if (loadingBackdrop != null) scroll.setBackground(loadingBackdrop); else scroll.setBackgroundColor(DetailHero.FLOOR);
+        content.addView(scroll,new ViewGroup.LayoutParams(-1,-1));
         heroFrame=new FrameLayout(activity);heroFrame.setClipChildren(false);
-        hero=new DetailHero(activity,this::surfaceColour);heroFrame.addView(hero,new FrameLayout.LayoutParams(-1,-1));
+        hero=new DetailHero(activity,this::surfaceColour);hero.setAlpha(loadingBackdrop == null ? 1f : 0f);
+        heroFrame.addView(hero,new FrameLayout.LayoutParams(-1,-1));
         surface=mobile?null:new DetailSurface(activity);
         if(surface!=null)heroFrame.addView(surface,new FrameLayout.LayoutParams(-1,dp(360)));
         int height=content.getHeight()>0?content.getHeight():activity.getResources().getDisplayMetrics().heightPixels;
@@ -159,7 +165,39 @@ final class TvDetailPage implements DetailPage {
             try{return method.invoke(originalCallback,args);}catch(java.lang.reflect.InvocationTargetException failure){throw failure.getCause();}
         });
         activity.getWindow().setCallback(callback);content.getViewTreeObserver().addOnPreDrawListener(preDraw);
+        themeChanges = (prefs, key) -> {
+            if (!"detail_theme".equals(key)) return;
+            activity.runOnUiThread(() -> {
+                if (!mounted) return;
+                theme = -1; content.requestLayout(); content.invalidate();
+                ThemeLayout.apply(this);
+            });
+        };
+        MetadataSettings.preferences(activity).registerOnSharedPreferenceChangeListener(themeChanges);
         ThemeLayout.apply(this);if(!mobile)navigation.start();
+        loadingState();
+    }
+
+    private static android.graphics.drawable.Drawable hostBackdrop(Activity activity) {
+        try {
+            Object value = Class.forName("com.leotv.ui.GlobalChrome", true, activity.getClassLoader())
+                    .getMethod("loadingBackground", android.content.Context.class).invoke(null, activity);
+            if (value instanceof android.graphics.drawable.Drawable) return (android.graphics.drawable.Drawable) value;
+        } catch (ReflectiveOperationException unavailable) { }
+        android.graphics.drawable.Drawable drawable = activity.getWindow().getDecorView().getBackground();
+        return drawable == null || drawable.getConstantState() == null ? null : drawable.getConstantState().newDrawable(activity.getResources()).mutate();
+    }
+
+    private void loadingState() {
+        if (loadingBackdrop == null || artworkRevealed) return;
+        if (metadataResolved && hero.hasArtwork()) {
+            artworkRevealed = true; hero.setAlpha(1f);
+            if (surface != null) surface.setVisibility(DetailTheme.library(activity, mobile) ? View.GONE : View.VISIBLE);
+            scroll.setBackgroundColor(DetailTheme.library(activity, mobile) ? 0xff06111b : DetailHero.FLOOR);
+            theme = -1; ThemeLayout.apply(this); surfaceColour(surfaceColour); return;
+        }
+        hero.setAlpha(0f); if (surface != null) surface.setVisibility(View.GONE);
+        scroll.setBackground(loadingBackdrop); info.setBackgroundColor(Color.TRANSPARENT); controls.setBackgroundColor(Color.TRANSPARENT);
     }
 
     private static void edgeToEdge(Activity activity) {
@@ -219,7 +257,7 @@ final class TvDetailPage implements DetailPage {
         else playButton.idle(preferred==null?"暂无可播放剧集":"播放");
     }
     void suspend(){hero.setActive(false);if(mobileSources!=null)mobileSources.dismiss();sitePicker.dismiss();if(personPopup!=null)personPopup.close();personPopup=null;if(matchPopup!=null)matchPopup.dismiss();matchPopup=null;}
-    private boolean beforeDraw(){if(!mounted)return true;ThemeLayout.apply(this);libraryLayout.sync();applyTitleArt();return true;}
+    private boolean beforeDraw(){if(!mounted)return true;ThemeLayout.apply(this);libraryLayout.sync();applyTitleArt();loadingState();return true;}
     private boolean key(KeyEvent event){
         if(event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP){if(sitePicker.showing())sitePicker.dismiss();else if(personPopup!=null&&personPopup.showing())personPopup.handleBack();else activity.finish();}return true;}
         if(!mobile&&sitePicker.showing()&&sitePicker.moveFocus(event.getKeyCode()))return true;
@@ -230,7 +268,8 @@ final class TvDetailPage implements DetailPage {
         return false;
     }
     @Override public void render(MobileDetailMetadata.Result value){
-        metadata=value;if(value==null){hero.finishLoading();actorFallback.setText("暂无演员资料");return;}
+        metadata=value;metadataResolved=true;
+        if(value==null){hero.finishLoading();actorFallback.setText("暂无演员资料");loadingState();return;}
         stills.render(value.stills.isEmpty()?value.backdropPaths:value.stills);collection.render(value.collectionParts);
         recommendations.render(value.recommendations);reviews.render(value.reviews);
         tagline.setText(value.tagline);tagline.setVisibility(DetailTheme.library(activity,mobile)||value.tagline.isEmpty()?View.GONE:View.VISIBLE);
@@ -257,6 +296,7 @@ final class TvDetailPage implements DetailPage {
         recommendations.refresh(images);collection.refresh(images);stills.refresh(images,proxy);images.end();
     }
     void surfaceColour(int colour){
+        if (loadingBackdrop != null && !artworkRevealed) { surfaceColour = colour; content.invalidate(); return; }
         surfaceColour=colour;if(DetailTheme.library(activity,mobile)){controls.setBackgroundColor(Color.TRANSPARENT);return;}
         int tint=DetailHero.surface(colour);controls.setBackground(mobile?new android.graphics.drawable.GradientDrawable(android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM,new int[]{tint,DetailHero.FLOOR}):null);
         if(surface!=null)surface.colour(colour);if(mobileSources!=null)mobileSources.surfaceColour(colour);sitePicker.colour(tint);
@@ -284,6 +324,7 @@ final class TvDetailPage implements DetailPage {
     @Override public void fallback(){}
     @Override public void trimMemory(){if(images!=null)images.trimMemory(owns()&&scroll.isShown());}
     @Override public void close(){if(!mounted)return;mounted=false;suspend();siteSearch.close();sitePicker.close();cards.clear();stills.close();recommendations.detach();collection.detach();
+        MetadataSettings.preferences(activity).unregisterOnSharedPreferenceChangeListener(themeChanges);
         if(images!=null)images.close();hero.close();titleArt.close();scroll.stopAnimation();content.getViewTreeObserver().removeOnPreDrawListener(preDraw);
         if(activity.getWindow().getCallback()==callback)activity.getWindow().setCallback(originalCallback);if(scroll.getParent()==content)content.removeView(scroll);}
     private void message(String value){Toast.makeText(activity,value,Toast.LENGTH_SHORT).show();}

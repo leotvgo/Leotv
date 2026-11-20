@@ -78,7 +78,7 @@ public final class Personalization {
             TextView content = new TextView(activity); content.setTag("leotv_preference_value");
             fallback.addView(heading, new LinearLayout.LayoutParams(0, -2, 1)); fallback.addView(content); row = fallback;
         }
-        row.setTag(title); row.setFocusable(true); row.setFocusableInTouchMode(true); row.setClickable(true);
+        row.setTag(title); row.setFocusable(!Device.MOBILE); row.setFocusableInTouchMode(!Device.MOBILE); row.setClickable(true);
         row.setOnClickListener(view -> action.run());
         ViewGroup.LayoutParams original = template == null ? null : template.getLayoutParams();
         LinearLayout.LayoutParams params = original instanceof LinearLayout.LayoutParams

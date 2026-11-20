@@ -69,6 +69,7 @@ class DetailHero extends View {
         setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
     }
     void presentation(boolean portrait,int style) { this.portrait=portrait;this.presentation=style;invalidate(); }
+    boolean hasArtwork() { return bitmap != null && !bitmap.isRecycled(); }
     /** Scales the carousel's own bottom scrim; the artwork's last edge stays the page colour either way. */
     void tailWeight(float value) { tailWeight = Math.max(0f, Math.min(1f, value)); invalidate(); }
     /** How many slides this carousel keeps; the detail page wants five, the home wants its whole pool. */

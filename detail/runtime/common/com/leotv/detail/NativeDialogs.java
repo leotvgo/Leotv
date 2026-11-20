@@ -32,6 +32,16 @@ final class NativeDialogs {
     static void choose(Activity activity,String title,String[] values,int current,Choice listener) {
         try {
             Object builder=builder(activity);Context context=context(builder);
+            if (Device.MOBILE) {
+                builder.getClass().getMethod("setTitle", CharSequence.class).invoke(builder, title);
+                builder.getClass().getMethod("f", CharSequence[].class, int.class, DialogInterface.OnClickListener.class)
+                        .invoke(builder, (Object) values, current, (DialogInterface.OnClickListener) (dialog, index) -> {
+                            listener.selected(index); dialog.dismiss();
+                        });
+                builder.getClass().getMethod("setNegativeButton", int.class, DialogInterface.OnClickListener.class)
+                        .invoke(builder, android.R.string.cancel, null);
+                ((Dialog) builder.getClass().getMethod("create").invoke(builder)).show(); return;
+            }
             ListView list=new ListView(context);list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
             int row=context.getResources().getIdentifier("select_dialog_singlechoice_material","layout",activity.getPackageName());
             list.setAdapter(new ArrayAdapter<String>(context,row==0?android.R.layout.simple_list_item_single_choice:row,values));

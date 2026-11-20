@@ -11,6 +11,7 @@ import java.util.WeakHashMap;
 public final class Playback {
     private static final WeakHashMap<Activity, String> oriented = new WeakHashMap<>();
     private static final WeakHashMap<Object, WeakReference<Activity>> owners = new WeakHashMap<>();
+    private static final WeakHashMap<Activity, PlayerTitleArt> titles = new WeakHashMap<>();
     private Playback() {}
     public static void initialize(Activity activity) {
         if (!NativeRouting.isFullscreenPlayer(activity)) return;
@@ -25,6 +26,26 @@ public final class Playback {
         } catch (ReflectiveOperationException failure) {
             throw new IllegalStateException("全屏播放器初始化失败", failure);
         }
+        titleArtwork(activity);
+    }
+    private static void titleArtwork(Activity activity) {
+        List<String> logos = activity.getIntent().getStringArrayListExtra(NativeRouting.TITLE_LOGOS);
+        if (logos == null || logos.isEmpty() || titles.containsKey(activity)) return;
+        int id = activity.getResources().getIdentifier("control", "id", activity.getPackageName());
+        android.view.View bar = id == 0 ? null : activity.findViewById(id);
+        if (bar == null) return;
+        int videoId = activity.getResources().getIdentifier("video", "id", activity.getPackageName());
+        android.view.View video = videoId == 0 ? null : activity.findViewById(videoId);
+        android.view.ViewGroup frame = video instanceof android.widget.FrameLayout ? (android.view.ViewGroup) video
+                : bar.getParent() instanceof android.widget.FrameLayout ? (android.view.ViewGroup) bar.getParent() : null;
+        if (frame == null) return;
+        PlayerTitleArt title = new PlayerTitleArt(activity, frame, Device.MOBILE);
+        android.view.View anchor = null;
+        for (String name : new String[]{Device.MOBILE ? "episodes" : "loop", "seek", "progress"}) {
+            int target = activity.getResources().getIdentifier(name, "id", activity.getPackageName());
+            if (target != 0) { anchor = bar.findViewById(target); if (anchor != null) break; }
+        }
+        title.anchor(anchor); title.load(logos, BackdropSettings.read(activity).proxy); titles.put(activity, title);
     }
     public static boolean leave(Activity activity) {
         if (!NativeRouting.isFullscreenPlayer(activity)) return false;
@@ -105,6 +126,7 @@ public final class Playback {
             oriented.put(activity, media);
     }
     public static void release(Activity activity) {
+        PlayerTitleArt title = titles.remove(activity); if (title != null) title.close();
         oriented.remove(activity);
         synchronized (owners) {
             Iterator<WeakReference<Activity>> values = owners.values().iterator();
