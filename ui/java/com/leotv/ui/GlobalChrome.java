@@ -705,6 +705,7 @@ public final class GlobalChrome {
             }
             if (pageArtworkRenderer != null && artworkY + pageArtwork.getHeight() > 0) {
                 int save = canvas.save(); canvas.translate(artworkX, artworkY - artworkExtension);
+                canvas.clipRect(0, 0, pageArtwork.getWidth(), pageArtwork.getHeight() + artworkExtension);
                 pageArtworkRenderer.draw(canvas); canvas.restoreToCount(save);
             }
         }

@@ -8,10 +8,11 @@
   "device_validation_of_this_version": false,
   "changes": [
     "ordinary View tag Map exposes current artwork Drawable without custom resource IDs",
-    "same live page backdrop selection and crop as 5.1.16"
+    "same live page backdrop selection and crop as 5.1.16",
+    "clip the live artwork frame to its current page bounds during horizontal category transitions"
   ],
   "source_sha256": {
-    "ui/java/com/leotv/ui/GlobalChrome.java": "43c4328e2edf456bd22f8738f5120b7a9c855f54decb4aba5666390ab9d0acb6",
+    "ui/java/com/leotv/ui/GlobalChrome.java": "818a701a3d99b0a9fc36d54cad294d0802e1ba64de0b3c7b232772fe783bc987",
     "ui/java/com/leotv/ui/NativeViewport.java": "06e0913ef295ca4006c0cad33d91a39ea2b82f88179ede0e28d3f81ad47a4f94",
     "ui/java/com/leotv/ui/ProgressiveBlur.java": "863b6900c55961562fffcea64edcf20f8475324e8656d0d9e35a21f54ec9b251",
     "detail/runtime/common/com/leotv/detail/BackdropHttp.java": "8ddce670140aef391caecb554d4396debbf4eb9220dabab3b97e6496c0377e28",
