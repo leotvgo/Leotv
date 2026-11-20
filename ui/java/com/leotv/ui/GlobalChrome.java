@@ -664,7 +664,8 @@ public final class GlobalChrome {
 
         private View taggedBackdrop(View view, String tag) {
             if (!shown(view) || view == portal) return null;
-            if (tag.equals(view.getTag())) return view;
+            Object value = view.getTag();
+            if (tag.equals(value) || value instanceof Map && ((Map<?, ?>) value).containsKey(tag)) return view;
             if (view instanceof ViewGroup) for (int i = ((ViewGroup) view).getChildCount() - 1; i >= 0; i--) {
                 View found = taggedBackdrop(((ViewGroup) view).getChildAt(i), tag); if (found != null) return found;
             }
@@ -680,7 +681,8 @@ public final class GlobalChrome {
         private void updatePageBackdrop() {
             pageBackdrop = taggedBackdrop(visiblePage, "leotv_page_backdrop");
             View artwork = taggedBackdrop(visiblePage, "leotv_page_artwork");
-            Object renderer = artwork == null ? null : artwork.getTag(android.R.id.background);
+            Object tag = artwork == null ? null : artwork.getTag();
+            Object renderer = tag instanceof Map ? ((Map<?, ?>) tag).get("leotv_page_artwork") : null;
             if (artwork != pageArtwork || renderer != pageArtworkRenderer) {
                 releasePageArtwork();
                 if (renderer instanceof Drawable) { pageArtwork = artwork; pageArtworkRenderer = (Drawable) renderer; }

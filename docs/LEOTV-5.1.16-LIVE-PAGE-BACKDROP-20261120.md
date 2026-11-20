@@ -1,5 +1,7 @@
 # Leotv 5.1.16 当前页面的顶部淡出背景
 
+此版是背景接口的中间 APK。V6 专项发现系统资源 ID 不允许作为自定义 keyed tag，相关核心候选未发布；最终核心采用 Map 普通标签协议，须配套 5.1.17，见 [接口修正记录](LEOTV-5.1.17-LIVE-BACKDROP-CONTRACT-20261120.md)。
+
 用户反馈使用 JAR 新主页时，最上方淡出出现宿主蓝色壁纸细缝，要求自动跟随当前页面背景。本轮与 V6 `v6.2026.11.20.1` 核心适配一起交付，JAR 在 Leotv 中停用自己的上下栏处理。
 
 - JAR 新主页将实际背景 View 标记为 `leotv_page_backdrop`，轮播 View 标记为 `leotv_page_artwork`，在 `android.R.id.background` keyed tag 提供平台 Drawable。仅通过 View/Drawable 公共接口通信，不按加固核心混淆后的类名反射。
