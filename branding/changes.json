@@ -37,6 +37,8 @@
     "java_source": "java/tv/com/leotv/branding/LogoLoader.java"
   },
   "mobile": {
+    "home_back_file": "smali/com/fongmi/android/tv/ui/activity/HomeActivity.smali",
+    "home_back_method": "q()V",
     "literal_edits": [
       {"file": "smali/S3/u.smali", "old": "5.1.6", "new": "@version_name"},
       {"file": "smali/S3/u.smali", "old": "@flavor", "new": "@app_name"},

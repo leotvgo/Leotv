@@ -1,0 +1,31 @@
+# Leotv 5.1.22 原生底栏与全屏播放修复
+
+用户在5.1.21手机端发现追更页面的四个按钮重新排布，点击追更、设置、直播会出现底栏长条背景；随后报告点击播放无法停留在播放器。接续中断任务时，按用户要求将这两组修改合并为5.1.22 / 532，再推送GitHub编译。
+
+## 手机追更与底栏
+
+追更日历现在挂载到HomeActivity的原RelativeLayout中，布局位于现有导航之上。原导航View的实例、父级、尺寸、窗口避让和图标主题继续使用；不启动新的手机日历Activity，不创建另一套BottomNavigationView。日历内容显示时临时隐藏原FragmentContainerView，切换原按钮或返回时恢复它。日历背景透明，直接露出主页当前壁纸/JAR共享背景。
+
+导航透明由独立的pre-draw观察者维持，覆盖主页切到设置、追更和打开原生直播Activity时的过渡帧；同时保持透明背景着色、移除导航自身阴影和会恢复阴影的状态动画，清除其父级静态底色。各菜单项原有的选中反馈继续由原控件绘制。
+
+原三个菜单项仍交给原生选项回调；补入追更菜单后，重新应用原HomeActivity.N导航初始化，保留直播长按入口。手机HomeActivity.q返回入口增加明确的日历判断，关闭日期选择器或恢复上一个原生页后，才进入原返回逻辑。日历离开/恢复时停用/恢复监听，进入详情后返回继续沿用该日历实例；Activity重建时恢复追更入口状态。TV继续保留原来的横屏日历与遥控入口。
+
+## 播放排查与修复
+
+ADB确认手机安装的是5.1.21 / 531。用户从CollectActivity进入详情后点击播放，系统确实创建VideoActivity；多次记录显示约129—172毫秒后VideoActivity以app-request主动finish，随后恢复原DetailActivity。没有把历史设置页崩溃作为这次播放故障的证据。相关安全摘要保留在evidence/leotv-5.1.22-playback-adb.json。
+
+对照原smali，手机详情结果为空时进入VideoActivity.I0；该方法遇到入口collect标记或错误消息会直接finish。旧NativeRouting.play复制整份详情入口Intent，包含资源列表的预览/收集状态。旧缓存交接又把已经处理的原生Result序列化后重新调用Result.fromJson；原解析器遇到异常会返回Result.empty，调用方没有区分这个失败结果与有效缓存。这两处共同暴露了立即退回详情的错误路径；设备端未额外注入代码读取Intent/缓存对象，因此不把静态路径分析写成完整运行栈证明。
+
+播放现在创建独立的VideoActivity请求，只携带站点、资源、选中线路/剧集、续播名称、全屏标记以及确实需要的下载和标题艺术字参数；有URI授予权限时保留对应URI/ClipData。资源列表的collect状态、旧重定向和元数据页面状态不再带入播放器。原播放器仍负责初始化、数据库历史、解析、引擎和播放。
+
+缓存直接交接原详情任务已经初始化的Result/Vod/Flag/Episode对象，不再进行整份Result的JSON往返。保留站点/资源/config校验、15秒时限和一次性消费；缓存未匹配时继续运行原详情任务。自动找源同步保留该原生结果。选集仍由原适配器和播放方法执行，返回详情缓存与数据库schema不变。
+
+同时按用户要求移除播放前同步截取整个详情画面、ActivityOptions缩略图动画，以及把详情截图放进播放器背景的过渡逻辑。点击直接启动全屏播放器；过渡本身没有被认定为此次主动退出的唯一原因。
+
+## 变更与验证边界
+
+声明变化为GlobalChrome、FollowCalendarPage、FollowingActivity、NativeRouting、Playback、SourceGateway、DetailSiteSearch，以及版本Manifest/string；手机两个ABI新增HomeActivity.q的原生返回桥，其原源码SHA256固定在branding/source-lock.json。编译产物类继续限定在已有覆盖层范围；check_native_details增加原导航选中API与HomeActivity.N/q契约。原bytecode-project源码不直接修改。
+
+手机/TV源码已通过API23 Java8编译、D8和允许类导入审计，各生成402个覆盖层类；四变体接口审计、四个原APK输入SHA256和手机两个ABI的固定原生返回桥应用检查通过。新增两项定向检查覆盖独立播放请求、原生选集/下载，以及缓存播放列表保留，手机和TV均在SDK23环境通过（各2项）；本轮继续跳过整套回归和模拟器。GitHub继续核对四份原样基准、全部代码语义和保护ZIP资产，再构建并用既有APK专用固定证书签名。
+
+编译/接口审计不等同于签名后实际播放、背景和遥控验收，新版APK仍需真机复测。旧自打包宿主签名的后续JAR补支持事项已追加到OLD-REPACKED-APK-ADB-DIAGNOSIS-20261120.md，本轮不修改或发布coos V6核心。

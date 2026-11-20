@@ -1,0 +1,29 @@
+{
+  "observed_package": "com.leotv.app",
+  "observed_version_name": "5.1.21",
+  "observed_version_code": 531,
+  "observed_client": "mobile",
+  "user_performed_play_click": true,
+  "origin_activity_observed": "com.fongmi.android.tv.ui.activity.CollectActivity",
+  "play_activity": "com.fongmi.android.tv.ui.activity.VideoActivity",
+  "returned_activity": "com.leotv.detail.DetailActivity",
+  "representative_event": {
+    "created_at_device_time": "2026-11-20 21:45:14.901",
+    "finished_at_device_time": "2026-11-20 21:45:15.046",
+    "detail_resumed_at_device_time": "2026-11-20 21:45:15.068",
+    "elapsed_before_finish_ms": 145,
+    "finish_reason": "app-request"
+  },
+  "pinned_native_failure_path": "O3/t.e: empty Result list -> VideoActivity.I0: collect preview or error message -> Activity.finish",
+  "intent_and_cached_result_read_from_device": false,
+  "old_transition_confirmed_as_sole_root_cause": false,
+  "changes": [
+    "Create an independent fullscreen request without inherited collect/redirect/metadata page state",
+    "Hand the initialized native Result to the player without reparsing serialized JSON",
+    "Remove detail bitmap capture and thumbnail launch animation"
+  ],
+  "raw_user_configuration_copied": false,
+  "device_log_buffer_cleared": false,
+  "fixed_apk_device_playback_verified": false,
+  "core_changed": false
+}

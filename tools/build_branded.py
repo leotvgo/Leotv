@@ -89,6 +89,8 @@ def apply_source_overlay(project, profile, values, flavor, lock, spec):
         edits.setdefault(edit['file'], []).append(edit)
     edits.setdefault(profile['logo_file'], [])
     edits.setdefault(spec['ui_application_file'], [])
+    if 'home_back_file' in profile:
+        edits.setdefault(profile['home_back_file'], [])
     changed_classes, changed_sources = set(), {}
     for path, replacements in edits.items():
         source = project / path
@@ -114,6 +116,26 @@ def apply_source_overlay(project, profile, values, flavor, lock, spec):
             if method.count(trigger) != 1:
                 raise ValueError('Expected one application lifecycle registration.')
             method = method.replace(trigger, trigger + '\n\n    invoke-static {p0}, Lcom/leotv/ui/GlobalChrome;->install(Landroid/app/Application;)V')
+            text = text[:span.start()] + method + text[span.end():]
+        if path == profile.get('home_back_file'):
+            span = method_span(text, profile['home_back_method'])
+            method = span.group()
+            position = re.search(r'(?m)^    \.locals (\d+)', method)
+            if not position or int(position.group(1)) < 1 or ':leotv_home_back' in method:
+                raise ValueError('Expected the pinned mobile home back scratch register.')
+            call = '''
+
+    invoke-static {p0}, Lcom/leotv/ui/GlobalChrome;->backFollowing(Landroid/app/Activity;)Z
+
+    move-result v0
+
+    if-eqz v0, :leotv_home_back
+
+    return-void
+
+    :leotv_home_back
+'''
+            method = method[:position.end()] + call + method[position.end():]
             text = text[:span.start()] + method + text[span.end():]
         if path == profile['logo_file']:
             span = method_span(text, profile['logo_method'])

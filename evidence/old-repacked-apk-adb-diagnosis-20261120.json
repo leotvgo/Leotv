@@ -1,0 +1,30 @@
+{
+  "apk_sha256": "755fa5aa339068ee29ca570606c5f8a17f25e6d4fe700b85079d15b7841a2eb4",
+  "package": "package: name='com.fongmi.android.tv' versionCode='516' versionName='5.1.6' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'",
+  "native-code": "native-code: 'arm64-v8a'",
+  "certificate_sha256": "b2d45d0d0ce3dc96865ed7136aab07cf171ed1224a7946d010456ae39e835a1c",
+  "signer_accepted_by_current_core": false,
+  "leotv_detail_bridge_marker_present": false,
+  "dex_byte_identical_v7a": false,
+  "dex_byte_identical_v8a": true,
+  "device_core_release_observed": null,
+  "basis": "Current V6 signature admission rule rejects the captured installed signer; DEX bytes match ordinary mobile-v8a.",
+  "current_core_signer_rule_sha256": "250fc67ce38db731db804a0560bc5031aef992bd3f9bfb9f20a779015794237c",
+  "core_changed": false,
+  "preserved_local_apk": "evidence/local-input/old-repacked-mobile-v8a-20261120.apk",
+  "legacy_replay": {
+    "archived_core": "v6.2026.11.14.7",
+    "host_source_sha256": "6de299b382c1bd6be4f2d32a1a4ffde4d91c0dc29b45b51ba3b85586b333a7c7",
+    "bridge_source_sha256": "629814a864de9c0232b8c49bfd4e14f5ab239d586291df791548389f1c7c48e0",
+    "exact_archived_methods_executed": true,
+    "apk_version_code": 516,
+    "apk_version_name": "5.1.6",
+    "classes.dex": {
+      "size": 9514388,
+      "crc32": "0xbb9c55c4"
+    },
+    "resolved_profile": "MOBILE"
+  },
+  "regression_introduced_in": "v6.2026.11.18.2",
+  "regression_reason": "Migration from archived DEX fingerprint admission to certificate admission omitted old repack signer b2d45d0d…835a1c; later Leotv detail delegation is not the transition that removed support."
+}

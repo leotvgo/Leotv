@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowInsets;
@@ -14,28 +13,15 @@ import com.leotv.ui.GlobalChrome;
 
 public final class FollowingActivity extends Activity {
     private FollowCalendarPage page;
-    private View navigation;
-    private int navigationHeight;
-    private boolean resumed;
-    private final android.content.SharedPreferences.OnSharedPreferenceChangeListener changes = (prefs, key) -> {
-        if ("entries".equals(key) && page != null) runOnUiThread(page::reload);
-    };
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
-        if (!Device.MOBILE) setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+        if (Device.MOBILE) { GlobalChrome.openFollowing(this); finish(); return; }
+        setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         edgeToEdge();
-        MetadataSettings.initialize(this); MetadataMatchStore.install(this); SiteFeed.initialize(this); FollowStore.install(this);
+        initialize(this);
         FrameLayout root = new FrameLayout(this); root.setFitsSystemWindows(false);
-        page = new FollowCalendarPage(this, Device.MOBILE, this::finish, entry -> startActivity(new Intent(this, DetailActivity.class)
-                .putExtra("key", entry.site).putExtra("id", entry.id).putExtra("name", entry.title).putExtra("pic", entry.image())));
+        page = calendar(this, false, this::finish);
         root.addView(page, new FrameLayout.LayoutParams(-1, -1));
-        if (Device.MOBILE) {
-            navigation = GlobalChrome.calendarNavigation(this);
-            if (navigation != null) {
-                navigationHeight = navigation.getMinimumHeight();
-                root.addView(navigation, new FrameLayout.LayoutParams(-1, navigationHeight, Gravity.BOTTOM));
-            }
-        }
         root.setOnApplyWindowInsetsListener((view, insets) -> {
             applyInsets(insets); return insets.consumeSystemWindowInsets();
         });
@@ -47,17 +33,23 @@ public final class FollowingActivity extends Activity {
             getWindow().getDecorView().setSystemUiVisibility(flags);
         }
     }
+    /** Mounted above the original bottom navigation in the mobile HomeActivity. */
+    public static View homePage(Activity activity, Runnable close) {
+        initialize(activity);
+        FollowCalendarPage page = calendar(activity, true, close);
+        page.useHostBackdrop();
+        return page;
+    }
+    private static void initialize(Activity activity) {
+        MetadataSettings.initialize(activity); MetadataMatchStore.install(activity);
+        SiteFeed.initialize(activity); FollowStore.install(activity);
+    }
+    private static FollowCalendarPage calendar(Activity activity, boolean mobile, Runnable close) {
+        return new FollowCalendarPage(activity, mobile, close, entry -> activity.startActivity(new Intent(activity, DetailActivity.class)
+                .putExtra("key", entry.site).putExtra("id", entry.id).putExtra("name", entry.title).putExtra("pic", entry.image())));
+    }
     private void applyInsets(WindowInsets insets) {
-        int bottom = insets.getSystemWindowInsetBottom();
-        int reserved = bottom;
-        if (navigation != null) {
-            reserved += navigationHeight;
-            FrameLayout.LayoutParams layout = (FrameLayout.LayoutParams) navigation.getLayoutParams();
-            if (layout.height != reserved) { layout.height = reserved; navigation.setLayoutParams(layout); }
-            navigation.setPadding(navigation.getPaddingLeft(), navigation.getPaddingTop(), navigation.getPaddingRight(), bottom);
-            navigation.setBackgroundColor(Color.TRANSPARENT); navigation.setElevation(0);
-        }
-        page.viewportInsets(insets.getSystemWindowInsetTop(), reserved);
+        page.viewportInsets(insets.getSystemWindowInsetTop(), insets.getSystemWindowInsetBottom());
     }
     private void edgeToEdge() {
         Window window = getWindow();
@@ -73,12 +65,11 @@ public final class FollowingActivity extends Activity {
             catch (ReflectiveOperationException unavailable) { }
     }
     @Override public void onResume() {
-        super.onResume(); if (page != null && resumed) page.reload(); resumed = true;
-        getSharedPreferences("leo_following", 0).registerOnSharedPreferenceChangeListener(changes);
+        super.onResume(); if (page != null) page.resume();
     }
+    @Override public void onPause() { if (page != null) page.pause(); super.onPause(); }
     @Override public void onBackPressed() { if (page != null && page.closePicker()) return; super.onBackPressed(); }
     @Override public void onDestroy() {
-        getSharedPreferences("leo_following", 0).unregisterOnSharedPreferenceChangeListener(changes);
         if (page != null) page.close(); super.onDestroy();
     }
 }

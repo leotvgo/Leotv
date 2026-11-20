@@ -13,29 +13,28 @@ public final class Playback {
     private static final WeakHashMap<Object, WeakReference<Activity>> owners = new WeakHashMap<>();
     private static final WeakHashMap<Activity, PlayerTitleArt> titles = new WeakHashMap<>();
     private static WeakReference<android.content.Context> pendingContext=new WeakReference<>(null);
-    private static String pendingSite,pendingId,pendingJson;
+    private static String pendingSite,pendingId;
+    private static Object pendingResult;
     private static Integer pendingConfig;
     private static long pendingUntil;
     private Playback() {}
     static synchronized void prepareSource(android.content.Context context,SourceGateway.Detail detail){
-        pendingContext=new WeakReference<>(context.getApplicationContext());pendingSite=detail.site;pendingId=detail.id;pendingJson=detail.nativeJson;
+        pendingContext=new WeakReference<>(context.getApplicationContext());pendingSite=detail.site;pendingId=detail.id;pendingResult=detail.nativeResult;
         pendingConfig=SiteFeed.configId();pendingUntil=android.os.SystemClock.elapsedRealtime()+15000;
     }
     public static synchronized Object consumeNativeDetail(String site,String id){
         android.content.Context context=pendingContext.get();
-        if(context==null||pendingJson==null||android.os.SystemClock.elapsedRealtime()>pendingUntil||!site.equals(pendingSite)||!id.equals(pendingId)||!java.util.Objects.equals(pendingConfig,SiteFeed.configId()))return null;
-        String json=pendingJson;pendingJson=null;pendingContext.clear();
-        try{return context.getClassLoader().loadClass("com.fongmi.android.tv.bean.Result").getMethod("fromJson",String.class).invoke(null,json);}
-        catch(ReflectiveOperationException unavailable){return null;}
+        if(context==null||pendingResult==null)return null;
+        if(android.os.SystemClock.elapsedRealtime()>pendingUntil||!java.util.Objects.equals(pendingConfig,SiteFeed.configId())){
+            pendingResult=null;pendingContext.clear();return null;
+        }
+        if(!java.util.Objects.equals(site,pendingSite)||!java.util.Objects.equals(id,pendingId))return null;
+        // Keep the ordinary task's initialized Vod/Flag/Episode objects. A JSON round trip
+        // can silently turn a failed Result parse into Result.empty(), which the host exits on.
+        Object result=pendingResult;pendingResult=null;pendingContext.clear();return result;
     }
     public static void initialize(Activity activity) {
         if (!NativeRouting.isFullscreenPlayer(activity)) return;
-        android.graphics.Bitmap transition = NativeRouting.transitionArtwork();
-        int videoId = activity.getResources().getIdentifier("video", "id", activity.getPackageName());
-        android.view.View video = videoId == 0 ? null : activity.findViewById(videoId);
-        if (transition != null && !transition.isRecycled() && video != null)
-            video.setBackground(new android.graphics.drawable.BitmapDrawable(activity.getResources(), transition));
-        NativeRouting.clearTransition();
         try {
             boolean fullscreen = activity.getClass().getField(Device.MOBILE ? "d0" : "i0").getBoolean(activity);
             if (!fullscreen) activity.getClass().getMethod(Device.MOBILE ? "b0" : "Y").invoke(activity);
@@ -148,7 +147,6 @@ public final class Playback {
     }
     public static void release(Activity activity) {
         if(NativeRouting.isFullscreenPlayer(activity)&&!activity.isChangingConfigurations())DetailSessionCache.unpin();
-        NativeRouting.clearTransition();
         PlayerTitleArt title = titles.remove(activity); if (title != null) title.close();
         oriented.remove(activity);
         synchronized (owners) {

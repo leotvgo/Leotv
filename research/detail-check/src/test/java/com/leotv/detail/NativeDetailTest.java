@@ -61,11 +61,17 @@ public class NativeDetailTest {
 
     @Test public void playPreservesDownloadContextAndSelectsTheExplicitEpisode() {
         Activity activity = Robolectric.buildActivity(Activity.class, resource()).create().get();
+        activity.getIntent().putExtra("collect", true).putExtra("leotv.detail.redirected", true)
+                .putExtra("leotv.detail.metadata", new android.os.Bundle());
         NativeRouting.play(activity, "fictional-csp-line", "fictional-film", "示例影片", "", "线路乙",
                 "fictional:selected$opaque", "第七集");
         Intent next = Shadows.shadowOf(activity).getNextStartedActivity();
         assertEquals(VideoActivity.class.getName(), next.getComponent().getClassName());
         assertTrue(next.getBooleanExtra("download", false));
+        assertFalse(next.hasExtra("collect"));
+        assertFalse(next.hasExtra("leotv.detail.redirected"));
+        assertFalse(next.hasExtra("leotv.detail.metadata"));
+        assertTrue(next.getBooleanExtra(NativeRouting.PLAYER, false));
         assertEquals("第七集", next.getStringExtra("mark"));
         VideoActivity player = player(next); playlist(player);
         assertFalse(NativeRouting.redirect(player));
@@ -102,6 +108,23 @@ public class NativeDetailTest {
         assertEquals("虚构影片", detail.name);
         assertEquals("虚构线路", detail.episodes.get(0).flag);
         assertEquals("fictional:source$opaque", detail.episodes.get(0).url);
+    }
+
+    @Test public void cachedNativeDetailRetainsTheLoadedPlaylistWithoutReparsingIt() throws Exception {
+        Activity activity = Robolectric.buildActivity(Activity.class, resource()).create().get();
+        SiteFeed.initialize(activity);
+        SourceGateway.Detail detail = SourceGateway.load(activity, "fictional-csp-line", "fictional-film");
+        Playback.prepareSource(activity, detail);
+        assertNull(Playback.consumeNativeDetail("fictional-other-line", "fictional-film"));
+        Object cached = Playback.consumeNativeDetail("fictional-csp-line", "fictional-film");
+        assertNotNull(cached);
+        Object vod = cached.getClass().getMethod("getVod").invoke(cached);
+        JSONObject json = new JSONObject(new com.google.gson.Gson().toJson(vod));
+        List<SourceGateway.Episode> episodes = SourceGateway.episodes(json);
+        assertEquals(1, episodes.size());
+        assertEquals("虚构线路", episodes.get(0).flag);
+        assertEquals("fictional:source$opaque", episodes.get(0).url);
+        assertNull(Playback.consumeNativeDetail("fictional-csp-line", "fictional-film"));
     }
 
     @Test public void favoritesAndResumeUseTheOriginalConfigNamespaceAndModels() throws Exception {

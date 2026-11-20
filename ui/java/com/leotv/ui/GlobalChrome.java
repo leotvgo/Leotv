@@ -36,29 +36,29 @@ import java.util.Map;
 public final class GlobalChrome {
     private static java.lang.ref.WeakReference<Application> installed;
     private static Drawable hostBackdrop;
-    private static NavigationSnapshot navigationSnapshot;
-    private static int pendingHomeItem;
+    private static Lifecycle lifecycle;
+    private static final String FOLLOWING = "leotv.home.following";
 
-    /** Same native navigation widget, menu and tint as the host home. */
-    public static View calendarNavigation(Activity activity) {
-        NavigationSnapshot snapshot = navigationSnapshot;
-        if(snapshot==null)try{
-            Class<?> widget=activity.getClassLoader().loadClass("com.google.android.material.bottomnavigation.BottomNavigationView");
-            View navigation=(View)widget.getConstructor(android.content.Context.class,android.util.AttributeSet.class).newInstance(activity,null);
-            int resource=activity.getResources().getIdentifier("menu_nav","menu",activity.getPackageName());
-            android.view.Menu menu=(android.view.Menu)widget.getMethod("getMenu").invoke(navigation);
-            new android.view.MenuInflater(navigation.getContext()).inflate(resource,menu);
-            if(menu.size()==3)snapshot=new NavigationSnapshot(navigation,menu,View.generateViewId());
-        }catch(ReflectiveOperationException|RuntimeException unavailable){}
-        return snapshot == null ? null : snapshot.create(activity);
+    /** The calendar is a home page; the existing native navigation stays in its parent. */
+    public interface FollowingPage {
+        void resume();
+        void pause();
+        void close();
+        boolean closePicker();
+        void viewportInsets(int top, int bottom);
     }
 
-    private static void returnHome(Activity activity, int item) {
-        pendingHomeItem = item;
+    public static void openFollowing(Activity activity) {
         activity.startActivity(new android.content.Intent().setClassName(activity.getPackageName(),
                 "com.fongmi.android.tv.ui.activity.HomeActivity")
+                .putExtra(FOLLOWING, true)
                 .addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP | android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP));
-        activity.finish();
+    }
+
+    /** Called from the retained home back handler, including Android's gesture dispatcher. */
+    public static boolean backFollowing(Activity activity) {
+        Controller controller = lifecycle == null ? null : lifecycle.active.get(activity);
+        return controller != null && controller.following.back();
     }
 
     public static synchronized Drawable loadingBackground(android.content.Context context) {
@@ -70,7 +70,8 @@ public final class GlobalChrome {
 
     public static synchronized void install(Application app) {
         if (installed != null && installed.get() == app) return;
-        app.registerActivityLifecycleCallbacks(new Lifecycle());
+        lifecycle = new Lifecycle();
+        app.registerActivityLifecycleCallbacks(lifecycle);
         installed = new java.lang.ref.WeakReference<>(app);
     }
 
@@ -101,9 +102,15 @@ public final class GlobalChrome {
             Controller controller = active.get(activity);
             if (controller != null) controller.trim();
         }
-        @Override public void onActivityCreated(Activity activity, Bundle state) {}
+        @Override public void onActivityCreated(Activity activity, Bundle state) {
+            if (state != null && state.getBoolean(FOLLOWING, false) && activity.getIntent() != null)
+                activity.getIntent().putExtra(FOLLOWING, true);
+        }
         @Override public void onActivityStarted(Activity activity) {}
-        @Override public void onActivitySaveInstanceState(Activity activity, Bundle state) {}
+        @Override public void onActivitySaveInstanceState(Activity activity, Bundle state) {
+            Controller controller = active.get(activity);
+            if (controller != null) state.putBoolean(FOLLOWING, controller.following.calendar != null);
+        }
     }
 
     static final class Controller implements ViewTreeObserver.OnPreDrawListener,
@@ -237,6 +244,7 @@ public final class GlobalChrome {
             if (closed || running) return;
             clearSamples();
             running = dirty = discovery = true;
+            following.resumePage();
             ViewTreeObserver observer = decor.getViewTreeObserver();
             observer.addOnPreDrawListener(this); observer.addOnScrollChangedListener(this);
             observer.addOnGlobalLayoutListener(this);
@@ -246,8 +254,10 @@ public final class GlobalChrome {
         void pause() {
             if (!running) return;
             rememberBackdrop();
+            following.pausePage();
             following.hide();
             disableContent();
+            following.transparent();
             running = false;
             clearSamples();
             choreographer.removeFrameCallback(this);
@@ -933,56 +943,184 @@ public final class GlobalChrome {
         }
     }
 
-    private static final class FollowingNavigation {
+    private static final class FollowingNavigation implements ViewTreeObserver.OnPreDrawListener {
         final Controller owner;
         final int id=View.generateViewId();
         android.widget.ImageButton button;
         View nativeNavigation;
         Drawable originalBackground;
+        android.content.res.ColorStateList originalTint;
+        android.graphics.PorterDuff.Mode originalTintMode;
+        android.animation.StateListAnimator originalAnimator;
         float originalElevation;
         android.view.ViewOutlineProvider originalOutline;
         final Drawable clearBackground = new ColorDrawable(Color.TRANSPARENT);
+        final android.content.res.ColorStateList clearTint = android.content.res.ColorStateList.valueOf(Color.TRANSPARENT);
+        final Map<View, Background> parents = new IdentityHashMap<>();
+        View homePage, homeContainer;
+        FollowingPage calendar;
+        int previousItem, containerVisibility;
         java.lang.ref.WeakReference<View> previousFocus=new java.lang.ref.WeakReference<>(null);
-        Window.Callback installed;
+        Window.Callback installed, delegate;
         boolean closed,left;
-        FollowingNavigation(Controller owner){this.owner=owner;}
-        void open(){owner.rememberBackdrop();owner.activity.startActivity(new android.content.Intent().setClassName(owner.activity.getPackageName(),"com.leotv.detail.FollowingActivity"));hide();}
+        FollowingNavigation(Controller owner){
+            this.owner=owner;
+            if(owner.phone)owner.decor.getViewTreeObserver().addOnPreDrawListener(this);
+        }
+        void open(){
+            if(owner.phone){openHome();return;}
+            owner.rememberBackdrop();
+            owner.activity.startActivity(new android.content.Intent().setClassName(owner.activity.getPackageName(),"com.leotv.detail.FollowingActivity"));
+            hide();
+        }
+        @Override public boolean onPreDraw(){transparent();return true;}
         void transparent(){
-            if(!owner.phone)return;
+            if(closed||!owner.phone)return;
             View view=owner.find("navigation");if(view==null)return;
-            if(nativeNavigation!=view){nativeNavigation=view;originalBackground=view.getBackground();originalElevation=view.getElevation();originalOutline=view.getOutlineProvider();}
+            if(nativeNavigation!=view){
+                boolean reopen=calendar!=null;
+                if(reopen)dismissCalendar();
+                restoreNavigation();
+                nativeNavigation=view;originalBackground=view.getBackground();originalElevation=view.getElevation();originalOutline=view.getOutlineProvider();
+                originalTint=view.getBackgroundTintList();originalTintMode=view.getBackgroundTintMode();originalAnimator=view.getStateListAnimator();
+                if(reopen)owner.activity.getIntent().putExtra(FOLLOWING,true);
+            }
+            // A stateful tint must stay clear even if a native tab replaces its background.
+            if(view.getBackgroundTintList()!=clearTint)view.setBackgroundTintList(clearTint);
+            if(view.getBackgroundTintMode()!=android.graphics.PorterDuff.Mode.SRC_IN)view.setBackgroundTintMode(android.graphics.PorterDuff.Mode.SRC_IN);
             if(view.getBackground()!=clearBackground)view.setBackground(clearBackground);
-            view.setElevation(0);view.setOutlineProvider(null);
+            if(view.getElevation()!=0)view.setElevation(0);
+            if(view.getOutlineProvider()!=null)view.setOutlineProvider(null);
+            if(view.getStateListAnimator()!=null)view.setStateListAnimator(null);
+            for(View parent=view.getParent() instanceof View?(View)view.getParent():null;parent!=null&&parent!=owner.content;
+                    parent=parent.getParent() instanceof View?(View)parent.getParent():null){
+                Background state=parents.get(parent);
+                if(state==null){state=new Background(parent,new ColorDrawable(Color.TRANSPARENT),false);parents.put(parent,state);}
+                state.apply();
+            }
         }
         void update(){
             if(closed)return;
             if(owner.phone){
                 View navigation=owner.find("navigation");if(navigation==null)return;
                 try{
-                    android.view.Menu menu=(android.view.Menu)navigation.getClass().getMethod("getMenu").invoke(navigation);
-                    if(pendingHomeItem!=0&&menu.findItem(pendingHomeItem)!=null){int item=pendingHomeItem;pendingHomeItem=0;navigation.getClass().getMethod("setSelectedItemId",int.class).invoke(navigation,item);}
                     transparent();
-                    if(menu.findItem(id)!=null){if(navigationSnapshot==null||navigationSnapshot.source.get()!=navigation)navigationSnapshot=new NavigationSnapshot(navigation,menu,id);return;}
-                    if(menu.size()!=3)return;
-                    int[] ids=new int[3];CharSequence[] titles=new CharSequence[3];Drawable[] icons=new Drawable[3];boolean[] checked=new boolean[3];
-                    for(int i=0;i<3;i++){android.view.MenuItem item=menu.getItem(i);ids[i]=item.getItemId();titles[i]=item.getTitle();icons[i]=item.getIcon();checked[i]=item.isChecked();}
-                    menu.clear();
-                    for(int i=0;i<4;i++){
-                        if(i==1){menu.add(0,id,i,"追更").setIcon(new CalendarIcon(owner.activity)).setCheckable(true).setOnMenuItemClickListener(item->{open();return true;});}
-                        else{int old=i==0?0:i-1;menu.add(0,ids[old],i,titles[old]).setIcon(icons[old]).setCheckable(true).setChecked(checked[old]);}
+                    android.view.Menu menu=(android.view.Menu)navigation.getClass().getMethod("getMenu").invoke(navigation);
+                    if(menu.findItem(id)==null){
+                        if(menu.size()!=3)return;
+                        installMenu(navigation,menu);
                     }
-                    navigationSnapshot=new NavigationSnapshot(navigation,menu,id);
-                }catch(ReflectiveOperationException unavailable){}
+                    if(calendar==null&&owner.activity.getIntent().getBooleanExtra(FOLLOWING,false))openHome();
+                    if(calendar!=null){
+                        WindowInsets insets=owner.content.getRootWindowInsets();
+                        homePage.getLocationOnScreen(owner.at);
+                        calendar.viewportInsets(Math.max(0,(insets==null?0:insets.getSystemWindowInsetTop())-owner.at[1]),0);
+                    }
+                }catch(ReflectiveOperationException unavailable){android.util.Log.w("LeotvFollowing","Native navigation interface unavailable",unavailable);}
                 return;
             }
             Window window=owner.activity.getWindow();Window.Callback current=window.getCallback();
             if(current!=installed){
+                delegate=current;
                 installed=(Window.Callback)java.lang.reflect.Proxy.newProxyInstance(Window.Callback.class.getClassLoader(),new Class<?>[]{Window.Callback.class},(proxy,method,args)->{
                     if(method.getName().equals("dispatchKeyEvent")&&handle((android.view.KeyEvent)args[0]))return true;
                     try{return method.invoke(current,args);}catch(java.lang.reflect.InvocationTargetException error){throw error.getCause();}
                 });window.setCallback(installed);
             }
             if(!firstTab())hide();
+        }
+        void installMenu(View navigation,android.view.Menu menu) throws ReflectiveOperationException {
+            int[] ids=new int[3];CharSequence[] titles=new CharSequence[3];Drawable[] icons=new Drawable[3];
+            boolean[] checked=new boolean[3],visible=new boolean[3],enabled=new boolean[3];
+            for(int i=0;i<3;i++){
+                android.view.MenuItem item=menu.getItem(i);ids[i]=item.getItemId();titles[i]=item.getTitle();icons[i]=item.getIcon();
+                checked[i]=item.isChecked();visible[i]=item.isVisible();enabled[i]=item.isEnabled();
+            }
+            menu.clear();
+            for(int i=0;i<4;i++){
+                if(i==1){menu.add(0,id,i,"追更").setIcon(new CalendarIcon(owner.activity)).setCheckable(true)
+                        .setOnMenuItemClickListener(item->{openHome();return true;});}
+                else{
+                    int old=i==0?0:i-1;
+                    menu.add(0,ids[old],i,titles[old]).setIcon(icons[old]).setCheckable(true).setChecked(checked[old])
+                            .setVisible(visible[old]).setEnabled(enabled[old]).setOnMenuItemClickListener(item->{
+                                if(calendar!=null){
+                                    int prior=previousItem;dismissCalendar();
+                                    int live=owner.activity.getResources().getIdentifier("live","id",owner.activity.getPackageName());
+                                    // Live is a separate native Activity and does not select a home tab.
+                                    if(item.getItemId()==live)selectNative(prior);
+                                }
+                                transparent();return false;
+                            });
+                }
+            }
+            menu.setGroupCheckable(0,true,true);
+            int live=owner.activity.getResources().getIdentifier("live","id",owner.activity.getPackageName());
+            if(navigation.findViewById(live)!=null)owner.activity.getClass().getMethod("N").invoke(owner.activity);
+        }
+        void openHome(){
+            if(calendar!=null)return;
+            try{
+                transparent();
+                if(nativeNavigation==null||!(nativeNavigation.getParent() instanceof android.widget.RelativeLayout))
+                    throw new IllegalStateException("Native home navigation parent unavailable");
+                android.widget.RelativeLayout parent=(android.widget.RelativeLayout)nativeNavigation.getParent();
+                int containerId=owner.activity.getResources().getIdentifier("container","id",owner.activity.getPackageName());
+                View container=parent.findViewById(containerId);
+                if(container==null||container.getParent()!=parent)throw new IllegalStateException("Native home content unavailable");
+                android.view.Menu menu=(android.view.Menu)nativeNavigation.getClass().getMethod("getMenu").invoke(nativeNavigation);
+                previousItem=((Number)nativeNavigation.getClass().getMethod("getSelectedItemId").invoke(nativeNavigation)).intValue();
+                if(previousItem==id||menu.findItem(previousItem)==null)
+                    previousItem=owner.activity.getResources().getIdentifier("vod","id",owner.activity.getPackageName());
+                owner.rememberBackdrop();owner.disableContent();
+                View page=(View)owner.activity.getClassLoader().loadClass("com.leotv.detail.FollowingActivity")
+                        .getMethod("homePage",Activity.class,Runnable.class).invoke(null,owner.activity,(Runnable)this::returnToNative);
+                if(!(page instanceof FollowingPage))throw new IllegalStateException("Calendar page interface unavailable");
+                homePage=page;calendar=(FollowingPage)page;homeContainer=container;containerVisibility=container.getVisibility();
+                android.widget.RelativeLayout.LayoutParams layout=new android.widget.RelativeLayout.LayoutParams(-1,-1);
+                layout.addRule(android.widget.RelativeLayout.ABOVE,nativeNavigation.getId());
+                layout.addRule(android.widget.RelativeLayout.ALIGN_PARENT_TOP);
+                page.setTag("leotv_following_home");
+                parent.addView(page,parent.indexOfChild(nativeNavigation),layout);
+                container.setVisibility(View.INVISIBLE);
+                menu.findItem(id).setChecked(true);
+                owner.activity.getIntent().putExtra(FOLLOWING,true);
+                calendar.resume();transparent();
+            }catch(ReflectiveOperationException|RuntimeException unavailable){
+                dismissCalendar();
+                android.util.Log.w("LeotvFollowing","Calendar could not be mounted",unavailable);
+                android.widget.Toast.makeText(owner.activity,"追更页面暂时无法打开，请重试",android.widget.Toast.LENGTH_SHORT).show();
+            }
+        }
+        boolean back(){
+            if(calendar==null)return false;
+            if(!calendar.closePicker())returnToNative();
+            return true;
+        }
+        void returnToNative(){int prior=previousItem;dismissCalendar();selectNative(prior);transparent();}
+        void selectNative(int item){
+            if(nativeNavigation==null||item==0||item==id)return;
+            try{nativeNavigation.getClass().getMethod("setSelectedItemId",int.class).invoke(nativeNavigation,item);}
+            catch(ReflectiveOperationException unavailable){android.util.Log.w("LeotvFollowing","Native tab selection unavailable",unavailable);}
+        }
+        void resumePage(){if(calendar!=null)calendar.resume();}
+        void pausePage(){if(calendar!=null)calendar.pause();}
+        void dismissCalendar(){
+            FollowingPage page=calendar;View view=homePage;calendar=null;homePage=null;
+            if(page!=null)page.close();
+            if(view!=null&&view.getParent() instanceof ViewGroup)((ViewGroup)view.getParent()).removeView(view);
+            if(homeContainer!=null&&homeContainer.getVisibility()==View.INVISIBLE)homeContainer.setVisibility(containerVisibility);
+            homeContainer=null;
+            if(owner.activity.getIntent()!=null)owner.activity.getIntent().removeExtra(FOLLOWING);
+        }
+        void restoreNavigation(){
+            for(Background state:parents.values())state.discard();parents.clear();
+            if(nativeNavigation==null)return;
+            if(nativeNavigation.getBackground()==clearBackground)nativeNavigation.setBackground(originalBackground);
+            if(nativeNavigation.getBackgroundTintList()==clearTint){nativeNavigation.setBackgroundTintList(originalTint);nativeNavigation.setBackgroundTintMode(originalTintMode);}
+            if(nativeNavigation.getElevation()==0)nativeNavigation.setElevation(originalElevation);
+            if(nativeNavigation.getOutlineProvider()==null)nativeNavigation.setOutlineProvider(originalOutline);
+            if(nativeNavigation.getStateListAnimator()==null)nativeNavigation.setStateListAnimator(originalAnimator);
         }
         boolean firstTab(){View pager=owner.find("pager");return !closed&&owner.running&&owner.contentScreen(pager)&&owner.currentPage(pager)==0;}
         boolean handle(android.view.KeyEvent event){
@@ -1005,45 +1143,12 @@ public final class GlobalChrome {
             button.setVisibility(View.VISIBLE);button.requestFocus();
         }
         void hide(){if(button!=null)button.setVisibility(View.GONE);}
-        void close(){closed=true;hide();if(button!=null&&button.getParent()==owner.content)owner.content.removeView(button);if(nativeNavigation!=null){if(nativeNavigation.getBackground()==clearBackground)nativeNavigation.setBackground(originalBackground);nativeNavigation.setElevation(originalElevation);nativeNavigation.setOutlineProvider(originalOutline);}}
-    }
-
-    private static final class NavigationSnapshot {
-        final java.lang.ref.WeakReference<View> source;
-        final Class<?> widget;
-        final android.content.res.Resources.Theme theme;
-        final int[] ids;
-        final CharSequence[] titles;
-        final Drawable[] icons;
-        final int calendar, height;
-        final Map<String,Object> styles=new java.util.LinkedHashMap<>();
-        NavigationSnapshot(View navigation,android.view.Menu menu,int calendar){
-            source=new java.lang.ref.WeakReference<>(navigation);widget=navigation.getClass();this.calendar=calendar;
-            height=Math.max(navigation.getMinimumHeight(),Math.round(56*navigation.getResources().getDisplayMetrics().density));
-            theme=navigation.getResources().newTheme();theme.setTo(navigation.getContext().getTheme());
-            boolean insert=menu.size()==3;ids=new int[menu.size()+(insert?1:0)];titles=new CharSequence[ids.length];icons=new Drawable[ids.length];
-            for(int i=0;i<ids.length;i++){
-                if(insert&&i==1){ids[i]=calendar;titles[i]="追更";icons[i]=new CalendarIcon(navigation.getContext());continue;}
-                android.view.MenuItem item=menu.getItem(insert&&i>1?i-1:i);ids[i]=item.getItemId();titles[i]=item.getTitle();Drawable icon=item.getIcon();icons[i]=icon==null?null:icon.getConstantState()==null?icon:icon.getConstantState().newDrawable(navigation.getResources()).mutate();
-            }
-            for(String style:new String[]{"ItemIconTintList","ItemTextColor","ItemRippleColor","ItemActiveIndicatorColor","LabelVisibilityMode","ItemIconSize","ItemPaddingTop","ItemPaddingBottom","ItemTextAppearanceActive","ItemTextAppearanceInactive"})try{Object value=widget.getMethod("get"+style).invoke(navigation);if(value!=null)styles.put(style,value);}catch(ReflectiveOperationException unavailable){}
-        }
-        View create(Activity activity){
-            try{
-                android.view.ContextThemeWrapper context=new android.view.ContextThemeWrapper(activity,0);context.getTheme().setTo(theme);
-                View view;
-                try{view=(View)widget.getConstructor(android.content.Context.class).newInstance(context);}
-                catch(NoSuchMethodException twoArguments){view=(View)widget.getConstructor(android.content.Context.class,android.util.AttributeSet.class).newInstance(context,null);}
-                android.view.Menu menu=(android.view.Menu)widget.getMethod("getMenu").invoke(view);
-                for(Map.Entry<String,Object> style:styles.entrySet())try{Object value=style.getValue();widget.getMethod("set"+style.getKey(),value instanceof Integer?int.class:android.content.res.ColorStateList.class).invoke(view,value);}catch(ReflectiveOperationException unavailable){}
-                for(int i=0;i<ids.length;i++){
-                    final int selected=ids[i];Drawable icon=icons[i];if(icon!=null&&icon.getConstantState()!=null)icon=icon.getConstantState().newDrawable(activity.getResources()).mutate();
-                    menu.add(0,selected,i,titles[i]).setIcon(icon).setCheckable(true).setChecked(selected==calendar)
-                            .setOnMenuItemClickListener(item->{if(selected!=calendar)returnHome(activity,selected);return true;});
-                }
-                view.setTag("leotv_calendar_navigation");view.setMinimumHeight(height);view.setElevation(0);view.setOutlineProvider(null);view.setBackgroundColor(Color.TRANSPARENT);view.setFitsSystemWindows(false);
-                return view;
-            }catch(ReflectiveOperationException|RuntimeException unavailable){return null;}
+        void close(){
+            closed=true;hide();dismissCalendar();
+            if(button!=null&&button.getParent()==owner.content)owner.content.removeView(button);
+            if(owner.decor.getViewTreeObserver().isAlive())owner.decor.getViewTreeObserver().removeOnPreDrawListener(this);
+            if(installed!=null&&owner.activity.getWindow().getCallback()==installed)owner.activity.getWindow().setCallback(delegate);
+            restoreNavigation();nativeNavigation=null;
         }
     }
 

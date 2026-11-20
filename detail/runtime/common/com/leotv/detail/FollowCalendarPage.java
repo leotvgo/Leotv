@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import com.leotv.ui.GlobalChrome;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,7 +27,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /** A week of followed releases, carried by the home's own poster gradient. */
-final class FollowCalendarPage extends FrameLayout {
+final class FollowCalendarPage extends FrameLayout implements GlobalChrome.FollowingPage {
     interface Opener { void open(FollowStore.Entry entry); }
     private final int INK, MUTED, BLUE;
     private final Activity activity;
@@ -34,6 +35,8 @@ final class FollowCalendarPage extends FrameLayout {
     private final Runnable close;
     private final Opener opener;
     private final CalendarBackdrop backdrop;
+    private final android.content.SharedPreferences preferences;
+    private final android.content.SharedPreferences.OnSharedPreferenceChangeListener changes;
     private final LinearLayout body;
     private final LinearLayout list;
     final FollowDateStrip dates;
@@ -47,13 +50,17 @@ final class FollowCalendarPage extends FrameLayout {
     private final ThreadPoolExecutor worker = new ThreadPoolExecutor(1, 1, 10, TimeUnit.SECONDS,
             new LinkedBlockingQueue<>(), r -> { Thread t = new Thread(r, "leo-follow-calendar"); t.setDaemon(true); return t; });
     private BackdropHttp.Request request;
-    private boolean closed, userNavigated;
+    private boolean closed, userNavigated, listening, resumed;
     private int gridColumns = 1;
     FollowMonthPicker picker;
 
     FollowCalendarPage(Activity activity, boolean mobile, Runnable close, Opener opener) {
         super(activity);
         this.activity = activity; this.mobile = mobile; this.close = close; this.opener = opener;
+        preferences = activity.getSharedPreferences("leo_following", 0);
+        changes = (prefs, key) -> {
+            if ("entries".equals(key)) activity.runOnUiThread(() -> { if (!closed) reload(); });
+        };
         backdrop = new CalendarBackdrop(activity, activity.getWindow().getDecorView().getBackground());
         INK = backdrop.light ? 0xff17202b : 0xffeef0f5;
         MUTED = backdrop.light ? 0xff4d5b6c : 0xffc3cad5;
@@ -114,7 +121,8 @@ final class FollowCalendarPage extends FrameLayout {
     }
 
     boolean lightBackground() { return backdrop.light; }
-    void viewportInsets(int top, int bottom) {
+    void useHostBackdrop() { backdrop.setVisibility(INVISIBLE); }
+    @Override public void viewportInsets(int top, int bottom) {
         int side = dp(mobile ? 14 : 24), upper = top + dp(mobile ? 10 : 6), lower = bottom + dp(mobile ? 12 : 4);
         if (body.getPaddingTop() != upper || body.getPaddingBottom() != lower)
             body.setPadding(side, upper, side, lower);
@@ -157,7 +165,18 @@ final class FollowCalendarPage extends FrameLayout {
 
     @Override protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        resume();
         focusInitial();
+    }
+    @Override protected void onDetachedFromWindow() { pause(); super.onDetachedFromWindow(); }
+    @Override public void resume() {
+        if (closed || listening) return;
+        preferences.registerOnSharedPreferenceChangeListener(changes); listening = true;
+        if (resumed) reload(); resumed = true;
+    }
+    @Override public void pause() {
+        if (!listening) return;
+        preferences.unregisterOnSharedPreferenceChangeListener(changes); listening = false;
     }
 
     /** Opens on today's works; the date ribbon is only the fallback while the schedule is loading. */
@@ -177,7 +196,7 @@ final class FollowCalendarPage extends FrameLayout {
         if (close != null) close.run();
     }
 
-    boolean closePicker() {
+    @Override public boolean closePicker() {
         return picker != null && picker.cancel();
     }
 
@@ -394,8 +413,8 @@ final class FollowCalendarPage extends FrameLayout {
         return Math.max(dp(80), Math.round((tileWidth - dp(22)) * 1.5f));
     }
 
-    void close() {
-        if (closed) return; closed = true;
+    @Override public void close() {
+        if (closed) return; pause(); closed = true;
         if (request != null) request.cancel(); request = null;
         if (picker != null) { picker.close(); picker = null; }
         worker.shutdownNow(); images.close();

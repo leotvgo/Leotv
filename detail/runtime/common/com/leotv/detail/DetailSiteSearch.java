@@ -65,7 +65,7 @@ final class DetailSiteSearch {
                 JSONObject full = new JSONObject(loaded.json.toString());
                 for (String name : new String[]{"vod_name", "vod_pic", "vod_year", "type_name"})
                     if (full.optString(name).isEmpty()) full.put(name, candidate.optString(name));
-                SourceGateway.Detail detail=new SourceGateway.Detail(loaded.site, loaded.id, full);detail.nativeJson=loaded.nativeJson;return detail;
+                SourceGateway.Detail detail=new SourceGateway.Detail(loaded.site, loaded.id, full);detail.nativeResult=loaded.nativeResult;return detail;
             }
         });
     }
