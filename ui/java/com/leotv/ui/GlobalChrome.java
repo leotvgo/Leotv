@@ -113,6 +113,9 @@ public final class GlobalChrome {
         final Map<String, Integer> ids = new java.util.HashMap<>();
         View root, toolbar, navigation, source;
         View sampledRoot;
+        View pageBackdrop, pageArtwork;
+        Drawable pageArtworkRenderer;
+        int artworkX, artworkY, artworkExtension;
         View pager, visiblePage;
         int pageIndex = -1, pageOffset = Integer.MIN_VALUE;
         Padding padding;
@@ -164,6 +167,7 @@ public final class GlobalChrome {
 
         private void disableContent() {
             clearSamples();
+            releasePageArtwork(); pageBackdrop = null;
             for (Background background : backgrounds.values()) background.discard(); backgrounds.clear(); bars.clear();
             for (NativeViewport borrowed : viewports.values()) borrowed.close(); viewports.clear(); viewport = null;
             restoreClips(); restoreDepths(); if (padding != null) padding.restore(); padding = null;
@@ -642,6 +646,7 @@ public final class GlobalChrome {
                 dirty |= source.isDirty() || source.getScrollX() != lastScrollX || source.getScrollY() != lastScrollY;
                 lastScrollX = source.getScrollX(); lastScrollY = source.getScrollY();
             }
+            if (phone) updatePageBackdrop();
             if (dirty) {
                 portal.invalidate();
                 for (View bar : bars) bar.invalidate();
@@ -657,13 +662,64 @@ public final class GlobalChrome {
             for (int i = ancestors.size() - 1; i >= 0; i--) drawBackground(canvas, ancestors.get(i));
         }
 
+        private View taggedBackdrop(View view, String tag) {
+            if (!shown(view) || view == portal) return null;
+            if (tag.equals(view.getTag())) return view;
+            if (view instanceof ViewGroup) for (int i = ((ViewGroup) view).getChildCount() - 1; i >= 0; i--) {
+                View found = taggedBackdrop(((ViewGroup) view).getChildAt(i), tag); if (found != null) return found;
+            }
+            return null;
+        }
+
+        private void releasePageArtwork() {
+            if (pageArtworkRenderer != null && pageArtwork != null)
+                pageArtworkRenderer.setBounds(0, 0, pageArtwork.getWidth(), pageArtwork.getHeight());
+            pageArtwork = null; pageArtworkRenderer = null;
+        }
+
+        private void updatePageBackdrop() {
+            pageBackdrop = taggedBackdrop(visiblePage, "leotv_page_backdrop");
+            View artwork = taggedBackdrop(visiblePage, "leotv_page_artwork");
+            Object renderer = artwork == null ? null : artwork.getTag(android.R.id.background);
+            if (artwork != pageArtwork || renderer != pageArtworkRenderer) {
+                releasePageArtwork();
+                if (renderer instanceof Drawable) { pageArtwork = artwork; pageArtworkRenderer = (Drawable) renderer; }
+            }
+            if (pageArtworkRenderer == null || pageArtwork.getWidth() <= 0 || pageArtwork.getHeight() <= 0) return;
+            pageArtwork.getLocationOnScreen(at); artworkX = at[0] - origin[0]; artworkY = at[1] - origin[1];
+            int scroll = source != null && singleChildScroller(source) ? source.getScrollY() : 0;
+            artworkExtension = Math.max(0, artworkY + scroll);
+            // Ask for the same extended frame before the native hero draws.
+            // Only the current artwork is shared; controls and cards stay native.
+            pageArtworkRenderer.setBounds(0, 0, pageArtwork.getWidth(), pageArtwork.getHeight() + artworkExtension);
+        }
+
+        void pageBackground(Canvas canvas) {
+            if (pageBackdrop == null) background(canvas);
+            else {
+                pageBackdrop.getLocationOnScreen(at); int save = canvas.save();
+                canvas.translate(at[0] - origin[0], Math.min(0, at[1] - origin[1]));
+                pageBackdrop.draw(canvas); canvas.restoreToCount(save);
+            }
+            if (pageArtworkRenderer != null && artworkY + pageArtwork.getHeight() > 0) {
+                int save = canvas.save(); canvas.translate(artworkX, artworkY - artworkExtension);
+                pageArtworkRenderer.draw(canvas); canvas.restoreToCount(save);
+            }
+        }
+
+        void extendPageArtwork(Canvas canvas) {
+            if (pageArtworkRenderer == null || artworkY <= 0) return;
+            int save = canvas.save(); canvas.clipRect(artworkX, 0, artworkX + pageArtwork.getWidth(), Math.min(height, artworkY));
+            pageBackground(canvas); canvas.restoreToCount(save);
+        }
+
         void topFade(Canvas canvas) {
             if (statusHeight <= 0 || topEnd <= topStart) return;
             int save = canvas.save(); canvas.clipRect(0, 0, width, topEnd);
             int layer = canvas.saveLayer(0, 0, width, topEnd, null);
-            // Blend into the current host wallpaper, without capturing or
-            // replaying a rectangular strip of the scrolling content.
-            background(canvas);
+            // Prefer the page's live backdrop/artwork. A fixed host wallpaper
+            // would leave a coloured seam across a poster-based JAR homepage.
+            pageBackground(canvas);
             float from = topStart;
             if (topFadeMask == null || topFadeFrom != from || topFadeTo != topEnd) {
                 int[] colours = new int[9]; float[] positions = new float[9];
@@ -841,7 +897,7 @@ public final class GlobalChrome {
         @Override protected void onDraw(Canvas canvas) {
             if (owner.closed || !owner.running || !owner.contentEnabled) return;
             if (owner.source == null && owner.bars.isEmpty()) return;
-            if (owner.phone) owner.topFade(canvas);
+            if (owner.phone) { owner.extendPageArtwork(canvas); owner.topFade(canvas); }
             else owner.status.draw(canvas, 0, (int) Math.ceil(owner.topPaintEnd), true);
             owner.systemNavigation.draw(canvas, (int) Math.floor(owner.bottomStart), owner.height, false);
             for (View bar : owner.bars) {
