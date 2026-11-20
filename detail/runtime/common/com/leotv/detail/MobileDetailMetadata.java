@@ -350,6 +350,12 @@ class MobileDetailMetadata {
             keywords = source.keywords; collectionParts = source.collectionParts;
         }
         void release() { if (poster != null) poster.release(); }
+        Result detached() {
+            Result value=new Result(overview,facts,cast,null,posterPath,backdropPath,actors,episodes,season,
+                    backdropPaths,provider,posterPaths,recommendations,reviews,branding);
+            value.copyTmdb(this);value.trailers=trailers;value.sourceChannel=sourceChannel;value.sourceAuthor=sourceAuthor;
+            return value;
+        }
         Episode episode(String sourceLabel) {
             Episode movie=episodes.get("movie");
             if(movie!=null && sourceLabel!=null && !sourceLabel.trim().isEmpty())return movie;

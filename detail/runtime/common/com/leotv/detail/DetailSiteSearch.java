@@ -37,9 +37,9 @@ final class DetailSiteSearch {
         default SourceGateway.Detail detail(SiteFeed.Site site, JSONObject candidate) throws Exception { throw new UnsupportedOperationException(); }
     }
     private final Handler main = new Handler(Looper.getMainLooper());
-    static final int MAX_CONCURRENT_SEARCHES = 8;
+    static final int MAX_CONCURRENT_SEARCHES = 16;
     private final ThreadPoolExecutor searches = pool(MAX_CONCURRENT_SEARCHES);
-    private final ThreadPoolExecutor resolver = pool(2);
+    private final ThreadPoolExecutor resolver = pool(4);
     private final List<Future<?>> tasks = new ArrayList<>();
     private final Listener listener;
     private final Backend backend;
@@ -48,11 +48,11 @@ final class DetailSiteSearch {
     private long generation;
     private long completionSequence;
     private boolean closed;
-    private boolean automatic, resolving, unavailableSent;
+    private boolean automatic, unavailableSent;
     private long selectionGeneration;
     private final java.util.Set<String> attempted = new java.util.HashSet<>();
-    private Future<?> selectionTask;
-    private Runnable selectionTimeout;
+    private static final class Resolution {Future<?> task;Runnable timeout;boolean done;}
+    private final List<Resolution> resolutions=new ArrayList<>();
     private SiteFeed.Site pendingSite;
     private SourceGateway.Detail pendingDetail;
 
@@ -65,7 +65,7 @@ final class DetailSiteSearch {
                 JSONObject full = new JSONObject(loaded.json.toString());
                 for (String name : new String[]{"vod_name", "vod_pic", "vod_year", "type_name"})
                     if (full.optString(name).isEmpty()) full.put(name, candidate.optString(name));
-                return new SourceGateway.Detail(loaded.site, loaded.id, full);
+                SourceGateway.Detail detail=new SourceGateway.Detail(loaded.site, loaded.id, full);detail.nativeJson=loaded.nativeJson;return detail;
             }
         });
     }
@@ -140,10 +140,10 @@ final class DetailSiteSearch {
     private void changed() { listener.changed(); tryAutomatic(); }
 
     void tryAutomatic() {
-        if (closed || !automatic || target == null || resolving || !listener.automaticAllowed()) return;
+        if (closed || !automatic || target == null || !listener.automaticAllowed()) return;
         if (pendingDetail != null) {
             SourceGateway.Detail found = pendingDetail; SiteFeed.Site site = pendingSite;
-            pendingDetail = null; pendingSite = null; automatic = false;
+            stopAutomatic();
             listener.resolved(site, found); return;
         }
         for (Entry entry : foundByCompletion()) {
@@ -151,44 +151,46 @@ final class DetailSiteSearch {
             for (JSONObject candidate : entry.matches) {
                 if (candidate == null || folder(candidate) || candidate.optString("vod_id").isEmpty()) continue;
                 String key = entry.site.key + "@@@" + candidate.optString("vod_id");
+                if(resolutions.size()>=4)return;
                 if (!attempted.add(key)) continue;
-                resolve(entry, candidate); return;
+                resolve(entry, candidate);
             }
         }
+        if(!resolutions.isEmpty())return;
         for (Entry entry : entries) if (entry.state == State.SEARCHING) return;
         if (!unavailableSent) { unavailableSent = true; listener.unavailable(); }
     }
 
     private void resolve(Entry entry, JSONObject candidate) {
-        resolving = true;
-        final long token = generation, selection = ++selectionGeneration;
+        Resolution resolution=new Resolution();resolutions.add(resolution);
+        final long token = generation, selection = selectionGeneration;
         listener.loading(entry.site);
-        selectionTimeout = () -> {
-            if (closed || token != generation || selection != selectionGeneration || !automatic) return;
-            selectionGeneration++; resolving = false;
-            if (selectionTask != null) selectionTask.cancel(true);
+        resolution.timeout = () -> {
+            if (closed || token != generation || selection != selectionGeneration || !automatic||resolution.done) return;
+            resolution.done=true;resolutions.remove(resolution);
+            if (resolution.task != null) resolution.task.cancel(true);
             tryAutomatic();
         };
-        main.postDelayed(selectionTimeout, 45000);
+        main.postDelayed(resolution.timeout, 45000);
         try {
-            selectionTask = resolver.submit(() -> {
+            resolution.task = resolver.submit(() -> {
                 SourceGateway.Detail value = null;
                 try { value = backend.detail(entry.site, candidate); }
                 catch (Exception unavailable) { }
                 SourceGateway.Detail result = value;
                 main.post(() -> {
-                    if (closed || token != generation || selection != selectionGeneration || !automatic) return;
-                    main.removeCallbacks(selectionTimeout); resolving = false;
+                    if (closed || token != generation || selection != selectionGeneration || !automatic||resolution.done) return;
+                    main.removeCallbacks(resolution.timeout);resolution.done=true;resolutions.remove(resolution);
                     // A matching search title is not enough: request the full native
                     // detail and require real flag/episode data before adopting it.
-                    if (playableMatch(target, entry.site, result)) {
+                    if (pendingDetail == null && playableMatch(target, entry.site, result)) {
                         pendingSite = entry.site; pendingDetail = result;
                     }
                     tryAutomatic();
                 });
             });
         } catch (java.util.concurrent.RejectedExecutionException unavailable) {
-            main.removeCallbacks(selectionTimeout); resolving = false; tryAutomatic();
+            main.removeCallbacks(resolution.timeout);resolution.done=true;resolutions.remove(resolution);tryAutomatic();
         }
     }
 
@@ -202,10 +204,9 @@ final class DetailSiteSearch {
     }
 
     private void stopAutomatic() {
-        automatic = resolving = false; selectionGeneration++;
-        if (selectionTask != null) selectionTask.cancel(true);
-        if (selectionTimeout != null) main.removeCallbacks(selectionTimeout);
-        selectionTask = null; selectionTimeout = null; pendingSite = null; pendingDetail = null;
+        automatic = false; selectionGeneration++;
+        for(Resolution resolution:resolutions){resolution.done=true;if(resolution.task!=null)resolution.task.cancel(true);if(resolution.timeout!=null)main.removeCallbacks(resolution.timeout);}resolutions.clear();
+        pendingSite = null; pendingDetail = null;
         resolver.getQueue().clear();
     }
 

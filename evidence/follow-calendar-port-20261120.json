@@ -1,0 +1,11 @@
+{
+  "source_sha256": {
+    "../coos/coos-master/app/src/main/java/com/github/catvod/spider/backdrop/FollowFeed.java": "50ebc1e443dfef5b681c03909e26caf1dd366796c6300757a0f074d61b1114fe",
+    "../coos/coos-master/app/src/main/java/com/github/catvod/spider/backdrop/FollowDateStrip.java": "3a6d1bdfbcf3dcd607e35ec6be99e63227c2890fd56c4c03c15c11f5a5a165b7",
+    "../coos/coos-master/app/src/main/java/com/github/catvod/spider/backdrop/FollowMonthPicker.java": "b21a35766151a953d2a898daad74e1035dae8081508363b975bbf95d0722c70c",
+    "../coos/coos-master/app/src/main/java/com/github/catvod/spider/backdrop/FollowCalendarPage.java": "b7c8d5fedc6cbaebb5319b99b52b5552fbe29a67ebd472423101541a9d2d56ef"
+  },
+  "shared_preferences": "leo_following/entries",
+  "platform": "API23",
+  "source_port": "JAR calendar/date-strip/month-picker/feed"
+}

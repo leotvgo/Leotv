@@ -193,7 +193,7 @@ def compile_overlays(project, profile, spec, apk, sdk, apktool, work, log):
     added = set()
     for source in emitted:
         descriptor = re.search(r'(?m)^\.class[^\n]* (L[^;]+;)$', source.read_text()).group(1)
-        if descriptor != LOGO_CLASS and not re.fullmatch(r'Lcom/leotv/ui/(?:GlobalChrome(?:\$[\w]+)?|ProgressiveBlur|NativeViewport(?:\$[\w]+)?);', descriptor) \
+        if descriptor != LOGO_CLASS and not re.fullmatch(r'Lcom/leotv/ui/(?:GlobalChrome(?:\$[A-Za-z0-9_$]+)?|ProgressiveBlur|NativeViewport(?:\$[A-Za-z0-9_$]+)?);', descriptor) \
                 and not any(re.fullmatch(r'Lcom/leotv/detail/' + re.escape(name) + r'(?:\$[A-Za-z0-9_$]+)?(?:\$-(?:CC|EL))?;', descriptor)
                             for name in native_class_roots):
             raise ValueError('Overlay compilation emitted an undeclared program class: ' + descriptor)
@@ -364,12 +364,17 @@ def main():
                     spec['original_package'], values['package'], spec['original_version_name'], values['version_name'],
                     spec['original_version_code'], values['version_code'])
                 landscape = args.variant.startswith('tv-')
-                manifest = BinaryXml(manifest).add_native_activity('com.leotv.detail.DetailActivity', landscape=landscape)
+                manifest = BinaryXml(manifest).add_native_activity('com.leotv.detail.DetailActivity', landscape=landscape,config_changes=0x480)
                 manifest_report.append({'path': 'manifest/application/activity', 'attribute': 'name',
                                         'before': None, 'after': 'com.leotv.detail.DetailActivity'})
+                manifest_report.append({'path':'manifest/application/activity','attribute':'configChanges','before':None,'after':0x480})
+                manifest=BinaryXml(manifest).add_native_activity('com.leotv.detail.FollowingActivity',landscape=landscape,config_changes=0x480)
+                manifest_report.append({'path':'manifest/application/activity','attribute':'name','before':None,'after':'com.leotv.detail.FollowingActivity'})
+                manifest_report.append({'path':'manifest/application/activity','attribute':'configChanges','before':None,'after':0x480})
                 if landscape:
                     manifest_report.append({'path': 'manifest/application/activity', 'attribute': 'screenOrientation',
                                             'before': None, 'after': 6})
+                    manifest_report.append({'path':'manifest/application/activity','attribute':'screenOrientation','before':None,'after':6})
                 resources, resource_report, files = resource_overlay(original.read('resources.arsc'), values, spec['allowed_resources'])
             expected = {'AndroidManifest.xml': manifest, 'resources.arsc': resources}
             expected.update({item['path']: item['bytes'] for item in files.values()})

@@ -16,6 +16,8 @@ public final class JarIntegration {
     private static WeakReference<InvocationHandler> handler = new WeakReference<>(null);
     private static final Map<Activity, Bundle> latest = new WeakHashMap<>();
     private static final Map<Activity, WeakReference<Runnable>> observers = new WeakHashMap<>();
+    private static android.content.SharedPreferences follows;
+    private static final android.content.SharedPreferences.OnSharedPreferenceChangeListener followChanges=(prefs,key)->{if("entries".equals(key))new Handler(Looper.getMainLooper()).post(JarIntegration::notifyObservers);};
     private JarIntegration() {}
 
     public static synchronized void register(Object value, InvocationHandler callback) {
@@ -24,11 +26,12 @@ public final class JarIntegration {
         new Handler(Looper.getMainLooper()).post(() -> {
             synchronized (JarIntegration.class) {
                 for (Map.Entry<Activity, Bundle> entry : latest.entrySet()) call(entry.getKey(), "detail.metadata", entry.getValue());
-                for (WeakReference<Runnable> reference : observers.values()) { Runnable changed = reference.get(); if (changed != null) changed.run(); }
+                notifyObservers();
             }
         });
     }
-    static synchronized void watch(Activity activity, Runnable changed) { observers.put(activity, new WeakReference<>(changed)); }
+    private static synchronized void notifyObservers(){for(WeakReference<Runnable> reference:observers.values()){Runnable changed=reference.get();if(changed!=null)changed.run();}}
+    static synchronized void watch(Activity activity, Runnable changed) { observers.put(activity, new WeakReference<>(changed));if(follows==null){follows=activity.getApplicationContext().getSharedPreferences("leo_following",0);follows.registerOnSharedPreferenceChangeListener(followChanges);} }
     static synchronized void release(Activity activity) { latest.remove(activity); observers.remove(activity); }
 
     static Bundle call(Activity activity, String operation, Bundle data) {
@@ -60,7 +63,7 @@ public final class JarIntegration {
 
     static void publish(Activity activity, Bundle data) {
         if (data.getString("id", "").isEmpty()) return;
-        synchronized (JarIntegration.class) { latest.put(activity, new Bundle(data)); }
+        synchronized (JarIntegration.class) { Bundle old=latest.get(activity);boolean equal=old!=null&&old.keySet().equals(data.keySet());if(equal)for(String key:data.keySet())if(!java.util.Objects.equals(old.get(key),data.get(key))){equal=false;break;}if(equal)return;latest.put(activity, new Bundle(data)); }
         activity.getIntent().putExtra(METADATA, new Bundle(data));
         call(activity, "detail.metadata", data);
     }

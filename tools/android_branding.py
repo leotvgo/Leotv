@@ -372,7 +372,7 @@ class BinaryXml:
             raise ValueError('An old provider authority survived.')
         return bytes(output), report
 
-    def add_native_activity(self, class_name, landscape=False):
+    def add_native_activity(self, class_name, landscape=False, config_changes=0):
         """Append one internal Activity using existing Android attribute names/IDs."""
         pool = self.pool
         android = pool.strings.index(ANDROID)
@@ -384,6 +384,9 @@ class BinaryXml:
             struct.pack('<IIIHBBI', android, name, value, 8, 0, 3, value),
             struct.pack('<IIIHBBI', android, exported, NO_INDEX, 8, 0, 0x12, 0),
         ]
+        if config_changes:
+            config=pool.strings.index('configChanges')
+            attributes.append(struct.pack('<IIIHBBI',android,config,NO_INDEX,8,0,0x11,config_changes))
         if landscape:
             orientation = pool.strings.index('screenOrientation')
             attributes.append(struct.pack('<IIIHBBI', android, orientation, NO_INDEX, 8, 0, 0x10, 6))

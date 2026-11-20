@@ -93,6 +93,7 @@ public final class GlobalChrome {
         final FrameLayout content;
         final View decor;
         final Portal portal;
+        final FollowingNavigation following;
         final boolean phone;
         final Map<View, Background> backgrounds = new IdentityHashMap<>();
         final Map<ViewGroup, Clip> clips = new IdentityHashMap<>();
@@ -131,6 +132,7 @@ public final class GlobalChrome {
             decor = activity.getWindow().getDecorView();
             phone = phoneClient(activity);
             portal = new Portal(activity, this);
+            following=new FollowingNavigation(this);
         }
 
         private static boolean phoneClient(Activity activity) {
@@ -220,6 +222,7 @@ public final class GlobalChrome {
         void pause() {
             if (!running) return;
             rememberBackdrop();
+            following.hide();
             disableContent();
             running = false;
             clearSamples();
@@ -457,6 +460,8 @@ public final class GlobalChrome {
                     Depth state = depths.get(view);
                     if (state == null) { state = new Depth(view); depths.put(view, state); }
                     state.apply(dp(1));
+                    view.getLocationOnScreen(at);
+                    state.clipHeader(Math.max(0,statusHeight),at[1]);
                 }
             }
         }
@@ -479,6 +484,7 @@ public final class GlobalChrome {
 
         @Override public boolean onPreDraw() {
             if (closed || !running || content.getWidth() <= 0 || content.getHeight() <= 0) return true;
+            following.update();
             int nextWidth = content.getWidth(), nextHeight = content.getHeight();
             boolean resized = width > 0 && height > 0 && (nextWidth != width || nextHeight != height);
             dirty |= nextWidth != width || nextHeight != height;
@@ -855,6 +861,7 @@ public final class GlobalChrome {
             if (closed) return;
             pause();
             closed = true;
+            following.close();
             for (Background background : backgrounds.values()) background.discard();
             backgrounds.clear();
             for (NativeViewport borrowed : viewports.values()) borrowed.close();
@@ -884,6 +891,74 @@ public final class GlobalChrome {
             } catch (ReflectiveOperationException unavailable) { }
             return null;
         }
+    }
+
+    private static final class FollowingNavigation {
+        final Controller owner;
+        final int id=View.generateViewId();
+        android.widget.ImageButton button;
+        java.lang.ref.WeakReference<View> previousFocus=new java.lang.ref.WeakReference<>(null);
+        Window.Callback installed;
+        boolean closed,left;
+        FollowingNavigation(Controller owner){this.owner=owner;}
+        void open(){owner.activity.startActivity(new android.content.Intent().setClassName(owner.activity.getPackageName(),"com.leotv.detail.FollowingActivity"));hide();}
+        void update(){
+            if(closed)return;
+            if(owner.phone){
+                View navigation=owner.find("navigation");if(navigation==null)return;
+                try{
+                    android.view.Menu menu=(android.view.Menu)navigation.getClass().getMethod("getMenu").invoke(navigation);
+                    if(menu.findItem(id)!=null||menu.size()!=3)return;
+                    int[] ids=new int[3];CharSequence[] titles=new CharSequence[3];Drawable[] icons=new Drawable[3];boolean[] checked=new boolean[3];
+                    for(int i=0;i<3;i++){android.view.MenuItem item=menu.getItem(i);ids[i]=item.getItemId();titles[i]=item.getTitle();icons[i]=item.getIcon();checked[i]=item.isChecked();}
+                    menu.clear();
+                    for(int i=0;i<4;i++){
+                        if(i==1){menu.add(0,id,i,"追更").setIcon(new CalendarIcon(owner.activity)).setCheckable(true).setOnMenuItemClickListener(item->{open();return true;});}
+                        else{int old=i==0?0:i-1;menu.add(0,ids[old],i,titles[old]).setIcon(icons[old]).setCheckable(true).setChecked(checked[old]);}
+                    }
+                }catch(ReflectiveOperationException unavailable){}
+                return;
+            }
+            Window window=owner.activity.getWindow();Window.Callback current=window.getCallback();
+            if(current!=installed){
+                installed=(Window.Callback)java.lang.reflect.Proxy.newProxyInstance(Window.Callback.class.getClassLoader(),new Class<?>[]{Window.Callback.class},(proxy,method,args)->{
+                    if(method.getName().equals("dispatchKeyEvent")&&handle((android.view.KeyEvent)args[0]))return true;
+                    try{return method.invoke(current,args);}catch(java.lang.reflect.InvocationTargetException error){throw error.getCause();}
+                });window.setCallback(installed);
+            }
+            if(!firstTab())hide();
+        }
+        boolean firstTab(){View pager=owner.find("pager");return !closed&&owner.running&&owner.contentScreen(pager)&&owner.currentPage(pager)==0;}
+        boolean handle(android.view.KeyEvent event){
+            if(closed||!owner.running)return false;
+            int key=event.getKeyCode();
+            if(key==android.view.KeyEvent.KEYCODE_DPAD_LEFT&&firstTab()){
+                if(event.getAction()==android.view.KeyEvent.ACTION_DOWN&&event.getRepeatCount()==0){left=true;show();}
+                if(left){if(event.getAction()==android.view.KeyEvent.ACTION_UP)left=false;return true;}
+            }
+            if(button!=null&&button.isShown()&&button.hasFocus()&&(key==android.view.KeyEvent.KEYCODE_DPAD_RIGHT||key==android.view.KeyEvent.KEYCODE_BACK)){if(event.getAction()==android.view.KeyEvent.ACTION_UP){hide();View prior=previousFocus.get();if(prior!=null&&prior.isShown())prior.requestFocus();}return true;}
+            return false;
+        }
+        void show(){
+            if(button==null||!button.isShown())previousFocus=new java.lang.ref.WeakReference<>(owner.activity.getCurrentFocus());
+            if(button==null){
+                button=new android.widget.ImageButton(owner.activity);button.setImageDrawable(new CalendarIcon(owner.activity));button.setContentDescription("追更日历");button.setFocusable(true);button.setFocusableInTouchMode(true);button.setOnClickListener(v->open());
+                android.graphics.drawable.GradientDrawable background=new android.graphics.drawable.GradientDrawable();background.setColor(0xdd1a273b);background.setCornerRadius(owner.dp(28));button.setBackground(background);button.setPadding(owner.dp(14),owner.dp(14),owner.dp(14),owner.dp(14));
+                FrameLayout.LayoutParams layout=new FrameLayout.LayoutParams(owner.dp(56),owner.dp(56),android.view.Gravity.LEFT|android.view.Gravity.CENTER_VERTICAL);layout.leftMargin=owner.dp(12);owner.content.addView(button,layout);button.setElevation(owner.dp(80));
+            }
+            button.setVisibility(View.VISIBLE);button.requestFocus();
+        }
+        void hide(){if(button!=null)button.setVisibility(View.GONE);}
+        void close(){closed=true;hide();if(button!=null&&button.getParent()==owner.content)owner.content.removeView(button);}
+    }
+
+    private static final class CalendarIcon extends Drawable {
+        final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
+        final int size;
+        CalendarIcon(android.content.Context context){size=Math.round(24*context.getResources().getDisplayMetrics().density);paint.setColor(Color.WHITE);}
+        @Override public void draw(Canvas canvas){Rect bounds=getBounds();int save=canvas.save();canvas.translate(bounds.left,bounds.top);canvas.scale(bounds.width()/24f,bounds.height()/24f);paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(1.8f);canvas.drawRoundRect(new RectF(3,5,21,22),2,2,paint);canvas.drawLine(3,10,21,10,paint);canvas.drawLine(8,2,8,7,paint);canvas.drawLine(16,2,16,7,paint);paint.setStyle(Paint.Style.FILL);for(int y=13;y<=18;y+=5)for(int x=7;x<=17;x+=5)canvas.drawCircle(x,y,1,paint);canvas.restoreToCount(save);}
+        @Override public int getIntrinsicWidth(){return size;}@Override public int getIntrinsicHeight(){return size;}
+        @Override public void setAlpha(int alpha){paint.setAlpha(alpha);}@Override public void setColorFilter(ColorFilter filter){paint.setColorFilter(filter);}@Override public int getOpacity(){return PixelFormat.TRANSLUCENT;}
     }
 
     private static final class ImageSwap {
@@ -1048,8 +1123,15 @@ public final class GlobalChrome {
         final View view;
         final float original;
         final android.view.ViewOutlineProvider outline;
+        final Rect originalClip;
+        Rect appliedClip;
         float applied;
-        Depth(View view) { this.view = view; original = applied = view.getTranslationZ(); outline = view.getOutlineProvider(); }
+        Depth(View view) { this.view = view; original = applied = view.getTranslationZ(); outline = view.getOutlineProvider();originalClip=view.getClipBounds(); }
+        void clipHeader(int statusBottom,int y){
+            Rect clip=new Rect(0,Math.min(view.getHeight(),Math.max(0,statusBottom-y)),view.getWidth(),view.getHeight());
+            if(originalClip!=null&&!clip.intersect(originalClip))clip.setEmpty();
+            if(!clip.equals(view.getClipBounds()))view.setClipBounds(clip);appliedClip=clip;
+        }
         void apply(float minimum) {
             applied = Math.max(original, minimum);
             if (view.getTranslationZ() != applied) view.setTranslationZ(applied);
@@ -1060,6 +1142,7 @@ public final class GlobalChrome {
         void restore() {
             if (view.getTranslationZ() == applied) view.setTranslationZ(original);
             if (view.getOutlineProvider() == null) view.setOutlineProvider(outline);
+            if(appliedClip!=null&&appliedClip.equals(view.getClipBounds()))view.setClipBounds(originalClip);
         }
     }
 

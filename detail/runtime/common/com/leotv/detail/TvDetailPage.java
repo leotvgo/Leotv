@@ -134,7 +134,7 @@ final class TvDetailPage implements DetailPage {
         flagScroll=new HorizontalScrollView(activity);flagScroll.setHorizontalScrollBarEnabled(false);flagScroll.addView(flags);
         siteSearch=new DetailSiteSearch(activity,new DetailSiteSearch.Listener(){
             public void changed(){sitePicker.changed();}
-            public void loading(SiteFeed.Site site){sitePicker.loading(site.name);if(source!=null&&source.episodes.isEmpty())playButton.idle("正在获取播放线路…");}
+            public void loading(SiteFeed.Site site){sitePicker.loading(site.name);if(source!=null&&source.episodes.isEmpty())playButton.idle("正在加载…");}
             public void ready(SiteFeed.Site site,org.json.JSONObject vod){manualSource=true;actions.changeSource(site,vod);}
             public boolean automaticAllowed(){return mounted&&!sitePicker.showing();}
             public void resolved(SiteFeed.Site site,SourceGateway.Detail detail){actions.automaticSource(site,detail);}
@@ -256,7 +256,7 @@ final class TvDetailPage implements DetailPage {
         String[] labels=new String[values.size()];for(int i=0;i<labels.length;i++)labels[i]=values.get(i).name;
         NativeDialogs.choose(activity,"选集",labels,0,index->actions.play(values.get(index)));
     }
-    void searchSources(){if(source!=null){boolean automatic=source.episodes.isEmpty()&&!manualSource&&!NativeLibrary.hasSavedSource(activity,source);if(automatic)playButton.idle("正在寻找播放资源…");siteSearch.begin(new BackdropIdentity(source.site,source.id,source.name,source.year,source.type),automatic);}}
+    void searchSources(){if(source!=null){boolean automatic=source.episodes.isEmpty()&&!manualSource&&!NativeLibrary.hasSavedSource(activity,source);if(automatic)playButton.idle("正在加载…");siteSearch.begin(new BackdropIdentity(source.site,source.id,source.name,source.year,source.type),automatic);}}
     void resume(){hero.setActive(true);ThemeLayout.apply(this);if(source!=null){preferred=NativeLibrary.resume(activity,source,null);refreshActions();showEpisodes();}refresh(BackdropSettings.read(activity).proxy);}
     private void updatePlayButton(){
         NativeLibrary.Progress saved=NativeLibrary.progress(activity,source,preferred);
@@ -330,15 +330,21 @@ final class TvDetailPage implements DetailPage {
         android.os.Bundle data=bridgeMetadata();
         if(bridgeSourceReady())JarIntegration.publish(activity,data);
         android.os.Bundle state=JarIntegration.call(activity,"follow.status",data);
-        boolean followed=state!=null&&state.getBoolean("followed",false);
+        boolean followed=source!=null&&FollowStore.find(new BackdropIdentity(source.site,source.id,source.name,source.year,source.type))!=null;
         followButton.active(followed);followButton.label(followed?"已追更":"追更");followButton.setEnabled(bridgeSourceReady());boolean kept=false;
         if(source!=null)try{kept=NativeLibrary.isKept(activity,source);}catch(ReflectiveOperationException ignored){}
         keepButton.active(kept);keepButton.label(kept?"已收藏":"收藏");matchButton.label(metadata!=null&&metadata.tmdbId>0?"重新匹配元数据":"手动匹配元数据");}
     private void toggleKeep(){if(source==null)return;try{boolean added=NativeLibrary.toggle(activity,source);refreshActions();message(added?"已加入我的收藏":"已取消收藏");}catch(ReflectiveOperationException error){message("收藏暂不可用");}}
     private void toggleFollow(){
         if(!bridgeSourceReady()){message("片源信息尚未就绪");return;}
+        BackdropIdentity work=new BackdropIdentity(source.site,source.id,source.name,source.year,source.type);boolean before=FollowStore.find(work)!=null;
         android.os.Bundle reply=JarIntegration.call(activity,"follow.toggle",bridgeMetadata());
-        if(reply==null||!reply.getBoolean("available",false)){message("当前 JAR 尚未提供追更接口，请更新核心");return;}
+        if(reply==null||!reply.getBoolean("available",false)){
+            boolean after=FollowStore.find(work)!=null;
+            boolean current=source.site.equals(metadataSite)&&source.id.equals(metadataId);
+            if(after==before){if(!before&&(!current||metadata==null||metadata.tmdbId<=0)){message("请先匹配影片资料再加入追更");return;}after=FollowStore.toggle(work,current?metadata:null);}
+            refreshActions();message(after?"已加入我的追更":"已取消追更");return;
+        }
         refreshActions();message(reply.getString("message","追更状态已更新"));
     }
     private void openMatch(){if(source==null||matchPopup!=null)return;BackdropIdentity work=new BackdropIdentity(source.site,source.id,source.name,source.year,source.type);

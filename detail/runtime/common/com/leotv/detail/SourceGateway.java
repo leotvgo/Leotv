@@ -17,6 +17,7 @@ final class SourceGateway {
     static final class Detail {
         final String site, id, name, picture, overview, year, type;
         final JSONObject json;
+        String nativeJson;
         final List<Episode> episodes;
         Detail(String site, String id, JSONObject json) {
             this.site = site; this.id = id; this.json = json;
@@ -43,7 +44,9 @@ final class SourceGateway {
             if (json.optString("vod_name").isEmpty()) json.put("vod_name", intent.getStringExtra("name"));
             if (json.optString("vod_pic").isEmpty()) json.put("vod_pic", intent.getStringExtra("pic"));
         }
-        return new Detail(key, id, json);
+        Detail detail=new Detail(key,id,json);
+        detail.nativeJson=(String)gsonClass.getMethod("toJson",Object.class).invoke(gson,result);
+        return detail;
     }
     static List<Episode> episodes(JSONObject json) {
         List<Episode> result = new ArrayList<>();

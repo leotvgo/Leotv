@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BEANS = 'com/fongmi/android/tv/bean/'
 
 COMMON = {
-    BEANS + 'Result': (['getVod()L' + BEANS + 'Vod;'], []),
+    BEANS + 'Result': (['getVod()L' + BEANS + 'Vod;','fromJson(Ljava/lang/String;)L'+BEANS+'Result;'], []),
     BEANS + 'Flag': (['getFlag()Ljava/lang/String;', 'getEpisodes()Ljava/util/List;'], []),
     BEANS + 'Episode': (['getUrl()Ljava/lang/String;'], []),
     BEANS + 'History': (['find(Ljava/lang/String;)L' + BEANS + 'History;',
@@ -42,6 +42,7 @@ def check_contract(root, variant, project=None):
     project = project or root / VARIANTS[variant][1] / 'bytecode-project'
     lock = json.loads((root / 'detail/native-source-lock.json').read_text())[variant]
     expected_paths = {'smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali'}
+    expected_paths.add('smali/E3/n.smali' if mobile else 'smali/B3/n.smali')
     expected_paths.update({'smali/P3/b.smali', 'smali/S3/p.smali', 'smali/O3/t.smali', 'smali/F3/f.smali'} if mobile else {
         'smali/M3/b.smali', 'smali/com/fongmi/android/tv/ui/activity/SettingCustomActivity.smali',
         'smali/com/fongmi/android/tv/ui/activity/M.smali'})

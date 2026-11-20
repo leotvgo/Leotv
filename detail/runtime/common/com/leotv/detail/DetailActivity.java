@@ -21,13 +21,16 @@ public final class DetailActivity extends Activity implements TvDetailPage.Actio
     @Override public void onCreate(Bundle saved){
         if(!Device.MOBILE)setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         super.onCreate(saved);
-        MetadataSettings.initialize(this);MetadataMatchStore.install(this);SiteFeed.initialize(this);
+        if(saved!=null&&saved.containsKey("leotv.detail.site"))getIntent().putExtra("key",saved.getString("leotv.detail.site")).putExtra("id",saved.getString("leotv.detail.id")).putExtra("name",saved.getString("leotv.detail.name")).putExtra("pic",saved.getString("leotv.detail.pic"));
+        MetadataSettings.initialize(this);MetadataMatchStore.install(this);FollowStore.install(this);SiteFeed.initialize(this);
         page=new TvDetailPage(this,this);
         load();
     }
     private void load(){
         int token=++generation;String site=getIntent().getStringExtra("key"),id=getIntent().getStringExtra("id");
         if(site==null||id==null||site.isEmpty()||id.isEmpty())return;
+        DetailSessionCache.State cached=DetailSessionCache.get(this,site,id);
+        if(cached!=null){source=cached.source;metadata=cached.metadata==null?null:cached.metadata.detached();page.bindSource(source);if(metadata!=null)page.render(metadata);else enrich(token);return;}
         org.json.JSONObject seed=RelatedDetail.metadata(id);
         if(seed!=null){
             source=new SourceGateway.Detail(site,id,seed);page.bindSource(source);
@@ -51,12 +54,16 @@ public final class DetailActivity extends Activity implements TvDetailPage.Actio
             try{value=new MobileDetailMetadata().load(identity,options,request);}catch(Exception|OutOfMemoryError unavailable){}
             MobileDetailMetadata.Result result=value;
             main.post(()->{if(token!=generation||isDestroyed()||metadataRequest!=request){if(result!=null)result.release();return;}
-                MobileDetailMetadata.Result old=metadata;metadata=result;page.render(result);if(old!=null&&old!=result)old.release();});
+                if(result==null&&metadata!=null)return;
+                MobileDetailMetadata.Result old=metadata;metadata=result;page.render(result);DetailSessionCache.put(this,source,metadata);if(old!=null&&old!=result)old.release();});
         });
     }
     @Override public void rematch(){enrich(generation);}
+    private void cacheState(){DetailSessionCache.put(this,source,source!=null&&page!=null&&source.site.equals(page.metadataSite)&&source.id.equals(page.metadataId)?metadata:null);}
     @Override public void play(SourceGateway.Episode episode){
         if(source==null)return;
+        cacheState();DetailSessionCache.pin(this,source);
+        Playback.prepareSource(this,source);
         if(metadata!=null)getIntent().putStringArrayListExtra(NativeRouting.TITLE_LOGOS,new java.util.ArrayList<>(metadata.branding.logos));
         else getIntent().removeExtra(NativeRouting.TITLE_LOGOS);
         NativeRouting.play(this,source.site,source.id,source.name,source.picture,episode.flag,episode.url,episode.name);
@@ -79,7 +86,9 @@ public final class DetailActivity extends Activity implements TvDetailPage.Actio
         if(source==null||page.preferred==null)return;getIntent().putExtra("download",true);play(page.preferred);getIntent().removeExtra("download");
     }
     @Override public void onResume(){super.onResume();if(page!=null)page.resume();}
-    @Override public void onPause(){if(page!=null)page.suspend();super.onPause();}
+    @Override public void onPause(){cacheState();if(page!=null)page.suspend();super.onPause();}
+    @Override public void onSaveInstanceState(Bundle saved){super.onSaveInstanceState(saved);saved.putString("leotv.detail.site",getIntent().getStringExtra("key"));saved.putString("leotv.detail.id",getIntent().getStringExtra("id"));saved.putString("leotv.detail.name",getIntent().getStringExtra("name"));saved.putString("leotv.detail.pic",getIntent().getStringExtra("pic"));}
+    @Override public void onConfigurationChanged(android.content.res.Configuration configuration){super.onConfigurationChanged(configuration);if(page!=null){page.theme=-1;page.content.requestLayout();page.refresh(BackdropSettings.read(this).proxy);}}
     @Override public void onDestroy(){
         JarIntegration.release(this);
         generation++;if(sourceTask!=null)sourceTask.cancel(true);if(metadataTask!=null)metadataTask.cancel(true);if(metadataRequest!=null)metadataRequest.cancel();

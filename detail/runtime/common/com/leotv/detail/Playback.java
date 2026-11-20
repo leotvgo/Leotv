@@ -12,7 +12,22 @@ public final class Playback {
     private static final WeakHashMap<Activity, String> oriented = new WeakHashMap<>();
     private static final WeakHashMap<Object, WeakReference<Activity>> owners = new WeakHashMap<>();
     private static final WeakHashMap<Activity, PlayerTitleArt> titles = new WeakHashMap<>();
+    private static WeakReference<android.content.Context> pendingContext=new WeakReference<>(null);
+    private static String pendingSite,pendingId,pendingJson;
+    private static Integer pendingConfig;
+    private static long pendingUntil;
     private Playback() {}
+    static synchronized void prepareSource(android.content.Context context,SourceGateway.Detail detail){
+        pendingContext=new WeakReference<>(context.getApplicationContext());pendingSite=detail.site;pendingId=detail.id;pendingJson=detail.nativeJson;
+        pendingConfig=SiteFeed.configId();pendingUntil=android.os.SystemClock.elapsedRealtime()+15000;
+    }
+    public static synchronized Object consumeNativeDetail(String site,String id){
+        android.content.Context context=pendingContext.get();
+        if(context==null||pendingJson==null||android.os.SystemClock.elapsedRealtime()>pendingUntil||!site.equals(pendingSite)||!id.equals(pendingId)||!java.util.Objects.equals(pendingConfig,SiteFeed.configId()))return null;
+        String json=pendingJson;pendingJson=null;pendingContext.clear();
+        try{return context.getClassLoader().loadClass("com.fongmi.android.tv.bean.Result").getMethod("fromJson",String.class).invoke(null,json);}
+        catch(ReflectiveOperationException unavailable){return null;}
+    }
     public static void initialize(Activity activity) {
         if (!NativeRouting.isFullscreenPlayer(activity)) return;
         android.graphics.Bitmap transition = NativeRouting.transitionArtwork();
@@ -132,6 +147,7 @@ public final class Playback {
             oriented.put(activity, media);
     }
     public static void release(Activity activity) {
+        if(NativeRouting.isFullscreenPlayer(activity)&&!activity.isChangingConfigurations())DetailSessionCache.unpin();
         NativeRouting.clearTransition();
         PlayerTitleArt title = titles.remove(activity); if (title != null) title.close();
         oriented.remove(activity);

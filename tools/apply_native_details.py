@@ -43,9 +43,10 @@ def apply(project, root, variant):
     settings_path = 'smali/S3/p.smali' if mobile else 'smali/com/fongmi/android/tv/ui/activity/SettingCustomActivity.smali'
     result_path = 'smali/O3/t.smali' if mobile else 'smali/com/fongmi/android/tv/ui/activity/M.smali'
     player_path = 'smali/F3/f.smali'
+    source_path = 'smali/E3/n.smali' if mobile else 'smali/B3/n.smali'
     lock = json.loads((root / 'detail/native-source-lock.json').read_text())[variant]
     changes, descriptors = {}, set()
-    paths = [base_path, settings_path, VIDEO, result_path]
+    paths = [base_path, settings_path, VIDEO, result_path,source_path]
     if mobile:
         paths.append(player_path)
     for path in paths:
@@ -143,6 +144,29 @@ def apply(project, root, variant):
                                + ordinary + '\n\n    :leotv_episode_selected')
                 return body.replace(ordinary, replacement)
             text = replace_method(text, signature, selection)
+        elif path == source_path:
+            def source_cache(body):
+                position=re.search(r'(?m)^    \.locals (\d+)',body)
+                if not position or int(position.group(1))<3:raise ValueError('Native detail task scratch contract changed.')
+                added=f'''\n\n    iget v2, p0, {descriptor}->a:I
+
+    if-nez v2, :leotv_source_original
+
+    iget-object v0, p0, {descriptor}->b:Ljava/lang/String;
+
+    iget-object v1, p0, {descriptor}->c:Ljava/lang/String;
+
+    invoke-static {{v0, v1}}, Lcom/leotv/detail/Playback;->consumeNativeDetail(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    if-eqz v0, :leotv_source_original
+
+    return-object v0
+
+    :leotv_source_original\n'''
+                return body[:position.end()]+added+body[position.end():]
+            text=replace_method(text,'call()Ljava/lang/Object;',source_cache)
         elif path == player_path:
             def media3_size(body):
                 if body.count('    .locals 0') != 1:
