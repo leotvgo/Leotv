@@ -52,6 +52,9 @@ final class NativeViewport implements AutoCloseable {
             if(anchor==null){anchor=new Anchor(list);pending.put(list,new WeakReference<>(anchor));}
             anchor.shift+=amount;
         }
+        static void cancel(ViewGroup list) {
+            WeakReference<Anchor> ref=pending.get(list);Anchor anchor=ref==null?null:ref.get();if(anchor!=null)anchor.release();
+        }
         void release(){
             list.removeOnLayoutChangeListener(this);list.removeOnAttachStateChangeListener(this);
             WeakReference<Anchor> ref=pending.get(list);if(ref!=null&&ref.get()==this)pending.remove(list);
@@ -68,7 +71,12 @@ final class NativeViewport implements AutoCloseable {
         @Override public void onViewAttachedToWindow(View v){}
     }
     @Override public void close(){
-        if(list.getLayoutParams()==params){Anchor.shift(list,-Math.max(0,insetTop));params.height=height;params.topMargin=marginTop;params.bottomMargin=marginBottom;list.setLayoutParams(params);}
+        restore(true);
+    }
+    void reset(){restore(false);}
+    private void restore(boolean preserveAnchor){
+        if(preserveAnchor)Anchor.shift(list,-Math.max(0,insetTop));else Anchor.cancel(list);
+        if(list.getLayoutParams()==params){params.height=height;params.topMargin=marginTop;params.bottomMargin=marginBottom;list.setLayoutParams(params);}
         if(params instanceof android.widget.LinearLayout.LayoutParams)((android.widget.LinearLayout.LayoutParams)params).weight=weight;
         list.setPadding(left,top,right,bottom);list.setClipToPadding(clip);list.setClipChildren(clipChildren);
     }

@@ -102,6 +102,7 @@ def check_contract(root, variant, project=None):
                     'S:Lcom/fongmi/android/tv/ui/adapter/q;', 'c0:LF3/f;'] if mobile else [
                         'i0:Z', 'U:Landroidx/leanback/widget/ArrayObjectAdapter;']
     contracts['com/fongmi/android/tv/ui/activity/VideoActivity'] = (video_methods, video_fields)
+    contracts['androidx/recyclerview/widget/RecyclerView'] = (['i0(I)V'] if mobile else ['scrollToPosition(I)V'], [])
     if mobile:
         contracts.update({
             'com/fongmi/android/tv/ui/adapter/u': ([], ['f:Ljava/util/ArrayList;']),

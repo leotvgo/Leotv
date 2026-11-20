@@ -54,6 +54,7 @@ public final class GlobalChrome {
         final Map<Activity, Controller> active = new IdentityHashMap<>();
 
         @Override public void onActivityResumed(Activity activity) {
+            if (!activity.getClass().getName().equals("com.fongmi.android.tv.ui.activity.HomeActivity")) { remove(activity); return; }
             Controller existing = active.get(activity);
             if (existing != null) { existing.resume(); return; }
             View view = activity.findViewById(android.R.id.content);
@@ -101,6 +102,9 @@ public final class GlobalChrome {
         final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         final Band status = new Band(this), systemNavigation = new Band(this);
         int initialTop, initialBottom;
+        int originalUi, originalFlags, originalStatus, originalNavigation;
+        Boolean originalStatusContrast, originalNavigationContrast;
+        boolean contentEnabled;
         final Choreographer choreographer = Choreographer.getInstance();
         long frameSignals;
         final Map<String, Integer> ids = new java.util.HashMap<>();
@@ -145,6 +149,53 @@ public final class GlobalChrome {
             portal.invalidate();
         }
 
+        private boolean contentScreen(View view) {
+            if (!shown(view)) return false;
+            if (!phone) return true;
+            View navigation = find("navigation");
+            int vod = activity.getResources().getIdentifier("vod", "id", activity.getPackageName());
+            if (navigation == null || vod == 0) return false;
+            try { return ((Number) navigation.getClass().getMethod("getSelectedItemId").invoke(navigation)).intValue() == vod; }
+            catch (ReflectiveOperationException unavailable) { return false; }
+        }
+
+        private void disableContent() {
+            clearSamples();
+            for (Background background : backgrounds.values()) background.discard(); backgrounds.clear(); bars.clear();
+            for (NativeViewport borrowed : viewports.values()) borrowed.close(); viewports.clear(); viewport = null;
+            restoreClips(); if (padding != null) padding.restore(); padding = null;
+            if (portal.getParent() == content) content.removeView(portal);
+            if (windowAdjusted) {
+                Window window = activity.getWindow(); decor.setSystemUiVisibility(originalUi);
+                window.setFlags(originalFlags, WINDOW_FLAGS); window.setStatusBarColor(originalStatus); window.setNavigationBarColor(originalNavigation);
+                if (originalStatusContrast != null) contrast(window, "setStatusBarContrastEnforced", originalStatusContrast);
+                if (originalNavigationContrast != null) contrast(window, "setNavigationBarContrastEnforced", originalNavigationContrast);
+                if (Build.VERSION.SDK_INT >= 30) try { Window.class.getMethod("setDecorFitsSystemWindows", boolean.class).invoke(window, true); }
+                catch (ReflectiveOperationException unavailable) { }
+                decor.requestApplyInsets();
+            }
+            windowAdjusted = contentEnabled = false; sampledRoot = source = root = toolbar = navigation = pager = visiblePage = null;
+            pageIndex = -1; pageOffset = Integer.MIN_VALUE; dirty = discovery = true;
+        }
+
+        private void resetPageScroll(View view) {
+            if (view == null) return;
+            if (scrollable(view)) {
+                if (singleChildScroller(view)) view.scrollTo(0, 0);
+                else if (view instanceof android.widget.AbsListView) ((android.widget.AbsListView) view).setSelection(0);
+                else try { view.getClass().getMethod(phone ? "i0" : "scrollToPosition", int.class).invoke(view, 0); }
+                catch (ReflectiveOperationException unavailable) { }
+            }
+            if (view instanceof ViewGroup) for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) resetPageScroll(((ViewGroup) view).getChildAt(i));
+        }
+
+        private void expandHeader() {
+            for (View view = toolbar; view != null && view != content; view = view.getParent() instanceof View ? (View) view.getParent() : null) {
+                try { view.getClass().getMethod("setExpanded", boolean.class).invoke(view, true); return; }
+                catch (ReflectiveOperationException unavailable) { }
+            }
+        }
+
         void attach() {
             resume();
         }
@@ -162,6 +213,7 @@ public final class GlobalChrome {
         void pause() {
             if (!running) return;
             rememberBackdrop();
+            disableContent();
             running = false;
             clearSamples();
             choreographer.removeFrameCallback(this);
@@ -176,8 +228,10 @@ public final class GlobalChrome {
             if (!running || closed) return;
             frameSignals++;
             dirty = true;
-            portal.invalidate();
-            for (View bar : bars) bar.invalidate();
+            if (contentEnabled) {
+                portal.invalidate();
+                for (View bar : bars) bar.invalidate();
+            }
             // One callback per display frame; no independent polling thread/timer.
             choreographer.postFrameCallback(this);
         }
@@ -392,7 +446,13 @@ public final class GlobalChrome {
             dirty |= nextWidth != width || nextHeight != height;
             width = nextWidth; height = nextHeight; content.getLocationOnScreen(origin);
             View nextPager = find("pager"), nextPage = pageAtCentre(nextPager);
+            if (!contentScreen(nextPager)) { disableContent(); return true; }
+            contentEnabled = true;
             int nextIndex = currentPage(nextPager), nextOffset = nextPager == null ? 0 : nextPager.getScrollX();
+            if (pageIndex >= 0 && pageIndex != nextIndex) {
+                for (NativeViewport borrowed : viewports.values()) borrowed.reset(); viewports.clear(); viewport = null;
+                resetPageScroll(nextPager); expandHeader();
+            }
             if (pager != nextPager || visiblePage != nextPage || pageIndex != nextIndex || pageOffset != nextOffset) {
                 clearSamples(); source = null; dirty = discovery = true;
                 pager = nextPager; visiblePage = nextPage; pageIndex = nextIndex; pageOffset = nextOffset;
@@ -426,6 +486,10 @@ public final class GlobalChrome {
                 initialBottom = Math.max(0, decor.getHeight() - origin[1] - height);
                 if (root != null) padding = new Padding(root);
                 Window window = activity.getWindow();
+                originalUi = decor.getSystemUiVisibility(); originalFlags = window.getAttributes().flags;
+                originalStatus = window.getStatusBarColor(); originalNavigation = window.getNavigationBarColor();
+                originalStatusContrast = contrast(window, "setStatusBarContrastEnforced", null);
+                originalNavigationContrast = contrast(window, "setNavigationBarContrastEnforced", null);
                 contrast(window, "setStatusBarContrastEnforced", false);
                 contrast(window, "setNavigationBarContrastEnforced", false);
                 if (Build.VERSION.SDK_INT >= 30) {
@@ -469,7 +533,7 @@ public final class GlobalChrome {
             float nextTopStart = Math.max(0, statusHeight - origin[1]);
             float headerEnd = toolbar == null ? nextTopStart : y(toolbar) + toolbar.getHeight();
             if (category != null) headerEnd = Math.max(headerEnd, y(category) + category.getHeight());
-            float nextTopEnd = Math.min(height, phone ? nextTopStart + dp(12) : Math.max(nextTopStart, headerEnd) + dp(24));
+            float nextTopEnd = Math.min(height, phone ? nextTopStart + dp(4) : Math.max(nextTopStart, headerEnd) + dp(16));
             float nextPaintEnd = phone ? Math.min(height, Math.max(nextTopEnd, headerEnd)) : nextTopEnd;
             float nextBottomStart = Math.max(0, navigation == null
                     ? height - navigationHeight - dp(48) : y(navigation) - dp(24));
@@ -687,7 +751,7 @@ public final class GlobalChrome {
             setFocusable(false); setClickable(false);
         }
         @Override protected void onDraw(Canvas canvas) {
-            if (owner.closed || !owner.running) return;
+            if (owner.closed || !owner.running || !owner.contentEnabled) return;
             if (owner.source == null && owner.bars.isEmpty()) return;
             owner.status.draw(canvas, 0, (int) Math.ceil(owner.topPaintEnd), true);
             owner.systemNavigation.draw(canvas, (int) Math.floor(owner.bottomStart), owner.height, false);
@@ -730,6 +794,7 @@ public final class GlobalChrome {
         void draw(Canvas canvas, int start, int end, boolean upper) {
             if (end <= start || owner.width <= 0) return;
             int save = canvas.save(); canvas.clipRect(0, start, owner.width, end);
+            int layer = canvas.saveLayer(0, start, owner.width, end, null);
             owner.scene(canvas); // Full-resolution clear pixels at the transition edge.
             float from = upper ? owner.topStart : owner.bottomStart, to = upper ? owner.topEnd : owner.height;
             if (to > from && (upper ? start < to : end > from)) {
@@ -752,7 +817,19 @@ public final class GlobalChrome {
                 paint.setShader(tint);
                 canvas.drawRect(0, start, owner.width, end, paint); paint.setShader(null);
             }
-            canvas.restoreToCount(save);
+            // Fade the whole replay into the live native frame, not just the
+            // downsampled blur. This removes the rectangular replay seam.
+            float fade = owner.dp(8);
+            float edgeFrom = upper ? Math.max(start, end - fade) : start;
+            float edgeTo = upper ? end : Math.min(end, start + fade);
+            if (edgeTo > edgeFrom) {
+                paint.setShader(new LinearGradient(0, edgeFrom, 0, edgeTo,
+                        upper ? 0xffffffff : 0x00ffffff, upper ? 0x00ffffff : 0xffffffff, Shader.TileMode.CLAMP));
+                paint.setXfermode(new android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.DST_IN));
+                canvas.drawRect(0, start, owner.width, end, paint);
+                paint.setXfermode(null); paint.setShader(null);
+            }
+            canvas.restoreToCount(layer); canvas.restoreToCount(save);
         }
         private void capture(int start, int end, float from, float to, boolean upper) {
             int width = Math.min(320, owner.width);

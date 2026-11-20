@@ -15,6 +15,12 @@ public final class Playback {
     private Playback() {}
     public static void initialize(Activity activity) {
         if (!NativeRouting.isFullscreenPlayer(activity)) return;
+        android.graphics.Bitmap transition = NativeRouting.transitionArtwork();
+        int videoId = activity.getResources().getIdentifier("video", "id", activity.getPackageName());
+        android.view.View video = videoId == 0 ? null : activity.findViewById(videoId);
+        if (transition != null && !transition.isRecycled() && video != null)
+            video.setBackground(new android.graphics.drawable.BitmapDrawable(activity.getResources(), transition));
+        NativeRouting.clearTransition();
         try {
             boolean fullscreen = activity.getClass().getField(Device.MOBILE ? "d0" : "i0").getBoolean(activity);
             if (!fullscreen) activity.getClass().getMethod(Device.MOBILE ? "b0" : "Y").invoke(activity);
@@ -126,6 +132,7 @@ public final class Playback {
             oriented.put(activity, media);
     }
     public static void release(Activity activity) {
+        NativeRouting.clearTransition();
         PlayerTitleArt title = titles.remove(activity); if (title != null) title.close();
         oriented.remove(activity);
         synchronized (owners) {
