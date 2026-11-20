@@ -28,12 +28,13 @@ import java.util.concurrent.TimeUnit;
 /** A week of followed releases, carried by the home's own poster gradient. */
 final class FollowCalendarPage extends FrameLayout {
     interface Opener { void open(FollowStore.Entry entry); }
-    private static final int INK = 0xffeef0f5, MUTED = 0xffc3cad5, BLUE = 0xff2994ff;
+    private final int INK, MUTED, BLUE;
     private final Activity activity;
     private final boolean mobile;
     private final Runnable close;
     private final Opener opener;
     private final CalendarBackdrop backdrop;
+    private final LinearLayout body;
     private final LinearLayout list;
     final FollowDateStrip dates;
     private ScrollView scrollView;
@@ -53,19 +54,22 @@ final class FollowCalendarPage extends FrameLayout {
     FollowCalendarPage(Activity activity, boolean mobile, Runnable close, Opener opener) {
         super(activity);
         this.activity = activity; this.mobile = mobile; this.close = close; this.opener = opener;
-        backdrop = new CalendarBackdrop(activity);
-        backdrop.colour(DetailHero.DEFAULT_COLOR); backdrop.hold(0.62f);
+        backdrop = new CalendarBackdrop(activity, activity.getWindow().getDecorView().getBackground());
+        INK = backdrop.light ? 0xff17202b : 0xffeef0f5;
+        MUTED = backdrop.light ? 0xff4d5b6c : 0xffc3cad5;
+        BLUE = backdrop.light ? 0xff126dcc : 0xff2994ff;
         addView(backdrop, new FrameLayout.LayoutParams(-1, -1));
         images = new DetailThumbnails(activity, BackdropSettings.read(activity).proxy, !mobile);
-        LinearLayout body = column();
+        body = column();
         body.setPadding(dp(mobile ? 14 : 24), dp(mobile ? 10 : 6), dp(mobile ? 14 : 24), dp(mobile ? 12 : 4));
         addView(body, new FrameLayout.LayoutParams(-1, -1));
 
-        FrameLayout header = new FrameLayout(activity);
-        TextView title = label("追剧日历", mobile ? 20 : 18, INK); title.setGravity(Gravity.CENTER);
-        header.addView(title, new FrameLayout.LayoutParams(-1, -1));
+        LinearLayout header = row();
+        TextView title = label("追更日历", mobile ? 20 : 18, INK); title.setGravity(Gravity.CENTER_VERTICAL);
+        title.setSingleLine(true); title.setEllipsize(android.text.TextUtils.TruncateAt.END);
         TextView back = control("‹", "返回首页", mobile ? 30 : 22, this::requestClose);
-        header.addView(back, new FrameLayout.LayoutParams(dp(mobile ? 40 : 32), -1, Gravity.LEFT));
+        header.addView(back, new LinearLayout.LayoutParams(dp(mobile ? 40 : 32), -1));
+        header.addView(title, new LinearLayout.LayoutParams(0, -1, 1));
         LinearLayout actions = row();
         actions.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
         todayControl = control("今天", "回到今天", mobile ? 13 : 11, () -> {
@@ -73,14 +77,16 @@ final class FollowCalendarPage extends FrameLayout {
         });
         todayControl.setTextColor(MUTED);
         calendarControl = control("日历", "选择日期", mobile ? 13 : 11, this::pickDate);
-        actions.addView(control("管理","管理追更",mobile?13:11,this::manage),new LinearLayout.LayoutParams(dp(48),-1));
-        actions.addView(todayControl, new LinearLayout.LayoutParams(dp(48), -1));
-        LinearLayout.LayoutParams calendarParams = new LinearLayout.LayoutParams(dp(48), -1);
-        calendarParams.leftMargin = dp(3); actions.addView(calendarControl, calendarParams);
-        header.addView(actions, new FrameLayout.LayoutParams(dp(151), -1, Gravity.RIGHT));
+        TextView manageControl = control("管理","管理追更",mobile?13:11,this::manage);
+        for (TextView control : new TextView[]{manageControl, todayControl, calendarControl})
+            actions.addView(control, mobile ? new LinearLayout.LayoutParams(0, -1, 1) : new LinearLayout.LayoutParams(dp(52), -1));
+        manageControl.setNextFocusRightId(identify(todayControl));
+        todayControl.setNextFocusLeftId(identify(manageControl));
         todayControl.setNextFocusRightId(identify(calendarControl));
         calendarControl.setNextFocusLeftId(identify(todayControl));
         body.addView(header, new LinearLayout.LayoutParams(-1, dp(mobile ? 42 : 30)));
+        if (mobile) body.addView(actions, new LinearLayout.LayoutParams(-1, dp(36)));
+        else header.addView(actions, new LinearLayout.LayoutParams(-2, -1));
 
         LinearLayout week = row();
         week.setPadding(0, dp(mobile ? 8 : 1), 0, 0);
@@ -88,6 +94,7 @@ final class FollowCalendarPage extends FrameLayout {
             selected.setTimeInMillis(day.getTimeInMillis());
             renderList();
         });
+        dates.palette(INK, MUTED, BLUE);
         week.addView(dates, new LinearLayout.LayoutParams(-1, dp(mobile ? 78 : 46)));
         dates.upTarget(todayControl);
         body.addView(week, new LinearLayout.LayoutParams(-1, -2));
@@ -106,8 +113,16 @@ final class FollowCalendarPage extends FrameLayout {
         render(); load();
     }
 
-    void colour(int value) { backdrop.colour(value); shadeCards(); }
-    void hold(float value) { backdrop.hold(value); shadeCards(); }
+    boolean lightBackground() { return backdrop.light; }
+    void viewportInsets(int top, int bottom) {
+        int side = dp(mobile ? 14 : 24), upper = top + dp(mobile ? 10 : 6), lower = bottom + dp(mobile ? 12 : 4);
+        if (body.getPaddingTop() != upper || body.getPaddingBottom() != lower)
+            body.setPadding(side, upper, side, lower);
+    }
+    @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        if (list != null && (w != oldw || h != oldh)) post(() -> { if (!closed) render(); });
+    }
 
     @Override public boolean dispatchKeyEvent(KeyEvent event) {
         if (!mobile && picker != null) return picker.dispatchKeyEvent(event);
@@ -263,7 +278,7 @@ final class FollowCalendarPage extends FrameLayout {
     }
 
     private int gridColumns(int available, int gap) {
-        if (mobile) return Math.max(1, Math.min(5, (available + gap) / dp(152)));
+        if (mobile) return 1;
         int byWidth = Math.max(1, Math.min(6, (available + gap) / dp(108)));
         int viewport = scrollView == null ? 0 : scrollView.getHeight();
         if (viewport <= 0 && getHeight() > 0) viewport = Math.max(dp(120), getHeight() - dp(90));
@@ -343,7 +358,7 @@ final class FollowCalendarPage extends FrameLayout {
         FollowFeed.Airing airing = group.get(0);
         LinearLayout card = row(); card.setPadding(dp(9), dp(9), dp(13), dp(9));
         card.setOrientation(mobile ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
-        card.setBackground(round(0x60151d29,14)); card.setFocusable(true); card.setFocusableInTouchMode(false); card.setClickable(true);
+        card.setBackground(round(backdrop.light ? 0xaaffffff : 0x60151d29,14)); card.setFocusable(true); card.setFocusableInTouchMode(false); card.setClickable(true);
         if (card.getId() == View.NO_ID) card.setId(View.generateViewId());
         card.setContentDescription(airing.entry.title + " " + episodesLabel(group));
         if (opener != null) card.setOnClickListener(v -> opener.open(airing.entry));

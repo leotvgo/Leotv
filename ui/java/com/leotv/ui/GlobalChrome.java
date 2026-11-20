@@ -36,6 +36,30 @@ import java.util.Map;
 public final class GlobalChrome {
     private static java.lang.ref.WeakReference<Application> installed;
     private static Drawable hostBackdrop;
+    private static NavigationSnapshot navigationSnapshot;
+    private static int pendingHomeItem;
+
+    /** Same native navigation widget, menu and tint as the host home. */
+    public static View calendarNavigation(Activity activity) {
+        NavigationSnapshot snapshot = navigationSnapshot;
+        if(snapshot==null)try{
+            Class<?> widget=activity.getClassLoader().loadClass("com.google.android.material.bottomnavigation.BottomNavigationView");
+            View navigation=(View)widget.getConstructor(android.content.Context.class,android.util.AttributeSet.class).newInstance(activity,null);
+            int resource=activity.getResources().getIdentifier("menu_nav","menu",activity.getPackageName());
+            android.view.Menu menu=(android.view.Menu)widget.getMethod("getMenu").invoke(navigation);
+            new android.view.MenuInflater(navigation.getContext()).inflate(resource,menu);
+            if(menu.size()==3)snapshot=new NavigationSnapshot(navigation,menu,View.generateViewId());
+        }catch(ReflectiveOperationException|RuntimeException unavailable){}
+        return snapshot == null ? null : snapshot.create(activity);
+    }
+
+    private static void returnHome(Activity activity, int item) {
+        pendingHomeItem = item;
+        activity.startActivity(new android.content.Intent().setClassName(activity.getPackageName(),
+                "com.fongmi.android.tv.ui.activity.HomeActivity")
+                .addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP | android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP));
+        activity.finish();
+    }
 
     public static synchronized Drawable loadingBackground(android.content.Context context) {
         return hostBackdrop == null || hostBackdrop.getConstantState() == null ? null
@@ -284,6 +308,22 @@ public final class GlobalChrome {
 
         private void rememberBackdrop() {
             if (!activity.getClass().getName().equals("com.fongmi.android.tv.ui.activity.HomeActivity")) return;
+            View shared = null;
+            for (int i = content.getChildCount() - 1; i >= 0; i--) {
+                View candidate = content.getChildAt(i);
+                if (shown(candidate) && "leotv_shared_backdrop".equals(candidate.getTag())) { shared = candidate; break; }
+            }
+            if (shared != null && shared.getWidth() > 0 && shared.getHeight() > 0) {
+                try {
+                    Bitmap pixels = Bitmap.createBitmap(shared.getWidth(), shared.getHeight(), Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(pixels);
+                    ArrayList<ImageSwap> swaps = new ArrayList<>();
+                    try { prepareImages(shared, swaps); shared.draw(canvas); }
+                    finally { for (int i = swaps.size() - 1; i >= 0; i--) swaps.get(i).restore(); }
+                    synchronized (GlobalChrome.class) { hostBackdrop = new android.graphics.drawable.BitmapDrawable(content.getResources(), pixels); }
+                    return;
+                } catch (RuntimeException | OutOfMemoryError unavailable) { }
+            }
             Drawable chosen = backdropImage(content);
             if (chosen == null && root != null) chosen = root.getBackground();
             if (chosen == null || chosen instanceof Frost) chosen = decor.getBackground();
@@ -446,7 +486,7 @@ public final class GlobalChrome {
                     entry.getValue().discard(); iterator.remove();
                 }
             }
-            for (View bar : bars) borrow(bar, true);
+            for (View bar : bars) if (bar != navigation) borrow(bar, true);
             if (phone) {
                 ArrayList<View> front = new ArrayList<>();
                 if (toolbar != null) front.add(headerPlane(toolbar));
@@ -490,7 +530,7 @@ public final class GlobalChrome {
             dirty |= nextWidth != width || nextHeight != height;
             width = nextWidth; height = nextHeight; content.getLocationOnScreen(origin);
             View nextPager = find("pager"), nextPage = pageAtCentre(nextPager);
-            if (!contentScreen(nextPager)) { disableContent(); return true; }
+            if (!contentScreen(nextPager)) { disableContent(); following.transparent(); return true; }
             contentEnabled = true;
             int nextIndex = currentPage(nextPager), nextOffset = nextPager == null ? 0 : nextPager.getScrollX();
             boolean categoryReset = pageIndex >= 0 && pageIndex != nextIndex;
@@ -897,18 +937,33 @@ public final class GlobalChrome {
         final Controller owner;
         final int id=View.generateViewId();
         android.widget.ImageButton button;
+        View nativeNavigation;
+        Drawable originalBackground;
+        float originalElevation;
+        android.view.ViewOutlineProvider originalOutline;
+        final Drawable clearBackground = new ColorDrawable(Color.TRANSPARENT);
         java.lang.ref.WeakReference<View> previousFocus=new java.lang.ref.WeakReference<>(null);
         Window.Callback installed;
         boolean closed,left;
         FollowingNavigation(Controller owner){this.owner=owner;}
-        void open(){owner.activity.startActivity(new android.content.Intent().setClassName(owner.activity.getPackageName(),"com.leotv.detail.FollowingActivity"));hide();}
+        void open(){owner.rememberBackdrop();owner.activity.startActivity(new android.content.Intent().setClassName(owner.activity.getPackageName(),"com.leotv.detail.FollowingActivity"));hide();}
+        void transparent(){
+            if(!owner.phone)return;
+            View view=owner.find("navigation");if(view==null)return;
+            if(nativeNavigation!=view){nativeNavigation=view;originalBackground=view.getBackground();originalElevation=view.getElevation();originalOutline=view.getOutlineProvider();}
+            if(view.getBackground()!=clearBackground)view.setBackground(clearBackground);
+            view.setElevation(0);view.setOutlineProvider(null);
+        }
         void update(){
             if(closed)return;
             if(owner.phone){
                 View navigation=owner.find("navigation");if(navigation==null)return;
                 try{
                     android.view.Menu menu=(android.view.Menu)navigation.getClass().getMethod("getMenu").invoke(navigation);
-                    if(menu.findItem(id)!=null||menu.size()!=3)return;
+                    if(pendingHomeItem!=0&&menu.findItem(pendingHomeItem)!=null){int item=pendingHomeItem;pendingHomeItem=0;navigation.getClass().getMethod("setSelectedItemId",int.class).invoke(navigation,item);}
+                    transparent();
+                    if(menu.findItem(id)!=null){if(navigationSnapshot==null||navigationSnapshot.source.get()!=navigation)navigationSnapshot=new NavigationSnapshot(navigation,menu,id);return;}
+                    if(menu.size()!=3)return;
                     int[] ids=new int[3];CharSequence[] titles=new CharSequence[3];Drawable[] icons=new Drawable[3];boolean[] checked=new boolean[3];
                     for(int i=0;i<3;i++){android.view.MenuItem item=menu.getItem(i);ids[i]=item.getItemId();titles[i]=item.getTitle();icons[i]=item.getIcon();checked[i]=item.isChecked();}
                     menu.clear();
@@ -916,6 +971,7 @@ public final class GlobalChrome {
                         if(i==1){menu.add(0,id,i,"追更").setIcon(new CalendarIcon(owner.activity)).setCheckable(true).setOnMenuItemClickListener(item->{open();return true;});}
                         else{int old=i==0?0:i-1;menu.add(0,ids[old],i,titles[old]).setIcon(icons[old]).setCheckable(true).setChecked(checked[old]);}
                     }
+                    navigationSnapshot=new NavigationSnapshot(navigation,menu,id);
                 }catch(ReflectiveOperationException unavailable){}
                 return;
             }
@@ -949,7 +1005,46 @@ public final class GlobalChrome {
             button.setVisibility(View.VISIBLE);button.requestFocus();
         }
         void hide(){if(button!=null)button.setVisibility(View.GONE);}
-        void close(){closed=true;hide();if(button!=null&&button.getParent()==owner.content)owner.content.removeView(button);}
+        void close(){closed=true;hide();if(button!=null&&button.getParent()==owner.content)owner.content.removeView(button);if(nativeNavigation!=null){if(nativeNavigation.getBackground()==clearBackground)nativeNavigation.setBackground(originalBackground);nativeNavigation.setElevation(originalElevation);nativeNavigation.setOutlineProvider(originalOutline);}}
+    }
+
+    private static final class NavigationSnapshot {
+        final java.lang.ref.WeakReference<View> source;
+        final Class<?> widget;
+        final android.content.res.Resources.Theme theme;
+        final int[] ids;
+        final CharSequence[] titles;
+        final Drawable[] icons;
+        final int calendar, height;
+        final Map<String,Object> styles=new java.util.LinkedHashMap<>();
+        NavigationSnapshot(View navigation,android.view.Menu menu,int calendar){
+            source=new java.lang.ref.WeakReference<>(navigation);widget=navigation.getClass();this.calendar=calendar;
+            height=Math.max(navigation.getMinimumHeight(),Math.round(56*navigation.getResources().getDisplayMetrics().density));
+            theme=navigation.getResources().newTheme();theme.setTo(navigation.getContext().getTheme());
+            boolean insert=menu.size()==3;ids=new int[menu.size()+(insert?1:0)];titles=new CharSequence[ids.length];icons=new Drawable[ids.length];
+            for(int i=0;i<ids.length;i++){
+                if(insert&&i==1){ids[i]=calendar;titles[i]="追更";icons[i]=new CalendarIcon(navigation.getContext());continue;}
+                android.view.MenuItem item=menu.getItem(insert&&i>1?i-1:i);ids[i]=item.getItemId();titles[i]=item.getTitle();Drawable icon=item.getIcon();icons[i]=icon==null?null:icon.getConstantState()==null?icon:icon.getConstantState().newDrawable(navigation.getResources()).mutate();
+            }
+            for(String style:new String[]{"ItemIconTintList","ItemTextColor","ItemRippleColor","ItemActiveIndicatorColor","LabelVisibilityMode","ItemIconSize","ItemPaddingTop","ItemPaddingBottom","ItemTextAppearanceActive","ItemTextAppearanceInactive"})try{Object value=widget.getMethod("get"+style).invoke(navigation);if(value!=null)styles.put(style,value);}catch(ReflectiveOperationException unavailable){}
+        }
+        View create(Activity activity){
+            try{
+                android.view.ContextThemeWrapper context=new android.view.ContextThemeWrapper(activity,0);context.getTheme().setTo(theme);
+                View view;
+                try{view=(View)widget.getConstructor(android.content.Context.class).newInstance(context);}
+                catch(NoSuchMethodException twoArguments){view=(View)widget.getConstructor(android.content.Context.class,android.util.AttributeSet.class).newInstance(context,null);}
+                android.view.Menu menu=(android.view.Menu)widget.getMethod("getMenu").invoke(view);
+                for(Map.Entry<String,Object> style:styles.entrySet())try{Object value=style.getValue();widget.getMethod("set"+style.getKey(),value instanceof Integer?int.class:android.content.res.ColorStateList.class).invoke(view,value);}catch(ReflectiveOperationException unavailable){}
+                for(int i=0;i<ids.length;i++){
+                    final int selected=ids[i];Drawable icon=icons[i];if(icon!=null&&icon.getConstantState()!=null)icon=icon.getConstantState().newDrawable(activity.getResources()).mutate();
+                    menu.add(0,selected,i,titles[i]).setIcon(icon).setCheckable(true).setChecked(selected==calendar)
+                            .setOnMenuItemClickListener(item->{if(selected!=calendar)returnHome(activity,selected);return true;});
+                }
+                view.setTag("leotv_calendar_navigation");view.setMinimumHeight(height);view.setElevation(0);view.setOutlineProvider(null);view.setBackgroundColor(Color.TRANSPARENT);view.setFitsSystemWindows(false);
+                return view;
+            }catch(ReflectiveOperationException|RuntimeException unavailable){return null;}
+        }
     }
 
     private static final class CalendarIcon extends Drawable {

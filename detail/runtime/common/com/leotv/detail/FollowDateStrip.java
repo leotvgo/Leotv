@@ -16,7 +16,8 @@ import java.util.*;
 /** A continuous ribbon of days. No page snapping and no fling after the finger stops. */
 final class FollowDateStrip extends HorizontalScrollView {
     interface Selection { void selected(Calendar day); }
-    private static final int DAYS = 121, MID = DAYS / 2, INK = 0xffeef0f5, BLUE = 0xff2994ff;
+    private static final int DAYS = 121, MID = DAYS / 2;
+    private int INK = 0xffeef0f5, MUTED = 0xffc3cad5, BLUE = 0xff2994ff;
     private final LinearLayout strip;
     private final Selection changed;
     private final boolean mobile;
@@ -38,6 +39,7 @@ final class FollowDateStrip extends HorizontalScrollView {
         rebuild(selected);
     }
     void dates(Set<String> values) { updates.clear(); updates.addAll(values); repaint(); }
+    void palette(int ink, int muted, int blue) { INK = ink; MUTED = muted; BLUE = blue; for (Cell cell : cells) cell.dot.setBackground(round(BLUE, 3)); repaint(); }
     void show(Calendar day) {
         if (same(day,selected) && !cells.isEmpty()) { repaint(); return; }
         selected.setTimeInMillis(day.getTimeInMillis()); rebuild(selected);
@@ -186,7 +188,7 @@ final class FollowDateStrip extends HorizontalScrollView {
         void mark(){
             boolean current=same(selected,day),today=same(Calendar.getInstance(),day);setSelected(current);
             number.setText(today?"今":String.valueOf(day.get(Calendar.DAY_OF_MONTH)));number.setTextColor(current?0xffffffff:today?BLUE:INK);
-            number.setBackground(current?round(BLUE,20):null);weekday.setTextColor(today?BLUE:0xffc3cad5);
+            number.setBackground(current?round(BLUE,20):null);weekday.setTextColor(today?BLUE:MUTED);
             dot.setVisibility(updates.contains(format(day,"yyyy-MM-dd"))?VISIBLE:INVISIBLE);
         }
     }

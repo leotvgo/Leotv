@@ -87,6 +87,12 @@ def check_contract(root, variant, project=None):
     contracts[builder] = (['<init>(Landroid/content/Context;)V', 'create()Landroidx/appcompat/app/g;'], [])
     if mobile:
         contracts[builder][0].append('f([Ljava/lang/CharSequence;ILandroid/content/DialogInterface$OnClickListener;)V')
+        contracts['com/google/android/material/bottomnavigation/BottomNavigationView'] = (
+            ['<init>(Landroid/content/Context;Landroid/util/AttributeSet;)V'], [])
+        contracts['com/google/android/material/navigation/q'] = (
+            ['getMenu()Landroid/view/Menu;', 'setSelectedItemId(I)V',
+             'getItemIconTintList()Landroid/content/res/ColorStateList;', 'setItemIconTintList(Landroid/content/res/ColorStateList;)V',
+             'getItemTextColor()Landroid/content/res/ColorStateList;', 'setItemTextColor(Landroid/content/res/ColorStateList;)V'], [])
     contracts['androidx/appcompat/app/f'] = ([
         'getContext()Landroid/content/Context;',
         'setTitle(Ljava/lang/CharSequence;)Landroidx/appcompat/app/f;',
