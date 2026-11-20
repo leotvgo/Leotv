@@ -1,10 +1,10 @@
-# Leotv — 普通版 5.1.13 开发工程
+# Leotv — 普通版 5.1.14 开发工程
 
 本工作区以现有普通版为功能和 Android 6 基准。当前已得到四个样本的可重建 smali 工程，
 普通 TV 的完整 Java 阅读视图，以及第一组能够独立编译的 Java 恢复代码。
 完整 Java/Gradle 应用工程仍在恢复；不能将这里的 Java 阅读视图直接当作已可编译的原始工程。
 
-当前应用名为 **Leotv**，版本 **5.1.13 / 523**，独立安装包名 **com.leotv.app**。
+当前应用名为 **Leotv**，版本 **5.1.14 / 524**，独立安装包名 **com.leotv.app**。
 启动图标、TV 横幅、默认线路动图、关于页与全局常态透明/实时渐变模糊已接入专用构建。
 独立原生详情页、个性设置内的本端详情主题/TMDB 配置，以及手机按视频尺寸自动旋转已接入。
 5.1.10 修正缓存分类页的滚动取景、上下渐变模糊和分类控件层次；详情海报铺到窗口顶端，TV 详情固定横屏。
@@ -12,9 +12,10 @@
 5.1.11 按手机原 smali 修正弹窗类映射与行间距，缩短手机顶部模糊过渡，并清理页面切换的旧图像。
 5.1.12 修正首触与主题选择、平滑模糊强度及分类切换取景；详情加载跟随宿主背景，播放器控制栏左下角显示已匹配的标题艺术字。
 5.1.13 将渐变模糊限定于线路内容页，退出时恢复原上下栏；分类切换归位，详情到播放使用当前画面衔接。
+5.1.14 手机顶部移除模糊与内容条重绘，仅在原生状态栏附近淡出到宿主壁纸；保留原生窗口避让，修正切换设置后的整体下移。
 资源入口统一进入详情页；选择剧集后进入保留的全屏播放器，收藏和续播继续使用原数据库模型。
 普通版 5.1.6 保留为不变的恢复基准；详见
-[Leotv 5.1.8 开发记录](docs/LEOTV-5.1.8-20261119.md)、[5.1.9 UI 修正记录](docs/LEOTV-5.1.9-UI-CORRECTIONS-20261119.md)和[5.1.10 修正记录](docs/LEOTV-5.1.10-EDGE-AND-SETTINGS-20261119.md)和[5.1.11 手机修正记录](docs/LEOTV-5.1.11-PHONE-CHROME-20261120.md)和[5.1.12 交互与艺术字记录](docs/LEOTV-5.1.12-INTERACTION-AND-ARTWORK-20261120.md)和[5.1.13 内容区与播放衔接记录](docs/LEOTV-5.1.13-CONTENT-ONLY-BLUR-20261120.md)。
+[Leotv 5.1.8 开发记录](docs/LEOTV-5.1.8-20261119.md)、[5.1.9 UI 修正记录](docs/LEOTV-5.1.9-UI-CORRECTIONS-20261119.md)和[5.1.10 修正记录](docs/LEOTV-5.1.10-EDGE-AND-SETTINGS-20261119.md)和[5.1.11 手机修正记录](docs/LEOTV-5.1.11-PHONE-CHROME-20261120.md)和[5.1.12 交互与艺术字记录](docs/LEOTV-5.1.12-INTERACTION-AND-ARTWORK-20261120.md)和[5.1.13 内容区与播放衔接记录](docs/LEOTV-5.1.13-CONTENT-ONLY-BLUR-20261120.md)和[5.1.14 手机顶部淡出记录](docs/LEOTV-5.1.14-PHONE-TOP-FADE-20261120.md)。
 
 项目根目录为 `/Users/leiatai/Downloads/leowork/Leotv`；后续请从此目录独立开发。
 GitHub：[leotvgo/Leotv](https://github.com/leotvgo/Leotv)。
@@ -79,7 +80,7 @@ gh workflow run ordinary-build.yml --repo leotvgo/Leotv --ref main
 工作区没有复制用户运行配置。历史普通版 5.1.6 的四个固定签名测试 APK 已发布，
 其中手机64位和TV32位由用户确认可安装使用；新 Leotv 的设备验收需另行记录。
 
-## 构建 Leotv 5.1.13
+## 构建 Leotv 5.1.14
 
 ```sh
 python3 tools/build_branded.py --variant tv-v7a
@@ -92,7 +93,7 @@ gradle --no-daemon -p research/detail-check -Pclient=mobile test
 gradle --no-daemon -p research/detail-check -Pclient=tv test
 ```
 
-本地输出为 `artifacts/leotv-5.1.13-<variant>-unsigned.apk` 及审计报告。
+本地输出为 `artifacts/leotv-5.1.14-<variant>-unsigned.apk` 及审计报告。
 GitHub 使用同一构建器，再以既有 APK 专用固定密钥签名；产物为 `leotv-<variant>.apk`。
 新包名、provider、私有权限及媒体控制标识独立，可与原 OK影视同时安装。
 原组件类名保留，以保护 JNI、反射及站点 JAR 的 ABI。

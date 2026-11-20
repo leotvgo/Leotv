@@ -32,7 +32,7 @@ import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-/** Native chrome shared by every Activity/site; its controls and content remain in their own tree. */
+/** Route-content effects; native controls and mobile window insets remain owned by the host. */
 public final class GlobalChrome {
     private static java.lang.ref.WeakReference<Application> installed;
     private static Drawable hostBackdrop;
@@ -96,10 +96,13 @@ public final class GlobalChrome {
         final boolean phone;
         final Map<View, Background> backgrounds = new IdentityHashMap<>();
         final Map<ViewGroup, Clip> clips = new IdentityHashMap<>();
+        final Map<View, Depth> depths = new IdentityHashMap<>();
         final ArrayList<View> bars = new ArrayList<>();
         final int[] origin = new int[2], at = new int[2];
         final Rect visible = new Rect();
         final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        Shader topFadeMask;
+        float topFadeFrom = Float.NaN, topFadeTo = Float.NaN;
         final Band status = new Band(this), systemNavigation = new Band(this);
         int initialTop, initialBottom;
         int originalUi, originalFlags, originalStatus, originalNavigation;
@@ -163,9 +166,9 @@ public final class GlobalChrome {
             clearSamples();
             for (Background background : backgrounds.values()) background.discard(); backgrounds.clear(); bars.clear();
             for (NativeViewport borrowed : viewports.values()) borrowed.close(); viewports.clear(); viewport = null;
-            restoreClips(); if (padding != null) padding.restore(); padding = null;
+            restoreClips(); restoreDepths(); if (padding != null) padding.restore(); padding = null;
             if (portal.getParent() == content) content.removeView(portal);
-            if (windowAdjusted) {
+            if (windowAdjusted && !phone) {
                 Window window = activity.getWindow(); decor.setSystemUiVisibility(originalUi);
                 window.setFlags(originalFlags, WINDOW_FLAGS); window.setStatusBarColor(originalStatus); window.setNavigationBarColor(originalNavigation);
                 if (originalStatusContrast != null) contrast(window, "setStatusBarContrastEnforced", originalStatusContrast);
@@ -437,6 +440,37 @@ public final class GlobalChrome {
                 }
             }
             for (View bar : bars) borrow(bar, true);
+            if (phone) {
+                ArrayList<View> front = new ArrayList<>();
+                if (toolbar != null) front.add(headerPlane(toolbar));
+                for (View bar : bars) if (bar != navigation && !front.contains(headerPlane(bar))) front.add(headerPlane(bar));
+                Iterator<Map.Entry<View, Depth>> depth = depths.entrySet().iterator();
+                while (depth.hasNext()) {
+                    Map.Entry<View, Depth> entry = depth.next();
+                    if (!front.contains(entry.getKey())) { entry.getValue().restore(); depth.remove(); }
+                }
+                for (View view : front) {
+                    Depth state = depths.get(view);
+                    if (state == null) { state = new Depth(view); depths.put(view, state); }
+                    state.apply(dp(1));
+                }
+            }
+        }
+
+        private View headerPlane(View bar) {
+            for (View current = bar; current != null && current != content;
+                    current = current.getParent() instanceof View ? (View) current.getParent() : null)
+                for (Class<?> type = current.getClass(); type != null; type = type.getSuperclass())
+                    if (type.getName().equals("com.google.android.material.appbar.AppBarLayout")) return current;
+            return bar;
+        }
+
+        private void exposeViewport(View view) {
+            for (ViewParent parent = view.getParent(); parent instanceof ViewGroup && parent != content; parent = parent.getParent()) {
+                ViewGroup group = (ViewGroup) parent; Clip state = clips.get(group);
+                if (state == null) { state = new Clip(group); clips.put(group, state); }
+                state.apply();
+            }
         }
 
         @Override public boolean onPreDraw() {
@@ -484,30 +518,37 @@ public final class GlobalChrome {
                 // insets now, before requesting an edge-to-edge window.
                 initialTop = origin[1];
                 initialBottom = Math.max(0, decor.getHeight() - origin[1] - height);
-                if (root != null) padding = new Padding(root);
-                Window window = activity.getWindow();
-                originalUi = decor.getSystemUiVisibility(); originalFlags = window.getAttributes().flags;
-                originalStatus = window.getStatusBarColor(); originalNavigation = window.getNavigationBarColor();
-                originalStatusContrast = contrast(window, "setStatusBarContrastEnforced", null);
-                originalNavigationContrast = contrast(window, "setNavigationBarContrastEnforced", null);
-                contrast(window, "setStatusBarContrastEnforced", false);
-                contrast(window, "setNavigationBarContrastEnforced", false);
-                if (Build.VERSION.SDK_INT >= 30) {
-                    try { Window.class.getMethod("setDecorFitsSystemWindows", boolean.class).invoke(window, false); }
-                    catch (ReflectiveOperationException unavailable) { }
+                // The ordinary mobile base already enables edge-to-edge and
+                // dispatches native insets. Toggling decor fitting here makes
+                // those insets apply twice when switching to settings/back.
+                if (!phone) {
+                    if (root != null) padding = new Padding(root);
+                    Window window = activity.getWindow();
+                    originalUi = decor.getSystemUiVisibility(); originalFlags = window.getAttributes().flags;
+                    originalStatus = window.getStatusBarColor(); originalNavigation = window.getNavigationBarColor();
+                    originalStatusContrast = contrast(window, "setStatusBarContrastEnforced", null);
+                    originalNavigationContrast = contrast(window, "setNavigationBarContrastEnforced", null);
+                    contrast(window, "setStatusBarContrastEnforced", false);
+                    contrast(window, "setNavigationBarContrastEnforced", false);
+                    if (Build.VERSION.SDK_INT >= 30) {
+                        try { Window.class.getMethod("setDecorFitsSystemWindows", boolean.class).invoke(window, false); }
+                        catch (ReflectiveOperationException unavailable) { }
+                    }
+                    window.setFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS, WINDOW_FLAGS);
+                    window.setStatusBarColor(Color.TRANSPARENT); window.setNavigationBarColor(Color.TRANSPARENT);
+                    decor.setSystemUiVisibility(decor.getSystemUiVisibility() | LAYOUT_FLAGS);
+                    decor.requestApplyInsets();
                 }
-                window.setFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS, WINDOW_FLAGS);
-                window.setStatusBarColor(Color.TRANSPARENT); window.setNavigationBarColor(Color.TRANSPARENT);
-                decor.setSystemUiVisibility(decor.getSystemUiVisibility() | LAYOUT_FLAGS);
-                decor.requestApplyInsets();
                 windowAdjusted = true;
-                return false;
+                if (!phone) return false;
             }
-            Window window = activity.getWindow();
-            if (window.getStatusBarColor() != Color.TRANSPARENT) window.setStatusBarColor(Color.TRANSPARENT);
-            if (window.getNavigationBarColor() != Color.TRANSPARENT) window.setNavigationBarColor(Color.TRANSPARENT);
-            int ui = decor.getSystemUiVisibility() | LAYOUT_FLAGS;
-            if (ui != decor.getSystemUiVisibility()) decor.setSystemUiVisibility(ui);
+            if (!phone) {
+                Window window = activity.getWindow();
+                if (window.getStatusBarColor() != Color.TRANSPARENT) window.setStatusBarColor(Color.TRANSPARENT);
+                if (window.getNavigationBarColor() != Color.TRANSPARENT) window.setNavigationBarColor(Color.TRANSPARENT);
+                int ui = decor.getSystemUiVisibility() | LAYOUT_FLAGS;
+                if (ui != decor.getSystemUiVisibility()) decor.setSystemUiVisibility(ui);
+            }
             if (root != null) {
                 int index = content.indexOfChild(root);
                 if (portal.getParent() != content) {
@@ -515,12 +556,12 @@ public final class GlobalChrome {
                     content.addView(portal, new FrameLayout.LayoutParams(-1, -1));
                 }
                 portal.setElevation(dp(64));
-                if (padding == null || padding.view != root) {
+                if (!phone && (padding == null || padding.view != root)) {
                     if (padding != null) padding.restore();
                     padding = new Padding(root);
                 }
                 int bottom = Math.max(0, decor.getHeight() - origin[1] - height);
-                if (!root.getFitsSystemWindows() && padding.apply(Math.max(0, initialTop - origin[1]), Math.max(0, initialBottom - bottom))) {
+                if (padding != null && !root.getFitsSystemWindows() && padding.apply(Math.max(0, initialTop - origin[1]), Math.max(0, initialBottom - bottom))) {
                     dirty = discovery = true;
                     return false; // Relayout once, keeping native button coordinates.
                 }
@@ -533,7 +574,7 @@ public final class GlobalChrome {
             float nextTopStart = Math.max(0, statusHeight - origin[1]);
             float headerEnd = toolbar == null ? nextTopStart : y(toolbar) + toolbar.getHeight();
             if (category != null) headerEnd = Math.max(headerEnd, y(category) + category.getHeight());
-            float nextTopEnd = Math.min(height, phone ? nextTopStart + dp(4) : Math.max(nextTopStart, headerEnd) + dp(16));
+            float nextTopEnd = Math.min(height, phone ? nextTopStart + dp(6) : Math.max(nextTopStart, headerEnd) + dp(16));
             float nextPaintEnd = phone ? Math.min(height, Math.max(nextTopEnd, headerEnd)) : nextTopEnd;
             float nextBottomStart = Math.max(0, navigation == null
                     ? height - navigationHeight - dp(48) : y(navigation) - dp(24));
@@ -558,7 +599,7 @@ public final class GlobalChrome {
                 }
                 viewport = null;
                 if (source instanceof ViewGroup) {
-                    if (!singleChildScroller(source) && source.getParent() instanceof ViewGroup
+                    if ((!singleChildScroller(source) || phone) && source.getParent() instanceof ViewGroup
                             && source.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
                         viewport = viewports.get(source);
                         if (viewport == null) {
@@ -571,6 +612,10 @@ public final class GlobalChrome {
                 discovery = false;
             }
             if (source != null) {
+                // Draw the real native list all the way to the status bar.
+                // The AppBar stays above it through native Z order, so there
+                // is no sharp scene-copy rectangle beneath the category row.
+                if (phone) exposeViewport(source);
                 if (viewport != null) {
                     viewport.viewport.getLocationOnScreen(at);
                     int above = Math.max(0, at[1] - origin[1]);
@@ -595,6 +640,30 @@ public final class GlobalChrome {
             for (View view = content; view != null; view = view.getParent() instanceof View ? (View) view.getParent() : null)
                 ancestors.add(view);
             for (int i = ancestors.size() - 1; i >= 0; i--) drawBackground(canvas, ancestors.get(i));
+        }
+
+        void topFade(Canvas canvas) {
+            if (statusHeight <= 0 || topStart <= 0 || topEnd <= 0) return;
+            int save = canvas.save(); canvas.clipRect(0, 0, width, topEnd);
+            int layer = canvas.saveLayer(0, 0, width, topEnd, null);
+            // Blend into the current host wallpaper, without capturing or
+            // replaying a rectangular strip of the scrolling content.
+            background(canvas);
+            float from = Math.max(0, topStart - dp(4));
+            if (topFadeMask == null || topFadeFrom != from || topFadeTo != topEnd) {
+                int[] colours = new int[9]; float[] positions = new float[9];
+                for (int i = 0; i < colours.length; i++) {
+                    float t = i / 8f; positions[i] = t;
+                    colours[i] = Color.argb(Math.round(255 * (1 - t * t * (3 - 2 * t))), 255, 255, 255);
+                }
+                topFadeMask = new LinearGradient(0, from, 0, topEnd, colours, positions, Shader.TileMode.CLAMP);
+                topFadeFrom = from; topFadeTo = topEnd;
+            }
+            paint.setShader(topFadeMask);
+            paint.setXfermode(new android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.DST_IN));
+            canvas.drawRect(0, 0, width, topEnd, paint);
+            paint.setXfermode(null); paint.setShader(null);
+            canvas.restoreToCount(layer); canvas.restoreToCount(save);
         }
 
         void scene(Canvas canvas) {
@@ -700,6 +769,10 @@ public final class GlobalChrome {
             for (Clip clip : clips.values()) clip.restore();
             clips.clear();
         }
+        private void restoreDepths() {
+            for (Depth depth : depths.values()) depth.restore();
+            depths.clear();
+        }
         void close() {
             if (closed) return;
             pause();
@@ -709,7 +782,7 @@ public final class GlobalChrome {
             for (NativeViewport borrowed : viewports.values()) borrowed.close();
             viewports.clear(); viewport = null;
             softwareImages.clear();
-            restoreClips();
+            restoreClips(); restoreDepths();
             if (padding != null) padding.restore();
             if (portal.getParent() == content) content.removeView(portal);
             status.release(); systemNavigation.release();
@@ -753,11 +826,11 @@ public final class GlobalChrome {
         @Override protected void onDraw(Canvas canvas) {
             if (owner.closed || !owner.running || !owner.contentEnabled) return;
             if (owner.source == null && owner.bars.isEmpty()) return;
-            owner.status.draw(canvas, 0, (int) Math.ceil(owner.topPaintEnd), true);
+            if (owner.phone) owner.topFade(canvas);
+            else owner.status.draw(canvas, 0, (int) Math.ceil(owner.topPaintEnd), true);
             owner.systemNavigation.draw(canvas, (int) Math.floor(owner.bottomStart), owner.height, false);
             for (View bar : owner.bars) {
                 if (owner.phone) {
-                    owner.drawBar(canvas, bar, 0, (int) Math.ceil(owner.topPaintEnd));
                     owner.drawBar(canvas, bar, (int) Math.floor(owner.bottomStart), owner.height);
                 } else owner.drawView(canvas, bar);
             }
@@ -891,6 +964,25 @@ public final class GlobalChrome {
         Clip(ViewGroup view) { this.view = view; children = view.getClipChildren(); padding = view.getClipToPadding(); }
         void apply() { view.setClipChildren(false); view.setClipToPadding(false); }
         void restore() { view.setClipChildren(children); view.setClipToPadding(padding); }
+    }
+
+    private static final class Depth {
+        final View view;
+        final float original;
+        final android.view.ViewOutlineProvider outline;
+        float applied;
+        Depth(View view) { this.view = view; original = applied = view.getTranslationZ(); outline = view.getOutlineProvider(); }
+        void apply(float minimum) {
+            applied = Math.max(original, minimum);
+            if (view.getTranslationZ() != applied) view.setTranslationZ(applied);
+            // Keep the transparent header above the list without adding a
+            // platform elevation shadow at its lower edge.
+            if (view.getOutlineProvider() != null) view.setOutlineProvider(null);
+        }
+        void restore() {
+            if (view.getTranslationZ() == applied) view.setTranslationZ(original);
+            if (view.getOutlineProvider() == null) view.setOutlineProvider(outline);
+        }
     }
 
     private static final class Padding {
