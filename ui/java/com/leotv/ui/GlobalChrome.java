@@ -483,7 +483,8 @@ public final class GlobalChrome {
             if (!contentScreen(nextPager)) { disableContent(); return true; }
             contentEnabled = true;
             int nextIndex = currentPage(nextPager), nextOffset = nextPager == null ? 0 : nextPager.getScrollX();
-            if (pageIndex >= 0 && pageIndex != nextIndex) {
+            boolean categoryReset = pageIndex >= 0 && pageIndex != nextIndex;
+            if (categoryReset) {
                 for (NativeViewport borrowed : viewports.values()) borrowed.reset(); viewports.clear(); viewport = null;
                 resetPageScroll(nextPager); expandHeader();
             }
@@ -491,6 +492,9 @@ public final class GlobalChrome {
                 clearSamples(); source = null; dirty = discovery = true;
                 pager = nextPager; visiblePage = nextPage; pageIndex = nextIndex; pageOffset = nextOffset;
             }
+            // Restored layout params must be laid out before borrowing the
+            // destination viewport and recording its native top position.
+            if (categoryReset && phone) return false;
             if (resized && !viewports.isEmpty()) {
                 for (NativeViewport borrowed : viewports.values()) borrowed.close();
                 viewports.clear(); viewport = null;
@@ -571,10 +575,12 @@ public final class GlobalChrome {
             navigationHeight = insets == null ? Math.max(0, initialBottom) : insets.getSystemWindowInsetBottom();
             if ((activity.getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0) statusHeight = 0;
             if ((decor.getSystemUiVisibility() & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) != 0) navigationHeight = 0;
-            float nextTopStart = Math.max(0, statusHeight - origin[1]);
+            // Mobile cards must remain visible beneath status-bar icons. Fade
+            // only at the window's upper edge, not across the whole status bar.
+            float nextTopStart = phone ? 0 : Math.max(0, statusHeight - origin[1]);
             float headerEnd = toolbar == null ? nextTopStart : y(toolbar) + toolbar.getHeight();
             if (category != null) headerEnd = Math.max(headerEnd, y(category) + category.getHeight());
-            float nextTopEnd = Math.min(height, phone ? nextTopStart + dp(6) : Math.max(nextTopStart, headerEnd) + dp(16));
+            float nextTopEnd = Math.min(height, phone ? dp(8) : Math.max(nextTopStart, headerEnd) + dp(16));
             float nextPaintEnd = phone ? Math.min(height, Math.max(nextTopEnd, headerEnd)) : nextTopEnd;
             float nextBottomStart = Math.max(0, navigation == null
                     ? height - navigationHeight - dp(48) : y(navigation) - dp(24));
@@ -616,6 +622,14 @@ public final class GlobalChrome {
                 // The AppBar stays above it through native Z order, so there
                 // is no sharp scene-copy rectangle beneath the category row.
                 if (phone) exposeViewport(source);
+                if (phone && viewport == null && singleChildScroller(source) && source instanceof ViewGroup) {
+                    // Some native pager roots use non-margin layout params.
+                    // A non-recycling scroll container can still draw its full
+                    // child above its own bounds without changing its layout.
+                    ViewGroup group = (ViewGroup) source; Clip state = clips.get(group);
+                    if (state == null) { state = new Clip(group); clips.put(group, state); }
+                    state.apply();
+                }
                 if (viewport != null) {
                     viewport.viewport.getLocationOnScreen(at);
                     int above = Math.max(0, at[1] - origin[1]);
@@ -623,6 +637,7 @@ public final class GlobalChrome {
                     above = Math.max(above, header + (padding == null ? 0 : padding.view.getPaddingTop()));
                     int below = (navigation == null ? 0 : navigation.getHeight()) + navigationHeight;
                     if (viewport.update(above, below)) { dirty = true; return false; }
+                    if (phone && viewport.alignTop()) dirty = true;
                 }
                 dirty |= source.isDirty() || source.getScrollX() != lastScrollX || source.getScrollY() != lastScrollY;
                 lastScrollX = source.getScrollX(); lastScrollY = source.getScrollY();
@@ -643,13 +658,13 @@ public final class GlobalChrome {
         }
 
         void topFade(Canvas canvas) {
-            if (statusHeight <= 0 || topStart <= 0 || topEnd <= 0) return;
+            if (statusHeight <= 0 || topEnd <= topStart) return;
             int save = canvas.save(); canvas.clipRect(0, 0, width, topEnd);
             int layer = canvas.saveLayer(0, 0, width, topEnd, null);
             // Blend into the current host wallpaper, without capturing or
             // replaying a rectangular strip of the scrolling content.
             background(canvas);
-            float from = Math.max(0, topStart - dp(4));
+            float from = topStart;
             if (topFadeMask == null || topFadeFrom != from || topFadeTo != topEnd) {
                 int[] colours = new int[9]; float[] positions = new float[9];
                 for (int i = 0; i < colours.length; i++) {

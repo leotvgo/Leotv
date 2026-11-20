@@ -14,6 +14,9 @@ final class NativeViewport implements AutoCloseable {
     private final boolean clip, clipChildren;
     private final float weight;
     private final int measuredHeight;
+    private final int positionTop;
+    private final float translation;
+    private float appliedTranslation;
     private int insetTop=-1, insetBottom=-1;
 
     private NativeViewport(ViewGroup list) {
@@ -23,6 +26,7 @@ final class NativeViewport implements AutoCloseable {
         clipChildren=list.getClipChildren();
         weight=params instanceof android.widget.LinearLayout.LayoutParams?((android.widget.LinearLayout.LayoutParams)params).weight:0;
         measuredHeight=list.getHeight();
+        positionTop=list.getTop();translation=appliedTranslation=list.getTranslationY();
     }
     static NativeViewport borrow(ViewGroup list){return new NativeViewport(list);}
     boolean update(int above,int below){
@@ -35,6 +39,14 @@ final class NativeViewport implements AutoCloseable {
         params.height=base+above+below;params.topMargin=marginTop-above;params.bottomMargin=marginBottom-below;
         if(params instanceof android.widget.LinearLayout.LayoutParams)((android.widget.LinearLayout.LayoutParams)params).weight=0;
         list.setPadding(left,top+above,right,bottom+below);list.setClipToPadding(false);list.setClipChildren(false);list.setLayoutParams(params);return true;
+    }
+    boolean alignTop(){
+        // Verify the laid-out edge instead of assuming every native parent
+        // honors negative margins. Translation moves only the viewport; the
+        // compensating padding keeps the initial cards at their native origin.
+        appliedTranslation=translation+positionTop-Math.max(0,insetTop)-list.getTop();
+        if(list.getTranslationY()==appliedTranslation)return false;
+        list.setTranslationY(appliedTranslation);return true;
     }
     /** RecyclerView retains the old child's local offset across padding changes. Compensate after its
      * layout, before drawing, using View.scrollBy (a stable host API) rather than private manager names. */
@@ -79,5 +91,6 @@ final class NativeViewport implements AutoCloseable {
         if(list.getLayoutParams()==params){params.height=height;params.topMargin=marginTop;params.bottomMargin=marginBottom;list.setLayoutParams(params);}
         if(params instanceof android.widget.LinearLayout.LayoutParams)((android.widget.LinearLayout.LayoutParams)params).weight=weight;
         list.setPadding(left,top,right,bottom);list.setClipToPadding(clip);list.setClipChildren(clipChildren);
+        if(list.getTranslationY()==appliedTranslation)list.setTranslationY(translation);
     }
 }
