@@ -1,0 +1,100 @@
+{
+  "version_name": "5.2.0",
+  "version_code": 600,
+  "source_commit": "d3f745d43ed4410da2436974a9730de94b5eaeaf",
+  "build_run": 44929582270,
+  "publish_run": 44930121542,
+  "build_status": "success",
+  "publish_status": "success",
+  "tag": "leotv-5.2.0",
+  "draft": false,
+  "prerelease": false,
+  "latest": true,
+  "release_url": "https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.0",
+  "private_symbols_tag": "leotv-symbols-5.2.0-build-44929582270",
+  "private_symbols_draft": true,
+  "variants": {
+    "tv-v7a": {
+      "apk_sha256": "d50fee0aeeefb7190674b2923641469ee6eba797d8935cc067225379f841b243",
+      "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+      "native_libraries_exact": 32,
+      "program_classes": 211,
+      "renamed_program_classes": 196,
+      "stable_abi_members_verified": 41,
+      "mapping_sha256": "dff53b19307966796e8993e47b0a56842f3527197e635f3414d5bf30264ffdde",
+      "compiler_marker": {
+        "backend": "dex",
+        "compilation-mode": "release",
+        "has-checksums": false,
+        "min-api": 23,
+        "pg-map-id": "ff313f5",
+        "r8-mode": "full",
+        "version": "8.8.34"
+      },
+      "original_class_audit_equal": true
+    },
+    "tv-v8a": {
+      "apk_sha256": "e1a60360185e297e559a9c2d7bc52d714726c3fc4b203ded4a93861cbe697757",
+      "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+      "native_libraries_exact": 21,
+      "program_classes": 211,
+      "renamed_program_classes": 196,
+      "stable_abi_members_verified": 41,
+      "mapping_sha256": "dff53b19307966796e8993e47b0a56842f3527197e635f3414d5bf30264ffdde",
+      "compiler_marker": {
+        "backend": "dex",
+        "compilation-mode": "release",
+        "has-checksums": false,
+        "min-api": 23,
+        "pg-map-id": "ff313f5",
+        "r8-mode": "full",
+        "version": "8.8.34"
+      },
+      "original_class_audit_equal": true
+    },
+    "mobile-v7a": {
+      "apk_sha256": "9ba2c1ba0b663982e1dd824b425ec5903bd46b24a9dd86f08d63d6fbc57e0903",
+      "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+      "native_libraries_exact": 34,
+      "program_classes": 212,
+      "renamed_program_classes": 197,
+      "stable_abi_members_verified": 41,
+      "mapping_sha256": "77e4ad535916e3e153955737add83dd263df18513015205defff708daf3bb41d",
+      "compiler_marker": {
+        "backend": "dex",
+        "compilation-mode": "release",
+        "has-checksums": false,
+        "min-api": 23,
+        "pg-map-id": "3c3eb78",
+        "r8-mode": "full",
+        "version": "8.8.34"
+      },
+      "original_class_audit_equal": true
+    },
+    "mobile-v8a": {
+      "apk_sha256": "080cc10f63f93f0e4478d55039d88ffb2cf409a4689a8540f85d955df92f20e2",
+      "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+      "native_libraries_exact": 23,
+      "program_classes": 212,
+      "renamed_program_classes": 197,
+      "stable_abi_members_verified": 41,
+      "mapping_sha256": "77e4ad535916e3e153955737add83dd263df18513015205defff708daf3bb41d",
+      "compiler_marker": {
+        "backend": "dex",
+        "compilation-mode": "release",
+        "has-checksums": false,
+        "min-api": 23,
+        "pg-map-id": "3c3eb78",
+        "r8-mode": "full",
+        "version": "8.8.34"
+      },
+      "original_class_audit_equal": true
+    }
+  },
+  "validation": {
+    "publication_guard_cases": 11,
+    "ownership_and_abi_negative_cases": 5,
+    "full_ui_regression_run": false,
+    "signed_device_validation": false
+  }
+}
