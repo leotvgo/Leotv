@@ -1,0 +1,51 @@
+{
+  "version_name": "5.1.27",
+  "version_code": 537,
+  "validation": {
+    "native_floating_three_states_and_status_mask": "two targeted checks passed",
+    "live_progress_and_cold_same_title_history": "two targeted checks passed",
+    "tv_carousel_animation_matches_jar_source": true,
+    "native_abi": [
+      {
+        "variant": "tv-v7a",
+        "public_abi_members_verified": 94,
+        "ordinary_edit_classes_pinned": 9,
+        "native_source_files_declared": 71,
+        "client": "tv",
+        "theme_count": 5,
+        "device_validation": false
+      },
+      {
+        "variant": "tv-v8a",
+        "public_abi_members_verified": 94,
+        "ordinary_edit_classes_pinned": 9,
+        "native_source_files_declared": 71,
+        "client": "tv",
+        "theme_count": 5,
+        "device_validation": false
+      },
+      {
+        "variant": "mobile-v7a",
+        "public_abi_members_verified": 127,
+        "ordinary_edit_classes_pinned": 8,
+        "native_source_files_declared": 71,
+        "client": "mobile",
+        "theme_count": 4,
+        "device_validation": false
+      },
+      {
+        "variant": "mobile-v8a",
+        "public_abi_members_verified": 127,
+        "ordinary_edit_classes_pinned": 8,
+        "native_source_files_declared": 71,
+        "client": "mobile",
+        "theme_count": 4,
+        "device_validation": false
+      }
+    ]
+  },
+  "reference_carousel_sha256": "7e7dc87441a8ec5136e61e6151eff869ffa40a2fb585de0b2c795119a65bff1d",
+  "database_writes_added": false,
+  "tv_chrome_replay_enabled": false,
+  "device_validation": false
+}

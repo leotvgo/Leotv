@@ -78,7 +78,6 @@ final class TvDetailPage implements DetailPage {
         content.addView(scroll,new ViewGroup.LayoutParams(-1,-1));
         heroFrame=new FrameLayout(activity);heroFrame.setClipChildren(false);
         hero=new DetailHero(activity,this::surfaceColour);hero.setAlpha(loadingBackdrop == null ? 1f : 0f);
-        hero.efficient(!mobile);
         heroFrame.addView(hero,new FrameLayout.LayoutParams(-1,-1));
         surface=mobile?null:new DetailSurface(activity);
         if(surface!=null)heroFrame.addView(surface,new FrameLayout.LayoutParams(-1,dp(360)));
@@ -268,7 +267,7 @@ final class TvDetailPage implements DetailPage {
         nativeEpisodes.open(false);
     }
     void searchSources(){if(source!=null){boolean automatic=source.episodes.isEmpty()&&!manualSource&&!NativeLibrary.hasSavedSource(activity,source);if(automatic)playButton.idle("正在加载…");siteSearch.begin(new BackdropIdentity(source.site,source.id,source.name,source.year,source.type),automatic);}}
-    void resume(){hero.setActive(true);ThemeLayout.apply(this);if(source!=null){preferred=NativeLibrary.resume(activity,source,null);refreshActions();showEpisodes();}refresh(BackdropSettings.read(activity).proxy);}
+    void resume(){hero.setActive(true);if(source!=null){preferred=NativeLibrary.resume(activity,source,null);updatePlayButton();if(preferred!=null&&!preferred.flag.equals(selectedFlag)){selectedFlag=preferred.flag;showFlags();}showEpisodes();refreshActions();}ThemeLayout.apply(this);refresh(BackdropSettings.read(activity).proxy);}
     private void updatePlayButton(){
         NativeLibrary.Progress saved=NativeLibrary.progress(activity,source,preferred);
         if(saved!=null)playButton.resume(saved.position,saved.duration);

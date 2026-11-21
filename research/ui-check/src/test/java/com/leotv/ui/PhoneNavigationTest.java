@@ -52,7 +52,7 @@ public class PhoneNavigationTest {
     }
     public static class Host extends Activity {
         Resources mapped;RelativeLayout root;Navigation navigation;Backdrop backdrop;Counter pattern;ScrollView scroll;com.google.android.material.appbar.AppBarLayout appbar;LinearLayout toolbar;
-        com.google.android.material.floatingactionbutton.FloatingActionButton arrow;boolean live,fadeRemovedBeforeNativeAction;
+        com.google.android.material.floatingactionbutton.FloatingActionButton arrow,push,filter;int pushClicks,filterClicks,topClicks;boolean live,fadeRemovedBeforeNativeAction;
         @Override public Resources getResources(){
             if(mapped==null){Resources base=super.getResources();mapped=new Resources(base.getAssets(),base.getDisplayMetrics(),base.getConfiguration()){
                 @Override public int getIdentifier(String name,String type,String pkg){
@@ -74,6 +74,14 @@ public class PhoneNavigationTest {
             container.addView(appbar,new FrameLayout.LayoutParams(-1,-2));
             arrow=new com.google.android.material.floatingactionbutton.FloatingActionButton(this);arrow.setTag("top");arrow.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.BLUE));
             FrameLayout.LayoutParams action=new FrameLayout.LayoutParams(56,56,Gravity.BOTTOM|Gravity.LEFT);action.leftMargin=16;action.bottomMargin=16;container.addView(arrow,action);
+            arrow.setImageDrawable(new android.graphics.drawable.ColorDrawable(Color.WHITE));arrow.setOnClickListener(v->{topClicks++;scroll.scrollTo(0,0);});arrow.setVisibility(View.INVISIBLE);
+            push=floating(container,"push");push.setOnClickListener(v->pushClicks++);
+            filter=floating(container,"filter");filter.setOnClickListener(v->filterClicks++);filter.setVisibility(View.INVISIBLE);
+        }
+        private com.google.android.material.floatingactionbutton.FloatingActionButton floating(FrameLayout container,String tag){
+            com.google.android.material.floatingactionbutton.FloatingActionButton view=new com.google.android.material.floatingactionbutton.FloatingActionButton(this);
+            view.setTag(tag);view.setImageDrawable(new android.graphics.drawable.ColorDrawable(Color.WHITE));view.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.BLUE));
+            FrameLayout.LayoutParams position=new FrameLayout.LayoutParams(56,56,Gravity.BOTTOM|Gravity.LEFT);position.leftMargin=16;position.bottomMargin=16;container.addView(view,position);return view;
         }
     }
     ActivityController<Host> activity;Host host;GlobalChrome.Controller chrome;
@@ -130,4 +138,28 @@ public class PhoneNavigationTest {
         long frames=chrome.frameSignals;org.robolectric.shadows.ShadowLooper.shadowMainLooper().idleFor(100,java.util.concurrent.TimeUnit.MILLISECONDS);
         assertEquals("phone has no recurring drawing ticker",frames,chrome.frameSignals);
     }
+    @Test public void nativePushFilterAndTopStatesKeepTheirIconsActionsAndTheSameGlass(){
+        View[] states={host.push,host.filter,host.arrow};
+        android.graphics.drawable.Drawable[] icons={host.push.getDrawable(),host.filter.getDrawable(),host.arrow.getDrawable()};
+        int[] sequence={0,2,0,1,2,1};
+        for(int selected:sequence){
+            for(int i=0;i<states.length;i++)states[i].setVisibility(i==selected?View.VISIBLE:View.INVISIBLE);
+            layout();
+            for(int i=0;i<states.length;i++){
+                assertEquals(Color.TRANSPARENT,states[i].getBackgroundTintList().getDefaultColor());
+                assertSame(icons[i],((ImageView)states[i]).getDrawable());
+            }
+            assertTrue(states[selected].performClick());
+        }
+        assertEquals(2,host.pushClicks);assertEquals(2,host.filterClicks);assertEquals(2,host.topClicks);assertEquals(0,host.scroll.getScrollY());
+    }
+    @Test @Config(sdk=35) @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    public void statusShadeCoversTheWholeStatusBandThenFades(){
+        View shade=host.findViewById(android.R.id.content).findViewWithTag("leotv_status_scrim");assertNotNull(shade);assertTrue(shade.getHeight()>8);
+        Bitmap pixels=Bitmap.createBitmap(shade.getWidth(),shade.getHeight(),Bitmap.Config.ARGB_8888);shade.draw(new Canvas(pixels));
+        int top=Color.alpha(pixels.getPixel(5,1)),middle=Color.alpha(pixels.getPixel(5,(shade.getHeight()-8)/2)),end=Color.alpha(pixels.getPixel(5,shade.getHeight()-1));
+        assertEquals(0x33,top);assertEquals(top,middle);assertTrue(end<top);pixels.recycle();
+        assertEquals(0,chrome.frameSignals);
+    }
+
 }

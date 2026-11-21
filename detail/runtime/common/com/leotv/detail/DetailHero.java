@@ -57,7 +57,6 @@ class DetailHero extends View {
     private long generation, nextAt;
     private float reveal = 1, slideProgress;
     private boolean closed, loading = true, attached, requestedActive = true, running;
-    private boolean efficient;
     private Index indexListener, incomingListener;
     private boolean portrait;
     private boolean sourceImages;
@@ -74,7 +73,6 @@ class DetailHero extends View {
         setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
     }
     void presentation(boolean portrait,int style) { this.portrait=portrait;this.presentation=style;invalidate(); }
-    void efficient(boolean value){efficient=value;refreshLoadingFrames();}
     boolean hasArtwork() { return bitmap != null && !bitmap.isRecycled(); }
     /** Scales the carousel's own bottom scrim; the artwork's last edge stays the page colour either way. */
     void tailWeight(float value) { tailWeight = Math.max(0f, Math.min(1f, value)); invalidate(); }
@@ -146,7 +144,7 @@ class DetailHero extends View {
     }
     private void refreshLoadingFrames() {
         main.removeCallbacks(loadingFrame);
-        if (!efficient && running && loading && bitmap == null) main.post(loadingFrame);
+        if (running && loading && bitmap == null) main.post(loadingFrame);
     }
     /**
      * The slide a step in the given direction lands on, skipping the ones that failed. The walk is
@@ -292,7 +290,6 @@ class DetailHero extends View {
     private void animate(int mode, long duration, int start, int end) { animate(mode, duration, start, end, 1); }
     private void animate(int mode, long duration, int start, int end, int direction) {
         animationMode = mode; fromColour = start; toColour = end; slideDirection = direction < 0 ? -1 : 1;
-        if(efficient){settleAnimation();prepareNext();schedule();return;}
         if (mode == 1) reveal = 0; else slideProgress = 0;
         ValueAnimator animation = ValueAnimator.ofFloat(0, 1); animator = animation;
         animation.setDuration(duration); animation.setInterpolator(new DecelerateInterpolator(1.5f));

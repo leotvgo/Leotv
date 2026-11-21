@@ -20,6 +20,8 @@ COMMON = {
                         'setActivated(Z)V', 'setSelected(Z)V', 'writeToParcel(Landroid/os/Parcel;I)V'], []),
     BEANS + 'History': (['find(Ljava/lang/String;)L' + BEANS + 'History;',
                         'getFlag()L' + BEANS + 'Flag;', 'getVodRemarks()Ljava/lang/String;',
+                        'findByName(Ljava/lang/String;)Ljava/util/List;', 'getPosition()J', 'getDuration()J',
+                        'getEpisodeUrl()Ljava/lang/String;', 'getVodName()Ljava/lang/String;', 'getKey()Ljava/lang/String;', 'getCreateTime()J',
                         'isRevSort()Z', 'isRevPlay()Z', 'setRevSort(Z)V', 'setRevPlay(Z)V'], []),
     BEANS + 'Keep': (['<init>()V', 'find(ILjava/lang/String;)L' + BEANS + 'Keep;',
                      'delete()L' + BEANS + 'Keep;', 'save()V', 'setCid(I)V', 'setType(I)V',
@@ -114,7 +116,7 @@ def check_contract(root, variant, project=None):
         'Y()V', 'O0(L' + BEANS + 'Flag;ZZ)V', 'L0(L' + BEANS + 'Episode;)V']
     video_fields = ['d0:Z', 'l0:Z', 'Z:Lcom/fongmi/android/tv/ui/adapter/u;',
                     'S:Lcom/fongmi/android/tv/ui/adapter/q;', 'c0:LF3/f;', 'b0:L'+BEANS+'History;'] if mobile else [
-                        'i0:Z', 'U:Landroidx/leanback/widget/ArrayObjectAdapter;', 'g0:L'+BEANS+'History;']
+                        'i0:Z', 'U:Landroidx/leanback/widget/ArrayObjectAdapter;', 'h0:LC3/e;', 'g0:L'+BEANS+'History;']
     contracts['com/fongmi/android/tv/ui/activity/VideoActivity'] = (video_methods, video_fields)
     contracts['com/fongmi/android/tv/ui/activity/SearchActivity'] = (['<init>()V'], [])
     if not mobile: contracts['com/fongmi/android/tv/ui/activity/CollectActivity'] = (['<init>()V'], [])
@@ -155,11 +157,12 @@ def check_contract(root, variant, project=None):
         contracts.update({
             'com/fongmi/android/tv/ui/adapter/u': ([], ['f:Ljava/util/ArrayList;']),
             'com/fongmi/android/tv/ui/adapter/q': (['p()I'], ['g:Ljava/lang/Object;']),
-            'F3/f': (['S()I', 'T()I', 'd(Ln0/d0;)V',
+            'F3/f': (['S()I', 'T()I', 'N()J', 'H()J', 'd(Ln0/d0;)V',
                       'onVideoSizeChanged(Ltv/danmaku/ijk/media/player/IMediaPlayer;IIII)V'], ['B:Ljava/lang/String;']),
             'n0/d0': ([], ['a:I', 'b:I']),
         })
     else:
+        contracts['C3/e'] = (['P()J', 'G()J'], [])
         contracts['androidx/leanback/widget/ArrayObjectAdapter'] = (['size()I', 'get(I)Ljava/lang/Object;',
             '<init>(Landroidx/leanback/widget/Presenter;)V',
             'setItems(Ljava/util/List;Landroidx/leanback/widget/DiffCallback;)V'], [])

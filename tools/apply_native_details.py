@@ -134,6 +134,11 @@ def apply(project, root, variant):
                 text = replace_method(text, name, lambda body, n=name, c=super_class: guard(body,
                     'Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z',
                     '    invoke-super ' + receiver + ', ' + c + '->' + n))
+            def checkpoint(body):
+                marker='    :leotv_original_path\n'
+                if body.count(marker)!=1:raise ValueError('Expected the guarded original pause path.')
+                return body.replace(marker,marker+'\n    invoke-static {p0}, Lcom/leotv/detail/Playback;->checkpoint(Landroid/app/Activity;)V\n')
+            text=replace_method(text,'onPause()V',checkpoint)
             def new_intent(body):
                 marker = '    invoke-super {p0, p1}, Lc/j;->onNewIntent(Landroid/content/Intent;)V'
                 if body.count(marker) != 1:

@@ -8,10 +8,13 @@ public final class History {
     public static final Map<String, History> records = new HashMap<>();
     private final Flag flag;
     private final String remarks;
-    public long position,duration;
+    public long position,duration,created;
+    public String key="",title="",url="";
     private boolean reverseSort,reversePlay;
     public History(String flag, String remarks) { this.flag = new Flag(flag); this.remarks = remarks; }
     public static History find(String key) { return records.get(key); }
+    public static java.util.List<History> findByName(String name){java.util.List<History> result=new java.util.ArrayList<>();for(History value:records.values())if(name.equals(value.title))result.add(value);return result;}
+    public String getKey(){return key;}public String getVodName(){return title;}public String getEpisodeUrl(){return url;}public long getCreateTime(){return created;}
     public Flag getFlag() { return flag; }
     public String getVodRemarks() { return remarks; }
     public long getPosition(){return position;}
