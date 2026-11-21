@@ -80,6 +80,14 @@
             "before": 2131100883,
             "after_type": 28,
             "after": 0
+          },
+          {
+            "tag": "RelativeLayout",
+            "attribute": "fitsSystemWindows",
+            "before_type": 18,
+            "before": 4294967295,
+            "after_type": 18,
+            "after": 0
           }
         ]
       },

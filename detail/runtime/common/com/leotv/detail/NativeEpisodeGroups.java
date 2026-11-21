@@ -25,7 +25,11 @@ final class NativeEpisodeGroups extends LinearLayout {
     private final ImageButton more;
     private final Lookup lookup=new Lookup();
     private ViewTreeObserver observer;
-    private final ViewTreeObserver.OnPreDrawListener anchor=()->{sync(false);anchorMore();return true;};
+    private final ViewTreeObserver.OnGlobalLayoutListener anchor=()->{sync(false);anchorMore();};
+    private java.lang.reflect.Method selectedMethod,setSelectedMethod,managerMethod,findMethod;
+    private Object layoutManager;
+    private int rangeCount;
+    private final Rect rangeBounds=new Rect();
     private int size,groupSize,selection=-1;
     private String resource="";
     private boolean reversed,reversePlay;
@@ -55,6 +59,8 @@ final class NativeEpisodeGroups extends LinearLayout {
             Object bridge=loader.loadClass("androidx.leanback.widget.ItemBridgeAdapter").getConstructor(objectType).newInstance(adapter);
             for(java.lang.reflect.Method method:widget.getMethods())if(method.getName().equals("setAdapter")&&method.getParameterTypes().length==1){method.invoke(ranges,bridge);break;}
             ranges.setId(View.generateViewId());ranges.setFocusable(true);
+            selectedMethod=widget.getMethod("getSelectedPosition");setSelectedMethod=widget.getMethod("setSelectedPosition",int.class);
+            managerMethod=widget.getMethod("getLayoutManager");
             try{widget.getMethod("setRowHeight",int.class).invoke(ranges,-2);widget.getMethod("setHorizontalSpacing",int.class).invoke(ranges,dp(8));}catch(ReflectiveOperationException ignored){}
             addView(ranges,new LinearLayout.LayoutParams(0,-2,1));
         }catch(ReflectiveOperationException|RuntimeException unavailable){android.util.Log.w("LeotvEpisodes","Native TV range viewport unavailable");}
@@ -64,9 +70,8 @@ final class NativeEpisodeGroups extends LinearLayout {
         more.setOnClickListener(view->page.nativeEpisodes.open(false));
         LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(dp(44),dp(44));params.leftMargin=dp(8);addView(more,params);
     }
-    @Override protected void onAttachedToWindow(){super.onAttachedToWindow();observer=getViewTreeObserver();observer.addOnPreDrawListener(anchor);}
-    @Override protected void onDetachedFromWindow(){if(observer!=null&&observer.isAlive())observer.removeOnPreDrawListener(anchor);observer=null;super.onDetachedFromWindow();}
-    @Override protected void onLayout(boolean changed,int left,int top,int right,int bottom){super.onLayout(changed,left,top,right,bottom);anchorMore();}
+    @Override protected void onAttachedToWindow(){super.onAttachedToWindow();observer=getViewTreeObserver();observer.addOnGlobalLayoutListener(anchor);}
+    @Override protected void onDetachedFromWindow(){if(observer!=null&&observer.isAlive())observer.removeOnGlobalLayoutListener(anchor);observer=null;super.onDetachedFromWindow();}
     void refresh(){
         if(page.source==null){setVisibility(GONE);return;}
         int count=0;for(SourceGateway.Episode episode:page.source.episodes)if(episode.flag.equals(page.selectedFlag))count++;
@@ -84,6 +89,7 @@ final class NativeEpisodeGroups extends LinearLayout {
                     (count-start)+"-"+Math.max(1,count-start-groupSize+1):(start+1)+"-"+Math.min(count,start+groupSize));
             Class<?> diff=page.activity.getClassLoader().loadClass("androidx.leanback.widget.DiffCallback");
             adapter.getClass().getMethod("setItems",List.class,diff).invoke(adapter,items,null);
+            rangeCount=items.size();
         }catch(ReflectiveOperationException unavailable){android.util.Log.w("LeotvEpisodes","Native range items unavailable");}
     }
     private void scrollTo(int index){
@@ -94,9 +100,9 @@ final class NativeEpisodeGroups extends LinearLayout {
     }
     private void sync(boolean confirmed){
         if(ranges==null||!ranges.hasFocus()||adapter==null)return;
-        try{int selected=((Number)ranges.getClass().getMethod("getSelectedPosition").invoke(ranges)).intValue();
+        try{int selected=rangePosition();
             if(selected>=2&&(confirmed||selected!=selection)){selection=selected;scrollTo((selected-2)*groupSize);}
-        }catch(ReflectiveOperationException ignored){}
+        }catch(RuntimeException ignored){}
     }
     boolean key(KeyEvent event){
         View focus=page.activity.getCurrentFocus();int code=event.getKeyCode();
@@ -105,35 +111,39 @@ final class NativeEpisodeGroups extends LinearLayout {
         }
         if(ranges!=null&&TvDetailNavigation.descendant(focus,ranges)){
             if(code==KeyEvent.KEYCODE_DPAD_RIGHT)try{
-                int count=((Number)adapter.getClass().getMethod("size").invoke(adapter)).intValue();
+                int count=rangeCount;
                 if(count>0&&rangePosition()==count-1){if(event.getAction()==KeyEvent.ACTION_DOWN){anchorMore();if(more.requestFocus())page.navigation.adopt(more);}return true;}
-            }catch(ReflectiveOperationException ignored){}
+            }catch(RuntimeException ignored){}
+            if(event.getAction()==KeyEvent.ACTION_DOWN&&(code==KeyEvent.KEYCODE_DPAD_LEFT||code==KeyEvent.KEYCODE_DPAD_RIGHT))post(()->sync(false));
             boolean confirm=code==KeyEvent.KEYCODE_DPAD_CENTER||code==KeyEvent.KEYCODE_ENTER||code==KeyEvent.KEYCODE_NUMPAD_ENTER;
             if(confirm&&rangePosition()>=2){if(event.getAction()==KeyEvent.ACTION_UP&&!event.isCanceled())sync(true);return true;}
         }
         return false;
     }
     public int getSelectedPosition(){return more.hasFocus()?MORE:rangePosition();}
-    private int rangePosition(){try{return ((Number)ranges.getClass().getMethod("getSelectedPosition").invoke(ranges)).intValue();}catch(ReflectiveOperationException|RuntimeException ignored){return 0;}}
-    public void setSelectedPosition(int position){if(position==MORE){more.requestFocus();return;}try{ranges.getClass().getMethod("setSelectedPosition",int.class).invoke(ranges,position);}catch(ReflectiveOperationException ignored){}}
+    private int rangePosition(){try{return ((Number)selectedMethod.invoke(ranges)).intValue();}catch(ReflectiveOperationException|RuntimeException ignored){return 0;}}
+    public void setSelectedPosition(int position){if(position==MORE){more.requestFocus();return;}try{setSelectedMethod.invoke(ranges,position);}catch(ReflectiveOperationException|RuntimeException ignored){}}
+    private View findRange(int position)throws ReflectiveOperationException{
+        Object manager=managerMethod.invoke(ranges);
+        if(manager!=layoutManager){layoutManager=manager;findMethod=manager.getClass().getMethod("findViewByPosition",int.class);findMethod.setAccessible(true);}
+        return (View)findMethod.invoke(manager,position);
+    }
     public Lookup getLayoutManager(){return lookup;}
     public final class Lookup{
         public View findViewByPosition(int position){
             if(position==MORE)return more;
             if(ranges==null)return null;
-            try{Object manager=ranges.getClass().getMethod("getLayoutManager").invoke(ranges);java.lang.reflect.Method find=manager.getClass().getMethod("findViewByPosition",int.class);find.setAccessible(true);return (View)find.invoke(manager,position);}catch(ReflectiveOperationException|RuntimeException ignored){return ranges;}
+            try{return findRange(position);}catch(ReflectiveOperationException|RuntimeException ignored){return ranges;}
         }
     }
     private void anchorMore(){
         if(ranges==null||adapter==null||more.getMeasuredWidth()==0)return;
         if(ranges.getVisibility()==GONE){more.setVisibility(VISIBLE);more.offsetLeftAndRight(getPaddingLeft()-more.getLeft());return;}
         try{
-            int count=((Number)adapter.getClass().getMethod("size").invoke(adapter)).intValue();
-            Object manager=ranges.getClass().getMethod("getLayoutManager").invoke(ranges);
-            java.lang.reflect.Method find=manager.getClass().getMethod("findViewByPosition",int.class);find.setAccessible(true);
-            View last=(View)find.invoke(manager,count-1);
+            int count=rangeCount;
+            View last=count==0?null:findRange(count-1);
             boolean visible=last!=null&&last.getWidth()>0;
-            Rect bounds=new Rect();if(visible){bounds.set(0,0,last.getWidth(),last.getHeight());offsetDescendantRectToMyCoords(last,bounds);visible=bounds.right>ranges.getLeft()&&bounds.left<ranges.getRight();}
+            Rect bounds=rangeBounds;if(visible){bounds.set(0,0,last.getWidth(),last.getHeight());offsetDescendantRectToMyCoords(last,bounds);visible=bounds.right>ranges.getLeft()&&bounds.left<ranges.getRight();}
             more.setVisibility(visible?VISIBLE:INVISIBLE);if(!visible)return;
             int left=Math.max(getPaddingLeft(),Math.min(bounds.right+dp(8),getWidth()-getPaddingRight()-more.getMeasuredWidth()));
             more.offsetLeftAndRight(left-more.getLeft());

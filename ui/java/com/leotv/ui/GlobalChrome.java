@@ -71,7 +71,7 @@ public final class GlobalChrome {
         String name=activity.getClass().getName();
         if(name.equals("com.leotv.detail.DetailActivity")||name.equals("com.leotv.detail.FollowingActivity")||name.equals("com.fongmi.android.tv.ui.activity.VideoActivity"))return;
         Controller controller=lifecycle==null?null:lifecycle.active.get(activity);
-        if(controller!=null){controller.rememberBackdrop();return;}
+        if(controller!=null){controller.rememberBackdrop();controller.backgroundPrepared=true;return;}
         View content=activity.findViewById(android.R.id.content);
         if(!(content instanceof ViewGroup))return;
         ViewGroup group=(ViewGroup)content;
@@ -79,7 +79,7 @@ public final class GlobalChrome {
             View layer=group.getChildAt(i);
             if(!layer.isShown()||layer.getAlpha()<=.001f||!"leotv_shared_backdrop".equals(layer.getTag())||layer.getWidth()<=0||layer.getHeight()<=0)continue;
             try{
-                float scale=Math.min(1f,1080f/layer.getWidth());
+                float scale=Math.min(1f,Math.min(960f/layer.getWidth(),540f/layer.getHeight()));
                 Bitmap pixels=Bitmap.createBitmap(Math.max(1,Math.round(layer.getWidth()*scale)),Math.max(1,Math.round(layer.getHeight()*scale)),Bitmap.Config.ARGB_8888);
                 Canvas canvas=new Canvas(pixels);canvas.scale(scale,scale);layer.draw(canvas);
                 synchronized(GlobalChrome.class){hostBackdrop=new android.graphics.drawable.BitmapDrawable(activity.getResources(),pixels);}
@@ -87,7 +87,6 @@ public final class GlobalChrome {
             }catch(RuntimeException|OutOfMemoryError unavailable){}
         }
         Drawable background=activity.getWindow().getDecorView().getBackground();
-        synchronized(GlobalChrome.class){if(usableBackground(hostBackdrop))return;}
         if(usableBackground(background)&&background.getConstantState()!=null)
             synchronized(GlobalChrome.class){hostBackdrop=background.getConstantState().newDrawable(activity.getResources()).mutate();}
     }
@@ -98,6 +97,7 @@ public final class GlobalChrome {
     }
 
     private GlobalChrome() {}
+    static Drawable nativeGlass(android.content.Context context){return new NavigationGlass(context.getResources().getDisplayMetrics().density);}
 
     public static synchronized void install(Application app) {
         if (installed != null && installed.get() == app) return;
@@ -160,6 +160,7 @@ public final class GlobalChrome {
         final View decor;
         final Portal portal;
         final FollowingNavigation following;
+        final NativePhoneInsets phoneInsets;
         final boolean phone;
         final Map<View, Background> backgrounds = new IdentityHashMap<>();
         final Map<ViewGroup, Clip> clips = new IdentityHashMap<>();
@@ -192,6 +193,7 @@ public final class GlobalChrome {
         boolean dirty = true, discovery = true, closed, windowAdjusted, running;
         int width, height, statusHeight, navigationHeight, lastScrollX, lastScrollY, sourceArea;
         float topStart, topEnd, topPaintEnd, bottomStart;
+        boolean backgroundPrepared;
 
         Controller(Activity activity, FrameLayout content) {
             this.activity = activity; this.content = content;
@@ -199,6 +201,8 @@ public final class GlobalChrome {
             phone = phoneClient(activity);
             portal = new Portal(activity, this);
             following=new FollowingNavigation(this);
+            phoneInsets=phone?new NativePhoneInsets(activity,content):null;
+            if(phone){decor.setSystemUiVisibility(decor.getSystemUiVisibility()|LAYOUT_FLAGS);activity.getWindow().setStatusBarColor(Color.TRANSPARENT);activity.getWindow().setNavigationBarColor(Color.TRANSPARENT);}
         }
 
         private static boolean phoneClient(Activity activity) {
@@ -285,12 +289,12 @@ public final class GlobalChrome {
             ViewTreeObserver observer = decor.getViewTreeObserver();
             observer.addOnPreDrawListener(this); observer.addOnScrollChangedListener(this);
             observer.addOnGlobalLayoutListener(this);
-            if(!phone)choreographer.postFrameCallback(this);
+
         }
 
         void pause() {
             if (!running) return;
-            rememberBackdrop();
+            if(!backgroundPrepared)rememberBackdrop();backgroundPrepared=false;
             following.pausePage();
             following.hide();
             disableContent();
@@ -306,16 +310,7 @@ public final class GlobalChrome {
         }
 
         @Override public void doFrame(long frameTimeNanos) {
-            if (!running || closed) return;
-            frameSignals++;
-            if(phone)return;
-            dirty = true;
-            if (contentEnabled) {
-                portal.invalidate();
-                for (View bar : bars) if (!phone || bar != navigation) bar.invalidate();
-            }
-            // One callback per display frame; no independent polling thread/timer.
-            choreographer.postFrameCallback(this);
+            // Both clients draw their native controls directly, without a redraw ticker.
         }
 
         private View find(String name) {
@@ -363,8 +358,9 @@ public final class GlobalChrome {
             }
             if (shared != null && shared.getWidth() > 0 && shared.getHeight() > 0) {
                 try {
-                    Bitmap pixels = Bitmap.createBitmap(shared.getWidth(), shared.getHeight(), Bitmap.Config.ARGB_8888);
-                    Canvas canvas = new Canvas(pixels);
+                    float scale=Math.min(1f,Math.min(960f/shared.getWidth(),540f/shared.getHeight()));
+                    Bitmap pixels = Bitmap.createBitmap(Math.max(1,Math.round(shared.getWidth()*scale)),Math.max(1,Math.round(shared.getHeight()*scale)), Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(pixels);canvas.scale(scale,scale);
                     ArrayList<ImageSwap> swaps = new ArrayList<>();
                     try { prepareImages(shared, swaps); shared.draw(canvas); }
                     finally { for (int i = swaps.size() - 1; i >= 0; i--) swaps.get(i).restore(); }
@@ -372,20 +368,19 @@ public final class GlobalChrome {
                     return;
                 } catch (RuntimeException | OutOfMemoryError unavailable) { }
             }
-            Drawable chosen = backdropImage(content);
-            if (chosen == null && root != null) chosen = root.getBackground();
-            if (!usableBackground(chosen) || chosen instanceof Frost) {
-                synchronized (GlobalChrome.class) { if (usableBackground(hostBackdrop)) return; }
-                chosen = decor.getBackground();
-            }
+            Drawable chosen = decor.getBackground();
+            if(!usableBackground(chosen))chosen=backdropImage(content);
+            if(!usableBackground(chosen)&&root!=null)chosen=root.getBackground();
             if (!usableBackground(chosen) || chosen.getConstantState() == null) return;
             try {
                 Drawable copy = chosen.getConstantState().newDrawable(content.getResources()).mutate();
                 if (chosen instanceof android.graphics.drawable.BitmapDrawable) {
                     Bitmap original = ((android.graphics.drawable.BitmapDrawable) chosen).getBitmap();
                     if (original != null && !original.isRecycled()) {
-                        Bitmap pixels = original.copy(Bitmap.Config.ARGB_8888, false);
-                        if (pixels != null) copy = new android.graphics.drawable.BitmapDrawable(content.getResources(), pixels);
+                        float scale=Math.min(1f,Math.min(960f/original.getWidth(),540f/original.getHeight()));
+                        Bitmap pixels=Bitmap.createScaledBitmap(original,Math.max(1,Math.round(original.getWidth()*scale)),Math.max(1,Math.round(original.getHeight()*scale)),true);
+                        if(pixels==original)pixels=original.copy(Bitmap.Config.ARGB_8888,false);
+                        if(pixels!=null)copy=new android.graphics.drawable.BitmapDrawable(content.getResources(),pixels);
                     }
                 }
                 synchronized (GlobalChrome.class) { hostBackdrop = copy; }
@@ -539,7 +534,7 @@ public final class GlobalChrome {
                     entry.getValue().discard(); iterator.remove();
                 }
             }
-            for (View bar : bars) if (bar != navigation) borrow(bar, !phone);
+            for (View bar : bars) if (bar != navigation) borrow(bar, false);
             if (phone) {
                 ArrayList<View> front = new ArrayList<>();
                 if (toolbar != null) front.add(headerPlane(toolbar));
@@ -579,11 +574,22 @@ public final class GlobalChrome {
         @Override public boolean onPreDraw() {
             if (closed || !running || content.getWidth() <= 0 || content.getHeight() <= 0) return true;
             following.update();
+            if(!phone){
+                if(!discovery)return true;
+                discovery=false;contentEnabled=true;
+                width=content.getWidth();height=content.getHeight();content.getLocationOnScreen(origin);
+                toolbar=toolbar();pager=find("pager");navigation=find("navigation");
+                View category=strip();bars.clear();if(toolbar!=null)bars.add(toolbar);if(category!=null&&category!=toolbar)bars.add(category);
+                for(View bar:bars)borrow(bar,false);
+                return true;
+            }
             int nextWidth = content.getWidth(), nextHeight = content.getHeight();
             boolean resized = width > 0 && height > 0 && (nextWidth != width || nextHeight != height);
             dirty |= nextWidth != width || nextHeight != height;
             width = nextWidth; height = nextHeight; content.getLocationOnScreen(origin);
             View nextPager = find("pager"), nextPage = pageAtCentre(nextPager);
+            View nativeHeader=toolbar();
+            phoneInsets.update(nativeHeader==null?null:headerPlane(nativeHeader),following.nativeNavigation,contentScreen(nextPager));
             if (!contentScreen(nextPager)) { disableContent(); following.transparent(); return true; }
             contentEnabled = true;
             int nextIndex = currentPage(nextPager), nextOffset = nextPager == null ? 0 : nextPager.getScrollX();
@@ -740,8 +746,8 @@ public final class GlobalChrome {
                     above = Math.max(above, header + (padding == null ? 0 : padding.view.getPaddingTop()));
                     int below = (navigation == null ? 0 : navigation.getHeight()) + navigationHeight;
                     if(phone){
-                        int nativeHeader=toolbar==null?0:headerPlane(toolbar).getHeight();
-                        if(viewport.inset(Math.max(0,nativeHeader),below+dp(8))){dirty=true;return false;}
+                        int headerHeight=toolbar==null?0:headerPlane(toolbar).getHeight();
+                        if(viewport.inset(Math.max(0,headerHeight),below+dp(16))){dirty=true;return false;}
                     }else if (viewport.update(above, below)) { dirty = true; return false; }
                 }
                 dirty |= source.isDirty() || source.getScrollX() != lastScrollX || source.getScrollY() != lastScrollY;
@@ -961,6 +967,7 @@ public final class GlobalChrome {
             pause();
             closed = true;
             following.close();
+            if(phoneInsets!=null)phoneInsets.close();
             for (Background background : backgrounds.values()) background.discard();
             backgrounds.clear();
             for (NativeViewport borrowed : viewports.values()) borrowed.close();
@@ -1049,7 +1056,8 @@ public final class GlobalChrome {
             if(view.getTranslationZ()!=owner.dp(8))view.setTranslationZ(owner.dp(8));
             if(view.getPaddingLeft()!=0||view.getPaddingTop()!=0||view.getPaddingRight()!=0||view.getPaddingBottom()!=0)view.setPadding(0,0,0,0);
             if(navigationLayout!=null){
-                int side=owner.dp(16),bottom=owner.dp(8);
+                WindowInsets insets=owner.content.getRootWindowInsets();
+                int side=owner.dp(16),bottom=owner.dp(8)+(insets==null?0:insets.getSystemWindowInsetBottom());
                 if(navigationLayout.leftMargin!=side||navigationLayout.rightMargin!=side||navigationLayout.bottomMargin!=bottom){
                     navigationLayout.leftMargin=side;navigationLayout.rightMargin=side;navigationLayout.bottomMargin=bottom;
                     view.setLayoutParams(navigationLayout);
@@ -1205,13 +1213,14 @@ public final class GlobalChrome {
             return false;
         }
         void show(){
-            if(button==null||!button.isShown())previousFocus=new java.lang.ref.WeakReference<>(owner.activity.getCurrentFocus());
+            if(button==null||!button.isShown()){View current=owner.activity.getCurrentFocus();previousFocus=new java.lang.ref.WeakReference<>(current==null?owner.content.findFocus():current);}
             if(button==null){
-                button=new android.widget.ImageButton(owner.activity);button.setImageDrawable(new CalendarIcon(owner.activity));button.setContentDescription("追更日历");button.setFocusable(true);button.setFocusableInTouchMode(true);button.setOnClickListener(v->open());
-                android.graphics.drawable.GradientDrawable background=new android.graphics.drawable.GradientDrawable();background.setColor(0xdd1a273b);background.setCornerRadius(owner.dp(28));button.setBackground(background);button.setPadding(owner.dp(14),owner.dp(14),owner.dp(14),owner.dp(14));
+                button=new android.widget.ImageButton(owner.activity);button.setTag("leotv_following_entry");button.setImageDrawable(new CalendarIcon(owner.activity));button.setContentDescription("追更日历");button.setFocusable(true);button.setFocusableInTouchMode(true);button.setOnClickListener(v->open());
+                button.setBackground(new NavigationGlass(owner.content.getResources().getDisplayMetrics().density));if(Build.VERSION.SDK_INT>=26)try{View.class.getMethod("setDefaultFocusHighlightEnabled",boolean.class).invoke(button,false);}catch(ReflectiveOperationException unavailable){}button.setOnFocusChangeListener((view,focused)->{view.setScaleX(focused?1.08f:1);view.setScaleY(focused?1.08f:1);});button.setStateListAnimator(null);button.setOutlineProvider(null);button.setPadding(owner.dp(14),owner.dp(14),owner.dp(14),owner.dp(14));
                 FrameLayout.LayoutParams layout=new FrameLayout.LayoutParams(owner.dp(56),owner.dp(56),android.view.Gravity.LEFT|android.view.Gravity.CENTER_VERTICAL);layout.leftMargin=owner.dp(12);owner.content.addView(button,layout);button.setElevation(owner.dp(80));
             }
             button.setVisibility(View.VISIBLE);button.requestFocus();
+            button.post(()->{if(!closed&&owner.running&&button.isShown())button.requestFocus();});
         }
         void hide(){if(button!=null)button.setVisibility(View.GONE);}
         void close(){
@@ -1269,13 +1278,16 @@ public final class GlobalChrome {
         NavigationGlass(float density){this.density=density;}
         @Override protected void onBoundsChange(Rect bounds){
             shape.set(bounds.left+.5f*density,bounds.top+.5f*density,bounds.right-.5f*density,bounds.bottom-.5f*density);
-            fill=new LinearGradient(0,shape.top,0,shape.bottom,new int[]{0x26ffffff,0x0dffffff,0x1a172638},new float[]{0,.42f,1},Shader.TileMode.CLAMP);
+            fill=new LinearGradient(0,shape.top,0,shape.bottom,new int[]{0x48ffffff,0x24ffffff,0x45172638},new float[]{0,.42f,1},Shader.TileMode.CLAMP);
             edge=new LinearGradient(0,shape.top,0,shape.bottom,0x70ffffff,0x18ffffff,Shader.TileMode.CLAMP);
         }
+        @Override public boolean isStateful(){return true;}
+        @Override protected boolean onStateChange(int[] state){invalidateSelf();return true;}
         @Override public void draw(Canvas canvas){
-            float radius=shape.height()/2;
+            float radius=shape.height()/2;boolean focused=false;for(int state:getState())focused|=state==android.R.attr.state_focused||state==android.R.attr.state_pressed;
             paint.setStyle(Paint.Style.FILL);paint.setShader(fill);paint.setAlpha(alpha);canvas.drawRoundRect(shape,radius,radius,paint);
-            paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(density);paint.setShader(edge);canvas.drawRoundRect(shape,radius,radius,paint);paint.setShader(null);
+            if(focused){paint.setShader(null);paint.setColor(0x28ffffff);canvas.drawRoundRect(shape,radius,radius,paint);}
+            paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth((focused?1.5f:1)*density);paint.setShader(focused?null:edge);if(focused)paint.setColor(0xbbe7e9ee);canvas.drawRoundRect(shape,radius,radius,paint);paint.setShader(null);
         }
         @Override public void setAlpha(int value){alpha=value;invalidateSelf();}
         @Override public void setColorFilter(ColorFilter value){paint.setColorFilter(value);invalidateSelf();}

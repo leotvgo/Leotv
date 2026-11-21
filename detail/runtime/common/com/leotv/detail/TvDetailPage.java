@@ -55,6 +55,7 @@ final class TvDetailPage implements DetailPage {
     int surfaceColour=DetailHero.DEFAULT_COLOR, theme=-1, themeWidth, themeHeight;
     boolean mounted=true, reversed, reversePlay, manualSource;
     boolean metadataResolved, artworkRevealed;
+    private boolean loadingHostApplied;
     private final android.graphics.drawable.Drawable loadingBackdrop;
     private final Window.Callback originalCallback;
     private final Window.Callback callback;
@@ -77,6 +78,7 @@ final class TvDetailPage implements DetailPage {
         content.addView(scroll,new ViewGroup.LayoutParams(-1,-1));
         heroFrame=new FrameLayout(activity);heroFrame.setClipChildren(false);
         hero=new DetailHero(activity,this::surfaceColour);hero.setAlpha(loadingBackdrop == null ? 1f : 0f);
+        hero.efficient(!mobile);
         heroFrame.addView(hero,new FrameLayout.LayoutParams(-1,-1));
         surface=mobile?null:new DetailSurface(activity);
         if(surface!=null)heroFrame.addView(surface,new FrameLayout.LayoutParams(-1,dp(360)));
@@ -154,7 +156,7 @@ final class TvDetailPage implements DetailPage {
             mobileSources=null;LinearLayout siteRow=column();siteRow.setGravity(Gravity.LEFT);
             siteRow.addView(sitePicker.selector,new LinearLayout.LayoutParams(-2,-2));
             LinearLayout.LayoutParams lines=new LinearLayout.LayoutParams(-1,-2);lines.topMargin=dp(6);siteRow.addView(flagScroll,lines);
-            controls.addView(siteRow);navigation.add(flags,siteRow);navigation.add(sitePicker.selector,siteRow);
+            controls.addView(siteRow);navigation.add(sitePicker.selector,siteRow);navigation.add(flags,siteRow);
         }
         if(!mobile){TextView heading=label("选集",18);heading.setPadding(0,dp(16),0,dp(8));controls.addView(heading);}
         episodes=new LinearLayout(activity);episodes.setId(View.generateViewId());episodes.setOrientation(LinearLayout.HORIZONTAL);episodes.setClipChildren(false);
@@ -210,6 +212,7 @@ final class TvDetailPage implements DetailPage {
             scroll.setBackground(new android.graphics.drawable.ColorDrawable(DetailTheme.library(activity, mobile) ? 0xff06111b : DetailHero.FLOOR));
             theme = -1; ThemeLayout.apply(this); surfaceColour(surfaceColour); return;
         }
+        if(loadingHostApplied)return;loadingHostApplied=true;
         hero.setAlpha(0f); if (surface != null) surface.setVisibility(View.GONE);
         scroll.setBackground(loadingBackdrop); info.setBackgroundColor(Color.TRANSPARENT); controls.setBackgroundColor(Color.TRANSPARENT);
     }
@@ -272,7 +275,7 @@ final class TvDetailPage implements DetailPage {
         else playButton.idle(preferred==null?"暂无可播放剧集":"播放");
     }
     void suspend(){hero.setActive(false);nativeEpisodes.dismiss();if(mobileSources!=null)mobileSources.dismiss();sitePicker.dismiss();if(personPopup!=null)personPopup.close();personPopup=null;if(matchPopup!=null)matchPopup.dismiss();matchPopup=null;}
-    private boolean beforeDraw(){if(!mounted)return true;SourceGateway.Detail previous=source;siteSearch.tryAutomatic();if(previous!=source)return false;ThemeLayout.apply(this);libraryLayout.sync();applyTitleArt();loadingState();return true;}
+    private boolean beforeDraw(){if(!mounted)return true;if(content.getWidth()!=themeWidth||content.getHeight()!=themeHeight)ThemeLayout.apply(this);libraryLayout.sync();loadingState();return true;}
     private boolean key(KeyEvent event){
         if(nativeEpisodes.active()&&event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)nativeEpisodes.dismiss();return true;}
         if(episodeGroups!=null&&episodeGroups.key(event))return true;

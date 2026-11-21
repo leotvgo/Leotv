@@ -62,6 +62,7 @@ final class ThemeLayout {
         p.hero.presentation(mobile,value);p.info.setBackgroundColor(below?DetailHero.surface(p.surfaceColour):android.graphics.Color.TRANSPARENT);p.heroFrame.requestLayout();
         if(DetailTheme.library(p.activity,mobile)&&p.libraryLayout!=null)p.libraryLayout.apply(width,height);
         else p.surfaceColour(p.surfaceColour);
+        p.navigation.reorder();
     }
     private ThemeLayout(){}
 }

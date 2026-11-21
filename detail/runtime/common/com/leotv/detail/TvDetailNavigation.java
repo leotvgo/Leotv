@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 /** Vertical module navigation, with independent horizontal selection retained inside each host row. */
 final class TvDetailNavigation {
@@ -29,6 +30,23 @@ final class TvDetailNavigation {
         }
     }
     void heroEntry(View view) { heroEntry = view; }
+    /** Follow the actual composition after a theme moves action/content rows. */
+    void reorder(){
+        Module selected=current>=0&&current<modules.size()?modules.get(current):null;
+        Collections.sort(modules,(left,right)->{
+            List<View> a=ancestry(left.view),b=ancestry(right.view);int size=Math.min(a.size(),b.size());
+            for(int i=0;i<size;i++)if(a.get(i)!=b.get(i)){
+                View parent=i==0?null:a.get(i-1);
+                return parent instanceof ViewGroup?Integer.compare(((ViewGroup)parent).indexOfChild(a.get(i)),((ViewGroup)parent).indexOfChild(b.get(i))):0;
+            }
+            return Integer.compare(a.size(),b.size());
+        });
+        if(selected!=null)current=modules.indexOf(selected);
+    }
+    private List<View> ancestry(View view){
+        List<View> result=new ArrayList<>();for(View v=view;v!=null;v=v.getParent() instanceof View?(View)v.getParent():null){result.add(v);if(v==page)break;}
+        Collections.reverse(result);return result;
+    }
     private View entry() {
         return heroEntry.isShown() && heroEntry.isEnabled() && heroEntry.isFocusable() ? heroEntry : hero;
     }
@@ -62,6 +80,7 @@ final class TvDetailNavigation {
     void remember() {
         View focus = page.findFocus();
         for (int i = 0; i < modules.size(); i++) if (descendant(focus, modules.get(i).view)) {
+            if(!changing){current=i;atHero=focus==entry();}
             modules.get(i).focus = new WeakReference<>(focus);
             modules.get(i).position = selectedPosition(modules.get(i).view, focus);
             break;
@@ -116,9 +135,9 @@ final class TvDetailNavigation {
         boolean success;
         try {
             success = previous != null && descendant(previous, m.view) && previous.isShown() && previous.isEnabled() && previous.requestFocus();
-            if (!success) success = m.view.requestFocus();
             if (!success) { View first = firstFocusable(m.view); success = first != null && first.requestFocus(); }
-            if (!success) success = m.container.requestFocus();
+            if (!success) success = m.view.requestFocus();
+            success=success&&descendant(page.findFocus(),m.view);
             if (success) {
                 atHero = false; current = index;
                 if (descendant(page.findFocus(), m.view)) { m.focus = new WeakReference<>(page.findFocus()); m.position = selectedPosition(m.view, page.findFocus()); }
@@ -179,6 +198,6 @@ final class TvDetailNavigation {
     }
     private static final class Module {
         final View view; final ViewGroup container; int position = -1; WeakReference<View> focus = new WeakReference<>(null);
-        Module(View view, ViewGroup container) { this.view = view; this.container = container; container.setFocusable(true); }
+        Module(View view, ViewGroup container) { this.view = view; this.container = container; if(container!=view)container.setFocusable(false); }
     }
 }

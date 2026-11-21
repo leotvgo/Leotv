@@ -29,6 +29,8 @@ final class DetailSurface extends View {
     private static final float FALL = 0.90f;
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private int colour = DetailHero.DEFAULT_COLOR;
+    private Shader gradient;
+    private int gradientHeight,gradientColour;
 
     DetailSurface(Context context) {
         super(context);
@@ -55,7 +57,8 @@ final class DetailSurface extends View {
         paint.setShader(null);
         paint.setColor(colour);
         canvas.drawRect(0, 0, width, hold, paint);
-        paint.setShader(new LinearGradient(0, hold, 0, fall, colour, DetailHero.FLOOR, Shader.TileMode.CLAMP));
+        if(gradient==null||gradientHeight!=height||gradientColour!=colour){gradient=new LinearGradient(0,hold,0,fall,colour,DetailHero.FLOOR,Shader.TileMode.CLAMP);gradientHeight=height;gradientColour=colour;}
+        paint.setShader(gradient);
         canvas.drawRect(0, hold, width, fall, paint);
         paint.setShader(null);
         paint.setColor(DetailHero.FLOOR);

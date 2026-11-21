@@ -1,0 +1,29 @@
+{
+  "version_name": "5.1.26",
+  "version_code": 536,
+  "base_commit": "477ea008196413218194eaf57abda4b52659d453",
+  "changes": [
+    "No TV content replay, CPU blur or drawing ticker.",
+    "Remote order follows actual view composition and current focus.",
+    "TV detail uses static loading/background and direct image changes.",
+    "Geometry-driven range/layout updates; cached reflection/shaders.",
+    "Fresh wallpaper handoff with bounded captures.",
+    "Glass TV following entry and reference calendar focus outline.",
+    "Denser mobile navigation glass, glass native arrow above navigation, full status viewport."
+  ],
+  "targeted_validation": {
+    "tv_remote_order": "passed",
+    "mobile_native_glass_and_arrow_geometry": "four checks passed",
+    "tv_static_controls_and_wallpaper_refresh": "two checks passed",
+    "tv_glass_entry_focus_and_return": "passed",
+    "pinned_mobile_layouts_both_abis": "passed"
+  },
+  "jar_focus_reference_sha256": {
+    "FollowCalendarPage.java": "b7c8d5fedc6cbaebb5319b99b52b5552fbe29a67ebd472423101541a9d2d56ef",
+    "PosterShade.java": "d83b36492f8d6660fdac9f086110739278da0df0d03b987cefa80a0538012cfc",
+    "FollowDateStrip.java": "3a6d1bdfbcf3dcd607e35ec6be99e63227c2890fd56c4c03c15c11f5a5a165b7"
+  },
+  "api23_and_zip_and_fixed_signature_audits": "performed by ordinary-build.yml",
+  "device_validation": false,
+  "full_regression_requested": false
+}

@@ -52,7 +52,7 @@ public class PhoneNavigationTest {
     }
     public static class Host extends Activity {
         Resources mapped;RelativeLayout root;Navigation navigation;Backdrop backdrop;Counter pattern;ScrollView scroll;com.google.android.material.appbar.AppBarLayout appbar;LinearLayout toolbar;
-        boolean live,fadeRemovedBeforeNativeAction;
+        com.google.android.material.floatingactionbutton.FloatingActionButton arrow;boolean live,fadeRemovedBeforeNativeAction;
         @Override public Resources getResources(){
             if(mapped==null){Resources base=super.getResources();mapped=new Resources(base.getAssets(),base.getDisplayMetrics(),base.getConfiguration()){
                 @Override public int getIdentifier(String name,String type,String pkg){
@@ -72,6 +72,8 @@ public class PhoneNavigationTest {
             toolbar=new LinearLayout(this);toolbar.setId(301);toolbar.setBackgroundColor(Color.BLUE);appbar.addView(toolbar,new LinearLayout.LayoutParams(-1,56));
             LinearLayout tabs=new LinearLayout(this);tabs.setBackgroundColor(Color.GREEN);appbar.addView(tabs,new LinearLayout.LayoutParams(-1,40));
             container.addView(appbar,new FrameLayout.LayoutParams(-1,-2));
+            arrow=new com.google.android.material.floatingactionbutton.FloatingActionButton(this);arrow.setTag("top");arrow.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.BLUE));
+            FrameLayout.LayoutParams action=new FrameLayout.LayoutParams(56,56,Gravity.BOTTOM|Gravity.LEFT);action.leftMargin=16;action.bottomMargin=16;container.addView(arrow,action);
         }
     }
     ActivityController<Host> activity;Host host;GlobalChrome.Controller chrome;
@@ -98,6 +100,9 @@ public class PhoneNavigationTest {
         for(int i=0;i<host.navigation.getChildCount();i++)assertEquals(1,((Counter)host.navigation.getChildAt(i)).draws);
         assertNull(bottomBuffer("image"));assertNull(bottomBuffer("overlay"));
         assertEquals(android.graphics.PixelFormat.TRANSLUCENT,host.navigation.getBackground().getOpacity());
+        int[] arrowAt=new int[2],navAt=new int[2];host.arrow.getLocationOnScreen(arrowAt);host.navigation.getLocationOnScreen(navAt);
+        assertTrue("native arrow clears the glass navigation",arrowAt[1]+host.arrow.getHeight()<navAt[1]);
+        assertEquals(Color.TRANSPARENT,host.arrow.getBackgroundTintList().getDefaultColor());
         assertFalse(((View)chrome.portal).isAttachedToWindow());
     }
     @Test public void floatingHeaderLeavesThePagerAtTheWindowTopAndDoesNotRelayoutOnCollapse(){

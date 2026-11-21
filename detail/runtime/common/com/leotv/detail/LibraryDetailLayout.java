@@ -12,16 +12,18 @@ final class LibraryDetailLayout {
     private final List<View> originalControls=new ArrayList<>();
     private final Map<View,ViewGroup.LayoutParams> params=new IdentityHashMap<>();
     private boolean applied;
-    private int measuredSignature,synopsisColor;
+    private int measuredWidth,measuredHeight,measuredTop,synopsisColor;
     private int[] titlePadding;
     LibraryDetailLayout(TvDetailPage page){this.page=page;}
     void sync(){
         if(!applied)return;
         int width=page.heroFrame.getWidth();if(width<=0)return;
-        int signature=Objects.hash(width,page.title.getVisibility(),page.titleArt.getVisibility(),page.title.getText().toString(),page.synopsis.getText().toString(),page.badges.getChildCount());
-        if(signature==measuredSignature)return;measuredSignature=signature;
+        int top=((FrameLayout.LayoutParams)page.info.getLayoutParams()).topMargin;
+        if(width==measuredWidth&&page.info.getHeight()==measuredHeight&&top==measuredTop)return;
+        measuredWidth=width;measuredTop=top;
         page.info.measure(View.MeasureSpec.makeMeasureSpec(width,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED));
         int height=((FrameLayout.LayoutParams)page.info.getLayoutParams()).topMargin+page.info.getMeasuredHeight();
+        measuredHeight=page.info.getMeasuredHeight();
         ViewGroup.LayoutParams lp=page.heroFrame.getLayoutParams();if(lp.height!=height){lp.height=height;page.heroFrame.setLayoutParams(lp);}
     }
     private int dp(float value){return LibraryStyle.dp(page.activity,value);}
@@ -29,7 +31,7 @@ final class LibraryDetailLayout {
     void apply(int width,int height){
         TvDetailPage p=page;
         if(!applied){synopsisColor=p.synopsis.getCurrentTextColor();titlePadding=new int[]{p.title.getPaddingLeft(),p.title.getPaddingTop(),p.title.getPaddingRight(),p.title.getPaddingBottom()};for(int i=0;i<p.info.getChildCount();i++){View v=p.info.getChildAt(i);original.add(v);params.put(v,v.getLayoutParams());}for(int i=0;i<p.controls.getChildCount();i++){View v=p.controls.getChildAt(i);originalControls.add(v);params.put(v,v.getLayoutParams());}}
-        applied=true;measuredSignature=0;detach(p.info);p.info.removeAllViews();detach(p.actionRow);detach(p.synopsis);
+        applied=true;measuredWidth=0;detach(p.info);p.info.removeAllViews();detach(p.actionRow);detach(p.synopsis);
         int side=p.mobile?dp(14):Math.max(dp(18),Math.min(dp(38),Math.round(width*.026f)));
         p.info.setPadding(side,0,side,dp(6));p.info.setGravity(Gravity.LEFT);p.info.setBackgroundColor(Color.TRANSPARENT);
         for(View v:new View[]{p.title,p.brandingHeader,p.titleArt,p.heroActions,p.badges,p.facts,p.synopsis,p.tagline,p.cast,p.crewLine}){detach(v);p.info.addView(v,new LinearLayout.LayoutParams(-1,-2));}

@@ -32,10 +32,11 @@ final class TvDetailScroll extends ScrollView {
     private void updatePinnedHero() {
         if (hero == null || controls == null || hero.getHeight() == 0) return;
         int half = hero.getHeight() / 2;
-        hero.setTranslationY(Math.max(0, getScrollY() - half));
+        int translation=Math.max(0, getScrollY() - half);
+        if(hero.getTranslationY()!=translation)hero.setTranslationY(translation);
         int hidden = Math.max(0, getScrollY() + hero.getHeight() - half - controls.getTop());
         clip.set(0, Math.min(hidden, controls.getHeight()), controls.getWidth(), controls.getHeight());
-        controls.setClipBounds(clip);
+        if(!clip.equals(controls.getClipBounds()))controls.setClipBounds(clip);
     }
     @Override public boolean onTouchEvent(MotionEvent event) {
         if (event.getActionMasked() == MotionEvent.ACTION_DOWN) { stopAnimation(); touchScroll = true; }
@@ -45,6 +46,7 @@ final class TvDetailScroll extends ScrollView {
         touchScroll = false; stopAnimation();
         int maximum = getChildCount() == 0 ? 0 : Math.max(0, getChildAt(0).getHeight() - getHeight());
         final int target = Math.max(0, Math.min(y, maximum));
+        if(target==getScrollY())return;
         if (!smooth || getHeight() == 0) { direct(target); return; }
         animator = ValueAnimator.ofInt(getScrollY(), target); animator.setDuration(240);
         animator.setInterpolator(new DecelerateInterpolator());

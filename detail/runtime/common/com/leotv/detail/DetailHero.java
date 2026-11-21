@@ -57,10 +57,15 @@ class DetailHero extends View {
     private long generation, nextAt;
     private float reveal = 1, slideProgress;
     private boolean closed, loading = true, attached, requestedActive = true, running;
+    private boolean efficient;
     private Index indexListener, incomingListener;
     private boolean portrait;
     private boolean sourceImages;
     private int presentation;
+    private Shader tailGradient,sideGradient;
+    private int gradientWidth,gradientHeight,gradientColour,gradientStyle;
+    private boolean gradientPortrait;
+    private float gradientWeight=-1;
     /** How much of the carousel's own foot scrim is kept; the home keeps less of it than the detail page. */
     private float tailWeight = 1f;
 
@@ -69,6 +74,7 @@ class DetailHero extends View {
         setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
     }
     void presentation(boolean portrait,int style) { this.portrait=portrait;this.presentation=style;invalidate(); }
+    void efficient(boolean value){efficient=value;refreshLoadingFrames();}
     boolean hasArtwork() { return bitmap != null && !bitmap.isRecycled(); }
     /** Scales the carousel's own bottom scrim; the artwork's last edge stays the page colour either way. */
     void tailWeight(float value) { tailWeight = Math.max(0f, Math.min(1f, value)); invalidate(); }
@@ -140,7 +146,7 @@ class DetailHero extends View {
     }
     private void refreshLoadingFrames() {
         main.removeCallbacks(loadingFrame);
-        if (running && loading && bitmap == null) main.post(loadingFrame);
+        if (!efficient && running && loading && bitmap == null) main.post(loadingFrame);
     }
     /**
      * The slide a step in the given direction lands on, skipping the ones that failed. The walk is
@@ -286,6 +292,7 @@ class DetailHero extends View {
     private void animate(int mode, long duration, int start, int end) { animate(mode, duration, start, end, 1); }
     private void animate(int mode, long duration, int start, int end, int direction) {
         animationMode = mode; fromColour = start; toColour = end; slideDirection = direction < 0 ? -1 : 1;
+        if(efficient){settleAnimation();prepareNext();schedule();return;}
         if (mode == 1) reveal = 0; else slideProgress = 0;
         ValueAnimator animation = ValueAnimator.ofFloat(0, 1); animator = animation;
         animation.setDuration(duration); animation.setInterpolator(new DecelerateInterpolator(1.5f));
@@ -409,15 +416,11 @@ class DetailHero extends View {
             }
         } else drawImage(canvas,bitmap,0,reveal,1+.025f*(1-reveal),w,h);
         paint.setAlpha(255);
-        if(presentation==LIBRARY_HOME){paint.setShader(new LinearGradient(0,0,w,0,new int[]{0xe0080808,0x8c080808,0x14080808,0},new float[]{0,.36f,.64f,1},Shader.TileMode.CLAMP));}
-        else if(presentation==LIBRARY_DETAIL){paint.setShader(new LinearGradient(0,h*.62f,0,h,new int[]{0,0x6606111b,0xff06111b},new float[]{0,.7f,1},Shader.TileMode.CLAMP));}
-        else paint.setShader(tail(colour,h,portrait,tailWeight));
+        gradients(w,h);paint.setShader(tailGradient);
         canvas.drawRect(0,0,w,h,paint); paint.setShader(null);
         if(!portrait&&(presentation==1 || presentation==DetailTheme.TV_THUNDER)) {
             boolean thunder = presentation == DetailTheme.TV_THUNDER;
-            paint.setShader(new LinearGradient(0,0,w*(thunder?.88f:.76f),0,
-                    thunder ? new int[]{0xc9080c13,0x88080c13,0x00080c13} : new int[]{0xdc0b1017,0x9e0b1017,0x000b1017},
-                    new float[]{0,.58f,1},Shader.TileMode.CLAMP));
+            paint.setShader(sideGradient);
             canvas.drawRect(0,0,w,h,paint);paint.setShader(null);
         }
         int count = 0; for (Slide slide : slides) if (!slide.failed) count++;
@@ -434,6 +437,15 @@ class DetailHero extends View {
             }
         }
         paint.setAlpha(255);
+    }
+    private void gradients(int w,int h){
+        if(tailGradient!=null&&gradientWidth==w&&gradientHeight==h&&gradientColour==colour&&gradientStyle==presentation&&gradientPortrait==portrait&&gradientWeight==tailWeight)return;
+        gradientWidth=w;gradientHeight=h;gradientColour=colour;gradientStyle=presentation;gradientPortrait=portrait;gradientWeight=tailWeight;
+        if(presentation==LIBRARY_HOME)tailGradient=new LinearGradient(0,0,w,0,new int[]{0xe0080808,0x8c080808,0x14080808,0},new float[]{0,.36f,.64f,1},Shader.TileMode.CLAMP);
+        else if(presentation==LIBRARY_DETAIL)tailGradient=new LinearGradient(0,h*.62f,0,h,new int[]{0,0x6606111b,0xff06111b},new float[]{0,.7f,1},Shader.TileMode.CLAMP);
+        else tailGradient=tail(colour,h,portrait,tailWeight);
+        boolean thunder=presentation==DetailTheme.TV_THUNDER;
+        sideGradient=new LinearGradient(0,0,w*(thunder?.88f:.76f),0,thunder?new int[]{0xc9080c13,0x88080c13,0x00080c13}:new int[]{0xdc0b1017,0x9e0b1017,0x000b1017},new float[]{0,.58f,1},Shader.TileMode.CLAMP);
     }
     private void drawImage(Canvas canvas, Bitmap image, float x, float alpha, float zoom,int w,int h) {
         if (image == null || image.isRecycled()) return;

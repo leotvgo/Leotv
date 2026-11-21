@@ -459,7 +459,7 @@ def main():
                 'default_logo_sha256': provenance['assets'][spec['default_logo_asset']]['sha256'],
                 'resource_ids_and_configurations_retained': True,
                 'resource_style_spans_retained': True, 'coexistence_manifest_verified': True,
-                'native_chrome_global': True, 'blur_transition': 'progressive radius and smootherstep opacity',
+                'native_chrome_global': True, 'blur_transition': 'disabled; native controls draw once',
                 'native_detail_activity': 'com.leotv.detail.DetailActivity',
                 'inline_player_removed_from_resource_navigation': True,
                 'detail_themes_client_specific': True,

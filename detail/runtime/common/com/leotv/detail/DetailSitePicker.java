@@ -154,6 +154,7 @@ final class DetailSitePicker {
     private void cleanup() {
         directory.cancel(); pages.clear(); browsing = null;
         window = null; overlay = null; content = null; sourceRows.clear();
+        if(!closing)selector.post(search::tryAutomatic);
         if (settingsChanged) {
             settingsChanged = false;
             try { reload.run(); }

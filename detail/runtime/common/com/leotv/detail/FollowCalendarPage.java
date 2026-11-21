@@ -115,8 +115,6 @@ final class FollowCalendarPage extends FrameLayout implements GlobalChrome.Follo
         empty.setPadding(0, dp(40), 0, dp(40)); content.addView(empty, new LinearLayout.LayoutParams(-1, -2));
         scrollView.addView(content, new FrameLayout.LayoutParams(-1, -2));
         body.addView(scrollView, new LinearLayout.LayoutParams(-1, 0, 1));
-        scrollView.getViewTreeObserver().addOnScrollChangedListener(this::shadeCards);
-        list.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob) -> shadeCards());
         render(); load();
     }
 
@@ -377,7 +375,8 @@ final class FollowCalendarPage extends FrameLayout implements GlobalChrome.Follo
         FollowFeed.Airing airing = group.get(0);
         LinearLayout card = row(); card.setPadding(dp(9), dp(9), dp(13), dp(9));
         card.setOrientation(mobile ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
-        card.setBackground(round(backdrop.light ? 0xaaffffff : 0x60151d29,14)); card.setFocusable(true); card.setFocusableInTouchMode(false); card.setClickable(true);
+        card.setBackground(new CalendarCardBackground(activity,backdrop.light ? 0xaaffffff : 0x60151d29)); card.setFocusable(true); card.setFocusableInTouchMode(false); card.setClickable(true);
+        if(!mobile&&android.os.Build.VERSION.SDK_INT>=26)try{View.class.getMethod("setDefaultFocusHighlightEnabled",boolean.class).invoke(card,false);}catch(ReflectiveOperationException unavailable){}
         if (card.getId() == View.NO_ID) card.setId(View.generateViewId());
         card.setContentDescription(airing.entry.title + " " + episodesLabel(group));
         if (opener != null) card.setOnClickListener(v -> opener.open(airing.entry));
@@ -437,13 +436,20 @@ final class FollowCalendarPage extends FrameLayout implements GlobalChrome.Follo
         states.addState(new int[]{android.R.attr.state_pressed}, round(0x30ffffff, 12));
         states.addState(new int[]{}, round(colour, 12)); return states;
     }
-    private void shadeCards() { if (list != null) invalidateTree(list); }
-    private void invalidateTree(View view) {
-        view.invalidate();
-        if (view instanceof android.view.ViewGroup) {
-            android.view.ViewGroup group=(android.view.ViewGroup)view;
-            for(int i=0;i<group.getChildCount();i++) invalidateTree(group.getChildAt(i));
+    /** Matches the JAR calendar's 1.5dp pale focus/press outline without background readback. */
+    private static final class CalendarCardBackground extends android.graphics.drawable.Drawable{
+        final android.graphics.Paint paint=new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+        final android.graphics.RectF box=new android.graphics.RectF();final int colour;final float density;int alpha=255;
+        CalendarCardBackground(Activity activity,int colour){this.colour=colour;density=activity.getResources().getDisplayMetrics().density;}
+        @Override public boolean isStateful(){return true;}
+        @Override protected boolean onStateChange(int[] state){invalidateSelf();return true;}
+        @Override public void draw(android.graphics.Canvas canvas){
+            box.set(getBounds());paint.setStyle(android.graphics.Paint.Style.FILL);paint.setColor(colour);paint.setAlpha((colour>>>24)*alpha/255);canvas.drawRoundRect(box,14*density,14*density,paint);
+            for(int state:getState())if(state==android.R.attr.state_focused||state==android.R.attr.state_pressed){box.inset(.75f*density,.75f*density);paint.setStyle(android.graphics.Paint.Style.STROKE);paint.setStrokeWidth(1.5f*density);paint.setColor(0xbbe7e9ee);paint.setAlpha(0xbb*alpha/255);canvas.drawRoundRect(box,14*density,14*density,paint);break;}
         }
+        @Override public void setAlpha(int value){alpha=value;invalidateSelf();}
+        @Override public void setColorFilter(android.graphics.ColorFilter filter){paint.setColorFilter(filter);invalidateSelf();}
+        @Override public int getOpacity(){return android.graphics.PixelFormat.TRANSLUCENT;}
     }
     private static int identify(View view) { if (view.getId() == View.NO_ID) view.setId(View.generateViewId()); return view.getId(); }
 }
