@@ -1,0 +1,538 @@
+{
+  "repo": "leotvgo/Leotv",
+  "keep": 10,
+  "applied": true,
+  "retained": [
+    {
+      "id": 453789705,
+      "tag": "leotv-5.1.32-build-44919808499"
+    },
+    {
+      "id": 453726793,
+      "tag": "leotv-5.1.31-build-44910597116"
+    },
+    {
+      "id": 453712197,
+      "tag": "leotv-5.1.30-build-44908580381"
+    },
+    {
+      "id": 453705592,
+      "tag": "leotv-5.1.29-build-44907870382"
+    },
+    {
+      "id": 453667435,
+      "tag": "leotv-5.1.28-build-44902373330"
+    },
+    {
+      "id": 453607977,
+      "tag": "leotv-5.1.27-build-44893722454"
+    },
+    {
+      "id": 453549774,
+      "tag": "leotv-5.1.26-build-44884916479"
+    },
+    {
+      "id": 453486362,
+      "tag": "leotv-5.1.25-build-44874502527"
+    },
+    {
+      "id": 453366664,
+      "tag": "leotv-5.1.24-build-44852339269"
+    },
+    {
+      "id": 453081123,
+      "tag": "leotv-5.1.23-build-44798650015"
+    }
+  ],
+  "remove_releases": [],
+  "remove_artifacts": [
+    {
+      "id": 14625026926,
+      "name": "ordinary-tv-v8a-signed",
+      "run_id": 44728051101,
+      "bytes": 53594169
+    },
+    {
+      "id": 14624947433,
+      "name": "ordinary-mobile-v8a-signed",
+      "run_id": 44728051101,
+      "bytes": 46091503
+    },
+    {
+      "id": 14614245211,
+      "name": "ordinary-mobile-v7a-signed",
+      "run_id": 44702618185,
+      "bytes": 50417610
+    },
+    {
+      "id": 14613793052,
+      "name": "ordinary-tv-v7a-signed",
+      "run_id": 44702618185,
+      "bytes": 57995322
+    },
+    {
+      "id": 14613352859,
+      "name": "ordinary-mobile-v8a-signed",
+      "run_id": 44702618185,
+      "bytes": 46066123
+    },
+    {
+      "id": 14612909340,
+      "name": "ordinary-tv-v8a-signed",
+      "run_id": 44702618185,
+      "bytes": 53567891
+    },
+    {
+      "id": 14611230112,
+      "name": "ordinary-tv-v8a-signed",
+      "run_id": 44695837360,
+      "bytes": 53565215
+    },
+    {
+      "id": 14610757356,
+      "name": "ordinary-tv-v7a-signed",
+      "run_id": 44695837360,
+      "bytes": 57994960
+    },
+    {
+      "id": 14610403883,
+      "name": "ordinary-mobile-v7a-signed",
+      "run_id": 44695837360,
+      "bytes": 50412911
+    },
+    {
+      "id": 14609754827,
+      "name": "ordinary-mobile-v8a-signed",
+      "run_id": 44695837360,
+      "bytes": 46060864
+    },
+    {
+      "id": 14607760503,
+      "name": "ordinary-mobile-v7a-signed",
+      "run_id": 44687436423,
+      "bytes": 50410276
+    },
+    {
+      "id": 14607705056,
+      "name": "ordinary-tv-v7a-signed",
+      "run_id": 44687436423,
+      "bytes": 57993865
+    },
+    {
+      "id": 14607321053,
+      "name": "ordinary-tv-v7a-signed",
+      "run_id": 44686990750,
+      "bytes": 57994062
+    },
+    {
+      "id": 14607057880,
+      "name": "ordinary-mobile-v8a-signed",
+      "run_id": 44687436423,
+      "bytes": 46058712
+    },
+    {
+      "id": 14606838292,
+      "name": "ordinary-tv-v8a-signed",
+      "run_id": 44687436423,
+      "bytes": 53566134
+    },
+    {
+      "id": 14606606953,
+      "name": "ordinary-tv-v8a-signed",
+      "run_id": 44685835071,
+      "bytes": 53566356
+    },
+    {
+      "id": 14606582311,
+      "name": "ordinary-mobile-v7a-signed",
+      "run_id": 44685835071,
+      "bytes": 50410027
+    },
+    {
+      "id": 14606553421,
+      "name": "ordinary-tv-v8a-signed",
+      "run_id": 44686990750,
+      "bytes": 53566188
+    },
+    {
+      "id": 14606527698,
+      "name": "ordinary-mobile-v8a-signed",
+      "run_id": 44685835071,
+      "bytes": 46058731
+    },
+    {
+      "id": 14605864167,
+      "name": "ordinary-tv-v7a-signed",
+      "run_id": 44685835071,
+      "bytes": 57993798
+    },
+    {
+      "id": 14603895558,
+      "name": "ordinary-mobile-v7a-signed",
+      "run_id": 44678110165,
+      "bytes": 50409478
+    },
+    {
+      "id": 14603206409,
+      "name": "ordinary-tv-v7a-signed",
+      "run_id": 44678110165,
+      "bytes": 57992324
+    },
+    {
+      "id": 14603101603,
+      "name": "ordinary-mobile-v8a-signed",
+      "run_id": 44678110165,
+      "bytes": 46058224
+    },
+    {
+      "id": 14602962180,
+      "name": "ordinary-tv-v8a-signed",
+      "run_id": 44678110165,
+      "bytes": 53565879
+    },
+    {
+      "id": 14600452735,
+      "name": "ordinary-mobile-v7a-signed",
+      "run_id": 44671989553,
+      "bytes": 50409130
+    },
+    {
+      "id": 14600072796,
+      "name": "ordinary-tv-v8a-signed",
+      "run_id": 44671989553,
+      "bytes": 53565972
+    },
+    {
+      "id": 14599674614,
+      "name": "ordinary-mobile-v8a-signed",
+      "run_id": 44671989553,
+      "bytes": 46058886
+    },
+    {
+      "id": 14599618933,
+      "name": "ordinary-tv-v7a-signed",
+      "run_id": 44671989553,
+      "bytes": 57991954
+    },
+    {
+      "id": 14599322226,
+      "name": "ordinary-mobile-v7a-signed",
+      "run_id": 44668721815,
+      "bytes": 50405983
+    },
+    {
+      "id": 14598753399,
+      "name": "ordinary-mobile-v8a-signed",
+      "run_id": 44668721815,
+      "bytes": 46059944
+    },
+    {
+      "id": 14598712726,
+      "name": "ordinary-tv-v8a-signed",
+      "run_id": 44668721815,
+      "bytes": 53565159
+    },
+    {
+      "id": 14598149391,
+      "name": "ordinary-tv-v7a-signed",
+      "run_id": 44668721815,
+      "bytes": 57987900
+    },
+    {
+      "id": 14591115608,
+      "name": "ordinary-mobile-v8a-signed",
+      "run_id": 44649247099,
+      "bytes": 46055997
+    },
+    {
+      "id": 14590295878,
+      "name": "ordinary-tv-v8a-signed",
+      "run_id": 44649247099,
+      "bytes": 53557109
+    },
+    {
+      "id": 14589873889,
+      "name": "ordinary-mobile-v7a-signed",
+      "run_id": 44649247099,
+      "bytes": 50404317
+    },
+    {
+      "id": 14589714802,
+      "name": "ordinary-tv-v7a-signed",
+      "run_id": 44649247099,
+      "bytes": 57978338
+    },
+    {
+      "id": 14554821749,
+      "name": "restored-core-api23-check",
+      "run_id": 44570087200,
+      "bytes": 491
+    },
+    {
+      "id": 14554153040,
+      "name": "ordinary-mobile-v8a-signed",
+      "run_id": 44570087200,
+      "bytes": 46050183
+    },
+    {
+      "id": 14553937258,
+      "name": "ordinary-mobile-v7a-signed",
+      "run_id": 44570087200,
+      "bytes": 50401342
+    },
+    {
+      "id": 14553507602,
+      "name": "native-detail-api23-check",
+      "run_id": 44570087200,
+      "bytes": 771610
+    },
+    {
+      "id": 14553282729,
+      "name": "native-chrome-api23-and-render-check",
+      "run_id": 44570087200,
+      "bytes": 30284
+    },
+    {
+      "id": 14552993709,
+      "name": "ordinary-tv-v7a-signed",
+      "run_id": 44570087200,
+      "bytes": 57980012
+    },
+    {
+      "id": 14552778852,
+      "name": "ordinary-tv-v8a-signed",
+      "run_id": 44570087200,
+      "bytes": 53551311
+    },
+    {
+      "id": 14547525287,
+      "name": "ordinary-mobile-v8a-signed",
+      "run_id": 44558037464,
+      "bytes": 46050353
+    },
+    {
+      "id": 14546905405,
+      "name": "ordinary-tv-v8a-signed",
+      "run_id": 44558037464,
+      "bytes": 53550937
+    },
+    {
+      "id": 14546741526,
+      "name": "ordinary-tv-v7a-signed",
+      "run_id": 44558037464,
+      "bytes": 57980379
+    },
+    {
+      "id": 14545629122,
+      "name": "ordinary-mobile-v7a-signed",
+      "run_id": 44558037464,
+      "bytes": 50401343
+    },
+    {
+      "id": 14545464101,
+      "name": "restored-core-api23-check",
+      "run_id": 44558037464,
+      "bytes": 491
+    },
+    {
+      "id": 14545204580,
+      "name": "native-detail-api23-check",
+      "run_id": 44558037464,
+      "bytes": 771509
+    },
+    {
+      "id": 14545104969,
+      "name": "native-chrome-api23-and-render-check",
+      "run_id": 44558037464,
+      "bytes": 52480
+    },
+    {
+      "id": 14522705492,
+      "name": "native-chrome-api23-and-render-check",
+      "run_id": 44509315489,
+      "bytes": 12011
+    },
+    {
+      "id": 14522485755,
+      "name": "native-detail-api23-check",
+      "run_id": 44509315489,
+      "bytes": 769872
+    },
+    {
+      "id": 14522400759,
+      "name": "restored-core-api23-check",
+      "run_id": 44509315489,
+      "bytes": 491
+    },
+    {
+      "id": 14522381161,
+      "name": "ordinary-mobile-v8a-signed",
+      "run_id": 44509315489,
+      "bytes": 46047225
+    },
+    {
+      "id": 14522175838,
+      "name": "ordinary-tv-v7a-signed",
+      "run_id": 44509315489,
+      "bytes": 57978306
+    },
+    {
+      "id": 14521002777,
+      "name": "ordinary-tv-v8a-signed",
+      "run_id": 44509315489,
+      "bytes": 53548642
+    },
+    {
+      "id": 14520554291,
+      "name": "ordinary-mobile-v7a-signed",
+      "run_id": 44509315489,
+      "bytes": 50397490
+    },
+    {
+      "id": 14504795026,
+      "name": "ordinary-mobile-v8a-signed",
+      "run_id": 44470625955,
+      "bytes": 45975368
+    },
+    {
+      "id": 14504575325,
+      "name": "ordinary-tv-v7a-signed",
+      "run_id": 44470625955,
+      "bytes": 57909280
+    },
+    {
+      "id": 14504257731,
+      "name": "native-chrome-api23-and-render-check",
+      "run_id": 44470625955,
+      "bytes": 14986
+    },
+    {
+      "id": 14504172936,
+      "name": "native-detail-api23-check",
+      "run_id": 44470625955,
+      "bytes": 1768
+    },
+    {
+      "id": 14504088185,
+      "name": "restored-core-api23-check",
+      "run_id": 44470625955,
+      "bytes": 491
+    },
+    {
+      "id": 14503494680,
+      "name": "ordinary-mobile-v7a-signed",
+      "run_id": 44470625955,
+      "bytes": 50327380
+    },
+    {
+      "id": 14503084770,
+      "name": "ordinary-tv-v8a-signed",
+      "run_id": 44470625955,
+      "bytes": 53482015
+    },
+    {
+      "id": 14424375566,
+      "name": "ordinary-tv-v8a-signed",
+      "run_id": 44295959500,
+      "bytes": 52716964
+    },
+    {
+      "id": 14424130889,
+      "name": "ordinary-mobile-v8a-signed",
+      "run_id": 44295959500,
+      "bytes": 45469177
+    },
+    {
+      "id": 14424020936,
+      "name": "ordinary-mobile-v7a-signed",
+      "run_id": 44295959500,
+      "bytes": 49813924
+    },
+    {
+      "id": 14423492913,
+      "name": "restored-core-api23-check",
+      "run_id": 44295959500,
+      "bytes": 491
+    },
+    {
+      "id": 14422784670,
+      "name": "ordinary-tv-v7a-signed",
+      "run_id": 44295959500,
+      "bytes": 57144654
+    }
+  ],
+  "release_asset_bytes": 0,
+  "artifact_bytes": 2914654571,
+  "deleted_release_ids": [],
+  "deleted_artifact_ids": [
+    14625026926,
+    14624947433,
+    14614245211,
+    14613793052,
+    14613352859,
+    14612909340,
+    14611230112,
+    14610757356,
+    14610403883,
+    14609754827,
+    14607760503,
+    14607705056,
+    14607321053,
+    14607057880,
+    14606838292,
+    14606606953,
+    14606582311,
+    14606553421,
+    14606527698,
+    14605864167,
+    14603895558,
+    14603206409,
+    14603101603,
+    14602962180,
+    14600452735,
+    14600072796,
+    14599674614,
+    14599618933,
+    14599322226,
+    14598753399,
+    14598712726,
+    14598149391,
+    14591115608,
+    14590295878,
+    14589873889,
+    14589714802,
+    14554821749,
+    14554153040,
+    14553937258,
+    14553507602,
+    14553282729,
+    14552993709,
+    14552778852,
+    14547525287,
+    14546905405,
+    14546741526,
+    14545629122,
+    14545464101,
+    14545204580,
+    14545104969,
+    14522705492,
+    14522485755,
+    14522400759,
+    14522381161,
+    14522175838,
+    14521002777,
+    14520554291,
+    14504795026,
+    14504575325,
+    14504257731,
+    14504172936,
+    14504088185,
+    14503494680,
+    14503084770,
+    14424375566,
+    14424130889,
+    14424020936,
+    14423492913,
+    14422784670
+  ]
+}

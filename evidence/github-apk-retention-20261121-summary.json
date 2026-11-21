@@ -1,0 +1,23 @@
+{
+  "keep": 10,
+  "retained": [
+    "leotv-5.1.32-build-44919808499",
+    "leotv-5.1.31-build-44910597116",
+    "leotv-5.1.30-build-44908580381",
+    "leotv-5.1.29-build-44907870382",
+    "leotv-5.1.28-build-44902373330",
+    "leotv-5.1.27-build-44893722454",
+    "leotv-5.1.26-build-44884916479",
+    "leotv-5.1.25-build-44874502527",
+    "leotv-5.1.24-build-44852339269",
+    "leotv-5.1.23-build-44798650015"
+  ],
+  "deleted_prereleases": 16,
+  "deleted_ci_artifacts": 79,
+  "deleted_release_asset_bytes": 5449067696,
+  "deleted_ci_artifact_bytes": 3439437600,
+  "protected_input_release": "apk-inputs-5.1.6-20261118",
+  "automatic_cleanup": "After each successful APK test release publication.",
+  "transient_github_deletion_retries": true,
+  "apk_release": "https://github.com/leotvgo/Leotv/releases/tag/leotv-5.1.32-build-44919808499"
+}

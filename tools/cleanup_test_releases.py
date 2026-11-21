@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import time
 
 TAG = re.compile(r'(?:leotv|ordinary)-[0-9]+\.[0-9]+\.[0-9]+-build-([0-9]+)')
 REPORTS = {'restored-core-api23-check', 'native-chrome-api23-and-render-check', 'native-detail-api23-check'}
@@ -55,9 +56,20 @@ def main():
             args.report.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
 
     def delete(endpoint):
-        response = subprocess.run(['gh', 'api', endpoint, '--method', 'DELETE', '--silent'], capture_output=True, text=True)
-        if response.returncode and 'HTTP 404' not in response.stderr:
-            raise SystemExit('Cleanup failed: ' + response.stderr.strip())
+        reason = ''
+        for attempt in range(4):
+            try:
+                response = subprocess.run(['gh', 'api', endpoint, '--method', 'DELETE', '--silent'], capture_output=True, text=True, timeout=45)
+                if response.returncode == 0 or 'HTTP 404' in response.stderr:
+                    return
+                reason = response.stderr.strip()
+            except subprocess.TimeoutExpired:
+                reason = 'GitHub deletion request timed out.'
+            if not any(value in reason.lower() for value in ['timeout', 'timed out', 'tls handshake', 'http 429', 'http 500', 'http 502', 'http 503', 'http 504']):
+                break
+            if attempt < 3:
+                time.sleep(2*(attempt+1))
+        raise SystemExit('Cleanup failed: ' + reason)
 
     persist()
     if args.apply:
