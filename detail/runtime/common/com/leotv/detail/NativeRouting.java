@@ -34,14 +34,32 @@ public final class NativeRouting {
     /** Native resource launchers call this before creating an unnecessary VideoActivity window. */
     public static void openResource(Activity activity, Intent incoming) {
         com.leotv.ui.GlobalChrome.rememberBackground(activity);
+        org.json.JSONObject metadata=searchMetadata(incoming);
+        if(metadata!=null&&MetadataSettings.resourceGlobalSearch(activity)) {
+            Intent search=new Intent().setClassName(activity.getPackageName(),"com.fongmi.android.tv.ui.activity."+(Device.MOBILE?"SearchActivity":"CollectActivity"));
+            search.putExtra("keyword",metadata.optString("vod_name"));activity.startActivity(search);return;
+        }
         Intent next = new Intent(incoming);
         next.setClass(activity, DetailActivity.class);
         next.removeExtra(REDIRECTED);
         next.removeExtra(PLAYER); next.removeExtra(APPLIED);
         next.removeExtra(EPISODE); next.removeExtra(FLAG);
+        // Resource clicks already have an Activity and should retain its task/window context.
+        next.setFlags(next.getFlags() & ~Intent.FLAG_ACTIVITY_NEW_TASK);
         next.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         activity.startActivity(next);
         activity.overridePendingTransition(0,0);
+    }
+    static org.json.JSONObject searchMetadata(Intent incoming) {
+        if(incoming==null)return null;
+        String id=incoming.getStringExtra("id");if(id==null||!id.startsWith("msearch:"))return null;
+        String name=incoming.getStringExtra("name");if(name==null||name.trim().isEmpty())name=android.net.Uri.decode(id.substring(8));
+        if(name.trim().isEmpty())return null;
+        try{return new org.json.JSONObject().put("vod_id",id).put("vod_name",name.trim())
+                .put("vod_pic",incoming.getStringExtra("pic")==null?"":incoming.getStringExtra("pic"))
+                .put("vod_year",incoming.getStringExtra("year")==null?"":incoming.getStringExtra("year"))
+                .put("type_name",incoming.getStringExtra("type")==null?"":incoming.getStringExtra("type"));}
+        catch(org.json.JSONException invalid){return null;}
     }
     /** A running fullscreen player can receive another resource through onNewIntent. */
     public static boolean redirectNewIntent(Activity activity, Intent incoming) {

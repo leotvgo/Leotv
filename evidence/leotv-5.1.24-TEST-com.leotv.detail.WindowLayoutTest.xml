@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.leotv.detail.WindowLayoutTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-21T01:33:23.222Z" hostname="leiyutingdeMacBook-Pro.local" time="0.188">
+  <properties/>
+  <testcase name="nativeErrorUiCanRenderAndDoesNotWaitForAnInvisibleVideo" classname="com.leotv.detail.WindowLayoutTest" time="0.12"/>
+  <testcase name="firstFrameWaitsForLandscapeAndTheActualFullscreenBounds" classname="com.leotv.detail.WindowLayoutTest" time="0.068"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

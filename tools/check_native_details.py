@@ -114,6 +114,8 @@ def check_contract(root, variant, project=None):
                     'S:Lcom/fongmi/android/tv/ui/adapter/q;', 'c0:LF3/f;', 'b0:L'+BEANS+'History;'] if mobile else [
                         'i0:Z', 'U:Landroidx/leanback/widget/ArrayObjectAdapter;', 'g0:L'+BEANS+'History;']
     contracts['com/fongmi/android/tv/ui/activity/VideoActivity'] = (video_methods, video_fields)
+    contracts['com/fongmi/android/tv/ui/activity/SearchActivity'] = (['<init>()V'], [])
+    if not mobile: contracts['com/fongmi/android/tv/ui/activity/CollectActivity'] = (['<init>()V'], [])
     contracts['androidx/appcompat/app/j'] = (
         ['<init>()V', ('C' if mobile else 'A') + '()Landroidx/fragment/app/S;'], [])
     if mobile:
@@ -141,7 +143,7 @@ def check_contract(root, variant, project=None):
         contracts['androidx/leanback/widget/HorizontalGridView'] = (['<init>(Landroid/content/Context;Landroid/util/AttributeSet;)V', 'setRowHeight(I)V'], [])
         contracts['androidx/leanback/widget/BaseGridView'] = (['setHorizontalSpacing(I)V', 'getSelectedPosition()I', 'setSelectedPosition(I)V'], [])
         contracts['androidx/leanback/widget/ItemBridgeAdapter'] = (['<init>(Landroidx/leanback/widget/ObjectAdapter;)V'], [])
-        contracts['com/fongmi/android/tv/ui/custom/ProgressLayout'] = (['b(I)V'], [])
+        contracts['com/fongmi/android/tv/ui/custom/ProgressLayout'] = (['b(I)V'], ['p:I'])
     contracts['androidx/recyclerview/widget/RecyclerView'] = (['i0(I)V'] if mobile else ['scrollToPosition(I)V'], [])
     if mobile:
         contracts.update({

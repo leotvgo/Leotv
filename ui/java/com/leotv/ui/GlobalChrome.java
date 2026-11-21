@@ -159,6 +159,7 @@ public final class GlobalChrome {
         final FrameLayout content;
         final View decor;
         final Portal portal;
+        final BottomFade bottomFade;
         final FollowingNavigation following;
         final boolean phone;
         final Map<View, Background> backgrounds = new IdentityHashMap<>();
@@ -198,6 +199,7 @@ public final class GlobalChrome {
             decor = activity.getWindow().getDecorView();
             phone = phoneClient(activity);
             portal = new Portal(activity, this);
+            bottomFade = new BottomFade(activity, this);
             following=new FollowingNavigation(this);
         }
 
@@ -235,6 +237,7 @@ public final class GlobalChrome {
         }
 
         private void disableContent() {
+            bottomFade.remove();
             clearSamples();
             releasePageArtwork(); pageBackdrop = null;
             for (Background background : backgrounds.values()) background.discard(); backgrounds.clear(); bars.clear();
@@ -311,6 +314,7 @@ public final class GlobalChrome {
             dirty = true;
             if (contentEnabled) {
                 portal.invalidate();
+                if (phone) bottomFade.invalidate();
                 for (View bar : bars) bar.invalidate();
             }
             // One callback per display frame; no independent polling thread/timer.
@@ -743,6 +747,7 @@ public final class GlobalChrome {
                 lastScrollX = source.getScrollX(); lastScrollY = source.getScrollY();
             }
             if (phone) updatePageBackdrop();
+            if (phone) bottomFade.mount(navigation);
             if (dirty) {
                 portal.invalidate();
                 for (View bar : bars) bar.invalidate();
@@ -796,13 +801,17 @@ public final class GlobalChrome {
             pageArtworkRenderer.setBounds(0, 0, pageArtwork.getWidth(), pageArtwork.getHeight() + artworkExtension);
         }
 
-        void pageBackground(Canvas canvas) {
+        void backdropBackground(Canvas canvas) {
             if (pageBackdrop == null) background(canvas);
             else {
                 pageBackdrop.getLocationOnScreen(at); int save = canvas.save();
                 canvas.translate(at[0] - origin[0], Math.min(0, at[1] - origin[1]));
                 pageBackdrop.draw(canvas); canvas.restoreToCount(save);
             }
+        }
+
+        void pageBackground(Canvas canvas) {
+            backdropBackground(canvas);
             if (pageArtworkRenderer != null && artworkY + pageArtwork.getHeight() > 0) {
                 int save = canvas.save(); canvas.translate(artworkX, artworkY - artworkExtension);
                 canvas.clipRect(0, 0, pageArtwork.getWidth(), pageArtwork.getHeight() + artworkExtension);
@@ -1223,14 +1232,68 @@ public final class GlobalChrome {
         @Override protected void onDraw(Canvas canvas) {
             if (owner.closed || !owner.running || !owner.contentEnabled) return;
             if (owner.source == null && owner.bars.isEmpty()) return;
-            if (owner.phone) { owner.extendPageArtwork(canvas); owner.topFade(canvas); }
-            else owner.status.draw(canvas, 0, (int) Math.ceil(owner.topPaintEnd), true);
-            owner.systemNavigation.draw(canvas, (int) Math.floor(owner.bottomStart), owner.height, false);
-            for (View bar : owner.bars) {
-                if (owner.phone) {
-                    owner.drawBar(canvas, bar, (int) Math.floor(owner.bottomStart), owner.height);
-                } else owner.drawView(canvas, bar);
+            if (owner.phone) {
+                owner.extendPageArtwork(canvas); owner.topFade(canvas);
+            } else {
+                owner.status.draw(canvas, 0, (int) Math.ceil(owner.topPaintEnd), true);
+                owner.systemNavigation.draw(canvas, (int) Math.floor(owner.bottomStart), owner.height, false);
+                for (View bar : owner.bars) owner.drawView(canvas, bar);
             }
+        }
+    }
+
+    /** Only the current host backdrop fades over native content, behind the existing buttons. */
+    private static final class BottomFade extends View {
+        final Controller owner;
+        final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        final int[] colours = new int[9];
+        final Rect bounds = new Rect();
+        final float[] positions = new float[9];
+        final android.graphics.PorterDuffXfermode mask = new android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.DST_IN);
+        View navigation;
+        Shader gradient;
+        int fadeHeight;
+        BottomFade(Activity activity, Controller owner) {
+            super(activity); this.owner = owner;
+            setTag("leotv_bottom_fade");setFocusable(false);setClickable(false);
+            setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
+        }
+        void mount(View navigation) {
+            if (!owner.phone || !owner.contentEnabled || owner.following.contentSwitchPending
+                    || navigation == null || !navigation.isShown() || navigation.getHeight() <= 0
+                    || !(navigation.getParent() instanceof android.widget.RelativeLayout)) { remove(); return; }
+            android.widget.RelativeLayout parent = (android.widget.RelativeLayout) navigation.getParent();
+            int fade = owner.dp(24), height = navigation.getHeight() + fade;
+            boolean changed = this.navigation != navigation || getParent() != parent
+                    || getLayoutParams() == null || getLayoutParams().height != height;
+            this.navigation = navigation;
+            if (changed) {
+                if (getParent() instanceof ViewGroup) ((ViewGroup)getParent()).removeView(this);
+                android.widget.RelativeLayout.LayoutParams params = new android.widget.RelativeLayout.LayoutParams(-1, height);
+                params.addRule(android.widget.RelativeLayout.ALIGN_BOTTOM, navigation.getId());
+                params.addRule(android.widget.RelativeLayout.ALIGN_PARENT_LEFT);
+                parent.addView(this, parent.indexOfChild(navigation), params);
+            }
+            if (gradient == null || fadeHeight != fade) {
+                fadeHeight = fade;
+                for (int i=0;i<colours.length;i++) { float t=i/8f; positions[i]=t;colours[i]=Color.argb(Math.round(255*t*t*(3-2*t)),255,255,255); }
+                gradient = new LinearGradient(0,0,0,fade,colours,positions,Shader.TileMode.CLAMP);
+            }
+        }
+        void remove() {
+            navigation = null;
+            if (getParent() instanceof ViewGroup) ((ViewGroup)getParent()).removeView(this);
+        }
+        @Override protected void onDraw(Canvas canvas) {
+            if (owner.closed || !owner.running || !owner.contentEnabled || owner.following.contentSwitchPending || navigation == null) return;
+            int clip = canvas.save();canvas.clipRect(0,0,getWidth(),getHeight());
+            int layer = canvas.saveLayer(0,0,getWidth(),getHeight(),null);
+            bounds.set(0,0,getWidth(),getHeight());owner.content.offsetDescendantRectToMyCoords(this,bounds);
+            int save = canvas.save();canvas.translate(-bounds.left,-bounds.top);
+            owner.backdropBackground(canvas);canvas.restoreToCount(save);
+            paint.setShader(gradient);paint.setXfermode(mask);
+            canvas.drawRect(0,0,getWidth(),getHeight(),paint);
+            paint.setShader(null);paint.setXfermode(null);canvas.restoreToCount(layer);canvas.restoreToCount(clip);
         }
     }
 

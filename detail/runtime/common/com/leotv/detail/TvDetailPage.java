@@ -272,7 +272,15 @@ final class TvDetailPage implements DetailPage {
         else playButton.idle(preferred==null?"暂无可播放剧集":"播放");
     }
     void suspend(){hero.setActive(false);nativeEpisodes.dismiss();if(mobileSources!=null)mobileSources.dismiss();sitePicker.dismiss();if(personPopup!=null)personPopup.close();personPopup=null;if(matchPopup!=null)matchPopup.dismiss();matchPopup=null;}
-    private boolean beforeDraw(){if(!mounted)return true;SourceGateway.Detail previous=source;siteSearch.tryAutomatic();if(previous!=source)return false;ThemeLayout.apply(this);libraryLayout.sync();applyTitleArt();loadingState();nativeEpisodes.background();return true;}
+    private boolean beforeDraw(){
+        if(!mounted)return true;
+        loadingState();
+        if(!mobile&&!WindowLayout.landscapeReady(activity,content))return false;
+        SourceGateway.Detail previous=source;siteSearch.tryAutomatic();if(previous!=source)return false;
+        ThemeLayout.apply(this);libraryLayout.sync();applyTitleArt();loadingState();nativeEpisodes.background();
+        // Applying the real window size requests layout. Its old measured tree must not draw.
+        return mobile||!content.isLayoutRequested();
+    }
     private boolean key(KeyEvent event){
         if(nativeEpisodes.active()&&event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)nativeEpisodes.dismiss();return true;}
         if(episodeGroups!=null&&episodeGroups.key(event))return true;

@@ -1,0 +1,38 @@
+[
+  {
+    "variant": "tv-v7a",
+    "public_abi_members_verified": 78,
+    "ordinary_edit_classes_pinned": 7,
+    "native_source_files_declared": 72,
+    "client": "tv",
+    "theme_count": 5,
+    "device_validation": false
+  },
+  {
+    "variant": "tv-v8a",
+    "public_abi_members_verified": 78,
+    "ordinary_edit_classes_pinned": 7,
+    "native_source_files_declared": 72,
+    "client": "tv",
+    "theme_count": 5,
+    "device_validation": false
+  },
+  {
+    "variant": "mobile-v7a",
+    "public_abi_members_verified": 113,
+    "ordinary_edit_classes_pinned": 7,
+    "native_source_files_declared": 72,
+    "client": "mobile",
+    "theme_count": 4,
+    "device_validation": false
+  },
+  {
+    "variant": "mobile-v8a",
+    "public_abi_members_verified": 113,
+    "ordinary_edit_classes_pinned": 7,
+    "native_source_files_declared": 72,
+    "client": "mobile",
+    "theme_count": 4,
+    "device_validation": false
+  }
+]

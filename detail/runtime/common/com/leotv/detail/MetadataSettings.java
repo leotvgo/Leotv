@@ -39,6 +39,8 @@ public final class MetadataSettings {
         if (theme < 0 || theme >= Device.THEME_NAMES.length) throw new IllegalArgumentException("详情主题无效");
         prefs(context).edit().putInt("detail_theme", theme).apply();
     }
+    public static boolean resourceGlobalSearch(Context context) { return prefs(context).getBoolean("resource_global_search", false); }
+    public static void setResourceGlobalSearch(Context context, boolean enabled) { prefs(context).edit().putBoolean("resource_global_search", enabled).apply(); }
     static String normalizeBase(String value) {
         String text = value == null ? "" : value.trim();
         if (text.isEmpty()) return DEFAULT_BASE;

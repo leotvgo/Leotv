@@ -84,7 +84,10 @@ public final class Playback {
         if(!Device.MOBILE){
             int id=activity.getResources().getIdentifier("video","id",activity.getPackageName());
             android.view.View video=id==0?null:activity.findViewById(id);
-            if(video!=null)video.setBackground(new android.graphics.drawable.ColorDrawable(android.graphics.Color.BLACK));
+            if(video!=null){
+                video.setBackground(new android.graphics.drawable.ColorDrawable(android.graphics.Color.BLACK));
+                WindowLayout.fullscreen(activity,activity.findViewById(android.R.id.content),video);
+            }
         }
     }
     private static void titleArtwork(Activity activity) {

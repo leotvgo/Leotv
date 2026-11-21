@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.leotv.ui.PhoneBottomFadeTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-21T01:43:15.174Z" hostname="leiyutingdeMacBook-Pro.local" time="16.546">
+  <properties/>
+  <testcase name="nativeButtonsAndScrollContentDrawOnceWithoutAnyBottomBlurBuffer" classname="com.leotv.ui.PhoneBottomFadeTest" time="5.145"/>
+  <testcase name="fadeMatchesTheLiveSharedWallpaperWhileTheNativeCardsStaySharp" classname="com.leotv.ui.PhoneBottomFadeTest" time="11.261"/>
+  <testcase name="liveKeepsVodSelectedAndRemovesTheFadeBeforeNativeDispatch" classname="com.leotv.ui.PhoneBottomFadeTest" time="0.14"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

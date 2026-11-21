@@ -9,10 +9,10 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Adds two preferences using individual native rows, leaving existing settings intact. */
+/** Uses the existing native preference rows and dialogs for Leotv's own settings. */
 public final class Personalization {
     private static final String TAG = "leotv_detail_settings";
-    private static final String THEME = "详情页主题", ENDPOINT = "TMDB 配置";
+    private static final String THEME = "详情页主题", ENDPOINT = "TMDB 配置", SEARCH = "全局搜索";
     private Personalization() {}
 
     public static void attach(Activity activity, View root) {
@@ -27,16 +27,23 @@ public final class Personalization {
         if (target == null) return;
         View summary = template == null ? null : find(activity, template, "sizeText");
         LinearLayout rows = new LinearLayout(activity);
-        rows.setOrientation(Device.MOBILE ? LinearLayout.VERTICAL : LinearLayout.HORIZONTAL);
+        rows.setOrientation(LinearLayout.VERTICAL);
         rows.setTag(TAG);
-        add(activity, rows, template, summary, THEME,
+        LinearLayout first = rows;
+        if (!Device.MOBILE) { first=new LinearLayout(activity);first.setOrientation(LinearLayout.HORIZONTAL);rows.addView(first,new LinearLayout.LayoutParams(-1,-2)); }
+        add(activity, first, template, summary, THEME,
                 () -> NativeDialogs.choose(activity, THEME, Device.THEME_NAMES, MetadataSettings.theme(activity),
                         index -> { MetadataSettings.setTheme(activity, index); refresh(activity, rows); }));
-        add(activity, rows, template, summary, ENDPOINT,
+        add(activity, first, template, summary, ENDPOINT,
                 () -> NativeDialogs.endpoint(activity,
                         MetadataSettings.customKey(activity) ? MetadataSettings.key(activity) : "", MetadataSettings.base(activity),
                         (key, base) -> { MetadataSettings.setEndpoint(activity, key, base); refresh(activity, rows); },
                         () -> { MetadataSettings.setEndpoint(activity, "", ""); refresh(activity, rows); }));
+        LinearLayout second=rows;
+        if(!Device.MOBILE){second=new LinearLayout(activity);second.setOrientation(LinearLayout.HORIZONTAL);LinearLayout.LayoutParams line=new LinearLayout.LayoutParams(-1,-2);line.topMargin=rowSpacing(target);rows.addView(second,line);}
+        add(activity, second, template, summary, SEARCH,
+                () -> {MetadataSettings.setResourceGlobalSearch(activity,!MetadataSettings.resourceGlobalSearch(activity));refresh(activity,rows);});
+        if(!Device.MOBILE)second.addView(new View(activity),new LinearLayout.LayoutParams(0,0,1));
         View anchor = template;
         while (anchor != null && anchor.getParent() != target && anchor.getParent() instanceof View)
             anchor = (View) anchor.getParent();
@@ -54,6 +61,7 @@ public final class Personalization {
         try { host = new URI(MetadataSettings.base(activity)).getAuthority(); }
         catch (java.net.URISyntaxException invalid) { host = MetadataSettings.base(activity); }
         summary(endpoint, (MetadataSettings.customKey(activity) ? "自定义 Key" : "内置 Key") + " · " + host);
+        summary(rows.findViewWithTag(SEARCH), MetadataSettings.resourceGlobalSearch(activity)?"开启":"关闭");
     }
     private static void summary(View row, String value) {
         if (row == null) return;

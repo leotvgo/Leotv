@@ -32,6 +32,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
         DetailSessionCache.State cached=DetailSessionCache.get(this,site,id);
         if(cached!=null){source=cached.source;metadata=cached.metadata==null?null:cached.metadata.detached();page.bindSource(source);if(metadata!=null)page.render(metadata);else enrich(token);return;}
         org.json.JSONObject seed=RelatedDetail.metadata(id);
+        if(seed==null)seed=NativeRouting.searchMetadata(getIntent());
         if(seed!=null){
             source=new SourceGateway.Detail(site,id,seed);page.bindSource(source);
             BackdropIdentity identity=identity();long tmdb=seed.optLong("tmdb_id",0);

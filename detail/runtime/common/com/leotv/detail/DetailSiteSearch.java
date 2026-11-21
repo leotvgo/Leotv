@@ -51,7 +51,7 @@ final class DetailSiteSearch {
     private boolean automatic, unavailableSent;
     private long selectionGeneration;
     private final java.util.Set<String> attempted = new java.util.HashSet<>();
-    private static final class Resolution {Future<?> task;Runnable timeout;boolean done;}
+    private static final class Resolution {Entry entry;Future<?> task;Runnable timeout;boolean done;}
     private final List<Resolution> resolutions=new ArrayList<>();
     private SiteFeed.Site pendingSite;
     private SourceGateway.Detail pendingDetail;
@@ -93,10 +93,14 @@ final class DetailSiteSearch {
         begin(work, false);
     }
     void begin(BackdropIdentity work, boolean automatically) {
+        if(closed||work==null||work.title.isEmpty())return;
+        begin(work,automatically,SiteFeed.searchSites());
+    }
+    void begin(BackdropIdentity work, boolean automatically,List<SiteFeed.Site> sites) {
         if (closed || work == null || work.title.isEmpty()) return;
         cancel(); target = work; completionSequence = 0; automatic = automatically;
         final long token = generation;
-        for (SiteFeed.Site site : SiteFeed.searchSites()) {
+        for (SiteFeed.Site site : sites) {
             if (!work.music && musicSite(site)) continue;
             if (site.key.equals(work.site)) {
                 Entry entry = new Entry(site); entry.state = State.FOUND;
@@ -148,12 +152,15 @@ final class DetailSiteSearch {
         }
         for (Entry entry : foundByCompletion()) {
             if (entry.site.key.equals(target.site)) continue;
+            boolean busy=false;for(Resolution resolution:resolutions)if(resolution.entry==entry){busy=true;break;}
+            if(busy)continue;
             for (JSONObject candidate : entry.matches) {
                 if (candidate == null || folder(candidate) || candidate.optString("vod_id").isEmpty()) continue;
                 String key = entry.site.key + "@@@" + candidate.optString("vod_id");
                 if(resolutions.size()>=4)return;
                 if (!attempted.add(key)) continue;
                 resolve(entry, candidate);
+                break; // One candidate per site leaves room for another site's faster detail response.
             }
         }
         if(!resolutions.isEmpty())return;
@@ -162,7 +169,7 @@ final class DetailSiteSearch {
     }
 
     private void resolve(Entry entry, JSONObject candidate) {
-        Resolution resolution=new Resolution();resolutions.add(resolution);
+        Resolution resolution=new Resolution();resolution.entry=entry;resolutions.add(resolution);
         final long token = generation, selection = selectionGeneration;
         listener.loading(entry.site);
         resolution.timeout = () -> {

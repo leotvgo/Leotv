@@ -1,0 +1,50 @@
+{
+  "version_name": "5.1.24",
+  "version_code": 534,
+  "date": "2026-11-21",
+  "focused_checks": [
+    {
+      "suite": "com.leotv.ui.PhoneBottomFadeTest",
+      "tests": 3,
+      "failures": 0,
+      "cases": [
+        "nativeButtonsAndScrollContentDrawOnceWithoutAnyBottomBlurBuffer",
+        "fadeMatchesTheLiveSharedWallpaperWhileTheNativeCardsStaySharp",
+        "liveKeepsVodSelectedAndRemovesTheFadeBeforeNativeDispatch"
+      ],
+      "report": "evidence/leotv-5.1.24-TEST-com.leotv.ui.PhoneBottomFadeTest.xml"
+    },
+    {
+      "suite": "com.leotv.detail.NativeDetailTest",
+      "tests": 1,
+      "failures": 0,
+      "cases": [
+        "directResourceLaunchPreservesTheLoadingBackdropAcrossThemeChanges"
+      ],
+      "report": "evidence/leotv-5.1.24-TEST-com.leotv.detail.NativeDetailTest.xml"
+    },
+    {
+      "suite": "com.leotv.detail.PersonalizationTest",
+      "tests": 1,
+      "failures": 0,
+      "cases": [
+        "globalSearchDefaultsOffAndEachClickTogglesTheNativeRow"
+      ],
+      "report": "evidence/leotv-5.1.24-TEST-com.leotv.detail.PersonalizationTest.xml"
+    },
+    {
+      "suite": "com.leotv.detail.WindowLayoutTest",
+      "tests": 2,
+      "failures": 0,
+      "cases": [
+        "nativeErrorUiCanRenderAndDoesNotWaitForAnInvisibleVideo",
+        "firstFrameWaitsForLandscapeAndTheActualFullscreenBounds"
+      ],
+      "report": "evidence/leotv-5.1.24-TEST-com.leotv.detail.WindowLayoutTest.xml"
+    }
+  ],
+  "device_validation": false,
+  "full_regression_run": false,
+  "github_validation_suites_requested": false,
+  "native_abi_report": "evidence/leotv-5.1.24-native-abi.json"
+}

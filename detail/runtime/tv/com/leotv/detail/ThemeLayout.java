@@ -14,6 +14,7 @@ final class ThemeLayout {
         int width=p.content.getWidth(),height=p.content.getHeight();
         if(width<=0)width=p.activity.getResources().getDisplayMetrics().widthPixels;
         if(height<=0)height=p.activity.getResources().getDisplayMetrics().heightPixels;
+        if(p.content.getWidth()<=0&&width<height){int previous=width;width=height;height=previous;}
         if(p.theme==value&&p.themeWidth==width&&p.themeHeight==height)return;
         if(p.libraryLayout!=null)p.libraryLayout.restore();
         p.theme=value;p.themeWidth=width;p.themeHeight=height;
