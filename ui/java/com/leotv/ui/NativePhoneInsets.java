@@ -25,7 +25,7 @@ final class NativePhoneInsets implements AutoCloseable {
     NativePhoneInsets(Activity activity,FrameLayout content){
         this.activity=activity;this.content=content;
         scrim=new View(activity);scrim.setTag("leotv_status_scrim");scrim.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);scrim.setClickable(false);scrim.setFocusable(false);
-        scrim.setBackground(new StatusShade(dp(8)));scrim.setElevation(dp(16));
+        scrim.setBackground(new StatusShade(dp(8)));scrim.setElevation(dp(16));scrim.setOutlineProvider(null);
         content.getViewTreeObserver().addOnGlobalLayoutListener(layout);
     }
     int dp(float value){return Math.round(value*content.getResources().getDisplayMetrics().density);}
@@ -73,11 +73,13 @@ final class NativePhoneInsets implements AutoCloseable {
             }
         }
         if(settings!=null&&settings.list!=list){settings.restore();settings=null;}
-        if(list==null||list.getHeight()<=0)return;
-        if(settings==null)settings=new SettingsInset(list);
+        if(list==null||list.getHeight()<=0||list.getChildCount()==0||!(list.getChildAt(0) instanceof ViewGroup))return;
+        if(settings!=null&&settings.body!=list.getChildAt(0)){settings.restore();settings=null;}
+        if(settings==null)settings=new SettingsInset(list,(ViewGroup)list.getChildAt(0));
         list.getLocationOnScreen(settingsOrigin);
-        // Actual capsule position includes its height, floating gap and system inset.
-        settings.apply(Math.max(0,settingsOrigin[1]+list.getHeight()-navTop+dp(8)));
+        // Add a tail to the content, leaving the scrolling viewport full height.
+        // Only the last setting reaches this space, with the original row spacing.
+        settings.apply(Math.max(0,settingsOrigin[1]+list.getHeight()-navTop));
     }
     private int statusBarHeight(WindowInsets insets){
         if(insets!=null&&android.os.Build.VERSION.SDK_INT>=30)try{
@@ -104,16 +106,28 @@ final class NativePhoneInsets implements AutoCloseable {
         if(content.getViewTreeObserver().isAlive())content.getViewTreeObserver().removeOnGlobalLayoutListener(layout);
     }
     private static final class SettingsInset{
-        final ViewGroup list;final int bottom;final boolean clip;int applied;
-        SettingsInset(ViewGroup list){this.list=list;bottom=applied=list.getPaddingBottom();clip=list.getClipToPadding();}
-        void apply(int clearance){
-            applied=bottom+clearance;
-            if(list.getPaddingBottom()!=applied)list.setPadding(list.getPaddingLeft(),list.getPaddingTop(),list.getPaddingRight(),applied);
-            if(!list.getClipToPadding())list.setClipToPadding(true);
+        final ViewGroup list,body;final int bottom,gap;int applied;
+        SettingsInset(ViewGroup list,ViewGroup body){
+            this.list=list;this.body=body;bottom=applied=body.getPaddingBottom();
+            int spacing=0;
+            for(int i=0;i<body.getChildCount();i++){
+                ViewGroup.LayoutParams params=body.getChildAt(i).getLayoutParams();
+                if(params instanceof ViewGroup.MarginLayoutParams&&((ViewGroup.MarginLayoutParams)params).topMargin>0){spacing=((ViewGroup.MarginLayoutParams)params).topMargin;break;}
+            }
+            gap=spacing>0?spacing:Math.round(16*body.getResources().getDisplayMetrics().density);
+        }
+        void apply(int overlap){
+            int margin=0;
+            for(int i=body.getChildCount()-1;i>=0;i--)if(body.getChildAt(i).getVisibility()!=View.GONE){
+                ViewGroup.LayoutParams params=body.getChildAt(i).getLayoutParams();
+                if(params instanceof ViewGroup.MarginLayoutParams)margin=((ViewGroup.MarginLayoutParams)params).bottomMargin;
+                break;
+            }
+            applied=Math.max(bottom,overlap+gap-list.getPaddingBottom()-margin);
+            if(body.getPaddingBottom()!=applied)body.setPadding(body.getPaddingLeft(),body.getPaddingTop(),body.getPaddingRight(),applied);
         }
         void restore(){
-            if(list.getPaddingBottom()==applied)list.setPadding(list.getPaddingLeft(),list.getPaddingTop(),list.getPaddingRight(),bottom);
-            list.setClipToPadding(clip);
+            if(body.getPaddingBottom()==applied)body.setPadding(body.getPaddingLeft(),body.getPaddingTop(),body.getPaddingRight(),bottom);
         }
     }
     private static final class Margin{
@@ -135,18 +149,18 @@ final class NativePhoneInsets implements AutoCloseable {
             if(glass!=null){view.getOverlay().remove(glass);view.removeOnLayoutChangeListener(geometry);view.setBackgroundTintList(tint);view.setStateListAnimator(animator);view.setElevation(elevation);}
         }
     }
-    /** Navigation glass tones, gradually frosted inside the existing status shade bounds. */
+    /** Light glass at the window edge, fading down to clear within the existing bounds. */
     private static final class StatusShade extends android.graphics.drawable.Drawable{
         final android.graphics.Paint paint=new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
         final int fade;
         StatusShade(int fade){this.fade=fade;}
         @Override protected void onBoundsChange(android.graphics.Rect bounds){
             float stop=Math.max(0f,Math.min(.999f,(bounds.height()-fade)/(float)Math.max(1,bounds.height())));
-            // Clear at the window edge, then soft white light and the navigation's
-            // blue-grey glass. Keep the original 8dp tail clear at the content edge.
+            // The strongest frost belongs at the top. Use only translucent white
+            // light, with no dark tint, and keep the original 8dp tail clear.
             paint.setShader(new android.graphics.LinearGradient(0,bounds.top,0,bounds.bottom,
-                    new int[]{0x00ffffff,0x0cffffff,0x24ffffff,0x32ffffff,0x45172638,0x28172638,0x00172638},
-                    new float[]{0,stop*.2f,stop*.46f,stop*.72f,stop,stop+(1-stop)*.45f,1},
+                    new int[]{0x48ffffff,0x36ffffff,0x24ffffff,0x0effffff,0x00ffffff,0x00ffffff},
+                    new float[]{0,stop*.25f,stop*.5f,stop*.75f,stop,1},
                     android.graphics.Shader.TileMode.CLAMP));
         }
         @Override public void draw(android.graphics.Canvas canvas){canvas.drawRect(getBounds(),paint);}

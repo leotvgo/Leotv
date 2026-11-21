@@ -1,0 +1,41 @@
+{
+  "version_name": "5.1.31",
+  "version_code": 541,
+  "base_commit": "1dcbc1d58235117c9a8f19cba19075c9b7350516",
+  "allowed_changed_overlay_classes": [
+    "Lcom/leotv/ui/NativePhoneInsets;",
+    "Lcom/leotv/ui/NativePhoneInsets$SettingsInset;",
+    "Lcom/leotv/ui/NativePhoneInsets$StatusShade;"
+  ],
+  "resource_changes": [
+    "manifest/versionCode",
+    "manifest/versionName",
+    "string/app_version"
+  ],
+  "status_glass": {
+    "direction": "strongest translucent white at top, fading down to transparent",
+    "dark_tint": false,
+    "outline_shadow": false,
+    "bounds_changed": false,
+    "real_time_backdrop_blur": false
+  },
+  "personalization": {
+    "padding_target": "original settings content column only",
+    "scroll_view_padding_changed": false,
+    "scroll_view_clipping_changed": false,
+    "gap": "original setting row topMargin, default 16dp",
+    "tail_padding": "max(original tail, overlap + row gap - original scroll bottom padding - last row bottomMargin)",
+    "ordinary_scrolling": "full viewport; clearance appears at content end"
+  },
+  "source_sha256": {
+    "ui/java/com/leotv/ui/NativePhoneInsets.java": "21370e54e495155ff08523e6b2fbca6de98b5af60be14d0b66326b3ae957e356",
+    "branding/AndroidManifest.xml": "bf2637b88a41a02edd50968114e6ecef554e82092e0bc44f9fa4c0f3a5c32666",
+    "branding/res/values/strings.xml": "8162cda52d1f6fbce2213a074fdb377abcd3b2d1248b385b1f1789a0f3af68ef",
+    "research/ui-check/src/test/java/com/leotv/ui/PhoneNavigationTest.java": "4476c7f7e7679da76d04adfa10dc88db99ecd6f0c99c0800213615f95af54a29"
+  },
+  "local_build_run": false,
+  "validation_tests_run": false,
+  "ci_run_validation_tests": false,
+  "device_validation": false,
+  "validation_reason": "Continuing user preference for direct push/build and real-device acceptance."
+}

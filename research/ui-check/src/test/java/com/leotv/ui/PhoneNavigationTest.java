@@ -162,17 +162,18 @@ public class PhoneNavigationTest {
         assertEquals(2,host.pushClicks);assertEquals(2,host.filterClicks);assertEquals(2,host.topClicks);assertEquals(0,host.scroll.getScrollY());
     }
     @Test @Config(sdk=35) @GraphicsMode(GraphicsMode.Mode.NATIVE)
-    public void statusGlassGraduallyFrostsWithinTheOriginalShadeBounds(){
+    public void statusGlassFadesDownToClearWithoutADarkEdge(){
         View shade=host.findViewById(android.R.id.content).findViewWithTag("leotv_status_scrim");assertNotNull(shade);assertTrue(shade.getHeight()>8);
         assertEquals(chrome.phoneInsets.shadeTop+chrome.phoneInsets.dp(8),shade.getHeight());
         assertEquals(0,shade.getTop());assertEquals(chrome.phoneInsets.content.getWidth(),shade.getWidth());
         Bitmap pixels=Bitmap.createBitmap(shade.getWidth(),shade.getHeight(),Bitmap.Config.ARGB_8888);shade.draw(new Canvas(pixels));
         int band=chrome.phoneInsets.shadeTop;
         int top=Color.alpha(pixels.getPixel(5,0)),middle=Color.alpha(pixels.getPixel(5,band/2)),frost=Color.alpha(pixels.getPixel(5,band-1)),end=Color.alpha(pixels.getPixel(5,shade.getHeight()-1));
-        assertTrue("window edge remains clear",top<8);
-        assertTrue("glass gradually gains opacity",top<middle&&middle<frost);
-        assertTrue("frost remains translucent",frost<128);
-        assertTrue("original tail merges softly into content",end<middle);pixels.recycle();
+        assertTrue("top frost remains translucent",top>0&&top<128);
+        assertTrue("glass fades down toward content",top>middle&&middle>frost);
+        assertTrue("lower edge is clear",end<8);
+        assertEquals("no dark material at the top",255,Color.red(pixels.getPixel(5,0)));
+        assertNull("shade casts no outline shadow",shade.getOutlineProvider());pixels.recycle();
         assertEquals(0,chrome.frameSignals);
     }
 
