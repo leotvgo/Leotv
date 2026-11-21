@@ -96,14 +96,19 @@ final class NativePhoneInsets implements AutoCloseable {
             if(glass!=null){view.getOverlay().remove(glass);view.removeOnLayoutChangeListener(geometry);view.setBackgroundTintList(tint);view.setStateListAnimator(animator);view.setElevation(elevation);}
         }
     }
-    /** Uniform shallow tint behind status icons, with a short fade below their whole band. */
+    /** Navigation glass tones, gradually frosted inside the existing status shade bounds. */
     private static final class StatusShade extends android.graphics.drawable.Drawable{
         final android.graphics.Paint paint=new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
         final int fade;
         StatusShade(int fade){this.fade=fade;}
         @Override protected void onBoundsChange(android.graphics.Rect bounds){
             float stop=Math.max(0f,Math.min(.999f,(bounds.height()-fade)/(float)Math.max(1,bounds.height())));
-            paint.setShader(new android.graphics.LinearGradient(0,bounds.top,0,bounds.bottom,new int[]{0x330b1422,0x330b1422,0x000b1422},new float[]{0,stop,1},android.graphics.Shader.TileMode.CLAMP));
+            // Clear at the window edge, then soft white light and the navigation's
+            // blue-grey glass. Keep the original 8dp tail clear at the content edge.
+            paint.setShader(new android.graphics.LinearGradient(0,bounds.top,0,bounds.bottom,
+                    new int[]{0x00ffffff,0x0cffffff,0x24ffffff,0x32ffffff,0x45172638,0x28172638,0x00172638},
+                    new float[]{0,stop*.2f,stop*.46f,stop*.72f,stop,stop+(1-stop)*.45f,1},
+                    android.graphics.Shader.TileMode.CLAMP));
         }
         @Override public void draw(android.graphics.Canvas canvas){canvas.drawRect(getBounds(),paint);}
         @Override public void setAlpha(int value){paint.setAlpha(value);invalidateSelf();}

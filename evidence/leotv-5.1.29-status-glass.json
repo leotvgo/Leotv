@@ -1,0 +1,33 @@
+{
+  "version_name": "5.1.29",
+  "version_code": 539,
+  "base_commit": "3024219bdc54c532a685440f279923e022f7afec",
+  "allowed_runtime_changes": [
+    "Lcom/leotv/ui/NativePhoneInsets$StatusShade;"
+  ],
+  "resource_changes": [
+    "manifest/versionCode",
+    "manifest/versionName",
+    "string/app_version"
+  ],
+  "material": {
+    "type": "static translucent glass gradient, matching native navigation tones",
+    "top": "transparent",
+    "status_band": "gradual white sheen to translucent blue-grey frost",
+    "tail": "fade to transparent inside the original 8dp tail",
+    "geometry_changed": false,
+    "real_time_backdrop_blur": false
+  },
+  "source_sha256": {
+    "ui/java/com/leotv/ui/NativePhoneInsets.java": "1ee0b9dad22c9a9df479c5aaf427b14fa79ff0beec36d3a0e2ffda5094686776",
+    "branding/AndroidManifest.xml": "864aafebe697fa2cbcaed1166a4d8c2a53ea985eca47933d511e1bb6fa9000f8",
+    "branding/res/values/strings.xml": "df969449f7c5b968b8cb21db2aef62c4d67131b604e819889b651c8ba07565e3",
+    "research/ui-check/src/test/java/com/leotv/ui/PhoneNavigationTest.java": "878f22d842ce831dce28c15db860a5c5bf34eb03b3f969e2a78789b43369b3a1"
+  },
+  "validation_tests_run": false,
+  "local_build_run": false,
+  "ci_run_validation_tests": false,
+  "validation_reason": "User requested direct push/build and will verify on a real device.",
+  "existing_status_gate_updated": true,
+  "device_validation": false
+}
