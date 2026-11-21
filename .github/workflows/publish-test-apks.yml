@@ -39,7 +39,7 @@ jobs:
           EXPECTED_CERT: ${{ vars.APK_CERT_SHA256 }}
         run: |
           python3 - <<'PY'
-          import hashlib, json, os, pathlib, subprocess, sys
+          import base64, hashlib, json, os, pathlib, subprocess, sys, xml.etree.ElementTree as ET
           repo = os.environ['GITHUB_REPOSITORY']
           run_id = os.environ['BUILD_RUN_ID']
           if not run_id.isdecimal() or int(run_id) <= 0:
@@ -50,11 +50,21 @@ jobs:
           root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'publish-apks'
           files = []
           version = None
+          staged_version = None
           for variant in ['tv-v7a', 'tv-v8a', 'mobile-v7a', 'mobile-v8a']:
               target = root / variant
               target.mkdir(parents=True, exist_ok=True)
-              subprocess.run(['gh', 'run', 'download', run_id, '--repo', repo, '--name',
-                  f'ordinary-{variant}-signed', '--dir', str(target)], check=True)
+              downloaded = subprocess.run(['gh', 'run', 'download', run_id, '--repo', repo, '--name',
+                  f'ordinary-{variant}-signed', '--dir', str(target)], capture_output=True, text=True)
+              if downloaded.returncode != 0:
+                  if staged_version is None:
+                      manifest = json.loads(subprocess.check_output(['gh', 'api',
+                          f"repos/{repo}/contents/branding/AndroidManifest.xml?ref={data['head_sha']}"]))
+                      staged_version = ET.fromstring(base64.b64decode(manifest['content'])).attrib['{http://schemas.android.com/apk/res/android}versionName']
+                  staged_tag = f'leotv-{staged_version}-build-{run_id}'
+                  subprocess.run(['gh', 'release', 'download', staged_tag, '--repo', repo, '--dir', str(target), '--clobber',
+                      '--pattern', f'leotv-{variant}.apk', '--pattern', f'leotv-{variant}.signature.json',
+                      '--pattern', f'leotv-{variant}-unsigned.audit.json'], check=True)
               report = json.loads((target / f'leotv-{variant}.signature.json').read_text())
               audit = json.loads((target / f'leotv-{variant}-unsigned.audit.json').read_text())
               apk = target / f'leotv-{variant}.apk'
@@ -64,6 +74,8 @@ jobs:
                   raise SystemExit('Leotv identity/source audit verification failed.')
               if version is not None and version != audit['version_name']:
                   raise SystemExit('Four APK variants must use the same Leotv version.')
+              if staged_version is not None and staged_version != audit['version_name']:
+                  raise SystemExit('Staged APK version differs from its source commit.')
               version = audit['version_name']
               files.extend([str(apk), str(target / f'leotv-{variant}.signature.json'),
                   str(target / f'leotv-{variant}-unsigned.audit.json')])
@@ -117,6 +129,7 @@ jobs:
           verify_assets(release)
           subprocess.run(['gh', 'api', release_endpoint, '--method', 'PATCH',
               '--field', 'draft=false', '--field', 'prerelease=true',
+              '--raw-field', 'body=' + notes.read_text(),
               '--raw-field', 'make_latest=false', '--silent'], check=True)
           print(f'https://github.com/{repo}/releases/tag/{tag}')
           PY

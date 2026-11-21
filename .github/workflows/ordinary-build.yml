@@ -81,6 +81,8 @@ jobs:
           retention-days: 14
 
   apk:
+    permissions:
+      contents: write
     runs-on: ubuntu-22.04
     timeout-minutes: 25
     strategy:
@@ -141,7 +143,9 @@ jobs:
           python3 tools/sign_ci_apk.py --sdk "$ANDROID_SDK_ROOT" \
             --input "artifacts/leotv-$VARIANT-unsigned.apk" \
             --output "artifacts/leotv-$VARIANT.apk"
-      - uses: actions/upload-artifact@v4
+      - id: signed_artifact
+        uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
           name: ordinary-${{ matrix.variant }}-signed
           path: |
@@ -149,3 +153,10 @@ jobs:
             artifacts/leotv-${{ matrix.variant }}.signature.json
             artifacts/leotv-${{ matrix.variant }}-unsigned.audit.json
           retention-days: 14
+      - name: Stage verified APK in a release draft when Actions storage is unavailable
+        if: steps.signed_artifact.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APK_CERT_SHA256: ${{ vars.APK_CERT_SHA256 }}
+          VARIANT: ${{ matrix.variant }}
+        run: python3 tools/stage_ci_apk.py --variant "$VARIANT"

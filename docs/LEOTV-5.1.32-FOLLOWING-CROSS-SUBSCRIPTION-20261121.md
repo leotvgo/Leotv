@@ -11,3 +11,5 @@
 允许变化类为 FollowingActivity、DetailActivity、SourceGateway$Detail、TvDetailPage、DetailSiteSearch；不新增生产类、不改原 smali、布局或 native。版本元数据更新 5.1.32 / 542。用户要求直接构建、真机验收；本轮不运行本地测试，GitHub 使用 run_validation_tests=false，保留 API 23 编译、原样/变化审计、四变体固定签名。
 
 手机 JAR“我的追更”界面的重叠另由 V6 核心修正，只在手机 com.leotv.app 内适配 JAR 自己的整页容器，不桥接该入口到 APK 日历，保持冲顶与上下透明栏下的滚动；APK 本轮不修改首页容器或栏位绘制。
+
+首次构建 44917973074 的四个 APK 已完成编译/审计/固定签名，失败在 Actions 产物上传：Artifact storage quota has been hit。新增私有 release 草稿传输兜底，保持原签名密钥只在签名步骤使用；发布器仍核对源码版本、四个 APK、证书、SHA-256 和基准/变化审计，全部齐备才公开。同一构建的草稿支持并发变体上传，已公开文件不被覆盖，不删除既有 releases 或输入 APK。
