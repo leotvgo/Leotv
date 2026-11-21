@@ -26,7 +26,7 @@ TV 左键追更入口使用与手机导航相同的静态玻璃材质，增加�
 
 玻璃胶囊的高光/中段/底部 alpha 从 0x26/0x0d/0x1a 提高到 0x48/0x24/0x45。原 FloatingActionButton 的锚点仍保留在内容 pager，但末尾 margin 加入导航与系统避让，使三个原悬浮操作位于导航上方。tag=top 的回到顶部按钮保留原控件/点击/原图标，去掉蓝色实底和阴影，并使用同一玻璃材质。
 
-精确资源声明为 layout/activity_home 的原 RelativeLayout 增加 fitsSystemWindows=false。手机窗口继续使用原生 edge-to-edge 标志，内容扩展到状态栏下；AppBar 只增加安全 padding，列表仍关闭 clipToPadding，使滚动卡片经过原生状态图标下方。状态栏顶端增加一个静态透明渐变遮罩，增强图标可读性；不采样内容、不绘制宿主壁纸回放。导航和悬浮操作按实际系统 inset 避让。
+构建类门禁精确加入 NativePhoneInsets 及其内部类，保持其它类的拒绝规则。精确资源声明为 layout/activity_home 的原 RelativeLayout 增加 fitsSystemWindows=false。手机窗口继续使用原生 edge-to-edge 标志，内容扩展到状态栏下；AppBar 只增加安全 padding，列表仍关闭 clipToPadding，使滚动卡片经过原生状态图标下方。状态栏顶端增加一个静态透明渐变遮罩，增强图标可读性；不采样内容、不绘制宿主壁纸回放。导航和悬浮操作按实际系统 inset 避让。
 
 ## 验证与边界
 
