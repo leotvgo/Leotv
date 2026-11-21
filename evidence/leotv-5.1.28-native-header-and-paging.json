@@ -1,0 +1,18 @@
+{
+  "version_name": "5.1.28",
+  "version_code": 538,
+  "base_commit": "59f1d0892cc5fa648b994219267108b8d6bf710a",
+  "validation": {
+    "cached_pages_plain_layout_params_and_fold_preserved": "passed",
+    "neighbor_does_not_flash_unpadded_cards_into_header": "passed",
+    "return_to_top_matches_visible_header_edge": "passed"
+  },
+  "changes": [
+    "Removed category-wide native list reset and forced AppBar expansion.",
+    "Prepared cached pager pages before swipe drawing, including plain LayoutParams.",
+    "Retained pager clipping and current list anchors.",
+    "Aligned the true list origin with the actual visible header edge."
+  ],
+  "replay_or_blur_reenabled": false,
+  "device_validation": false
+}

@@ -17,6 +17,14 @@ import static org.junit.Assert.*;
 @Config(sdk=23,manifest=Config.NONE,qualifiers="w360dp-h800dp-port-mdpi-finger")
 @LooperMode(LooperMode.Mode.PAUSED)
 public class PhoneNavigationTest {
+    /** Like the retained pager, pages use plain LayoutParams and stay cached side by side. */
+    public static class Pager extends ViewGroup{
+        int current;
+        Pager(Activity activity){super(activity);setId(310);}
+        public int getCurrentItem(){return current;}
+        @Override protected void onMeasure(int w,int h){setMeasuredDimension(MeasureSpec.getSize(w),MeasureSpec.getSize(h));for(int i=0;i<getChildCount();i++)getChildAt(i).measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth(),MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(getMeasuredHeight(),MeasureSpec.EXACTLY));}
+        @Override protected void onLayout(boolean changed,int l,int t,int r,int b){for(int i=0;i<getChildCount();i++)getChildAt(i).layout(i*getWidth(),0,(i+1)*getWidth(),getHeight());}
+    }
     public static class Navigation extends LinearLayout {
         final android.view.Menu menu;
         int selected=101;
@@ -160,6 +168,29 @@ public class PhoneNavigationTest {
         int top=Color.alpha(pixels.getPixel(5,1)),middle=Color.alpha(pixels.getPixel(5,(shade.getHeight()-8)/2)),end=Color.alpha(pixels.getPixel(5,shade.getHeight()-1));
         assertEquals(0x33,top);assertEquals(top,middle);assertTrue(end<top);pixels.recycle();
         assertEquals(0,chrome.frameSignals);
+    }
+
+    private Pager cachedPager(){
+        FrameLayout container=host.root.findViewById(306);View old=container.findViewById(310);container.removeView(old);
+        Pager pager=new Pager(host);container.addView(pager,0,new FrameLayout.LayoutParams(-1,-1));
+        for(int i=0;i<2;i++){ScrollView page=new ScrollView(host);Counter cards=new Counter(host,true);page.addView(cards,new ScrollView.LayoutParams(-1,2400));pager.addView(page,new ViewGroup.LayoutParams(-1,-1));}
+        org.robolectric.shadows.ShadowLooper.shadowMainLooper().idleFor(16,java.util.concurrent.TimeUnit.MILLISECONDS);layout();return pager;
+    }
+    @Test @Config(sdk=35) @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    public void categorySwipeKeepsTheFoldAndPreparesTheNeighborBeforeDrawing(){
+        Pager pager=cachedPager();ScrollView first=(ScrollView)pager.getChildAt(0),next=(ScrollView)pager.getChildAt(1);
+        host.appbar.setTranslationY(-56);layout();assertEquals(40,first.getPaddingTop());assertEquals(40,next.getPaddingTop());
+        Bitmap before=render();pager.scrollTo(180,0);layout();Bitmap during=render();
+        assertEquals("no unpadded neighbor cards flash through the header",before.getPixel(300,16),during.getPixel(300,16));before.recycle();during.recycle();
+        first.scrollTo(0,200);pager.current=1;pager.scrollTo(360,0);layout();
+        assertEquals(-56,host.appbar.getTranslationY(),0);assertEquals(0,host.appbar.expandCalls);assertEquals(200,first.getScrollY());assertTrue(pager.getClipChildren());
+    }
+    @Test public void nativeReturnToTopAlignsWithTheCurrentlyVisibleCategoryBar(){
+        host.scroll.scrollTo(0,400);host.appbar.setTranslationY(-56);layout();assertEquals(96,host.scroll.getPaddingTop());
+        host.arrow.performClick();layout();assertEquals(0,host.scroll.getScrollY());
+        int[] bar=new int[2],list=new int[2];host.appbar.getLocationOnScreen(bar);host.scroll.getLocationOnScreen(list);
+        int edge=bar[1]+host.appbar.getHeight()-list[1];assertEquals(edge,host.scroll.getPaddingTop());assertEquals(edge,host.pattern.getTop());
+        assertEquals(-56,host.appbar.getTranslationY(),0);assertEquals(0,host.appbar.expandCalls);
     }
 
 }

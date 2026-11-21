@@ -258,24 +258,6 @@ public final class GlobalChrome {
             pageIndex = -1; pageOffset = Integer.MIN_VALUE; dirty = discovery = true;
         }
 
-        private void resetPageScroll(View view) {
-            if (view == null) return;
-            if (scrollable(view)) {
-                if (singleChildScroller(view)) view.scrollTo(0, 0);
-                else if (view instanceof android.widget.AbsListView) ((android.widget.AbsListView) view).setSelection(0);
-                else try { view.getClass().getMethod(phone ? "i0" : "scrollToPosition", int.class).invoke(view, 0); }
-                catch (ReflectiveOperationException unavailable) { }
-            }
-            if (view instanceof ViewGroup) for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) resetPageScroll(((ViewGroup) view).getChildAt(i));
-        }
-
-        private void expandHeader() {
-            for (View view = toolbar; view != null && view != content; view = view.getParent() instanceof View ? (View) view.getParent() : null) {
-                try { view.getClass().getMethod("setExpanded", boolean.class).invoke(view, true); return; }
-                catch (ReflectiveOperationException unavailable) { }
-            }
-        }
-
         void attach() {
             resume();
         }
@@ -593,18 +575,10 @@ public final class GlobalChrome {
             if (!contentScreen(nextPager)) { disableContent(); following.transparent(); return true; }
             contentEnabled = true;
             int nextIndex = currentPage(nextPager), nextOffset = nextPager == null ? 0 : nextPager.getScrollX();
-            boolean categoryReset = pageIndex >= 0 && pageIndex != nextIndex;
-            if (categoryReset) {
-                for (NativeViewport borrowed : viewports.values()) borrowed.reset(); viewports.clear(); viewport = null;
-                resetPageScroll(nextPager); expandHeader();
-            }
             if (pager != nextPager || visiblePage != nextPage || pageIndex != nextIndex || pageOffset != nextOffset) {
                 clearSamples(); source = null; dirty = discovery = true;
                 pager = nextPager; visiblePage = nextPage; pageIndex = nextIndex; pageOffset = nextOffset;
             }
-            // Restored layout params must be laid out before borrowing the
-            // destination viewport and recording its native top position.
-            if (categoryReset && phone) return false;
             if (resized && !viewports.isEmpty()) {
                 for (NativeViewport borrowed : viewports.values()) borrowed.close();
                 viewports.clear(); viewport = null;
@@ -715,8 +689,7 @@ public final class GlobalChrome {
                 }
                 viewport = null;
                 if (source instanceof ViewGroup) {
-                    if ((!singleChildScroller(source) || phone) && source.getParent() instanceof ViewGroup
-                            && source.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+                    if (source.getParent() instanceof ViewGroup) {
                         viewport = viewports.get(source);
                         if (viewport == null) {
                             viewport = NativeViewport.borrow((ViewGroup) source);
@@ -727,32 +700,15 @@ public final class GlobalChrome {
                 }
                 discovery = false;
             }
-            if (source != null) {
-                // Draw the real native list all the way to the status bar.
-                // The AppBar stays above it through native Z order, so there
-                // is no sharp scene-copy rectangle beneath the category row.
-                if (phone && viewport == null && singleChildScroller(source) && source instanceof ViewGroup) {
-                    // Some native pager roots use non-margin layout params.
-                    // A non-recycling scroll container can still draw its full
-                    // child above its own bounds without changing its layout.
-                    ViewGroup group = (ViewGroup) source; Clip state = clips.get(group);
-                    if (state == null) { state = new Clip(group); clips.put(group, state); }
-                    state.apply();
-                }
-                if (viewport != null) {
-                    viewport.viewport.getLocationOnScreen(at);
-                    int above = Math.max(0, at[1] - origin[1]);
-                    int header = (toolbar == null ? 0 : toolbar.getHeight()) + (category == null ? 0 : category.getHeight());
-                    above = Math.max(above, header + (padding == null ? 0 : padding.view.getPaddingTop()));
-                    int below = (navigation == null ? 0 : navigation.getHeight()) + navigationHeight;
-                    if(phone){
-                        int headerHeight=toolbar==null?0:headerPlane(toolbar).getHeight();
-                        if(viewport.inset(Math.max(0,headerHeight),below+dp(16))){dirty=true;return false;}
-                    }else if (viewport.update(above, below)) { dirty = true; return false; }
-                }
-                dirty |= source.isDirty() || source.getScrollX() != lastScrollX || source.getScrollY() != lastScrollY;
-                lastScrollX = source.getScrollX(); lastScrollY = source.getScrollY();
+            View headerPlane=toolbar==null?category:headerPlane(toolbar);
+            int headerBottom=headerPlane==null?0:Math.max(0,y(headerPlane)+headerPlane.getHeight());
+            int below=(navigation==null?0:navigation.getHeight())+navigationHeight+dp(16);
+            if(pager instanceof ViewGroup){
+                ViewGroup group=(ViewGroup)pager;Clip state=clips.get(group);if(state==null){state=new Clip(group);clips.put(group,state);}state.contain();
             }
+            // Prepare all cached pages before a swipe can reveal them, including plain pager layout params.
+            if(preparePageInsets(pager,headerBottom,below)){dirty=true;return false;}
+            if(source!=null){lastScrollX=source.getScrollX();lastScrollY=source.getScrollY();}
 
             if (dirty) {
                 portal.invalidate();
@@ -760,6 +716,18 @@ public final class GlobalChrome {
                 dirty = false;
             }
             return true;
+        }
+
+        private boolean preparePageInsets(View view,int above,int below){
+            if(view==null||view.getVisibility()==View.GONE)return false;
+            if(scrollable(view)&&view instanceof ViewGroup&&view.getParent() instanceof ViewGroup&&view.getHeight()>dp(100)){
+                ViewGroup list=(ViewGroup)view;NativeViewport state=viewports.get(list);
+                if(state==null){state=NativeViewport.borrow(list);viewports.put(list,state);}
+                if(source==list)viewport=state;
+                return state.insetForHeader(above,below);
+            }
+            boolean changed=false;if(view instanceof ViewGroup){ViewGroup group=(ViewGroup)view;for(int i=0;i<group.getChildCount();i++)changed|=preparePageInsets(group.getChildAt(i),above,below);}
+            return changed;
         }
 
         void background(Canvas canvas) {
@@ -1420,6 +1388,7 @@ public final class GlobalChrome {
         final boolean children, padding;
         Clip(ViewGroup view) { this.view = view; children = view.getClipChildren(); padding = view.getClipToPadding(); }
         void apply() { view.setClipChildren(false); view.setClipToPadding(false); }
+        void contain() { view.setClipChildren(true); view.setClipToPadding(true); }
         void restore() { view.setClipChildren(children); view.setClipToPadding(padding); }
     }
 

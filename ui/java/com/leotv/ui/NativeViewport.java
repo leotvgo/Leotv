@@ -9,7 +9,8 @@ import java.util.WeakHashMap;
 /** Gives the host list a padded drawing margin while keeping its adapter, gestures and content origin. */
 final class NativeViewport implements AutoCloseable {
     final ViewGroup list, viewport;
-    private final ViewGroup.MarginLayoutParams params;
+    private final ViewGroup.LayoutParams params;
+    private final ViewGroup.MarginLayoutParams margins;
     private final int height, marginTop, marginBottom, left, top, right, bottom;
     private final boolean clip, clipChildren;
     private final float weight;
@@ -20,8 +21,8 @@ final class NativeViewport implements AutoCloseable {
     private int insetTop=-1, insetBottom=-1;
 
     private NativeViewport(ViewGroup list) {
-        this.list=list;viewport=(ViewGroup)list.getParent();params=(ViewGroup.MarginLayoutParams)list.getLayoutParams();
-        height=params.height;marginTop=params.topMargin;marginBottom=params.bottomMargin;
+        this.list=list;viewport=(ViewGroup)list.getParent();params=list.getLayoutParams();margins=params instanceof ViewGroup.MarginLayoutParams?(ViewGroup.MarginLayoutParams)params:null;
+        height=params.height;marginTop=margins==null?0:margins.topMargin;marginBottom=margins==null?0:margins.bottomMargin;
         left=list.getPaddingLeft();top=list.getPaddingTop();right=list.getPaddingRight();bottom=list.getPaddingBottom();clip=list.getClipToPadding();
         clipChildren=list.getClipChildren();
         weight=params instanceof android.widget.LinearLayout.LayoutParams?((android.widget.LinearLayout.LayoutParams)params).weight:0;
@@ -40,6 +41,11 @@ final class NativeViewport implements AutoCloseable {
         list.setClipToPadding(false);
         return true;
     }
+    boolean insetForHeader(int above,int below){
+        // Keep the scrolling list's existing anchor. Only its genuine top aligns to the visible bar.
+        int target=insetTop<0||!list.canScrollVertically(-1)?Math.max(0,above):insetTop;
+        return inset(target,below);
+    }
     boolean update(int above,int below){
         // AppBar motion translates this page; it must not re-anchor the RecyclerView every frame.
         above=Math.max(insetTop,above);below=Math.max(insetBottom,below);
@@ -47,7 +53,7 @@ final class NativeViewport implements AutoCloseable {
         if(above==insetTop&&below==insetBottom&&params.height==base+above+below)return false;
         Anchor.shift(list,above-Math.max(0,insetTop));
         insetTop=above;insetBottom=below;
-        params.height=base+above+below;params.topMargin=marginTop-above;params.bottomMargin=marginBottom-below;
+        params.height=base+above+below;if(margins!=null){margins.topMargin=marginTop-above;margins.bottomMargin=marginBottom-below;}
         if(params instanceof android.widget.LinearLayout.LayoutParams)((android.widget.LinearLayout.LayoutParams)params).weight=0;
         list.setPadding(left,top+above,right,bottom+below);list.setClipToPadding(false);list.setClipChildren(false);list.setLayoutParams(params);return true;
     }
@@ -99,7 +105,7 @@ final class NativeViewport implements AutoCloseable {
     void reset(){restore(false);}
     private void restore(boolean preserveAnchor){
         if(preserveAnchor)Anchor.shift(list,-Math.max(0,insetTop));else Anchor.cancel(list);
-        if(list.getLayoutParams()==params){params.height=height;params.topMargin=marginTop;params.bottomMargin=marginBottom;list.setLayoutParams(params);}
+        if(list.getLayoutParams()==params){params.height=height;if(margins!=null){margins.topMargin=marginTop;margins.bottomMargin=marginBottom;}list.setLayoutParams(params);}
         if(params instanceof android.widget.LinearLayout.LayoutParams)((android.widget.LinearLayout.LayoutParams)params).weight=weight;
         list.setPadding(left,top,right,bottom);list.setClipToPadding(clip);list.setClipChildren(clipChildren);
         if(list.getTranslationY()==appliedTranslation)list.setTranslationY(translation);
