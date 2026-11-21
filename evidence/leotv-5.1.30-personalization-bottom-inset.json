@@ -1,0 +1,34 @@
+{
+  "version_name": "5.1.30",
+  "version_code": 540,
+  "base_commit": "71007b372bf1ac6bd7918ef7b6b72f759d2e75d3",
+  "allowed_changed_overlay_classes": [
+    "Lcom/leotv/ui/NativePhoneInsets;"
+  ],
+  "allowed_added_overlay_classes": [
+    "Lcom/leotv/ui/NativePhoneInsets$SettingsInset;"
+  ],
+  "resource_changes": [
+    "manifest/versionCode",
+    "manifest/versionName",
+    "string/app_version"
+  ],
+  "scope": "Visible mobile personalization scroll container identified by existing leotv_detail_settings rows.",
+  "bottom_clearance": "Original bottom padding + max(0, scroll screen bottom - glass navigation screen top + 8dp).",
+  "behavior": [
+    "Clips settings to padded viewport.",
+    "Recalculates on layout and navigation geometry changes.",
+    "Restores original bottom padding and clipping on exit.",
+    "No list-wide scroll reset or top/side padding changes."
+  ],
+  "source_sha256": {
+    "ui/java/com/leotv/ui/NativePhoneInsets.java": "3bb0ddb9203efdf0660eb19ee20fce3709edd5d9b2fad4caac6e6340abb6141a",
+    "branding/AndroidManifest.xml": "ef1498b7bb013bcf8dbeca9b1c0790313dea584f1327b0bd008188231436638a",
+    "branding/res/values/strings.xml": "aa8e8e737b516795482cce5d90d8b81e203c575f49859596e3b12bb99ed5b4ed"
+  },
+  "local_build_run": false,
+  "validation_tests_run": false,
+  "ci_run_validation_tests": false,
+  "device_validation": false,
+  "validation_reason": "Continuing user preference for direct push/build and real-device acceptance."
+}

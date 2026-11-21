@@ -17,10 +17,11 @@ final class NativePhoneInsets implements AutoCloseable {
     final Map<View,Margin> actions=new IdentityHashMap<>();
     final ViewTreeObserver.OnGlobalLayoutListener layout=()->dirty=true;
     View header;int left,top,right,bottom,appliedTop;
+    SettingsInset settings;
     boolean dirty=true;
-    int lastTop=-1,lastBottom=-1,lastNavigation=-1;
+    int lastTop=-1,lastBottom=-1,lastNavigation=-1,lastNavigationTop=Integer.MAX_VALUE;
     int shadeTop;
-    final int[] origin=new int[2];
+    final int[] origin=new int[2],navigationOrigin=new int[2],settingsOrigin=new int[2];
     NativePhoneInsets(Activity activity,FrameLayout content){
         this.activity=activity;this.content=content;
         scrim=new View(activity);scrim.setTag("leotv_status_scrim");scrim.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);scrim.setClickable(false);scrim.setFocusable(false);
@@ -35,11 +36,14 @@ final class NativePhoneInsets implements AutoCloseable {
         int outside=Math.max(0,activity.getWindow().getDecorView().getHeight()-origin[1]-content.getHeight());below=Math.max(0,below-outside);
         if((activity.getWindow().getAttributes().flags&android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN)!=0)above=0;
         int navHeight=navigation==null?0:navigation.getHeight();
+        int navTop=Integer.MAX_VALUE;
+        if(navigation!=null&&navigation.isShown()&&navHeight>0){navigation.getLocationOnScreen(navigationOrigin);navTop=navigationOrigin[1];}
         boolean statusVisible=(activity.getWindow().getAttributes().flags&android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN)==0
                 &&(activity.getWindow().getDecorView().getSystemUiVisibility()&View.SYSTEM_UI_FLAG_FULLSCREEN)==0;
-        boolean changed=dirty||header!=nextHeader||above!=lastTop||below!=lastBottom||navHeight!=lastNavigation;
+        boolean changed=dirty||header!=nextHeader||above!=lastTop||below!=lastBottom||navHeight!=lastNavigation||navTop!=lastNavigationTop;
         if(changed){
-            dirty=false;lastTop=above;lastBottom=below;lastNavigation=navHeight;
+            dirty=false;lastTop=above;lastBottom=below;lastNavigation=navHeight;lastNavigationTop=navTop;
+            insetSettings(navTop);
             shadeTop=statusVisible?Math.max(above,Math.max(0,statusBarHeight(insets)-origin[1])):0;
             if(header!=nextHeader){restoreHeader();header=nextHeader;if(header!=null){left=header.getPaddingLeft();top=header.getPaddingTop();right=header.getPaddingRight();bottom=header.getPaddingBottom();}}
             if(header!=null){appliedTop=top+above;if(header.getPaddingTop()!=appliedTop)header.setPadding(left,appliedTop,right,bottom);}
@@ -53,6 +57,27 @@ final class NativePhoneInsets implements AutoCloseable {
             if(scrim.getParent()!=content)content.addView(scrim,new FrameLayout.LayoutParams(-1,height,android.view.Gravity.TOP));
             if(scrim.getLayoutParams().height!=height){scrim.getLayoutParams().height=height;scrim.requestLayout();}
         }else if(scrim.getParent()==content)content.removeView(scrim);
+    }
+    private void insetSettings(int navTop){
+        // Only the original personalization scroll container needs this clearance.
+        View rows=content.findViewWithTag("leotv_detail_settings");
+        ViewGroup list=null;
+        if(navTop!=Integer.MAX_VALUE&&rows!=null&&rows.isShown()){
+            for(View parent=rows;parent!=null&&parent!=content;parent=parent.getParent() instanceof View?(View)parent.getParent():null){
+                for(Class<?> type=parent.getClass();type!=null;type=type.getSuperclass()){
+                    if(type==android.widget.ScrollView.class||type.getName().equals("androidx.core.widget.NestedScrollView")){
+                        list=(ViewGroup)parent;break;
+                    }
+                }
+                if(list!=null)break;
+            }
+        }
+        if(settings!=null&&settings.list!=list){settings.restore();settings=null;}
+        if(list==null||list.getHeight()<=0)return;
+        if(settings==null)settings=new SettingsInset(list);
+        list.getLocationOnScreen(settingsOrigin);
+        // Actual capsule position includes its height, floating gap and system inset.
+        settings.apply(Math.max(0,settingsOrigin[1]+list.getHeight()-navTop+dp(8)));
     }
     private int statusBarHeight(WindowInsets insets){
         if(insets!=null&&android.os.Build.VERSION.SDK_INT>=30)try{
@@ -74,8 +99,22 @@ final class NativePhoneInsets implements AutoCloseable {
     private void restoreHeader(){if(header!=null&&header.getPaddingTop()==appliedTop)header.setPadding(left,top,right,bottom);header=null;}
     @Override public void close(){
         restoreHeader();for(Margin state:actions.values())state.restore();actions.clear();
+        if(settings!=null){settings.restore();settings=null;}
         if(scrim.getParent()==content)content.removeView(scrim);
         if(content.getViewTreeObserver().isAlive())content.getViewTreeObserver().removeOnGlobalLayoutListener(layout);
+    }
+    private static final class SettingsInset{
+        final ViewGroup list;final int bottom;final boolean clip;int applied;
+        SettingsInset(ViewGroup list){this.list=list;bottom=applied=list.getPaddingBottom();clip=list.getClipToPadding();}
+        void apply(int clearance){
+            applied=bottom+clearance;
+            if(list.getPaddingBottom()!=applied)list.setPadding(list.getPaddingLeft(),list.getPaddingTop(),list.getPaddingRight(),applied);
+            if(!list.getClipToPadding())list.setClipToPadding(true);
+        }
+        void restore(){
+            if(list.getPaddingBottom()==applied)list.setPadding(list.getPaddingLeft(),list.getPaddingTop(),list.getPaddingRight(),bottom);
+            list.setClipToPadding(clip);
+        }
     }
     private static final class Margin{
         final View view;final ViewGroup.MarginLayoutParams params;final int original;int applied;
