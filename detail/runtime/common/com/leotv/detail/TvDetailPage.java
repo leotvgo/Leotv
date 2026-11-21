@@ -266,7 +266,7 @@ final class TvDetailPage implements DetailPage {
     private void episodePicker(){
         nativeEpisodes.open(false);
     }
-    void searchSources(){if(source!=null){boolean automatic=source.episodes.isEmpty()&&!manualSource&&!NativeLibrary.hasSavedSource(activity,source);if(automatic)playButton.idle("正在加载…");siteSearch.begin(new BackdropIdentity(source.site,source.id,source.name,source.year,source.type),automatic);}}
+    void searchSources(){if(source!=null){boolean automatic=source.episodes.isEmpty()&&!manualSource&&(source.searchCurrentSite||!NativeLibrary.hasSavedSource(activity,source));if(automatic)playButton.idle("正在加载…");siteSearch.begin(new BackdropIdentity(source.site,source.id,source.name,source.year,source.type),automatic,source.searchCurrentSite);}}
     void resume(){hero.setActive(true);if(source!=null){preferred=NativeLibrary.resume(activity,source,null);updatePlayButton();if(preferred!=null&&!preferred.flag.equals(selectedFlag)){selectedFlag=preferred.flag;showFlags();}showEpisodes();refreshActions();}ThemeLayout.apply(this);refresh(BackdropSettings.read(activity).proxy);}
     private void updatePlayButton(){
         NativeLibrary.Progress saved=NativeLibrary.progress(activity,source,preferred);

@@ -28,7 +28,16 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
     }
     private void load(){
         int token=++generation;String site=getIntent().getStringExtra("key"),id=getIntent().getStringExtra("id");
-        if(site==null||id==null||site.isEmpty()||id.isEmpty())return;
+        org.json.JSONObject followed=FollowingActivity.metadata(getIntent());
+        if(site==null||id==null||id.isEmpty()||site.isEmpty()&&followed==null)return;
+        // Always resolve calendar titles against this subscription. An old site's id or
+        // same-named cached site can refer to an entirely different JAR after a switch.
+        if(followed!=null){
+            source=new SourceGateway.Detail(site,id,followed);source.searchCurrentSite=true;
+            BackdropIdentity work=identity();long tmdb=followed.optLong("tmdb_id",0);
+            if(tmdb>0&&MetadataMatchStore.find(work)==null)MetadataMatchStore.save(work,followed.optString("tmdb_type"),tmdb);
+            page.bindSource(source);enrich(token);return;
+        }
         DetailSessionCache.State cached=DetailSessionCache.get(this,site,id);
         if(cached!=null){source=cached.source;metadata=cached.metadata==null?null:cached.metadata.detached();page.bindSource(source);if(metadata!=null)page.render(metadata);else enrich(token);return;}
         org.json.JSONObject seed=RelatedDetail.metadata(id);
@@ -72,6 +81,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
     }
     @Override public void changeSource(SiteFeed.Site site,org.json.JSONObject vod){
         if(sourceTask!=null)sourceTask.cancel(true);
+        FollowingActivity.resolved(getIntent());
         getIntent().putExtra("key",site.key).putExtra("id",vod.optString("vod_id")).putExtra("name",vod.optString("vod_name")).putExtra("pic",vod.optString("vod_pic"));
         load();
     }
@@ -79,6 +89,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
         if(isFinishing()||isDestroyed()||source==null||!source.episodes.isEmpty())return;
         if(sourceTask!=null)sourceTask.cancel(true);if(metadataTask!=null)metadataTask.cancel(true);if(metadataRequest!=null)metadataRequest.cancel();
         int token=++generation;
+        FollowingActivity.resolved(getIntent());
         getIntent().putExtra("key",site.key).putExtra("id",detail.id).putExtra("name",detail.name).putExtra("pic",detail.picture);
         getIntent().removeExtra("mark");
         source=detail;page.bindSource(detail);

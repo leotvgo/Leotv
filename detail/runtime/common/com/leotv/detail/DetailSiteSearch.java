@@ -48,7 +48,7 @@ final class DetailSiteSearch {
     private long generation;
     private long completionSequence;
     private boolean closed;
-    private boolean automatic, unavailableSent;
+    private boolean automatic, unavailableSent,includeCurrentSite;
     private long selectionGeneration;
     private final java.util.Set<String> attempted = new java.util.HashSet<>();
     private static final class Resolution {Entry entry;Future<?> task;Runnable timeout;boolean done;}
@@ -93,16 +93,22 @@ final class DetailSiteSearch {
         begin(work, false);
     }
     void begin(BackdropIdentity work, boolean automatically) {
+        begin(work,automatically,false);
+    }
+    void begin(BackdropIdentity work, boolean automatically,boolean includeCurrent) {
         if(closed||work==null||work.title.isEmpty())return;
-        begin(work,automatically,SiteFeed.searchSites());
+        begin(work,automatically,SiteFeed.searchSites(),includeCurrent);
     }
     void begin(BackdropIdentity work, boolean automatically,List<SiteFeed.Site> sites) {
+        begin(work,automatically,sites,false);
+    }
+    void begin(BackdropIdentity work, boolean automatically,List<SiteFeed.Site> sites,boolean includeCurrent) {
         if (closed || work == null || work.title.isEmpty()) return;
-        cancel(); target = work; completionSequence = 0; automatic = automatically;
+        cancel(); target = work; completionSequence = 0; automatic = automatically;includeCurrentSite=includeCurrent;
         final long token = generation;
         for (SiteFeed.Site site : sites) {
             if (!work.music && musicSite(site)) continue;
-            if (site.key.equals(work.site)) {
+            if (site.key.equals(work.site)&&!includeCurrentSite) {
                 Entry entry = new Entry(site); entry.state = State.FOUND;
                 entry.completedOrder = 0;
                 try { entry.matches = Collections.singletonList(new JSONObject().put("vod_id", work.id).put("vod_name", work.sourceTitle)); }
@@ -151,7 +157,7 @@ final class DetailSiteSearch {
             listener.resolved(site, found); return;
         }
         for (Entry entry : foundByCompletion()) {
-            if (entry.site.key.equals(target.site)) continue;
+            if (entry.site.key.equals(target.site)&&!includeCurrentSite) continue;
             boolean busy=false;for(Resolution resolution:resolutions)if(resolution.entry==entry){busy=true;break;}
             if(busy)continue;
             for (JSONObject candidate : entry.matches) {

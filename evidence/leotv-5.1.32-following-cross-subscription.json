@@ -1,0 +1,37 @@
+{
+  "version_name": "5.1.32",
+  "version_code": 542,
+  "base_commit": "c42ef0e762ba4beb55adc8ad4fd48a89d648df44",
+  "trigger": "Follow entry saved under another subscription; current JAR cannot resolve the old source id.",
+  "allowed_changed_overlay_classes": [
+    "Lcom/leotv/detail/FollowingActivity;",
+    "Lcom/leotv/detail/DetailActivity;",
+    "Lcom/leotv/detail/SourceGateway$Detail;",
+    "Lcom/leotv/detail/TvDetailPage;",
+    "Lcom/leotv/detail/DetailSiteSearch;"
+  ],
+  "resource_changes": [
+    "manifest/versionCode",
+    "manifest/versionName",
+    "string/app_version"
+  ],
+  "behavior": [
+    "Calendar passes a bound title/metadata snapshot.",
+    "Calendar detail bypasses old source loading and old source cache.",
+    "Current configuration is searched, including the current same-key site when searchable.",
+    "Old saved history does not block automatic resolution of this metadata-only entry.",
+    "Manual/automatic source selection clears the calendar snapshot marker."
+  ],
+  "user_follow_records_changed": false,
+  "local_build_run": false,
+  "validation_tests_run": false,
+  "ci_run_validation_tests": false,
+  "device_validation": false,
+  "source_sha256": {
+    "detail/runtime/common/com/leotv/detail/FollowingActivity.java": "1d0a32420013f622b4ef4fbe833b835a989eba3f5034bf25b437171382776145",
+    "detail/runtime/common/com/leotv/detail/DetailActivity.java": "2168abd40d87ab945e50e928b1d02421ae4ad6c7f848d1d320535fe5a5a6a750",
+    "detail/runtime/common/com/leotv/detail/SourceGateway.java": "59e3ad9cc673c614a6201d3f35924cb9264e41c62c9c277257b7adc364280b4b",
+    "detail/runtime/common/com/leotv/detail/TvDetailPage.java": "77e62a8ed42dc2eec6941a951580e1ce38b7b2f6f113dc94fb4aacf925560b9a",
+    "detail/runtime/common/com/leotv/detail/DetailSiteSearch.java": "42ea8408e3a0ccc39c37065cebcb4ac08af7852e24dfb6c9f5b32d4cf5d741c6"
+  }
+}

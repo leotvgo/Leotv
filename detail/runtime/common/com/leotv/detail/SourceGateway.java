@@ -18,6 +18,7 @@ final class SourceGateway {
         final String site, id, name, picture, overview, year, type;
         final JSONObject json;
         Object nativeResult;
+        boolean searchCurrentSite;
         final List<Episode> episodes;
         Detail(String site, String id, JSONObject json) {
             this.site = site; this.id = id; this.json = json;
