@@ -308,6 +308,43 @@ class BinaryXml:
             elif kind == 0x103:
                 stack.pop()
 
+    def edit_attributes(self, edits):
+        """Bounded layout edits: preserve every tag, ID and unrelated attribute."""
+        data, report, offsets = bytearray(self.data), [], set()
+        for edit in edits:
+            matches = [a for a in self.attributes if a['tag'] == edit['tag']
+                       and a['name'] == edit['attribute']]
+            if len(matches) != 1:
+                raise ValueError('Expected one pinned layout attribute: ' + str(edit))
+            a = matches[0]
+            if a['type'] != edit['before_type'] or a['value'] != edit['before']:
+                raise ValueError('Layout attribute differs from the pinned contract.')
+            position, value = a['offset'], edit['after']
+            kind = edit['after_type']
+            encoded = self.pool.intern(value) if kind == 3 else value
+            put32(data, position + 8, encoded if kind == 3 else NO_INDEX)
+            data[position + 15] = kind
+            put32(data, position + 16, encoded)
+            offsets.add(position)
+            report.append({'path': a['path'], **edit})
+        output = bytearray(data[:u16(data, 2)])
+        for position, kind, _, size in self.parts:
+            output.extend(self.pool.build() if kind == 1 else data[position:position + size])
+        put32(output, 4, len(output))
+        parsed = BinaryXml(output)
+        if len(parsed.attributes) != len(self.attributes):
+            raise ValueError('Layout attribute set changed.')
+        for before, after in zip(self.attributes, parsed.attributes):
+            if before['offset'] not in offsets and {k:v for k,v in before.items() if k!='offset'} != {k:v for k,v in after.items() if k!='offset'}:
+                raise ValueError('Unrelated layout attribute changed.')
+        # The only byte changes outside the string pool are the exact value slots.
+        original = bytearray(self.data)
+        for position in offsets:
+            original[position + 8:position + 20] = data[position + 8:position + 20]
+        if original != data:
+            raise ValueError('Unrelated layout bytes changed.')
+        return bytes(output), report
+
     def edit_identity(self, old_package, new_package, old_version, new_version, old_code, new_code):
         data, report = bytearray(self.data), []
         old_authorities = []

@@ -31,7 +31,7 @@ tasks.register('extractAars') {
 }
 
 test {
-    timeout = java.time.Duration.ofMinutes(3)
+    timeout = java.time.Duration.ofMinutes(providers.gradleProperty('testTimeoutMinutes').getOrElse('3').toLong())
     dependsOn 'extractAars'
     classpath += files(provider { fileTree(aarClasses).matching { include '**/*.jar' } })
     systemProperty 'robolectric.dependency.repo.url', 'https://repo.maven.apache.org/maven2'

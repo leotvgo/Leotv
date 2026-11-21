@@ -92,8 +92,7 @@
       "detail/runtime/common/com/leotv/detail/TmdbDefaults.java",
       "detail/runtime/common/com/leotv/detail/TvDetailNavigation.java",
       "detail/runtime/common/com/leotv/detail/TvDetailPage.java",
-      "detail/runtime/common/com/leotv/detail/TvDetailScroll.java",
-      "detail/runtime/common/com/leotv/detail/WindowLayout.java"
+      "detail/runtime/common/com/leotv/detail/TvDetailScroll.java"
     ],
     "mobile": [
       "detail/runtime/mobile/com/leotv/detail/Device.java",

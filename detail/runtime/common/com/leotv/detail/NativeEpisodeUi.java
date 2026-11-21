@@ -2,7 +2,6 @@ package com.leotv.detail;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcel;
@@ -37,7 +36,6 @@ public final class NativeEpisodeUi implements AutoCloseable {
     private String resource;
     private final Runnable poll=this::poll;
     private long deadline;
-    private int backgroundColour=Integer.MIN_VALUE;
     NativeEpisodeUi(TvDetailPage page){this.page=page;downloader=new NativeDownload(page.activity);synchronized(pages){pages.put(page.activity,new WeakReference<>(this));}}
     void open(boolean download){
         if(closed||fragment!=null||page.source==null||page.source.nativeResult==null)return;
@@ -87,8 +85,8 @@ public final class NativeEpisodeUi implements AutoCloseable {
     private void poll(){
         if(closed||fragment==null)return;
         if(page.source==null||!resource.equals(page.source.site+"@@@"+page.source.id+"@@@"+page.selectedFlag)){dismiss();return;}
-        if(dialog==null){dialog=findDialog(fragment);backgroundColour=Integer.MIN_VALUE;}
-        if(dialog!=null&&dialog.isShowing()){shown=true;background();main.postDelayed(poll,64);return;}
+        if(dialog==null){dialog=findDialog(fragment);}
+        if(dialog!=null&&dialog.isShowing()){shown=true;main.postDelayed(poll,64);return;}
         if(shown){release(true);return;}
         if(android.os.SystemClock.uptimeMillis()<deadline)main.postDelayed(poll,32);else dismiss();
     }
@@ -96,15 +94,6 @@ public final class NativeEpisodeUi implements AutoCloseable {
         for(Class<?> type=fragment.getClass();type!=null;type=type.getSuperclass())for(Field field:type.getDeclaredFields())if(Dialog.class.isAssignableFrom(field.getType()))
             try{field.setAccessible(true);Dialog dialog=(Dialog)field.get(fragment);if(dialog!=null)return dialog;}catch(ReflectiveOperationException ignored){}
         return null;
-    }
-    void background(){
-        if(dialog==null||!dialog.isShowing()||dialog.getWindow()==null)return;
-        if(backgroundColour==page.surfaceColour)return;backgroundColour=page.surfaceColour;
-        GradientDrawable background=new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,new int[]{DetailHero.surface(page.surfaceColour),0xff0b1119});
-        background.setCornerRadius(16*page.activity.getResources().getDisplayMetrics().density);
-        int id=page.activity.getResources().getIdentifier("design_bottom_sheet","id",page.activity.getPackageName());
-        View sheet=id==0?null:dialog.findViewById(id);
-        if(sheet!=null)sheet.setBackground(background);else dialog.getWindow().setBackgroundDrawable(background);
     }
     public static boolean owned(Object fragment){synchronized(windows){WeakReference<NativeEpisodeUi> ref=windows.get(fragment);return ref!=null&&ref.get()!=null;}}
     public static boolean selectNative(Object fragment,Object episode){

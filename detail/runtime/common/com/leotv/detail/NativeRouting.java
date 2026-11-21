@@ -10,6 +10,8 @@ public final class NativeRouting {
     static final String EPISODE = "leotv.episode.url", FLAG = "leotv.episode.flag";
     static final String APPLIED = "leotv.selection.applied";
     static final String TITLE_LOGOS = "leotv.title.logos";
+    private static final String INDEX_METADATA="leotv.resource.metadata";
+    private static final String INDEX_SITE="leotv.resource.metadata.site";
     private NativeRouting() {}
 
     public static boolean redirect(Activity activity) {
@@ -44,7 +46,6 @@ public final class NativeRouting {
         next.removeExtra(REDIRECTED);
         next.removeExtra(PLAYER); next.removeExtra(APPLIED);
         next.removeExtra(EPISODE); next.removeExtra(FLAG);
-        // Resource clicks already have an Activity and should retain its task/window context.
         next.setFlags(next.getFlags() & ~Intent.FLAG_ACTIVITY_NEW_TASK);
         next.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         activity.startActivity(next);
@@ -52,6 +53,12 @@ public final class NativeRouting {
     }
     static org.json.JSONObject searchMetadata(Intent incoming) {
         if(incoming==null)return null;
+        String seed=incoming.getStringExtra(INDEX_METADATA);
+        if(seed!=null)try{
+            org.json.JSONObject value=new org.json.JSONObject(seed);
+            if(value.optString("vod_id").equals(incoming.getStringExtra("id"))
+                    &&java.util.Objects.equals(incoming.getStringExtra(INDEX_SITE),incoming.getStringExtra("key")))return value;
+        }catch(org.json.JSONException invalid){}
         String id=incoming.getStringExtra("id");if(id==null||!id.startsWith("msearch:"))return null;
         String name=incoming.getStringExtra("name");if(name==null||name.trim().isEmpty())name=android.net.Uri.decode(id.substring(8));
         if(name.trim().isEmpty())return null;
@@ -60,6 +67,34 @@ public final class NativeRouting {
                 .put("vod_year",incoming.getStringExtra("year")==null?"":incoming.getStringExtra("year"))
                 .put("type_name",incoming.getStringExtra("type")==null?"":incoming.getStringExtra("type"));}
         catch(org.json.JSONException invalid){return null;}
+    }
+    /** Only the host's isIndexs resource-click branch calls this. Manual search stays native. */
+    public static void openIndexResource(Activity activity,Object vod,android.os.Bundle arguments){
+        if(activity==null||vod==null)return;
+        SiteFeed.initialize(activity);
+        try{
+            String key=arguments==null?null:arguments.getString("key");
+            if(key==null||key.isEmpty()){
+                Object store=Class.forName(Device.MOBILE?"t3.h":"q3.h",true,activity.getClassLoader()).getField("a").get(null);
+                Object site=Device.MOBILE?store.getClass().getField("e").get(store):SiteFeed.invoke(store,"o");
+                key=(String)SiteFeed.invoke(site,"getKey");
+            }
+            Class<?> type=Class.forName("com.google.gson.Gson",true,activity.getClassLoader());
+            Object gson=type.getConstructor().newInstance();
+            org.json.JSONObject seed=new org.json.JSONObject((String)type.getMethod("toJson",Object.class).invoke(gson,vod));
+            String name=(String)SiteFeed.invoke(vod,"getName"),id=(String)SiteFeed.invoke(vod,"getId"),pic=(String)SiteFeed.invoke(vod,"getPic");
+            seed.put("vod_name",name==null?"":name).put("vod_pic",pic==null?"":pic);
+            if(id==null||id.isEmpty())id="msearch:"+android.net.Uri.encode(name==null?"":name);
+            seed.put("vod_id",id);
+            for(String field:new String[]{"vod_play_from","vod_play_url","vod_play_list","flags","vodFlags","dl"})seed.remove(field);
+            String siteKey=key==null?"leotv-index":key;
+            Intent incoming=new Intent().putExtra("key",siteKey).putExtra("id",id).putExtra("name",name).putExtra("pic",pic).putExtra(INDEX_METADATA,seed.toString()).putExtra(INDEX_SITE,siteKey);
+            openResource(activity,incoming);
+        }catch(ReflectiveOperationException|org.json.JSONException|RuntimeException unavailable){
+            Object name=SiteFeed.invoke(vod,"getName");
+            Intent incoming=new Intent().putExtra("key","leotv-index").putExtra("id","msearch:"+android.net.Uri.encode(name==null?"":name.toString()));
+            openResource(activity,incoming);
+        }
     }
     /** A running fullscreen player can receive another resource through onNewIntent. */
     public static boolean redirectNewIntent(Activity activity, Intent incoming) {

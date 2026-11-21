@@ -309,7 +309,7 @@ def validate_output(original_apk, output_apk, expected, files, added_asset):
         names = (originals - removed) | added
         if names != set(output.namelist()) or len(output.namelist()) != len(names):
             raise ValueError('APK ZIP entry set differs from the declared overlay.')
-        mutable = dex | removed | {'AndroidManifest.xml', 'resources.arsc'}
+        mutable = dex | removed | set(expected)
         protected = originals - mutable
         for name in protected:
             if original.read(name) != output.read(name):
@@ -401,7 +401,22 @@ def main():
                         manifest, change = BinaryXml(manifest).set_activity_orientation(activity_name, 0)
                         manifest_report.append(change)
                 resources, resource_report, files = resource_overlay(original.read('resources.arsc'), values, spec['allowed_resources'])
+                layouts, layout_report = {}, []
+                table = ResourceTable(original.read('resources.arsc'))
+                for resource, contract in profile.get('layout_edits', {}).items():
+                    entries = [e for e in table.entries if e['name'] == resource]
+                    if len(entries) != 1 or len(entries[0]['references']) != 1:
+                        raise ValueError('Expected one pinned native layout: ' + resource)
+                    path = table.pool.strings[entries[0]['references'][0][1]]
+                    data = original.read(path)
+                    if sha256(data) != contract['sha256']:
+                        raise ValueError('Native layout differs from its pinned bytes: ' + resource)
+                    layouts[path], edits = BinaryXml(data).edit_attributes(contract['attributes'])
+                    layout_report.append({'resource': resource, 'path': path,
+                                          'before_sha256': sha256(data), 'after_sha256': sha256(layouts[path]),
+                                          'attributes': edits})
             expected = {'AndroidManifest.xml': manifest, 'resources.arsc': resources}
+            expected.update(layouts)
             expected.update({item['path']: item['bytes'] for item in files.values()})
             expected[spec['default_logo_asset']] = (BRANDING / spec['default_logo_asset']).read_bytes()
             combined = work / 'combined.apk'
@@ -439,6 +454,7 @@ def main():
                 'baseline_audit': baseline_audit, 'allowed_changed_classes': sorted(changed),
                 'source_edits': changed_sources, 'manifest_edits': manifest_report,
                 'resource_edits': resource_report, 'overlay_compile': compile_report,
+                'layout_edits': layout_report,
                 'branding_assets_sha256': sha256((BRANDING / 'asset-provenance.json').read_bytes()),
                 'default_logo_sha256': provenance['assets'][spec['default_logo_asset']]['sha256'],
                 'resource_ids_and_configurations_retained': True,

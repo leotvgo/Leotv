@@ -29,6 +29,17 @@ final class NativeViewport implements AutoCloseable {
         positionTop=list.getTop();translation=appliedTranslation=list.getTranslationY();
     }
     static NativeViewport borrow(ViewGroup list){return new NativeViewport(list);}
+    /** The phone pager already fills the window. Insets protect the first/last cards,
+     * while clipToPadding=false lets scrolled cards pass beneath the real controls. */
+    boolean inset(int above,int below){
+        above=Math.max(0,above);below=Math.max(0,below);
+        if(insetTop==above&&insetBottom==below)return false;
+        Anchor.shift(list,above-Math.max(0,insetTop));
+        insetTop=above;insetBottom=below;
+        list.setPadding(left,top+above,right,bottom+below);
+        list.setClipToPadding(false);
+        return true;
+    }
     boolean update(int above,int below){
         // AppBar motion translates this page; it must not re-anchor the RecyclerView every frame.
         above=Math.max(insetTop,above);below=Math.max(insetBottom,below);

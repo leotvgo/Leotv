@@ -14,7 +14,8 @@ BEANS = 'com/fongmi/android/tv/bean/'
 COMMON = {
     BEANS + 'Result': (['getVod()L' + BEANS + 'Vod;','fromJson(Ljava/lang/String;)L'+BEANS+'Result;'], []),
     BEANS + 'Flag': (['getFlag()Ljava/lang/String;', 'getEpisodes()Ljava/util/List;'], []),
-    BEANS + 'Vod': (['getFlags()Ljava/util/List;'], []),
+    BEANS + 'Vod': (['getFlags()Ljava/util/List;', 'getId()Ljava/lang/String;',
+                     'getName()Ljava/lang/String;', 'getPic()Ljava/lang/String;'], []),
     BEANS + 'Episode': (['getUrl()Ljava/lang/String;', '<init>(Landroid/os/Parcel;)V',
                         'setActivated(Z)V', 'setSelected(Z)V', 'writeToParcel(Landroid/os/Parcel;I)V'], []),
     BEANS + 'History': (['find(Ljava/lang/String;)L' + BEANS + 'History;',
@@ -50,6 +51,7 @@ def check_contract(root, variant, project=None):
         'smali/M3/b.smali', 'smali/com/fongmi/android/tv/ui/activity/SettingCustomActivity.smali',
         'smali/com/fongmi/android/tv/ui/activity/M.smali'})
     expected_paths.update({'smali/S3/f.1.smali'} if mobile else {'smali/A0/a.smali', 'smali/O3/l.smali'})
+    expected_paths.update({'smali/S3/z.smali'} if mobile else {'smali/P3/e.smali','smali/P3/f.smali'})
     if set(lock) != expected_paths:
         raise ValueError('Native ordinary source edit list differs from its declaration: ' + variant)
     for name, digest in lock.items():
@@ -130,12 +132,15 @@ def check_contract(root, variant, project=None):
         contracts['t3/h'] = ([], ['a:Lt3/i;'])
         contracts['t3/i'][0].append('o()Ljava/util/List;')
         contracts['t3/i'][1].append('l:Ljava/util/ArrayList;')
+        contracts['t3/i'][1].append('e:Lcom/fongmi/android/tv/bean/Site;')
         contracts['B0/t'] = (['<init>(LC3/g;)V', 'y(L'+BEANS+'Result;Z)V', 'A()V'], [])
         contracts[BEANS+'Result'][0].extend(['getJx()Ljava/lang/Integer;', 'getParse()Ljava/lang/Integer;',
             'getFlag()Ljava/lang/String;', 'getPlayUrl()Ljava/lang/String;', 'getRealUrl()Ljava/lang/String;',
             'getHeader()Ljava/util/Map;', 'getMsg()Ljava/lang/String;', 'hasMsg()Z'])
         contracts['N6/m'] = (['c(Ljava/lang/String;Ljava/util/Map;)V'], ['i:Z', 'n:Ljava/lang/Object;', 'o:Ljava/lang/Object;', 'p:Ljava/lang/Object;', 'q:Ljava/io/Serializable;'])
     else:
+        contracts['q3/h'] = ([], ['a:Lq3/i;'])
+        contracts['q3/i'][0].append('o()Lcom/fongmi/android/tv/bean/Site;')
         contracts['O3/o'] = (['<init>()V'], ['C0:Ljava/util/List;'])
         contracts['androidx/fragment/app/m'] = (['a0(Landroidx/fragment/app/S;)V', 'X(ZZ)V'], [])
         contracts['R3/b'] = (['c(Landroid/widget/TextView;)V', 'd()V', 'k()V'], [])
@@ -144,6 +149,7 @@ def check_contract(root, variant, project=None):
         contracts['androidx/leanback/widget/BaseGridView'] = (['setHorizontalSpacing(I)V', 'getSelectedPosition()I', 'setSelectedPosition(I)V'], [])
         contracts['androidx/leanback/widget/ItemBridgeAdapter'] = (['<init>(Landroidx/leanback/widget/ObjectAdapter;)V'], [])
         contracts['com/fongmi/android/tv/ui/custom/ProgressLayout'] = (['b(I)V'], ['p:I'])
+    contracts.setdefault('androidx/fragment/app/v', ([], []))[1].append('s:Landroid/os/Bundle;')
     contracts['androidx/recyclerview/widget/RecyclerView'] = (['i0(I)V'] if mobile else ['scrollToPosition(I)V'], [])
     if mobile:
         contracts.update({

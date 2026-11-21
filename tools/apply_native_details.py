@@ -50,6 +50,8 @@ def apply(project, root, variant):
     lock = json.loads((root / 'detail/native-source-lock.json').read_text())[variant]
     changes, descriptors = {}, set()
     paths = [base_path, settings_path, VIDEO, result_path,source_path]
+    index_paths=['smali/S3/z.smali'] if mobile else ['smali/P3/e.smali','smali/P3/f.smali']
+    paths.extend(index_paths)
     if mobile:
         paths.extend([player_path, episode_path])
     else:
@@ -62,7 +64,24 @@ def apply(project, root, variant):
         text = original.decode()
         descriptor = re.search(r'(?m)^\.class[^\n]* (L[^;]+;)', text).group(1)
         descriptors.add(descriptor)
-        if path == base_path:
+        if path in index_paths:
+            signature='n(Lcom/fongmi/android/tv/bean/Vod;)V' if mobile else 'a(Lcom/fongmi/android/tv/bean/Vod;)V'
+            def index_resource(body):
+                native='SearchActivity;->S' if mobile else 'CollectActivity;->V'
+                debug=r'(?:\n[ \t]*(?:\.line \d+)?)*\n'
+                pattern=(r'    invoke-virtual \{p1\}, Lcom/fongmi/android/tv/bean/Vod;->getName\(\)Ljava/lang/String;'
+                         +debug+r'    move-result-object p1'+debug+r'    invoke-static \{v0, p1\}, Lcom/fongmi/android/tv/ui/activity/'+re.escape(native)+
+                         r'\(Landroidx/appcompat/app/j;Ljava/lang/String;\)V')
+                matches=list(re.finditer(pattern,body,re.S))
+                if len(matches)!=1 or body.count('->isIndexs()Z')!=1:
+                    raise ValueError('Expected one index-only resource search branch: '+path)
+                found=matches[0]
+                bundle=('    const/4 v1, 0x0' if path=='smali/P3/e.smali' else
+                        '    iget-object v1, p0, Landroidx/fragment/app/v;->s:Landroid/os/Bundle;')
+                replacement=bundle+'\n\n    invoke-static {v0, p1, v1}, Lcom/leotv/detail/NativeRouting;->openIndexResource(Landroid/app/Activity;Ljava/lang/Object;Landroid/os/Bundle;)V'
+                return body[:found.start()]+replacement+body[found.end():]
+            text=replace_method(text,signature,index_resource)
+        elif path == base_path:
             def create(body):
                 marker = '    invoke-super {p0, p1}, Landroidx/appcompat/app/j;->onCreate(Landroid/os/Bundle;)V'
                 if body.count(marker) != 1:

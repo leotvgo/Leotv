@@ -1,0 +1,91 @@
+{
+  "version_name": "5.1.25",
+  "version_code": 535,
+  "base_commit": "72e17fcee019ded5e0e8df371236b6625c95de52",
+  "validation": {
+    "ui": {
+      "passed_tests": 19,
+      "failed_tests": 0
+    },
+    "detail_mobile": {
+      "passed_tests": 38,
+      "failed_tests": 0
+    },
+    "detail_tv": {
+      "passed_tests": 38,
+      "failed_tests": 0
+    },
+    "resource_routing_after_seed_id_guard": {
+      "passed_tests": 4,
+      "failed_tests": 0
+    }
+  },
+  "api23_core_compilation_and_json_contracts": "passed",
+  "all_variant_native_source_locks_and_api_contracts": "verified",
+  "mobile_layout_edits": {
+    "layout/activity_home": {
+      "sha256": "5dfe1ac322d2f935fb4f026befa93916846a388496e7a6bbc912109d7c284318",
+      "attributes": [
+        {
+          "tag": "androidx.fragment.app.FragmentContainerView",
+          "attribute": "layout_above",
+          "before_type": 1,
+          "before": 2131362314,
+          "after_type": 1,
+          "after": 0
+        },
+        {
+          "tag": "com.google.android.material.bottomnavigation.BottomNavigationView",
+          "attribute": "background",
+          "before_type": 1,
+          "before": 2131100883,
+          "after_type": 28,
+          "after": 0
+        }
+      ]
+    },
+    "layout/fragment_vod": {
+      "sha256": "0be4a71c9ab23c4ec324241d3b0066bea06d4ebe27624a10d2509172bdcdcdc2",
+      "attributes": [
+        {
+          "tag": "com.google.android.material.appbar.AppBarLayout",
+          "attribute": "background",
+          "before_type": 1,
+          "before": 2131100883,
+          "after_type": 28,
+          "after": 0
+        },
+        {
+          "tag": "com.google.android.material.appbar.AppBarLayout",
+          "attribute": "liftOnScrollColor",
+          "before_type": 1,
+          "before": 2131100883,
+          "after_type": 28,
+          "after": 0
+        },
+        {
+          "tag": "com.fongmi.android.tv.ui.custom.CustomViewPager",
+          "attribute": "layout_behavior",
+          "before_type": 1,
+          "before": 2131951656,
+          "after_type": 3,
+          "after": ""
+        }
+      ]
+    }
+  },
+  "index_resource_source": {
+    "site_key": "Douban",
+    "api": "csp_DoubanAmns",
+    "indexs": 1,
+    "configuration_is_public": true
+  },
+  "tv_first_frame_behavior_restored_from": "9d2d1030",
+  "fixed_signing_and_final_apk_audits": "recorded by ordinary-build.yml and Release signature/audit artifacts",
+  "device_validation": false,
+  "validation_limits": [
+    "Robolectric uses fictional cards, playlists and identities.",
+    "No user settings or credentials copied.",
+    "Signed device installation, site network behavior and screen appearance require user acceptance."
+  ]
+}

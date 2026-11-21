@@ -60,6 +60,58 @@
     "config_class": "Lt3/a;",
     "config_holder": "Lt3/h;->a:Lt3/i;",
     "url_normalizer": "LU3/f;->a",
-    "java_source": "java/mobile/com/leotv/branding/LogoLoader.java"
+    "java_source": "java/mobile/com/leotv/branding/LogoLoader.java",
+    "layout_edits": {
+      "layout/activity_home": {
+        "sha256": "5dfe1ac322d2f935fb4f026befa93916846a388496e7a6bbc912109d7c284318",
+        "attributes": [
+          {
+            "tag": "androidx.fragment.app.FragmentContainerView",
+            "attribute": "layout_above",
+            "before_type": 1,
+            "before": 2131362314,
+            "after_type": 1,
+            "after": 0
+          },
+          {
+            "tag": "com.google.android.material.bottomnavigation.BottomNavigationView",
+            "attribute": "background",
+            "before_type": 1,
+            "before": 2131100883,
+            "after_type": 28,
+            "after": 0
+          }
+        ]
+      },
+      "layout/fragment_vod": {
+        "sha256": "0be4a71c9ab23c4ec324241d3b0066bea06d4ebe27624a10d2509172bdcdcdc2",
+        "attributes": [
+          {
+            "tag": "com.google.android.material.appbar.AppBarLayout",
+            "attribute": "background",
+            "before_type": 1,
+            "before": 2131100883,
+            "after_type": 28,
+            "after": 0
+          },
+          {
+            "tag": "com.google.android.material.appbar.AppBarLayout",
+            "attribute": "liftOnScrollColor",
+            "before_type": 1,
+            "before": 2131100883,
+            "after_type": 28,
+            "after": 0
+          },
+          {
+            "tag": "com.fongmi.android.tv.ui.custom.CustomViewPager",
+            "attribute": "layout_behavior",
+            "before_type": 1,
+            "before": 2131951656,
+            "after_type": 3,
+            "after": ""
+          }
+        ]
+      }
+    }
   }
 }
