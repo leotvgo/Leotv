@@ -65,6 +65,7 @@ gh workflow run ordinary-build.yml --repo leotvgo/Leotv --ref main
 和原样/变更审计，并发布到 [Releases](https://github.com/leotvgo/Leotv/releases)，可直接下载 APK。
 文件全部上传并核对完成后才公开发布；同一构建重复触发会核对已有发布，保留已发布文件。
 Actions 产物存储不可用时，各变体把已签名 APK 和报告存入同一构建的私有 release 草稿；发布流程按该构建的源码版本取回，完成四变体固定签名和审计核对后再公开，不依赖 Actions 存储额度。
+每次发布完成后自动保留最近 10 个已公开的 Leotv 测试预发行版，并删除更早的发布产物及对应旧 CI 输出；固定构建输入和仍在构建的草稿保留。
 手动发布入口继续保留，用于补发已有成功构建。
 `android6-smoke.yml` 已按用户要求关闭自动触发；仅在另行要求时手动使用构建产物，
 在全新 Android 6 ARM 镜像上检查安装、离线启动和

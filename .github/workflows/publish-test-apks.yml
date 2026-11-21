@@ -22,6 +22,9 @@ concurrency:
 
 jobs:
   publish:
+    permissions:
+      contents: write
+      actions: write
     if: >-
       github.event_name == 'workflow_dispatch' ||
       (github.event.workflow_run.conclusion == 'success' &&
@@ -133,3 +136,7 @@ jobs:
               '--raw-field', 'make_latest=false', '--silent'], check=True)
           print(f'https://github.com/{repo}/releases/tag/{tag}')
           PY
+      - name: Retain the latest ten published APK prereleases and remove older CI outputs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 tools/cleanup_test_releases.py --repo "$GITHUB_REPOSITORY" --keep 10 --apply
