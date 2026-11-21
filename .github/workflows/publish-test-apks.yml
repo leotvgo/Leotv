@@ -1,4 +1,4 @@
-name: Publish installable ordinary APK test release
+name: Publish installable Leotv APK release
 
 on:
   workflow_run:
@@ -53,6 +53,7 @@ jobs:
           root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'publish-apks'
           files = []
           version = None
+          channel = None
           staged_version = None
           for variant in ['tv-v7a', 'tv-v8a', 'mobile-v7a', 'mobile-v8a']:
               target = root / variant
@@ -75,6 +76,16 @@ jobs:
                   raise SystemExit('Signed APK identity verification failed.')
               if audit['package'] != 'com.leotv.app' or not audit['expected_changes_match'] or not audit['baseline_audit']['equal']:
                   raise SystemExit('Leotv identity/source audit verification failed.')
+              selected_channel = audit.get('release_channel', 'prerelease')
+              if selected_channel not in ('stable', 'prerelease') or channel is not None and selected_channel != channel:
+                  raise SystemExit('Four APK variants must use the same release channel.')
+              channel = selected_channel
+              if channel == 'stable':
+                  hardening = audit.get('overlay_compile', {}).get('hardening', {})
+                  if not audit.get('protected_release') or hardening.get('mode') != 'r8-release-full' or hardening.get('min_api') != 23 \
+                          or not hardening.get('mapping_inputs_declared') or hardening.get('renamed_program_classes', 0) <= 0 \
+                          or hardening.get('stable_abi_members_verified', 0) <= 0 or len(audit.get('added_dex_paths', [])) != 1:
+                      raise SystemExit('Official APK release requires verified R8 protection and preserved ABI.')
               if version is not None and version != audit['version_name']:
                   raise SystemExit('Four APK variants must use the same Leotv version.')
               if staged_version is not None and staged_version != audit['version_name']:
@@ -83,10 +94,14 @@ jobs:
               files.extend([str(apk), str(target / f'leotv-{variant}.signature.json'),
                   str(target / f'leotv-{variant}-unsigned.audit.json')])
           notes = root / 'notes.md'
-          notes.write_text(f'Leotv {version} 测试 APK，来自成功构建 #{run_id}。\n\n应用包名 com.leotv.app，可与原 OK影视同时安装；四个 TV/手机、32/64 位 APK 使用同一张固定签名证书。包含 Leotv 图标/动态 logo、常态透明上下栏与实时渐进模糊、独立原生详情页、本端主题及 TMDB 设置；手机按视频尺寸自动切换方向，收藏和续播继续使用原数据库模型。\n\nAndroid 6 V1 签名、原样基准和声明的代码/资源变更审计已通过。Android 6 真机、播放和界面视觉验收仍单独记录。\n\n构建：https://github.com/{repo}/actions/runs/{run_id}\n')
-          tag = f'leotv-{version}-build-{run_id}'
-          endpoint = f'repos/{repo}/releases/tags/{tag}'
-          def find_release():
+          official = channel == 'stable'
+          title = f'Leotv {version}' if official else f'Leotv {version}（固定签名测试）'
+          notes.write_text(f'Leotv {version} {"正式版" if official else "测试 APK"}，来自成功构建 #{run_id}。\n\n应用包名 com.leotv.app；提供 TV/手机、32/64 位四个固定签名 APK。保留已验收的原生详情、手机玻璃状态栏和悬浮导航、追更日历、跨订阅自动找源、收藏与续播。\n\n' +
+              ('新增代码采用 R8 release/full 混淆优化；原宿主字节码、数据库、JAR/JNI 及反射接口、回移层和各 ABI 原生库保留。混淆映射单独存入内部草稿，不进入 APK 或正式下载文件。\n\n' if official else '') +
+              f'Android 6（API 23）编译、原样/变化审计与固定签名检查已通过；签名后真机运行验收单独记录。\n\n构建：https://github.com/{repo}/actions/runs/{run_id}\n')
+          tag = f'leotv-{version}' if official else f'leotv-{version}-build-{run_id}'
+          def find_release(release_tag=tag):
+              endpoint = f'repos/{repo}/releases/tags/{release_tag}'
               existing = subprocess.run(['gh', 'api', endpoint], capture_output=True, text=True)
               if existing.returncode == 0:
                   return json.loads(existing.stdout)
@@ -95,11 +110,15 @@ jobs:
               # GitHub may not resolve a new draft through releases/tags until publication.
               pages = json.loads(subprocess.check_output(['gh', 'api',
                   f'repos/{repo}/releases?per_page=100', '--paginate', '--slurp']))
-              matches = [item for page in pages for item in page if item['tag_name'] == tag]
+              matches = [item for page in pages for item in page if item['tag_name'] == release_tag]
               if len(matches) > 1:
                   raise SystemExit('Multiple APK drafts use the same release tag.')
               return matches[0] if matches else None
           release = find_release()
+          if official and release is None:
+              release = find_release(f'leotv-{version}-build-{run_id}')
+              if release is not None and not release['draft']:
+                  raise SystemExit('Official release transport must remain a draft until promotion.')
           expected = {pathlib.Path(file).name: (pathlib.Path(file).stat().st_size,
               'sha256:' + hashlib.sha256(pathlib.Path(file).read_bytes()).hexdigest()) for file in files}
           def verify_assets(release):
@@ -118,22 +137,30 @@ jobs:
               sys.exit(0)
           if release is None:
               subprocess.run(['gh', 'release', 'create', tag, '--repo', repo, '--target', data['head_sha'],
-                  '--title', f'Leotv {version}（固定签名测试）', '--notes-file', str(notes),
-                  '--draft', '--prerelease', '--latest=false', *files], check=True)
+                  '--title', title, '--notes-file', str(notes),
+                  '--draft', '--latest=false', *([] if official else ['--prerelease']), *files], check=True)
           else:
               if release['target_commitish'] != data['head_sha']:
                   raise SystemExit('Existing APK draft targets a different source commit.')
-              subprocess.run(['gh', 'release', 'upload', tag, '--repo', repo, '--clobber', *files], check=True)
-          release = find_release()
+              if not official:
+                  subprocess.run(['gh', 'release', 'upload', release['tag_name'], '--repo', repo, '--clobber', *files], check=True)
+              else:
+                  try:
+                      verify_assets(release)
+                  except SystemExit:
+                      # Same-source drafts may have been interrupted during upload.
+                      subprocess.run(['gh', 'release', 'upload', release['tag_name'], '--repo', repo, '--clobber', *files], check=True)
+          release = find_release(release['tag_name'] if release is not None else tag)
           if release is None:
               raise SystemExit('Unable to locate the uploaded APK draft.')
           release_endpoint = f"repos/{repo}/releases/{release['id']}"
           release = json.loads(subprocess.check_output(['gh', 'api', release_endpoint]))
           verify_assets(release)
           subprocess.run(['gh', 'api', release_endpoint, '--method', 'PATCH',
-              '--field', 'draft=false', '--field', 'prerelease=true',
+              '--field', 'draft=false', '--field', 'prerelease=' + str(not official).lower(),
+              '--raw-field', 'tag_name=' + tag, '--raw-field', 'name=' + title,
               '--raw-field', 'body=' + notes.read_text(),
-              '--raw-field', 'make_latest=false', '--silent'], check=True)
+              '--raw-field', 'make_latest=' + str(official).lower(), '--silent'], check=True)
           print(f'https://github.com/{repo}/releases/tag/{tag}')
           PY
       - name: Retain the latest ten published APK prereleases and remove older CI outputs

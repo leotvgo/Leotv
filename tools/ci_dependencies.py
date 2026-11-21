@@ -6,6 +6,7 @@ from pathlib import Path
 import subprocess
 
 FILES = {
+    'r8-8.8.34.jar': ('https://storage.googleapis.com/r8-releases/raw/8.8.34/r8.jar', 'f8370523cb41819bb83ae0747c8373d6faef8457b620111bdea5d49066f33bd2'),
     'apktool_2.11.0.jar': ('https://github.com/iBotPeaches/Apktool/releases/download/v2.11.0/apktool_2.11.0.jar', '8fdc17c6fe2e6d80d71b8718eb2a5d0379f1cc7139ae777f6a499ce397b26f54'),
     'gson-2.13.2.jar': ('https://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.13.2/gson-2.13.2.jar', 'dd0ce1b55a3ed2080cb70f9c655850cda86c206862310009dcb5e5c95265a5e0'),
     'simple-xml-2.7.1.jar': ('https://repo.maven.apache.org/maven2/org/simpleframework/simple-xml/2.7.1/simple-xml-2.7.1.jar', '7a43d2d5e488e0dac57a6de0284df4413a4733365239649309c4b693f4e429f9'),

@@ -24,8 +24,10 @@ RELEASE_ID = 42
 
 
 class GitHub:
-    def __init__(self, existing=None, invalid=None, conclusion='success'):
+    def __init__(self, existing=None, invalid=None, conclusion='success', official=False):
         self.existing, self.invalid, self.conclusion = existing, invalid, conclusion
+        self.official = official
+        self.tag = 'leotv-5.1.8' if official else TAG
         self.mutations, self.files, self.api_requests = [], {}, []
 
     def assets(self):
@@ -34,7 +36,7 @@ class GitHub:
                                        hashlib.sha256(data).hexdigest())} for name, data in self.files.items()]
 
     def release(self):
-        return {'id': RELEASE_ID, 'tag_name': TAG, 'draft': self.existing == 'draft',
+        return {'id': RELEASE_ID, 'tag_name': self.tag, 'draft': self.existing == 'draft', 'prerelease': not self.official,
                 'target_commitish': 'wrong' if self.invalid == 'target' else COMMIT,
                 'html_url': 'https://github.com/example/fixture/releases/tag/fixture', 'assets': self.assets()}
 
@@ -47,6 +49,11 @@ class GitHub:
                          'apk_sha256': 'wrong' if self.invalid == 'hash' else hashlib.sha256(apk).hexdigest()}
             audit = {'package': 'com.leotv.app', 'expected_changes_match': self.invalid != 'audit',
                      'baseline_audit': {'equal': True}, 'version_name': '5.1.8'}
+            if self.official:
+                audit.update({'release_channel': 'stable', 'protected_release': self.invalid != 'unprotected',
+                    'added_dex_paths': ['classes4.dex'], 'overlay_compile': {'hardening': {'mode': 'r8-release-full',
+                    'min_api': 23, 'mapping_inputs_declared': True, 'renamed_program_classes': 10,
+                    'stable_abi_members_verified': 0 if self.invalid == 'missing_abi' else 41}}})
             items = {f'leotv-{variant}.apk': apk,
                      f'leotv-{variant}.signature.json': json.dumps(signature).encode(),
                      f'leotv-{variant}-unsigned.audit.json': json.dumps(audit).encode()}
@@ -58,13 +65,14 @@ class GitHub:
             self.api_requests.append(endpoint)
             if '--method' in command and command[command.index('--method') + 1] == 'PATCH':
                 assert endpoint == f'repos/example/fixture/releases/{RELEASE_ID}'
-                assert 'draft=false' in command and 'prerelease=true' in command
-                assert 'make_latest=false' in command
+                assert 'draft=false' in command and ('prerelease=false' if self.official else 'prerelease=true') in command
+                assert ('make_latest=true' if self.official else 'make_latest=false') in command
+                assert 'tag_name=' + self.tag in command
                 assert len(self.assets()) == 12
                 self.mutations.append(('edit', list(command)))
                 self.existing = 'published'
                 return subprocess.CompletedProcess(command, 0, '', '')
-            assert endpoint.endswith('/releases/tags/' + TAG)
+            assert endpoint.endswith('/releases/tags/' + self.tag) or endpoint.endswith('/releases/tags/' + TAG)
             if self.existing != 'published':
                 return subprocess.CompletedProcess(command, 1, '', 'gh: Not Found (HTTP 404)')
             return subprocess.CompletedProcess(command, 0, json.dumps(self.release()), '')
@@ -156,6 +164,27 @@ class PublishWorkflowTest(unittest.TestCase):
             self.execute(github)
         self.assertEqual(github.files, {})
         self.assertEqual(github.mutations, [])
+
+    def test_official_protected_release_has_a_version_tag_and_becomes_latest(self):
+        github = GitHub(official=True)
+        self.execute(github)
+        self.assertEqual([action for action, _ in github.mutations], ['create', 'edit'])
+        self.assertIn('leotv-5.1.8', github.mutations[0][1])
+        self.assertNotIn('--prerelease', github.mutations[0][1])
+        self.assertIn('prerelease=false', github.mutations[-1][1])
+        self.assertIn('make_latest=true', github.mutations[-1][1])
+
+    def test_completed_official_transport_draft_is_promoted_without_reupload(self):
+        github = GitHub(existing='draft', official=True)
+        self.execute(github)
+        self.assertEqual([action for action, _ in github.mutations], ['edit'])
+
+    def test_official_release_rejects_missing_protection_or_abi(self):
+        for invalid in ['unprotected', 'missing_abi']:
+            github = GitHub(official=True, invalid=invalid)
+            with self.assertRaises(SystemExit):
+                self.execute(github)
+            self.assertEqual(github.mutations, [])
 
 
 if __name__ == '__main__':

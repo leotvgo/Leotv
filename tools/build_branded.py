@@ -18,6 +18,7 @@ from android_branding import ANDROID, BinaryXml, ResourceTable, sha256
 from build_preserved import VARIANTS, is_signature, run
 from apply_native_details import apply as apply_native_details
 from check_native_details import check_contract as check_detail_contract, source_set as detail_source_set
+from harden_overlays import compile_program, audit_program
 
 ROOT = Path(__file__).resolve().parents[1]
 BRANDING = ROOT / 'branding'
@@ -184,7 +185,7 @@ def apply_source_overlay(project, profile, values, flavor, lock, spec):
     return changed_classes, changed_sources
 
 
-def compile_overlays(project, profile, spec, apk, sdk, apktool, work, log):
+def compile_overlays(project, profile, spec, apk, sdk, apktool, work, log, r8=None):
     tools = work / 'compile-tools'
     export = 'java.base/jdk.internal.org.objectweb.asm=ALL-UNNAMED'
     run(['javac', '--add-exports', export, '-cp', apktool, '-d', tools, ROOT / 'research/DexReferenceJar.java'], log)
@@ -201,8 +202,15 @@ def compile_overlays(project, profile, spec, apk, sdk, apktool, work, log):
     native_class_roots = {source.stem for source in native_sources}
     run(['javac', '--release', '8', '-encoding', 'UTF-8', '-cp', str(android) + os.pathsep + str(reference),
          '-d', classes, *sources], log)
-    run([sdk / 'build-tools/36.1.0/d8', '--min-api', '23', '--lib', android, '--lib', reference,
-         '--output', dex, *sorted(classes.rglob('*.class'))], log)
+    settings = json.loads((ROOT / 'branding/hardening.json').read_text()) if (ROOT / 'branding/hardening.json').is_file() else {'enabled': False}
+    hardening, mapping = None, None
+    if settings['enabled']:
+        if r8 is None:
+            raise ValueError('Protected builds require --r8 with the fixed R8 8.8.34 JAR.')
+        settings, hardening, mapping = compile_program(ROOT, classes, android, reference, r8, dex, work, run, log)
+    else:
+        run([sdk / 'build-tools/36.1.0/d8', '--min-api', '23', '--lib', android, '--lib', reference,
+             '--output', dex, *sorted(classes.rglob('*.class'))], log)
     wrapper = work / 'logo-wrapper.apk'
     with zipfile.ZipFile(apk) as original, zipfile.ZipFile(wrapper, 'w') as output:
         output.writestr('AndroidManifest.xml', original.read('AndroidManifest.xml'))
@@ -211,6 +219,16 @@ def compile_overlays(project, profile, spec, apk, sdk, apktool, work, log):
         target_dex = min(dex_files, key=lambda name: struct.unpack_from('<I', original.read(name), 88)[0])
     decoded = work / 'logo-smali'
     run(['java', '-jar', apktool, 'd', '-r', '--frame-path', work / 'framework', '-o', decoded, wrapper], log)
+    if hardening is not None:
+        checked, added = audit_program(classes, decoded, mapping, settings, family == 'mobile')
+        hardening.update(checked)
+        next_index = max(1 if name == 'classes.dex' else int(re.fullmatch(r'classes(\d+)\.dex', name).group(1)) for name in dex_files) + 1
+        dex_name = f'classes{next_index}.dex'
+        data = (dex / 'classes.dex').read_bytes()
+        hardening.update({'dex_file': dex_name, 'dex_sha256': sha256(data), 'host_program_reoptimized': False})
+        return {'sources': {str(source.relative_to(ROOT)): sha256(source.read_bytes()) for source in sources},
+                'java_release': 8, 'd8_min_api': 23, 'program_classes': len(added),
+                'reference_jar_packaged': False, 'hardening': hardening}, added, {dex_name: data}, mapping
     emitted = list(decoded.glob('smali*/com/leotv/**/*.smali'))
     added = set()
     for source in emitted:
@@ -228,7 +246,7 @@ def compile_overlays(project, profile, spec, apk, sdk, apktool, work, log):
     if LOGO_CLASS not in added or 'Lcom/leotv/ui/GlobalChrome;' not in added or 'Lcom/leotv/ui/ProgressiveBlur;' not in added:
         raise ValueError('Required overlay classes are missing.')
     return {'sources': {str(source.relative_to(ROOT)): sha256(source.read_bytes()) for source in sources},
-            'java_release': 8, 'd8_min_api': 23, 'program_classes': len(added), 'reference_jar_packaged': False}, added
+            'java_release': 8, 'd8_min_api': 23, 'program_classes': len(added), 'reference_jar_packaged': False}, added, {}, None
 
 
 def resource_overlay(original, values, allowed):
@@ -306,6 +324,8 @@ def validate_output(original_apk, output_apk, expected, files, added_asset):
         dex = {name for name in originals if re.fullmatch(r'classes(?:\d+)?\.dex', name)}
         removed = set(files)
         added = {item['path'] for item in files.values()} | {added_asset}
+        added_dex = {name for name in expected if re.fullmatch(r'classes(?:\d+)?\.dex', name) and name not in originals}
+        added.update(added_dex)
         names = (originals - removed) | added
         if names != set(output.namelist()) or len(output.namelist()) != len(names):
             raise ValueError('APK ZIP entry set differs from the declared overlay.')
@@ -317,7 +337,7 @@ def validate_output(original_apk, output_apk, expected, files, added_asset):
         for name, data in expected.items():
             if output.read(name) != data:
                 raise ValueError('Built branding payload differs from source: ' + name)
-        for name in dex:
+        for name in dex | added_dex:
             data = output.read(name)
             for brand in ('OKTV', 'OK TV', 'OK影视', 'OK影視', '公众号-OK猫开发'):
                 if brand.encode() in data:
@@ -325,7 +345,8 @@ def validate_output(original_apk, output_apk, expected, files, added_asset):
         native = [name for name in protected if name.startswith('lib/') and name.endswith('.so')]
         return {'protected_zip_entries_exact': len(protected), 'native_libraries_exact': len(native),
                 'native_abis': sorted({name.split('/')[1] for name in native}),
-                'removed_resource_paths': sorted(removed), 'added_resource_paths': sorted(added),
+                'removed_resource_paths': sorted(removed), 'added_resource_paths': sorted(added - added_dex),
+                'added_dex_paths': sorted(added_dex),
                 'old_visible_branding_removed': True, 'zip_payload_changes_declared': True}
 
 
@@ -337,6 +358,7 @@ def main():
     parser.add_argument('--project', type=Path)
     parser.add_argument('--sdk', type=Path, default=Path.home() / 'Library/Android/sdk')
     parser.add_argument('--apktool', type=Path)
+    parser.add_argument('--r8', type=Path, help='Checksum-pinned R8 8.8.34 JAR for protected release overlays')
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
     apk_name, project_name, pinned = VARIANTS[args.variant]
@@ -346,6 +368,9 @@ def main():
     if sha256(apk.read_bytes()) != pinned:
         raise SystemExit('Input APK differs from the pinned ordinary sample.')
     values = identity()
+    release = json.loads((BRANDING / 'release.json').read_text()) if (BRANDING / 'release.json').is_file() else {'channel': 'prerelease'}
+    if release['channel'] == 'stable' and (values['version_name'] != release['version_name'] or values['version_code'] != release['version_code']):
+        raise ValueError('Official release identity differs from its pinned version metadata.')
     if values['package'] == 'com.fongmi.android.tv':
         raise SystemExit('Leotv must use an independent application ID.')
     spec = json.loads((BRANDING / 'changes.json').read_text())
@@ -376,7 +401,9 @@ def main():
             detail_changed, detail_sources = apply_native_details(project, ROOT, args.variant)
             changed.update(detail_changed); changed_sources.update(detail_sources)
             print(f'{args.variant}: compiling Leotv branding and native chrome against API 23...', flush=True)
-            compile_report, added = compile_overlays(project, profile, spec, apk, args.sdk, apktool, work, log)
+            compile_report, added, protected_dex, mapping = compile_overlays(project, profile, spec, apk, args.sdk, apktool, work, log, args.r8)
+            if release['channel'] == 'stable' and not compile_report.get('hardening'):
+                raise ValueError('Official release program code must pass R8 protection gates.')
             changed.update(added)
             relocated = keep_mobile_dex_string_indices_bounded(project, args.variant)
             assembled = work / 'assembled.apk'
@@ -419,6 +446,7 @@ def main():
             expected.update(layouts)
             expected.update({item['path']: item['bytes'] for item in files.values()})
             expected[spec['default_logo_asset']] = (BRANDING / spec['default_logo_asset']).read_bytes()
+            expected.update(protected_dex)
             combined = work / 'combined.apk'
             with zipfile.ZipFile(apk) as original, zipfile.ZipFile(assembled) as built, zipfile.ZipFile(combined, 'w') as output:
                 dex = {name: built.read(name) for name in built.namelist() if re.fullmatch(r'classes(?:\d+)?\.dex', name)}
@@ -435,6 +463,8 @@ def main():
                     data = dex[entry.filename] if entry.filename in dex else expected.get(info.filename)
                     output.writestr(info, original.read(entry) if data is None else data)
                 output.writestr(spec['default_logo_asset'], expected[spec['default_logo_asset']], compress_type=zipfile.ZIP_STORED)
+                for name, data in protected_dex.items():
+                    output.writestr(name, data, compress_type=zipfile.ZIP_STORED)
             aligned = work / 'aligned.apk'
             zipalign = args.sdk / 'build-tools/36.1.0/zipalign'
             run([zipalign, '-P', '16', '-f', '4', combined, aligned], log)
@@ -449,6 +479,7 @@ def main():
             report.update(validate_output(apk, aligned, expected, files, spec['default_logo_asset']))
             report.update({
                 'variant': args.variant, **values,
+                'release_channel': release['channel'], 'protected_release': bool(compile_report.get('hardening')),
                 'input_apk_sha256': pinned, 'output_apk_sha256': sha256(aligned.read_bytes()),
                 'unsigned': True, 'native_zip_alignment_kib': 16,
                 'baseline_audit': baseline_audit, 'allowed_changed_classes': sorted(changed),
@@ -469,6 +500,8 @@ def main():
                 'device_validation': False,
             })
             shutil.copyfile(aligned, args.output)
+            if mapping is not None:
+                shutil.copyfile(mapping, args.output.with_suffix('.mapping.txt'))
             args.output.with_suffix('.audit.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
             print(f'Leotv {values["version_name"]}: {args.output}\nAudit: {args.output.with_suffix(".audit.json")}', flush=True)
         except Exception:

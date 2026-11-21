@@ -129,6 +129,7 @@ jobs:
           python3 tools/build_branded.py --variant "$VARIANT" \
             --apk "$RUNNER_TEMP/input/$INPUT_FILENAME" \
             --apktool "$RUNNER_TEMP/deps/apktool_2.11.0.jar" \
+            --r8 "$RUNNER_TEMP/deps/r8-8.8.34.jar" \
             --sdk "$ANDROID_SDK_ROOT" \
             --output "artifacts/leotv-$VARIANT-unsigned.apk"
       - name: Sign installable APK with the fixed APK certificate
@@ -143,6 +144,12 @@ jobs:
           python3 tools/sign_ci_apk.py --sdk "$ANDROID_SDK_ROOT" \
             --input "artifacts/leotv-$VARIANT-unsigned.apk" \
             --output "artifacts/leotv-$VARIANT.apk"
+      - name: Archive protected R8 mappings in a private draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APK_CERT_SHA256: ${{ vars.APK_CERT_SHA256 }}
+          VARIANT: ${{ matrix.variant }}
+        run: python3 tools/stage_ci_apk.py --variant "$VARIANT" --symbols
       - id: signed_artifact
         uses: actions/upload-artifact@v4
         continue-on-error: true

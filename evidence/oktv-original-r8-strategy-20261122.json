@@ -1,0 +1,49 @@
+{
+  "observed": {
+    "tv-v7a": {
+      "apk_sha256": "f61b88eefa6dd34bb2ef13bab593af35e2af33d220c2f6b6deb9d08d285ee9ab",
+      "r8_markers": [
+        "~~R8{\"backend\":\"cf\",\"compilation-mode\":\"release\",\"has-checksums\":false,\"pg-map-id\":\"1606ab2\",\"r8-mode\":\"full\",\"version\":\"8.5.27\"}",
+        "~~R8{\"backend\":\"dex\",\"compilation-mode\":\"release\",\"desugared-library-identifiers\":[\"com.tools.android:desugar_jdk_libs_configuration_nio:2.1.5\"],\"has-checksums\":false,\"min-api\":23,\"pg-map-id\":\"2a5f98f\",\"r8-mode\":\"full\",\"version\":\"8.8.34\"}",
+        "~~R8{\"backend\":\"dex\",\"compilation-mode\":\"release\",\"has-checksums\":false,\"min-api\":23,\"r8-mode\":\"full\",\"version\":\"8.8.34\"}",
+        "~~R8{\"backend\":\"dex\",\"compilation-mode\":\"release\",\"desugared-library-identifiers\":[\"com.tools.android:desugar_jdk_libs_configuration_nio:2.1.5\"],\"has-checksums\":false,\"min-api\":23,\"pg-map-id\":\"2a5f98f\",\"r8-mode\":\"full\",\"version\":\"8.8.34\"}"
+      ],
+      "packer_named_assets": []
+    },
+    "tv-v8a": {
+      "apk_sha256": "72f3c12935852d35f4eeb28534e6a4e2d0bf29ac481c75f8383dd753b1d120e1",
+      "r8_markers": [
+        "~~R8{\"backend\":\"cf\",\"compilation-mode\":\"release\",\"has-checksums\":false,\"pg-map-id\":\"1606ab2\",\"r8-mode\":\"full\",\"version\":\"8.5.27\"}",
+        "~~R8{\"backend\":\"dex\",\"compilation-mode\":\"release\",\"desugared-library-identifiers\":[\"com.tools.android:desugar_jdk_libs_configuration_nio:2.1.5\"],\"has-checksums\":false,\"min-api\":23,\"pg-map-id\":\"a434f49\",\"r8-mode\":\"full\",\"version\":\"8.8.34\"}",
+        "~~R8{\"backend\":\"dex\",\"compilation-mode\":\"release\",\"has-checksums\":false,\"min-api\":23,\"r8-mode\":\"full\",\"version\":\"8.8.34\"}",
+        "~~R8{\"backend\":\"dex\",\"compilation-mode\":\"release\",\"desugared-library-identifiers\":[\"com.tools.android:desugar_jdk_libs_configuration_nio:2.1.5\"],\"has-checksums\":false,\"min-api\":23,\"pg-map-id\":\"a434f49\",\"r8-mode\":\"full\",\"version\":\"8.8.34\"}"
+      ],
+      "packer_named_assets": []
+    },
+    "mobile-v7a": {
+      "apk_sha256": "d54b917ecfff10fd8d4a1959a95df1cdcf8e43cae8d3e96cb546d3f84c9e1148",
+      "r8_markers": [
+        "~~R8{\"backend\":\"cf\",\"compilation-mode\":\"release\",\"has-checksums\":false,\"pg-map-id\":\"1606ab2\",\"r8-mode\":\"full\",\"version\":\"8.5.27\"}",
+        "~~R8{\"backend\":\"dex\",\"compilation-mode\":\"release\",\"desugared-library-identifiers\":[\"com.tools.android:desugar_jdk_libs_configuration_nio:2.1.5\"],\"has-checksums\":false,\"min-api\":23,\"pg-map-id\":\"d6926d9\",\"r8-mode\":\"full\",\"version\":\"8.8.34\"}",
+        "~~R8{\"backend\":\"dex\",\"compilation-mode\":\"release\",\"has-checksums\":false,\"min-api\":23,\"r8-mode\":\"full\",\"version\":\"8.8.34\"}",
+        "~~R8{\"backend\":\"dex\",\"compilation-mode\":\"release\",\"desugared-library-identifiers\":[\"com.tools.android:desugar_jdk_libs_configuration_nio:2.1.5\"],\"has-checksums\":false,\"min-api\":23,\"pg-map-id\":\"d6926d9\",\"r8-mode\":\"full\",\"version\":\"8.8.34\"}"
+      ],
+      "packer_named_assets": []
+    },
+    "mobile-v8a": {
+      "apk_sha256": "76fdb7edfc46cab43a3d6ead66822f97be2e6b06cf15e5bf200395360d372d17",
+      "r8_markers": [
+        "~~R8{\"backend\":\"cf\",\"compilation-mode\":\"release\",\"has-checksums\":false,\"pg-map-id\":\"1606ab2\",\"r8-mode\":\"full\",\"version\":\"8.5.27\"}",
+        "~~R8{\"backend\":\"dex\",\"compilation-mode\":\"release\",\"desugared-library-identifiers\":[\"com.tools.android:desugar_jdk_libs_configuration_nio:2.1.5\"],\"has-checksums\":false,\"min-api\":23,\"pg-map-id\":\"7a8ac46\",\"r8-mode\":\"full\",\"version\":\"8.8.34\"}",
+        "~~R8{\"backend\":\"dex\",\"compilation-mode\":\"release\",\"has-checksums\":false,\"min-api\":23,\"r8-mode\":\"full\",\"version\":\"8.8.34\"}",
+        "~~R8{\"backend\":\"dex\",\"compilation-mode\":\"release\",\"desugared-library-identifiers\":[\"com.tools.android:desugar_jdk_libs_configuration_nio:2.1.5\"],\"has-checksums\":false,\"min-api\":23,\"pg-map-id\":\"7a8ac46\",\"r8-mode\":\"full\",\"version\":\"8.8.34\"}"
+      ],
+      "packer_named_assets": []
+    }
+  },
+  "new_code_strategy": "Pinned R8 8.8.34 release/full shrinking, optimization and obfuscation with min-api 23.",
+  "original_exact_rules_available": false,
+  "comparison_rules_reference": "upstream-comparison-20260415/app/proguard-rules.pro",
+  "original_program_and_native_reoptimized": false,
+  "evidence_boundary": "Compiler markers and named ZIP entries establish observed R8 use; absence of these packer names alone is not proof that no other protection exists."
+}

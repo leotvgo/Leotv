@@ -1,0 +1,83 @@
+{
+  "version_name": "5.2.0",
+  "version_code": 600,
+  "functional_base": "85ebc919463d52dd52efe6eed5db5df89ea8adb1",
+  "local_builds": {
+    "tv-v7a": {
+      "apk_sha256": "1d8865dc2106507762d66b13927aa2810451b5e59114698d819c713134e3faa5",
+      "baseline_equal": true,
+      "declared_changes_match": true,
+      "native_libraries_exact": 32,
+      "hardening": {
+        "mode": "r8-release-full",
+        "r8_version": "R8 8.8.34 (build e4c4b8c78485b4b879001e60600d9ef799083345 from go/r8bot (luci-r8-custom-ci-archive-0-stmt))",
+        "r8_sha256": "f8370523cb41819bb83ae0747c8373d6faef8457b620111bdea5d49066f33bd2",
+        "rules_sha256": "87f2dfe94e49df5b1d6079eb4a7f4c84cf6ca2079c06de79b7a89aab55df82e0",
+        "min_api": 23,
+        "mapping_sha256": "dff53b19307966796e8993e47b0a56842f3527197e635f3414d5bf30264ffdde",
+        "program_input_classes": 196,
+        "reference_jar_packaged": false,
+        "program_classes": 211,
+        "renamed_program_classes": 196,
+        "stable_abi_members_verified": 41,
+        "mapping_inputs_declared": true,
+        "source_file_names_removed": true,
+        "dex_file": "classes4.dex",
+        "dex_sha256": "73053d8a7263ce7f914f00d100a5d0c76718c2bb0fd5772297f36bae9ca4db92",
+        "host_program_reoptimized": false
+      },
+      "r8_dex_markers": [
+        {
+          "backend": "dex",
+          "compilation-mode": "release",
+          "has-checksums": false,
+          "min-api": 23,
+          "pg-map-id": "ff313f5",
+          "r8-mode": "full",
+          "version": "8.8.34"
+        }
+      ]
+    },
+    "mobile-v7a": {
+      "apk_sha256": "67f251867cad08f0c97a9b7b7abcf1e576331ca2fbedcb535434d775a009e505",
+      "baseline_equal": true,
+      "declared_changes_match": true,
+      "native_libraries_exact": 34,
+      "hardening": {
+        "mode": "r8-release-full",
+        "r8_version": "R8 8.8.34 (build e4c4b8c78485b4b879001e60600d9ef799083345 from go/r8bot (luci-r8-custom-ci-archive-0-stmt))",
+        "r8_sha256": "f8370523cb41819bb83ae0747c8373d6faef8457b620111bdea5d49066f33bd2",
+        "rules_sha256": "87f2dfe94e49df5b1d6079eb4a7f4c84cf6ca2079c06de79b7a89aab55df82e0",
+        "min_api": 23,
+        "mapping_sha256": "77e4ad535916e3e153955737add83dd263df18513015205defff708daf3bb41d",
+        "program_input_classes": 196,
+        "reference_jar_packaged": false,
+        "program_classes": 212,
+        "renamed_program_classes": 197,
+        "stable_abi_members_verified": 41,
+        "mapping_inputs_declared": true,
+        "source_file_names_removed": true,
+        "dex_file": "classes4.dex",
+        "dex_sha256": "b3d6eb876321003f9819115704f8892f7f83730ed433f21cc969058162b0432f",
+        "host_program_reoptimized": false
+      },
+      "r8_dex_markers": [
+        {
+          "backend": "dex",
+          "compilation-mode": "release",
+          "has-checksums": false,
+          "min-api": 23,
+          "pg-map-id": "3c3eb78",
+          "r8-mode": "full",
+          "version": "8.8.34"
+        }
+      ]
+    }
+  },
+  "validation": {
+    "publication_guard_cases": 11,
+    "mapping_and_abi_negative_cases": 5,
+    "full_ui_regression_run": false,
+    "signed_device_validation": false
+  }
+}
