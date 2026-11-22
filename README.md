@@ -214,3 +214,5 @@ Parcel、数据库、列表/过滤器、弹幕异常路径、网络、UI 和播�
 5.3.0-preview.1 / 613 已发布[手机/TV、32/64 位四套测试 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0-preview.1-build-45036827066)，包含弹幕 API、TV 原生扫码及分类分页提交修复。构建/发布成功，额外回归关闭，交由用户真机测试；正式 Latest 仍为 5.2.3。
 
 5.3.0-preview.2 / 614 修正原生初始化覆盖弹幕监听和默认隐藏入口，恢复 TV 触屏唤醒时的原 top/title/size，保留黑色进场；扫码使用原 dialog_ua 整体布局、内部按钮和主题，补标准 Fongmi v2 根地址兼容。详见[入口和原生扫码修复](docs/LEOTV-5.3.0-PREVIEW-2-PLAYER-ENTRY-AND-NATIVE-QR-20261123.md)。
+
+5.3.0-preview.2 / 614 已发布[四套固定签名 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0-preview.2-build-45045541321)：播放控制栏「弹幕 → 搜索弹幕」入口、TV 原生扫码 UI 和顶部标题恢复；正式 Latest 保持 5.2.3。全屏启动疑点只读核对，未据此改变路线，保留现有黑色窗口背景。

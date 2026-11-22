@@ -29,3 +29,11 @@ coos-js 公开播放器入口的 GET 根响应为 `{apiUrl: ...}`，该信息不
 后续自有 TVBox 输出采用根级 `danmaku` 字符串，优先输出完整标准搜索地址。完整约定见 `docs/TVBOX-DANMAKU-CONFIG.md`。本轮不修改或发布 coos-js/V6 服务，不记录实际用户 API 凭据。
 
 GitHub 编译 5.3.0-preview.2 / 614 四套固定签名 APK，`run_validation_tests=false`，仅保留构建所需 API23、原样/允许变化、R8 ABI 和签名步骤；正式 Latest 仍为 5.2.3。用户真机复测手动菜单、标准 API、扫码回填和 TV 触屏标题。
+
+## 交付与只读排查
+
+[四套固定签名测试 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0-preview.2-build-45045541321) 已发布，源码 `a55524691b5b424535ba89be625b2ae3b4d2a517`，构建 `45045541321` 第二次尝试与发布 `45047566834` 均成功。结果保存于 `evidence/leotv-5.3.0-preview.2-delivery-20261123.json`。首次手机构建发现控制栏回调有两个返回分支，已修正挂接工具；内部映射并发空草稿冲突经核对精确 ID/源码/空资产后改名保留，重试归档完成。额外回归保持关闭。
+
+用户随后怀疑全屏入口仍先显示原小窗，明确要求只读排查。实际路由是 DetailActivity.play → 新 Intent 直接进入带 fullscreen 标记的 VideoActivity → 原初始化 L 尾部 Playback.initialize → 同一实例的原 Y 全屏方法；没有另开小窗 Activity或模拟点击。原布局确实先被构造，但正常新建流程在 onCreate 返回/首帧布局前已调用全屏切换。原 cast 标记也是同一 Activity 内较早调用 Y，不能仅据此证明闪屏根因。现有黑色处理是窗口背景归属及跳过宿主壁纸初始化，未增加过渡动画；按用户要求不改变启动链路，继续保留。
+
+公开订阅的只读 PNG/base64 解码得到根级 danmaku 为本机 2525 端口的 name/epid 模板，与用户 coos-js 局域网入口不同；APK 支持模板替换，实际服务可用性由订阅配套运行组件及真机决定。完整观察字段保存在交付取证，不将整个订阅配置存入仓库。
