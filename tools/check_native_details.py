@@ -138,6 +138,21 @@ def check_contract(root, variant, project=None):
                     'S:Lcom/fongmi/android/tv/ui/adapter/q;', 'c0:LF3/f;', 'b0:L'+BEANS+'History;'] if mobile else [
                         'i0:Z', 'U:Landroidx/leanback/widget/ArrayObjectAdapter;', 'h0:LC3/e;', 'g0:L'+BEANS+'History;']
     contracts['com/fongmi/android/tv/ui/activity/VideoActivity'] = (video_methods, video_fields)
+    contracts[BEANS+'Danmaku'] = (['from(Ljava/lang/String;)L'+BEANS+'Danmaku;', 'empty()L'+BEANS+'Danmaku;',
+                                 'getName()Ljava/lang/String;', 'getUrl()Ljava/lang/String;', 'getRealUrl()Ljava/lang/String;', 'setName(Ljava/lang/String;)V'], [])
+    contracts['okhttp3/OkHttpClient$Builder'] = (['<init>()V', 'connectTimeout(JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;', 'readTimeout(JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;', 'build()Lokhttp3/OkHttpClient;'], [])
+    contracts['okhttp3/Request$Builder'] = (['<init>()V', 'url(Ljava/lang/String;)Lokhttp3/Request$Builder;', 'post(Lokhttp3/RequestBody;)Lokhttp3/Request$Builder;', 'build()Lokhttp3/Request;'], [])
+    contracts['okhttp3/FormBody$Builder'] = (['<init>()V', 'add(Ljava/lang/String;Ljava/lang/String;)Lokhttp3/FormBody$Builder;', 'build()Lokhttp3/FormBody;'], [])
+    contracts['okhttp3/OkHttpClient'] = (['newWebSocket(Lokhttp3/Request;Lokhttp3/WebSocketListener;)Lokhttp3/WebSocket;', 'newCall(Lokhttp3/Request;)Lokhttp3/Call;'], [])
+    contracts[BEANS+'Result'][0].append('getDanmaku()Ljava/util/List;')
+    contracts[BEANS+'Config'] = (['getId()I', 'getUrl()Ljava/lang/String;'], [])
+    contracts['F3/f' if mobile else 'C3/e'] = ([('k0' if mobile else 'i0')+'(L'+BEANS+'Danmaku;)V'], ['v:L'+('H3/d' if mobile else 'E3/d')+';'])
+    contracts['H3/d' if mobile else 'E3/d'] = (['e()V','d()V'], [])
+    contracts['R6/g' if mobile else 'r7/g'] = ([('x' if mobile else 'r')+'()Landroid/content/SharedPreferences;'], [])
+    if not mobile:
+        contracts['b4/c'] = (['d()Ljava/lang/String;'], [])
+        contracts['com/github/catvod/Proxy'] = (['getPort()I'], [])
+        contracts['com/bumptech/glide/d'] = (['o(IILjava/lang/String;)Landroid/graphics/Bitmap;'], [])
     contracts['com/fongmi/android/tv/ui/activity/SearchActivity'] = (['<init>()V'], [])
     if not mobile: contracts['com/fongmi/android/tv/ui/activity/CollectActivity'] = (['<init>()V'], [])
     contracts['androidx/appcompat/app/j'] = (
@@ -177,16 +192,33 @@ def check_contract(root, variant, project=None):
         contracts.update({
             'com/fongmi/android/tv/ui/adapter/u': ([], ['f:Ljava/util/ArrayList;']),
             'com/fongmi/android/tv/ui/adapter/q': (['p()I'], ['g:Ljava/lang/Object;']),
-            'F3/f': (['S()I', 'T()I', 'N()J', 'H()J', 'd(Ln0/d0;)V',
-                      'onVideoSizeChanged(Ltv/danmaku/ijk/media/player/IMediaPlayer;IIII)V'], ['B:Ljava/lang/String;']),
+            'F3/f': (['S()I', 'T()I', 'N()J', 'H()J', 'd(Ln0/d0;)V', 'k0(L'+BEANS+'Danmaku;)V',
+                      'onVideoSizeChanged(Ltv/danmaku/ijk/media/player/IMediaPlayer;IIII)V'], ['B:Ljava/lang/String;', 'v:LH3/d;']),
             'n0/d0': ([], ['a:I', 'b:I']),
         })
     else:
-        contracts['C3/e'] = (['P()J', 'G()J'], [])
+        contracts['C3/e'][0].extend(['P()J', 'G()J'])
         contracts['androidx/leanback/widget/ArrayObjectAdapter'] = (['size()I', 'get(I)Ljava/lang/Object;',
             '<init>(Landroidx/leanback/widget/Presenter;)V',
             'setItems(Ljava/util/List;Landroidx/leanback/widget/DiffCallback;)V'], [])
     checked = 0
+    paging_lock = json.loads((root / 'detail/category-paging-source-lock.json').read_text())[variant]
+    for name, digest in paging_lock.items():
+        if hashlib.sha256((project / name).read_bytes()).hexdigest() != digest:
+            raise ValueError('Native category paging source differs from its lock: ' + variant + ':' + name)
+    if mobile:
+        contracts['S3/z'] = (['o(Ljava/lang/String;)V'], ['n0:LQ3/j;', 'p0:Lcom/fongmi/android/tv/ui/adapter/Y;', 'm0:LA/h;'])
+        contracts['Q3/j'] = ([], ['a:LP3/d;', 'b:Z','c:Z','d:I'])
+        contracts['com/fongmi/android/tv/ui/adapter/a'] = (['a()I','s(Ljava/util/List;Ljava/lang/Runnable;)V','o(Ljava/util/List;LS3/y;)V'], ['d:Landroidx/recyclerview/widget/d;'])
+        contracts['androidx/recyclerview/widget/d'] = ([], ['f:Ljava/util/List;'])
+        contracts['A/h'] = ([], ['p:Ljava/lang/Object;'])
+    else:
+        contracts['P3/f'] = ([], ['o0:LN3/m;', 'm0:Landroidx/leanback/widget/ArrayObjectAdapter;'])
+        contracts['N3/m'] = ([], ['a:LM3/c;', 'b:Z','c:Z','d:I'])
+    danmaku_lock = json.loads((root / 'detail/danmaku-native-source-lock.json').read_text())[variant]
+    for name, digest in danmaku_lock.items():
+        if hashlib.sha256((project / name).read_bytes()).hexdigest() != digest:
+            raise ValueError('Native danmaku/QR source differs from its lock: ' + variant + ':' + name)
     # Cached Flag activation is private in every ordinary variant; there is no
     # boolean setter (setActivated(Flag) also replaces episode references).
     if not re.search(r'(?m)^\.field private activated:Z$', text(BEANS + 'Flag')):

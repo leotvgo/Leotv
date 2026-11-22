@@ -1,0 +1,32 @@
+{
+  "tv-v7a": {
+    "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": "c010e5f836f13abc27338149748703d3ce9e87065af581c79e91b9b248790489",
+    "smali/com/fongmi/android/tv/ui/activity/M.smali": "844060e4e12db3824d5e89dcac50788000fc507c6edc80baa85205983e0e43ed",
+    "smali/C3/e.smali": "2a09f333230d6ec19042c171482d7ae844b5d058a200b92b6b7431de7f02317f",
+    "smali/q3.1/i.smali": "d760a8f29d0519430fdba76a0c4efe053c6b19bd6ae78df01d81f6b88dfd07c6",
+    "smali/L3/f.smali": "9977a74da2972fab711af9f005a2f2c86ef14a3fcee019abd20d8eb12e98d5a3",
+    "smali/com/fongmi/android/tv/ui/activity/SettingDanmuActivity.smali": "0d2a2b843aee36934cfe69cb8a31399f84c3764e1c40c0e48716b127119053c5"
+  },
+  "tv-v8a": {
+    "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": "c010e5f836f13abc27338149748703d3ce9e87065af581c79e91b9b248790489",
+    "smali/com/fongmi/android/tv/ui/activity/M.smali": "844060e4e12db3824d5e89dcac50788000fc507c6edc80baa85205983e0e43ed",
+    "smali/C3/e.smali": "2a09f333230d6ec19042c171482d7ae844b5d058a200b92b6b7431de7f02317f",
+    "smali/q3.1/i.smali": "d760a8f29d0519430fdba76a0c4efe053c6b19bd6ae78df01d81f6b88dfd07c6",
+    "smali/L3/f.smali": "9977a74da2972fab711af9f005a2f2c86ef14a3fcee019abd20d8eb12e98d5a3",
+    "smali/com/fongmi/android/tv/ui/activity/SettingDanmuActivity.smali": "0d2a2b843aee36934cfe69cb8a31399f84c3764e1c40c0e48716b127119053c5"
+  },
+  "mobile-v7a": {
+    "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": "19420b2396fec4311fc579ca861d935815d2ada3f42b3e06ca0deeaafb567591",
+    "smali/O3/t.smali": "91439ca047e239ee70573cc4f0f325530da0bc2745a7709f083cf464ceb3bc44",
+    "smali/F3/f.smali": "1088218ad0d752cccbc174e143f72e9cf43be1abb73a8ab6c33adec3fdf87692",
+    "smali/t3.1/i.smali": "4a1a7715b80674d14fc71efed7d96ad3bc786db263e794293eab137c7126ff9e",
+    "smali/S3/x.smali": "51ebe156966ff0d9e46e2368673084d92fff771a6195a71cf613caadb72d6a5a"
+  },
+  "mobile-v8a": {
+    "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": "19420b2396fec4311fc579ca861d935815d2ada3f42b3e06ca0deeaafb567591",
+    "smali/O3/t.smali": "91439ca047e239ee70573cc4f0f325530da0bc2745a7709f083cf464ceb3bc44",
+    "smali/F3/f.smali": "1088218ad0d752cccbc174e143f72e9cf43be1abb73a8ab6c33adec3fdf87692",
+    "smali/t3.1/i.smali": "4a1a7715b80674d14fc71efed7d96ad3bc786db263e794293eab137c7126ff9e",
+    "smali/S3/x.smali": "51ebe156966ff0d9e46e2368673084d92fff771a6195a71cf613caadb72d6a5a"
+  }
+}

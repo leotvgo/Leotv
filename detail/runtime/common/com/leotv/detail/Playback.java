@@ -115,6 +115,7 @@ public final class Playback {
             android.view.View video=id==0?null:activity.findViewById(id);
             if(video!=null)video.setBackground(new android.graphics.drawable.ColorDrawable(android.graphics.Color.BLACK));
         }
+        DanmakuPlayback.initialize(activity);
     }
     private static void titleArtwork(Activity activity) {
         List<String> logos = activity.getIntent().getStringArrayListExtra(NativeRouting.TITLE_LOGOS);
@@ -135,7 +136,7 @@ public final class Playback {
         }
         title.anchor(anchor); title.load(logos, BackdropSettings.read(activity).proxy); titles.put(activity, title);
     }
-    public static void checkpoint(Activity activity){NativeLibrary.checkpoint(activity);}
+    public static void checkpoint(Activity activity){DanmakuPlayback.pause(activity);NativeLibrary.checkpoint(activity);}
     public static boolean leave(Activity activity) {
         if (!NativeRouting.isFullscreenPlayer(activity)) return false;
         activity.finish(); return true;
@@ -216,6 +217,7 @@ public final class Playback {
             oriented.put(activity, media);
     }
     public static void release(Activity activity) {
+        DanmakuPlayback.release(activity);
         if(NativeRouting.isFullscreenPlayer(activity)&&!activity.isChangingConfigurations())DetailSessionCache.unpin();
         PlayerTitleArt title = titles.remove(activity); if (title != null) title.close();
         oriented.remove(activity);

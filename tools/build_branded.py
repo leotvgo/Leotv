@@ -17,6 +17,8 @@ import zipfile
 from android_branding import ANDROID, BinaryXml, ResourceTable, sha256
 from build_preserved import VARIANTS, is_signature, run
 from apply_native_details import apply as apply_native_details
+from apply_danmaku import apply as apply_danmaku
+from apply_category_paging import apply as apply_category_paging
 from check_native_details import check_contract as check_detail_contract, source_set as detail_source_set
 from harden_overlays import compile_program, audit_program
 
@@ -400,6 +402,10 @@ def main():
             changed, changed_sources = apply_source_overlay(project, profile, values, Path(apk_name).stem, lock, spec)
             detail_changed, detail_sources = apply_native_details(project, ROOT, args.variant)
             changed.update(detail_changed); changed_sources.update(detail_sources)
+            danmaku_changed, danmaku_sources = apply_danmaku(project, ROOT, args.variant)
+            changed.update(danmaku_changed); changed_sources.update(danmaku_sources)
+            paging_changed, paging_sources = apply_category_paging(project, ROOT, args.variant)
+            changed.update(paging_changed); changed_sources.update(paging_sources)
             print(f'{args.variant}: compiling Leotv branding and native chrome against API 23...', flush=True)
             compile_report, added, protected_dex, mapping = compile_overlays(project, profile, spec, apk, args.sdk, apktool, work, log, args.r8)
             if release['channel'] == 'stable' and not compile_report.get('hardening'):
@@ -497,6 +503,8 @@ def main():
                 'inline_player_removed_from_resource_navigation': True,
                 'detail_themes_client_specific': True,
                 'native_detail_contract': detail_contract,
+                'native_danmaku_api': True, 'native_tv_qr_input': not args.variant.startswith('mobile'),
+                'native_category_paging_commit_guard': True,
                 'mobile_automatic_video_orientation': args.variant.startswith('mobile'),
                 'semantically_unchanged_classes_relocated_between_existing_dex': relocated,
                 'device_validation': False,

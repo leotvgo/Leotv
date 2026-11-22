@@ -59,6 +59,7 @@ final class NativeDialogs {
             if(secret)input.setTransformationMethod(android.text.method.PasswordTransformationMethod.getInstance());
             LinearLayout panel=new LinearLayout(context);panel.setOrientation(LinearLayout.VERTICAL);
             panel.addView(body,new LinearLayout.LayoutParams(-1,-2));
+            if(!Device.MOBILE){View qr=NativeQrInput.button(activity,input,title);qr.setId(View.generateViewId());input.setId(View.generateViewId());input.setNextFocusDownId(qr.getId());qr.setNextFocusUpId(input.getId());qr.setNextFocusDownId(android.R.id.button1);panel.addView(qr);}
             if(reset!=null){Object params=builder.getClass().getField("a").get(builder);params.getClass().getField("k").set(params,"恢复默认");}
             builder.getClass().getMethod("setPositiveButton",int.class,DialogInterface.OnClickListener.class).invoke(builder,android.R.string.ok,null);
             Dialog dialog=create(builder,title,panel);EditText edit=input;
@@ -80,6 +81,12 @@ final class NativeDialogs {
             keyInput.setId(View.generateViewId()); baseInput.setId(View.generateViewId());
             keyInput.setNextFocusDownId(baseInput.getId()); baseInput.setNextFocusUpId(keyInput.getId());
             baseInput.setNextFocusDownId(android.R.id.button1);
+            if(!Device.MOBILE){
+                View keyQr=NativeQrInput.button(activity,keyInput,"Key"),baseQr=NativeQrInput.button(activity,baseInput,"域名");
+                keyQr.setId(View.generateViewId());baseQr.setId(View.generateViewId());
+                baseInput.setNextFocusDownId(keyQr.getId());keyQr.setNextFocusUpId(baseInput.getId());keyQr.setNextFocusDownId(baseQr.getId());baseQr.setNextFocusUpId(keyQr.getId());baseQr.setNextFocusDownId(android.R.id.button1);
+                panel.addView(keyQr);panel.addView(baseQr);
+            }
             keyInput.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_NEXT);
             baseInput.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_DONE);
             Object params = builder.getClass().getField("a").get(builder);
@@ -113,6 +120,11 @@ final class NativeDialogs {
         int inset = Math.round(16 * context.getResources().getDisplayMetrics().density);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, -2); params.setMargins(inset, inset / 2, inset, inset / 2);
         panel.addView(input, params); return input;
+    }
+    static Dialog panel(Activity activity,String title,View body,Runnable save)throws ReflectiveOperationException{
+        Object builder=builder(activity);
+        if(save!=null)builder.getClass().getMethod("setPositiveButton",int.class,DialogInterface.OnClickListener.class).invoke(builder,android.R.string.ok,(DialogInterface.OnClickListener)(dialog,which)->save.run());
+        return create(builder,title,body);
     }
     private static EditText findInput(View view){if(view instanceof EditText)return (EditText)view;if(view instanceof ViewGroup)for(int i=0;i<((ViewGroup)view).getChildCount();i++){EditText result=findInput(((ViewGroup)view).getChildAt(i));if(result!=null)return result;}return null;}
     private NativeDialogs(){}

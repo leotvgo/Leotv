@@ -6,6 +6,8 @@
 
 本轮正式版本为 **5.2.3 / 612**，独立安装包名 **com.leotv.app**。修正详情返回后再次播放黑屏，支持固定签名覆盖升级。
 正式安装包：[Leotv 5.2.3](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.3)，已设为 Latest，提供 TV/手机、32/64 位四个固定签名 APK。
+
+当前开发测试版为 **5.3.0-preview.1 / 613**：原生弹幕 API、TV 扫码输入及新主页分类分页提交修复，合并交付真机测试；正式 Latest 保留 5.2.3。详见[合并开发记录](docs/LEOTV-5.3.0-PREVIEW-1-DANMAKU-QR-AND-PAGING-20261122.md)。
 启动图标、TV 横幅、默认线路动图、关于页与原生透明上下栏已接入专用构建；5.1.26 停止上下栏实时回放和模糊。
 独立原生详情页、个性设置内的本端详情主题/TMDB 配置，以及手机按视频尺寸自动旋转已接入。
 5.1.10 修正缓存分类页的滚动取景、上下渐变模糊和分类控件层次；详情海报铺到窗口顶端，TV 详情固定横屏。
@@ -113,7 +115,7 @@ Actions 产物存储不可用时，各变体把已签名 APK 和报告存入同�
 工作区没有复制用户运行配置。历史普通版 5.1.6 的四个固定签名测试 APK 已发布，
 其中手机64位和TV32位由用户确认可安装使用；新 Leotv 的设备验收需另行记录。
 
-## 构建 Leotv 5.2.3
+## 构建当前 Leotv 5.3.0-preview.1
 
 ```sh
 python3 tools/ci_dependencies.py --output /tmp/leotv-build-deps
@@ -127,7 +129,7 @@ gradle --no-daemon -p research/detail-check -Pclient=mobile test
 gradle --no-daemon -p research/detail-check -Pclient=tv test
 ```
 
-本地输出为 `artifacts/leotv-5.2.3-<variant>-unsigned.apk`、审计报告和内部混淆映射。
+本地输出为 `artifacts/leotv-5.3.0-preview.1-<variant>-unsigned.apk`、审计报告和内部混淆映射。
 GitHub 使用同一构建器，再以既有 APK 专用固定密钥签名；产物为 `leotv-<variant>.apk`。
 新包名、provider、私有权限及媒体控制标识独立，可与原 OK影视同时安装。
 原组件类名保留，以保护 JNI、反射及站点 JAR 的 ABI。

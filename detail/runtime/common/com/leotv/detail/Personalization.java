@@ -45,6 +45,10 @@ public final class Personalization {
                 () -> {MetadataSettings.setResourceGlobalSearch(activity,!MetadataSettings.resourceGlobalSearch(activity));refresh(activity,rows);});
         add(activity, second, template, summary, HOME,
                 () -> {MetadataSettings.setNewHome(activity,!MetadataSettings.newHome(activity));refresh(activity,rows);});
+        LinearLayout third=rows;
+        if(!Device.MOBILE){third=new LinearLayout(activity);third.setOrientation(LinearLayout.HORIZONTAL);LinearLayout.LayoutParams line=new LinearLayout.LayoutParams(-1,-2);line.topMargin=rowSpacing(target);rows.addView(third,line);}
+        add(activity, third, template, summary, "弹幕 API",
+                () -> DanmakuUi.settings(activity));
         View anchor = template;
         while (anchor != null && anchor.getParent() != target && anchor.getParent() instanceof View)
             anchor = (View) anchor.getParent();
@@ -64,6 +68,7 @@ public final class Personalization {
         summary(endpoint, (MetadataSettings.customKey(activity) ? "自定义 Key" : "内置 Key") + " · " + host);
         summary(rows.findViewWithTag(SEARCH), MetadataSettings.resourceGlobalSearch(activity)?"开启":"关闭");
         summary(rows.findViewWithTag(HOME), MetadataSettings.newHome(activity)?"开启":"关闭");
+        summary(rows.findViewWithTag("弹幕 API"),DanmakuSettings.api(activity).isEmpty()?"未配置":"已配置");
     }
     private static void summary(View row, String value) {
         if (row == null) return;

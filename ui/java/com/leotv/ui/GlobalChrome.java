@@ -114,6 +114,7 @@ public final class GlobalChrome {
 
     public static synchronized void install(Application app) {
         if (installed != null && installed.get() == app) return;
+        com.leotv.detail.DanmakuSettings.initialize(app);
         lifecycle = new Lifecycle();
         app.registerActivityLifecycleCallbacks(lifecycle);
         installed = new java.lang.ref.WeakReference<>(app);
@@ -173,7 +174,7 @@ public final class GlobalChrome {
             if (controller != null) controller.pause();
             else rememberBackground(activity);
         }
-        @Override public void onActivityDestroyed(Activity activity) { remove(activity);known.remove(activity);Scene scene=scenes.remove(activity);if(scene!=null)scene.close(); }
+        @Override public void onActivityDestroyed(Activity activity) { com.leotv.detail.NativeQrInput.release(activity);remove(activity);known.remove(activity);Scene scene=scenes.remove(activity);if(scene!=null)scene.close(); }
         @Override public void onActivityStopped(Activity activity) {
             Controller controller = active.get(activity);
             if (controller != null) controller.trim();

@@ -17,6 +17,11 @@
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.Personalization { public <methods>; }
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.NativeEpisodeUi { public <methods>; }
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.Playback { public <methods>; }
+-keep,includedescriptorclasses,allowoptimization class com.leotv.detail.DanmakuPlayback { public <methods>; }
+-keep,includedescriptorclasses,allowoptimization class com.leotv.detail.DanmakuSettings { public <methods>; }
+-keep,includedescriptorclasses,allowoptimization class com.leotv.detail.DanmakuUi { public <methods>; }
+-keep,includedescriptorclasses,allowoptimization class com.leotv.detail.NativeQrInput { public <methods>; }
+-keep,includedescriptorclasses,allowoptimization class com.leotv.detail.NativeCategoryPaging { public <methods>; }
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.MetadataSettings { public <methods>; }
 -keep class com.leotv.detail.Device { boolean MOBILE; }
 

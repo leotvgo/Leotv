@@ -103,6 +103,50 @@
         "<init>()V",
         "onCreate(Landroid/os/Bundle;)V"
       ]
+    },
+    "com.leotv.detail.DanmakuPlayback": {
+      "methods": [
+        "initialize(Landroid/app/Activity;)V",
+        "begin(Landroid/app/Activity;)V",
+        "result(Landroid/app/Activity;Ljava/lang/Object;)V",
+        "nativeSelection(Ljava/lang/Object;)V",
+        "release(Landroid/app/Activity;)V",
+        "fileResult(Landroid/app/Activity;IILandroid/content/Intent;)Z",
+        "pause(Landroid/app/Activity;)V",
+        "resume(Landroid/app/Activity;)V"
+      ]
+    },
+    "com.leotv.detail.DanmakuSettings": {
+      "methods": [
+        "subscription(Ljava/lang/Object;Ljava/lang/Object;)V",
+        "initialize(Landroid/content/Context;)V"
+      ]
+    },
+    "com.leotv.detail.DanmakuUi": {
+      "methods": [
+        "settings(Landroid/app/Activity;)V",
+        "attach(Landroid/app/Activity;Landroid/view/View;)V"
+      ]
+    },
+    "com.leotv.detail.NativeQrInput": {
+      "methods": [
+        "receive(Ljava/lang/String;)Z",
+        "release(Landroid/app/Activity;)V"
+      ]
+    },
+    "com.leotv.detail.NativeCategoryPaging": {
+      "methods": [
+        "owned(Ljava/lang/Object;)Z",
+        "refresh(Ljava/lang/Object;)V",
+        "track(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;)V",
+        "result(Ljava/lang/Object;Ljava/lang/Object;)V",
+        "accept(Ljava/lang/Object;Ljava/lang/Object;)Z",
+        "hold(Ljava/lang/Object;Ljava/lang/Object;)V",
+        "append(Ljava/lang/Object;Ljava/lang/Object;Ljava/util/List;Ljava/lang/Runnable;)V",
+        "complete(Ljava/lang/Object;)V",
+        "canScrollPage(Ljava/lang/Object;Landroid/view/View;)Z",
+        "idle(Ljava/lang/Object;Landroid/view/View;I)V"
+      ]
     }
   }
 }

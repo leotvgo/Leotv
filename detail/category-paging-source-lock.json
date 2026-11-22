@@ -1,0 +1,24 @@
+{
+  "tv-v7a": {
+    "smali/P3/f.smali": "a633c62d805ebc4d4af757e6ece2a3cdd1ebb012c92dc4a88731984f5f9ce2f0",
+    "smali/N3/m.smali": "7c39100d10cf3cfdbf6eebc1d0ba62c6d91d6ec0dc991714b06c6ea0071c1226",
+    "smali/B3/j.smali": "e5a094dc1d0401f5cdff0225dd9d6131009031a87e4464f395a4165a47e9ef86",
+    "smali/A0/a.smali": "03891c7083e826c6dad73ff0f0066b527516152f83e4a003b11a3638400eb72f"
+  },
+  "tv-v8a": {
+    "smali/P3/f.smali": "a633c62d805ebc4d4af757e6ece2a3cdd1ebb012c92dc4a88731984f5f9ce2f0",
+    "smali/N3/m.smali": "7c39100d10cf3cfdbf6eebc1d0ba62c6d91d6ec0dc991714b06c6ea0071c1226",
+    "smali/B3/j.smali": "e5a094dc1d0401f5cdff0225dd9d6131009031a87e4464f395a4165a47e9ef86",
+    "smali/A0/a.smali": "03891c7083e826c6dad73ff0f0066b527516152f83e4a003b11a3638400eb72f"
+  },
+  "mobile-v7a": {
+    "smali/S3/z.smali": "29db9684ea89cc50c5b698ebda35b0d18e5b70bf7baf4f72f5631e288cf31e5f",
+    "smali/Q3/j.smali": "c8d6500e05b6c81e74fba978a2fc107c54b8264b105d79562d14222cb3901f3d",
+    "smali/E3/l.smali": "a31d09753428b23fc1197bdd6cf1404e78f89eadccc09ed8b91d3ce23948739b"
+  },
+  "mobile-v8a": {
+    "smali/S3/z.smali": "29db9684ea89cc50c5b698ebda35b0d18e5b70bf7baf4f72f5631e288cf31e5f",
+    "smali/Q3/j.smali": "c8d6500e05b6c81e74fba978a2fc107c54b8264b105d79562d14222cb3901f3d",
+    "smali/E3/l.smali": "a31d09753428b23fc1197bdd6cf1404e78f89eadccc09ed8b91d3ce23948739b"
+  }
+}
