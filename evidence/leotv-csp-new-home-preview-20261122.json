@@ -15,9 +15,9 @@
   ],
   "source_sha256": {
     "detail/runtime/common/com/leotv/detail/NewHome.java": "4568c948bc19adb1fadade079ea297686cc68d951dbe16e23e2d9bd80abd4087",
-    "detail/runtime/common/com/leotv/detail/CspHomePage.java": "dd9b0d9961df42a7dfc0243e7c2e099620c4baba1d084029ffa46be18a3567c9",
+    "detail/runtime/common/com/leotv/detail/CspHomePage.java": "5b529785f50ca10c0d2cc8c9e50439b4de1d5bca6eb6ae78d46d03db47213380",
     "detail/runtime/common/com/leotv/detail/CspHomeData.java": "59f8899908d209c2f977744a2f7f56ba65c01242619303d0bfef41098bf94715",
-    "detail/runtime/common/com/leotv/detail/CspCategoryActivity.java": "f552f1e7a8252b28e902d203172447592b5af6ec4d8615a2322805b1d6d42448",
+    "detail/runtime/common/com/leotv/detail/CspCategoryActivity.java": "ecc4ae9ce45231454c5b223646fcb56143f7bdf5a34b09e0e4ad44d926fc8b27",
     "detail/runtime/common/com/leotv/detail/MetadataSettings.java": "47e44ba0003f919f329dad503c0e8d53dafd7baf2e24753dbf068b074ad042c4",
     "detail/runtime/common/com/leotv/detail/Personalization.java": "6d2fa800731c7198851d944690f42565ba5c54e5e0a71a9904f6476419d49ebb",
     "detail/runtime/common/com/leotv/detail/SiteFeed.java": "16adb6809ba184503c148f9b69c0d574cf561b3386b1dd56f58217627242fe48",
@@ -25,5 +25,39 @@
   },
   "tests_run": false,
   "device_validation": false,
-  "validation_boundary": "API23 compile/package/R8/source-integrity and fixed signing are build gates; user requested real-device testing."
+  "validation_boundary": "API23 compile/package/R8/source-integrity and fixed signing are build gates; user requested real-device testing.",
+  "delivery": {
+    "build_run": 44972297959,
+    "publish_run": 44972703696,
+    "source_commit": "10f1492559fa518edc8b2f115c5ed0ad4113e1b1",
+    "release": "https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.0-preview.1-build-44972297959",
+    "prerelease": true,
+    "latest_stable_unchanged": "leotv-5.2.0",
+    "variants": {
+      "tv-v7a": {
+        "apk_sha256": "00a57a845aa9eb103e720efcbe12b6466a71b1491f5dfb073c42008f06ce06ea",
+        "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+        "r8_abi_members": 43,
+        "native_libraries_exact": 32
+      },
+      "tv-v8a": {
+        "apk_sha256": "c332e9afecca0a9ad8f096c1dd922df2fb7b782be5ae7eb6f32869720a8108dd",
+        "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+        "r8_abi_members": 43,
+        "native_libraries_exact": 21
+      },
+      "mobile-v7a": {
+        "apk_sha256": "a8a0996d59507d4c2c2b0d99858a06a7604a0140322ea816b6f0a39ae1d4bf3d",
+        "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+        "r8_abi_members": 43,
+        "native_libraries_exact": 34
+      },
+      "mobile-v8a": {
+        "apk_sha256": "0694e24caddf0bdbf8021d474bb62494f022b7b9f9c1b9a50cf1d415ea03bdc9",
+        "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+        "r8_abi_members": 43,
+        "native_libraries_exact": 23
+      }
+    }
+  }
 }
