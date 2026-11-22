@@ -41,3 +41,7 @@ XML 和常见 Dandanplay/Bilibili 评论 JSON 转为原播放器接受的 XML，
 新增原生编辑分别固定在 `detail/danmaku-native-source-lock.json` 和 `detail/category-paging-source-lock.json`；构建器只应用声明的精确方法/调用点。新增公开桥加入 R8 stable ABI，读取的原生类/字段/方法加入四变体编译门禁。原 `bytecode-project` 输入不直接修改，新增程序源码仍限定在 runtime-sources 声明内，编译参考 JAR 不进入 APK。
 
 工作过程中手机64位和 TV32位的中间源码通过 API23/R8/原样及允许变化编译审计；最终分页接线的四变体修改点核对完成。用户要求停止后，不再启动本地回归/设备测试或整包验证。最终组合由 GitHub `run_validation_tests=false` 编译，保留构建所需 API23、R8、原样/允许变化及固定签名门禁。提供 5.3.0-preview.1 / 613 四套固定签名测试 APK，可覆盖 5.2.3；正式 Latest 仍为用户已验收的 5.2.3。V6 核心不改。
+
+## 已发布
+
+[四套固定签名测试 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0-preview.1-build-45036827066) 已发布，构建 `45036827066`、发布 `45037350825` 均成功，源码 `7b259765e4d2b20347e9ab36a96e62718ba663b4`。对应报告保存于 `evidence/leotv-5.3.0-preview.1-delivery-20261122.json`，原样/允许变化、API23、R8 和固定签名由发布流水线完成。额外回归已跳过，真机验收待用户反馈；正式 Latest 保持 5.2.3。
