@@ -23,26 +23,38 @@ import java.util.List;
 /** Borrows existing host controls and keeps category content in the host's own pager. */
 final class NativeCspUi {
     final Activity activity;final boolean phone;final NewHome owner;
-    View toolbar,type,pager;Object host;ViewGroup toolbarParent,typeParent;ViewGroup.LayoutParams toolbarParams,typeParams;
-    int toolbarIndex,typeIndex,typeHeight,toolbarVisibility;float toolbarTranslation;LinearLayout categoryHeader;boolean borrowed;
+    View toolbar,type,pager,categoryRow;Object host;ViewGroup toolbarParent,typeParent;ViewGroup.LayoutParams toolbarParams,typeParams;
+    int toolbarIndex,typeIndex,toolbarVisibility,lastScroll;float toolbarTranslation,folded;LinearLayout categoryHeader,tvActions;boolean borrowed;
+    final java.util.Map<View,Integer> visibility=new java.util.IdentityHashMap<>(),categoryActions=new java.util.IdentityHashMap<>();
+    android.graphics.Rect toolbarClip;ImageView actionSource;Drawable actionDrawable;boolean actionTop;
     NativeCspUi(NewHome owner){this.owner=owner;activity=owner.activity;phone=owner.phone;}
     View find(String name){return NativeViews.find(activity,name);}
     void discover(){
         if(borrowed||categoryHeader!=null)return;
-        View found=find("toolbar");if(found!=null)toolbar=found;
+        View found=find("toolbar");if(found==null&&phone){View logo=find("logo");if(logo!=null&&logo.getParent() instanceof View)found=(View)logo.getParent();}if(found!=null)toolbar=found;
         if(phone){type=find("type");pager=find("pager");Object adapter=SiteFeed.invoke(type,"getAdapter");
             if(adapter!=null)for(Field field:adapter.getClass().getDeclaredFields())try{field.setAccessible(true);Object value=field.get(adapter);if(value!=null&&value.getClass().getName().equals("S3.G"))host=value;}catch(ReflectiveOperationException ignored){}
         }
     }
+    void homeVisibility(String name,int value){View view=named(activity,toolbar,name);if(view!=null){visibility.put(view,view.getVisibility());view.setVisibility(value);}}
     void borrow(CspHomePage page){
         discover();if(borrowed||toolbar==null||!(toolbar.getParent() instanceof ViewGroup))return;
-        toolbarParent=(ViewGroup)toolbar.getParent();toolbarIndex=toolbarParent.indexOfChild(toolbar);toolbarParams=toolbar.getLayoutParams();toolbarVisibility=toolbar.getVisibility();toolbarTranslation=toolbar.getTranslationY();
-        int[] original=new int[2],origin=new int[2];toolbar.getLocationOnScreen(original);owner.parent.getLocationOnScreen(origin);
-        toolbarParent.removeView(toolbar);toolbar.setTranslationY(0);toolbar.setVisibility(View.VISIBLE);
-        FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(-1,Math.max(page.dp(phone?56:48),toolbar.getHeight()),Gravity.TOP);params.topMargin=Math.max(0,original[1]-origin[1]);page.addView(toolbar,params);borrowed=true;
-        page.headerHeight=params.topMargin+params.height;page.updateInsets();
+        toolbarParent=(ViewGroup)toolbar.getParent();toolbarIndex=toolbarParent.indexOfChild(toolbar);toolbarParams=toolbar.getLayoutParams();toolbarVisibility=toolbar.getVisibility();toolbarTranslation=toolbar.getTranslationY();toolbarClip=toolbar.getClipBounds();
+        toolbarParent.removeView(toolbar);toolbar.setTranslationY(0);toolbar.setVisibility(View.VISIBLE);toolbar.setClipBounds(null);
+        if(phone){homeVisibility("title",View.VISIBLE);homeVisibility("searchInput",View.GONE);homeVisibility("searchIcon",View.VISIBLE);homeVisibility("download",View.VISIBLE);}
+        else addTvActions();
+        FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(-1,-2,Gravity.TOP);page.addView(toolbar,params);borrowed=true;lastScroll=page.scroll.getScrollY();layoutToolbar(page);
     }
-    void restoreToolbar(){if(!borrowed)return;remove(toolbar);toolbar.setTranslationY(toolbarTranslation);toolbar.setVisibility(toolbarVisibility);toolbarParent.addView(toolbar,Math.min(toolbarIndex,toolbarParent.getChildCount()),toolbarParams);borrowed=false;}
+    void layoutToolbar(CspHomePage page){
+        if(!borrowed)return;FrameLayout.LayoutParams params=(FrameLayout.LayoutParams)toolbar.getLayoutParams();int above=0;
+        if(phone){android.view.WindowInsets insets=page.getRootWindowInsets();int[] origin=new int[2];page.getLocationOnScreen(origin);boolean fullscreen=(activity.getWindow().getAttributes().flags&android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN)!=0||(activity.getWindow().getDecorView().getSystemUiVisibility()&View.SYSTEM_UI_FLAG_FULLSCREEN)!=0;above=fullscreen?0:Math.max(0,(insets==null?0:insets.getSystemWindowInsetTop())-origin[1]);}
+        if(params.topMargin!=above){params.topMargin=above;toolbar.requestLayout();}page.headerHeight=above+Math.max(toolbar.getHeight(),page.dp(phone?52:56));page.updateInsets();scrolled(page.scroll.getScrollY());
+    }
+    void scrolled(int y){if(!borrowed)return;int delta=y-lastScroll;lastScroll=y;folded=y<=0?0:Math.max(0,Math.min(Math.max(toolbar.getHeight(),owner.page.dp(52)),folded+delta));if(toolbar.hasFocus())folded=0;float translation=-folded;if(toolbar.getTranslationY()!=translation)toolbar.setTranslationY(translation);}
+    void restoreToolbar(){if(!borrowed)return;remove(toolbar);if(tvActions!=null){remove(tvActions);tvActions=null;}for(java.util.Map.Entry<View,Integer> entry:visibility.entrySet())entry.getKey().setVisibility(entry.getValue());visibility.clear();toolbar.setClipBounds(toolbarClip);toolbar.setTranslationY(toolbarTranslation);toolbar.setVisibility(toolbarVisibility);toolbarParent.addView(toolbar,Math.min(toolbarIndex,toolbarParent.getChildCount()),toolbarParams);borrowed=false;actionSource=null;}
+    void addTvActions(){if(!(toolbar instanceof LinearLayout))return;LinearLayout row=(LinearLayout)toolbar;tvActions=new LinearLayout(activity);tvActions.setGravity(Gravity.CENTER_VERTICAL);String[] keys={"search","keep","history","push","setting"},labels={"搜索","收藏","历史","推送","设置"};for(int i=0;i<keys.length;i++){final String key=keys[i];ImageView icon=new ImageView(activity);int resource=activity.getResources().getIdentifier("ic_home_"+key,"drawable",activity.getPackageName());if(resource!=0)icon.setImageDrawable(activity.getResources().getDrawable(resource));icon.setContentDescription(labels[i]);icon.setPadding(owner.page.dp(9),owner.page.dp(9),owner.page.dp(9),owner.page.dp(9));icon.setFocusable(true);icon.setClickable(true);icon.setBackground(TvDetailPage.focusBackground(activity));icon.setOnClickListener(v->tvAction(key));LinearLayout.LayoutParams cell=new LinearLayout.LayoutParams(owner.page.dp(40),owner.page.dp(40));cell.rightMargin=owner.page.dp(4);tvActions.addView(icon,cell);}LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(-2,-2);params.gravity=Gravity.CENTER_VERTICAL;row.addView(tvActions,Math.max(0,row.getChildCount()-1),params);}
+    void tvAction(String action){if(action.equals("push")){try{Class.forName("com.fongmi.android.tv.ui.activity.PushActivity",true,activity.getClassLoader()).getMethod("R",Class.forName("androidx.appcompat.app.j",true,activity.getClassLoader()),int.class).invoke(null,activity,2);}catch(ReflectiveOperationException unavailable){}return;}String screen=action.equals("search")?"SearchActivity":action.equals("keep")?"KeepActivity":action.equals("history")?"HistoryActivity":"SettingActivity";activity.startActivity(new Intent().setClassName(activity.getPackageName(),"com.fongmi.android.tv.ui.activity."+screen));}
+    void homeAction(ImageView target,boolean top){if(!phone){target.setVisibility(View.GONE);return;}View source=find(top?"top":"link");ImageView image=source instanceof ImageView?(ImageView)source:null;Drawable drawable=image==null?null:image.getDrawable();if(actionSource!=image||actionDrawable!=drawable||actionTop!=top){actionSource=image;actionDrawable=drawable;actionTop=top;target.setImageDrawable(drawable==null?new Glyph(false,false):NativeViews.drawable(drawable,target));target.setContentDescription(top?"一键回顶":"推送播放");target.setOnClickListener(v->{if(top){owner.page.scroll.smoothScrollTo(0,0);}else if(image!=null)image.performClick();});}target.setVisibility(View.VISIBLE);}
     int position(CspHomeData.Category category){
         Object adapter=SiteFeed.invoke(type,"getAdapter");if(adapter==null)return -1;
         for(Class<?> cls=adapter.getClass();cls!=null;cls=cls.getSuperclass())for(Field field:cls.getDeclaredFields())try{field.setAccessible(true);Object value=field.get(adapter);if(value instanceof List){List<?> entries=(List<?>)value;for(int i=0;i<entries.size();i++)if(category.id.equals(SiteFeed.invoke(entries.get(i),"getTypeId")))return i;}}catch(ReflectiveOperationException ignored){}
@@ -53,21 +65,23 @@ final class NativeCspUi {
         if(position<0||pager==null||type==null||!(type.getParent() instanceof ViewGroup))return false;
         try{pager.getClass().getMethod("setCurrentItem",int.class).invoke(pager,position);}catch(ReflectiveOperationException unavailable){return false;}
         SiteFeed.invoke(host,"y0",position);
-        typeParent=(ViewGroup)type.getParent();typeIndex=typeParent.indexOfChild(type);typeParams=type.getLayoutParams();typeHeight=typeParams.height;
-        categoryHeader=new LinearLayout(activity);categoryHeader.setGravity(Gravity.CENTER_VERTICAL);categoryHeader.setPadding(owner.page.dp(8),0,owner.page.dp(8),0);categoryHeader.setId(type.getId());
-        ImageView back=icon(false,"返回首页",()->owner.back());back.setImageDrawable(new Glyph(false,true));categoryHeader.addView(back,new LinearLayout.LayoutParams(owner.page.dp(40),owner.page.dp(48)));
-        TextView title=new TextView(activity);title.setText(category.name);title.setTextColor(Color.WHITE);title.setTextSize(20);title.setMaxLines(1);title.setEllipsize(android.text.TextUtils.TruncateAt.END);categoryHeader.addView(title,new LinearLayout.LayoutParams(0,-2,1));title.setOnClickListener(v->owner.chooseCategory());
-        categoryHeader.addView(icon(true,"分类筛选",()->{if(category.filters.length()>0)filter();else owner.chooseCategory();}),new LinearLayout.LayoutParams(owner.page.dp(48),owner.page.dp(48)));
-        typeParent.removeView(type);typeParent.addView(categoryHeader,typeIndex,typeParams);categoryHeader.getLayoutParams().height=owner.page.dp(52);categoryHeader.requestLayout();
+        ViewGroup immediate=(ViewGroup)type.getParent();View expand=find("expand");categoryRow=expand!=null&&expand.getParent()==immediate?immediate:type;
+        typeParent=(ViewGroup)categoryRow.getParent();typeIndex=typeParent.indexOfChild(categoryRow);typeParams=categoryRow.getLayoutParams();
+        categoryHeader=new LinearLayout(activity);categoryHeader.setGravity(Gravity.CENTER_VERTICAL);categoryHeader.setPadding(owner.page.dp(12),0,owner.page.dp(12),0);categoryHeader.setId(type.getId());
+        ImageView back=icon(false,"返回首页",()->owner.back());back.setImageDrawable(new Glyph(false,true));categoryHeader.addView(back,new LinearLayout.LayoutParams(owner.page.dp(36),owner.page.dp(40)));
+        TextView title=new TextView(activity);title.setText(category.name);title.setTextColor(Color.WHITE);title.setTextSize(16);title.setMaxLines(1);title.setEllipsize(android.text.TextUtils.TruncateAt.END);categoryHeader.addView(title,new LinearLayout.LayoutParams(0,-2,1));title.setOnClickListener(v->owner.chooseCategory());
+        categoryHeader.addView(icon(true,"分类筛选",()->{if(category.filters.length()>0)filter();else owner.chooseCategory();}),new LinearLayout.LayoutParams(owner.page.dp(40),owner.page.dp(40)));
+        typeParent.removeView(categoryRow);typeParent.addView(categoryHeader,typeIndex,typeParams);categoryHeader.setMinimumHeight(owner.page.dp(44));
         toolbarVisibility=toolbar==null?View.VISIBLE:toolbar.getVisibility();if(toolbar!=null)toolbar.setVisibility(View.GONE);
-        View appbar=find("appBar");SiteFeed.invoke(appbar,"setExpanded",true,false);
-        return true;
+        for(String name:new String[]{"filter","link"}){View action=find(name);if(action!=null)categoryActions.put(action,action.getVisibility());}suppressCategoryActions();
+        View appbar=typeParent;SiteFeed.invoke(appbar,"setExpanded",true,false);return true;
     }
-    void restoreCategory(){if(categoryHeader==null)return;remove(categoryHeader);typeParams.height=typeHeight;if(type.getParent()==null)typeParent.addView(type,Math.min(typeIndex,typeParent.getChildCount()),typeParams);if(toolbar!=null)toolbar.setVisibility(toolbarVisibility);categoryHeader=null;}
+    void suppressCategoryActions(){if(categoryHeader!=null)for(View action:categoryActions.keySet())if(action.getVisibility()!=View.GONE)action.setVisibility(View.GONE);}
+    void restoreCategory(){if(categoryHeader==null)return;remove(categoryHeader);if(categoryRow.getParent()==null)typeParent.addView(categoryRow,Math.min(typeIndex,typeParent.getChildCount()),typeParams);if(toolbar!=null)toolbar.setVisibility(toolbarVisibility);for(java.util.Map.Entry<View,Integer> entry:categoryActions.entrySet())entry.getKey().setVisibility(entry.getValue());categoryActions.clear();categoryHeader=null;}
     boolean folderBack(){return host!=null&&Boolean.FALSE.equals(SiteFeed.invoke(host,"p0"));}
     boolean folder(JSONObject item){Object folder=SiteFeed.invoke(host,"u0");Object manager=SiteFeed.invoke(folder,"z");int id=activity.getResources().getIdentifier("container","id",activity.getPackageName());Object child=SiteFeed.invoke(manager,"B",id);if(child==null)return false;try{Class<?> vod=Class.forName("com.fongmi.android.tv.bean.Vod",true,activity.getClassLoader());Object bean=vod.getMethod("objectFrom",String.class).invoke(null,item.toString());child.getClass().getMethod("n",vod).invoke(child,bean);return true;}catch(ReflectiveOperationException unavailable){return false;}}
     void filter(){View filter=find("filter");if(filter!=null)filter.performClick();}
-    ImageView icon(boolean grid,String description,Runnable action){ImageView view=new ImageView(activity);view.setImageDrawable(new Glyph(grid,false));view.setContentDescription(description);view.setPadding(12,12,12,12);view.setBackground(TvDetailPage.focusBackground(activity));view.setFocusable(true);view.setClickable(true);view.setOnClickListener(v->action.run());return view;}
+    ImageView icon(boolean grid,String description,Runnable action){ImageView view=new ImageView(activity);view.setImageDrawable(new Glyph(grid,false));view.setContentDescription(description);view.setPadding(owner.page.dp(11),owner.page.dp(11),owner.page.dp(11),owner.page.dp(11));view.setBackground(TvDetailPage.focusBackground(activity));view.setFocusable(true);view.setClickable(true);view.setOnClickListener(v->action.run());return view;}
     static void remove(View view){if(view!=null&&view.getParent() instanceof ViewGroup)((ViewGroup)view.getParent()).removeView(view);}
     static Object style(Activity activity,JSONObject value){
         try{ClassLoader loader=activity.getClassLoader();Class<?> cls=Class.forName("com.fongmi.android.tv.bean.Class",true,loader),style=Class.forName("com.fongmi.android.tv.bean.Style",true,loader);Object gson=Class.forName("com.google.gson.Gson",true,loader).getConstructor().newInstance();Object bean=gson.getClass().getMethod("fromJson",String.class,Class.class).invoke(gson,value==null?"{}":value.toString(),cls);Object selected=SiteFeed.invoke(bean,"getStyle");if(selected==null)selected=style.getMethod("rect").invoke(null);SiteFeed.Site active=SiteFeed.active();Object configured=active==null?null:SiteFeed.invoke(active.raw,"getStyle",selected);return configured==null?selected:configured;}catch(ReflectiveOperationException unavailable){return null;}
@@ -90,7 +104,7 @@ final class NativeCspUi {
     static View named(Activity activity,View root,String name){int id=activity.getResources().getIdentifier(name,"id",activity.getPackageName());return id==0?null:root.findViewById(id);}
     static void bind(Activity activity,View root,String name,Object bean,String getter,String visible){View view=named(activity,root,name);if(view instanceof TextView){Object text=SiteFeed.invoke(bean,getter);((TextView)view).setText(text==null?"":text.toString());Object visibility=SiteFeed.invoke(bean,visible);if(visibility instanceof Number)view.setVisibility(((Number)visibility).intValue());}}
     static boolean tvCategory(Activity activity,String key,CspHomeData.Category category){
-        try{JSONObject type=new JSONObject(category.json.toString()).put("filters",category.filters);JSONArray seed=new JSONArray();for(JSONObject item:category.seed)seed.put(item);JSONObject body=new JSONObject().put("class",new JSONArray().put(type)).put("list",seed);Class<?> result=Class.forName("com.fongmi.android.tv.bean.Result",true,activity.getClassLoader());Parcelable nativeResult=(Parcelable)result.getMethod("fromJson",String.class).invoke(null,body.toString());activity.startActivity(new Intent().setClassName(activity.getPackageName(),"com.fongmi.android.tv.ui.activity.VodActivity").putExtra("key",key).putExtra("result",nativeResult));return true;}catch(ReflectiveOperationException|org.json.JSONException unavailable){return false;}
+        try{JSONObject type=new JSONObject(category.json.toString()).put("filters",category.filters);JSONArray seed=new JSONArray();for(JSONObject item:category.seed)seed.put(item);JSONObject body=new JSONObject().put("class",new JSONArray().put(type)).put("list",seed);Class<?> result=Class.forName("com.fongmi.android.tv.bean.Result",true,activity.getClassLoader());Parcelable nativeResult=(Parcelable)result.getMethod("fromJson",String.class).invoke(null,body.toString());activity.startActivity(new Intent().setClassName(activity.getPackageName(),"com.fongmi.android.tv.ui.activity.VodActivity").putExtra("key",key).putExtra("result",nativeResult).putExtra("leotv.csp.category",true));return true;}catch(ReflectiveOperationException|org.json.JSONException unavailable){return false;}
     }
     static final class Glyph extends Drawable {
         final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);final boolean grid,back;

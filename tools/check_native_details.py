@@ -124,6 +124,7 @@ def check_contract(root, variant, project=None):
         contracts['r2/f'] = (['setCurrentItem(I)V', 'getAdapter()Lr2/a;'], [])
     else:
         contracts['com/bumptech/glide/e'] = (['v()I', 'w(IL' + BEANS + 'Style;)[I'], [])
+        contracts['com/fongmi/android/tv/ui/activity/PushActivity'] = (['R(Landroidx/appcompat/app/j;I)V'], [])
         contracts['com/fongmi/android/tv/ui/activity/VodActivity'] = (['S(Landroid/app/Activity;Ljava/lang/String;L' + BEANS + 'Result;)V'], [])
     contracts[('E3' if mobile else 'B3') + '/n'] = (['<init>(Ljava/lang/String;Ljava/lang/String;I)V', 'call()Ljava/lang/Object;'], [])
     contracts[('E3' if mobile else 'B3') + '/p'] = (['call()Ljava/lang/Object;'], [])

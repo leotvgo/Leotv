@@ -109,8 +109,12 @@ public final class GlobalChrome {
 
     private static final class Lifecycle implements Application.ActivityLifecycleCallbacks {
         final Map<Activity, Controller> active = new IdentityHashMap<>();
+        final Map<Activity,TvCategoryChrome> categories=new IdentityHashMap<>();
 
         @Override public void onActivityResumed(Activity activity) {
+            if(activity.getClass().getName().equals("com.fongmi.android.tv.ui.activity.VodActivity")&&activity.getIntent().getBooleanExtra("leotv.csp.category",false)){
+                View content=activity.findViewById(android.R.id.content);if(content instanceof FrameLayout){TvCategoryChrome chrome=categories.get(activity);if(chrome==null){chrome=new TvCategoryChrome(activity,(FrameLayout)content);categories.put(activity,chrome);}chrome.resume();}return;
+            }
             if (!activity.getClass().getName().equals("com.fongmi.android.tv.ui.activity.HomeActivity")) { remove(activity); return; }
             Controller existing = active.get(activity);
             if (existing != null) { existing.resume(); return; }
@@ -122,10 +126,12 @@ public final class GlobalChrome {
             controller.attach();
         }
         private void remove(Activity activity) {
+            TvCategoryChrome category=categories.remove(activity);if(category!=null)category.close();
             Controller controller = active.remove(activity);
             if (controller != null) controller.close();
         }
         @Override public void onActivityPaused(Activity activity) {
+            TvCategoryChrome category=categories.get(activity);if(category!=null)category.pause();
             Controller controller = active.get(activity);
             if (controller != null) controller.pause();
             else rememberBackground(activity);
@@ -1078,7 +1084,7 @@ public final class GlobalChrome {
             if(current!=installed){
                 delegate=current;
                 installed=(Window.Callback)java.lang.reflect.Proxy.newProxyInstance(Window.Callback.class.getClassLoader(),new Class<?>[]{Window.Callback.class},(proxy,method,args)->{
-                    if(method.getName().equals("dispatchKeyEvent")&&handle((android.view.KeyEvent)args[0]))return true;
+                    if(method.getName().equals("dispatchKeyEvent")&&(owner.newHome.handleKey((android.view.KeyEvent)args[0])||handle((android.view.KeyEvent)args[0])))return true;
                     try{return method.invoke(current,args);}catch(java.lang.reflect.InvocationTargetException error){throw error.getCause();}
                 });window.setCallback(installed);
             }
