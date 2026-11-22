@@ -1,32 +1,36 @@
 package com.leotv.detail;
 
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import java.util.ArrayList;
-import java.util.List;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import org.json.JSONObject;
 
-/** Keeps the native cached recommendation view visible while the JAR's home pager remains hidden. */
+/** Shows the cached home list without moving host views or submitting a synthetic CSP category. */
 final class CspRecommendation implements AutoCloseable {
-    final NewHome owner;final FrameLayout frame;final View list,header;final List<Loan> loans=new ArrayList<>();
-    final AutoCloseable viewport;boolean closed;int lastOffset=Integer.MIN_VALUE;
-    final android.view.ViewTreeObserver.OnScrollChangedListener scrolling=this::scrolled;
-    CspRecommendation(NewHome owner,View list,View header){
-        this.owner=owner;this.list=list;this.header=header;frame=new FrameLayout(owner.activity);frame.setTag("leotv_csp_recommendation");frame.setTranslationZ(1);frame.setOutlineProvider(null);
-        move(list,new FrameLayout.LayoutParams(-1,-1));FrameLayout.LayoutParams strip=new FrameLayout.LayoutParams(-1,-2,Gravity.TOP);move(header,strip);
-        for(String name:new String[]{"link","filter","top"}){View action=owner.find(name);if(action!=null){FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(-2,-2,Gravity.BOTTOM|Gravity.RIGHT);params.rightMargin=owner.page.dp(16);params.bottomMargin=owner.page.dp(16);move(action,params);}}
+    final NewHome owner;final CspHomeData.Category category;final FrameLayout frame;final ScrollView scroll;
+    final GridLayout grid;final LinearLayout header;final DetailThumbnails images;
+    int columns,cell,rendered;boolean closed;
+    CspRecommendation(NewHome owner,CspHomeData.Category category){
+        this.owner=owner;this.category=category;frame=new FrameLayout(owner.activity);frame.setTag("leotv_csp_recommendation");frame.setTranslationZ(1);frame.setOutlineProvider(null);frame.setBackground(owner.background());
+        images=new DetailThumbnails(owner.activity,BackdropSettings.read(owner.activity).proxy,false);
+        scroll=new ScrollView(owner.activity);scroll.setClipToPadding(false);scroll.setVerticalScrollBarEnabled(false);grid=new GridLayout(owner.activity);grid.setPadding(dp(12),dp(8),dp(12),dp(16));scroll.addView(grid,new ScrollView.LayoutParams(-1,-2));frame.addView(scroll,new FrameLayout.LayoutParams(-1,-1));
+        header=new LinearLayout(owner.activity);header.setGravity(Gravity.CENTER_VERTICAL);header.setPadding(dp(12),0,dp(12),0);
+        TextView back=text("‹",28);back.setContentDescription("返回首页");back.setFocusable(true);back.setClickable(true);back.setOnClickListener(v->owner.back());header.addView(back,new LinearLayout.LayoutParams(dp(40),dp(44)));
+        TextView title=text(category.name,16);header.addView(title,new LinearLayout.LayoutParams(0,dp(44),1));title.setOnClickListener(v->owner.chooseCategory());frame.addView(header,new FrameLayout.LayoutParams(-1,dp(44),Gravity.TOP));
         View navigation=owner.find("navigation");int index=navigation!=null&&navigation.getParent()==owner.parent?owner.parent.indexOfChild(navigation):owner.parent.getChildCount();ViewGroup.LayoutParams params=owner.parent instanceof android.widget.RelativeLayout?new android.widget.RelativeLayout.LayoutParams(-1,-1):new FrameLayout.LayoutParams(-1,-1);owner.parent.addView(frame,index,params);
-        viewport=com.leotv.ui.GlobalChrome.protectCategory(list,header,navigation);frame.getViewTreeObserver().addOnScrollChangedListener(scrolling);
-        frame.setOnApplyWindowInsetsListener((v,insets)->{int[] origin=new int[2];frame.getLocationOnScreen(origin);int above=Math.max(0,insets.getSystemWindowInsetTop()-origin[1]);FrameLayout.LayoutParams h=(FrameLayout.LayoutParams)header.getLayoutParams();if(h.topMargin!=above){h.topMargin=above;header.requestLayout();}return insets;});frame.requestApplyInsets();
+        frame.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->layout());scroll.getViewTreeObserver().addOnScrollChangedListener(this::appendVisible);grid.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->appendVisible());
+        frame.setOnApplyWindowInsetsListener((v,insets)->{int[] origin=new int[2];frame.getLocationOnScreen(origin);int above=Math.max(0,insets.getSystemWindowInsetTop()-origin[1]);FrameLayout.LayoutParams h=(FrameLayout.LayoutParams)header.getLayoutParams();if(h.topMargin!=above){h.topMargin=above;header.setLayoutParams(h);}int below=navigation==null?dp(56):Math.max(dp(56),navigation.getHeight());scroll.setPadding(0,above+dp(44),0,below+insets.getSystemWindowInsetBottom()+dp(16));return insets;});scroll.setPadding(0,dp(44),0,dp(72));frame.requestApplyInsets();
     }
-    void move(View view,FrameLayout.LayoutParams params){loans.add(new Loan(view));NativeCspUi.remove(view);frame.addView(view,params);if(view==list)view.setVisibility(View.VISIBLE);}
-    void scrolled(){if(closed)return;View recycler=NativeCspUi.named(owner.activity,list,"recycler");Object value=SiteFeed.invoke(recycler,"computeVerticalScrollOffset");if(!(value instanceof Number))return;int offset=((Number)value).intValue();if(lastOffset==Integer.MIN_VALUE){lastOffset=offset;return;}int delta=offset-lastOffset;lastOffset=offset;if(delta!=0)for(Loan loan:loans)loan.scroll(recycler,delta);}
-    @Override public void close(){if(closed)return;closed=true;if(frame.getViewTreeObserver().isAlive())frame.getViewTreeObserver().removeOnScrollChangedListener(scrolling);try{viewport.close();}catch(Exception unavailable){}for(int i=loans.size()-1;i>=0;i--)loans.get(i).restore();NativeCspUi.remove(frame);}
-    static final class Loan {
-        final View view;final ViewGroup parent;final ViewGroup.LayoutParams params;final int index,visibility;Object behavior;java.lang.reflect.Method nestedScroll;
-        Loan(View view){this.view=view;parent=(ViewGroup)view.getParent();index=parent.indexOfChild(view);params=view.getLayoutParams();visibility=view.getVisibility();try{Object candidate=params.getClass().getField("a").get(params);if(candidate!=null&&candidate.getClass().getName().equals("com.fongmi.android.tv.ui.custom.CustomFabBehavior")){behavior=candidate;for(java.lang.reflect.Method method:candidate.getClass().getMethods())if(method.getName().equals("p")&&method.getParameterTypes().length==9){nestedScroll=method;break;}}}catch(ReflectiveOperationException ignored){} }
-        void scroll(View list,int delta){if(behavior==null||nestedScroll==null)return;try{nestedScroll.invoke(behavior,parent,view,list,0,delta,0,0,0,new int[2]);}catch(ReflectiveOperationException ignored){}}
-        void restore(){NativeCspUi.remove(view);parent.addView(view,Math.min(index,parent.getChildCount()),params);view.setVisibility(visibility);}
-    }
+    int dp(int value){return owner.page.dp(value);}
+    TextView text(String value,int size){TextView view=new TextView(owner.activity);view.setText(value);view.setTextColor(Color.WHITE);view.setTextSize(size);view.setGravity(Gravity.CENTER_VERTICAL);return view;}
+    void layout(){if(closed||frame.getWidth()<=0)return;int width=frame.getWidth()-dp(24),nativeWidth=NativeCspUi.spec(owner.activity,category.json)[0];int count=Math.max(1,width/Math.max(1,nativeWidth+dp(12))),target=(width-dp(12)*(count-1))/count;if(columns==count&&cell==target)return;columns=count;cell=target;rendered=0;grid.removeAllViews();grid.setColumnCount(count);append();}
+    void appendVisible(){if(!closed&&columns>0&&grid.getHeight()>0&&rendered<category.seed.size()&&scroll.getScrollY()+scroll.getHeight()+dp(300)>=grid.getHeight())append();}
+    void append(){int end=Math.min(category.seed.size(),rendered+Math.max(30,columns*5));for(;rendered<end;rendered++){JSONObject item=category.seed.get(rendered);Runnable action=()->{if("folder".equalsIgnoreCase(item.optString("vod_tag")))CspCategoryActivity.openFolder(owner.activity,owner.current.site.key,category,item);else NativeRouting.openCspResource(owner.activity,owner.current.site.key,item);};View card=NativeCspUi.card(owner.activity,grid,item,category.json,cell,action);if(card==null)card=CspHomePage.card(owner.activity,images,item,cell,category.json,action);GridLayout.LayoutParams params=new GridLayout.LayoutParams(GridLayout.spec(rendered/columns),GridLayout.spec(rendered%columns));params.width=cell;params.height=-2;params.rightMargin=rendered%columns==columns-1?0:dp(12);params.bottomMargin=dp(16);grid.addView(card,params);}}}
+    @Override public void close(){if(closed)return;closed=true;images.close();NativeCspUi.remove(frame);}
 }

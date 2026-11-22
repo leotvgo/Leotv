@@ -23,7 +23,7 @@ public final class NewHome implements AutoCloseable {
     final ThreadPoolExecutor worker=new ThreadPoolExecutor(3,3,10,TimeUnit.SECONDS,new LinkedBlockingQueue<Runnable>(),r->{Thread t=new Thread(r,"leotv-csp-home");t.setDaemon(true);return t;});
     final NativeCspUi nativeUi;final CspHeroMetadata metadata;
     CspHomePage page;View nativeRoot;ViewGroup parent;int originalVisibility;String identity="";volatile long generation;volatile boolean closed;boolean running,categoryMode;
-    NewHomeSite current;CspHomeData.Category selectedCategory;BackdropSettings.Options heroOptions;List<JSONObject> heroSource;
+    NewHomeSite current;CspHomeData.Category selectedCategory;BackdropSettings.Options heroOptions;List<JSONObject> heroSource;boolean carouselAllowed;
     List<CspHomeData.Category> categories=new ArrayList<>();final HashSet<Integer> requested=new HashSet<>();
     final class NewHomeSite {final SiteFeed.Site site;final String key;NewHomeSite(SiteFeed.Site site){this.site=site;key=String.valueOf(SiteFeed.configId())+"@@@"+site.key;}}
     public NewHome(Activity activity,FrameLayout content,boolean phone){this.activity=activity;this.content=content;this.phone=phone;nativeUi=new NativeCspUi(this);metadata=new CspHeroMetadata(activity);MetadataSettings.initialize(activity);SiteFeed.initialize(activity);worker.allowCoreThreadTimeOut(true);}
@@ -37,7 +37,7 @@ public final class NewHome implements AutoCloseable {
         if(page!=null&&(!identity.equals(value.key)||current.site.raw!=site.raw)){unmount();restoreNative();}
         if(!vod()){hide();return false;}
         if(page!=null){
-            if(categoryMode){String selected=nativeUi.currentCategoryId();if(!selected.isEmpty()&&selectedCategory!=null&&!selected.equals(selectedCategory.id))for(CspHomeData.Category option:categories)if(option.id.equals(selected)){nativeUi.restoreCategory();selectedCategory=option;break;}page.setVisibility(View.GONE);nativeUi.restoreToolbar();if(nativeUi.categoryHeader==null&&!nativeUi.category(selectedCategory)){categoryMode=false;}else {if(guardRecommendation(selectedCategory)){nativeRoot.setVisibility(View.INVISIBLE);if(!nativeUi.mountRecommendation())retryRecommendation();return true;}restoreNative();return false;}}
+            if(categoryMode){page.setVisibility(View.GONE);nativeUi.restoreToolbar();if(guardRecommendation(selectedCategory)){nativeRoot.setVisibility(View.INVISIBLE);nativeUi.mountRecommendation(selectedCategory);return true;}String selected=nativeUi.currentCategoryId();if(!selected.isEmpty()&&selectedCategory!=null&&!selected.equals(selectedCategory.id))for(CspHomeData.Category option:categories)if(!option.recommended&&option.id.equals(selected)){nativeUi.restoreCategory();selectedCategory=option;break;}if(nativeUi.categoryHeader==null&&!nativeUi.category(selectedCategory)){categoryMode=false;}else {restoreNative();return false;}}
             nativeUi.restoreCategory();nativeRoot.setVisibility(View.INVISIBLE);page.setVisibility(View.VISIBLE);nativeUi.borrow(page);nativeUi.layoutToolbar(page);nativeUi.homeAction(page.shortcut,page.scroll.getScrollY()>page.dp(120));page.active(true);
             BackdropSettings.Options options=BackdropSettings.read(activity);if(heroSource!=null&&(heroOptions==null||!heroOptions.same(options)))matchHero(heroSource);
             return true;
@@ -49,7 +49,7 @@ public final class NewHome implements AutoCloseable {
         com.leotv.ui.GlobalChrome.clearHomeBackground(activity);
         page=new CspHomePage(activity,phone,new CspHomePage.Actions(){
             public void category(CspHomeData.Category category){openCategory(category,false);}
-            public void resource(CspHomeData.Category category,JSONObject item){if("folder".equalsIgnoreCase(item.optString("vod_tag"))){if(phone){openCategory(category,false);openFolder(item,0,generation);}else CspCategoryActivity.openFolder(activity,current.site.key,category,item);}else NativeRouting.openCspResource(activity,current.site.key,item);}
+            public void resource(CspHomeData.Category category,JSONObject item){if("folder".equalsIgnoreCase(item.optString("vod_tag"))){if(phone&&!category.recommended){openCategory(category,false);openFolder(item,0,generation);}else CspCategoryActivity.openFolder(activity,current.site.key,category,item);}else NativeRouting.openCspResource(activity,current.site.key,item);}
             public void categories(){chooseCategory();}
             public void filters(){chooseFilter();}
         });
@@ -61,7 +61,7 @@ public final class NewHome implements AutoCloseable {
         nativeUi.borrow(page);nativeRoot.setVisibility(View.INVISIBLE);worker.execute(()->load(value,token));return true;
     }
     void load(NewHomeSite value,long token){
-        try{JSONObject home=new JSONObject(SiteFeed.homeBody(value.site));List<CspHomeData.Category> loaded=CspHomeData.categories(home);main.post(()->{if(valid(value,token)){categories=loaded;page.categories(value.site.name,loaded);loadVisibleRows();}});}
+        try{JSONObject home=new JSONObject(SiteFeed.homeBody(value.site));List<CspHomeData.Category> loaded=CspHomeData.categories(home);main.post(()->{if(valid(value,token)){categories=loaded;carouselAllowed=CspHomeData.carouselAllowed(value.site,loaded);page.categories(value.site.name,loaded);loadVisibleRows();}});}
         catch(Exception unavailable){main.post(()->{if(valid(value,token))page.failed("分类加载失败，点击站点名称切换站点");});}
     }
     void loadVisibleRows(){if(page==null||current==null)return;int bottom=page.scroll.getScrollY()+page.scroll.getHeight()+page.dp(300);for(int i=0;i<categories.size();i++){if(i>=3&&(page.shelves.get(i).root.getTop()==0||page.shelves.get(i).root.getTop()>bottom))continue;if(!requested.add(i))continue;final int index=i;final NewHomeSite value=current;final long token=generation;CspHomeData.Category category=categories.get(i);worker.execute(()->loadRow(value,token,category,index));}}
@@ -70,24 +70,23 @@ public final class NewHome implements AutoCloseable {
         try{List<JSONObject> items=CspHomeData.items(CspHomeData.category(value.site,category,"1",category.defaults()),15);main.post(()->{if(valid(value,token)){page.loaded(index,items);int primary=0;if(index==primary){page.first=category;heroSource=items;matchHero(items);}}});}
         catch(Exception unavailable){main.post(()->{if(valid(value,token))page.failed(index);});}
     }
-    void matchHero(List<JSONObject> items){com.leotv.ui.GlobalChrome.clearHomeBackground(activity);page.beginHeroLoading();heroOptions=BackdropSettings.read(activity);final NewHomeSite value=current;final long token=generation;metadata.load(value.site.key,items,(source,results)->{if(valid(value,token))page.hero(source,results);});}
+    void matchHero(List<JSONObject> items){com.leotv.ui.GlobalChrome.clearHomeBackground(activity);metadata.cancel();page.beginHeroLoading();heroOptions=BackdropSettings.read(activity);boolean eligible=false;for(JSONObject item:items)eligible|=CspHomeData.heroCandidate(item);page.heroVisible(carouselAllowed&&eligible);if(!carouselAllowed||!eligible)return;final NewHomeSite value=current;final long token=generation;metadata.load(value.site.key,items,(source,results)->{if(valid(value,token))page.hero(source,results);});}
     boolean validSite(NewHomeSite value,long token){return !closed&&token==generation&&identity.equals(value.key);}
     boolean valid(NewHomeSite value,long token){return page!=null&&validSite(value,token);}
     void chooseCategory(){if(categories.isEmpty())return;String[] labels=new String[categories.size()];for(int i=0;i<labels.length;i++)labels[i]=categories.get(i).name;NativeDialogs.choose(activity,"分类",labels,selectedCategory==null?0:Math.max(0,categories.indexOf(selectedCategory)),index->openCategory(categories.get(index),false));}
     void chooseFilter(){List<CspHomeData.Category> values=new ArrayList<>();for(CspHomeData.Category category:categories)if(category.filters.length()>0)values.add(category);if(values.isEmpty()){chooseCategory();return;}if(values.size()==1){openCategory(values.get(0),true);return;}String[] labels=new String[values.size()];for(int i=0;i<labels.length;i++)labels[i]=values.get(i).name;NativeDialogs.choose(activity,"分类筛选",labels,0,index->openCategory(values.get(index),true));}
     void openFolder(JSONObject item,int attempt,long token){main.postDelayed(()->{if(closed||token!=generation||!categoryMode||!vod())return;if(nativeUi.folder(item))return;if(attempt<20)openFolder(item,attempt+1,token);},50);}
     void openCategory(CspHomeData.Category category,boolean filter){
+        if(category.recommended){if(!phone){CspCategoryActivity.open(activity,current.site.key,category);return;}nativeUi.restoreToolbar();nativeUi.restoreCategory();selectedCategory=category;categoryMode=true;page.active(false);page.setVisibility(View.GONE);publishBackground();nativeRoot.setVisibility(View.INVISIBLE);nativeUi.mountRecommendation(category);return;}
         if(!phone){if(!NativeCspUi.tvCategory(activity,current.site.key,category))CspCategoryActivity.open(activity,current.site.key,category);return;}
         if(!nativeUi.category(category)){page.failed("原生分类尚未加载完成，请稍后重试");return;}
-        selectedCategory=category;categoryMode=true;page.active(false);page.setVisibility(View.GONE);publishBackground();if(guardRecommendation(category)){nativeRoot.setVisibility(View.INVISIBLE);if(!nativeUi.mountRecommendation())retryRecommendation();}else restoreNative();if(filter)nativeUi.categoryFilters();
+        selectedCategory=category;categoryMode=true;page.active(false);page.setVisibility(View.GONE);publishBackground();restoreNative();if(filter)nativeUi.categoryFilters();
     }
-    boolean recommendationRetry;
-    void retryRecommendation(){if(recommendationRetry)return;recommendationRetry=true;final long token=generation;main.postDelayed(()->{recommendationRetry=false;if(!closed&&token==generation)update();},50);}
-    boolean guardRecommendation(CspHomeData.Category category){return phone&&category!=null&&category.id.equals("home")&&current!=null&&current.site.api.equals("csp_Leodanmu");}
+    boolean guardRecommendation(CspHomeData.Category category){return phone&&category!=null&&category.recommended;}
     void publishBackground(){if(page!=null&&page.hero.hasArtwork())com.leotv.ui.GlobalChrome.publishHomeBackground(activity,page.backdrop.colour);}
     boolean tvBack;
     public boolean handleKey(android.view.KeyEvent event){if(phone||page==null||closed||categoryMode||!running||event.getKeyCode()!=android.view.KeyEvent.KEYCODE_BACK)return false;if(event.getAction()==android.view.KeyEvent.ACTION_DOWN){if(!tvBack&&page.scroll.getScrollY()<=0)return false;tvBack=true;return true;}if(event.getAction()==android.view.KeyEvent.ACTION_UP&&tvBack){tvBack=false;if(!event.isCanceled()){page.scroll.scrollTo(0,0);nativeUi.scrolled(0);page.heroFrame.requestFocus();}return true;}return false;}
-    public boolean back(){if(closed||!vod()||!categoryMode)return false;if(nativeUi.folderBack())return true;categoryMode=false;nativeUi.restoreCategory();if(page!=null){nativeRoot.setVisibility(View.INVISIBLE);page.setVisibility(View.VISIBLE);nativeUi.borrow(page);page.active(running);}return true;}
+    public boolean back(){if(closed||!vod()||!categoryMode)return false;if(!guardRecommendation(selectedCategory)&&nativeUi.folderBack())return true;categoryMode=false;nativeUi.restoreCategory();if(page!=null){nativeRoot.setVisibility(View.INVISIBLE);page.setVisibility(View.VISIBLE);nativeUi.borrow(page);page.active(running);}return true;}
     void hide(){if(page!=null){page.active(false);page.setVisibility(View.GONE);}nativeUi.restoreToolbar();nativeUi.restoreCategory();restoreNative();}
     void restoreNative(){if(nativeRoot!=null&&content.findViewWithTag("leotv_following_home")==null&&nativeRoot.getVisibility()==View.INVISIBLE)nativeRoot.setVisibility(originalVisibility);}
     void unmount(){hide();if(page!=null){metadata.cancel();page.close();NativeCspUi.remove(page);page=null;generation++;worker.getQueue().clear();requested.clear();categories=new ArrayList<>();heroSource=null;heroOptions=null;categoryMode=false;selectedCategory=null;}}

@@ -18,7 +18,7 @@ final class CspHeroMetadata implements AutoCloseable {
     CspHeroMetadata(Activity activity){this.activity=activity;}
     void load(String site,List<JSONObject> source,Target target){
         cancel();final long token=generation;final BackdropSettings.Options options=BackdropSettings.read(activity);
-        List<JSONObject> items=new ArrayList<>();for(JSONObject item:source){if("folder".equalsIgnoreCase(item.optString("vod_tag")))continue;items.add(item);if(items.size()==15)break;}
+        List<JSONObject> items=new ArrayList<>();for(JSONObject item:source){if(!CspHomeData.heroCandidate(item))continue;items.add(item);if(items.size()==15)break;}
         final List<MobileDetailMetadata.Result> results=new ArrayList<>();for(int i=0;i<items.size();i++)results.add(null);
         if(items.isEmpty()||options.key.isEmpty()){target.ready(items,results);return;}
         final int[] remaining={items.size()};
