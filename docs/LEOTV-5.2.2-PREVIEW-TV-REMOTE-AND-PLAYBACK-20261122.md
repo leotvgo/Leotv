@@ -24,6 +24,6 @@
 
 ## 变更范围和验证边界
 
-允许变化的新增源码：`CspHomePage`、`NativeCspUi`、`NewHome`、`DetailSitePicker`、`DetailSiteSearch`、`TvDetailPage`、`Playback`、`GlobalChrome` 及对应合成/内部类。新增原宿主变化仅为 TV `M3.b.Q()` 的全屏专用分支，该类已在原生变更清单及原源码 SHA 锁内；普通路径保留。资源只更新版本字符串及 Manifest 版本，不增加或替换图标资源。新增 ABI 门禁核对原大小函数、原焦点监听器与 `M3.b.Q()`，最终 R8 DEX 门禁加入 `Playback.prepareWindow(Activity)`。
+允许变化的新增源码：`CspHomePage`、`NativeCspUi`、`NewHome`、`DetailSitePicker`、`DetailSiteSearch`、`SiteFeed`、`TvDetailPage`、`Playback`、`GlobalChrome` 及对应合成/内部类。`SiteFeed` 在初始化前返回空配置，保持独立虚构搜索 backend 的可用性。新增原宿主变化仅为 TV `M3.b.Q()` 的全屏专用分支，该类已在原生变更清单及原源码 SHA 锁内；普通路径保留。资源只更新版本字符串及 Manifest 版本，不增加或替换图标资源。新增 ABI 门禁核对原大小函数、原焦点监听器与 `M3.b.Q()`，最终 R8 DEX 门禁加入 `Playback.prepareWindow(Activity)`。
 
 本轮只操作 Leotv APK，不改 V6 核心或用户配置。依照用户既有要求不运行本地编译、JVM/界面回归及 Android 6 模拟器。GitHub 使用 `run_validation_tests=false`，照常完成四变体 API 23 编译、R8、原样/声明变化审计及固定签名。遥控路径、大小切换和播放首帧结论仍需签名后 TV 真机复测。

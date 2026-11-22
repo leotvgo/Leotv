@@ -19,6 +19,7 @@ final class SiteFeed {
         return Class.forName(name,true,application.getClassLoader());
     }
     private static Object store() {
+        if(application==null)return null;
         try { return type(Device.MOBILE?"t3.h":"q3.h").getField("a").get(null); }
         catch (ReflectiveOperationException unavailable) { return null; }
     }
