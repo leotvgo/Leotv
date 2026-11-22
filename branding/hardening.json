@@ -76,6 +76,7 @@
     },
     "com.leotv.detail.Playback": {
       "methods": [
+        "prepareWindow(Landroid/app/Activity;)V",
         "initialize(Landroid/app/Activity;)V",
         "release(Landroid/app/Activity;)V",
         "checkpoint(Landroid/app/Activity;)V",

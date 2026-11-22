@@ -22,6 +22,7 @@ final class DetailSiteSearch {
         Future<?> task;
         Runnable timeout;
         long completedOrder;
+        boolean currentPlaceholder;
         Entry(SiteFeed.Site site) { this.site = site; }
     }
     interface Listener {
@@ -45,6 +46,7 @@ final class DetailSiteSearch {
     private final Backend backend;
     private final List<Entry> entries = new ArrayList<>();
     private BackdropIdentity target;
+    private Integer configuration;
     private long generation;
     private long completionSequence;
     private boolean closed;
@@ -77,6 +79,19 @@ final class DetailSiteSearch {
     }
     DetailSiteSearch(Listener listener, Backend backend) { this.listener = listener; this.backend = backend; }
     boolean started() { return target != null; }
+    /** A playable source adopted for this same work must not cancel and restart every site. */
+    boolean reuse(BackdropIdentity work){
+        if(closed||target==null||work==null||!java.util.Objects.equals(configuration,SiteFeed.configId())
+                ||!target.normalized.equals(work.normalized)||!target.year.isEmpty()&&!work.year.isEmpty()&&!target.year.equals(work.year)
+                ||!target.type.isEmpty()&&!work.type.isEmpty()&&!target.type.equals(work.type)
+                ||!season(target.sourceTitle).equals(season(work.sourceTitle)))return false;
+        stopAutomatic();target=work;
+        for(Entry entry:entries)if(entry.currentPlaceholder){
+            if(entry.site.key.equals(work.site))try{entry.matches=Collections.singletonList(new JSONObject().put("vod_id",work.id).put("vod_name",work.sourceTitle));}catch(Exception ignored){}
+            else {entry.currentPlaceholder=false;entry.state=State.EMPTY;entry.matches=Collections.emptyList();}
+        }
+        listener.changed();return true;
+    }
     List<Entry> entries() { return new ArrayList<>(entries); }
     List<Entry> found() {
         List<Entry> result = new ArrayList<>();
@@ -104,12 +119,12 @@ final class DetailSiteSearch {
     }
     void begin(BackdropIdentity work, boolean automatically,List<SiteFeed.Site> sites,boolean includeCurrent) {
         if (closed || work == null || work.title.isEmpty()) return;
-        cancel(); target = work; completionSequence = 0; automatic = automatically;includeCurrentSite=includeCurrent;
+        cancel(); target = work;configuration=SiteFeed.configId();completionSequence = 0; automatic = automatically;includeCurrentSite=includeCurrent;
         final long token = generation;
         for (SiteFeed.Site site : sites) {
             if (!work.music && musicSite(site)) continue;
             if (site.key.equals(work.site)&&!includeCurrentSite) {
-                Entry entry = new Entry(site); entry.state = State.FOUND;
+                Entry entry = new Entry(site); entry.state = State.FOUND;entry.currentPlaceholder=true;
                 entry.completedOrder = 0;
                 try { entry.matches = Collections.singletonList(new JSONObject().put("vod_id", work.id).put("vod_name", work.sourceTitle)); }
                 catch (Exception ignored) { }

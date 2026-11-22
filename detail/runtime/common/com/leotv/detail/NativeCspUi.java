@@ -28,6 +28,8 @@ final class NativeCspUi {
     final java.util.Map<View,ViewGroup.LayoutParams> tvLayouts=new java.util.IdentityHashMap<>();
     final java.util.Map<View,Integer> visibility=new java.util.IdentityHashMap<>();
     android.graphics.Rect toolbarClip;View expand;CspRecommendation recommendation;ImageView actionSource;Drawable actionDrawable;boolean actionTop;
+    View tvSite;Drawable tvSiteBackground;boolean tvSiteFocusable,tvSiteTouchFocusable;
+    int siteLeft,siteTop,siteRight,siteBottom;
     NativeCspUi(NewHome owner){this.owner=owner;activity=owner.activity;phone=owner.phone;}
     int dp(int value){return Math.round(value*activity.getResources().getDisplayMetrics().density);}
     void forget(){if(borrowed||categoryHeader!=null||recommendation!=null)return;toolbar=null;type=null;pager=null;categoryRow=null;host=null;toolbarParent=null;typeParent=null;toolbarParams=null;typeParams=null;expand=null;actionSource=null;actionDrawable=null;folded=0;lastScroll=0;}
@@ -45,7 +47,7 @@ final class NativeCspUi {
         toolbarParent=(ViewGroup)toolbar.getParent();toolbarIndex=toolbarParent.indexOfChild(toolbar);toolbarParams=toolbar.getLayoutParams();toolbarVisibility=toolbar.getVisibility();toolbarTranslation=toolbar.getTranslationY();toolbarAlpha=toolbar.getAlpha();toolbarClip=toolbar.getClipBounds();
         toolbarParent.removeView(toolbar);toolbar.setTranslationY(0);toolbar.setVisibility(View.VISIBLE);toolbar.setClipBounds(null);
         if(phone){homeVisibility("title",View.VISIBLE);homeVisibility("searchInput",View.GONE);homeVisibility("searchIcon",View.VISIBLE);homeVisibility("download",View.VISIBLE);}
-        else addTvActions();
+        else {addTvActions();borrowTvSite();}
         FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(-1,-2,Gravity.TOP);page.addView(toolbar,params);borrowed=true;lastScroll=page.scroll.getScrollY();layoutToolbar(page);
     }
     void layoutToolbar(CspHomePage page){
@@ -54,7 +56,42 @@ final class NativeCspUi {
         if(params.topMargin!=above){params.topMargin=above;toolbar.requestLayout();}page.headerHeight=above+Math.max(toolbar.getHeight(),page.dp(phone?52:56));page.updateInsets();scrolled(page.scroll.getScrollY());
     }
     void scrolled(int y){if(!borrowed)return;int delta=y-lastScroll;lastScroll=y;int inset=((FrameLayout.LayoutParams)toolbar.getLayoutParams()).topMargin;int limit=Math.max(toolbar.getHeight(),dp(52))+inset;folded=y<=0?0:Math.max(0,Math.min(limit,folded+delta));if(!phone&&toolbar.hasFocus())folded=0;float translation=-folded;if(toolbar.getTranslationY()!=translation)toolbar.setTranslationY(translation);float alpha=folded>=limit?0:toolbarAlpha;if(toolbar.getAlpha()!=alpha)toolbar.setAlpha(alpha);}
-    void restoreToolbar(){if(!borrowed)return;remove(toolbar);if(tvActions!=null){remove(tvActions);tvActions=null;if(tvClock!=null){tvClock.setOrientation(clockOrientation);tvClock.setGravity(clockGravity);tvClock=null;}}for(java.util.Map.Entry<View,ViewGroup.LayoutParams> entry:tvLayouts.entrySet())entry.getKey().setLayoutParams(entry.getValue());tvLayouts.clear();for(java.util.Map.Entry<View,Integer> entry:visibility.entrySet())entry.getKey().setVisibility(entry.getValue());visibility.clear();toolbar.setClipBounds(toolbarClip);toolbar.setAlpha(toolbarAlpha);toolbar.setTranslationY(toolbarTranslation);toolbar.setVisibility(toolbarVisibility);toolbarParent.addView(toolbar,Math.min(toolbarIndex,toolbarParent.getChildCount()),toolbarParams);borrowed=false;actionSource=null;}
+    void restoreToolbar(){if(!borrowed)return;restoreTvSite();remove(toolbar);if(tvActions!=null){remove(tvActions);tvActions=null;if(tvClock!=null){tvClock.setOrientation(clockOrientation);tvClock.setGravity(clockGravity);tvClock=null;}}for(java.util.Map.Entry<View,ViewGroup.LayoutParams> entry:tvLayouts.entrySet())entry.getKey().setLayoutParams(entry.getValue());tvLayouts.clear();for(java.util.Map.Entry<View,Integer> entry:visibility.entrySet())entry.getKey().setVisibility(entry.getValue());visibility.clear();toolbar.setClipBounds(toolbarClip);toolbar.setAlpha(toolbarAlpha);toolbar.setTranslationY(toolbarTranslation);toolbar.setVisibility(toolbarVisibility);toolbarParent.addView(toolbar,Math.min(toolbarIndex,toolbarParent.getChildCount()),toolbarParams);borrowed=false;actionSource=null;}
+    void borrowTvSite(){
+        tvSite=named(activity,toolbar,"title");if(tvSite==null)return;
+        tvSiteBackground=tvSite.getBackground();tvSiteFocusable=tvSite.isFocusable();tvSiteTouchFocusable=tvSite.isFocusableInTouchMode();
+        siteLeft=tvSite.getPaddingLeft();siteTop=tvSite.getPaddingTop();siteRight=tvSite.getPaddingRight();siteBottom=tvSite.getPaddingBottom();
+        tvSite.setFocusable(true);tvSite.setFocusableInTouchMode(true);
+        int selector=activity.getResources().getIdentifier("selector_item","drawable",activity.getPackageName());
+        if(selector!=0)tvSite.setBackground(activity.getResources().getDrawable(selector));
+    }
+    void restoreTvSite(){if(tvSite==null)return;tvSite.setBackground(tvSiteBackground);tvSite.setPadding(siteLeft,siteTop,siteRight,siteBottom);tvSite.setFocusableInTouchMode(tvSiteTouchFocusable);tvSite.setFocusable(tvSiteFocusable);tvSite=null;tvSiteBackground=null;}
+    boolean siteFocused(){return tvSite!=null&&tvSite.hasFocus();}
+    boolean focusSite(){if(!borrowed||tvSite==null||owner.page==null)return false;owner.page.scroll.scrollTo(0,0);folded=0;scrolled(0);toolbar.setAlpha(toolbarAlpha);toolbar.setTranslationY(0);return tvSite.requestFocus();}
+    boolean moveTv(int code){
+        if(!borrowed||tvSite==null||owner.page==null)return false;
+        View focus=activity.getCurrentFocus();CspHomePage page=owner.page;
+        if(siteFocused()){
+            if(code==android.view.KeyEvent.KEYCODE_DPAD_DOWN){page.focusContent();return true;}
+            if(code==android.view.KeyEvent.KEYCODE_DPAD_RIGHT){if(tvActions!=null&&tvActions.getChildCount()>0)tvActions.getChildAt(0).requestFocus();return true;}
+            return code==android.view.KeyEvent.KEYCODE_DPAD_UP||code==android.view.KeyEvent.KEYCODE_DPAD_LEFT;
+        }
+        if(tvActions!=null&&descendant(focus,tvActions)){
+            if(code==android.view.KeyEvent.KEYCODE_DPAD_DOWN){page.focusContent();return true;}
+            if(code==android.view.KeyEvent.KEYCODE_DPAD_UP){focusSite();return true;}
+            int index=tvActions.indexOfChild(focus);
+            if(code==android.view.KeyEvent.KEYCODE_DPAD_LEFT&&index==0){focusSite();return true;}
+            if(code==android.view.KeyEvent.KEYCODE_DPAD_RIGHT&&index==tvActions.getChildCount()-1)return true;
+            return false;
+        }
+        if(code==android.view.KeyEvent.KEYCODE_DPAD_UP&&page.firstContent(focus)){focusSite();return true;}
+        if(code==android.view.KeyEvent.KEYCODE_DPAD_UP&&descendant(focus,page.scroll)){
+            View next=focus.focusSearch(View.FOCUS_UP);
+            if(next==null||descendant(next,toolbar)){focusSite();return true;}
+        }
+        return false;
+    }
+    static boolean descendant(View view,View parent){for(View node=view;node!=null;node=node.getParent() instanceof View?(View)node.getParent():null)if(node==parent)return true;return false;}
     void addTvActions(){
         if(!(toolbar instanceof LinearLayout))return;addTvActions(named(activity,toolbar,"clock"));
     }
@@ -116,8 +153,13 @@ final class NativeCspUi {
             View root=LayoutInflater.from(activity).inflate(id,parent,false);Class<?> vod=Class.forName("com.fongmi.android.tv.bean.Vod",true,activity.getClassLoader());Object bean=vod.getMethod("objectFrom",String.class).invoke(null,item.toString());
             bind(activity,root,"name",bean,"getName","getNameVisible");bind(activity,root,"year",bean,"getYear","getYearVisible");bind(activity,root,"site",bean,"getSiteName","getSiteVisible");bind(activity,root,"remark",bean,"getRemarks","getRemarkVisible");
             ImageView image=(ImageView)named(activity,root,"image");if(image!=null){if(!list){Object ratio=SiteFeed.invoke(style,"getRatio");image.getLayoutParams().height=Math.round(width/(ratio instanceof Number?((Number)ratio).floatValue():.75f));}String pic=item.optString("vod_pic",item.optString("pic"));if(pic.indexOf('@')<0&&!SourceArtwork.headers(pic).isEmpty())pic+="@Headers="+new JSONObject(SourceArtwork.headers(pic)).toString();Class.forName(Device.MOBILE?"U3.n":"S3.k",true,activity.getClassLoader()).getMethod("d",ImageView.class,String.class,String.class,boolean.class).invoke(null,image,item.optString("vod_name"),pic,true);}
-            root.setFocusable(true);root.setClickable(true);root.setOnClickListener(v->action.run());root.setOnFocusChangeListener((v,focused)->{v.setScaleX(focused?1.04f:1);v.setScaleY(focused?1.04f:1);});return root;
+            root.setFocusable(true);root.setClickable(true);root.setOnClickListener(v->action.run());cardFocus(root);return root;
         }catch(ReflectiveOperationException|RuntimeException unavailable){return null;}
+    }
+    static void cardFocus(View root){
+        if(Device.MOBILE){root.setOnFocusChangeListener((view,focused)->{view.setScaleX(focused?1.04f:1);view.setScaleY(focused?1.04f:1);});return;}
+        if(!Device.MOBILE)try{root.setOnFocusChangeListener((View.OnFocusChangeListener)Class.forName("com.fongmi.android.tv.ui.adapter.o",true,root.getContext().getClassLoader()).getConstructor(int.class).newInstance(0));return;}catch(ReflectiveOperationException unavailable){}
+        root.setOnFocusChangeListener((view,focused)->{float scale=focused?(Device.MOBILE?1.04f:1.1f):1;view.animate().scaleX(scale).scaleY(scale).setDuration(150).start();view.setTranslationZ(focused?10:0);view.setSelected(focused);});
     }
     static View named(Activity activity,View root,String name){int id=activity.getResources().getIdentifier(name,"id",activity.getPackageName());return id==0?null:root.findViewById(id);}
     static void bind(Activity activity,View root,String name,Object bean,String getter,String visible){View view=named(activity,root,name);if(view instanceof TextView){Object text=SiteFeed.invoke(bean,getter);((TextView)view).setText(text==null?"":text.toString());Object visibility=SiteFeed.invoke(bean,visible);if(visibility instanceof Number)view.setVisibility(((Number)visibility).intValue());}}

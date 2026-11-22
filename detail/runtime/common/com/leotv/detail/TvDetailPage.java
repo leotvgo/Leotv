@@ -243,7 +243,8 @@ final class TvDetailPage implements DetailPage {
         preferred=NativeLibrary.resume(activity,detail,activity.getIntent().getStringExtra("mark"));
         boolean[] order=NativeLibrary.order(activity,detail);reversed=order[0];reversePlay=order[1];
         selectedFlag=preferred==null?"":preferred.flag;showFlags();showEpisodes();refreshActions();
-        SiteFeed.Site site=SiteFeed.find(SiteFeed.sites(),detail.site);sitePicker.selected(site==null?detail.site:site.name);searchSources();
+        SiteFeed.Site site=SiteFeed.find(SiteFeed.sites(),detail.site);sitePicker.selected(site==null?detail.site:site.name);
+        if(mobile||detail.episodes.isEmpty()||!siteSearch.reuse(new BackdropIdentity(detail.site,detail.id,detail.name,detail.year,detail.type)))searchSources();
     }
     private void showFlags(){
         flags.removeAllViews();LinkedHashSet<String> names=new LinkedHashSet<>();for(SourceGateway.Episode episode:source.episodes)names.add(episode.flag);
@@ -278,8 +279,12 @@ final class TvDetailPage implements DetailPage {
     private boolean key(KeyEvent event){
         if(nativeEpisodes.active()&&event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)nativeEpisodes.dismiss();return true;}
         if(episodeGroups!=null&&episodeGroups.key(event))return true;
-        if(event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP){if(sitePicker.showing())sitePicker.dismiss();else if(personPopup!=null&&personPopup.showing())personPopup.handleBack();else activity.finish();}return true;}
-        if(!mobile&&sitePicker.showing()&&sitePicker.moveFocus(event.getKeyCode()))return true;
+        if(event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP&&!event.isCanceled()){if(sitePicker.showing()){if(mobile||!sitePicker.back())sitePicker.dismiss();}else if(personPopup!=null&&personPopup.showing())personPopup.handleBack();else activity.finish();}return true;}
+        if(!mobile&&sitePicker.showing()){
+            int code=event.getKeyCode();
+            if(code==KeyEvent.KEYCODE_DPAD_UP||code==KeyEvent.KEYCODE_DPAD_DOWN||code==KeyEvent.KEYCODE_DPAD_LEFT||code==KeyEvent.KEYCODE_DPAD_RIGHT){if(event.getAction()==KeyEvent.ACTION_DOWN)sitePicker.moveFocus(code);return true;}
+            return false;
+        }
         if(!mobile&&(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_UP||event.getKeyCode()==KeyEvent.KEYCODE_DPAD_DOWN)){
             View focus=activity.getCurrentFocus();if(focus!=null&&TvDetailNavigation.descendant(focus,reviews.list)&&reviews.canMoveVertically(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_DOWN))return false;
             if(event.getAction()==KeyEvent.ACTION_DOWN)navigation.move(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_DOWN);return true;

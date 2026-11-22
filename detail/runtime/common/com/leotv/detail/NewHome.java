@@ -84,8 +84,22 @@ public final class NewHome implements AutoCloseable {
     }
     boolean guardRecommendation(CspHomeData.Category category){return phone&&category!=null&&category.recommended;}
     void publishBackground(){if(page!=null&&page.hero.hasArtwork())com.leotv.ui.GlobalChrome.publishHomeBackground(activity,page.backdrop.colour);}
-    boolean tvBack;
-    public boolean handleKey(android.view.KeyEvent event){if(phone||page==null||closed||categoryMode||!running||event.getKeyCode()!=android.view.KeyEvent.KEYCODE_BACK)return false;if(event.getAction()==android.view.KeyEvent.ACTION_DOWN){if(!tvBack&&page.scroll.getScrollY()<=0)return false;tvBack=true;return true;}if(event.getAction()==android.view.KeyEvent.ACTION_UP&&tvBack){tvBack=false;if(!event.isCanceled()){page.scroll.scrollTo(0,0);nativeUi.scrolled(0);page.heroFrame.requestFocus();}return true;}return false;}
+    boolean tvBack;int tvDirection=-1;
+    public boolean shown(){return !closed&&running&&!categoryMode&&page!=null&&page.isShown();}
+    public void openShortcut(String action){if(!phone&&!closed)nativeUi.tvAction(action);}
+    public boolean focusContentAfterShortcut(View previous){if(!shown())return false;if(previous!=null&&previous.isShown()&&previous.isEnabled()&&NativeCspUi.descendant(previous,page.scroll)&&previous.requestFocus())return true;return page.focusContent();}
+    public boolean handleKey(android.view.KeyEvent event){
+        if(phone||page==null||closed||categoryMode||!running)return false;
+        int code=event.getKeyCode(),action=event.getAction();
+        if(action==android.view.KeyEvent.ACTION_UP&&code==tvDirection){tvDirection=-1;return true;}
+        if(code==android.view.KeyEvent.KEYCODE_BACK){
+            if(action==android.view.KeyEvent.ACTION_DOWN){if(!tvBack&&page.scroll.getScrollY()<=0&&nativeUi.siteFocused())return false;tvBack=true;return true;}
+            if(action==android.view.KeyEvent.ACTION_UP&&tvBack){tvBack=false;if(!event.isCanceled())nativeUi.focusSite();return true;}
+            return false;
+        }
+        if(action==android.view.KeyEvent.ACTION_DOWN&&nativeUi.moveTv(code)){tvDirection=code;return true;}
+        return false;
+    }
     public boolean back(){if(closed||!vod()||!categoryMode)return false;if(!guardRecommendation(selectedCategory)&&nativeUi.folderBack())return true;categoryMode=false;nativeUi.restoreCategory();if(page!=null){nativeRoot.setVisibility(View.INVISIBLE);page.setVisibility(View.VISIBLE);nativeUi.borrow(page);page.active(running);}return true;}
     void hide(){if(page!=null){page.active(false);page.setVisibility(View.GONE);}nativeUi.restoreToolbar();nativeUi.restoreCategory();restoreNative();}
     void restoreNative(){if(nativeRoot!=null&&content.findViewWithTag("leotv_following_home")==null&&nativeRoot.getVisibility()==View.INVISIBLE)nativeRoot.setVisibility(originalVisibility);}
@@ -97,8 +111,8 @@ public final class NewHome implements AutoCloseable {
         requested.clear();categories=new ArrayList<>();heroSource=null;heroOptions=null;categoryMode=false;selectedCategory=null;
         nativeUi.forget();nativeRoot=null;parent=null;current=null;identity="";
     }
-    public void resume(){running=true;if(page!=null)page.active(MetadataSettings.newHome(activity)&&!categoryMode&&vod());}
-    public void pause(){running=false;tvBack=false;if(page!=null)page.active(false);}
+    public void resume(){running=true;if(page!=null){if(!phone)page.refreshSizes();page.active(MetadataSettings.newHome(activity)&&!categoryMode&&vod());}}
+    public void pause(){running=false;tvBack=false;tvDirection=-1;if(page!=null)page.active(false);}
     public Drawable background(){return page==null?null:!page.hero.hasArtwork()?page.backdrop.fallback:new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,new int[]{page.backdrop.colour,DetailHero.FLOOR});}
     @Override public void close(){if(closed)return;closed=true;unmount();restoreNative();metadata.close();worker.shutdownNow();main.removeCallbacksAndMessages(null);}
 }

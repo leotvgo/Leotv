@@ -113,7 +113,7 @@ Actions 产物存储不可用时，各变体把已签名 APK 和报告存入同�
 工作区没有复制用户运行配置。历史普通版 5.1.6 的四个固定签名测试 APK 已发布，
 其中手机64位和TV32位由用户确认可安装使用；新 Leotv 的设备验收需另行记录。
 
-## 构建 Leotv 5.2.1
+## 构建当前开发版 Leotv 5.2.2-preview.1
 
 ```sh
 python3 tools/ci_dependencies.py --output /tmp/leotv-build-deps
@@ -127,7 +127,7 @@ gradle --no-daemon -p research/detail-check -Pclient=mobile test
 gradle --no-daemon -p research/detail-check -Pclient=tv test
 ```
 
-本地输出为 `artifacts/leotv-5.2.1-<variant>-unsigned.apk`、审计报告和内部混淆映射。
+本地输出为 `artifacts/leotv-5.2.2-preview.1-<variant>-unsigned.apk`、审计报告和内部混淆映射。
 GitHub 使用同一构建器，再以既有 APK 专用固定密钥签名；产物为 `leotv-<variant>.apk`。
 新包名、provider、私有权限及媒体控制标识独立，可与原 OK影视同时安装。
 原组件类名保留，以保护 JNI、反射及站点 JAR 的 ABI。
@@ -200,3 +200,5 @@ Parcel、数据库、列表/过滤器、弹幕异常路径、网络、UI 和播�
 5.2.0-preview.8 关闭新主页时先作废请求代次、切断旧布局回调，再归还视图并清理绑定，修正关闭后刷新崩溃；APK 追更按资源及 TMDB 作品身份同步点亮、去重与取消，复用同一 leo_following 库。V6 本轮仅修正顶/底栏加载背景，不改追更。详见[关闭与追更状态修正](docs/LEOTV-HOME-CLOSE-AND-FOLLOW-STATE-20261122.md)。
 
 5.2.1 用户确认 preview.8 APK 无问题后要求正式发布。沿用已验收的新主页、原生控件/分类、关闭刷新及追更状态修复，R8 8.8.34 release/full 混淆与固定签名保持；正式非预发行标签 leotv-5.2.1 设为最新版本。code609高于测试版608，V6核心不变。详见[正式发布记录](docs/LEOTV-5.2.1-OFFICIAL-20261122.md)。
+
+5.2.2-preview.1 / 610 修正 TV 主页回顶到站点、站点/快捷图标与内容区的方向键路径，左键唤醒纵向追更/搜索/收藏/历史/推送/设置玻璃菜单，焦点放大并返回原内容项。TV 首页海报沿用宿主大小/样式设置并在返回时重新计算，保留原生卡片描边和放大动画，补足放大边缘。详情选站方向键只在按下时移动，返回依次退出目录/结果/站点；同作品换源保留已有搜索任务与结果，播放器创建时绕过宿主壁纸初始化。详见[TV 遥控、海报与播放修正](docs/LEOTV-5.2.2-PREVIEW-TV-REMOTE-AND-PLAYBACK-20261122.md)。

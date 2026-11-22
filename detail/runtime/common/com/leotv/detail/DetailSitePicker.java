@@ -31,7 +31,7 @@ final class DetailSitePicker {
     private FrameLayout overlay;
     private LinearLayout content;
     private final java.util.Map<DetailSiteSearch.Entry, TextView> sourceRows = new java.util.IdentityHashMap<>();
-    private boolean managing, settingsChanged, initialLabel, closing;
+    private boolean managing, settingsChanged, initialLabel, closing, folderLoading;
     private String selected;
     private int colour = 0xff182331;
 
@@ -152,7 +152,7 @@ final class DetailSitePicker {
         return found;
     }
     private void cleanup() {
-        directory.cancel(); pages.clear(); browsing = null;
+        directory.cancel(); pages.clear(); browsing = null;folderLoading=false;
         window = null; overlay = null; content = null; sourceRows.clear();
         if(!closing)selector.post(search::tryAutomatic);
         if (settingsChanged) {
@@ -163,7 +163,7 @@ final class DetailSitePicker {
     }
     private void renderSources() {
         if (content == null) return;
-        directory.cancel(); pages.clear(); browsing = null;
+        directory.cancel(); pages.clear(); browsing = null;folderLoading=false;
         View focused = content.findFocus(); Object previous = focused == null ? null : focused.getTag();
         android.view.ViewParent parent = content.getParent();
         if (!(parent instanceof ScrollView)) return;
@@ -211,6 +211,7 @@ final class DetailSitePicker {
     }
     private void backPage() {
         directory.cancel();
+        if(folderLoading){folderLoading=false;renderPage();return;}
         if (pages.size() > 1) { pages.remove(pages.size() - 1); renderPage(); }
         else { managing = false; renderSources(); }
     }
@@ -221,7 +222,8 @@ final class DetailSitePicker {
     }
     private void renderPage() {
         if (content == null || pages.isEmpty()) return;
-        managing = true; content.removeAllViews();
+        folderLoading=false;
+        managing = true;content.removeAllViews();
         item(pages.size() > 1 ? "返回上一级" : "返回站点", this::backPage);
         DirectoryPage page = pages.get(pages.size() - 1); DetailSiteSearch.Entry entry = browsing;
         if (page.items.isEmpty()) item("此目录暂无可用资源", null);
@@ -245,11 +247,12 @@ final class DetailSitePicker {
         for (DirectoryPage page : pages) if (id.equals(page.id)) {
             Toast.makeText(activity, "目录无法继续展开，请选择其他资源", Toast.LENGTH_SHORT).show(); return;
         }
-        managing = true; content.removeAllViews();
+        managing = true;folderLoading=true;content.removeAllViews();
         item("返回上一级", () -> { directory.cancel(); renderPage(); }); item("正在读取目录…", null); fit();
         directory.open(browsing.site, folder, new DetailSiteDirectory.Listener() {
             @Override public void ready(List<JSONObject> items) {
                 if (content == null) return;
+                folderLoading=false;
                 pages.add(new DirectoryPage(id, items)); renderPage();
             }
             @Override public void failed() {
@@ -261,7 +264,7 @@ final class DetailSitePicker {
         fit();
     }
     private void renderSettings() {
-        directory.cancel(); pages.clear(); browsing = null;
+        directory.cancel(); pages.clear(); browsing = null;folderLoading=false;
         managing = true; content.removeAllViews();
         item("启用后参与自动搜索，保存到宿主", null);
         for (SiteFeed.Site site : SiteFeed.searchSites()) {

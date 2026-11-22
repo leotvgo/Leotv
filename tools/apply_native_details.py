@@ -100,6 +100,10 @@ def apply(project, root, variant):
                 return body.replace(marker, marker + '\n\n    invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirect(Landroid/app/Activity;)Z\n\n'
                         '    move-result v0\n\n    if-eqz v0, :leotv_create_original\n\n    return-void\n\n    :leotv_create_original')
             text = replace_method(text, 'onCreate(Landroid/os/Bundle;)V', create)
+            if not mobile:
+                text = replace_method(text, 'Q()V', lambda body: guard(body,
+                    'Lcom/leotv/detail/NativeRouting;->isFullscreenPlayer(Landroid/app/Activity;)Z',
+                    '    invoke-static {p0}, Lcom/leotv/detail/Playback;->prepareWindow(Landroid/app/Activity;)V'))
             text = replace_method(text, 'onDestroy()V', lambda body: guard(body,
                 'Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z',
                 '    invoke-super {p0}, Landroidx/appcompat/app/j;->onDestroy()V'))

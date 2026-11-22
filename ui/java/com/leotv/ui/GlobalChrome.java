@@ -1027,6 +1027,7 @@ public final class GlobalChrome {
         final Controller owner;
         final int id=View.generateViewId();
         android.widget.ImageButton button;
+        android.widget.LinearLayout shortcutMenu;int menuKey=-1;
         View nativeNavigation;
         Drawable originalBackground;
         android.content.res.ColorStateList originalTint;
@@ -1121,7 +1122,7 @@ public final class GlobalChrome {
             if(current!=installed){
                 delegate=current;
                 installed=(Window.Callback)java.lang.reflect.Proxy.newProxyInstance(Window.Callback.class.getClassLoader(),new Class<?>[]{Window.Callback.class},(proxy,method,args)->{
-                    if(method.getName().equals("dispatchKeyEvent")&&(owner.newHome.handleKey((android.view.KeyEvent)args[0])||handle((android.view.KeyEvent)args[0])))return true;
+                    if(method.getName().equals("dispatchKeyEvent")&&(handle((android.view.KeyEvent)args[0])||owner.newHome.handleKey((android.view.KeyEvent)args[0])))return true;
                     try{return method.invoke(current,args);}catch(java.lang.reflect.InvocationTargetException error){throw error.getCause();}
                 });window.setCallback(installed);
             }
@@ -1225,31 +1226,48 @@ public final class GlobalChrome {
             if(nativeNavigation.getOutlineProvider()==null)nativeNavigation.setOutlineProvider(originalOutline);
             if(nativeNavigation.getStateListAnimator()==null)nativeNavigation.setStateListAnimator(originalAnimator);
         }
-        boolean firstTab(){View pager=owner.find("pager");return !closed&&owner.running&&owner.contentScreen(pager)&&owner.currentPage(pager)==0;}
+        boolean firstTab(){View pager=owner.find("pager");return !closed&&owner.running&&(owner.newHome.shown()||owner.contentScreen(pager)&&owner.currentPage(pager)==0);}
         boolean handle(android.view.KeyEvent event){
             if(closed||!owner.running)return false;
             int key=event.getKeyCode();
+            if(key==android.view.KeyEvent.KEYCODE_DPAD_LEFT&&event.getAction()==android.view.KeyEvent.ACTION_UP&&left){left=false;return true;}
+            if(event.getAction()==android.view.KeyEvent.ACTION_UP&&key==menuKey){menuKey=-1;return true;}
+            if(shortcutMenu!=null&&shortcutMenu.isShown()&&shortcutMenu.hasFocus()){
+                if(key==android.view.KeyEvent.KEYCODE_DPAD_UP||key==android.view.KeyEvent.KEYCODE_DPAD_DOWN){
+                    if(event.getAction()==android.view.KeyEvent.ACTION_DOWN){int index=shortcutMenu.indexOfChild(shortcutMenu.findFocus());int next=Math.max(0,Math.min(shortcutMenu.getChildCount()-1,index+(key==android.view.KeyEvent.KEYCODE_DPAD_DOWN?1:-1)));shortcutMenu.getChildAt(next).requestFocus();menuKey=key;}return true;
+                }
+                if(key==android.view.KeyEvent.KEYCODE_DPAD_RIGHT||key==android.view.KeyEvent.KEYCODE_BACK){if(event.getAction()==android.view.KeyEvent.ACTION_DOWN){menuKey=key;restoreContentFocus();}return true;}
+                if(key==android.view.KeyEvent.KEYCODE_DPAD_LEFT)return true;
+            }
             if(key==android.view.KeyEvent.KEYCODE_DPAD_LEFT&&firstTab()){
                 if(event.getAction()==android.view.KeyEvent.ACTION_DOWN&&event.getRepeatCount()==0){left=true;show();}
                 if(left){if(event.getAction()==android.view.KeyEvent.ACTION_UP)left=false;return true;}
             }
-            if(button!=null&&button.isShown()&&button.hasFocus()&&(key==android.view.KeyEvent.KEYCODE_DPAD_RIGHT||key==android.view.KeyEvent.KEYCODE_BACK)){if(event.getAction()==android.view.KeyEvent.ACTION_UP){hide();View prior=previousFocus.get();if(prior!=null&&prior.isShown())prior.requestFocus();}return true;}
             return false;
         }
+        void restoreContentFocus(){hide();View prior=previousFocus.get();if(!owner.newHome.focusContentAfterShortcut(prior)&&prior!=null&&prior.isShown()&&prior.isEnabled())prior.requestFocus();}
         void show(){
-            if(button==null||!button.isShown()){View current=owner.activity.getCurrentFocus();previousFocus=new java.lang.ref.WeakReference<>(current==null?owner.content.findFocus():current);}
-            if(button==null){
-                button=new android.widget.ImageButton(owner.activity);button.setTag("leotv_following_entry");button.setImageDrawable(new CalendarIcon(owner.activity));button.setContentDescription("追更日历");button.setFocusable(true);button.setFocusableInTouchMode(true);button.setOnClickListener(v->open());
-                button.setBackground(new NavigationGlass(owner.content.getResources().getDisplayMetrics().density));if(Build.VERSION.SDK_INT>=26)try{View.class.getMethod("setDefaultFocusHighlightEnabled",boolean.class).invoke(button,false);}catch(ReflectiveOperationException unavailable){}button.setOnFocusChangeListener((view,focused)->{view.setScaleX(focused?1.08f:1);view.setScaleY(focused?1.08f:1);});button.setStateListAnimator(null);button.setOutlineProvider(null);button.setPadding(owner.dp(14),owner.dp(14),owner.dp(14),owner.dp(14));
-                FrameLayout.LayoutParams layout=new FrameLayout.LayoutParams(owner.dp(56),owner.dp(56),android.view.Gravity.LEFT|android.view.Gravity.CENTER_VERTICAL);layout.leftMargin=owner.dp(12);owner.content.addView(button,layout);button.setElevation(owner.dp(80));
+            if(shortcutMenu==null||!shortcutMenu.isShown()){View current=owner.activity.getCurrentFocus();previousFocus=new java.lang.ref.WeakReference<>(current==null?owner.content.findFocus():current);}
+            if(shortcutMenu==null){
+                shortcutMenu=new android.widget.LinearLayout(owner.activity);shortcutMenu.setOrientation(android.widget.LinearLayout.VERTICAL);shortcutMenu.setTag("leotv_home_shortcuts");shortcutMenu.setPadding(owner.dp(6),owner.dp(6),owner.dp(6),owner.dp(6));shortcutMenu.setClipChildren(false);shortcutMenu.setClipToPadding(false);
+                String[] actions={"following","search","keep","history","push","setting"},labels={"追更日历","搜索","收藏","历史","推送","设置"};
+                for(int i=0;i<actions.length;i++){
+                    final String action=actions[i];android.widget.ImageButton icon=new android.widget.ImageButton(owner.activity);icon.setTag(i==0?"leotv_following_entry":"leotv_home_"+action+"_entry");icon.setContentDescription(labels[i]);
+                    if(i==0){button=icon;icon.setImageDrawable(new CalendarIcon(owner.activity));}else {int resource=owner.activity.getResources().getIdentifier("ic_home_"+action,"drawable",owner.activity.getPackageName());if(resource!=0)icon.setImageDrawable(owner.activity.getResources().getDrawable(resource));}
+                    icon.setScaleType(ImageView.ScaleType.FIT_CENTER);icon.setFocusable(true);icon.setFocusableInTouchMode(true);icon.setPadding(owner.dp(12),owner.dp(12),owner.dp(12),owner.dp(12));icon.setStateListAnimator(null);icon.setOutlineProvider(null);
+                    icon.setBackground(new NavigationGlass(owner.content.getResources().getDisplayMetrics().density));if(Build.VERSION.SDK_INT>=26)try{View.class.getMethod("setDefaultFocusHighlightEnabled",boolean.class).invoke(icon,false);}catch(ReflectiveOperationException unavailable){}
+                    icon.setOnFocusChangeListener((view,focused)->{view.animate().cancel();view.animate().scaleX(focused?1.12f:1).scaleY(focused?1.12f:1).setDuration(150).setInterpolator(new android.view.animation.DecelerateInterpolator()).start();});icon.setOnClickListener(v->{restoreContentFocus();if(action.equals("following"))open();else owner.newHome.openShortcut(action);});
+                    android.widget.LinearLayout.LayoutParams cell=new android.widget.LinearLayout.LayoutParams(owner.dp(48),owner.dp(48));cell.bottomMargin=i==actions.length-1?0:owner.dp(4);shortcutMenu.addView(icon,cell);
+                }
+                FrameLayout.LayoutParams layout=new FrameLayout.LayoutParams(-2,-2,android.view.Gravity.LEFT|android.view.Gravity.CENTER_VERTICAL);layout.leftMargin=owner.dp(6);owner.content.addView(shortcutMenu,layout);shortcutMenu.setElevation(owner.dp(80));
             }
-            button.setVisibility(View.VISIBLE);button.requestFocus();
+            shortcutMenu.setVisibility(View.VISIBLE);button.requestFocus();
             button.post(()->{if(!closed&&owner.running&&button.isShown())button.requestFocus();});
         }
-        void hide(){if(button!=null)button.setVisibility(View.GONE);}
+        void hide(){if(shortcutMenu!=null)shortcutMenu.setVisibility(View.GONE);}
         void close(){
             closed=true;hide();dismissCalendar();
-            if(button!=null&&button.getParent()==owner.content)owner.content.removeView(button);
+            if(shortcutMenu!=null&&shortcutMenu.getParent()==owner.content)owner.content.removeView(shortcutMenu);
             if(owner.decor.getViewTreeObserver().isAlive())owner.decor.getViewTreeObserver().removeOnPreDrawListener(this);
             if(installed!=null&&owner.activity.getWindow().getCallback()==installed)owner.activity.getWindow().setCallback(delegate);
             restoreNavigation();nativeNavigation=null;

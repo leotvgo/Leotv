@@ -18,6 +18,13 @@ public final class Playback {
     private static Integer pendingConfig;
     private static long pendingUntil;
     private Playback() {}
+    /** The TV base Activity also installs wallpaper from setContentView, after redirect(). */
+    public static void prepareWindow(Activity activity){
+        if(Device.MOBILE||!NativeRouting.isFullscreenPlayer(activity))return;
+        activity.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.BLACK));
+        android.view.View content=activity.findViewById(android.R.id.content);
+        if(content!=null)content.setBackground(new android.graphics.drawable.ColorDrawable(android.graphics.Color.BLACK));
+    }
     static synchronized void prepareSource(android.content.Context context,SourceGateway.Detail detail){
         normalizeEpisodes(detail);
         pendingContext=new WeakReference<>(context.getApplicationContext());pendingSite=detail.site;pendingId=detail.id;pendingResult=detail.nativeResult;
@@ -62,6 +69,7 @@ public final class Playback {
     }
     public static void initialize(Activity activity) {
         if (!NativeRouting.isFullscreenPlayer(activity)) return;
+        prepareWindow(activity);
         try {
             if(!Device.MOBILE){
                 int id=activity.getResources().getIdentifier("progressLayout","id",activity.getPackageName());
