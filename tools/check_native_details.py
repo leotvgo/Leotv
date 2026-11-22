@@ -142,7 +142,7 @@ def check_contract(root, variant, project=None):
     if mobile:
         contracts['R3/t'] = (['<init>()V', 'y0(Landroidx/appcompat/app/j;)V'], ['A0:Ljava/util/List;', 'C0:Z', 'D0:Z'])
         contracts['S3/f'] = (['t0()V'], ['m0:LE3/r;'])
-        contracts['androidx/fragment/app/v'] = (['y()Landroidx/appcompat/app/j;'], [])
+        contracts['androidx/fragment/app/v'] = (['y()Landroidx/appcompat/app/j;', 'h0()Landroid/view/View;'], [])
         contracts['androidx/fragment/app/m'] = (['p0(ZZ)V'], [])
         contracts['E3/k'] = (['<init>(Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;)V', 'call()Ljava/lang/Object;'], [])
         contracts['E3/r'] = ([], ['f:Landroidx/lifecycle/A;', 'g:Landroidx/lifecycle/A;'])

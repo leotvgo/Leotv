@@ -29,7 +29,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     final List<JSONObject> heroItems=new ArrayList<>();final List<MobileDetailMetadata.Result> heroMetadata=new ArrayList<>();final List<Shelf> shelves=new ArrayList<>();
     final Backdrop backdrop=new Backdrop();
     CspHomeData.Category first;boolean closed;int headerHeight;
-    Runnable viewportChanged;
+    Runnable viewportChanged,backgroundChanged;
     CspHomePage(Activity activity,boolean phone,Actions actions){
         super(activity);this.activity=activity;this.phone=phone;this.actions=actions;
         setTag("leotv_csp_home");
@@ -37,7 +37,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         scroll=new ScrollView(activity);scroll.setClipToPadding(false);scroll.setVerticalScrollBarEnabled(false);scroll.setFillViewport(true);
         rows=new LinearLayout(activity);rows.setOrientation(LinearLayout.VERTICAL);scroll.addView(rows,new ScrollView.LayoutParams(-1,-2));addView(scroll,new FrameLayout.LayoutParams(-1,-1));
         heroFrame=new FrameLayout(activity);rows.addView(heroFrame,new LinearLayout.LayoutParams(-1,dp(phone?480:360)));
-        hero=new DetailHero(activity,colour->{backdrop.colour=DetailHero.surface(colour);backdrop.shader=null;invalidate();});hero.presentation(phone,0);hero.limit(15);hero.dots(false);hero.tailWeight(.75f);
+        hero=new DetailHero(activity,colour->{backdrop.colour=DetailHero.surface(colour);backdrop.shader=null;invalidate();if(backgroundChanged!=null)backgroundChanged.run();});hero.presentation(phone,0);hero.limit(15);hero.dots(false);hero.tailWeight(.75f);
         heroFrame.addView(hero,new FrameLayout.LayoutParams(-1,-1));
         LinearLayout info=new LinearLayout(activity);info.setOrientation(LinearLayout.VERTICAL);info.setGravity(Gravity.CENTER);info.setPadding(dp(22),0,dp(22),dp(25));
         title=text("",phone?28:30);title.setGravity(Gravity.CENTER);title.setTypeface(title.getTypeface(),android.graphics.Typeface.BOLD);title.setMaxLines(2);

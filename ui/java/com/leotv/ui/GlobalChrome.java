@@ -38,6 +38,7 @@ public final class GlobalChrome {
     private static java.lang.ref.WeakReference<Application> installed;
     private static Drawable hostBackdrop;
     private static Lifecycle lifecycle;
+    private static Integer homeColour;
     private static final String FOLLOWING = "leotv.home.following";
 
     /** The calendar is a home page; the existing native navigation stays in its parent. */
@@ -62,13 +63,21 @@ public final class GlobalChrome {
         return controller != null && (controller.newHome.back() || controller.following.back());
     }
 
+    public static void publishHomeBackground(Activity activity,int colour){
+        if(homeColour!=null&&homeColour==colour)return;homeColour=colour;hostBackdrop=homeGradient();if(lifecycle!=null){lifecycle.known.put(activity,true);for(Activity page:new ArrayList<>(lifecycle.known.keySet()))lifecycle.scene(page);}
+    }
+    public static void clearHomeBackground(Activity activity){if(homeColour==null)return;homeColour=null;hostBackdrop=null;if(lifecycle!=null){for(Scene scene:lifecycle.scenes.values())scene.close();lifecycle.scenes.clear();}}
+    private static Drawable homeGradient(){return homeColour==null?null:new android.graphics.drawable.GradientDrawable(android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM,new int[]{homeColour,homeColour,0xff04060a});}
+    public static AutoCloseable protectCategory(View list,View header,View navigation){return new CategoryViewport(list,header,navigation);}
     public static synchronized Drawable loadingBackground(android.content.Context context) {
+        if(homeColour!=null)return homeGradient();
         return hostBackdrop == null || hostBackdrop.getConstantState() == null ? null
                 : hostBackdrop.getConstantState().newDrawable(context.getResources()).mutate();
     }
 
     /** Preserve the actual shared background before a resource leaves home/search/library. */
     public static void rememberBackground(Activity activity) {
+        if(homeColour!=null){hostBackdrop=homeGradient();return;}
         String name=activity.getClass().getName();
         if(name.equals("com.leotv.detail.DetailActivity")||name.equals("com.leotv.detail.FollowingActivity")||name.equals("com.fongmi.android.tv.ui.activity.VideoActivity"))return;
         Controller controller=lifecycle==null?null:lifecycle.active.get(activity);
@@ -107,11 +116,36 @@ public final class GlobalChrome {
         installed = new java.lang.ref.WeakReference<>(app);
     }
 
+    private static final class CategoryViewport implements AutoCloseable,ViewTreeObserver.OnPreDrawListener {
+        final View root,header,navigation;final Map<ViewGroup,NativeViewport> lists=new IdentityHashMap<>();final int[] at=new int[2],bar=new int[2];boolean closed;
+        CategoryViewport(View root,View header,View navigation){this.root=root;this.header=header;this.navigation=navigation;root.getViewTreeObserver().addOnPreDrawListener(this);}
+        @Override public boolean onPreDraw(){if(closed||!root.isShown()||header.getHeight()==0)return true;header.getLocationOnScreen(bar);int top=bar[1]+header.getHeight();int below=(navigation==null?0:navigation.getHeight())+Math.round(24*root.getResources().getDisplayMetrics().density);scan(root,top,below);return true;}
+        void scan(View view,int top,int below){if(!view.isShown())return;boolean recycler=false;for(Class<?> cls=view.getClass();cls!=null;cls=cls.getSuperclass())if(cls.getName().equals("androidx.recyclerview.widget.RecyclerView")){recycler=true;break;}if(recycler&&view instanceof ViewGroup){ViewGroup list=(ViewGroup)view;NativeViewport value=lists.get(list);if(value==null){value=NativeViewport.borrow(list);lists.put(list,value);}view.getLocationOnScreen(at);value.insetForHeader(Math.max(0,top-at[1]),below);return;}if(view instanceof ViewGroup){ViewGroup group=(ViewGroup)view;for(int i=0;i<group.getChildCount();i++)scan(group.getChildAt(i),top,below);}}
+        @Override public void close(){if(closed)return;closed=true;if(root.getViewTreeObserver().isAlive())root.getViewTreeObserver().removeOnPreDrawListener(this);for(NativeViewport list:lists.values())list.close();lists.clear();}
+    }
+    private static final class Scene extends View implements AutoCloseable,ViewTreeObserver.OnPreDrawListener {
+        final FrameLayout content;final Map<View,Drawable[]> backgrounds=new IdentityHashMap<>();final Map<View,Float> wallpapers=new IdentityHashMap<>();final Paint paint=new Paint();Shader shader;Integer paintedColour;int paintedHeight;boolean closed;
+        Scene(Activity activity){super(activity);content=(FrameLayout)activity.findViewById(android.R.id.content);setTag("leotv_csp_shared_backdrop");setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);setFocusable(false);setClickable(false);content.addView(this,0,new FrameLayout.LayoutParams(-1,-1));content.getViewTreeObserver().addOnPreDrawListener(this);refresh();}
+        static boolean accepts(Activity activity){String name=activity.getClass().getName();if(name.equals("com.leotv.detail.CspCategoryActivity")||name.equals("com.leotv.detail.FollowingActivity"))return true;if(!name.startsWith("com.fongmi.android.tv.ui.activity."))return false;String simple=name.substring(name.lastIndexOf('.')+1);return simple.equals("HomeActivity")||simple.equals("VodActivity")||simple.equals("FolderActivity")||simple.equals("SearchActivity")||simple.equals("CollectActivity")||simple.equals("HistoryActivity")||simple.equals("KeepActivity")||simple.equals("PushActivity")||simple.equals("CastActivity")||simple.startsWith("Setting");}
+        void refresh(){if(closed||homeColour==null)return;invalidate();borrow(content,0);}
+        void borrow(View view,int depth){if(content.getWidth()<=0||content.getHeight()<=0)return;if(view==this||"leotv_csp_home".equals(view.getTag())||"leotv_shared_backdrop".equals(view.getTag())||"leotv_page_backdrop".equals(view.getTag()))return;boolean large=view.getWidth()>=content.getWidth()*.9f&&view.getHeight()>=content.getHeight()*.65f;
+            if(large&&view instanceof ImageView&&(view.getClass()==ImageView.class||view.getClass().getName().equals("androidx.appcompat.widget.AppCompatImageView"))){if(!wallpapers.containsKey(view))wallpapers.put(view,view.getAlpha());if(view.getAlpha()!=0)view.setAlpha(0);return;}
+            if(view!=content&&large){Drawable old=view.getBackground();Drawable[] state=backgrounds.get(view);if(old!=null&&(state==null||old!=state[1])){Drawable clear=new ColorDrawable(Color.TRANSPARENT);backgrounds.put(view,new Drawable[]{old,clear});view.setBackground(clear);}}
+            if(depth<6&&view instanceof ViewGroup){ViewGroup group=(ViewGroup)view;for(int i=0;i<group.getChildCount();i++)borrow(group.getChildAt(i),depth+1);}
+        }
+        @Override public boolean onPreDraw(){if(closed||homeColour==null)return true;if(!com.leotv.detail.MetadataSettings.newHome(getContext())){clearHomeBackground((Activity)getContext());return true;}borrow(content,0);int desired=0;for(int i=0;i<content.getChildCount();i++){View view=content.getChildAt(i);if(view!=this&&(view instanceof ImageView||"leotv_shared_backdrop".equals(view.getTag())))desired=i+1;}int current=content.indexOfChild(this);if(current<desired){content.removeView(this);content.addView(this,Math.min(desired-1,content.getChildCount()),new FrameLayout.LayoutParams(-1,-1));}return true;}
+        @Override protected void onDraw(Canvas canvas){if(homeColour==null)return;if(shader==null||!homeColour.equals(paintedColour)||paintedHeight!=getHeight()){paintedColour=homeColour;paintedHeight=getHeight();shader=new LinearGradient(0,0,0,Math.max(1,getHeight()),new int[]{homeColour,homeColour,0xff04060a},new float[]{0,.5f,1},Shader.TileMode.CLAMP);}paint.setShader(shader);canvas.drawRect(0,0,getWidth(),getHeight(),paint);}
+        @Override public void close(){if(closed)return;closed=true;if(content.getViewTreeObserver().isAlive())content.getViewTreeObserver().removeOnPreDrawListener(this);for(Map.Entry<View,Drawable[]> entry:backgrounds.entrySet())if(entry.getKey().getBackground()==entry.getValue()[1])entry.getKey().setBackground(entry.getValue()[0]);for(Map.Entry<View,Float> entry:wallpapers.entrySet())if(entry.getKey().getAlpha()==0)entry.getKey().setAlpha(entry.getValue());if(getParent()==content)content.removeView(this);backgrounds.clear();wallpapers.clear();}
+    }
+
     private static final class Lifecycle implements Application.ActivityLifecycleCallbacks {
         final Map<Activity, Controller> active = new IdentityHashMap<>();
         final Map<Activity,TvCategoryChrome> categories=new IdentityHashMap<>();
+        final Map<Activity,Boolean> known=new IdentityHashMap<>();final Map<Activity,Scene> scenes=new IdentityHashMap<>();
+        void scene(Activity activity){if(homeColour==null||!Scene.accepts(activity)||activity.isFinishing()||activity.isDestroyed())return;Scene value=scenes.get(activity);if(value==null){value=new Scene(activity);scenes.put(activity,value);}value.refresh();}
 
         @Override public void onActivityResumed(Activity activity) {
+            if(Scene.accepts(activity)){known.put(activity,true);scene(activity);}
             if(activity.getClass().getName().equals("com.fongmi.android.tv.ui.activity.VodActivity")&&activity.getIntent().getBooleanExtra("leotv.csp.category",false)){
                 View content=activity.findViewById(android.R.id.content);if(content instanceof FrameLayout){TvCategoryChrome chrome=categories.get(activity);if(chrome==null){chrome=new TvCategoryChrome(activity,(FrameLayout)content);categories.put(activity,chrome);}chrome.resume();}return;
             }
@@ -136,7 +170,7 @@ public final class GlobalChrome {
             if (controller != null) controller.pause();
             else rememberBackground(activity);
         }
-        @Override public void onActivityDestroyed(Activity activity) { remove(activity); }
+        @Override public void onActivityDestroyed(Activity activity) { remove(activity);known.remove(activity);Scene scene=scenes.remove(activity);if(scene!=null)scene.close(); }
         @Override public void onActivityStopped(Activity activity) {
             Controller controller = active.get(activity);
             if (controller != null) controller.trim();

@@ -35,6 +35,7 @@
       "detail/runtime/common/com/leotv/detail/CspHeroMetadata.java",
       "detail/runtime/common/com/leotv/detail/CspHomeData.java",
       "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+      "detail/runtime/common/com/leotv/detail/CspRecommendation.java",
       "detail/runtime/common/com/leotv/detail/DetailActionButton.java",
       "detail/runtime/common/com/leotv/detail/DetailActivity.java",
       "detail/runtime/common/com/leotv/detail/DetailBadges.java",

@@ -32,12 +32,12 @@ public final class NewHome implements AutoCloseable {
     public boolean update(){
         if(closed||!running||!activity.getClass().getName().equals("com.fongmi.android.tv.ui.activity.HomeActivity"))return false;
         SiteFeed.Site site=SiteFeed.active();boolean enabled=MetadataSettings.newHome(activity);
-        if(!enabled||site==null){unmount();restoreNative();return false;}
+        if(!enabled||site==null){unmount();restoreNative();if(!enabled)com.leotv.ui.GlobalChrome.clearHomeBackground(activity);return false;}
         NewHomeSite value=new NewHomeSite(site);
         if(page!=null&&(!identity.equals(value.key)||current.site.raw!=site.raw)){unmount();restoreNative();}
         if(!vod()){hide();return false;}
         if(page!=null){
-            if(categoryMode){page.setVisibility(View.GONE);nativeUi.restoreToolbar();restoreNative();if(nativeUi.categoryHeader==null&&!nativeUi.category(selectedCategory)){categoryMode=false;}else {nativeUi.suppressCategoryActions();return false;}}
+            if(categoryMode){String selected=nativeUi.currentCategoryId();if(!selected.isEmpty()&&selectedCategory!=null&&!selected.equals(selectedCategory.id))for(CspHomeData.Category option:categories)if(option.id.equals(selected)){nativeUi.restoreCategory();selectedCategory=option;break;}page.setVisibility(View.GONE);nativeUi.restoreToolbar();if(nativeUi.categoryHeader==null&&!nativeUi.category(selectedCategory)){categoryMode=false;}else {if(guardRecommendation(selectedCategory)){nativeRoot.setVisibility(View.INVISIBLE);if(!nativeUi.mountRecommendation())retryRecommendation();return true;}restoreNative();return false;}}
             nativeUi.restoreCategory();nativeRoot.setVisibility(View.INVISIBLE);page.setVisibility(View.VISIBLE);nativeUi.borrow(page);nativeUi.layoutToolbar(page);nativeUi.homeAction(page.shortcut,page.scroll.getScrollY()>page.dp(120));page.active(true);
             BackdropSettings.Options options=BackdropSettings.read(activity);if(heroSource!=null&&(heroOptions==null||!heroOptions.same(options)))matchHero(heroSource);
             return true;
@@ -52,6 +52,7 @@ public final class NewHome implements AutoCloseable {
             public void categories(){chooseCategory();}
             public void filters(){chooseFilter();}
         });
+        page.backgroundChanged=this::publishBackground;
         page.viewportChanged=()->{nativeUi.scrolled(page.scroll.getScrollY());nativeUi.homeAction(page.shortcut,page.scroll.getScrollY()>page.dp(120));loadVisibleRows();};
         View navigation=phone?find("navigation"):null;
         ViewGroup.LayoutParams params=parent instanceof RelativeLayout?new RelativeLayout.LayoutParams(-1,-1):new FrameLayout.LayoutParams(-1,-1);
@@ -65,7 +66,7 @@ public final class NewHome implements AutoCloseable {
     void loadVisibleRows(){if(page==null||current==null)return;int bottom=page.scroll.getScrollY()+page.scroll.getHeight()+page.dp(300);for(int i=0;i<categories.size();i++){if(i>=3&&(page.shelves.get(i).root.getTop()==0||page.shelves.get(i).root.getTop()>bottom))continue;if(!requested.add(i))continue;final int index=i;final NewHomeSite value=current;final long token=generation;CspHomeData.Category category=categories.get(i);worker.execute(()->loadRow(value,token,category,index));}}
     void loadRow(NewHomeSite value,long token,CspHomeData.Category category,int index){
         if(!validSite(value,token))return;
-        try{List<JSONObject> items=CspHomeData.items(CspHomeData.category(value.site,category,"1",category.defaults()),15);main.post(()->{if(valid(value,token)){page.loaded(index,items);int primary=categories.size()>1&&categories.get(0).id.equals("home")?1:0;if(index==primary){page.first=category;heroSource=items;matchHero(items);}}});}
+        try{List<JSONObject> items=CspHomeData.items(CspHomeData.category(value.site,category,"1",category.defaults()),15);main.post(()->{if(valid(value,token)){page.loaded(index,items);int primary=0;if(index==primary){page.first=category;heroSource=items;matchHero(items);}}});}
         catch(Exception unavailable){main.post(()->{if(valid(value,token))page.failed(index);});}
     }
     void matchHero(List<JSONObject> items){heroOptions=BackdropSettings.read(activity);final NewHomeSite value=current;final long token=generation;metadata.load(value.site.key,items,(source,results)->{if(valid(value,token))page.hero(source,results);});}
@@ -77,8 +78,12 @@ public final class NewHome implements AutoCloseable {
     void openCategory(CspHomeData.Category category,boolean filter){
         if(!phone){if(!NativeCspUi.tvCategory(activity,current.site.key,category))CspCategoryActivity.open(activity,current.site.key,category);return;}
         if(!nativeUi.category(category)){page.failed("原生分类尚未加载完成，请稍后重试");return;}
-        selectedCategory=category;categoryMode=true;page.active(false);page.setVisibility(View.GONE);restoreNative();if(filter)nativeUi.filter();
+        selectedCategory=category;categoryMode=true;page.active(false);page.setVisibility(View.GONE);publishBackground();if(guardRecommendation(category)){nativeRoot.setVisibility(View.INVISIBLE);if(!nativeUi.mountRecommendation())retryRecommendation();}else restoreNative();if(filter)nativeUi.categoryFilters();
     }
+    boolean recommendationRetry;
+    void retryRecommendation(){if(recommendationRetry)return;recommendationRetry=true;final long token=generation;main.postDelayed(()->{recommendationRetry=false;if(!closed&&token==generation)update();},50);}
+    boolean guardRecommendation(CspHomeData.Category category){return phone&&category!=null&&category.id.equals("home")&&current!=null&&current.site.api.equals("csp_Leodanmu");}
+    void publishBackground(){if(page!=null&&page.hero.hasArtwork())com.leotv.ui.GlobalChrome.publishHomeBackground(activity,page.backdrop.colour);}
     boolean tvBack;
     public boolean handleKey(android.view.KeyEvent event){if(phone||page==null||closed||categoryMode||!running||event.getKeyCode()!=android.view.KeyEvent.KEYCODE_BACK)return false;if(event.getAction()==android.view.KeyEvent.ACTION_DOWN){if(!tvBack&&page.scroll.getScrollY()<=0)return false;tvBack=true;return true;}if(event.getAction()==android.view.KeyEvent.ACTION_UP&&tvBack){tvBack=false;if(!event.isCanceled()){page.scroll.scrollTo(0,0);nativeUi.scrolled(0);page.heroFrame.requestFocus();}return true;}return false;}
     public boolean back(){if(closed||!vod()||!categoryMode)return false;if(nativeUi.folderBack())return true;categoryMode=false;nativeUi.restoreCategory();if(page!=null){nativeRoot.setVisibility(View.INVISIBLE);page.setVisibility(View.VISIBLE);nativeUi.borrow(page);page.active(running);}return true;}
@@ -87,6 +92,6 @@ public final class NewHome implements AutoCloseable {
     void unmount(){hide();if(page!=null){metadata.cancel();page.close();NativeCspUi.remove(page);page=null;generation++;worker.getQueue().clear();requested.clear();categories=new ArrayList<>();heroSource=null;heroOptions=null;categoryMode=false;selectedCategory=null;}}
     public void resume(){running=true;if(page!=null)page.active(!categoryMode&&vod());}
     public void pause(){running=false;tvBack=false;if(page!=null)page.active(false);}
-    public Drawable background(){return page==null||!vod()?null:new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,new int[]{page.backdrop.colour,DetailHero.FLOOR});}
+    public Drawable background(){return page==null?null:new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,new int[]{page.backdrop.colour,DetailHero.FLOOR});}
     @Override public void close(){if(closed)return;closed=true;unmount();restoreNative();metadata.close();worker.shutdownNow();main.removeCallbacksAndMessages(null);}
 }

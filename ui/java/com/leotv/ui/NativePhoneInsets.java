@@ -94,7 +94,7 @@ final class NativePhoneInsets implements AutoCloseable {
     private void findActions(View view,int lift){
         boolean floating=false;for(Class<?> type=view.getClass();type!=null;type=type.getSuperclass())if(type.getName().equals("com.google.android.material.floatingactionbutton.FloatingActionButton")){floating=true;break;}
         if(floating&&view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams){
-            Margin state=actions.get(view);if(state==null){state=new Margin(view);actions.put(view,state);}state.apply(lift);return;
+            Margin state=actions.get(view);if(state!=null&&state.params!=view.getLayoutParams()){state.restore();state=null;}if(state==null){state=new Margin(view);actions.put(view,state);}state.apply(lift);return;
         }
         if(view instanceof ViewGroup){ViewGroup group=(ViewGroup)view;for(int i=0;i<group.getChildCount();i++)findActions(group.getChildAt(i),lift);}
     }
