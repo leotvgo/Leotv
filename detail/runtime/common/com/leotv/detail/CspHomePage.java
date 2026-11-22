@@ -32,7 +32,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     Runnable viewportChanged,backgroundChanged;
     CspHomePage(Activity activity,boolean phone,Actions actions){
         super(activity);this.activity=activity;this.phone=phone;this.actions=actions;
-        backdrop.fallback=com.leotv.ui.GlobalChrome.wallpaperBackground(activity);setTag("leotv_csp_home");
+        backdrop.fallback=com.leotv.ui.GlobalChrome.currentBackground(activity);setTag("leotv_csp_home");
         setBackground(backdrop);images=new DetailThumbnails(activity,BackdropSettings.read(activity).proxy,!phone);
         scroll=new ScrollView(activity);scroll.setClipToPadding(false);scroll.setVerticalScrollBarEnabled(false);scroll.setFillViewport(true);
         rows=new LinearLayout(activity);rows.setOrientation(LinearLayout.VERTICAL);scroll.addView(rows,new ScrollView.LayoutParams(-1,-2));addView(scroll,new FrameLayout.LayoutParams(-1,-1));
@@ -68,7 +68,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     void failed(int index){if(index>=0&&index<shelves.size())shelves.get(index).note.setText("加载失败，点更多重试");}
     void failed(String message){status.setText(message);status.setVisibility(VISIBLE);hero.finishLoading();}
     void heroVisible(boolean visible){heroFrame.setVisibility(visible?VISIBLE:GONE);hero.setActive(pageActive&&visible&&getVisibility()==VISIBLE);updateInsets();}
-    void beginHeroLoading(){backdrop.fallback=com.leotv.ui.GlobalChrome.wallpaperBackground(activity);hero.loadSources(java.util.Collections.emptyList(),BackdropSettings.read(activity).proxy);heroItems.clear();heroMetadata.clear();title.setText("");facts.setText("");overview.setText("");dots.removeAllViews();titleArt.load(java.util.Collections.emptyList(),BackdropSettings.read(activity).proxy);invalidate();}
+    void beginHeroLoading(){backdrop.fallback=com.leotv.ui.GlobalChrome.currentBackground(activity);hero.loadSources(java.util.Collections.emptyList(),BackdropSettings.read(activity).proxy);heroItems.clear();heroMetadata.clear();title.setText("");facts.setText("");overview.setText("");dots.removeAllViews();titleArt.load(java.util.Collections.emptyList(),BackdropSettings.read(activity).proxy);invalidate();}
     int heroIndex;
     void hero(List<JSONObject> values,List<MobileDetailMetadata.Result> metadata){
         heroItems.clear();heroMetadata.clear();List<String> paths=new ArrayList<>(),fallbacks=new ArrayList<>();
