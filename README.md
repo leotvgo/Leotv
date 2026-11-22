@@ -4,7 +4,7 @@
 普通 TV 的完整 Java 阅读视图，以及第一组能够独立编译的 Java 恢复代码。
 完整 Java/Gradle 应用工程仍在恢复；不能将这里的 Java 阅读视图直接当作已可编译的原始工程。
 
-当前开发版为 **5.2.0-preview.4 / 604**，独立安装包名 **com.leotv.app**；正式版继续保留 **5.2.0 / 600**。
+当前开发版为 **5.2.0-preview.5 / 605**，独立安装包名 **com.leotv.app**；正式版继续保留 **5.2.0 / 600**。
 正式安装包：[Leotv 5.2.0](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.0)，提供 TV/手机、32/64 位四个固定签名 APK。
 启动图标、TV 横幅、默认线路动图、关于页与原生透明上下栏已接入专用构建；5.1.26 停止上下栏实时回放和模糊。
 独立原生详情页、个性设置内的本端详情主题/TMDB 配置，以及手机按视频尺寸自动旋转已接入。
@@ -38,6 +38,7 @@
 5.2.0-preview.2 移除首页三个点菜单，借用原生顶栏和卡片资源；补回推荐、分类/筛选快捷入口和回顶。手机分类复用原生分页列表及底栏，类别标题保留悬浮与内容冲顶；轮播优先匹配 TMDB 海报/背景和元数据，失败回退 CSP 图片，补齐豆瓣请求头与 CSP 图片参数。切到设置/追更再返回保留首页和滚动位置。详见[新主页原生组件与海报优化](docs/LEOTV-CSP-NEW-HOME-NATIVE-REFINEMENT-20261122.md)。
 5.2.0-preview.3 按手机原 APK 的实际无 ID 顶栏父容器接回 logo、线路及原生控件，避让系统状态栏并随滚动折叠；移除手机/TV 首页附加分类行，手机悬浮操作恢复推送播放/回顶两态。手机分类文字和图标缩小，替换完整分类行并隐藏重复筛选入口；TV 分类条覆盖完整原生 pager，首页遥控返回回顶，时钟左侧新增原生搜索、收藏、历史、推送和设置入口，不加下载及回顶按钮。详见[顶栏与悬浮分类修正](docs/LEOTV-CSP-NEW-HOME-CHROME-20261122.md)。
 5.2.0-preview.4 手机顶栏折叠包含系统安全上沿，手机焦点不再阻止折叠；轮播改用第一推荐分组。当前海报取色背景延续到手机/TV 分类、设置及原生库页面，关闭新主页时还原壁纸。分类右上接回原 expand 分类窗口，右下恢复原生推送/筛选/回顶状态；对 csp_Leodanmu 的推荐更多借用原生缓存列表，保持原首页 pager 不可见，回避 JAR 首页接管。详见[折叠、背景共享与推荐接管修正](docs/LEOTV-CSP-NEW-HOME-BACKGROUND-AND-RECOMMENDATION-20261122.md)。
+5.2.0-preview.5 TMDB 匹配及海报下载期间沿用宿主原背景，实际海报就绪后再切换取色共享背景；TV 五个快捷图标并入时钟容器，紧贴时间左侧。随后按用户要求同步 JAR 首页/详情加载背景并更新 V6 核心，仍不运行本地回归。
 资源入口统一进入详情页；选择剧集后进入保留的全屏播放器，收藏和续播继续使用原数据库模型。
 普通版 5.1.6 保留为不变的恢复基准；详见
 [Leotv 5.1.8 开发记录](docs/LEOTV-5.1.8-20261119.md)、[5.1.9 UI 修正记录](docs/LEOTV-5.1.9-UI-CORRECTIONS-20261119.md)和[5.1.10 修正记录](docs/LEOTV-5.1.10-EDGE-AND-SETTINGS-20261119.md)和[5.1.11 手机修正记录](docs/LEOTV-5.1.11-PHONE-CHROME-20261120.md)和[5.1.12 交互与艺术字记录](docs/LEOTV-5.1.12-INTERACTION-AND-ARTWORK-20261120.md)和[5.1.13 内容区与播放衔接记录](docs/LEOTV-5.1.13-CONTENT-ONLY-BLUR-20261120.md)和[5.1.14 手机顶部淡出记录](docs/LEOTV-5.1.14-PHONE-TOP-FADE-20261120.md)和[5.1.15 状态栏下滚动记录](docs/LEOTV-5.1.15-PHONE-STATUS-SCROLL-20261120.md)和[5.1.16 当前页面背景记录](docs/LEOTV-5.1.16-LIVE-PAGE-BACKDROP-20261120.md)和[5.1.17 背景协议修正](docs/LEOTV-5.1.17-LIVE-BACKDROP-CONTRACT-20261120.md)和[5.1.18 全分类背景与追更桥](docs/LEOTV-5.1.18-JAR-FEATURE-BRIDGE-20261120.md)和[5.1.19 自动获取播放资源](docs/LEOTV-5.1.19-AUTO-PLAYABLE-SOURCE-20261120.md)和[5.1.20 基础功能与追更日历](docs/LEOTV-5.1.20-FOUNDATION-AND-FOLLOWING-20261120.md)和[5.1.21 透明导航与日历背景](docs/LEOTV-5.1.21-CALENDAR-AND-TRANSPARENT-NAVIGATION-20261120.md)。

@@ -46,6 +46,7 @@ public final class NewHome implements AutoCloseable {
         if(root==null&&!phone)for(int i=0;i<content.getChildCount();i++){View candidate=content.getChildAt(i);if(candidate.getVisibility()==View.VISIBLE&&candidate.findViewById(activity.getResources().getIdentifier("recycler","id",activity.getPackageName()))!=null){root=candidate;break;}}
         if(root==null||!(root.getParent() instanceof ViewGroup))return false;
         nativeRoot=root;originalVisibility=root.getVisibility();parent=(ViewGroup)root.getParent();current=value;identity=value.key;final long token=++generation;
+        com.leotv.ui.GlobalChrome.clearHomeBackground(activity);
         page=new CspHomePage(activity,phone,new CspHomePage.Actions(){
             public void category(CspHomeData.Category category){openCategory(category,false);}
             public void resource(CspHomeData.Category category,JSONObject item){if("folder".equalsIgnoreCase(item.optString("vod_tag"))){if(phone){openCategory(category,false);openFolder(item,0,generation);}else CspCategoryActivity.openFolder(activity,current.site.key,category,item);}else NativeRouting.openCspResource(activity,current.site.key,item);}
@@ -69,7 +70,7 @@ public final class NewHome implements AutoCloseable {
         try{List<JSONObject> items=CspHomeData.items(CspHomeData.category(value.site,category,"1",category.defaults()),15);main.post(()->{if(valid(value,token)){page.loaded(index,items);int primary=0;if(index==primary){page.first=category;heroSource=items;matchHero(items);}}});}
         catch(Exception unavailable){main.post(()->{if(valid(value,token))page.failed(index);});}
     }
-    void matchHero(List<JSONObject> items){heroOptions=BackdropSettings.read(activity);final NewHomeSite value=current;final long token=generation;metadata.load(value.site.key,items,(source,results)->{if(valid(value,token))page.hero(source,results);});}
+    void matchHero(List<JSONObject> items){com.leotv.ui.GlobalChrome.clearHomeBackground(activity);page.beginHeroLoading();heroOptions=BackdropSettings.read(activity);final NewHomeSite value=current;final long token=generation;metadata.load(value.site.key,items,(source,results)->{if(valid(value,token))page.hero(source,results);});}
     boolean validSite(NewHomeSite value,long token){return !closed&&token==generation&&identity.equals(value.key);}
     boolean valid(NewHomeSite value,long token){return page!=null&&validSite(value,token);}
     void chooseCategory(){if(categories.isEmpty())return;String[] labels=new String[categories.size()];for(int i=0;i<labels.length;i++)labels[i]=categories.get(i).name;NativeDialogs.choose(activity,"分类",labels,selectedCategory==null?0:Math.max(0,categories.indexOf(selectedCategory)),index->openCategory(categories.get(index),false));}
@@ -92,6 +93,6 @@ public final class NewHome implements AutoCloseable {
     void unmount(){hide();if(page!=null){metadata.cancel();page.close();NativeCspUi.remove(page);page=null;generation++;worker.getQueue().clear();requested.clear();categories=new ArrayList<>();heroSource=null;heroOptions=null;categoryMode=false;selectedCategory=null;}}
     public void resume(){running=true;if(page!=null)page.active(!categoryMode&&vod());}
     public void pause(){running=false;tvBack=false;if(page!=null)page.active(false);}
-    public Drawable background(){return page==null?null:new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,new int[]{page.backdrop.colour,DetailHero.FLOOR});}
+    public Drawable background(){return page==null?null:!page.hero.hasArtwork()?com.leotv.ui.GlobalChrome.wallpaperBackground(activity):new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,new int[]{page.backdrop.colour,DetailHero.FLOOR});}
     @Override public void close(){if(closed)return;closed=true;unmount();restoreNative();metadata.close();worker.shutdownNow();main.removeCallbacksAndMessages(null);}
 }

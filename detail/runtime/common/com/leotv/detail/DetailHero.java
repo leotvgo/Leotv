@@ -72,6 +72,8 @@ class DetailHero extends View {
         super(context); this.palette = palette;
         setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
     }
+    private boolean transparentWaiting;
+    void transparentWaiting(boolean value){transparentWaiting=value;invalidate();}
     void presentation(boolean portrait,int style) { this.portrait=portrait;this.presentation=style;invalidate(); }
     boolean hasArtwork() { return bitmap != null && !bitmap.isRecycled(); }
     /** Scales the carousel's own bottom scrim; the artwork's last edge stays the page colour either way. */
@@ -411,7 +413,7 @@ class DetailHero extends View {
     }
     /** Shares the actual carousel frame with home chrome; no second download or View-tree screenshot. */
     void drawFrame(Canvas canvas,int w,int h) {
-        if(w<=0||h<=0)return;
+        if(w<=0||h<=0||transparentWaiting&&bitmap==null)return;
         paint.setShader(null); paint.setAlpha(255); canvas.drawColor(colour);
         if (bitmap == null || reveal < 1) drawLoading(canvas,w,h);
         if (animationMode == 2 && nextBitmap != null) {
