@@ -1,0 +1,27 @@
+{
+  "apk": {
+    "version": "5.2.0-preview.8",
+    "version_code": 608,
+    "source_revision": "e9db807bc285b0087bd2bf2b8d38439bac87ee45",
+    "build": "https://github.com/leotvgo/Leotv/actions/runs/44999587010",
+    "publication": "https://github.com/leotvgo/Leotv/actions/runs/44999939699",
+    "release": "https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.0-preview.8-build-44999587010",
+    "variants": ["mobile-v7a", "mobile-v8a", "tv-v7a", "tv-v8a"],
+    "result": "All four compiled, audited and signed with the fixed APK certificate; publication successful",
+    "changes": ["Invalidate and disconnect old homepage callbacks before unmounting on switch-off", "Reset released native view references", "Use original source identity plus matched TMDB movie/series identity for follow membership", "Refresh follow icon/label on detail render and resume", "Deduplicate aliases in the same leo_following store and remove the matched work on cancellation"],
+    "tests": "Local and CI regression tests not run, as requested; device acceptance pending"
+  },
+  "v6": {
+    "release": "v6.2026.11.22.4",
+    "previous": "v6.2026.11.22.3",
+    "generation": 1795332442,
+    "core_sha256": "f4b8f36459affef05b29502d399eeda937f2ba9907f8f140152d8048f22757e9",
+    "result": "Published using the canonical V6 builder and publisher; both ABI stable channels verified",
+    "scope": "Background only: pending top/bottom bands and delegated artwork extensions read the current backdrop; sample padding repeats real window edges",
+    "changed_java": ["HomeBackdrop.java", "HomeGlassChrome.java", "HomeHero.java", "HomePhoneChrome.java"],
+    "follow_logic_changed": false,
+    "shell_changed": false,
+    "tests": "JVM not-run/0 cases under explicit user waiver; device acceptance pending",
+    "cleanup_allocated_mib": 263.3
+  }
+}
