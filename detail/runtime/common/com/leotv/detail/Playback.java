@@ -137,6 +137,15 @@ public final class Playback {
         title.anchor(anchor); title.load(logos, BackdropSettings.read(activity).proxy); titles.put(activity, title);
     }
     public static void checkpoint(Activity activity){DanmakuPlayback.pause(activity);NativeLibrary.checkpoint(activity);}
+    /** The TV touch callback shows the bottom bar alone; reuse the native widget title/size panel. */
+    public static void controlsShown(Activity activity){
+        if(Device.MOBILE||!NativeRouting.isFullscreenPlayer(activity))return;
+        int widgetId=activity.getResources().getIdentifier("widget","id",activity.getPackageName());
+        android.view.View widget=widgetId==0?null:activity.findViewById(widgetId);
+        int topId=activity.getResources().getIdentifier("top","id",activity.getPackageName());
+        android.view.View top=widget==null||topId==0?null:widget.findViewById(topId);
+        if(top!=null)top.setVisibility(android.view.View.VISIBLE);
+    }
     public static boolean leave(Activity activity) {
         if (!NativeRouting.isFullscreenPlayer(activity)) return false;
         activity.finish(); return true;

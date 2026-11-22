@@ -17,10 +17,10 @@ final class NativeDialogs {
     interface Choice { void selected(int index); }
     interface Saved { void value(String text); }
     interface EndpointSaved { void value(String key, String base); }
-    private static Object builder(Activity activity) throws ReflectiveOperationException {
+    static Object builder(Activity activity) throws ReflectiveOperationException {
         return Class.forName(Device.DIALOG_BUILDER,true,activity.getClassLoader()).getConstructor(Context.class).newInstance(activity);
     }
-    private static Context context(Object builder) throws ReflectiveOperationException {
+    static Context context(Object builder) throws ReflectiveOperationException {
         return (Context)builder.getClass().getMethod("getContext").invoke(builder);
     }
     private static Dialog create(Object builder,String title,View view) throws ReflectiveOperationException {
@@ -52,14 +52,9 @@ final class NativeDialogs {
     static void edit(Activity activity,String title,String value,String hint,boolean secret,Saved saved,Runnable reset) {
         try {
             Object builder=builder(activity);Context context=context(builder);
-            View body=NativeViews.layout(context,"dialog_title");EditText input=findInput(body);
-            if(input==null){input=new EditText(context);body=input;}
-            input.setSingleLine(true);input.setHint(hint);input.setText(value);
-            input.setInputType(android.text.InputType.TYPE_CLASS_TEXT|(secret?android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD:android.text.InputType.TYPE_TEXT_VARIATION_URI));
-            if(secret)input.setTransformationMethod(android.text.method.PasswordTransformationMethod.getInstance());
             LinearLayout panel=new LinearLayout(context);panel.setOrientation(LinearLayout.VERTICAL);
-            panel.addView(body,new LinearLayout.LayoutParams(-1,-2));
-            if(!Device.MOBILE){View qr=NativeQrInput.button(activity,input,title);qr.setId(View.generateViewId());input.setId(View.generateViewId());input.setNextFocusDownId(qr.getId());qr.setNextFocusUpId(input.getId());qr.setNextFocusDownId(android.R.id.button1);panel.addView(qr);}
+            EditText input=endpointInput(context,panel,hint,value,secret);
+            if(!Device.MOBILE){View qr=NativeQrInput.button(activity,input,title);qr.setId(View.generateViewId());input.setId(View.generateViewId());input.setNextFocusDownId(qr.getId());qr.setNextFocusUpId(input.getId());qr.setNextFocusDownId(android.R.id.button1);panel.addView(qr,qrMargins(context));}
             if(reset!=null){Object params=builder.getClass().getField("a").get(builder);params.getClass().getField("k").set(params,"恢复默认");}
             builder.getClass().getMethod("setPositiveButton",int.class,DialogInterface.OnClickListener.class).invoke(builder,android.R.string.ok,null);
             Dialog dialog=create(builder,title,panel);EditText edit=input;
@@ -85,7 +80,11 @@ final class NativeDialogs {
                 View keyQr=NativeQrInput.button(activity,keyInput,"Key"),baseQr=NativeQrInput.button(activity,baseInput,"域名");
                 keyQr.setId(View.generateViewId());baseQr.setId(View.generateViewId());
                 baseInput.setNextFocusDownId(keyQr.getId());keyQr.setNextFocusUpId(baseInput.getId());keyQr.setNextFocusDownId(baseQr.getId());baseQr.setNextFocusUpId(keyQr.getId());baseQr.setNextFocusDownId(android.R.id.button1);
-                panel.addView(keyQr);panel.addView(baseQr);
+                LinearLayout qrRow=new LinearLayout(context);qrRow.setOrientation(LinearLayout.HORIZONTAL);
+                LinearLayout.LayoutParams first=new LinearLayout.LayoutParams(0,-2,1);first.setMarginEnd(Math.round(16*context.getResources().getDisplayMetrics().density));
+                qrRow.addView(keyQr,first);qrRow.addView(baseQr,new LinearLayout.LayoutParams(0,-2,1));
+                keyQr.setNextFocusRightId(baseQr.getId());baseQr.setNextFocusLeftId(keyQr.getId());
+                panel.addView(qrRow,qrMargins(context));
             }
             keyInput.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_NEXT);
             baseInput.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_DONE);
@@ -126,6 +125,7 @@ final class NativeDialogs {
         if(save!=null)builder.getClass().getMethod("setPositiveButton",int.class,DialogInterface.OnClickListener.class).invoke(builder,android.R.string.ok,(DialogInterface.OnClickListener)(dialog,which)->save.run());
         return create(builder,title,body);
     }
+    static LinearLayout.LayoutParams qrMargins(Context context){int inset=Math.round(16*context.getResources().getDisplayMetrics().density);LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(-1,-2);params.setMargins(inset,0,inset,inset/2);return params;}
     private static EditText findInput(View view){if(view instanceof EditText)return (EditText)view;if(view instanceof ViewGroup)for(int i=0;i<((ViewGroup)view).getChildCount();i++){EditText result=findInput(((ViewGroup)view).getChildAt(i));if(result!=null)return result;}return null;}
     private NativeDialogs(){}
 }

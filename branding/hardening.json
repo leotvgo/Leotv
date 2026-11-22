@@ -85,7 +85,8 @@
         "applyOrder(Landroid/app/Activity;)V",
         "videoChanged(Landroid/app/Activity;)V",
         "videoSizeChanged(Ljava/lang/Object;II)V",
-        "consumeNativeDetail(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;"
+        "consumeNativeDetail(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;",
+        "controlsShown(Landroid/app/Activity;)V"
       ]
     },
     "com.leotv.detail.MetadataSettings": {
@@ -113,7 +114,8 @@
         "release(Landroid/app/Activity;)V",
         "fileResult(Landroid/app/Activity;IILandroid/content/Intent;)Z",
         "pause(Landroid/app/Activity;)V",
-        "resume(Landroid/app/Activity;)V"
+        "resume(Landroid/app/Activity;)V",
+        "installControls(Landroid/app/Activity;)V"
       ]
     },
     "com.leotv.detail.DanmakuSettings": {

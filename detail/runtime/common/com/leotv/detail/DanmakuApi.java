@@ -34,12 +34,16 @@ final class DanmakuApi {
     static String searchUrl(String configured){
         if(configured.contains("{name}")||configured.contains("{episode}"))return configured;
         Uri uri=Uri.parse(configured);List<String> segments=uri.getPathSegments();
+        String path=uri.getPath()==null?"":uri.getPath();
+        if(path.matches("/website/danmu/manage/[^/]+/?")||segments.size()==1&&segments.get(0).matches("[0-9]{4,}"))
+            return uri.buildUpon().appendPath("api").appendPath("v2").appendPath("fongmi").appendPath("danmaku").build().toString();
         if(!segments.isEmpty()&&"danmaku".equalsIgnoreCase(segments.get(segments.size()-1))||segments.size()>1)return configured;
         return uri.buildUpon().appendPath("danmaku").build().toString();
     }
     static List<DanmakuSource> search(String api,String name,String episode,Owner owner)throws Exception{
         String endpoint=searchUrl(api);Request request;
         if(endpoint.contains("{name}")||endpoint.contains("{episode}"))request=sourceRequest(endpoint.replace("{name}",Uri.encode(name)).replace("{episode}",Uri.encode(episode)));
+        else if(Uri.parse(endpoint).getPath().endsWith("/api/v2/fongmi/danmaku"))request=sourceRequest(Uri.parse(endpoint).buildUpon().appendQueryParameter("name",name).appendQueryParameter("episode",episode).build().toString());
         else request=formRequest(endpoint,name,episode);
         byte[] bytes=request(request,owner,4*1024*1024);if(owner.canceled)throw new InterruptedException();
         return DanmakuSource.parse(new String(bytes,"UTF-8"),endpoint.replace("{name}","name").replace("{episode}","episode"));

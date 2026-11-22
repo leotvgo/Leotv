@@ -1,8 +1,8 @@
 {
   "channel": "prerelease",
-  "version_name": "5.3.0-preview.1",
-  "version_code": 613,
-  "title": "Leotv 5.3.0-preview.1（弹幕 API、扫码输入与分页修复）",
+  "version_name": "5.3.0-preview.2",
+  "version_code": 614,
+  "title": "Leotv 5.3.0-preview.2（弹幕入口、TV 原生扫码与播放标题）",
   "prerelease": true,
   "make_latest": false
 }

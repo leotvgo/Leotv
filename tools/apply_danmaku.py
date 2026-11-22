@@ -32,6 +32,15 @@ def apply(project, root, variant):
                 marker = re.search(r'(?m)^    \.locals \d+$', body)
                 return body[:marker.end()] + '\n\n    invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->begin(Landroid/app/Activity;)V\n' + body[marker.end():]
             text = replace_method(text, 'A0()V', begin)
+            event = 'N()V' if mobile else 'K()V'
+            text = replace_method(text,event,lambda body:append_call(body,
+                '    invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->installControls(Landroid/app/Activity;)V'))
+            show = 'Y0()V' if mobile else 'Y0(Landroid/view/View;)V'
+            def shown(body):
+                call='    invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->installControls(Landroid/app/Activity;)V'
+                if not mobile:call+='\n\n    invoke-static {p0}, Lcom/leotv/detail/Playback;->controlsShown(Landroid/app/Activity;)V'
+                return append_call(body,call)
+            text = replace_method(text,show,shown)
             def resume(body):
                 marker = body.rfind('    return-void')
                 if marker < 0:
