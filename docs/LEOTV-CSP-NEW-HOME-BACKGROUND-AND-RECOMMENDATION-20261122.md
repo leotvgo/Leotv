@@ -20,7 +20,7 @@ preview.3 的 loadRow 明确在第一分组为 home 时跳到第二分组，这�
 
 仅对该 API 的 home 推荐分组安装 CspRecommendation：借用原 FolderFragment.h0 返回的实际推荐内容 View，以及原 link/filter/top FAB 和 APK 分类条，显示在 APK 自己的 FrameLayout 中；原主页 pager 和容器保持 INVISIBLE。因此原生 adapter、图片、资源点击、目录、筛选及列表缓存保留，JAR 的 visibleHome 为 false。关闭/设置切换时按保存的父容器、索引、布局及可见性归还全部 View，返回首页继续使用原缓存。其它 CSP 分类不走此特殊分支；TV 推荐使用独立原 VodActivity，已有 activity 范围隔离保持。
 
-补充原 Fragment.h0 反射契约。借出的 FAB 切换 LayoutParams 后，NativePhoneInsets 重新绑定对应参数和玻璃材质，避免使用旧 CoordinatorLayout 参数覆盖新 FrameLayout。
+推荐容器把列表滚动方向交给原 CustomFabBehavior.p，保留原生 FAB 的显示/隐藏动画及状态规则，避免移出 CoordinatorLayout 后丢失行为。补充该方法与原 Fragment.h0 反射契约。借出的 FAB 切换 LayoutParams 后，NativePhoneInsets 重新绑定对应参数和玻璃材质，避免使用旧 CoordinatorLayout 参数覆盖新 FrameLayout。
 
 ## 海报背景共享
 

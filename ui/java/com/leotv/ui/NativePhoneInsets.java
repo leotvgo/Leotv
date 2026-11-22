@@ -145,7 +145,7 @@ final class NativePhoneInsets implements AutoCloseable {
         }
         void apply(int lift){applied=original+lift;if(params.bottomMargin!=applied){params.bottomMargin=applied;view.setLayoutParams(params);}}
         void restore(){
-            if(view.getLayoutParams()==params&&params.bottomMargin==applied){params.bottomMargin=original;view.setLayoutParams(params);}
+            if(params.bottomMargin==applied){params.bottomMargin=original;if(view.getLayoutParams()==params)view.setLayoutParams(params);}
             if(glass!=null){view.getOverlay().remove(glass);view.removeOnLayoutChangeListener(geometry);view.setBackgroundTintList(tint);view.setStateListAnimator(animator);view.setElevation(elevation);}
         }
     }

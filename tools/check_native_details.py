@@ -118,6 +118,7 @@ def check_contract(root, variant, project=None):
     contracts['U3/n' if mobile else 'S3/k'] = (['d(Landroid/widget/ImageView;Ljava/lang/String;Ljava/lang/String;Z)V', 'b(Ljava/lang/String;)Ljava/lang/Object;'], [])
     if mobile:
         contracts['p2/a'] = (['p(Landroidx/appcompat/app/j;L' + BEANS + 'Style;)[I'], [])
+        contracts['com/fongmi/android/tv/ui/custom/CustomFabBehavior'] = (['p(Landroidx/coordinatorlayout/widget/CoordinatorLayout;Landroid/view/View;Landroid/view/View;IIIII[I)V'], [])
         contracts['S3/G'] = (['y0(I)V', 'p0()Z', 'u0()LS3/h;'], [])
         contracts['S3/z'] = (['n(L' + BEANS + 'Vod;)V'], [])
         contracts['androidx/fragment/app/S'] = (['B(I)Landroidx/fragment/app/v;'], [])
