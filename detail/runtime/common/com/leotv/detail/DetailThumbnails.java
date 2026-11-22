@@ -120,7 +120,7 @@ class DetailThumbnails {
 
     /** Host history explicitly owns these CDN or loopback image addresses. Metadata stays restricted. */
     void bindSource(String path,boolean portrait,Target target){
-        if(own(path)){bind(path,portrait,target);return;}
+        if(own(path)&&path.indexOf('@')<0){bind(path,portrait,target);return;}
         request(path,portrait,target,true);
     }
     boolean ownSource(String path){return own(path)||!SourceArtwork.address(path).isEmpty();}
@@ -229,8 +229,7 @@ class DetailThumbnails {
         byte[] data = files.read(key);
         boolean fresh = data == null;
         String address=source?SourceArtwork.address(path):MobileDetailMetadata.imageAddress(path,size(portrait));
-        if (fresh) data = BackdropHttp.get(address,source?"source-image":"image",source?SourceArtwork.route(address,proxy):proxy,
-                source?SourceArtwork.headers(address):MobileDetailMetadata.imageHeaders(address),request,(source?2048:512)*1024);
+        if (fresh) data = source?SourceArtwork.fetch(path,proxy,request,2048*1024):BackdropHttp.get(address,"image",proxy,MobileDetailMetadata.imageHeaders(address),request,512*1024);
         request.check();
         BitmapFactory.Options options = new BitmapFactory.Options(); options.inJustDecodeBounds = true;
         BitmapFactory.decodeByteArray(data, 0, data.length, options);

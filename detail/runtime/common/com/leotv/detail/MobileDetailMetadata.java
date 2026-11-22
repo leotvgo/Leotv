@@ -425,6 +425,13 @@ class MobileDetailMetadata {
 
     private Result loadTmdb(BackdropIdentity work, BackdropSettings.Options options, BackdropHttp.Request request,
                             MetadataPrefetch.Target known, BackdropIdentity.Selection[] searched) throws Exception {
+        return loadTmdb(work,options,request,known,searched,false);
+    }
+    Result loadHero(BackdropIdentity work,BackdropSettings.Options options,BackdropHttp.Request request,MetadataPrefetch.Target known)throws Exception{
+        return work.music?null:loadTmdb(work,options,request,known,null,true);
+    }
+    private Result loadTmdb(BackdropIdentity work, BackdropSettings.Options options, BackdropHttp.Request request,
+                            MetadataPrefetch.Target known, BackdropIdentity.Selection[] searched,boolean heroOnly) throws Exception {
         if (options.key.isEmpty() || options.key.contains("\n") || options.key.contains("\r")) return null;
         Map<String, String> headers = new HashMap<>(); headers.put("Accept", "application/json");
         boolean bearer = options.key.startsWith("eyJ");
@@ -484,8 +491,10 @@ class MobileDetailMetadata {
         // title's own facts - its standing, its crew, its collection and the ids a skip-intro lookup needs.
         String append = creditsKey + ",images,recommendations,reviews,videos,external_ids,keywords,similar"
                 + (tv ? ",credits" : "");
+        if(heroOnly)append="images";
         JSONObject detail = get(base + "?append_to_response=" + append + "&include_image_language="
                 + encode("null,zh," + imageLanguage + ",en") + query, options, headers, request);
+        if(heroOnly){Result value=new Result(detail.optString("overview"),facts(detail),"",null,imagePath(detail.optString("poster_path")),imagePath(detail.optString("backdrop_path")),Collections.emptyList(),Collections.emptyMap(),-1,backdrops(detail),"tmdb",posters(detail),Collections.emptyList(),new Branding(tv?"剧集":"电影",detail.optString(tv?"original_name":"original_title"),logos(detail,imageLanguage),badges(detail)));value.tmdbId=match.optLong("id");value.tmdbType=match.optString("media_type");return value;}
         List<Actor> actors = actors(detail.optJSONObject(creditsKey));
         if (actors.isEmpty()) actors = actors(detail.optJSONObject("credits"));
         if (actors.isEmpty()) {

@@ -85,13 +85,18 @@ class DetailHero extends View {
     void onIncoming(Index listener) { incomingListener = listener; }
     void load(String path, String proxy) { load(Collections.singletonList(path), proxy); }
     void loadSource(String path, String proxy) {
-        String address = SourceArtwork.address(path);
-        load(address.isEmpty() ? Collections.emptyList() : Collections.singletonList(address), proxy, true);
+        load(SourceArtwork.address(path).isEmpty() ? Collections.emptyList() : Collections.singletonList(path), proxy, true);
     }
     void loadSources(List<String> paths,String proxy){
         List<String> valid=new ArrayList<>();
-        for(String path:paths){String address=SourceArtwork.address(path);if(!address.isEmpty()&&!valid.contains(address))valid.add(address);if(valid.size()>=limit)break;}
+        for(String path:paths){String address=SourceArtwork.address(path);if(!address.isEmpty()&&!valid.contains(path))valid.add(path);if(valid.size()>=limit)break;}
         load(valid,proxy,true);
+    }
+    void loadHomeSources(List<String> paths,List<String> fallbacks,String proxy){
+        boolean append=sourceImages&&!slides.isEmpty()&&slides.size()<=paths.size();
+        for(int i=0;append&&i<slides.size();i++)append=slides.get(i).path.equals(paths.get(i));
+        if(append){this.proxy=proxy;for(int i=slides.size();i<paths.size()&&i<limit;i++){Slide slide=new Slide(paths.get(i),true);slide.fallback=fallbacks.get(i);slides.add(slide);}prepareNext();schedule();return;}
+        load(paths,proxy,true);for(int i=0;i<slides.size();i++)slides.get(i).fallback=fallbacks.get(i);
     }
     /**
      * The slides this carousel would keep for a list: usable and unique, in order, capped. The home
@@ -213,11 +218,12 @@ class DetailHero extends View {
             byte[] data = cached; Bitmap loaded = null; boolean retry=false, fetched=false;
             try {
                 if (data == null) data = store.read(slide.cacheKey());
-                if (data == null) { data = slide.source ? downloadSource(slide.path, route, pending)
-                        : download(slide.path, route, pending); fetched=true; }
+                if (data == null) {try{data = slide.source ? downloadSource(slide.path, route, pending)
+                        : download(slide.path, route, pending); fetched=true;}catch(Exception unavailable){pending.check();if(!slide.source||slide.fallback.isEmpty())throw unavailable;data=downloadSource(slide.fallback,route,pending);fetched=false;}}
                 pending.check();
                 BitmapFactory.Options o = new BitmapFactory.Options(); o.inJustDecodeBounds = true;
                 BitmapFactory.decodeByteArray(data, 0, data.length, o);
+                if((o.outWidth<=0||o.outHeight<=0)&&slide.source&&!slide.fallback.isEmpty()){data=downloadSource(slide.fallback,route,pending);fetched=false;BitmapFactory.decodeByteArray(data,0,data.length,o);}
                 if (o.outWidth > 0 && o.outHeight > 0 && o.outWidth <= 4096 && o.outHeight <= 4096) {
                     // Only an image this page can actually draw is worth keeping.
                     if (fetched) store.write(slide.cacheKey(), data, cacheTicket);
@@ -260,7 +266,7 @@ class DetailHero extends View {
                 "image", route, MobileDetailMetadata.imageHeaders(address), pending, 2 * 1024 * 1024);
     }
     byte[] downloadSource(String address, String route, BackdropHttp.Request pending) throws Exception {
-        return BackdropHttp.get(address, "source-image", route, SourceArtwork.headers(address), pending, 2 * 1024 * 1024);
+        return SourceArtwork.fetch(address,route,pending,2*1024*1024);
     }
     private void schedule() {
         main.removeCallbacks(turn);
@@ -490,7 +496,7 @@ class DetailHero extends View {
     private void retire(Bitmap b) { if (b != null) main.postDelayed(() -> recycle(b),64); }
     private static void recycle(Bitmap b) { if (b != null && !b.isRecycled()) b.recycle(); }
     private static final class Slide {
-        final String path; final boolean source; byte[] bytes; boolean failed; int colour = DEFAULT_COLOR, attempts; long retryAt;
+        final String path; final boolean source; String fallback="";byte[] bytes; boolean failed; int colour = DEFAULT_COLOR, attempts; long retryAt;
         Slide(String path, boolean source) { this.path = path; this.source = source; }
         String cacheKey() { return source ? "source-poster:" + path : key(path); }
     }

@@ -59,7 +59,7 @@ public final class GlobalChrome {
     /** Called from the retained home back handler, including Android's gesture dispatcher. */
     public static boolean backFollowing(Activity activity) {
         Controller controller = lifecycle == null ? null : lifecycle.active.get(activity);
-        return controller != null && controller.following.back();
+        return controller != null && (controller.newHome.back() || controller.following.back());
     }
 
     public static synchronized Drawable loadingBackground(android.content.Context context) {

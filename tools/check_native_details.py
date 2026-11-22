@@ -111,6 +111,20 @@ def check_contract(root, variant, project=None):
         'setNegativeButton(ILandroid/content/DialogInterface$OnClickListener;)Landroidx/appcompat/app/f;'],
         ['a:Landroidx/appcompat/app/b;'])
     contracts['androidx/appcompat/app/b'] = ([], ['k:Ljava/lang/CharSequence;'])
+    contracts[BEANS + 'Class'] = (['getTypeId()Ljava/lang/String;', 'getStyle()L' + BEANS + 'Style;'], [])
+    contracts[BEANS + 'Style'] = (['rect()L' + BEANS + 'Style;', 'getRatio()F', 'isOval()Z', 'isList()Z'], [])
+    contracts[BEANS + 'Site'] = (['getStyle(L' + BEANS + 'Style;)L' + BEANS + 'Style;'], [])
+    contracts[BEANS + 'Vod'] = (contracts[BEANS + 'Vod'][0] + ['objectFrom(Ljava/lang/String;)L' + BEANS + 'Vod;', 'getNameVisible()I', 'getYearVisible()I', 'getSiteVisible()I', 'getRemarkVisible()I'], contracts[BEANS + 'Vod'][1])
+    contracts['U3/n' if mobile else 'S3/k'] = (['d(Landroid/widget/ImageView;Ljava/lang/String;Ljava/lang/String;Z)V', 'b(Ljava/lang/String;)Ljava/lang/Object;'], [])
+    if mobile:
+        contracts['p2/a'] = (['p(Landroidx/appcompat/app/j;L' + BEANS + 'Style;)[I'], [])
+        contracts['S3/G'] = (['y0(I)V', 'p0()Z', 'u0()LS3/h;'], [])
+        contracts['S3/z'] = (['n(L' + BEANS + 'Vod;)V'], [])
+        contracts['androidx/fragment/app/S'] = (['B(I)Landroidx/fragment/app/v;'], [])
+        contracts['r2/f'] = (['setCurrentItem(I)V', 'getAdapter()Lr2/a;'], [])
+    else:
+        contracts['com/bumptech/glide/e'] = (['v()I', 'w(IL' + BEANS + 'Style;)[I'], [])
+        contracts['com/fongmi/android/tv/ui/activity/VodActivity'] = (['S(Landroid/app/Activity;Ljava/lang/String;L' + BEANS + 'Result;)V'], [])
     contracts[('E3' if mobile else 'B3') + '/n'] = (['<init>(Ljava/lang/String;Ljava/lang/String;I)V', 'call()Ljava/lang/Object;'], [])
     contracts[('E3' if mobile else 'B3') + '/p'] = (['call()Ljava/lang/Object;'], [])
     contracts[('t3' if mobile else 'q3') + '/i'] = (['m()I'], [])
