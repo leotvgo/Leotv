@@ -158,6 +158,57 @@ public class NativeDetailTest {
         assertNull(Playback.consumeNativeDetail("fictional-csp-line", "fictional-film"));
     }
 
+    public static final class CachedResult {
+        private final CachedVod vod;
+        CachedResult(List<Flag> flags) { vod = new CachedVod(flags); }
+        public CachedVod getVod() { return vod; }
+    }
+    public static final class CachedVod {
+        private final List<Flag> flags;
+        CachedVod(List<Flag> flags) { this.flags = flags; }
+        public List<Flag> getFlags() { return flags; }
+    }
+    private void replayCachedPlaylist(boolean otherEpisode, boolean otherFlag) throws Exception {
+        Activity detailActivity = Robolectric.buildActivity(Activity.class, resource()).create().get();
+        SiteFeed.initialize(detailActivity);
+        VideoActivity seed = player(resource()); playlist(seed);
+        SourceGateway.Detail detail = new SourceGateway.Detail("fictional-csp-line", "fictional-film", new JSONObject(
+                "{\"vod_play_from\":\"线路甲$$$线路乙\",\"vod_play_url\":\"第一集$fictional:first$$$第一集$fictional:other#第七集$fictional:selected$opaque\"}"));
+        detail.nativeResult = new CachedResult(seed.Z.f);
+        DetailSessionCache.put(detailActivity, detail, null);
+        // Return to the same cached detail repeatedly, including selection UI state from playback.
+        for (int visit = 0; visit < 4; visit++) {
+            SourceGateway.Detail cached = DetailSessionCache.get(detailActivity, detail.site, detail.id).source;
+            assertSame(detail, cached);
+            SourceGateway.Episode chosen = detail.episodes.get(visit == 0 ? 2 : otherFlag ? 0 : otherEpisode ? 1 : 2);
+            Playback.prepareSource(detailActivity, cached);
+            NativeRouting.play(detailActivity, detail.site, detail.id, detail.name, detail.picture, chosen.flag, chosen.url, chosen.name);
+            Intent next = Shadows.shadowOf(detailActivity).getNextStartedActivity();
+            CachedResult result = (CachedResult) Playback.consumeNativeDetail(detail.site, detail.id);
+            assertSame(detail.nativeResult, result);
+            VideoActivity current = player(next);
+            current.Z.f.addAll(result.getVod().getFlags());
+            Playback.initialize(current);
+            assertTrue(Playback.select(current));
+            assertEquals("visit " + visit + " must dispatch playback", 1, current.playbackRequests);
+            assertEquals(chosen.url, current.S.g.get(current.S.index).getUrl());
+            assertTrue(current.selectedEpisode.isActivated());
+            current.A0(); assertEquals(2, current.playbackRequests);
+            assertTrue(Playback.select(current)); assertEquals(2, current.playbackRequests);
+            current.selectedEpisode.setSelected(true);
+            assertTrue(Playback.leave(current)); Playback.release(current);
+        }
+    }
+    @Test public void returningFromPlaybackCanResumeTheSameEpisodeRepeatedly() throws Exception {
+        replayCachedPlaylist(false, false);
+    }
+    @Test public void returningFromPlaybackCanSelectAnotherEpisodeOnTheSameFlag() throws Exception {
+        replayCachedPlaylist(true, false);
+    }
+    @Test public void returningFromPlaybackCanSelectAnotherFlag() throws Exception {
+        replayCachedPlaylist(false, true);
+    }
+
     @Test public void favoritesAndResumeUseTheOriginalConfigNamespaceAndModels() throws Exception {
         Activity activity = Robolectric.buildActivity(Activity.class).create().get();
         SourceGateway.Detail detail = new SourceGateway.Detail("fictional-line", "fictional-film", new JSONObject(

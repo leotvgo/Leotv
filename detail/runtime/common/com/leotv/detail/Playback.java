@@ -65,7 +65,28 @@ public final class Playback {
         if(!java.util.Objects.equals(site,pendingSite)||!java.util.Objects.equals(id,pendingId))return null;
         // Keep the ordinary task's initialized Vod/Flag/Episode objects. A JSON round trip
         // can silently turn a failed Result parse into Result.empty(), which the host exits on.
-        Object result=pendingResult;pendingResult=null;pendingContext.clear();return result;
+        Object result=pendingResult;pendingResult=null;pendingContext.clear();
+        // The previous VideoActivity activated these same cached beans. w0/O0 skip
+        // binding an activated Flag, leaving the new player's episode adapter empty;
+        // A0 (including refresh) then returns without requesting a media source.
+        // Clear view state at handoff, before the ordinary controller reads history.
+        try{
+            Object vod=result.getClass().getMethod("getVod").invoke(result);
+            for(Object flag:(List<?>)vod.getClass().getMethod("getFlags").invoke(vod)){
+                java.lang.reflect.Field activated=flag.getClass().getDeclaredField("activated");
+                activated.setAccessible(true);activated.setBoolean(flag,false);
+                for(Object episode:(List<?>)flag.getClass().getMethod("getEpisodes").invoke(flag)){
+                    episode.getClass().getMethod("setActivated",boolean.class).invoke(episode,false);
+                    episode.getClass().getMethod("setSelected",boolean.class).invoke(episode,false);
+                }
+            }
+            return result;
+        }catch(ReflectiveOperationException|RuntimeException unavailable){
+            // An unusable handoff falls back to the preserved detail task, never a
+            // partially reset playlist or Result.fromJson's silent empty fallback.
+            android.util.Log.w("LeotvPlayer","Cached playback state unavailable; reload native detail");
+            return null;
+        }
     }
     public static void initialize(Activity activity) {
         if (!NativeRouting.isFullscreenPlayer(activity)) return;

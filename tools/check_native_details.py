@@ -187,6 +187,10 @@ def check_contract(root, variant, project=None):
             '<init>(Landroidx/leanback/widget/Presenter;)V',
             'setItems(Ljava/util/List;Landroidx/leanback/widget/DiffCallback;)V'], [])
     checked = 0
+    # Cached Flag activation is private in every ordinary variant; there is no
+    # boolean setter (setActivated(Flag) also replaces episode references).
+    if not re.search(r'(?m)^\.field private activated:Z$', text(BEANS + 'Flag')):
+        raise ValueError('Pinned native Flag activation field unavailable: ' + variant)
     for name, (methods, fields) in contracts.items():
         body = text(name)
         for kind, members in (('method', methods), ('field', fields)):
@@ -196,7 +200,7 @@ def check_contract(root, variant, project=None):
                     raise ValueError('Public native detail ABI unavailable: ' + name + ':' + signature)
                 checked += 1
     sources = source_set(root, 'mobile' if mobile else 'tv')
-    return {'variant': variant, 'public_abi_members_verified': checked, 'ordinary_edit_classes_pinned': len(lock),
+    return {'variant': variant, 'public_abi_members_verified': checked, 'private_abi_members_verified': 1, 'ordinary_edit_classes_pinned': len(lock),
             'native_source_files_declared': len(sources), 'client': 'mobile' if mobile else 'tv',
             'theme_count': 4 if mobile else 5, 'device_validation': False}
 

@@ -1,11 +1,11 @@
-# Leotv — 5.2.2 正式版恢复工程
+# Leotv — 5.2.3 正式版恢复工程
 
 本工作区以现有普通版为功能和 Android 6 基准。当前已得到四个样本的可重建 smali 工程，
 普通 TV 的完整 Java 阅读视图，以及第一组能够独立编译的 Java 恢复代码。
 完整 Java/Gradle 应用工程仍在恢复；不能将这里的 Java 阅读视图直接当作已可编译的原始工程。
 
-当前正式版为 **5.2.2 / 611**，独立安装包名 **com.leotv.app**。承接 **5.2.2-preview.1 / 610** 的 TV 修复，支持固定签名覆盖升级。
-正式安装包：[Leotv 5.2.2](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.2)，已设为 Latest，提供 TV/手机、32/64 位四个固定签名 APK。
+本轮正式版本为 **5.2.3 / 612**，独立安装包名 **com.leotv.app**。修正详情返回后再次播放黑屏，支持固定签名覆盖升级。
+正式安装包：[Leotv 5.2.3](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.3)，提供 TV/手机、32/64 位四个固定签名 APK；本轮发布完成后设为 Latest。
 启动图标、TV 横幅、默认线路动图、关于页与原生透明上下栏已接入专用构建；5.1.26 停止上下栏实时回放和模糊。
 独立原生详情页、个性设置内的本端详情主题/TMDB 配置，以及手机按视频尺寸自动旋转已接入。
 5.1.10 修正缓存分类页的滚动取景、上下渐变模糊和分类控件层次；详情海报铺到窗口顶端，TV 详情固定横屏。
@@ -113,7 +113,7 @@ Actions 产物存储不可用时，各变体把已签名 APK 和报告存入同�
 工作区没有复制用户运行配置。历史普通版 5.1.6 的四个固定签名测试 APK 已发布，
 其中手机64位和TV32位由用户确认可安装使用；新 Leotv 的设备验收需另行记录。
 
-## 构建 Leotv 5.2.2
+## 构建 Leotv 5.2.3
 
 ```sh
 python3 tools/ci_dependencies.py --output /tmp/leotv-build-deps
@@ -127,7 +127,7 @@ gradle --no-daemon -p research/detail-check -Pclient=mobile test
 gradle --no-daemon -p research/detail-check -Pclient=tv test
 ```
 
-本地输出为 `artifacts/leotv-5.2.2-<variant>-unsigned.apk`、审计报告和内部混淆映射。
+本地输出为 `artifacts/leotv-5.2.3-<variant>-unsigned.apk`、审计报告和内部混淆映射。
 GitHub 使用同一构建器，再以既有 APK 专用固定密钥签名；产物为 `leotv-<variant>.apk`。
 新包名、provider、私有权限及媒体控制标识独立，可与原 OK影视同时安装。
 原组件类名保留，以保护 JNI、反射及站点 JAR 的 ABI。
@@ -206,3 +206,5 @@ Parcel、数据库、列表/过滤器、弹幕异常路径、网络、UI 和播�
 该[测试版四套固定签名 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.2-preview.1-build-45011955477)已发布。左侧菜单仅在内容行最左卡片继续按左键时唤醒，保留行内及顶栏正常选择；发布该测试版时正式 Latest 为 5.2.1。
 
 5.2.2 / 611 按用户要求直接发布正式版：TV 左侧菜单玻璃底色略加深，站点字号接回宿主 `home_ui` 的 24/20sp 并移除附加按钮底板，右上焦点圆框从 36dp 缩至 30dp。首页按相邻分类逐行移动，横向保留原生 24dp 边距/16dp 间距并按放大后的卡片边界对齐，纵向保护完整焦点行；仅在窗口不足以容纳最大尺寸行时按比例收敛海报尺寸。原生分类列表补充进入时的内容焦点及页面内约束。详见[5.2.2 正式版 TV 可见范围与焦点修正](docs/LEOTV-5.2.2-TV-VIEWPORT-AND-FOCUS-20261122.md)。
+
+5.2.3 / 612 清除缓存交给新播放器时残留的线路激活与剧集选中状态，修正播放返回详情后续播/换集黑屏、刷新无效。保留原 History 续播、排序和原播放器协议，按用户要求跳过额外回归，直接固定签名正式发布。详见[详情返回后再次播放修复](docs/LEOTV-5.2.3-REPLAY-CACHED-PLAYLIST-20261122.md)。
