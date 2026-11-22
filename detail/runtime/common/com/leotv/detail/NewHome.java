@@ -86,6 +86,7 @@ public final class NewHome implements AutoCloseable {
     void publishBackground(){if(page!=null&&page.hero.hasArtwork())com.leotv.ui.GlobalChrome.publishHomeBackground(activity,page.backdrop.colour);}
     boolean tvBack;int tvDirection=-1;
     public boolean shown(){return !closed&&running&&!categoryMode&&page!=null&&page.isShown();}
+    public boolean canWakeShortcuts(){return shown()&&page.leftContentEdge(activity.getCurrentFocus());}
     public void openShortcut(String action){if(!phone&&!closed)nativeUi.tvAction(action);}
     public boolean focusContentAfterShortcut(View previous){if(!shown())return false;if(previous!=null&&previous.isShown()&&previous.isEnabled()&&NativeCspUi.descendant(previous,page.scroll)&&previous.requestFocus())return true;return page.focusContent();}
     public boolean handleKey(android.view.KeyEvent event){

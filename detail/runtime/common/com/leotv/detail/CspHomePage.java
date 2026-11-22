@@ -85,6 +85,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         int above=heroFrame.getVisibility()==GONE?headerHeight+dp(12):0;if(scroll.getPaddingTop()!=above)scroll.setPadding(0,above,0,0);
     }
     boolean firstContent(View focus){return heroFrame.isShown()?NativeCspUi.descendant(focus,heroFrame):!shelves.isEmpty()&&NativeCspUi.descendant(focus,shelves.get(0).root);}
+    boolean leftContentEdge(View focus){if(focus==null)return false;for(Shelf shelf:shelves)if(shelf.rail.getChildCount()>0&&NativeCspUi.descendant(focus,shelf.rail.getChildAt(0)))return true;return false;}
     boolean focusContent(){View target=heroFrame.isShown()?heroFrame:null;if(target==null)for(Shelf shelf:shelves){target=shelf.rail.getChildCount()>0?shelf.rail.getChildAt(0):shelf.open;if(target.isShown())break;}if(target==null)return false;boolean focused=target.requestFocus();if(focused){android.graphics.Rect rect=new android.graphics.Rect();target.getDrawingRect(rect);target.requestRectangleOnScreen(rect,true);}return focused;}
     void refreshSizes(){if(closed)return;for(Shelf shelf:shelves)if(shelf.items!=null){int[] size=NativeCspUi.spec(activity,shelf.category.json);if(size[0]!=shelf.width||size[1]!=shelf.height)shelf.fill(shelf.items);}}
 

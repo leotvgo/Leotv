@@ -1227,6 +1227,18 @@ public final class GlobalChrome {
             if(nativeNavigation.getStateListAnimator()==null)nativeNavigation.setStateListAnimator(originalAnimator);
         }
         boolean firstTab(){View pager=owner.find("pager");return !closed&&owner.running&&(owner.newHome.shown()||owner.contentScreen(pager)&&owner.currentPage(pager)==0);}
+        boolean shortcutEdge(){
+            if(!firstTab())return false;
+            if(owner.newHome.shown())return owner.newHome.canWakeShortcuts();
+            View focus=owner.activity.getCurrentFocus(),pager=owner.find("pager");
+            if(focus==null||pager==null)return false;
+            boolean inside=false;for(View node=focus;node!=null;node=node.getParent() instanceof View?(View)node.getParent():null)if(node==pager){inside=true;break;}
+            if(!inside)return false;
+            View next=focus.focusSearch(View.FOCUS_LEFT);
+            if(next==null||next==focus)return true;
+            for(View node=next;node!=null;node=node.getParent() instanceof View?(View)node.getParent():null)if(node==pager)return false;
+            return true;
+        }
         boolean handle(android.view.KeyEvent event){
             if(closed||!owner.running)return false;
             int key=event.getKeyCode();
@@ -1239,7 +1251,7 @@ public final class GlobalChrome {
                 if(key==android.view.KeyEvent.KEYCODE_DPAD_RIGHT||key==android.view.KeyEvent.KEYCODE_BACK){if(event.getAction()==android.view.KeyEvent.ACTION_DOWN){menuKey=key;restoreContentFocus();}return true;}
                 if(key==android.view.KeyEvent.KEYCODE_DPAD_LEFT)return true;
             }
-            if(key==android.view.KeyEvent.KEYCODE_DPAD_LEFT&&firstTab()){
+            if(key==android.view.KeyEvent.KEYCODE_DPAD_LEFT&&shortcutEdge()){
                 if(event.getAction()==android.view.KeyEvent.ACTION_DOWN&&event.getRepeatCount()==0){left=true;show();}
                 if(left){if(event.getAction()==android.view.KeyEvent.ACTION_UP)left=false;return true;}
             }
