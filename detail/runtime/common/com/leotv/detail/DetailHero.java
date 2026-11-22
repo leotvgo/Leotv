@@ -88,6 +88,11 @@ class DetailHero extends View {
         String address = SourceArtwork.address(path);
         load(address.isEmpty() ? Collections.emptyList() : Collections.singletonList(address), proxy, true);
     }
+    void loadSources(List<String> paths,String proxy){
+        List<String> valid=new ArrayList<>();
+        for(String path:paths){String address=SourceArtwork.address(path);if(!address.isEmpty()&&!valid.contains(address))valid.add(address);if(valid.size()>=limit)break;}
+        load(valid,proxy,true);
+    }
     /**
      * The slides this carousel would keep for a list: usable and unique, in order, capped. The home
      * builds its own list with the same rule, so slide i and its title are always the same entry.

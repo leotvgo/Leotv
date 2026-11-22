@@ -8,7 +8,7 @@ import re
 import subprocess
 import time
 
-TAG = re.compile(r'(?:leotv|ordinary)-[0-9]+\.[0-9]+\.[0-9]+-build-([0-9]+)')
+TAG = re.compile(r'(?:leotv|ordinary)-[0-9]+\.[0-9]+\.[0-9]+(?:-(?:preview|beta|rc)\.[0-9]+)?-build-([0-9]+)')
 REPORTS = {'restored-core-api23-check', 'native-chrome-api23-and-render-check', 'native-detail-api23-check'}
 
 

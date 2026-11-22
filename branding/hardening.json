@@ -6,17 +6,102 @@
   "internal_package": "com.leotv.internal",
   "min_api": 23,
   "stable_abi": {
-    "com.leotv.branding.LogoLoader": {"methods": ["load(Landroid/widget/ImageView;Ljava/lang/String;)V"]},
-    "com.leotv.ui.GlobalChrome": {"methods": ["install(Landroid/app/Application;)V", "openFollowing(Landroid/app/Activity;)V", "backFollowing(Landroid/app/Activity;)Z", "rememberBackground(Landroid/app/Activity;)V", "loadingBackground(Landroid/content/Context;)Landroid/graphics/drawable/Drawable;"]},
-    "com.leotv.ui.GlobalChrome$FollowingPage": {"methods": ["resume()V", "pause()V", "close()V", "closePicker()Z", "viewportInsets(II)V"]},
-    "com.leotv.detail.DetailActivity": {"methods": ["<init>()V", "saveDetailState(Landroid/os/Bundle;)V"]},
-    "com.leotv.detail.FollowingActivity": {"methods": ["<init>()V", "homePage(Landroid/app/Activity;Ljava/lang/Runnable;)Landroid/view/View;"]},
-    "com.leotv.detail.JarIntegration": {"methods": ["register(Ljava/lang/Object;Ljava/lang/reflect/InvocationHandler;)V"], "fields": ["METADATA:Ljava/lang/String;"]},
-    "com.leotv.detail.NativeRouting": {"methods": ["redirect(Landroid/app/Activity;)Z", "redirected(Landroid/app/Activity;)Z", "redirectNewIntent(Landroid/app/Activity;Landroid/content/Intent;)Z", "openResource(Landroid/app/Activity;Landroid/content/Intent;)V", "openIndexResource(Landroid/app/Activity;Ljava/lang/Object;Landroid/os/Bundle;)V", "isFullscreenPlayer(Landroid/app/Activity;)Z", "ownsNativeDetails()Z", "ownsNativeChrome()Z", "detailClient()Ljava/lang/String;"]},
-    "com.leotv.detail.Personalization": {"methods": ["attach(Landroid/app/Activity;Landroid/view/View;)V"]},
-    "com.leotv.detail.NativeEpisodeUi": {"methods": ["watch(Ljava/lang/Object;)V", "owned(Ljava/lang/Object;)Z", "selectNative(Ljava/lang/Object;Ljava/lang/Object;)Z"]},
-    "com.leotv.detail.Playback": {"methods": ["initialize(Landroid/app/Activity;)V", "release(Landroid/app/Activity;)V", "checkpoint(Landroid/app/Activity;)V", "leave(Landroid/app/Activity;)Z", "select(Landroid/app/Activity;)Z", "applyOrder(Landroid/app/Activity;)V", "videoChanged(Landroid/app/Activity;)V", "videoSizeChanged(Ljava/lang/Object;II)V", "consumeNativeDetail(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;"]},
-    "com.leotv.detail.MetadataSettings": {"methods": ["initialize(Landroid/content/Context;)V"]},
-    "com.leotv.detail.Device": {"fields": ["MOBILE:Z"]}
+    "com.leotv.branding.LogoLoader": {
+      "methods": [
+        "load(Landroid/widget/ImageView;Ljava/lang/String;)V"
+      ]
+    },
+    "com.leotv.ui.GlobalChrome": {
+      "methods": [
+        "install(Landroid/app/Application;)V",
+        "openFollowing(Landroid/app/Activity;)V",
+        "backFollowing(Landroid/app/Activity;)Z",
+        "rememberBackground(Landroid/app/Activity;)V",
+        "loadingBackground(Landroid/content/Context;)Landroid/graphics/drawable/Drawable;"
+      ]
+    },
+    "com.leotv.ui.GlobalChrome$FollowingPage": {
+      "methods": [
+        "resume()V",
+        "pause()V",
+        "close()V",
+        "closePicker()Z",
+        "viewportInsets(II)V"
+      ]
+    },
+    "com.leotv.detail.DetailActivity": {
+      "methods": [
+        "<init>()V",
+        "saveDetailState(Landroid/os/Bundle;)V"
+      ]
+    },
+    "com.leotv.detail.FollowingActivity": {
+      "methods": [
+        "<init>()V",
+        "homePage(Landroid/app/Activity;Ljava/lang/Runnable;)Landroid/view/View;"
+      ]
+    },
+    "com.leotv.detail.JarIntegration": {
+      "methods": [
+        "register(Ljava/lang/Object;Ljava/lang/reflect/InvocationHandler;)V"
+      ],
+      "fields": [
+        "METADATA:Ljava/lang/String;"
+      ]
+    },
+    "com.leotv.detail.NativeRouting": {
+      "methods": [
+        "redirect(Landroid/app/Activity;)Z",
+        "redirected(Landroid/app/Activity;)Z",
+        "redirectNewIntent(Landroid/app/Activity;Landroid/content/Intent;)Z",
+        "openResource(Landroid/app/Activity;Landroid/content/Intent;)V",
+        "openIndexResource(Landroid/app/Activity;Ljava/lang/Object;Landroid/os/Bundle;)V",
+        "isFullscreenPlayer(Landroid/app/Activity;)Z",
+        "ownsNativeDetails()Z",
+        "ownsNativeChrome()Z",
+        "detailClient()Ljava/lang/String;"
+      ]
+    },
+    "com.leotv.detail.Personalization": {
+      "methods": [
+        "attach(Landroid/app/Activity;Landroid/view/View;)V"
+      ]
+    },
+    "com.leotv.detail.NativeEpisodeUi": {
+      "methods": [
+        "watch(Ljava/lang/Object;)V",
+        "owned(Ljava/lang/Object;)Z",
+        "selectNative(Ljava/lang/Object;Ljava/lang/Object;)Z"
+      ]
+    },
+    "com.leotv.detail.Playback": {
+      "methods": [
+        "initialize(Landroid/app/Activity;)V",
+        "release(Landroid/app/Activity;)V",
+        "checkpoint(Landroid/app/Activity;)V",
+        "leave(Landroid/app/Activity;)Z",
+        "select(Landroid/app/Activity;)Z",
+        "applyOrder(Landroid/app/Activity;)V",
+        "videoChanged(Landroid/app/Activity;)V",
+        "videoSizeChanged(Ljava/lang/Object;II)V",
+        "consumeNativeDetail(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;"
+      ]
+    },
+    "com.leotv.detail.MetadataSettings": {
+      "methods": [
+        "initialize(Landroid/content/Context;)V"
+      ]
+    },
+    "com.leotv.detail.Device": {
+      "fields": [
+        "MOBILE:Z"
+      ]
+    },
+    "com.leotv.detail.CspCategoryActivity": {
+      "methods": [
+        "<init>()V",
+        "onCreate(Landroid/os/Bundle;)V"
+      ]
+    }
   }
 }

@@ -1,9 +1,8 @@
 {
-  "channel": "stable",
-  "version_name": "5.2.0",
-  "version_code": 600,
-  "tag": "leotv-5.2.0",
-  "title": "Leotv 5.2.0",
-  "prerelease": false,
-  "make_latest": true
+  "channel": "prerelease",
+  "version_name": "5.2.0-preview.1",
+  "version_code": 601,
+  "title": "Leotv 5.2.0-preview.1（新主页测试）",
+  "prerelease": true,
+  "make_latest": false
 }

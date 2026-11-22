@@ -49,6 +49,7 @@ def check_contract(root, variant, project=None):
     lock = json.loads((root / 'detail/native-source-lock.json').read_text())[variant]
     expected_paths = {'smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali'}
     expected_paths.add('smali/E3/n.smali' if mobile else 'smali/B3/n.smali')
+    expected_paths.add('smali/E3/p.smali' if mobile else 'smali/B3/p.smali')
     expected_paths.update({'smali/P3/b.smali', 'smali/S3/p.smali', 'smali/O3/t.smali', 'smali/F3/f.smali'} if mobile else {
         'smali/M3/b.smali', 'smali/com/fongmi/android/tv/ui/activity/SettingCustomActivity.smali',
         'smali/com/fongmi/android/tv/ui/activity/M.smali'})
@@ -111,6 +112,7 @@ def check_contract(root, variant, project=None):
         ['a:Landroidx/appcompat/app/b;'])
     contracts['androidx/appcompat/app/b'] = ([], ['k:Ljava/lang/CharSequence;'])
     contracts[('E3' if mobile else 'B3') + '/n'] = (['<init>(Ljava/lang/String;Ljava/lang/String;I)V', 'call()Ljava/lang/Object;'], [])
+    contracts[('E3' if mobile else 'B3') + '/p'] = (['call()Ljava/lang/Object;'], [])
     contracts[('t3' if mobile else 'q3') + '/i'] = (['m()I'], [])
     video_methods = ['b0()V', 'w0(L' + BEANS + 'Flag;ZZ)V', 'd(L' + BEANS + 'Episode;)V', 'T0(Z)V'] if mobile else [
         'Y()V', 'O0(L' + BEANS + 'Flag;ZZ)V', 'L0(L' + BEANS + 'Episode;)V']

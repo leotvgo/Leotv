@@ -41,6 +41,8 @@ public final class MetadataSettings {
     }
     public static boolean resourceGlobalSearch(Context context) { return prefs(context).getBoolean("resource_global_search", false); }
     public static void setResourceGlobalSearch(Context context, boolean enabled) { prefs(context).edit().putBoolean("resource_global_search", enabled).apply(); }
+    public static boolean newHome(Context context) { return prefs(context).getBoolean("new_home", true); }
+    public static void setNewHome(Context context, boolean enabled) { prefs(context).edit().putBoolean("new_home", enabled).apply(); }
     static String normalizeBase(String value) {
         String text = value == null ? "" : value.trim();
         if (text.isEmpty()) return DEFAULT_BASE;

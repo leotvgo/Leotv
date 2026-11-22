@@ -1,0 +1,29 @@
+{
+  "version_name": "5.2.0-preview.1",
+  "version_code": 601,
+  "base_commit": "67c130749600fa315258ec23b9e0dc44dccbd1f9",
+  "default_enabled": true,
+  "homepage_ui_provider": "APK only",
+  "carousel_feed": "First category of the active CSP",
+  "row_resource_limit": 15,
+  "row_more_action": "Independent single-category window",
+  "loads_later_rows_on_scroll": true,
+  "background": "Current hero palette gradient",
+  "new_activity": "com.leotv.detail.CspCategoryActivity",
+  "host_changes": [
+    "Added equivalent empty constructor to preserved E3.p/B3.p home callable; existing call body retained."
+  ],
+  "source_sha256": {
+    "detail/runtime/common/com/leotv/detail/NewHome.java": "4568c948bc19adb1fadade079ea297686cc68d951dbe16e23e2d9bd80abd4087",
+    "detail/runtime/common/com/leotv/detail/CspHomePage.java": "dd9b0d9961df42a7dfc0243e7c2e099620c4baba1d084029ffa46be18a3567c9",
+    "detail/runtime/common/com/leotv/detail/CspHomeData.java": "59f8899908d209c2f977744a2f7f56ba65c01242619303d0bfef41098bf94715",
+    "detail/runtime/common/com/leotv/detail/CspCategoryActivity.java": "f552f1e7a8252b28e902d203172447592b5af6ec4d8615a2322805b1d6d42448",
+    "detail/runtime/common/com/leotv/detail/MetadataSettings.java": "47e44ba0003f919f329dad503c0e8d53dafd7baf2e24753dbf068b074ad042c4",
+    "detail/runtime/common/com/leotv/detail/Personalization.java": "6d2fa800731c7198851d944690f42565ba5c54e5e0a71a9904f6476419d49ebb",
+    "detail/runtime/common/com/leotv/detail/SiteFeed.java": "16adb6809ba184503c148f9b69c0d574cf561b3386b1dd56f58217627242fe48",
+    "ui/java/com/leotv/ui/GlobalChrome.java": "9b671fd03ab17661c533253cb47979f8cfbc7c9e186775ba3b333c033b7add9b"
+  },
+  "tests_run": false,
+  "device_validation": false,
+  "validation_boundary": "API23 compile/package/R8/source-integrity and fixed signing are build gates; user requested real-device testing."
+}

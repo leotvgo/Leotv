@@ -44,12 +44,13 @@ def apply(project, root, variant):
     result_path = 'smali/O3/t.smali' if mobile else 'smali/com/fongmi/android/tv/ui/activity/M.smali'
     player_path = 'smali/F3/f.smali'
     source_path = 'smali/E3/n.smali' if mobile else 'smali/B3/n.smali'
+    home_path = 'smali/E3/p.smali' if mobile else 'smali/B3/p.smali'
     episode_path = 'smali/S3/f.1.smali'
     tv_episode_callback = 'smali/A0/a.smali'
     tv_episode_key = 'smali/O3/l.smali'
     lock = json.loads((root / 'detail/native-source-lock.json').read_text())[variant]
     changes, descriptors = {}, set()
-    paths = [base_path, settings_path, VIDEO, result_path,source_path]
+    paths = [base_path, settings_path, VIDEO, result_path,source_path,home_path]
     index_paths=['smali/S3/z.smali'] if mobile else ['smali/P3/e.smali','smali/P3/f.smali']
     paths.extend(index_paths)
     if mobile:
@@ -64,7 +65,17 @@ def apply(project, root, variant):
         text = original.decode()
         descriptor = re.search(r'(?m)^\.class[^\n]* (L[^;]+;)', text).group(1)
         descriptors.add(descriptor)
-        if path in index_paths:
+        if path == home_path:
+            if re.search(r'(?m)^\.method.* <init>\(\)V$',text):
+                raise ValueError('Expected the preserved constructor-elided home callable.')
+            text += '''
+.method public constructor <init>()V
+    .locals 0
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+    return-void
+.end method
+'''
+        elif path in index_paths:
             signature='n(Lcom/fongmi/android/tv/bean/Vod;)V' if mobile else 'a(Lcom/fongmi/android/tv/bean/Vod;)V'
             def index_resource(body):
                 native='SearchActivity;->S' if mobile else 'CollectActivity;->V'

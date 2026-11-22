@@ -417,6 +417,8 @@ def main():
                 manifest_report.append({'path': 'manifest/application/activity', 'attribute': 'name',
                                         'before': None, 'after': 'com.leotv.detail.DetailActivity'})
                 manifest_report.append({'path':'manifest/application/activity','attribute':'configChanges','before':None,'after':0x480})
+                manifest=BinaryXml(manifest).add_native_activity('com.leotv.detail.CspCategoryActivity',landscape=landscape,config_changes=0x480)
+                manifest_report.append({'path':'manifest/application/activity','attribute':'name','before':None,'after':'com.leotv.detail.CspCategoryActivity'})
                 manifest=BinaryXml(manifest).add_native_activity('com.leotv.detail.FollowingActivity',landscape=landscape,config_changes=0x480)
                 manifest_report.append({'path':'manifest/application/activity','attribute':'name','before':None,'after':'com.leotv.detail.FollowingActivity'})
                 manifest_report.append({'path':'manifest/application/activity','attribute':'configChanges','before':None,'after':0x480})

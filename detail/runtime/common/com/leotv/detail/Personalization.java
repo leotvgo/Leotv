@@ -12,7 +12,7 @@ import java.util.List;
 /** Uses the existing native preference rows and dialogs for Leotv's own settings. */
 public final class Personalization {
     private static final String TAG = "leotv_detail_settings";
-    private static final String THEME = "详情页主题", ENDPOINT = "TMDB 配置", SEARCH = "全局搜索";
+    private static final String THEME = "详情页主题", ENDPOINT = "TMDB 配置", SEARCH = "全局搜索", HOME = "新主页";
     private Personalization() {}
 
     public static void attach(Activity activity, View root) {
@@ -43,7 +43,8 @@ public final class Personalization {
         if(!Device.MOBILE){second=new LinearLayout(activity);second.setOrientation(LinearLayout.HORIZONTAL);LinearLayout.LayoutParams line=new LinearLayout.LayoutParams(-1,-2);line.topMargin=rowSpacing(target);rows.addView(second,line);}
         add(activity, second, template, summary, SEARCH,
                 () -> {MetadataSettings.setResourceGlobalSearch(activity,!MetadataSettings.resourceGlobalSearch(activity));refresh(activity,rows);});
-        if(!Device.MOBILE)second.addView(new View(activity),new LinearLayout.LayoutParams(0,0,1));
+        add(activity, second, template, summary, HOME,
+                () -> {MetadataSettings.setNewHome(activity,!MetadataSettings.newHome(activity));refresh(activity,rows);});
         View anchor = template;
         while (anchor != null && anchor.getParent() != target && anchor.getParent() instanceof View)
             anchor = (View) anchor.getParent();
@@ -62,6 +63,7 @@ public final class Personalization {
         catch (java.net.URISyntaxException invalid) { host = MetadataSettings.base(activity); }
         summary(endpoint, (MetadataSettings.customKey(activity) ? "自定义 Key" : "内置 Key") + " · " + host);
         summary(rows.findViewWithTag(SEARCH), MetadataSettings.resourceGlobalSearch(activity)?"开启":"关闭");
+        summary(rows.findViewWithTag(HOME), MetadataSettings.newHome(activity)?"开启":"关闭");
     }
     private static void summary(View row, String value) {
         if (row == null) return;

@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
+import com.leotv.detail.NewHome;
 
 /** Route-content effects; native controls and mobile window insets remain owned by the host. */
 public final class GlobalChrome {
@@ -161,6 +162,7 @@ public final class GlobalChrome {
         final Portal portal;
         final FollowingNavigation following;
         final NativePhoneInsets phoneInsets;
+        final NewHome newHome;
         final boolean phone;
         final Map<View, Background> backgrounds = new IdentityHashMap<>();
         final Map<ViewGroup, Clip> clips = new IdentityHashMap<>();
@@ -202,6 +204,7 @@ public final class GlobalChrome {
             portal = new Portal(activity, this);
             following=new FollowingNavigation(this);
             phoneInsets=phone?new NativePhoneInsets(activity,content):null;
+            newHome=new NewHome(activity,content,phone);
             if(phone){decor.setSystemUiVisibility(decor.getSystemUiVisibility()|LAYOUT_FLAGS);activity.getWindow().setStatusBarColor(Color.TRANSPARENT);activity.getWindow().setNavigationBarColor(Color.TRANSPARENT);}
         }
 
@@ -263,6 +266,7 @@ public final class GlobalChrome {
         }
 
         void resume() {
+            newHome.resume();
             if (closed || running) return;
             clearSamples();
             running = dirty = discovery = true;
@@ -275,6 +279,7 @@ public final class GlobalChrome {
         }
 
         void pause() {
+            newHome.pause();
             if (!running) return;
             if(!backgroundPrepared)rememberBackdrop();backgroundPrepared=false;
             following.pausePage();
@@ -332,6 +337,8 @@ public final class GlobalChrome {
         }
 
         private void rememberBackdrop() {
+            Drawable csp=newHome.background();
+            if(csp!=null){synchronized(GlobalChrome.class){hostBackdrop=csp;}return;}
             if (!activity.getClass().getName().equals("com.fongmi.android.tv.ui.activity.HomeActivity")) return;
             View shared = null;
             for (int i = content.getChildCount() - 1; i >= 0; i--) {
@@ -556,6 +563,11 @@ public final class GlobalChrome {
         @Override public boolean onPreDraw() {
             if (closed || !running || content.getWidth() <= 0 || content.getHeight() <= 0) return true;
             following.update();
+            if(newHome.update()){
+                if(contentEnabled||!backgrounds.isEmpty()||viewport!=null)disableContent();
+                if(phone)phoneInsets.update(null,following.nativeNavigation,true);
+                following.transparent();return true;
+            }
             if(!phone){
                 if(!discovery)return true;
                 discovery=false;contentEnabled=true;
@@ -935,6 +947,7 @@ public final class GlobalChrome {
             pause();
             closed = true;
             following.close();
+            newHome.close();
             if(phoneInsets!=null)phoneInsets.close();
             for (Background background : backgrounds.values()) background.discard();
             backgrounds.clear();

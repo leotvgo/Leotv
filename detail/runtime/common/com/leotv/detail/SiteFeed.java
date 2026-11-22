@@ -23,6 +23,20 @@ final class SiteFeed {
         catch (ReflectiveOperationException unavailable) { return null; }
     }
     static List<Site> sites() { return collect(invoke(store(),Device.MOBILE?"r":"s")); }
+    static Site active() {
+        Object value=null;
+        try{Object owner=store();value=Device.MOBILE?owner.getClass().getField("e").get(owner):invoke(owner,"o");}
+        catch(ReflectiveOperationException|RuntimeException unavailable){}
+        if(value==null)return null;String key=text(value,"getKey");
+        return key.isEmpty()?null:new Site(key,text(value,"getName"),text(value,"getApi"),value);
+    }
+    static String homeBody(Site site)throws Exception{
+        synchronized(site.raw){
+            Site current=active();if(current==null||!site.key.equals(current.key))throw new InterruptedException();
+            Object task=type(Device.MOBILE?"E3.p":"B3.p").getConstructor().newInstance();
+            return body(((java.util.concurrent.Callable<?>)task).call());
+        }
+    }
     static List<Site> searchSites() {
         List<Site> result=collect(invoke(store(),"r"));
         return result.isEmpty()?sites():result;
@@ -60,11 +74,14 @@ final class SiteFeed {
         }
     }
     static String directoryBody(Site site,String id,String page) throws Exception {
+        return directoryBody(site,id,page,new HashMap<String,String>());
+    }
+    static String directoryBody(Site site,String id,String page,HashMap<String,String> extend) throws Exception {
         synchronized(site.raw){
             if(Thread.currentThread().isInterrupted())throw new InterruptedException();
             Class<?> task=type(Device.MOBILE?"E3.l":"B3.j");
             Object call=task.getConstructor(String.class,String.class,String.class,HashMap.class)
-                    .newInstance(site.key,id,page,new HashMap<String,String>());
+                    .newInstance(site.key,id,page,new HashMap<String,String>(extend));
             return body(((java.util.concurrent.Callable<?>)call).call());
         }
     }

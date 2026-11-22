@@ -11,6 +11,7 @@
 -keep,allowoptimization interface com.leotv.ui.GlobalChrome$FollowingPage { *; }
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.DetailActivity { public <init>(...); public <methods>; protected <methods>; }
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.FollowingActivity { public <init>(...); public <methods>; protected <methods>; }
+-keep,includedescriptorclasses,allowoptimization class com.leotv.detail.CspCategoryActivity { public <init>(...); public <methods>; protected <methods>; }
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.JarIntegration { public <methods>; public <fields>; }
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.NativeRouting { public <methods>; public <fields>; }
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.Personalization { public <methods>; }

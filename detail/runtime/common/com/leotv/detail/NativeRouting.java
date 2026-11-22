@@ -51,6 +51,18 @@ public final class NativeRouting {
         activity.startActivity(next);
         activity.overridePendingTransition(0,0);
     }
+    static void openCspResource(Activity activity,String key,org.json.JSONObject item){
+        SiteFeed.Site site=SiteFeed.find(SiteFeed.sites(),key);
+        if(site!=null&&Boolean.TRUE.equals(SiteFeed.invoke(site.raw,"isIndexs")))try{
+            Class<?> result=activity.getClassLoader().loadClass("com.fongmi.android.tv.bean.Result");
+            org.json.JSONObject body=new org.json.JSONObject().put("list",new org.json.JSONArray().put(item));
+            Object value=result.getMethod("fromJson",String.class).invoke(null,body.toString());Object vod=result.getMethod("getVod").invoke(value);
+            android.os.Bundle arguments=new android.os.Bundle();arguments.putString("key",key);openIndexResource(activity,vod,arguments);return;
+        }catch(ReflectiveOperationException|org.json.JSONException unavailable){}
+        openResource(activity,new Intent().putExtra("key",key).putExtra("id",item.optString("vod_id",item.optString("id")))
+                .putExtra("name",item.optString("vod_name",item.optString("name"))).putExtra("pic",item.optString("vod_pic",item.optString("pic")))
+                .putExtra("year",item.optString("vod_year")).putExtra("type",item.optString("type_name")));
+    }
     static org.json.JSONObject searchMetadata(Intent incoming) {
         if(incoming==null)return null;
         String seed=incoming.getStringExtra(INDEX_METADATA);

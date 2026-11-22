@@ -28,7 +28,7 @@ def main():
     if audit['package'] != 'com.leotv.app' or not audit['expected_changes_match'] or not audit['baseline_audit']['equal']:
         raise SystemExit('APK source audit verification failed.')
     version = audit['version_name']
-    if not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', version):
+    if not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+(?:-(?:preview|beta|rc)\.[0-9]+)?', version):
         raise SystemExit('Invalid APK version.')
     tag = f'leotv-{version}-build-{run_id}'
     files = [apk, signature, audit_path]
