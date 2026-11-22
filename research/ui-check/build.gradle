@@ -3,7 +3,7 @@ plugins { id 'java' }
 repositories { mavenCentral(); google() }
 
 sourceSets {
-    main.java.srcDirs = ['../../ui/java']
+    main.java.srcDirs = ['../../ui/java', 'src/stub/java']
     test.java.srcDirs = ['src/test/java']
 }
 
