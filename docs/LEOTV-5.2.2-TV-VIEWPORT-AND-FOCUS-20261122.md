@@ -25,3 +25,9 @@ TV 分类继续使用原 `VodActivity`、pager、筛选、目录和 Leanback 列
 本轮新增源码变化限定于 `CspHomePage`（及 TV 滚动内部类）、`NativeCspUi`、`NewHome`、`GlobalChrome`、`TvCategoryChrome`（及焦点层），以及 ABI 检查和版本/说明文件。没有新增原宿主 smali 或资源布局变化，原生卡片资源及数据库、JNI、回移层、native/ZIP 资产保持既有门禁；原 `home_ui` 查询加入编译期 ABI 核对。
 
 正式 versionName=5.2.2，versionCode=611，stable、非预发行并设为 Latest；四套 TV/手机及 32/64 位包沿用 APK 专用固定证书、R8 8.8.34 release/full/min-api 23。映射仍单独放内部草稿。按用户此前要求不跑本地/JVM/界面/模拟器回归，GitHub `run_validation_tests=false`，必要的编译、R8、基准/允许变化与签名门禁继续执行。正式发布授权不等于这轮代码已经真机验收，实际遥控和极端图片设置效果仍需安装后的复测。V6 核心不改。
+
+## 最终交付
+
+[Leotv 5.2.2](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.2) 已正式公开并设为 Latest，四套 APK 和八份审计/签名报告齐备。源码 `7a6c955447382d36b591fc33305b38626dee01b5`，构建 `45017986410`、发布 `45018837161` 均成功。四套公开 APK digest 与签名报告 SHA 一致，固定证书与既有安装包相同；API 23、原样/允许变化、R8 和最终 DEX 44 个稳定接口门禁通过。实际指标及哈希记录于 `evidence/leotv-5.2.2-official-delivery-20261122.json`。
+
+TV 两个并行任务首次创建了同名空草稿，核对精确 release ID、源码及空资产后，将多余空草稿改为 `leotv-5.2.2-build-45017986410-duplicate-454403724` 保留备查，再仅重试失败 TV 任务。手机已签名文件保留，全部齐备后才正式公开。四份 R8 mapping 留在内部草稿 `leotv-symbols-5.2.2-build-45017986410`，没有公开映射或私钥。
