@@ -39,6 +39,12 @@ def apply(project, root, variant):
             def shown(body):
                 call='    invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->installControls(Landroid/app/Activity;)V'
                 if not mobile:call+='\n\n    invoke-static {p0}, Lcom/leotv/detail/Playback;->controlsShown(Landroid/app/Activity;)V'
+                # Mobile's ordinary control callback has an early return as well.
+                # Both paths can finish with the retained bar visible; bind after either.
+                if mobile:
+                    if body.count('    return-void') != 2:
+                        raise ValueError('Native mobile control return branches changed.')
+                    return body.replace('    return-void',call+'\n\n    return-void')
                 return append_call(body,call)
             text = replace_method(text,show,shown)
             def resume(body):
