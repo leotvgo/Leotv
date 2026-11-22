@@ -1,0 +1,36 @@
+{
+  "version_name": "5.2.0-preview.3",
+  "version_code": 603,
+  "source_revision": "3eb537a59676b2f7a0a4d94bd41c0d1e33b7f5a6",
+  "previous_device_feedback": "User tested preview.2: homepage layout close to expected, but phone native toolbar missing, additional home category row unwanted, category controls too large/duplicated, TV category bar consuming viewport height.",
+  "local_tests": "Not run; user authorized direct push/CI and device acceptance",
+  "ci_regression_tests": "Skipped with run_validation_tests=false",
+  "build": {
+    "run_id": 44982964138,
+    "url": "https://github.com/leotvgo/Leotv/actions/runs/44982964138",
+    "conclusion": "success",
+    "variants": ["mobile-v7a", "mobile-v8a", "tv-v7a", "tv-v8a"],
+    "checks": ["API 23 compile", "preserved baseline", "declared changes", "native reflection contracts", "R8 protected ABI", "fixed APK signature"]
+  },
+  "publication": {
+    "run_id": 44983358104,
+    "url": "https://github.com/leotvgo/Leotv/actions/runs/44983358104",
+    "conclusion": "success",
+    "release": "https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.0-preview.3-build-44982964138",
+    "published_at": "2026-11-22T04:04:13Z",
+    "prerelease": true
+  },
+  "changes": [
+    "Discover phone toolbar through the logo parent: pinned APK toolbar/AppBar have no toolbar/appBar IDs",
+    "Preserve native phone logo, site, search, keep, download and history controls/actions",
+    "Apply status inset relative to actual page origin; collapse/expand toolbar by scroll direction",
+    "Remove added homepage category/function row on both clients",
+    "Restore phone push-playback and scroll-to-top states using native icons/actions",
+    "Replace complete native type/expand row, use smaller category text/back/filter icons and hide duplicate filter/link FABs",
+    "Overlay retained TV category strip on full-height native pager, preserving native lists and focus",
+    "Use TV BACK to return to homepage top; hide TV scroll-to-top icon",
+    "Add TV search, keep, history, push and settings icons before the clock; no download entry"
+  ],
+  "original_assets_inspected": ["pinned mobile resources.arsc and layout/fragment_vod (res/tK.xml)", "S3/G.q0, w3/p, TV HomeActivity dispatchKeyEvent and PushActivity.R"],
+  "device_acceptance": "Pending signed preview.3 phone/TV testing"
+}
