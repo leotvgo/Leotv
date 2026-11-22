@@ -1,8 +1,8 @@
 {
   "channel": "prerelease",
-  "version_name": "5.2.0-preview.7",
-  "version_code": 607,
-  "title": "Leotv 5.2.0-preview.7（新主页测试）",
+  "version_name": "5.2.0-preview.8",
+  "version_code": 608,
+  "title": "Leotv 5.2.0-preview.8（新主页测试）",
   "prerelease": true,
   "make_latest": false
 }

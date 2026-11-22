@@ -47,51 +47,19 @@ public final class FollowStore {
     static List<Entry> list() { return list(context.get()); }
 
     static synchronized List<Entry> list(Context app) {
-        if (app == null) return Collections.emptyList();
-        List<Entry> result = new ArrayList<>();
-        try {
-            JSONArray values = new JSONArray(prefs(app).getString(KEY, "[]"));
-            for (int i = 0; i < values.length() && result.size() < LIMIT; i++) {
-                Entry entry = parse(values.optJSONObject(i));
-                if (entry != null && !entry.title.isEmpty()) result.add(entry);
-            }
-        } catch (Exception ignored) { }
-        Collections.sort(result, (a, b) -> Long.compare(b.addedAt, a.addedAt));
-        return Collections.unmodifiableList(result);
+        List<Entry> result=unique(read(app));Collections.sort(result,(a,b)->Long.compare(b.addedAt,a.addedAt));
+        if(result.size()>LIMIT)result=new ArrayList<>(result.subList(0,LIMIT));return Collections.unmodifiableList(result);
     }
-
-    static Entry find(BackdropIdentity work) { return find(context.get(), work); }
-
-    static Entry find(Context app, BackdropIdentity work) {
-        if (work == null) return null;
-        String key = work.site + "@@@" + work.id;
-        for (Entry entry : list(app)) if (entry.key().equals(key)) return entry;
-        return null;
-    }
-
-    static boolean toggle(BackdropIdentity work, MobileDetailMetadata.Result metadata) {
-        Context app = context.get();
-        if (app == null || work == null) return false;
-        synchronized (FollowStore.class) {
-            List<Entry> values = new ArrayList<>(list(app));
-            String key = work.site + "@@@" + work.id;
-            for (int i = 0; i < values.size(); i++) if (values.get(i).key().equals(key)) {
-                values.remove(i); write(app, values); return false;
-            }
-            Entry entry = entry(work, metadata);
-            if (entry != null) { values.add(0, entry); write(app, values); return true; }
-            return false;
-        }
-    }
-
-    /** Idempotent: repeating a removal must never toggle a stale entry back on. */
-    static synchronized void remove(Context app, Entry entry) {
-        if (app == null || entry == null) return;
-        List<Entry> values = new ArrayList<>(list(app));
-        for (int i = values.size() - 1; i >= 0; i--)
-            if (values.get(i).key().equals(entry.key())) values.remove(i);
-        write(app, values);
-    }
+    private static List<Entry> read(Context app){List<Entry> result=new ArrayList<>();if(app==null)return result;try{JSONArray values=new JSONArray(prefs(app).getString(KEY,"[]"));for(int i=0;i<values.length();i++){Entry entry=parse(values.optJSONObject(i));if(entry!=null&&!entry.title.isEmpty())result.add(entry);}}catch(Exception ignored){}return result;}
+    private static String workKey(Entry entry){return entry!=null&&entry.tmdbId>0&&(entry.tmdbType.equals("tv")||entry.tmdbType.equals("movie"))?entry.tmdbType+":"+entry.tmdbId:"";}
+    private static boolean same(Entry a,Entry b){if(a==null||b==null)return false;String key=workKey(a);return a.key().equals(b.key())||!key.isEmpty()&&key.equals(workKey(b));}
+    private static List<Entry> unique(List<Entry> input){List<Entry> result=new ArrayList<>();for(Entry entry:input){int found=-1;for(int i=0;i<result.size();i++)if(same(result.get(i),entry)){found=i;break;}if(found<0)result.add(entry);else{Entry old=result.get(found),info=entry.addedAt>old.addedAt?entry:old;Entry anchor=entry.addedAt<old.addedAt?entry:old;result.set(found,new Entry(anchor.site,anchor.id,anchor.title,anchor.year,anchor.type,info.poster,info.backdrop,info.tmdbType,info.tmdbId,info.season,info.totalSeasons,info.totalEpisodes,info.releaseDate,info.lastAirDate,info.nextAirDate,anchor.addedAt));}}return result;}
+    static Entry find(BackdropIdentity work){return find(context.get(),work,null);}
+    static Entry find(Context app,BackdropIdentity work){return find(app,work,null);}
+    static synchronized Entry find(Context app,BackdropIdentity work,MobileDetailMetadata.Result metadata){if(work==null)return null;List<Entry> entries=read(app);String exact=work.site+"@@@"+work.id;for(Entry entry:entries)if(entry.key().equals(exact))return entry;Entry current=entry(work,metadata);String key=workKey(current);if(!key.isEmpty())for(Entry entry:entries)if(key.equals(workKey(entry)))return entry;return null;}
+    static synchronized boolean toggle(BackdropIdentity work,MobileDetailMetadata.Result metadata){Context app=context.get();if(app==null||work==null)return false;Entry existing=find(app,work,metadata);List<Entry> values=unique(read(app));if(existing!=null){for(int i=values.size()-1;i>=0;i--)if(same(values.get(i),existing))values.remove(i);write(app,values);return false;}Entry next=entry(work,metadata);if(next==null)return false;values.add(0,next);write(app,values);return true;}
+    /** Idempotent removal also cancels older aliases of the same matched movie/series. */
+    static synchronized void remove(Context app,Entry entry){if(app==null||entry==null)return;List<Entry> values=unique(read(app));for(int i=values.size()-1;i>=0;i--)if(same(values.get(i),entry))values.remove(i);write(app,values);}
 
     static Entry entry(BackdropIdentity work, MobileDetailMetadata.Result metadata) {
         if (work == null || work.id.isEmpty()) return null;
@@ -107,18 +75,7 @@ public final class FollowStore {
                 metadata == null ? "" : metadata.nextAirDate, System.currentTimeMillis());
     }
 
-    static synchronized void update(BackdropIdentity work, MobileDetailMetadata.Result metadata) {
-        Context app = context.get();
-        if (app == null || work == null || metadata == null || metadata.tmdbId <= 0) return;
-        List<Entry> values = new ArrayList<>(list(app));
-        for (int i = 0; i < values.size(); i++) if (values.get(i).key().equals(work.site + "@@@" + work.id)) {
-            Entry old = values.get(i), next = entry(work, metadata);
-            values.set(i, new Entry(next.site, next.id, next.title, next.year, next.type, next.poster,
-                    next.backdrop, next.tmdbType, next.tmdbId, next.season, next.totalSeasons, next.totalEpisodes,
-                    next.releaseDate, next.lastAirDate, next.nextAirDate, old.addedAt));
-            write(app, values); return;
-        }
-    }
+    static synchronized void update(BackdropIdentity work,MobileDetailMetadata.Result metadata){Context app=context.get();if(app==null||work==null||metadata==null||metadata.tmdbId<=0)return;List<Entry> raw=read(app),values=unique(raw);Entry existing=find(app,work,metadata),next=entry(work,metadata);if(existing==null||next==null)return;for(int i=0;i<values.size();i++)if(same(values.get(i),existing)){Entry old=values.get(i);Entry enriched=new Entry(old.site,old.id,old.title,old.year,old.type,next.poster,next.backdrop,next.tmdbType,next.tmdbId,next.season,next.totalSeasons,next.totalEpisodes,next.releaseDate,next.lastAirDate,next.nextAirDate,old.addedAt);boolean changed=raw.size()!=values.size();try{changed|=!json(old).toString().equals(json(enriched).toString());}catch(org.json.JSONException invalid){return;}if(changed){values.set(i,enriched);write(app,values);}return;}}
 
     static void clearAll(Context app) {
         if (app != null) app.getApplicationContext().getSharedPreferences(PREFS, 0).edit().clear().commit();

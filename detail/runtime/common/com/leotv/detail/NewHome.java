@@ -52,8 +52,9 @@ public final class NewHome implements AutoCloseable {
             public void categories(){chooseCategory();}
             public void filters(){chooseFilter();}
         });
-        page.backgroundChanged=this::publishBackground;
-        page.viewportChanged=()->{nativeUi.scrolled(page.scroll.getScrollY());nativeUi.homeAction(page.shortcut,page.scroll.getScrollY()>page.dp(120));loadVisibleRows();};
+        final CspHomePage mounted=page;
+        mounted.backgroundChanged=()->{if(!closed&&page==mounted&&token==generation)publishBackground();};
+        mounted.viewportChanged=()->{if(closed||page!=mounted||token!=generation)return;nativeUi.scrolled(mounted.scroll.getScrollY());nativeUi.homeAction(mounted.shortcut,mounted.scroll.getScrollY()>mounted.dp(120));loadVisibleRows();};
         View navigation=phone?find("navigation"):null;
         ViewGroup.LayoutParams params=parent instanceof RelativeLayout?new RelativeLayout.LayoutParams(-1,-1):new FrameLayout.LayoutParams(-1,-1);
         int index=navigation!=null&&navigation.getParent()==parent?parent.indexOfChild(navigation):parent.getChildCount();parent.addView(page,index,params);page.setTranslationZ(1);page.setOutlineProvider(null);
@@ -88,8 +89,15 @@ public final class NewHome implements AutoCloseable {
     public boolean back(){if(closed||!vod()||!categoryMode)return false;if(!guardRecommendation(selectedCategory)&&nativeUi.folderBack())return true;categoryMode=false;nativeUi.restoreCategory();if(page!=null){nativeRoot.setVisibility(View.INVISIBLE);page.setVisibility(View.VISIBLE);nativeUi.borrow(page);page.active(running);}return true;}
     void hide(){if(page!=null){page.active(false);page.setVisibility(View.GONE);}nativeUi.restoreToolbar();nativeUi.restoreCategory();restoreNative();}
     void restoreNative(){if(nativeRoot!=null&&content.findViewWithTag("leotv_following_home")==null&&nativeRoot.getVisibility()==View.INVISIBLE)nativeRoot.setVisibility(originalVisibility);}
-    void unmount(){hide();if(page!=null){metadata.cancel();page.close();NativeCspUi.remove(page);page=null;generation++;worker.getQueue().clear();requested.clear();categories=new ArrayList<>();heroSource=null;heroOptions=null;categoryMode=false;selectedCategory=null;}}
-    public void resume(){running=true;if(page!=null)page.active(!categoryMode&&vod());}
+    void unmount(){
+        CspHomePage previous=page;
+        if(previous!=null){generation++;previous.viewportChanged=null;previous.backgroundChanged=null;metadata.cancel();worker.getQueue().clear();previous.active(false);previous.setVisibility(View.GONE);}
+        nativeUi.restoreToolbar();nativeUi.restoreCategory();restoreNative();
+        if(previous!=null){previous.close();NativeCspUi.remove(previous);}page=null;
+        requested.clear();categories=new ArrayList<>();heroSource=null;heroOptions=null;categoryMode=false;selectedCategory=null;
+        nativeUi.forget();nativeRoot=null;parent=null;current=null;identity="";
+    }
+    public void resume(){running=true;if(page!=null)page.active(MetadataSettings.newHome(activity)&&!categoryMode&&vod());}
     public void pause(){running=false;tvBack=false;if(page!=null)page.active(false);}
     public Drawable background(){return page==null?null:!page.hero.hasArtwork()?page.backdrop.fallback:new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,new int[]{page.backdrop.colour,DetailHero.FLOOR});}
     @Override public void close(){if(closed)return;closed=true;unmount();restoreNative();metadata.close();worker.shutdownNow();main.removeCallbacksAndMessages(null);}

@@ -30,7 +30,7 @@ public final class JarIntegration {
             }
         });
     }
-    private static synchronized void notifyObservers(){for(WeakReference<Runnable> reference:observers.values()){Runnable changed=reference.get();if(changed!=null)changed.run();}}
+    private static synchronized void notifyObservers(){for(WeakReference<Runnable> reference:new java.util.ArrayList<>(observers.values())){Runnable changed=reference.get();if(changed!=null)changed.run();}}
     static synchronized void watch(Activity activity, Runnable changed) { observers.put(activity, new WeakReference<>(changed));if(follows==null){follows=activity.getApplicationContext().getSharedPreferences("leo_following",0);follows.registerOnSharedPreferenceChangeListener(followChanges);} }
     static synchronized void release(Activity activity) { latest.remove(activity); observers.remove(activity); }
 

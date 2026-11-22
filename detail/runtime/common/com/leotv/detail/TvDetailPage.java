@@ -289,6 +289,7 @@ final class TvDetailPage implements DetailPage {
     @Override public void render(MobileDetailMetadata.Result value){
         metadata=value;metadataResolved=true;
         metadataSite=value!=null&&source!=null?source.site:"";metadataId=value!=null&&source!=null?source.id:"";
+        if(value!=null&&source!=null)FollowStore.update(new BackdropIdentity(source.site,source.id,source.name,source.year,source.type),value);
         if(value==null){hero.finishLoading();actorFallback.setText("暂无演员资料");loadingState();return;}
         stills.render(value.stills.isEmpty()?value.backdropPaths:value.stills);collection.render(value.collectionParts);
         recommendations.render(value.recommendations);reviews.render(value.reviews);
@@ -341,23 +342,17 @@ final class TvDetailPage implements DetailPage {
     private void refreshActions(){
         android.os.Bundle data=bridgeMetadata();
         if(bridgeSourceReady())JarIntegration.publish(activity,data);
-        android.os.Bundle state=JarIntegration.call(activity,"follow.status",data);
-        boolean followed=source!=null&&FollowStore.find(new BackdropIdentity(source.site,source.id,source.name,source.year,source.type))!=null;
-        followButton.active(followed);followButton.label(followed?"已追更":"追更");followButton.setEnabled(bridgeSourceReady());boolean kept=false;
+        MobileDetailMetadata.Result current=source!=null&&source.site.equals(metadataSite)&&source.id.equals(metadataId)?metadata:null;
+        boolean followed=source!=null&&FollowStore.find(activity,new BackdropIdentity(source.site,source.id,source.name,source.year,source.type),current)!=null;
+        followButton.active(followed);followButton.label(followed?"已追更":"追更");followButton.setContentDescription(followed?"已追更，取消追更":"追更，加入我的追更");followButton.setEnabled(bridgeSourceReady());boolean kept=false;
         if(source!=null)try{kept=NativeLibrary.isKept(activity,source);}catch(ReflectiveOperationException ignored){}
         keepButton.active(kept);keepButton.label(kept?"已收藏":"收藏");matchButton.label(metadata!=null&&metadata.tmdbId>0?"重新匹配元数据":"手动匹配元数据");}
     private void toggleKeep(){if(source==null)return;try{boolean added=NativeLibrary.toggle(activity,source);refreshActions();message(added?"已加入我的收藏":"已取消收藏");}catch(ReflectiveOperationException error){message("收藏暂不可用");}}
     private void toggleFollow(){
         if(!bridgeSourceReady()){message("片源信息尚未就绪");return;}
-        BackdropIdentity work=new BackdropIdentity(source.site,source.id,source.name,source.year,source.type);boolean before=FollowStore.find(work)!=null;
-        android.os.Bundle reply=JarIntegration.call(activity,"follow.toggle",bridgeMetadata());
-        if(reply==null||!reply.getBoolean("available",false)){
-            boolean after=FollowStore.find(work)!=null;
-            boolean current=source.site.equals(metadataSite)&&source.id.equals(metadataId);
-            if(after==before){if(!before&&(!current||metadata==null||metadata.tmdbId<=0)){message("请先匹配影片资料再加入追更");return;}after=FollowStore.toggle(work,current?metadata:null);}
-            refreshActions();message(after?"已加入我的追更":"已取消追更");return;
-        }
-        refreshActions();message(reply.getString("message","追更状态已更新"));
+        BackdropIdentity work=new BackdropIdentity(source.site,source.id,source.name,source.year,source.type);MobileDetailMetadata.Result current=source.site.equals(metadataSite)&&source.id.equals(metadataId)?metadata:null;
+        boolean before=FollowStore.find(activity,work,current)!=null;if(!before&&(current==null||current.tmdbId<=0)){message("请先匹配影片资料再加入追更");return;}
+        boolean after=FollowStore.toggle(work,current);refreshActions();message(after?"已加入我的追更":"已取消追更");
     }
     private void openMatch(){if(source==null||matchPopup!=null)return;BackdropIdentity work=new BackdropIdentity(source.site,source.id,source.name,source.year,source.type);
         matchPopup=new DetailMatchPopup(activity,mobile,work,actions::rematch,()->matchPopup=null);matchPopup.show();}

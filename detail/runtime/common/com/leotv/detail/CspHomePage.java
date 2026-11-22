@@ -37,12 +37,12 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         scroll=new ScrollView(activity);scroll.setClipToPadding(false);scroll.setVerticalScrollBarEnabled(false);scroll.setFillViewport(true);
         rows=new LinearLayout(activity);rows.setOrientation(LinearLayout.VERTICAL);scroll.addView(rows,new ScrollView.LayoutParams(-1,-2));addView(scroll,new FrameLayout.LayoutParams(-1,-1));
         heroFrame=new FrameLayout(activity);rows.addView(heroFrame,new LinearLayout.LayoutParams(-1,dp(phone?480:360)));
-        hero=new DetailHero(activity,colour->{backdrop.colour=DetailHero.surface(colour);backdrop.shader=null;invalidate();if(backgroundChanged!=null)backgroundChanged.run();});hero.transparentWaiting(true);hero.presentation(phone,0);hero.limit(15);hero.dots(false);hero.tailWeight(.75f);
+        hero=new DetailHero(activity,colour->{if(closed)return;backdrop.colour=DetailHero.surface(colour);backdrop.shader=null;invalidate();if(backgroundChanged!=null)backgroundChanged.run();});hero.transparentWaiting(true);hero.presentation(phone,0);hero.limit(15);hero.dots(false);hero.tailWeight(.75f);
         heroFrame.addView(hero,new FrameLayout.LayoutParams(-1,-1));
         heroFrame.setVisibility(GONE);
         LinearLayout info=new LinearLayout(activity);info.setOrientation(LinearLayout.VERTICAL);info.setGravity(Gravity.CENTER);info.setPadding(dp(22),0,dp(22),dp(25));
         title=text("",phone?28:30);title.setGravity(Gravity.CENTER);title.setTypeface(title.getTypeface(),android.graphics.Typeface.BOLD);title.setMaxLines(2);
-        titleArt=new DetailTitleArt(activity,()->{title.setVisibility(titleArtReady()?GONE:VISIBLE);});titleArt.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);
+        titleArt=new DetailTitleArt(activity,()->{if(closed)return;title.setVisibility(titleArtReady()?GONE:VISIBLE);});titleArt.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);
         facts=text("",phone?14:16);facts.setGravity(Gravity.CENTER);facts.setPadding(0,dp(8),0,dp(10));
         overview=text("",phone?14:16);overview.setGravity(Gravity.CENTER);overview.setMaxLines(2);overview.setEllipsize(android.text.TextUtils.TruncateAt.END);
         dots=new LinearLayout(activity);dots.setGravity(Gravity.CENTER);dots.setPadding(0,dp(14),0,0);
@@ -52,8 +52,8 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         hero.onIndex(this::selected);hero.onIncoming(this::selected);
         shortcut=new android.widget.ImageView(activity);View nativeTop=NativeViews.find(activity,"top");if(nativeTop instanceof android.widget.ImageView)shortcut.setImageDrawable(NativeViews.drawable(((android.widget.ImageView)nativeTop).getDrawable(),shortcut));else shortcut.setImageDrawable(new NativeCspUi.Glyph(false,false));shortcut.setPadding(dp(12),dp(12),dp(12),dp(12));shortcut.setContentDescription("一键回顶");shortcut.setFocusable(true);shortcut.setClickable(true);shortcut.setBackground(TvDetailPage.focusBackground(activity));shortcut.setOnClickListener(v->scroll.smoothScrollTo(0,0));addView(shortcut,new FrameLayout.LayoutParams(dp(48),dp(48),Gravity.BOTTOM|Gravity.RIGHT));shortcut.setVisibility(phone?VISIBLE:GONE);
         status=text("正在加载分类…",15);status.setGravity(Gravity.CENTER);status.setPadding(0,dp(20),0,dp(20));rows.addView(status,new LinearLayout.LayoutParams(-1,-2));
-        scroll.getViewTreeObserver().addOnScrollChangedListener(()->{backdrop.shader=null;invalidate();if(viewportChanged!=null)viewportChanged.run();});
-        rows.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->{if(viewportChanged!=null)viewportChanged.run();});
+        scroll.getViewTreeObserver().addOnScrollChangedListener(()->{if(closed)return;backdrop.shader=null;invalidate();if(viewportChanged!=null)viewportChanged.run();});
+        rows.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->{if(closed)return;if(viewportChanged!=null)viewportChanged.run();});
     }
     int dp(int value){return Math.round(value*getResources().getDisplayMetrics().density);}
     TextView text(String value,int size){TextView view=new TextView(activity);view.setText(value);view.setTextSize(size);view.setTextColor(Color.WHITE);return view;}
@@ -96,8 +96,8 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         boolean landscape=style!=null&&style.optInt("land",0)==1,circle=style!=null&&style.optInt("circle",0)==1;double ratio=style==null?0:style.optDouble("ratio",0);if(ratio<=0)ratio=circle?1:landscape?1.33:.75;
         LinearLayout card=new LinearLayout(activity);card.setOrientation(LinearLayout.VERTICAL);card.setFocusable(true);card.setClickable(true);card.setBackground(TvDetailPage.focusBackground(activity));card.setOnClickListener(v->open.run());card.setOnFocusChangeListener((v,focused)->{v.setScaleX(focused?1.04f:1);v.setScaleY(focused?1.04f:1);});DetailImageView image=new DetailImageView(activity);image.circular(circle);card.addView(image,new LinearLayout.LayoutParams(width,(int)Math.round(width/ratio)));TextView label=new TextView(activity);label.setText(item.optString("vod_name",item.optString("name")));label.setTextColor(Color.WHITE);label.setTextSize(Device.MOBILE?14:16);label.setMaxLines(2);label.setEllipsize(android.text.TextUtils.TruncateAt.END);label.setPadding(0,8,0,4);card.addView(label,new LinearLayout.LayoutParams(-1,-2));images.bindSource(CspHomeData.image(item,landscape),!landscape,image::setImageBitmap);return card;
     }
-    void active(boolean value){pageActive=value;hero.setActive(value&&heroFrame.getVisibility()==VISIBLE);if(value)updateInsets();}
-    @Override public void close(){if(closed)return;closed=true;hero.close();titleArt.close();images.close();}
+    void active(boolean value){if(closed)return;pageActive=value;hero.setActive(value&&heroFrame.getVisibility()==VISIBLE);if(value)updateInsets();}
+    @Override public void close(){if(closed)return;closed=true;viewportChanged=null;backgroundChanged=null;heroFrame.setOnClickListener(null);hero.close();titleArt.close();images.close();}
     final class Backdrop extends Drawable {
         Drawable fallback;final Paint paint=new Paint();int colour=DetailHero.DEFAULT_COLOR;Shader shader;int paintedHeight,paintedHero;
         @Override public void draw(Canvas canvas){if(hero==null||!hero.hasArtwork()){android.graphics.Rect before=new android.graphics.Rect(fallback.getBounds());fallback.setBounds(getBounds());fallback.draw(canvas);fallback.setBounds(before);return;}int height=Math.max(1,getHeight()),heroHeight=Math.max(0,heroFrame.getHeight()-scroll.getScrollY());if(shader==null||paintedHeight!=height||paintedHero!=heroHeight){paintedHeight=height;paintedHero=heroHeight;shader=new LinearGradient(0,0,0,height,new int[]{colour,colour,DetailHero.FLOOR},new float[]{0,Math.max(.05f,Math.min(.95f,heroHeight/(float)height)),1},Shader.TileMode.CLAMP);}paint.setShader(shader);canvas.drawRect(getBounds(),paint);}
