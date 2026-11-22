@@ -1,0 +1,39 @@
+{
+  "version_name": "5.2.0-preview.2",
+  "version_code": 602,
+  "application_id": "com.leotv.app",
+  "source_revision": "d5c3cd1244b1448ae6df53346ec2c3376539f825",
+  "implementation_revision": "ea1a15462c296a4be015daa73d203a2b98825e89",
+  "local_tests": "Not run, as explicitly requested by the user",
+  "ci_regression_tests": "Skipped via run_validation_tests=false",
+  "build": {
+    "run_id": 44978809422,
+    "url": "https://github.com/leotvgo/Leotv/actions/runs/44978809422",
+    "conclusion": "success",
+    "variants": ["tv-v7a", "tv-v8a", "mobile-v7a", "mobile-v8a"],
+    "checks": ["API 23 overlay compile", "preserved baseline audit", "declared changes audit", "native reflection contracts", "R8 protected ABI", "fixed APK signature"]
+  },
+  "publication": {
+    "run_id": 44979295311,
+    "url": "https://github.com/leotvgo/Leotv/actions/runs/44979295311",
+    "conclusion": "success",
+    "release": "https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.0-preview.2-build-44978809422",
+    "prerelease": true,
+    "make_latest": false
+  },
+  "changes": [
+    "Retain native toolbar instances and actions; remove custom overflow menu",
+    "Restore source home recommendation section",
+    "Use native mobile pager with one floating category title and filter shortcut; preserve native list and bottom navigation",
+    "Use native TV category activity",
+    "Use native card layouts, visibility rules, dimensions and image loader",
+    "Add homepage category, filter and scroll-to-top shortcuts",
+    "Match carousel pool through TMDB first, with CSP image fallback",
+    "Parse CSP image headers; add Douban Referer/UA and same-photo CDN fallback",
+    "Align hero tail and scrolling category gradient colours",
+    "Keep homepage view and loaded rows across navigation to settings/following",
+    "Apply viewport insets only when geometry changes"
+  ],
+  "device_acceptance": "Pending user phone/TV testing of signed APKs",
+  "douban_boundary": "Current Java LeoDouban in the sibling coos tree can return a blank-picture folder entry instead of actual works. The user's active response has not been inspected on-device; fixes cover supplied CSP artwork and its header/URL handling."
+}
