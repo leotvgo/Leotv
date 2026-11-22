@@ -112,7 +112,7 @@ public final class NewHome implements AutoCloseable {
         requested.clear();categories=new ArrayList<>();heroSource=null;heroOptions=null;categoryMode=false;selectedCategory=null;
         nativeUi.forget();nativeRoot=null;parent=null;current=null;identity="";
     }
-    public void resume(){running=true;if(page!=null){if(!phone)page.refreshSizes();page.active(MetadataSettings.newHome(activity)&&!categoryMode&&vod());}}
+    public void resume(){running=true;if(page!=null){if(!phone){nativeUi.refreshTvText();page.refreshSizes();}page.active(MetadataSettings.newHome(activity)&&!categoryMode&&vod());}}
     public void pause(){running=false;tvBack=false;tvDirection=-1;if(page!=null)page.active(false);}
     public Drawable background(){return page==null?null:!page.hero.hasArtwork()?page.backdrop.fallback:new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,new int[]{page.backdrop.colour,DetailHero.FLOOR});}
     @Override public void close(){if(closed)return;closed=true;unmount();restoreNative();metadata.close();worker.shutdownNow();main.removeCallbacksAndMessages(null);}

@@ -1267,7 +1267,7 @@ public final class GlobalChrome {
                     final String action=actions[i];android.widget.ImageButton icon=new android.widget.ImageButton(owner.activity);icon.setTag(i==0?"leotv_following_entry":"leotv_home_"+action+"_entry");icon.setContentDescription(labels[i]);
                     if(i==0){button=icon;icon.setImageDrawable(new CalendarIcon(owner.activity));}else {int resource=owner.activity.getResources().getIdentifier("ic_home_"+action,"drawable",owner.activity.getPackageName());if(resource!=0)icon.setImageDrawable(owner.activity.getResources().getDrawable(resource));}
                     icon.setScaleType(ImageView.ScaleType.FIT_CENTER);icon.setFocusable(true);icon.setFocusableInTouchMode(true);icon.setPadding(owner.dp(12),owner.dp(12),owner.dp(12),owner.dp(12));icon.setStateListAnimator(null);icon.setOutlineProvider(null);
-                    icon.setBackground(new NavigationGlass(owner.content.getResources().getDisplayMetrics().density));if(Build.VERSION.SDK_INT>=26)try{View.class.getMethod("setDefaultFocusHighlightEnabled",boolean.class).invoke(icon,false);}catch(ReflectiveOperationException unavailable){}
+                    icon.setBackground(new NavigationGlass(owner.content.getResources().getDisplayMetrics().density,true));if(Build.VERSION.SDK_INT>=26)try{View.class.getMethod("setDefaultFocusHighlightEnabled",boolean.class).invoke(icon,false);}catch(ReflectiveOperationException unavailable){}
                     icon.setOnFocusChangeListener((view,focused)->{view.animate().cancel();view.animate().scaleX(focused?1.12f:1).scaleY(focused?1.12f:1).setDuration(150).setInterpolator(new android.view.animation.DecelerateInterpolator()).start();});icon.setOnClickListener(v->{restoreContentFocus();if(action.equals("following"))open();else owner.newHome.openShortcut(action);});
                     android.widget.LinearLayout.LayoutParams cell=new android.widget.LinearLayout.LayoutParams(owner.dp(48),owner.dp(48));cell.bottomMargin=i==actions.length-1?0:owner.dp(4);shortcutMenu.addView(icon,cell);
                 }
@@ -1327,9 +1327,11 @@ public final class GlobalChrome {
         final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
         final RectF shape=new RectF();
         final float density;
+        final boolean deeper;
         Shader fill,edge;
         int alpha=255;
-        NavigationGlass(float density){this.density=density;}
+        NavigationGlass(float density){this(density,false);}
+        NavigationGlass(float density,boolean deeper){this.density=density;this.deeper=deeper;}
         @Override protected void onBoundsChange(Rect bounds){
             shape.set(bounds.left+.5f*density,bounds.top+.5f*density,bounds.right-.5f*density,bounds.bottom-.5f*density);
             fill=new LinearGradient(0,shape.top,0,shape.bottom,new int[]{0x48ffffff,0x24ffffff,0x45172638},new float[]{0,.42f,1},Shader.TileMode.CLAMP);
@@ -1340,6 +1342,7 @@ public final class GlobalChrome {
         @Override public void draw(Canvas canvas){
             float radius=shape.height()/2;boolean focused=false;for(int state:getState())focused|=state==android.R.attr.state_focused||state==android.R.attr.state_pressed;
             paint.setStyle(Paint.Style.FILL);paint.setShader(fill);paint.setAlpha(alpha);canvas.drawRoundRect(shape,radius,radius,paint);
+            if(deeper){paint.setShader(null);paint.setColor(0x28101b29);canvas.drawRoundRect(shape,radius,radius,paint);}
             if(focused){paint.setShader(null);paint.setColor(0x28ffffff);canvas.drawRoundRect(shape,radius,radius,paint);}
             paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth((focused?1.5f:1)*density);paint.setShader(focused?null:edge);if(focused)paint.setColor(0xbbe7e9ee);canvas.drawRoundRect(shape,radius,radius,paint);paint.setShader(null);
         }

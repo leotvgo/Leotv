@@ -29,7 +29,7 @@ final class NativeCspUi {
     final java.util.Map<View,Integer> visibility=new java.util.IdentityHashMap<>();
     android.graphics.Rect toolbarClip;View expand;CspRecommendation recommendation;ImageView actionSource;Drawable actionDrawable;boolean actionTop;
     View tvSite;Drawable tvSiteBackground;boolean tvSiteFocusable,tvSiteTouchFocusable;
-    int siteLeft,siteTop,siteRight,siteBottom;
+    int siteLeft,siteTop,siteRight,siteBottom;float siteTextSize;
     NativeCspUi(NewHome owner){this.owner=owner;activity=owner.activity;phone=owner.phone;}
     int dp(int value){return Math.round(value*activity.getResources().getDisplayMetrics().density);}
     void forget(){if(borrowed||categoryHeader!=null||recommendation!=null)return;toolbar=null;type=null;pager=null;categoryRow=null;host=null;toolbarParent=null;typeParent=null;toolbarParams=null;typeParams=null;expand=null;actionSource=null;actionDrawable=null;folded=0;lastScroll=0;}
@@ -61,11 +61,12 @@ final class NativeCspUi {
         tvSite=named(activity,toolbar,"title");if(tvSite==null)return;
         tvSiteBackground=tvSite.getBackground();tvSiteFocusable=tvSite.isFocusable();tvSiteTouchFocusable=tvSite.isFocusableInTouchMode();
         siteLeft=tvSite.getPaddingLeft();siteTop=tvSite.getPaddingTop();siteRight=tvSite.getPaddingRight();siteBottom=tvSite.getPaddingBottom();
+        siteTextSize=tvSite instanceof TextView?((TextView)tvSite).getTextSize():0;
         tvSite.setFocusable(true);tvSite.setFocusableInTouchMode(true);
-        int selector=activity.getResources().getIdentifier("selector_item","drawable",activity.getPackageName());
-        if(selector!=0)tvSite.setBackground(activity.getResources().getDrawable(selector));
+        refreshTvText();
     }
-    void restoreTvSite(){if(tvSite==null)return;tvSite.setBackground(tvSiteBackground);tvSite.setPadding(siteLeft,siteTop,siteRight,siteBottom);tvSite.setFocusableInTouchMode(tvSiteTouchFocusable);tvSite.setFocusable(tvSiteFocusable);tvSite=null;tvSiteBackground=null;}
+    void refreshTvText(){if(tvSite instanceof TextView)try{int mode=((Number)Class.forName("com.bumptech.glide.f",true,activity.getClassLoader()).getMethod("z").invoke(null)).intValue();((TextView)tvSite).setTextSize(mode==0?24:20);}catch(ReflectiveOperationException unavailable){} }
+    void restoreTvSite(){if(tvSite==null)return;tvSite.setBackground(tvSiteBackground);tvSite.setPadding(siteLeft,siteTop,siteRight,siteBottom);if(tvSite instanceof TextView)((TextView)tvSite).setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX,siteTextSize);tvSite.setFocusableInTouchMode(tvSiteTouchFocusable);tvSite.setFocusable(tvSiteFocusable);tvSite=null;tvSiteBackground=null;}
     boolean siteFocused(){return tvSite!=null&&tvSite.hasFocus();}
     boolean focusSite(){if(!borrowed||tvSite==null||owner.page==null)return false;owner.page.scroll.scrollTo(0,0);folded=0;scrolled(0);toolbar.setAlpha(toolbarAlpha);toolbar.setTranslationY(0);return tvSite.requestFocus();}
     boolean moveTv(int code){
@@ -84,11 +85,12 @@ final class NativeCspUi {
             if(code==android.view.KeyEvent.KEYCODE_DPAD_RIGHT&&index==tvActions.getChildCount()-1)return true;
             return false;
         }
-        if(code==android.view.KeyEvent.KEYCODE_DPAD_UP&&page.firstContent(focus)){focusSite();return true;}
-        if(code==android.view.KeyEvent.KEYCODE_DPAD_UP&&descendant(focus,page.scroll)){
-            View next=focus.focusSearch(View.FOCUS_UP);
-            if(next==null||descendant(next,toolbar)){focusSite();return true;}
+        if((code==android.view.KeyEvent.KEYCODE_DPAD_UP||code==android.view.KeyEvent.KEYCODE_DPAD_DOWN)&&descendant(focus,page.scroll)){
+            boolean down=code==android.view.KeyEvent.KEYCODE_DPAD_DOWN;
+            if(!down&&page.firstContent(focus)){focusSite();return true;}
+            page.moveRow(focus,down);return true;
         }
+        if(code==android.view.KeyEvent.KEYCODE_DPAD_LEFT||code==android.view.KeyEvent.KEYCODE_DPAD_RIGHT)return page.moveCard(focus,code==android.view.KeyEvent.KEYCODE_DPAD_RIGHT);
         return false;
     }
     static boolean descendant(View view,View parent){for(View node=view;node!=null;node=node.getParent() instanceof View?(View)node.getParent():null)if(node==parent)return true;return false;}
@@ -103,8 +105,8 @@ final class NativeCspUi {
         tvLayouts.put(clock,clock.getLayoutParams());LinearLayout.LayoutParams time=new LinearLayout.LayoutParams((LinearLayout.LayoutParams)clock.getLayoutParams());if(clock instanceof TextView){TextView text=(TextView)clock;String sample=text.getText().toString();if(sample.isEmpty())sample="88:88:88";float widest=0;char digit='8';for(char ch='0';ch<='9';ch++){float width=text.getPaint().measureText(String.valueOf(ch));if(width>widest){widest=width;digit=ch;}}sample=sample.replaceAll("[0-9]",String.valueOf(digit));time.width=Math.max(clock.getWidth(),(int)Math.ceil(text.getPaint().measureText(sample))+clock.getPaddingLeft()+clock.getPaddingRight()+dp(2));}time.gravity=Gravity.CENTER_VERTICAL;clock.setLayoutParams(time);
         tvClock.setOrientation(LinearLayout.HORIZONTAL);tvClock.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);tvActions=new LinearLayout(activity);tvActions.setGravity(Gravity.CENTER_VERTICAL);
         String[] keys={"search","keep","history","push","setting"},labels={"搜索","收藏","历史","推送","设置"};
-        for(int i=0;i<keys.length;i++){final String key=keys[i];ImageView icon=new ImageView(activity);int resource=activity.getResources().getIdentifier("ic_home_"+key,"drawable",activity.getPackageName());if(resource!=0)icon.setImageDrawable(activity.getResources().getDrawable(resource));icon.setScaleType(ImageView.ScaleType.FIT_CENTER);icon.setContentDescription(labels[i]);icon.setPadding(dp(10),dp(10),dp(10),dp(10));icon.setFocusable(true);icon.setClickable(true);int selector=activity.getResources().getIdentifier("selector_image","drawable",activity.getPackageName());if(selector!=0)icon.setBackground(activity.getResources().getDrawable(selector));icon.setOnClickListener(v->tvAction(key));LinearLayout.LayoutParams cell=new LinearLayout.LayoutParams(dp(36),dp(36));cell.rightMargin=i==keys.length-1?0:dp(4);tvActions.addView(icon,cell);}
-        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(-2,dp(36));params.gravity=Gravity.CENTER_VERTICAL;params.rightMargin=dp(6);tvClock.addView(tvActions,tvClock.indexOfChild(clock),params);
+        for(int i=0;i<keys.length;i++){final String key=keys[i];ImageView icon=new ImageView(activity);int resource=activity.getResources().getIdentifier("ic_home_"+key,"drawable",activity.getPackageName());if(resource!=0)icon.setImageDrawable(activity.getResources().getDrawable(resource));icon.setScaleType(ImageView.ScaleType.FIT_CENTER);icon.setContentDescription(labels[i]);icon.setPadding(dp(7),dp(7),dp(7),dp(7));icon.setFocusable(true);icon.setClickable(true);int selector=activity.getResources().getIdentifier("selector_image","drawable",activity.getPackageName());if(selector!=0)icon.setBackground(activity.getResources().getDrawable(selector));icon.setOnClickListener(v->tvAction(key));LinearLayout.LayoutParams cell=new LinearLayout.LayoutParams(dp(30),dp(30));cell.rightMargin=i==keys.length-1?0:dp(4);tvActions.addView(icon,cell);}
+        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(-2,dp(30));params.gravity=Gravity.CENTER_VERTICAL;params.rightMargin=dp(6);tvClock.addView(tvActions,tvClock.indexOfChild(clock),params);
     }
     void tvAction(String action){if(action.equals("push")){try{Class.forName("com.fongmi.android.tv.ui.activity.PushActivity",true,activity.getClassLoader()).getMethod("R",Class.forName("androidx.appcompat.app.j",true,activity.getClassLoader()),int.class).invoke(null,activity,2);}catch(ReflectiveOperationException unavailable){}return;}String screen=action.equals("search")?"SearchActivity":action.equals("keep")?"KeepActivity":action.equals("history")?"HistoryActivity":"SettingActivity";activity.startActivity(new Intent().setClassName(activity.getPackageName(),"com.fongmi.android.tv.ui.activity."+screen));}
     void homeAction(ImageView target,boolean top){if(!phone){target.setVisibility(View.GONE);return;}View source=find(top?"top":"link");ImageView image=source instanceof ImageView?(ImageView)source:null;Drawable drawable=image==null?null:image.getDrawable();if(actionSource!=image||actionDrawable!=drawable||actionTop!=top){actionSource=image;actionDrawable=drawable;actionTop=top;target.setImageDrawable(drawable==null?new Glyph(false,false):NativeViews.drawable(drawable,target));target.setContentDescription(top?"一键回顶":"推送播放");target.setOnClickListener(v->{if(top){owner.page.scroll.smoothScrollTo(0,0);}else if(image!=null)image.performClick();});}target.setVisibility(View.VISIBLE);}
