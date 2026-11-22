@@ -32,7 +32,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     Runnable viewportChanged,backgroundChanged;
     CspHomePage(Activity activity,boolean phone,Actions actions){
         super(activity);this.activity=activity;this.phone=phone;this.actions=actions;
-        setTag("leotv_csp_home");
+        backdrop.fallback=com.leotv.ui.GlobalChrome.wallpaperBackground(activity);setTag("leotv_csp_home");
         setBackground(backdrop);images=new DetailThumbnails(activity,BackdropSettings.read(activity).proxy,!phone);
         scroll=new ScrollView(activity);scroll.setClipToPadding(false);scroll.setVerticalScrollBarEnabled(false);scroll.setFillViewport(true);
         rows=new LinearLayout(activity);rows.setOrientation(LinearLayout.VERTICAL);scroll.addView(rows,new ScrollView.LayoutParams(-1,-2));addView(scroll,new FrameLayout.LayoutParams(-1,-1));
@@ -95,7 +95,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     void active(boolean value){hero.setActive(value);if(value)updateInsets();}
     @Override public void close(){if(closed)return;closed=true;hero.close();titleArt.close();images.close();}
     final class Backdrop extends Drawable {
-        Drawable fallback=com.leotv.ui.GlobalChrome.wallpaperBackground(activity);final Paint paint=new Paint();int colour=DetailHero.DEFAULT_COLOR;Shader shader;int paintedHeight,paintedHero;
+        Drawable fallback;final Paint paint=new Paint();int colour=DetailHero.DEFAULT_COLOR;Shader shader;int paintedHeight,paintedHero;
         @Override public void draw(Canvas canvas){if(hero==null||!hero.hasArtwork()){android.graphics.Rect before=new android.graphics.Rect(fallback.getBounds());fallback.setBounds(getBounds());fallback.draw(canvas);fallback.setBounds(before);return;}int height=Math.max(1,getHeight()),heroHeight=Math.max(0,heroFrame.getHeight()-scroll.getScrollY());if(shader==null||paintedHeight!=height||paintedHero!=heroHeight){paintedHeight=height;paintedHero=heroHeight;shader=new LinearGradient(0,0,0,height,new int[]{colour,colour,DetailHero.FLOOR},new float[]{0,Math.max(.05f,Math.min(.95f,heroHeight/(float)height)),1},Shader.TileMode.CLAMP);}paint.setShader(shader);canvas.drawRect(getBounds(),paint);}
         @Override public void setAlpha(int value){paint.setAlpha(value);}
         @Override public void setColorFilter(android.graphics.ColorFilter value){paint.setColorFilter(value);}
