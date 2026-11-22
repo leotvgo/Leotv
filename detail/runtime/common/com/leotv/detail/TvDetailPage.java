@@ -211,7 +211,7 @@ final class TvDetailPage implements DetailPage {
             scroll.setBackground(new android.graphics.drawable.ColorDrawable(DetailTheme.library(activity, mobile) ? 0xff06111b : DetailHero.FLOOR));
             theme = -1; ThemeLayout.apply(this); surfaceColour(surfaceColour); return;
         }
-        if(loadingHostApplied)return;loadingHostApplied=true;
+        if(loadingHostApplied&&scroll.getBackground()==loadingBackdrop)return;loadingHostApplied=true;
         hero.setAlpha(0f); if (surface != null) surface.setVisibility(View.GONE);
         scroll.setBackground(loadingBackdrop); info.setBackgroundColor(Color.TRANSPARENT); controls.setBackgroundColor(Color.TRANSPARENT);
     }

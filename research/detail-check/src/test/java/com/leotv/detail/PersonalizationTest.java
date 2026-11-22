@@ -102,7 +102,8 @@ public class PersonalizationTest {
         android.graphics.drawable.Drawable background = host.size.getBackground();
         LinearLayout rows = attach(); Personalization.attach(host, host.root);
         assertEquals(1, host.root.getChildCount()); assertSame(host.column, host.root.getChildAt(0));
-        assertEquals(count + 1, host.column.getChildCount()); assertEquals(Device.MOBILE?3:2, rows.getChildCount());
+        assertEquals(count + 1, host.column.getChildCount()); assertEquals(Device.MOBILE?4:2, rows.getChildCount());
+        assertNotNull(rows.findViewWithTag("新主页"));
         assertEquals(LinearLayout.VERTICAL, rows.getOrientation());
         assertSame(originalParent, host.size.getParent()); assertSame(background, host.size.getBackground());
         assertSame(host.size, host.findViewById(701)); assertEquals("大", ((TextView) host.findViewById(702)).getText().toString());
@@ -164,7 +165,7 @@ public class PersonalizationTest {
         Dialog dialog = endpoint(); assertNotNull(dialog.findViewById(android.R.id.button3));
         dialog.findViewById(android.R.id.button3).performClick();
         assertFalse(MetadataSettings.customKey(host)); assertEquals("https://api.tmdb.org/3", MetadataSettings.base(host));
-        assertSame(rows, host.root.findViewWithTag("leotv_detail_settings")); assertEquals(Device.MOBILE?3:2, rows.getChildCount());
+        assertSame(rows, host.root.findViewWithTag("leotv_detail_settings")); assertEquals(Device.MOBILE?4:2, rows.getChildCount());
     }
     @Test public void globalSearchDefaultsOffAndEachClickTogglesTheNativeRow(){
         assertFalse(MetadataSettings.resourceGlobalSearch(host));LinearLayout rows=attach();View row=rows.findViewWithTag("全局搜索");assertNotNull(row);

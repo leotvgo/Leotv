@@ -1,6 +1,6 @@
 # 新主页站点识别、TV 快捷入口与推荐更多修复
 
-版本：5.2.0-preview.6 / 606。用户反馈 preview.5 基本可用，另报告配置中心轮播空白、TV 快捷图标偏大/方块背景/左右移动，以及手机推荐更多崩溃、TV 推荐更多进入配置站点。截图未成功传入，用户明确要求按代码分析；下面区分可确认的调用问题与待真机核对的异常。
+实现起于 5.2.0-preview.6 / 606，合并另一个窗口的加载背景后，交付版本为 5.2.0-preview.7 / 607。用户反馈 preview.5 基本可用，另报告配置中心轮播空白、TV 快捷图标偏大/方块背景/左右移动，以及手机推荐更多崩溃、TV 推荐更多进入配置站点。截图未成功传入，用户明确要求按代码分析；下面区分可确认的调用问题与待真机核对的异常。
 
 ## 非视频站点
 
@@ -28,6 +28,10 @@
 
 ## 允许变化与验证边界
 
-仅变更 owned Java：NewHome、CspHomeData、CspHeroMetadata、CspHomePage、CspRecommendation、NativeCspUi、CspCategoryActivity，以及版本/文档和门禁。去除已不用的 CustomFabBehavior 反射 ABI 要求；源码集合继续由 runtime-sources.json 严格声明。新增 CspHomeContractTest 门禁验证完整推荐缓存/真实 home 分类隔离、管理类站点识别、海报收起后的顶栏避让，以及标题/秒数改变时 TV 快捷位置稳定和布局归还。原 smali、数据库、JNI/反射宿主 ABI、java.util.function/j$ 和各 ABI native/原 ZIP 资产保留。
+仅变更 owned Java：NewHome、CspHomeData、CspHeroMetadata、CspHomePage、CspRecommendation、NativeCspUi、CspCategoryActivity，以及 TvDetailPage 在主题重新布局后恢复加载背景的保护、版本/文档和门禁。去除已不用的 CustomFabBehavior 反射 ABI 要求；源码集合继续由 runtime-sources.json 严格声明。新增 CspHomeContractTest 门禁验证完整推荐缓存/真实 home 分类隔离、管理类站点识别、海报收起后的顶栏避让，以及标题/秒数改变时 TV 快捷位置稳定和布局归还。原 smali、数据库、JNI/反射宿主 ABI、java.util.function/j$ 和各 ABI native/原 ZIP 资产保留。
 
 按此前用户要求不运行本地编译和回归；交给 GitHub ordinary-build 的 API 23 编译、原样/允许变更审计、反射 ABI、远端模型/UI 门禁与 APK 固定签名步骤（run_validation_tests=true）。具体崩溃是否消失、轮播切换与遥控焦点外观仍需签名包真机验收。
+
+远端完整回归揭示了旧设置数量断言尚未计入新主页开关，现按手机四项/TV 两组核对。原加载背景测试还发现 ThemeLayout 在加载期间切主题会覆盖背景，而 loadingHostApplied 阻止重新应用；保护条件改为只在当前仍显示同一背景时跳过，保持既有测试的背景不丢失要求。
+
+另一个窗口随后完成 v6.2026.11.22.2；其 deployment.json 同样为 deployed-verified，generation 1795328439，双 ABI 签名、外网字节及解密回读通过。
