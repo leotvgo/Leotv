@@ -15,3 +15,7 @@ R8 固定 8.8.34、release/full、min-api 23；沿用 branding/proguard-release.
 ## 范围
 
 本轮只调整版本、渠道与交付说明，不更改已验收业务代码，不操作 V6 核心、薄壳、JS/Docker、用户配置或设备。源码基准为 e9db807bc285b0087bd2bf2b8d38439bac87ee45 的 preview.8 功能树，后续交付记录提交只包含证据。
+
+## 最终交付
+
+正式 [Leotv 5.2.1](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.1) 已公开并设为 Latest，非预发行；四套 APK 和八份审计/签名报告齐备。构建45002473704、发布45002858239成功，源码021c641b5e22700ca2bab3770906a7b5fd001ab8。实际 R8 类/重命名/稳定接口计数与每个文件 SHA 记录在 evidence/leotv-5.2.1-official-delivery-20261122.json。四份 mapping 存于内部草稿 leotv-symbols-5.2.1-build-45002473704。未更改 APK 功能源或 V6、未操作设备。
