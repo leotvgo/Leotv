@@ -7,7 +7,7 @@
 本轮正式版本为 **5.2.6 / 626**，独立安装包名 **com.leotv.app**，按用户要求保持版本号、撤回旧 625 后重新 R8 release/full 混淆、固定签名正式发布，支持覆盖升级。
 正式构建/自动发布由 GitHub 执行：[Leotv 5.2.6](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.6) 在发布完成后提供 TV/手机、32/64 位四套 APK。
 
-当前源码为 **5.2.6 / 626**：TV 新首页首次默认聚焦轮播，无轮播时聚焦首张实际内容卡片；弹幕设置首次聚焦置顶的“弹幕API”。继续保留详情返回回顶、新主页返回/分类复位和 5.2.5 修复。详见[首次焦点与同版本重新交付](docs/LEOTV-5.2.6-TV-INITIAL-FOCUS-REPLACEMENT-20261123.md)、[TV 详情返回回顶](docs/LEOTV-5.2.6-TV-DETAIL-BACK-TO-PLAY-20261123.md)及[5.2.5 修复范围](docs/LEOTV-5.2.5-NATIVE-HEADER-AND-TV-ROWS-20261123.md)。
+当前源码为 **5.2.6 / 626**：TV 新首页首次默认聚焦轮播，无轮播时聚焦首张实际内容卡片；弹幕设置首次聚焦置顶的“弹幕API”。跨分类上下移动按当前屏幕横向位置选择卡片，离屏行复位不再强制焦点落在第一项。继续保留详情返回回顶、新主页返回/分类复位和 5.2.5 修复。详见[跨分类视觉焦点修复](docs/LEOTV-5.2.6-TV-VISUAL-ROW-FOCUS-20261123.md)、[首次焦点与同版本重新交付](docs/LEOTV-5.2.6-TV-INITIAL-FOCUS-REPLACEMENT-20261123.md)、[TV 详情返回回顶](docs/LEOTV-5.2.6-TV-DETAIL-BACK-TO-PLAY-20261123.md)及[5.2.5 修复范围](docs/LEOTV-5.2.5-NATIVE-HEADER-AND-TV-ROWS-20261123.md)。
 上一版 5.3.0-preview.10 的[四套固定签名测试 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0-preview.10-build-45175234246) 已发布，构建/自动发布成功，额外回归关闭；临时公开构建后已恢复私有，实际焦点与样式待真机验收。
 启动图标、TV 横幅、默认线路动图、关于页与原生透明上下栏已接入专用构建；5.1.26 停止上下栏实时回放和模糊。
 独立原生详情页、个性设置内的本端详情主题/TMDB 配置，以及手机按视频尺寸自动旋转已接入。
