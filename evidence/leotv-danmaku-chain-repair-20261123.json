@@ -1,0 +1,157 @@
+{
+  "recorded_at": "2026-11-23T04:15:57.459522+00:00",
+  "base_revision": "8be2ce16321b54423cfd0cd5f13d9de57f396fc4",
+  "scope": [
+    "missing mobile sidebar search icon",
+    "full episode catalog/current episode requests",
+    "native first-ready/auto-match ordering",
+    "user-requested existing homepage search timing"
+  ],
+  "new_setting_items": false,
+  "source_priority_policy_changed": false,
+  "fixed_signature_release_performed": false,
+  "pushed": false,
+  "device_validation": false,
+  "fongmi_reference": "evidence/fongmi-danmaku-20261123/source-index.json",
+  "source_gate_variants_passed": [
+    "tv-v7a",
+    "tv-v8a",
+    "mobile-v7a",
+    "mobile-v8a"
+  ],
+  "local_apk_builds": [
+    {
+      "variant": "mobile-v7a",
+      "audit": "artifacts/danmaku-repair-final/leotv-mobile-v7a-unsigned.audit.json",
+      "unsigned": true,
+      "baseline_equal": true,
+      "expected_changes_match": true,
+      "min_api": 23,
+      "native_abis": [
+        "armeabi-v7a"
+      ],
+      "native_libraries_exact": 34,
+      "output_apk_sha256": "e1fd44feba858b5f295be056d2e7305331de90a95a790812d1dcc45327459bba",
+      "r8_mode": "r8-release-full",
+      "stable_abi_members_verified": 74,
+      "native_detail_contract": {
+        "variant": "mobile-v7a",
+        "public_abi_members_verified": 202,
+        "private_abi_members_verified": 1,
+        "ordinary_edit_classes_pinned": 9,
+        "native_source_files_declared": 91,
+        "client": "mobile",
+        "theme_count": 4,
+        "device_validation": false
+      }
+    },
+    {
+      "variant": "tv-v8a",
+      "audit": "artifacts/danmaku-repair-final/leotv-tv-v8a-unsigned.audit.json",
+      "unsigned": true,
+      "baseline_equal": true,
+      "expected_changes_match": true,
+      "min_api": 23,
+      "native_abis": [
+        "arm64-v8a"
+      ],
+      "native_libraries_exact": 21,
+      "output_apk_sha256": "2ee355bdd17cf123a17664a0270afa70f7d203ba556090e3e08102f4844a06aa",
+      "r8_mode": "r8-release-full",
+      "stable_abi_members_verified": 74,
+      "native_detail_contract": {
+        "variant": "tv-v8a",
+        "public_abi_members_verified": 165,
+        "private_abi_members_verified": 1,
+        "ordinary_edit_classes_pinned": 10,
+        "native_source_files_declared": 91,
+        "client": "tv",
+        "theme_count": 5,
+        "device_validation": false
+      }
+    }
+  ],
+  "tests": {
+    "mobile": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "sdk": 23,
+      "sha256": "c17a04c38bafc7aa670f31570dfec969570eb4f17bb7b0e2f88ca67d8b68b8d3",
+      "cases": [
+        "firstReadySelectionCannotCancelAutoMatchingButExplicitSelectionCan",
+        "catalogRetainsAllEpisodesAndUsesTheirCommentIdsInsteadOfVideoUrls",
+        "unresolvedSeriesLoadsItsFullCatalogAndFlatFallbackReceivesCurrentEpisode",
+        "phoneHeaderRestoresExistingSearchAfterBrieflyShowingChangedSite"
+      ]
+    },
+    "tv": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "sdk": 23,
+      "sha256": "d42d4ec69f406859dd8d43ba53b09e3c0dc4bd4f41b4e61587a1d2e2b737e34b",
+      "cases": [
+        "firstReadySelectionCannotCancelAutoMatchingButExplicitSelectionCan",
+        "catalogRetainsAllEpisodesAndUsesTheirCommentIdsInsteadOfVideoUrls",
+        "unresolvedSeriesLoadsItsFullCatalogAndFlatFallbackReceivesCurrentEpisode",
+        "phoneHeaderRestoresExistingSearchAfterBrieflyShowingChangedSite"
+      ]
+    }
+  },
+  "original_layouts": {
+    "layout/fragment_vod": {
+      "apk_path": "res/tK.xml",
+      "sha256": "0be4a71c9ab23c4ec324241d3b0066bea06d4ebe27624a10d2509172bdcdcdc2",
+      "controls": [
+        {
+          "path": "androidx.coordinatorlayout.widget.CoordinatorLayout/com.google.android.material.appbar.AppBarLayout/LinearLayout/LinearLayout",
+          "id": "id/searchInput"
+        },
+        {
+          "path": "androidx.coordinatorlayout.widget.CoordinatorLayout/com.google.android.material.appbar.AppBarLayout/LinearLayout/LinearLayout/TextView",
+          "id": "id/hot"
+        },
+        {
+          "path": "androidx.coordinatorlayout.widget.CoordinatorLayout/com.google.android.material.appbar.AppBarLayout/LinearLayout/LinearLayout/ImageView",
+          "id": "id/search"
+        },
+        {
+          "path": "androidx.coordinatorlayout.widget.CoordinatorLayout/com.google.android.material.appbar.AppBarLayout/LinearLayout/ImageView",
+          "id": "id/searchIcon"
+        }
+      ]
+    },
+    "layout/view_control_vod": {
+      "apk_path": "res/5N.xml",
+      "sha256": "0cecc08ab5aef339829f4637051627d53110c6bd06beea99bf7e393794504d9a",
+      "controls": [
+        {
+          "path": "RelativeLayout/androidx.appcompat.widget.LinearLayoutCompat/androidx.appcompat.widget.AppCompatImageView",
+          "id": "id/danmuSetting"
+        }
+      ]
+    }
+  },
+  "source_hashes": {
+    "AGENTS.md": "a22fdf9ad6f240a87867741ea8587276ade7bf71559f58e7db04899a4bbc7189",
+    "branding/hardening.json": "8aa2b63950f4885f24f6fd0d58bff36ad7af23c59cc87f9e49c43e6637240d8b",
+    "detail/runtime/common/com/leotv/detail/DanmakuApi.java": "0fcfdf8db98225666b394ef75cb5c68f89b2a35a362d28f7364b5343cfd9b239",
+    "detail/runtime/common/com/leotv/detail/DanmakuControls.java": "50e236228f448d67383dd906a994512d5f42c6d67db742f6de31d54ce8ac0e0d",
+    "detail/runtime/common/com/leotv/detail/DanmakuPlayback.java": "2bff0daee8d07023fadb762700dc04b0b07386637fde297f9e9061908de1f18e",
+    "detail/runtime/common/com/leotv/detail/DanmakuSearchDialog.java": "5c874327ecc96c2b97cf932f226d7ff6d45524e17f2cc16218021f4c4182ab35",
+    "detail/runtime/common/com/leotv/detail/DanmakuSource.java": "b38825708a7bc723289b4ee94a86c2864de54736065ee00341b99c935aeb0734",
+    "detail/runtime/common/com/leotv/detail/DanmakuTitle.java": "4b14d030bd7737ed89d3a456893b79565051304a04f52b1f450cadc4b9c1d37b",
+    "detail/runtime/common/com/leotv/detail/NativeCspUi.java": "19d8631e7bf9d17e74bb82de0032be0d15ccb16a81c79f53dffa9ba9628fa19f",
+    "detail/runtime/common/com/leotv/detail/NativeViews.java": "aed442d9c127bde2af1cd6937798b5bf5cd1dd8ab02332d693f973184fae1007",
+    "tools/apply_danmaku.py": "1fd4e315184287987602602ec520826cd19f12c788e25d834a7da5a072ed721d",
+    "tools/check_native_details.py": "c9d74a54c86bf92c17dfb17ca8fee5d2b0b2287c69fbb6a1df525e4b7e037c47"
+  },
+  "search_capsule_origin": {
+    "original_apk_control": true,
+    "new_home_borrow_commit": "3eb537a5",
+    "introduced_on_new_home": "2026-11-22 11:58:11 +0800",
+    "version": "5.2.0-preview.3",
+    "switch_site_name_duration_ms": 4000
+  }
+}

@@ -117,7 +117,9 @@
         "resume(Landroid/app/Activity;)V",
         "installControls(Landroid/app/Activity;)V",
         "openSearch(Landroid/app/Activity;)V",
-        "menuCreated(Ljava/lang/Object;)V"
+        "menuCreated(Ljava/lang/Object;)V",
+        "bootstrapBegin(Landroid/app/Activity;)V",
+        "bootstrapEnd(Landroid/app/Activity;)V"
       ]
     },
     "com.leotv.detail.DanmakuSettings": {

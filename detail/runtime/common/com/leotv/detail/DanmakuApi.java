@@ -48,6 +48,39 @@ final class DanmakuApi {
         byte[] bytes=request(request,owner,4*1024*1024);if(owner.canceled)throw new InterruptedException();
         return DanmakuSource.parse(new String(bytes,"UTF-8"),endpoint.replace("{name}","name").replace("{episode}","episode"));
     }
+    static String catalogRoot(String configured){
+        if(configured==null||configured.contains("{name}")||configured.contains("{episode}"))return "";
+        Uri uri=Uri.parse(configured);String path=uri.getEncodedPath()==null?"":uri.getEncodedPath();int api=path.indexOf("/api/v2/");
+        if(api>=0)return uri.buildUpon().encodedPath(path.substring(0,api)).build().toString();
+        if(path.matches("/website/danmu/manage/[^/]+/?")||path.matches("/[0-9]{4,}/?")||path.equals("/danmu"))return configured.replaceAll("/+$","");
+        return "";
+    }
+    static List<DanmakuSource> browse(String api,String name,String episode,Owner owner)throws Exception{
+        String root=catalogRoot(api);
+        if(!root.isEmpty())try{
+            String endpoint=Uri.parse(root).buildUpon().appendPath("api").appendPath("v2").appendPath("search").appendPath("episodes").appendQueryParameter("anime",name).build().toString();
+            List<DanmakuSource> sources=DanmakuSource.parse(new String(request(sourceRequest(endpoint),owner,4*1024*1024),"UTF-8"),endpoint);
+            if(!sources.isEmpty())return sources;
+        }catch(Exception unsupported){if(owner.canceled||Thread.currentThread().isInterrupted())throw unsupported;}
+        // Generic/template APIs retain their original protocol and receive the current episode.
+        return search(api,name,episode,owner);
+    }
+    static List<DanmakuSource> episodes(String api,DanmakuSource series,Owner owner)throws Exception{
+        String root=catalogRoot(api);if(root.isEmpty()||series.seriesId.isEmpty())return java.util.Collections.emptyList();
+        String endpoint=Uri.parse(root).buildUpon().appendPath("api").appendPath("v2").appendPath("bangumi").appendPath(series.seriesId).build().toString();
+        String body=new String(request(sourceRequest(endpoint),owner,4*1024*1024),"UTF-8");
+        Object decoded=new org.json.JSONTokener(body).nextValue();
+        if(decoded instanceof org.json.JSONObject){org.json.JSONObject object=(org.json.JSONObject)decoded;
+            org.json.JSONObject details=object.optJSONObject("bangumi");if(details==null)details=object;
+            if(details.optString("animeId").isEmpty())details.put("animeId",series.seriesId);
+            if(details.optString("animeTitle").isEmpty())details.put("animeTitle",series.seriesTitle);
+            if(details.optString("source").isEmpty()&&!series.source.isEmpty())details.put("source",series.source);
+            body=object.toString();
+        }
+        List<DanmakuSource> sources=DanmakuSource.parse(body,endpoint);
+        for(java.util.Iterator<DanmakuSource> items=sources.iterator();items.hasNext();)if(items.next().isCatalog())items.remove();
+        return sources;
+    }
     static byte[] download(String url,Owner owner)throws Exception{return request(sourceRequest(url),owner,12*1024*1024);}
     static Request sourceRequest(String url)throws ReflectiveOperationException{return buildRequest(url,null);}
     private static Request formRequest(String url,String name,String episode)throws ReflectiveOperationException{

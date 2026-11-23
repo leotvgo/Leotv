@@ -26,7 +26,7 @@ public final class DanmakuTitle {
 
     public static final int EPISODE_UNKNOWN = Integer.MAX_VALUE;
 
-    private static final Pattern EPISODE_CN = Pattern.compile("第\\s*0*([0-9]{1,5})\\s*[集话話回期章节節]");
+    private static final Pattern EPISODE_CN = Pattern.compile("第\\s*([零〇一二两三四五六七八九十百千0-9]{1,6})\\s*[集话話回期章节節]");
     private static final Pattern EPISODE_SEASON = Pattern.compile("\\bS\\d{1,2}\\s*E\\s*0*([0-9]{1,5})\\b", Pattern.CASE_INSENSITIVE);
     private static final Pattern EPISODE_EP = Pattern.compile("\\b(?:EP|E|Episode)\\s*0*([0-9]{1,5})\\b", Pattern.CASE_INSENSITIVE);
 
@@ -53,12 +53,14 @@ public final class DanmakuTitle {
         int episode = matchEpisode(EPISODE_CN, text);
         if (episode == EPISODE_UNKNOWN) episode = matchEpisode(EPISODE_SEASON, text);
         if (episode == EPISODE_UNKNOWN) episode = matchEpisode(EPISODE_EP, text);
+        if(episode==EPISODE_UNKNOWN&&text!=null&&text.toString().trim().matches("[0-9]{1,5}"))episode=Integer.parseInt(text.toString().trim());
         return episode;
     }
 
     /** 解析弹幕项的集数。 */
     public static int getEpisode(DanmakuSource item) {
-        return parseEpisode(item.getName());
+        if(item.episodeNumber!=EPISODE_UNKNOWN)return item.episodeNumber;
+        int number=parseEpisode(item.episodeTitle);return number==EPISODE_UNKNOWN?parseEpisode(item.getName()):number;
     }
 
     /**
@@ -66,7 +68,7 @@ public final class DanmakuTitle {
      * 解析失败（清洗后为空或无稳定剧名）返回 null，调用方据此把该条平铺、不折叠。
      */
         public static String titleKey(DanmakuSource item) {
-        return cleanTitle(item.getName());
+        return cleanTitle(item.seriesTitle.isEmpty()?item.getName():item.seriesTitle);
     }
 
     /**
@@ -122,7 +124,10 @@ public final class DanmakuTitle {
         Matcher matcher = pattern.matcher(text);
         if (!matcher.find()) return EPISODE_UNKNOWN;
         try {
-            return Integer.parseInt(matcher.group(1));
+            String number=matcher.group(1);if(number.matches("[0-9]+"))return Integer.parseInt(number);
+            int result=0,digit=0;String digits="零一二三四五六七八九";
+            for(char c:number.toCharArray()){int unit=c=='十'?10:c=='百'?100:c=='千'?1000:0;if(unit>0){result+=(digit==0?1:digit)*unit;digit=0;}else{digit=c=='两'?2:c=='〇'?0:digits.indexOf(c);if(digit<0)return EPISODE_UNKNOWN;}}
+            return result+digit;
         } catch (Exception ignored) {
             return EPISODE_UNKNOWN;
         }

@@ -75,6 +75,13 @@ final class NativeViews {
         }
         return result;
     }
+    static ViewGroup.LayoutParams copyLayout(View source) {
+        ViewGroup.LayoutParams original=source.getLayoutParams();
+        for(Class<?> argument:new Class<?>[]{original.getClass(),ViewGroup.LayoutParams.class,ViewGroup.MarginLayoutParams.class})try{
+            return(ViewGroup.LayoutParams)original.getClass().getConstructor(argument).newInstance(original);
+        }catch(ReflectiveOperationException unavailable){}
+        return original instanceof ViewGroup.MarginLayoutParams?new ViewGroup.MarginLayoutParams((ViewGroup.MarginLayoutParams)original):new ViewGroup.LayoutParams(original);
+    }
     static boolean globalSearch(Activity activity,String title) {
         if(title==null||title.trim().isEmpty())return false;
         int width=Math.round(activity.getResources().getDisplayMetrics().widthPixels/activity.getResources().getDisplayMetrics().density);

@@ -5,6 +5,8 @@
 本地原 APK 和 Apktool 仍由同级 `coos/` 提供，CI 使用本仓库的固定 release 输入。
 本任务基准是现有普通版全部功能和 Android 6（API 23），保持 TV/手机、两个 ABI 的交付区别。
 
+- 仅实现用户明确提出的需求和缺陷修复，不自行新增或删除功能。新增、删除功能前先说明并取得用户明确同意；已有明确授权的修复继续执行。
+
 - 原 APK 的 SHA-256、构建 revision 和比较记录在 `evidence/`；原始文件留在 coos 根目录及 `pro/`。
 - `upstream-comparison-20260415` 是固定时间的比较材料。来源定位和功能差异落实后再迁移具体模块。
 - `bytecode-project` 是已验证的原样基础；`java-view` 是阅读材料；`java-drafts` 是逐模块恢复中的源码。

@@ -41,12 +41,13 @@ final class DanmakuControls implements AutoCloseable {
     }
     private void sidebar(Activity activity,ViewGroup root){
         int id=activity.getResources().getIdentifier("danmuSetting","id",activity.getPackageName());View setting=id==0?null:root.findViewById(id);
-        if(!(setting instanceof ImageView)||!(setting.getParent() instanceof LinearLayout))return;
-        LinearLayout column=(LinearLayout)setting.getParent();if(column.getOrientation()!=LinearLayout.VERTICAL)return;
+        if(!(setting instanceof ImageView)||!(setting.getParent() instanceof ViewGroup))return;
+        ViewGroup column=(ViewGroup)setting.getParent();Object orientation=DanmakuPlayback.invoke(column,"getOrientation");
+        if(!(orientation instanceof Number)||((Number)orientation).intValue()!=LinearLayout.VERTICAL)return;
         if(side!=null&&side.getParent()!=column){remove(side);side=null;}
         View found=column.findViewWithTag(SIDE);if(found==null){
             ImageView lens=icon(setting.getContext(),setting,"搜索弹幕",()->DanmakuPlayback.openSearch(activity));lens.setTag(SIDE);lens.setId(View.generateViewId());
-            LinearLayout.LayoutParams params=new LinearLayout.LayoutParams((LinearLayout.LayoutParams)setting.getLayoutParams());column.addView(lens,column.indexOfChild(setting)+1,params);found=lens;
+            column.addView(lens,column.indexOfChild(setting)+1,NativeViews.copyLayout(setting));found=lens;
         }
         side=found;side.setVisibility(View.VISIBLE);
         // The new icon is a child of the same native control root and follows its visibility.

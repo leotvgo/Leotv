@@ -32,6 +32,7 @@ final class DanmakuSearchDialog {
     final int foreground,secondary,background,card;
     final LinkedHashMap<String,List<DanmakuSource>> sources=new LinkedHashMap<>();
     String source="",expanded="";
+    String loadingSeries="";
     boolean reverse,selected,closed,autoExpanded;
     Dialog dialog;
     final int width;
@@ -69,7 +70,7 @@ final class DanmakuSearchDialog {
         if(dialog.getWindow()!=null){dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);dialog.getWindow().setLayout(width,Math.round(activity.getResources().getDisplayMetrics().heightPixels*.82f));dialog.getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);}
         refresh();input.requestFocus();if(!DanmakuSettings.api(activity).isEmpty()&&!input.getText().toString().trim().isEmpty())input.post(this::search);
     }
-    void search(){String keyword=input.getText().toString().trim();if(keyword.isEmpty()){input.setError("请输入关键词");return;}source=expanded="";autoExpanded=false;session.search(keyword,this::refresh);}
+    void search(){String keyword=input.getText().toString().trim();if(keyword.isEmpty()){input.setError("请输入关键词");return;}source=expanded=loadingSeries="";autoExpanded=false;session.search(keyword,this::refresh);}
     void refresh(){
         if(closed)return;status.setText(DanmakuSettings.api(activity).isEmpty()?"先在接口设置中配置弹幕 API":session.status);sources.clear();tabs.removeAllViews();
         for(DanmakuSource item:session.apiSources){String name=item.getSourceName();List<DanmakuSource> values=sources.get(name);if(values==null){values=new ArrayList<>();sources.put(name,values);}values.add(item);}
@@ -80,12 +81,15 @@ final class DanmakuSearchDialog {
     void orderText(){order.setText(reverse?"集数 ↓":"集数 ↑");}
     void renderResults(){
         if(closed)return;results.removeAllViews();List<DanmakuSource> values=sources.get(source);if(values==null||values.isEmpty()){TextView empty=text(session.status.startsWith("正在")?session.status:"搜索结果将显示在这里",14);empty.setTextColor(secondary);empty.setPadding(0,dp(36),0,dp(36));results.addView(empty);return;}
-        LinkedHashMap<String,List<DanmakuSource>> series=new LinkedHashMap<>();for(DanmakuSource item:values){String title=DanmakuTitle.titleKey(item);if(title==null||title.isEmpty())title=input.getText().toString().trim();if(title.isEmpty())title=DanmakuTitle.displayTitle(item);List<DanmakuSource> items=series.get(title);if(items==null){items=new ArrayList<>();series.put(title,items);}items.add(item);}
-        List<String> titles=new ArrayList<>(series.keySet());DanmakuTitle.sortByKeyword(titles,input.getText().toString());if(!autoExpanded&&titles.size()==1){expanded=titles.get(0);autoExpanded=true;}
+        LinkedHashMap<String,List<DanmakuSource>> series=new LinkedHashMap<>();for(DanmakuSource item:values){String title=DanmakuTitle.titleKey(item);if(title==null||title.isEmpty())title=input.getText().toString().trim();if(title.isEmpty())title=DanmakuTitle.displayTitle(item);if(!item.seriesId.isEmpty())title+="@@@"+item.seriesId;List<DanmakuSource> items=series.get(title);if(items==null){items=new ArrayList<>();series.put(title,items);}items.add(item);}
+        List<String> titles=new ArrayList<>(series.keySet());DanmakuTitle.sortByKeyword(titles,input.getText().toString());boolean firstExpansion=!autoExpanded&&titles.size()==1;if(firstExpansion){expanded=titles.get(0);autoExpanded=true;}
         int columns=Math.max(2,Math.min(8,(width-dp(62))/dp(120))),cell=(width-dp(62))/columns;
         for(String title:titles){List<DanmakuSource> items=series.get(title);DanmakuTitle.sortByEpisode(items,reverse);boolean open=title.equals(expanded);
-            TextView group=button(title+"（"+items.size()+"集） "+(open?"−":"＋"),()->{autoExpanded=true;expanded=title.equals(expanded)?"":title;renderResults();focusGroup(title);});group.setTag(title);group.setTypeface(Typeface.DEFAULT,Typeface.BOLD);LinearLayout.LayoutParams gp=new LinearLayout.LayoutParams(-1,dp(44));gp.bottomMargin=dp(6);results.addView(group,gp);
+            DanmakuSource catalog=null;for(DanmakuSource item:items)if(item.isCatalog()){catalog=item;break;}final DanmakuSource pending=catalog;
+            String groupLabel=title.contains("@@@")?title.substring(0,title.lastIndexOf("@@@")):title;
+            TextView group=button(groupLabel+(pending==null?"（"+items.size()+"集）":"（展开加载剧集）")+" "+(open?"−":"＋"),()->{autoExpanded=true;expanded=title.equals(expanded)?"":title;renderResults();focusGroup(title);if(title.equals(expanded)&&pending!=null)loadSeries(pending);});group.setTag(title);group.setTypeface(Typeface.DEFAULT,Typeface.BOLD);LinearLayout.LayoutParams gp=new LinearLayout.LayoutParams(-1,dp(44));gp.bottomMargin=dp(6);results.addView(group,gp);
             if(!open)continue;GridLayout grid=new GridLayout(context);grid.setColumnCount(columns);grid.setClipChildren(false);grid.setClipToPadding(false);
+            if(pending!=null){TextView load=button(loadingSeries.equals(pending.seriesId)?"正在加载剧集…":"加载剧集",()->loadSeries(pending));results.addView(load,new LinearLayout.LayoutParams(-1,dp(44)));if(firstExpansion)results.post(()->loadSeries(pending));continue;}
             for(int i=0;i<items.size();i++){DanmakuSource item=items.get(i);int episode=DanmakuTitle.getEpisode(item);String label=episode==DanmakuTitle.EPISODE_UNKNOWN?item.getName():"第"+episode+"集";
                 TextView entry=button(label,()->{selected=true;session.choose(item,input.getText().toString(),true);dialog.dismiss();});entry.setMaxLines(2);entry.setEllipsize(android.text.TextUtils.TruncateAt.END);
                 if(session.selected!=null&&session.selected.url.equals(item.url))entry.setTextColor(0xffc2a14a);
@@ -93,6 +97,7 @@ final class DanmakuSearchDialog {
             }results.addView(grid,new LinearLayout.LayoutParams(-1,-2));
         }
     }
+    void loadSeries(DanmakuSource series){if(closed||loadingSeries.equals(series.seriesId))return;loadingSeries=series.seriesId;session.expand(series,()->{if(!session.status.startsWith("正在"))loadingSeries="";refresh();});}
     TextView text(String value,int size){TextView view=new TextView(context);view.setText(value);view.setTextSize(size);view.setTextColor(foreground);view.setGravity(Gravity.CENTER_VERTICAL);return view;}
     void focusGroup(String title){results.post(()->{if(closed)return;View group=results.findViewWithTag(title);if(group!=null){group.requestFocus();scroll.smoothScrollTo(0,results.getTop()+group.getTop());}});}
     TextView button(String value,Runnable click){TextView view=text(value,14);view.setGravity(Gravity.CENTER);view.setPadding(dp(10),dp(6),dp(10),dp(6));view.setFocusable(true);view.setClickable(true);view.setBackground(shape(card,8,Color.TRANSPARENT));view.setOnFocusChangeListener((v,focused)->v.setBackground(shape(card,8,focused?foreground:Color.TRANSPARENT)));view.setOnClickListener(v->click.run());return view;}

@@ -47,6 +47,16 @@ def apply(project, root, variant):
                     return body.replace('    return-void',call+'\n\n    return-void')
                 return append_call(body,call)
             text = replace_method(text,show,shown)
+            event_signature='onPlayerEvent(Lz3/g;)V' if mobile else 'onPlayerEvent(Lw3/g;)V'
+            native_ready=('    invoke-virtual {p1, v0}, LF3/f;->k0(Lcom/fongmi/android/tv/bean/Danmaku;)V' if mobile else
+                          '    invoke-virtual {p1, v0}, LC3/e;->i0(Lcom/fongmi/android/tv/bean/Danmaku;)V')
+            def bootstrap(body):
+                if body.count(native_ready)!=1:
+                    raise ValueError('Expected one ordinary first-ready Danmaku selection.')
+                return body.replace(native_ready,
+                    '    invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapBegin(Landroid/app/Activity;)V\n\n'+native_ready+
+                    '\n\n    invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapEnd(Landroid/app/Activity;)V')
+            text=replace_method(text,event_signature,bootstrap)
             def resume(body):
                 marker = body.rfind('    return-void')
                 if marker < 0:

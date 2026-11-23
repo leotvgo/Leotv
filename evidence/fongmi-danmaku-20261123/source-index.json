@@ -1,0 +1,145 @@
+{
+  "repo": "FongMi/TV",
+  "commit": "e7e7dd06250ca53da3c594ca4f6befc02e56b1d1",
+  "files": [
+    {
+      "path": "app/src/leanback/java/com/fongmi/android/tv/ui/activity/SettingDanmakuActivity.java",
+      "sha256": "187d07e5a3d81da37647eb7a1b8a72d4f163f32d32daab3bd753a076024cc0c3"
+    },
+    {
+      "path": "app/src/leanback/java/com/fongmi/android/tv/ui/activity/VideoActivity.java",
+      "sha256": "00d08cf8614b1fb81be6a7fcfef4ef48cedd5cabfc350689fd30a1ecd5e63f49"
+    },
+    {
+      "path": "app/src/leanback/res/layout/dialog_danmaku.xml",
+      "sha256": "84235bb929b45c44685aa3f3e6c57de33755924265fdd62a73175b4d3098aaf6"
+    },
+    {
+      "path": "app/src/leanback/res/layout/dialog_danmaku_search.xml",
+      "sha256": "d0750d6e2df718ea1c7e069db063a201bac9235672d33dc4a3c975630a532204"
+    },
+    {
+      "path": "app/src/leanback/res/layout/dialog_danmaku_setting.xml",
+      "sha256": "b809a2e081d4864bb2d864263096e9094f53f747b4beb494bc00f8bb95235e37"
+    },
+    {
+      "path": "app/src/leanback/res/layout/view_control_vod.xml",
+      "sha256": "be33be26db424f011e75546763b36c40db113f5c4acb4003aceea0fcd215a03c"
+    },
+    {
+      "path": "app/src/leanback/res/layout/view_danmaku_appearance.xml",
+      "sha256": "48f49740ed1f69ccd0958a3dc78a1646dbb50b9f25de270c3450048462d0db32"
+    },
+    {
+      "path": "app/src/leanback/res/layout/view_danmaku_density.xml",
+      "sha256": "cbb8d808140ae1217778bb1d807aa4ea51ddc27f88a452525a42808653089d5c"
+    },
+    {
+      "path": "app/src/leanback/res/layout/view_danmaku_display.xml",
+      "sha256": "5ee09342518257c8b3421c1c10beee94c45c7985a0f3f3d22499fb0aceddfc66"
+    },
+    {
+      "path": "app/src/leanback/res/layout/view_danmaku_timing.xml",
+      "sha256": "c1aa533b1c886ddd3bfcbd9e148247ec3d1dabd9cdac698f08306d52e8ec3b23"
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/api/DanmakuApi.java",
+      "sha256": "fd7d1dd5d8e1a84eccb340b82c3b4c033895715eabc57ad0d39f0ee0c646e41d"
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/bean/Danmaku.java",
+      "sha256": "9eaf46fd10d029048aaa347cdac95ef9c023dc77da023e6fd4f068c74f75de31"
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/impl/DanmakuListener.java",
+      "sha256": "6c1cc5681bc4f5489b5ca23a64fd64550d35ec60ac64da7027a4fd4a3af90a25"
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/playback/vod/VodPlaybackMedia.java",
+      "sha256": "a610cad9a5d318c284309a6308f192b7f090137d49222ad1341ad781aca7fc79"
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/player/LiveDanmaku.java",
+      "sha256": "efde494d16fa333fc8882653e427aaf3e6e57296918eebfd37e33331c3a8c12e"
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/player/PlayerManager.java",
+      "sha256": "75e238127d6e671ce48cb14e7e340aaf2d264ead342e87f93eda894c8d59751f"
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/setting/DanmakuSetting.java",
+      "sha256": "cd51d138ad85c55938d59254527f2c3acd363f5c2762616f67ea8c16ba702675"
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/ui/dialog/DanmakuDialog.java",
+      "sha256": "ca221055ed4e26b758edcb959e9db74e6577881267c23670d2ef82d1d96baa54"
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/ui/dialog/DanmakuSearchDialog.java",
+      "sha256": "7497efa5cc88f7692cccc523953225c2e60219c7dfd5f7123fdaf27b21b9607b"
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/ui/dialog/DanmakuSettingDialog.java",
+      "sha256": "b8d63dc97c8a6406801d22ec691ee17eabaeb9e60adbb6a18946b9d6eb995389"
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/ui/dialog/DanmakuSettingPanel.java",
+      "sha256": "33565ef4150bc67119ab16176f86ef6abb2a093a31cb31ab5358ba805d5e10a4"
+    },
+    {
+      "path": "app/src/mobile/java/com/fongmi/android/tv/ui/activity/VideoActivity.java",
+      "sha256": "d384e7735ddc887f36587a98c1c98f0b11159c1f91b8501ff01a78c2de2606b8"
+    },
+    {
+      "path": "app/src/mobile/java/com/fongmi/android/tv/ui/fragment/SettingDanmakuFragment.java",
+      "sha256": "5185abb1a46299aed531ae4a5712356adea89804860818560bb9410ae74e34f8"
+    },
+    {
+      "path": "app/src/mobile/res/layout/dialog_danmaku.xml",
+      "sha256": "6313b484455bf25d1e6c97bcf07369ba47ca9885e18864e16f260d44f9bb215e"
+    },
+    {
+      "path": "app/src/mobile/res/layout/dialog_danmaku_search.xml",
+      "sha256": "f0f8693d4078acd08432f10500ba0a77f68eaad1ac8c8a8d0bc886b9e66f601b"
+    },
+    {
+      "path": "app/src/mobile/res/layout/dialog_danmaku_setting.xml",
+      "sha256": "1078b1b6a766fa1f4ce1b4a05e0839988d5a2fcb50d31e15644ad818a05dbce7"
+    },
+    {
+      "path": "app/src/mobile/res/layout/view_control_vod.xml",
+      "sha256": "e7425100d54d9120c424957affae1ee8f85c8e178989a803b5ec1ec416e6c807"
+    },
+    {
+      "path": "app/src/mobile/res/layout/view_danmaku_appearance.xml",
+      "sha256": "4617d639ca9f65eca376e80f93c5081b8d210e74b0e657e781d5def809394afc"
+    },
+    {
+      "path": "app/src/mobile/res/layout/view_danmaku_density.xml",
+      "sha256": "ceb24b06a3f85517997f9cd2cfb46a5c1276d252538f1337e08e85e6ab623135"
+    },
+    {
+      "path": "app/src/mobile/res/layout/view_danmaku_display.xml",
+      "sha256": "e725c66cd6a304a6f5a3ca4fd8d561231546aca57ff51c7a676eb770023d95e0"
+    },
+    {
+      "path": "app/src/mobile/res/layout/view_danmaku_timing.xml",
+      "sha256": "6c63b095f03ca411b256796eaeeafdbed6018e1717c506dde2b6fa4e4028905a"
+    }
+  ],
+  "runtime_configuration_read": false,
+  "service_reference": {
+    "repo": "huangxd-/danmu_api",
+    "commit": "e78bfe4fa4421816b413390f4eb703d3f6f7ecda",
+    "files": [
+      {
+        "path": "danmu_api/apis/clients/fongmi-api.js",
+        "sha256": "b163f9d0d2be9c1c18facf20de6d2223eb85bdb7e26a7ed4725a3267f57c4c58"
+      },
+      {
+        "path": "danmu_api/tests/apis/clients/fongmi-api.test.js",
+        "sha256": "8b0530e4b262621061152b64ef102b5a8bfafb0f0c18581f3ccb627f85e19682"
+      }
+    ]
+  }
+}
