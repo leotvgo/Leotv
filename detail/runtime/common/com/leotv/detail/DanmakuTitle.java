@@ -95,6 +95,12 @@ public final class DanmakuTitle {
         // 来源已在上一层按 source 分组，from 及其后的来源名/集数都属于冗余后缀。
         int cut = findCut(value);
         if (cut >= 0) value = value.substring(0, cut);
+        // Fongmi sources can return "剧名 第1集" without a dash or source suffix.
+        // Keep those episodes in one series grid, as Leo's animeTitle grouping does.
+        Matcher episode=EPISODE_CN.matcher(value);
+        if(episode.find())value=value.substring(0,episode.start());
+        else{episode=EPISODE_SEASON.matcher(value);if(episode.find())value=value.substring(0,episode.start());
+            else{episode=EPISODE_EP.matcher(value);if(episode.find())value=value.substring(0,episode.start());}}
         // 再清洗来源/类型/年份标记
         value = SOURCE_MARK.matcher(value).replaceAll(" ");
         value = YEAR.matcher(value).replaceAll(" ");

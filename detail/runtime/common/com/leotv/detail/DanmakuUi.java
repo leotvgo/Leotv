@@ -78,36 +78,8 @@ public final class DanmakuUi {
             }catch(Exception unavailable){android.widget.Toast.makeText(a,"原生弹幕设置暂不可用",0).show();}});
         });
     }
-    private static void search(DanmakuPlayback.Session session){
-        Activity a=session.activity();if(a==null)return;
-        LinearLayout panel=new LinearLayout(a);panel.setOrientation(LinearLayout.VERTICAL);panel.setPadding(dp(a,16),dp(a,12),dp(a,16),dp(a,12));
-        EditText input=new EditText(a);input.setSingleLine(true);input.setText(session.keyword.isEmpty()?session.identity.title:session.keyword);input.setHint("搜索剧名");input.setId(View.generateViewId());panel.addView(input,new LinearLayout.LayoutParams(-1,-2));
-        View qr=null;if(!Device.MOBILE){qr=NativeQrInput.button(a,input,"剧名");qr.setId(View.generateViewId());panel.addView(qr);}
-        LinearLayout actions=new LinearLayout(a);actions.setOrientation(LinearLayout.HORIZONTAL);panel.addView(actions);
-        TextView search=action(a,"搜索"),order=action(a,"集数升序");search.setId(View.generateViewId());order.setId(View.generateViewId());actions.addView(search,new LinearLayout.LayoutParams(0,-2,1));actions.addView(order,new LinearLayout.LayoutParams(0,-2,1));
-        input.setNextFocusUpId(order.getId());input.setNextFocusDownId(search.getId());order.setNextFocusDownId(input.getId());
-        if(qr!=null){input.setNextFocusDownId(qr.getId());qr.setNextFocusUpId(input.getId());qr.setNextFocusDownId(search.getId());search.setNextFocusUpId(qr.getId());}
-        TextView status=new TextView(a);panel.addView(status);ListView list=new ListView(a);list.setId(View.generateViewId());list.setDividerHeight(dp(a,4));panel.addView(list,new LinearLayout.LayoutParams(-1,dp(a,Device.MOBILE?320:280)));
-        List<DanmakuSource> displayed=new ArrayList<>();boolean[] reversed={false};String[] selectedGroup={""};java.util.Set<String> expanded=new java.util.HashSet<>();
-        List<String> groupRows=new ArrayList<>();List<DanmakuSource> itemRows=new ArrayList<>();
-        Runnable refresh=()->{
-            status.setText(session.status);displayed.clear();displayed.addAll(session.apiSources);DanmakuTitle.sortByEpisode(displayed,reversed[0]);
-            LinkedHashMap<String,List<DanmakuSource>> grouped=new LinkedHashMap<>();
-            for(DanmakuSource item:displayed){String title=DanmakuTitle.titleKey(item);String group=item.getSourceName()+" · "+(title==null?item.getName():title);List<DanmakuSource> values=grouped.get(group);if(values==null){values=new ArrayList<>();grouped.put(group,values);}values.add(item);}
-            List<String> titles=new ArrayList<>(grouped.keySet());DanmakuTitle.sortByKeyword(titles,input.getText().toString());List<String> rows=new ArrayList<>();groupRows.clear();itemRows.clear();
-            for(String title:titles){List<DanmakuSource> items=grouped.get(title);if(items.size()>1){boolean open=expanded.contains(title);rows.add((open?"[-] ":"[+] ")+title+"（"+items.size()+" 集）");groupRows.add(title);itemRows.add(null);if(!open)continue;}
-                for(DanmakuSource item:items){rows.add(item.getName());groupRows.add("");itemRows.add(item);}
-            }
-            list.setAdapter(new ArrayAdapter<String>(a,android.R.layout.simple_list_item_1,rows));
-        };
-        try{Dialog dialog=NativeDialogs.panel(a,"搜索弹幕",panel,null);session.dialogs.add(dialog);
-            list.setOnItemClickListener((parent,view,position,id)->{DanmakuSource item=itemRows.get(position);if(item==null){String group=groupRows.get(position);if(!expanded.remove(group))expanded.add(group);refresh.run();}else{session.choose(item,input.getText().toString(),true);dialog.dismiss();}});
-            search.setOnClickListener(view->{expanded.clear();session.search(input.getText().toString().trim(),refresh);});
-            order.setOnClickListener(view->{reversed[0]=!reversed[0];order.setText(reversed[0]?"集数降序":"集数升序");refresh.run();});
-            input.setOnEditorActionListener((view,id,event)->{search.performClick();return true;});dialog.setOnDismissListener(ignored->{session.dialogs.remove(dialog);});
-            dialog.show();input.requestFocus();refresh.run();
-        }catch(ReflectiveOperationException unavailable){android.widget.Toast.makeText(a,"原生搜索窗口暂不可用",0).show();}
-    }
+    static void search(DanmakuPlayback.Session session){DanmakuSearchDialog.show(session);}
+    static void settings(DanmakuPlayback.Session session){Activity activity=session.activity();if(activity!=null)settings(activity,session);}
     private static TextView action(Activity a,String text){TextView v=new TextView(a);v.setText(text);v.setTextSize(16);v.setPadding(dp(a,12),dp(a,12),dp(a,12),dp(a,12));v.setFocusable(true);v.setClickable(true);int bg=a.getResources().getIdentifier("selector_item","drawable",a.getPackageName());if(bg!=0)v.setBackgroundResource(bg);return v;}
     private static boolean contains(List<DanmakuSource> values,String url){for(DanmakuSource value:values)if(value.url.equals(url))return true;return false;}
     private static String on(boolean value){return value?"开启":"关闭";}

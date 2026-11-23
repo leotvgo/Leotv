@@ -26,22 +26,26 @@ public final class DanmakuPlayback {
     private DanmakuPlayback(){}
     public static void initialize(Activity activity){
         if(!NativeRouting.isFullscreenPlayer(activity))return;
-        DanmakuSettings.initialize(activity);
-        Session session=sessions.get(activity);if(session==null){session=new Session(activity);sessions.put(activity,session);}
+        Session session=ensure(activity);if(session==null)return;
         session.syncDisplay();
     }
     /** Install after the host's N/K initEvent, which replaces listeners set during O/L initData. */
     public static void installControls(Activity activity){
-        if(!NativeRouting.isFullscreenPlayer(activity))return;
-        Session session=sessions.get(activity);if(session==null||session.closed)return;
-        int id=activity.getResources().getIdentifier("danmu","id",activity.getPackageName());
-        View button=id==0?null:activity.findViewById(id);if(button==null)return;
-        button.setVisibility(View.VISIBLE);button.setEnabled(true);button.setClickable(true);
-        button.setContentDescription("弹幕：搜索、选源和设置");
-        if(button instanceof android.widget.TextView)((android.widget.TextView)button).setText("弹幕");
-        Session current=session;button.setOnClickListener(view->DanmakuUi.show(current));
-        button.setOnLongClickListener(view->{DanmakuSettings.toggle(activity,"danmaku_show",!DanmakuSettings.show(activity));current.syncDisplay();return true;});
+        Session session=ensure(activity);if(session==null)return;
+        if(session.controls==null)session.controls=new DanmakuControls(session);
+        session.controls.install();
         if(!Device.MOBILE)invoke(activity,"H0");
+    }
+    static Session ensure(Activity activity){
+        if(activity==null||activity.isFinishing()||activity.isDestroyed()||!activity.getClass().getName().equals("com.fongmi.android.tv.ui.activity.VideoActivity")||field(activity,Device.MOBILE?"c0":"h0")==null)return null;
+        Session session=sessions.get(activity);if(session==null){DanmakuSettings.initialize(activity);SiteFeed.initialize(activity);session=new Session(activity);sessions.put(activity,session);}return session;
+    }
+    public static void openSearch(Activity activity){Session session=ensure(activity);if(session!=null){session.waiting=false;session.identity=new Identity(activity);DanmakuUi.search(session);}}
+    /** Add actions to the original dialog; its source adapter/file chooser/settings remain native. */
+    public static void menuCreated(Object owner){
+        Object value=invoke(owner,Device.MOBILE?"y":"l");if(!(value instanceof Activity))return;
+        Session session=ensure((Activity)value);if(session==null)return;
+        Object root=invoke(field(owner,"A0"),"getRoot");if(root instanceof View)DanmakuControls.menu(session,(View)root);
     }
     /** A0 starts every new episode, refresh and engine switch. Cancel the old API first. */
     public static void begin(Activity activity){Session session=sessions.get(activity);if(session!=null)session.begin();}
@@ -89,6 +93,7 @@ public final class DanmakuPlayback {
         DanmakuApi.Owner owner=new DanmakuApi.Owner();
         Future<?> task;
         DanmakuLive live;
+        DanmakuControls controls;
         volatile long generation;
         volatile boolean closed;
         boolean waiting=true,applying,paused,needResume;
@@ -96,7 +101,7 @@ public final class DanmakuPlayback {
         Activity activity(){Activity a=activity.get();return a==null||a.isFinishing()||a.isDestroyed()?null:a;}
         void begin(){cancel();waiting=true;selected=null;comments=null;apiSources.clear();siteSources.clear();dismissDialogs();}
         void cancel(){generation++;owner.cancel();owner=new DanmakuApi.Owner();if(task!=null)task.cancel(true);task=null;if(live!=null){live.close();live=null;}}
-        void close(){closed=true;cancel();dismissDialogs();comments=null;apiSources.clear();siteSources.clear();}
+        void close(){closed=true;cancel();dismissDialogs();if(controls!=null){controls.close();controls=null;}comments=null;apiSources.clear();siteSources.clear();}
         void dismissDialogs(){for(android.app.Dialog dialog:new ArrayList<>(dialogs))dialog.dismiss();dialogs.clear();}
         void result(Object result){
             Activity a=activity();if(a==null||closed)return;cancel();waiting=false;identity=new Identity(a);api=DanmakuSettings.api(a);siteSources.clear();
@@ -157,6 +162,11 @@ public final class DanmakuPlayback {
             try{
                 Object player=player();Class<?> bean=Class.forName("com.fongmi.android.tv.bean.Danmaku",true,a.getClassLoader());
                 Object nativeSource=bean.getMethod("from",String.class).invoke(null,Uri.fromFile(file).toString());bean.getMethod("setName",String.class).invoke(nativeSource,source.getName());
+                Object existing=field(player,"s");{
+                    List<Object> sources=existing instanceof List?new ArrayList<>((List<?>)existing):new ArrayList<>();String path=string(nativeSource,"getUrl","");boolean present=false;
+                    for(Object item:sources)if(path.equals(string(item,"getUrl","")))present=true;
+                    if(!present)sources.add(nativeSource);player.getClass().getField("s").set(player,sources);
+                }
                 applying=true;
                 try{player.getClass().getMethod(Device.MOBILE?"k0":"i0",bean).invoke(player,nativeSource);}finally{applying=false;}
                 syncDisplay();

@@ -55,6 +55,7 @@ final class NativeViews {
         catch(ReflectiveOperationException unavailable){
             if(source instanceof android.widget.LinearLayout)result=new android.widget.LinearLayout(context);
             else if(source instanceof android.widget.FrameLayout)result=new android.widget.FrameLayout(context);
+            else if(source instanceof android.widget.ImageView)result=new android.widget.ImageView(context);
             else if(source instanceof TextView)result=new TextView(context);
             else result=new View(context);
         }

@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-23",
+  "reference": "coos/coos-master/app/src/main/java/com/github/catvod/spider/DanmakuUIHelper.java",
+  "sha256": "27b541945bff5e94a198a1a94e896032e7c4d1e28dbca3e959ed0f0c95f612bc",
+  "methods": [
+    "showSearchDialog",
+    "showResultsForTab",
+    "createGridResultButton"
+  ],
+  "adapted_ui": [
+    "14sp compact search and 44dp input/button row",
+    "one outer scroll and rounded panel",
+    "source tabs",
+    "one expanded title group with episode grid",
+    "focus border and scroll-to-group behavior"
+  ],
+  "runtime_configuration_read": false,
+  "jar_source_modified": false,
+  "jar_published": false,
+  "pro_reference_apks": {
+    "mobile-pro.apk": {
+      "sha256": "43bb688c90515d79c321366c200976c3727a4290fab9be0c930e1b4e5bd2b406",
+      "usage": "Read-only resource/widget comparison; no Pro bytecode or libraries imported"
+    },
+    "leanback-pro-v8a.apk": {
+      "sha256": "d112004a21cc01b5ca758b795385ddf46c8ece94ae09773c60026409f2e0e3de",
+      "usage": "Read-only resource/widget comparison; no Pro bytecode or libraries imported"
+    }
+  }
+}

@@ -138,6 +138,7 @@ def check_contract(root, variant, project=None):
     video_fields = ['d0:Z', 'l0:Z', 'Z:Lcom/fongmi/android/tv/ui/adapter/u;',
                     'S:Lcom/fongmi/android/tv/ui/adapter/q;', 'c0:LF3/f;', 'b0:L'+BEANS+'History;'] if mobile else [
                         'i0:Z', 'U:Landroidx/leanback/widget/ArrayObjectAdapter;', 'h0:LC3/e;', 'g0:L'+BEANS+'History;']
+    video_fields.append('M:Lw3/b;' if mobile else 'N:Lt3/g;')
     contracts['com/fongmi/android/tv/ui/activity/VideoActivity'] = (video_methods, video_fields)
     contracts[BEANS+'Danmaku'] = (['from(Ljava/lang/String;)L'+BEANS+'Danmaku;', 'empty()L'+BEANS+'Danmaku;',
                                  'getName()Ljava/lang/String;', 'getUrl()Ljava/lang/String;', 'getRealUrl()Ljava/lang/String;', 'setName(Ljava/lang/String;)V'], [])
@@ -147,7 +148,15 @@ def check_contract(root, variant, project=None):
     contracts['okhttp3/OkHttpClient'] = (['newWebSocket(Lokhttp3/Request;Lokhttp3/WebSocketListener;)Lokhttp3/WebSocket;', 'newCall(Lokhttp3/Request;)Lokhttp3/Call;'], [])
     contracts[BEANS+'Result'][0].append('getDanmaku()Ljava/util/List;')
     contracts[BEANS+'Config'] = (['getId()I', 'getUrl()Ljava/lang/String;'], [])
-    contracts['F3/f' if mobile else 'C3/e'] = ([('k0' if mobile else 'i0')+'(L'+BEANS+'Danmaku;)V'], ['v:L'+('H3/d' if mobile else 'E3/d')+';'])
+    contracts['F3/f' if mobile else 'C3/e'] = ([('k0' if mobile else 'i0')+'(L'+BEANS+'Danmaku;)V'], ['v:L'+('H3/d' if mobile else 'E3/d')+';', 's:Ljava/util/List;'])
+    contracts['w3/b' if mobile else 't3/g'] = ([], ['q:Lw3/n;' if mobile else 's:Lt3/p;'])
+    if mobile:
+        contracts['w3/n'] = (['getRoot()Landroid/view/View;'], ['u:Ljava/lang/Object;'])
+        contracts['w3/r'] = ([], ['p:Landroid/view/View;'])
+        contracts['R3/p'] = ([], ['A0:Lv3/a;'])
+    else:
+        contracts['t3/p'] = (['getRoot()Landroid/view/View;'], ['p:Lcom/fongmi/android/tv/ui/custom/CustomUpDownView;'])
+        contracts['O3/k'] = ([], ['A0:Lt3/j;'])
     contracts['H3/d' if mobile else 'E3/d'] = (['e()V','d()V'], [])
     contracts['R6/g' if mobile else 'r7/g'] = ([('x' if mobile else 'r')+'()Landroid/content/SharedPreferences;'], [])
     if not mobile:
@@ -194,7 +203,7 @@ def check_contract(root, variant, project=None):
             'com/fongmi/android/tv/ui/adapter/u': ([], ['f:Ljava/util/ArrayList;']),
             'com/fongmi/android/tv/ui/adapter/q': (['p()I'], ['g:Ljava/lang/Object;']),
             'F3/f': (['S()I', 'T()I', 'N()J', 'H()J', 'd(Ln0/d0;)V', 'k0(L'+BEANS+'Danmaku;)V',
-                      'onVideoSizeChanged(Ltv/danmaku/ijk/media/player/IMediaPlayer;IIII)V'], ['B:Ljava/lang/String;', 'v:LH3/d;']),
+                      'onVideoSizeChanged(Ltv/danmaku/ijk/media/player/IMediaPlayer;IIII)V'], ['B:Ljava/lang/String;', 'v:LH3/d;', 's:Ljava/util/List;']),
             'n0/d0': ([], ['a:I', 'b:I']),
         })
     else:

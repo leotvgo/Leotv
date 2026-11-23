@@ -15,9 +15,9 @@ def apply(project, root, variant):
     config = 'smali/t3.1/i.smali' if mobile else 'smali/q3.1/i.smali'
     paths = [video, result, player, config]
     if mobile:
-        paths += ['smali/S3/x.smali']
+        paths += ['smali/S3/x.smali','smali/R3/p.smali']
     else:
-        paths += ['smali/L3/f.smali', 'smali/com/fongmi/android/tv/ui/activity/SettingDanmuActivity.smali']
+        paths += ['smali/L3/f.smali', 'smali/com/fongmi/android/tv/ui/activity/SettingDanmuActivity.smali','smali/O3/k.smali']
     for name in paths:
         # Video/result/mobile player may already have the declared detail hooks.
         original = (root / ('mobile-armeabi-v7a' if variant == 'mobile-v7a' else 'mobile-arm64-v8a' if mobile else 'tv-armeabi-v7a' if variant == 'tv-v7a' else 'tv-arm64-v8a') / 'bytecode-project' / name).read_bytes()
@@ -113,6 +113,12 @@ def apply(project, root, variant):
     :leotv_qr_original
 ''')
             text = replace_method(text, signature, qr)
+        elif name in ['smali/R3/p.smali','smali/O3/k.smali']:
+            def menu(body):
+                position=body.rfind('    return-void')
+                if position<0:raise ValueError('Native Danmaku menu has no normal return.')
+                return body[:position]+'    invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->menuCreated(Ljava/lang/Object;)V\n\n'+body[position:]
+            text=replace_method(text,'w0()V' if mobile else 'e0()V',menu)
         elif name == 'smali/S3/x.smali':
             text = replace_method(text, 't0()V', lambda body: append_call(body, '''    invoke-virtual {p0}, Landroidx/fragment/app/v;->y()Landroidx/appcompat/app/j;
 
