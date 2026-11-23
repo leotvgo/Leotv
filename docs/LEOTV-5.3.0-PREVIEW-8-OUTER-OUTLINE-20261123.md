@@ -10,4 +10,4 @@ TV 仅把搜索窗口背景 alpha 乘以 0.93：原约 70% 不透明变为约 65
 
 按用户既定要求，不做本地回归或打包；直接 GitHub 构建四套固定签名测试 APK，保留 API23/R8、原样/变化审计与签名核对。沿用已授权的临时公开构建，完成发布后恢复私有。正式 Latest 保持 5.2.3，UI 效果交给用户真机验收。
 
-构建交付结果待本轮流水线完成后补齐。
+[四套固定签名测试 APK 已发布](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0-preview.8-build-45151447282)。源码 `1f434c2e79feea84bf76113be98e94ce6b0c5bff`，[构建 45151447282](https://github.com/leotvgo/Leotv/actions/runs/45151447282) 与[自动发布 45152181454](https://github.com/leotvgo/Leotv/actions/runs/45152181454) 首次通过。四个固定证书、APK/报告摘要、API23/R8、原样/变化审计及内部映射核对通过。发布后已恢复私有并经 GitHub API 确认，正式 Latest 仍为 5.2.3。手机外框和 TV 透明度的实际观感待用户真机验收；交付记录见 `evidence/leotv-5.3.0-preview.8-delivery-20261123.json`。
