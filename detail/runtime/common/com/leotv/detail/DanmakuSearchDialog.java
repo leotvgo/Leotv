@@ -3,9 +3,13 @@ package com.leotv.detail;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +35,15 @@ final class DanmakuSearchDialog {
     final HorizontalScrollView sourceScroll;
     final EditText input;
     final TextView status,order;
-    final int foreground,secondary,background,card,accent,selection;
+    final int foreground,secondary,background,accent,border;
+    final TextView nativeRow;
+    final ColorStateList actionColors;
     final LinkedHashMap<String,List<DanmakuSource>> sources=new LinkedHashMap<>();
     String source="",expanded="";
     String loadingSeries="";
     boolean reverse,selected,closed,autoExpanded;
     boolean editing;
+    int renderedWidth;
     Dialog dialog;
     final int width;
     static void show(DanmakuPlayback.Session session){
@@ -46,25 +53,28 @@ final class DanmakuSearchDialog {
     }
     private DanmakuSearchDialog(DanmakuPlayback.Session session)throws ReflectiveOperationException{
         this.session=session;activity=session.activity();Object builder=NativeDialogs.builder(activity);context=NativeDialogs.context(builder);
-        boolean light=Device.MOBILE;
-        foreground=light?0xff202832:0xfff2f5f8;secondary=light?0xff687582:0xffc3cbd3;background=DanmakuUi.surface(context);card=light?0xfff0f3f6:0x263b4650;
-        accent=light?0xff315f8c:0xff9bc4ec;selection=light?0xffe5eef6:0x803a4c5c;
+        nativeRow=NativeViews.text(NativeViews.layout(context,"adapter_danmaku"));
+        ColorStateList colors=nativeRow==null?null:nativeRow.getTextColors();
+        foreground=colors==null?Device.MOBILE?0xff202832:Color.WHITE:colors.getDefaultColor();
+        accent=colors==null?Device.MOBILE?0xff2196f3:Color.YELLOW:colors.getColorForState(new int[]{android.R.attr.state_enabled,android.R.attr.state_activated},foreground);
+        border=Device.MOBILE?Color.BLACK:Color.WHITE;secondary=Device.MOBILE?0xff687582:0xffc3cbd3;background=DanmakuUi.surface(context);
+        actionColors=new ColorStateList(new int[][]{new int[]{android.R.attr.state_focused},new int[]{android.R.attr.state_activated},new int[]{android.R.attr.state_selected},new int[]{android.R.attr.state_pressed},new int[]{}},new int[]{accent,accent,accent,accent,foreground});
         int available=activity.getResources().getDisplayMetrics().widthPixels;
         width=Math.min(available-dp(24),Device.MOBILE&&available<dp(600)?dp(560):Math.min(dp(Device.MOBILE?920:1120),Math.round(available*(Device.MOBILE?.86f:.90f))));
         scroll=new ScrollView(context);scroll.setFillViewport(true);scroll.setClipChildren(true);scroll.setClipToPadding(true);scroll.setVerticalScrollBarEnabled(false);
         panel=new LinearLayout(context);panel.setOrientation(LinearLayout.VERTICAL);panel.setPadding(dp(16),dp(10),dp(16),dp(10));panel.setClipChildren(true);panel.setClipToPadding(true);panel.setBackground(shape(background,Device.MOBILE?18:12,Color.TRANSPARENT));
         LinearLayout heading=new LinearLayout(context);heading.setGravity(Gravity.CENTER_VERTICAL);TextView title=text("弹幕搜索",16);title.setTypeface(Typeface.DEFAULT,Typeface.BOLD);heading.addView(title,new LinearLayout.LayoutParams(0,dp(30),1));
         TextView setting=button("接口设置",()->DanmakuUi.settings(session));setting.setTextSize(12);heading.addView(setting,new LinearLayout.LayoutParams(-2,dp(28)));panel.addView(heading);
-        LinearLayout searchRow=new LinearLayout(context);searchRow.setGravity(Gravity.CENTER_VERTICAL);searchRow.setClipChildren(false);
-        input=new EditText(context);input.setSingleLine(true);input.setHint("输入片名或剧名…");input.setText(session.keyword.isEmpty()?session.identity.title:session.keyword);input.setTextSize(14);input.setTextColor(foreground);input.setHintTextColor(secondary);input.setPadding(dp(10),dp(4),dp(10),dp(4));input.setId(View.generateViewId());input.setImeOptions(EditorInfo.IME_ACTION_SEARCH);input.setBackground(shape(card,8,Color.TRANSPARENT));
+        LinearLayout searchRow=new LinearLayout(context);searchRow.setGravity(Gravity.CENTER_VERTICAL);searchRow.setClipChildren(true);searchRow.setClipToPadding(true);
+        input=new EditText(context);input.setSingleLine(true);input.setHint("输入片名或剧名…");input.setText(session.keyword.isEmpty()?session.identity.title:session.keyword);input.setTextSize(14);input.setTextColor(actionColors);input.setHintTextColor(secondary);input.setId(View.generateViewId());input.setImeOptions(EditorInfo.IME_ACTION_SEARCH);input.setBackground(actionBackground());input.setPadding(dp(10),dp(4),dp(10),dp(4));
         LinearLayout.LayoutParams field=new LinearLayout.LayoutParams(0,dp(36),1);field.setMarginEnd(dp(8));
         ImageView qr=null;
         if(Device.MOBILE){
-            input.setOnFocusChangeListener((v,focus)->v.setBackground(shape(card,8,focus?accent:Color.TRANSPARENT)));searchRow.addView(input,field);
+            searchRow.addView(input,field);
         }else{
-            LinearLayout inputBox=new LinearLayout(context);inputBox.setGravity(Gravity.CENTER_VERTICAL);inputBox.setBackground(shape(card,8,Color.TRANSPARENT));
+            LinearLayout inputBox=new LinearLayout(context);inputBox.setGravity(Gravity.CENTER_VERTICAL);inputBox.setBackground(actionBackground());inputBox.setPadding(0,0,0,0);
             input.setBackgroundColor(Color.TRANSPARENT);input.setShowSoftInputOnFocus(false);input.setCursorVisible(false);
-            input.setOnFocusChangeListener((v,focus)->{inputBox.setBackground(shape(card,8,focus?accent:Color.TRANSPARENT));if(!focus){editing=false;input.setShowSoftInputOnFocus(false);input.setCursorVisible(false);}});
+            input.setOnFocusChangeListener((v,focus)->{inputBox.setActivated(focus);if(!focus){editing=false;input.setShowSoftInputOnFocus(false);input.setCursorVisible(false);}});
             input.setOnClickListener(v->editKeyword());
             input.setOnKeyListener((v,key,event)->{
                 if(key==android.view.KeyEvent.KEYCODE_DPAD_CENTER||key==android.view.KeyEvent.KEYCODE_ENTER){if(event.getAction()==android.view.KeyEvent.ACTION_UP)editKeyword();return true;}
@@ -73,8 +83,8 @@ final class DanmakuSearchDialog {
                 }return false;
             });
             inputBox.addView(input,new LinearLayout.LayoutParams(0,-1,1));
-            qr=new ImageView(context);qr.setId(View.generateViewId());qr.setImageDrawable(new QrIcon(foreground));qr.setScaleType(ImageView.ScaleType.CENTER_INSIDE);qr.setPadding(dp(8),dp(8),dp(8),dp(8));qr.setContentDescription("扫码输入搜索词");qr.setFocusable(true);qr.setClickable(true);
-            qr.setBackground(shape(card,6,Color.TRANSPARENT));qr.setOnFocusChangeListener((v,focus)->v.setBackground(shape(focus?selection:card,6,focus?accent:Color.TRANSPARENT)));
+            qr=new ImageView(context);qr.setId(View.generateViewId());qr.setImageDrawable(new QrIcon(foreground));qr.setImageTintList(actionColors);qr.setScaleType(ImageView.ScaleType.CENTER_INSIDE);qr.setContentDescription("扫码输入搜索词");qr.setFocusable(true);qr.setClickable(true);
+            qr.setBackground(actionBackground());qr.setPadding(dp(8),dp(8),dp(8),dp(8));
             qr.setOnClickListener(v->NativeQrInput.show(activity,input,"搜索关键词"));inputBox.addView(qr,new LinearLayout.LayoutParams(dp(38),-1));searchRow.addView(inputBox,field);
         }
         TextView search=button("搜索",this::search);search.setId(View.generateViewId());searchRow.addView(search,new LinearLayout.LayoutParams(dp(62),dp(36)));panel.addView(searchRow,new LinearLayout.LayoutParams(-1,dp(36)));
@@ -84,9 +94,12 @@ final class DanmakuSearchDialog {
         LinearLayout tools=new LinearLayout(context);tools.setGravity(Gravity.CENTER_VERTICAL);LinearLayout.LayoutParams toolParams=new LinearLayout.LayoutParams(-1,dp(28));toolParams.topMargin=dp(4);panel.addView(tools,toolParams);
         status=text("",12);status.setTextColor(secondary);status.setSingleLine(true);status.setEllipsize(android.text.TextUtils.TruncateAt.END);tools.addView(status,new LinearLayout.LayoutParams(0,-2,1));
         order=button("集数 ↑",()->{reverse=!reverse;orderText();renderResults();});order.setTextSize(12);order.setId(View.generateViewId());tools.addView(order,new LinearLayout.LayoutParams(dp(68),dp(28)));input.setNextFocusDownId(order.getId());order.setNextFocusUpId(input.getId());
-        sourceScroll=new HorizontalScrollView(context);sourceScroll.setHorizontalScrollBarEnabled(false);tabs=new LinearLayout(context);tabs.setGravity(Gravity.CENTER_VERTICAL);tabs.setOrientation(LinearLayout.HORIZONTAL);sourceScroll.addView(tabs,new HorizontalScrollView.LayoutParams(-2,-1));panel.addView(sourceScroll,new LinearLayout.LayoutParams(-1,dp(34)));
+        sourceScroll=new HorizontalScrollView(context);sourceScroll.setHorizontalScrollBarEnabled(false);sourceScroll.setPadding(0,dp(4),0,dp(4));sourceScroll.setClipChildren(true);sourceScroll.setClipToPadding(true);
+        tabs=new LinearLayout(context);tabs.setGravity(Gravity.CENTER_VERTICAL);tabs.setOrientation(LinearLayout.HORIZONTAL);tabs.setClipChildren(true);tabs.setClipToPadding(true);
+        sourceScroll.addView(tabs,new HorizontalScrollView.LayoutParams(-2,dp(36)));panel.addView(sourceScroll,new LinearLayout.LayoutParams(-1,-2));
         results=new LinearLayout(context);results.setOrientation(LinearLayout.VERTICAL);results.setPadding(0,dp(4),0,dp(4));results.setClipChildren(true);results.setClipToPadding(true);scroll.addView(results,new ScrollView.LayoutParams(-1,-2));
         panel.addView(scroll,new LinearLayout.LayoutParams(-1,0,1));
+        scroll.addOnLayoutChangeListener((view,left,top,right,bottom,oldLeft,oldTop,oldRight,oldBottom)->{if(!closed&&right-left>0&&right-left!=renderedWidth)renderResults();});
         // A full-size content root gives the weighted results the actual remaining
         // window height, including keyboard resize; no extra Material custom-panel inset.
         dialog=new Dialog(context);dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);dialog.setContentView(panel,new ViewGroup.LayoutParams(-1,-1));
@@ -109,12 +122,12 @@ final class DanmakuSearchDialog {
         for(DanmakuSource item:session.apiSources){String name=item.getSourceName();List<DanmakuSource> values=sources.get(name);if(values==null){values=new ArrayList<>();sources.put(name,values);}values.add(item);}
         sourceScroll.setVisibility(sources.isEmpty()?View.GONE:View.VISIBLE);
         if(!sources.containsKey(source))source=sources.isEmpty()?"":sources.keySet().iterator().next();
-        for(String name:sources.keySet()){TextView tab=button(name,()->{source=name;expanded="";autoExpanded=false;refresh();tabs.post(()->{if(!closed){View current=tabs.findViewWithTag(name);if(current!=null)current.requestFocus();}});});tab.setTag(name);tab.setSelected(name.equals(source));tab.setBackground(shape(name.equals(source)?selection:card,8,name.equals(source)?accent:Color.TRANSPARENT));LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-2,dp(36));p.setMarginEnd(dp(8));tabs.addView(tab,p);}
+        for(String name:sources.keySet()){TextView tab=button(name,()->{source=name;expanded="";autoExpanded=false;refresh();tabs.post(()->{if(!closed){View current=tabs.findViewWithTag(name);if(current!=null)current.requestFocus();}});});tab.setTag(name);tab.setActivated(name.equals(source));tab.setSingleLine(true);tab.setEllipsize(android.text.TextUtils.TruncateAt.END);tab.setMaxWidth(Math.max(dp(96),width-dp(32)));LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-2,dp(36));p.setMarginEnd(dp(8));tabs.addView(tab,p);}
         renderResults();
     }
     void orderText(){order.setText(reverse?"集数 ↓":"集数 ↑");}
     void renderResults(){
-        if(closed)return;results.removeAllViews();List<DanmakuSource> values=sources.get(source);if(values==null||values.isEmpty()){TextView empty=text(session.status.startsWith("正在")?session.status:"搜索结果将显示在这里",14);empty.setTextColor(secondary);empty.setPadding(0,dp(36),0,dp(36));results.addView(empty);return;}
+        if(closed)return;View focused=scroll.findFocus();Object focusedTag=focused==null?null:focused.getTag();renderedWidth=scroll.getWidth();results.removeAllViews();List<DanmakuSource> values=sources.get(source);if(values==null||values.isEmpty()){TextView empty=text(session.status.startsWith("正在")?session.status:"搜索结果将显示在这里",14);empty.setTextColor(secondary);empty.setPadding(0,dp(36),0,dp(36));results.addView(empty);return;}
         LinkedHashMap<String,List<DanmakuSource>> series=new LinkedHashMap<>();for(DanmakuSource item:values){String title=DanmakuTitle.titleKey(item);if(title==null||title.isEmpty())title=input.getText().toString().trim();if(title.isEmpty())title=DanmakuTitle.displayTitle(item);if(!item.seriesId.isEmpty())title+="@@@"+item.seriesId;List<DanmakuSource> items=series.get(title);if(items==null){items=new ArrayList<>();series.put(title,items);}items.add(item);}
         List<String> titles=new ArrayList<>(series.keySet());DanmakuTitle.sortByKeyword(titles,input.getText().toString());boolean firstExpansion=!autoExpanded&&!titles.isEmpty();if(firstExpansion){expanded=titles.get(0);autoExpanded=true;}
         int contentWidth=scroll.getWidth()>0?scroll.getWidth():width-dp(32);
@@ -122,20 +135,32 @@ final class DanmakuSearchDialog {
         for(String title:titles){List<DanmakuSource> items=series.get(title);DanmakuTitle.sortByEpisode(items,reverse);boolean open=title.equals(expanded);
             DanmakuSource catalog=null;for(DanmakuSource item:items)if(item.isCatalog()){catalog=item;break;}final DanmakuSource pending=catalog;
             String groupLabel=title.contains("@@@")?title.substring(0,title.lastIndexOf("@@@")):title;
-            TextView group=button((open?"▾  ":"▸  ")+groupLabel+(pending==null?"   "+items.size()+"集":"   展开剧集"),()->{autoExpanded=true;expanded=title.equals(expanded)?"":title;renderResults();focusGroup(title);if(title.equals(expanded)&&pending!=null)loadSeries(pending);});group.setGravity(Gravity.CENTER_VERTICAL|Gravity.START);group.setTag(title);group.setTypeface(Typeface.DEFAULT,Typeface.BOLD);LinearLayout.LayoutParams gp=new LinearLayout.LayoutParams(-1,dp(40));gp.bottomMargin=dp(6);results.addView(group,gp);
-            if(!open)continue;GridLayout grid=new GridLayout(context);grid.setColumnCount(columns);grid.setClipChildren(false);grid.setClipToPadding(false);
+            TextView group=button((open?"▾  ":"▸  ")+groupLabel+(pending==null?"   "+items.size()+"集":"   展开剧集"),()->{autoExpanded=true;expanded=title.equals(expanded)?"":title;renderResults();focusGroup(title);if(title.equals(expanded)&&pending!=null)loadSeries(pending);});group.setGravity(Gravity.CENTER_VERTICAL|Gravity.START);group.setTag(title);group.setActivated(open);group.setSingleLine(true);group.setEllipsize(android.text.TextUtils.TruncateAt.END);group.setTypeface(Typeface.DEFAULT,Typeface.BOLD);LinearLayout.LayoutParams gp=new LinearLayout.LayoutParams(-1,dp(40));gp.bottomMargin=dp(6);results.addView(group,gp);
+            if(!open)continue;GridLayout grid=new GridLayout(context);grid.setColumnCount(columns);grid.setClipChildren(true);grid.setClipToPadding(true);
             if(pending!=null){TextView load=button(loadingSeries.equals(pending.seriesId)?"正在加载剧集…":"加载剧集",()->loadSeries(pending));results.addView(load,new LinearLayout.LayoutParams(-1,dp(44)));if(firstExpansion)results.post(()->loadSeries(pending));continue;}
             for(int i=0;i<items.size();i++){DanmakuSource item=items.get(i);int episode=DanmakuTitle.getEpisode(item);String label=episode==DanmakuTitle.EPISODE_UNKNOWN?item.getName():"第"+episode+"集";
                 TextView entry=button(label,()->{selected=true;session.choose(item,input.getText().toString(),true);dialog.dismiss();});entry.setMaxLines(2);entry.setEllipsize(android.text.TextUtils.TruncateAt.END);
-                if(session.selected!=null&&session.selected.url.equals(item.url)){entry.setSelected(true);entry.setTextColor(accent);entry.setBackground(shape(selection,8,accent));}
+                entry.setTag("episode@"+item.url);entry.setActivated(session.selected!=null&&session.selected.url.equals(item.url));
                 GridLayout.LayoutParams p=new GridLayout.LayoutParams(GridLayout.spec(i/columns),GridLayout.spec(i%columns));p.width=cell-dp(8);p.height=dp(44);p.setMargins(dp(4),dp(4),dp(4),dp(4));grid.addView(entry,p);
             }results.addView(grid,new LinearLayout.LayoutParams(-1,-2));
         }
+        if(focusedTag!=null)results.post(()->{if(!closed){View current=results.findViewWithTag(focusedTag);if(current!=null)current.requestFocus();}});
     }
     void loadSeries(DanmakuSource series){if(closed||loadingSeries.equals(series.seriesId))return;loadingSeries=series.seriesId;session.expand(series,()->{if(!session.status.startsWith("正在"))loadingSeries="";refresh();});}
     TextView text(String value,int size){TextView view=new TextView(context);view.setText(value);view.setTextSize(size);view.setTextColor(foreground);view.setGravity(Gravity.CENTER_VERTICAL);return view;}
     void focusGroup(String title){results.post(()->{if(closed)return;View group=results.findViewWithTag(title);if(group!=null){group.requestFocus();scroll.smoothScrollTo(0,group.getTop());}});}
-    TextView button(String value,Runnable click){TextView view=text(value,14);view.setGravity(Gravity.CENTER);view.setPadding(dp(10),dp(6),dp(10),dp(6));view.setFocusable(true);view.setClickable(true);view.setBackground(shape(card,8,Color.TRANSPARENT));view.setOnFocusChangeListener((v,focused)->v.setBackground(shape(focused||v.isSelected()?selection:card,8,focused||v.isSelected()?accent:Color.TRANSPARENT)));view.setOnClickListener(v->click.run());return view;}
+    TextView button(String value,Runnable click){TextView view=text(value,14);view.setTextColor(actionColors);view.setGravity(Gravity.CENTER);view.setFocusable(true);view.setClickable(true);view.setBackground(actionBackground());view.setPadding(dp(10),dp(4),dp(10),dp(4));view.setOnClickListener(v->click.run());return view;}
+    Drawable actionBackground(){
+        Drawable normal=nativeRow==null?null:NativeViews.drawable(nativeRow.getBackground(),nativeRow);
+        if(normal==null)normal=shape(Device.MOBILE?Color.WHITE:0x1a000000,Device.MOBILE?8:4,Color.TRANSPARENT);
+        Drawable focused;
+        int id=Device.MOBILE?0:context.getResources().getIdentifier("shape_item_focused","drawable",context.getPackageName());
+        if(id!=0)focused=context.getResources().getDrawable(id).mutate();
+        else focused=new LayerDrawable(new Drawable[]{nativeRow==null?shape(Color.WHITE,8,Color.TRANSPARENT):NativeViews.drawable(nativeRow.getBackground(),nativeRow),shape(Color.TRANSPARENT,8,border)});
+        StateListDrawable states=new StateListDrawable();
+        for(int state:new int[]{android.R.attr.state_focused,android.R.attr.state_activated,android.R.attr.state_selected,android.R.attr.state_pressed})states.addState(new int[]{state},focused.getConstantState()==null?focused:focused.getConstantState().newDrawable(context.getResources()).mutate());
+        states.addState(new int[]{},normal);return states;
+    }
     GradientDrawable shape(int fill,int radius,int border){GradientDrawable background=new GradientDrawable();background.setColor(fill);background.setCornerRadius(dp(radius));background.setStroke(dp(1),border);return background;}
     private static final class QrIcon extends android.graphics.drawable.Drawable {
         final android.graphics.Paint paint=new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);

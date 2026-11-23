@@ -1,0 +1,574 @@
+{
+  "reference": "ordinary native adapter_danmaku",
+  "user_requested_colors": {
+    "tv": {
+      "border": "white",
+      "text": "native activated yellow"
+    },
+    "mobile": {
+      "border": "black",
+      "text": "native activated blue"
+    }
+  },
+  "source_records": {
+    "tv": {
+      "color/text": {
+        "path": "res/color/text.xml",
+        "sha256": "46d9b37a7272edcf7b21c267c994bb9054fe70a66faedef8dad85091d6463075",
+        "attributes": [
+          {
+            "offset": 320,
+            "path": "selector/item",
+            "tag": "item",
+            "name": "color",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 1,
+            "value": 2131100949
+          },
+          {
+            "offset": 340,
+            "path": "selector/item",
+            "tag": "item",
+            "name": "state_activated",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 18,
+            "value": 4294967295
+          },
+          {
+            "offset": 420,
+            "path": "selector/item",
+            "tag": "item",
+            "name": "state_selected",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 18,
+            "value": 4294967295
+          },
+          {
+            "offset": 440,
+            "path": "selector/item",
+            "tag": "item",
+            "name": "color",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 1,
+            "value": 2131100949
+          },
+          {
+            "offset": 520,
+            "path": "selector/item",
+            "tag": "item",
+            "name": "state_checked",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 18,
+            "value": 4294967295
+          },
+          {
+            "offset": 540,
+            "path": "selector/item",
+            "tag": "item",
+            "name": "color",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 1,
+            "value": 2131100949
+          },
+          {
+            "offset": 620,
+            "path": "selector/item",
+            "tag": "item",
+            "name": "color",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 1,
+            "value": 2131100932
+          }
+        ]
+      },
+      "drawable/selector_item": {
+        "path": "res/hj.xml",
+        "sha256": "998283d5ab0071d5fc909a65e2ed1ae00606988bb5d0af5b5b744a443f6a185f",
+        "attributes": [
+          {
+            "offset": 300,
+            "path": "selector/item",
+            "tag": "item",
+            "name": "state_focused",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 18,
+            "value": 4294967295
+          },
+          {
+            "offset": 320,
+            "path": "selector/item",
+            "tag": "item",
+            "name": "drawable",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 1,
+            "value": 2131231310
+          },
+          {
+            "offset": 400,
+            "path": "selector/item",
+            "tag": "item",
+            "name": "drawable",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 1,
+            "value": 2131231309
+          },
+          {
+            "offset": 420,
+            "path": "selector/item",
+            "tag": "item",
+            "name": "state_activated",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 18,
+            "value": 4294967295
+          },
+          {
+            "offset": 500,
+            "path": "selector/item",
+            "tag": "item",
+            "name": "drawable",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 1,
+            "value": 2131231311
+          }
+        ]
+      },
+      "drawable/shape_item_focused": {
+        "path": "res/J2.xml",
+        "sha256": "b89953fef4f1d13b78d25b2036e7b34baa36157ea4dc4203ef33b8107bcace4e",
+        "attributes": [
+          {
+            "offset": 360,
+            "path": "shape",
+            "tag": "shape",
+            "name": "shape",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 16,
+            "value": 0
+          },
+          {
+            "offset": 416,
+            "path": "shape/solid",
+            "tag": "solid",
+            "name": "color",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 1,
+            "value": 2131099702
+          },
+          {
+            "offset": 496,
+            "path": "shape/corners",
+            "tag": "corners",
+            "name": "radius",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 5,
+            "value": 1025
+          },
+          {
+            "offset": 576,
+            "path": "shape/padding",
+            "tag": "padding",
+            "name": "left",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 5,
+            "value": 3073
+          },
+          {
+            "offset": 596,
+            "path": "shape/padding",
+            "tag": "padding",
+            "name": "top",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 5,
+            "value": 2049
+          },
+          {
+            "offset": 616,
+            "path": "shape/padding",
+            "tag": "padding",
+            "name": "right",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 5,
+            "value": 3073
+          },
+          {
+            "offset": 636,
+            "path": "shape/padding",
+            "tag": "padding",
+            "name": "bottom",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 5,
+            "value": 2049
+          },
+          {
+            "offset": 716,
+            "path": "shape/stroke",
+            "tag": "stroke",
+            "name": "width",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 5,
+            "value": 12582945
+          },
+          {
+            "offset": 736,
+            "path": "shape/stroke",
+            "tag": "stroke",
+            "name": "color",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 1,
+            "value": 2131100932
+          }
+        ]
+      },
+      "layout/adapter_danmaku": {
+        "path": "res/X1.xml",
+        "sha256": "9682c81a609a531624f9150ed0bd5d431fb09860c4ecdd97addced6d65cf0bf3",
+        "attributes": [
+          {
+            "offset": 396,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "textSize",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 5,
+            "value": 3586
+          },
+          {
+            "offset": 416,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "textColor",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 1,
+            "value": 2131100928
+          },
+          {
+            "offset": 436,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "ellipsize",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 16,
+            "value": 4
+          },
+          {
+            "offset": 456,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "id",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 1,
+            "value": 2131428245
+          },
+          {
+            "offset": 476,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "background",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 1,
+            "value": 2131231296
+          },
+          {
+            "offset": 496,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "focusable",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 18,
+            "value": 4294967295
+          },
+          {
+            "offset": 516,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "focusableInTouchMode",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 18,
+            "value": 4294967295
+          },
+          {
+            "offset": 536,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "layout_width",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 16,
+            "value": 4294967295
+          },
+          {
+            "offset": 556,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "layout_height",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 16,
+            "value": 4294967294
+          },
+          {
+            "offset": 576,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "singleLine",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 18,
+            "value": 4294967295
+          }
+        ]
+      }
+    },
+    "mobile": {
+      "color/control": {
+        "path": "res/color/control.xml",
+        "sha256": "f1bdad4c82662658299742c144259226de75985a51363638590f6b2d066fe41d",
+        "attributes": [
+          {
+            "offset": 296,
+            "path": "selector/item",
+            "tag": "item",
+            "name": "color",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 2,
+            "value": 2130968854
+          },
+          {
+            "offset": 316,
+            "path": "selector/item",
+            "tag": "item",
+            "name": "state_activated",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 18,
+            "value": 4294967295
+          },
+          {
+            "offset": 396,
+            "path": "selector/item",
+            "tag": "item",
+            "name": "state_enabled",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 18,
+            "value": 0
+          },
+          {
+            "offset": 416,
+            "path": "selector/item",
+            "tag": "item",
+            "name": "color",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 2,
+            "value": 2130968856
+          },
+          {
+            "offset": 496,
+            "path": "selector/item",
+            "tag": "item",
+            "name": "color",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 2,
+            "value": 16842806
+          }
+        ]
+      },
+      "drawable/shape_accent": {
+        "path": "res/w7.xml",
+        "sha256": "02ae9bfd1e93f9c415d5b2db1059fda83c8675e462f86de8a9f3de93cba393a8",
+        "attributes": [
+          {
+            "offset": 396,
+            "path": "ripple",
+            "tag": "ripple",
+            "name": "color",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 2,
+            "value": 2130968855
+          },
+          {
+            "offset": 452,
+            "path": "ripple/item",
+            "tag": "item",
+            "name": "id",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 1,
+            "value": 16908334
+          },
+          {
+            "offset": 508,
+            "path": "ripple/item/shape",
+            "tag": "shape",
+            "name": "shape",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 16,
+            "value": 0
+          },
+          {
+            "offset": 564,
+            "path": "ripple/item/shape/corners",
+            "tag": "corners",
+            "name": "radius",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 5,
+            "value": 2049
+          },
+          {
+            "offset": 644,
+            "path": "ripple/item/shape/solid",
+            "tag": "solid",
+            "name": "color",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 29,
+            "value": 4294309365
+          },
+          {
+            "offset": 808,
+            "path": "ripple/item/shape",
+            "tag": "shape",
+            "name": "shape",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 16,
+            "value": 0
+          },
+          {
+            "offset": 864,
+            "path": "ripple/item/shape/corners",
+            "tag": "corners",
+            "name": "radius",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 5,
+            "value": 2049
+          },
+          {
+            "offset": 944,
+            "path": "ripple/item/shape/stroke",
+            "tag": "stroke",
+            "name": "width",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 5,
+            "value": 257
+          },
+          {
+            "offset": 964,
+            "path": "ripple/item/shape/stroke",
+            "tag": "stroke",
+            "name": "color",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 2,
+            "value": 2130968881
+          },
+          {
+            "offset": 1044,
+            "path": "ripple/item/shape/padding",
+            "tag": "padding",
+            "name": "left",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 5,
+            "value": 3073
+          },
+          {
+            "offset": 1064,
+            "path": "ripple/item/shape/padding",
+            "tag": "padding",
+            "name": "top",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 5,
+            "value": 2049
+          },
+          {
+            "offset": 1084,
+            "path": "ripple/item/shape/padding",
+            "tag": "padding",
+            "name": "right",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 5,
+            "value": 3073
+          },
+          {
+            "offset": 1104,
+            "path": "ripple/item/shape/padding",
+            "tag": "padding",
+            "name": "bottom",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 5,
+            "value": 2049
+          }
+        ]
+      },
+      "layout/adapter_danmaku": {
+        "path": "res/X1.xml",
+        "sha256": "2a39845c57edc134d8cc918d7f6a6361cfd0335fcd5109bd18e81163c4f8d7f1",
+        "attributes": [
+          {
+            "offset": 344,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "textSize",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 5,
+            "value": 3586
+          },
+          {
+            "offset": 364,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "textColor",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 1,
+            "value": 2131099758
+          },
+          {
+            "offset": 384,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "ellipsize",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 16,
+            "value": 4
+          },
+          {
+            "offset": 404,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "id",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 1,
+            "value": 2131362571
+          },
+          {
+            "offset": 424,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "background",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 1,
+            "value": 2131231268
+          },
+          {
+            "offset": 444,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "layout_width",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 16,
+            "value": 4294967295
+          },
+          {
+            "offset": 464,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "layout_height",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 16,
+            "value": 4294967294
+          },
+          {
+            "offset": 484,
+            "path": "TextView",
+            "tag": "TextView",
+            "name": "singleLine",
+            "namespace": "http://schemas.android.com/apk/res/android",
+            "type": 18,
+            "value": 4294967295
+          }
+        ]
+      }
+    }
+  }
+}

@@ -7,7 +7,7 @@
 本轮正式版本为 **5.2.3 / 612**，独立安装包名 **com.leotv.app**。修正详情返回后再次播放黑屏，支持固定签名覆盖升级。
 正式安装包：[Leotv 5.2.3](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.3)，已设为 Latest，提供 TV/手机、32/64 位四个固定签名 APK。
 
-当前开发测试版为 **5.3.0-preview.6 / 618**：修复手机准备分支的自动弹幕通知，调整手机白色/TV 半透明搜索与 API 设置窗口、隔离选集滚动；TV 搜索框增加二维码和确认键输入法调度，手机网页新增单输入框扫码分类并自动回填当前电视配置。[四套固定签名 APK 已发布](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0-preview.6-build-45137567942)，临时公开构建完成后已恢复私有；正式 Latest 保留 5.2.3。详见[搜索与统一扫码输入](docs/LEOTV-5.3.0-PREVIEW-6-SEARCH-AND-QR-INPUT-20261123.md)。
+当前开发源码为 **5.3.0-preview.7 / 619**：按原生弹幕菜单修正两端搜索窗口高亮，TV 白框黄字、手机黑框原生蓝字；补足分类行上下空间，限制长名称并按实际宽度重排选集。功能沿用用户已验收的 preview.6，正式 Latest 保留 5.2.3。详见[原生焦点与分类边界](docs/LEOTV-5.3.0-PREVIEW-7-NATIVE-FOCUS-AND-BOUNDS-20261123.md)。
 启动图标、TV 横幅、默认线路动图、关于页与原生透明上下栏已接入专用构建；5.1.26 停止上下栏实时回放和模糊。
 独立原生详情页、个性设置内的本端详情主题/TMDB 配置，以及手机按视频尺寸自动旋转已接入。
 5.1.10 修正缓存分类页的滚动取景、上下渐变模糊和分类控件层次；详情海报铺到窗口顶端，TV 详情固定横屏。
@@ -120,7 +120,7 @@ Actions 产物存储不可用时，各变体把已签名 APK 和报告存入同�
 工作区没有复制用户运行配置。历史普通版 5.1.6 的四个固定签名测试 APK 已发布，
 其中手机64位和TV32位由用户确认可安装使用；新 Leotv 的设备验收需另行记录。
 
-## 构建当前 Leotv 5.3.0-preview.5
+## 构建当前 Leotv 5.3.0-preview.7
 
 ```sh
 python3 tools/ci_dependencies.py --output /tmp/leotv-build-deps
