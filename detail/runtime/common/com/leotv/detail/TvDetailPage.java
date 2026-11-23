@@ -284,7 +284,7 @@ final class TvDetailPage implements DetailPage {
         if(!mobile&&initialPlayFocus&&event.getAction()==KeyEvent.ACTION_DOWN){if(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_CENTER||event.getKeyCode()==KeyEvent.KEYCODE_ENTER)navigation.focusPrimary();initialPlayFocus=false;}
         if(nativeEpisodes.active()&&event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)nativeEpisodes.dismiss();return true;}
         if(episodeGroups!=null&&episodeGroups.key(event))return true;
-        if(event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP&&!event.isCanceled()){if(sitePicker.showing()){if(mobile||!sitePicker.back())sitePicker.dismiss();}else if(personPopup!=null&&personPopup.showing())personPopup.handleBack();else activity.finish();}return true;}
+        if(event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP&&!event.isCanceled()){if(sitePicker.showing()){if(mobile||!sitePicker.back())sitePicker.dismiss();}else if(personPopup!=null&&personPopup.showing())personPopup.handleBack();else if(!mobile&&(scroll.getScrollY()>0||!playButton.isFocused()))navigation.focusPrimary();else activity.finish();}return true;}
         if(!mobile&&sitePicker.showing()){
             int code=event.getKeyCode();
             if(code==KeyEvent.KEYCODE_DPAD_UP||code==KeyEvent.KEYCODE_DPAD_DOWN||code==KeyEvent.KEYCODE_DPAD_LEFT||code==KeyEvent.KEYCODE_DPAD_RIGHT){if(event.getAction()==KeyEvent.ACTION_DOWN)sitePicker.moveFocus(code);return true;}
