@@ -22,4 +22,4 @@ TV 搜索控件的描边只读取 `state_focused`，已应用来源、展开分�
 
 修改限定为 `DanmakuSearchDialog`、`DanmakuControls`、`DanmakuUi` 及版本标识。原 smali、资源表、原 ZIP 资产、数据库、回移层和各 ABI 原生库无新增修改。API 23/R8 编译、原样/变化审计及固定签名由 GitHub 保留。按用户要求跳过本地打包和额外回归，四套 APK 的实际焦点、菜单观感及设置配色交由真机验收。
 
-构建和发布结果待补齐。
+源码提交 `40112790ec781515b7bc250f914f52c572afdcb5` 已推送 main。四变体源码路径、ABI 及按顺序应用的原生 hooks 门禁通过，源码树审计通过。GitHub 构建 [45174589554](https://github.com/leotvgo/Leotv/actions/runs/45174589554) 使用 `run_validation_tests=false`，但 GitHub 因账号付款失败或私有仓库额度不足拒绝启动 sources 任务，未运行编译和签名。当前仓库保持私有，已向用户请求临时公开构建、完成后恢复私有的明确授权；尚无本版 APK。
