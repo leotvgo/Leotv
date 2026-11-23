@@ -23,3 +23,9 @@
 代码变化限定于 DanmakuPlayback/UI/Title、新 DanmakuControls 和 DanmakuSearchDialog、菜单接线工具与 native/R8/source-set 门禁及版本文档。原播放器启动和已验收的黑色窗口背景、TV 标题、扫码与分类分页修复保持原路径。TV/手机、两个 ABI 用同一声明构建为 5.3.0-preview.3 / 615 固定签名测试包，正式 Latest 保留 5.2.3。
 
 按用户持续要求不增加本地回归，GitHub `run_validation_tests=false` 编译和签名，真机入口、原弹幕操作及新搜索布局等待用户验收。
+
+## 交付
+
+用户于本次会话明确要求推送修复并发布。手机菜单的路径及 ABI 大小写修正为 `R3/P` 后，源码 `dbc1512b94f4ca7c0d3f6b5a90b7dbb76214a68c` 已推送 main；[构建 45098159076](https://github.com/leotvgo/Leotv/actions/runs/45098159076) 和[自动发布 45098776663](https://github.com/leotvgo/Leotv/actions/runs/45098776663) 首次尝试均成功。
+
+[TV/手机、32/64 位四套固定签名 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0-preview.3-build-45098159076) 已发布为测试预发行。已核对四包固定证书、Android 6 v1 签名报告、下载报告/资产摘要、原样与允许变化审计及内部 R8 映射；映射仍保留在私有草稿。新的四变体源码门禁在 GitHub Linux 通过，额外回归仍关闭，正式 Latest 为 5.2.3。详见 `evidence/leotv-5.3.0-preview.3-delivery-20261123.json`。

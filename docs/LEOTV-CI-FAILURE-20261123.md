@@ -20,3 +20,5 @@ Git 实际记录 `smali/R3/P.smali`（`LR3/P;`，弹幕菜单，A0 为 `Lv3/a;`�
 - [44993494287](https://github.com/leotvgo/Leotv/actions/runs/44993494287)：models 的 45 项测试中 5 项断言失败，涉及预期颜色和数量。
 
 源码门禁提前暴露路径、ABI 和挂接问题；Java 编译、完整字节码/资产审计、R8 和签名仍由后续构建验证，不把门禁结果当作全部构建或运行成功。
+
+用户要求推送并发布后，修复提交 `dbc1512b94f4ca7c0d3f6b5a90b7dbb76214a68c` 已推送 main。[新构建 45098159076](https://github.com/leotvgo/Leotv/actions/runs/45098159076) 的源码门禁和四套 APK 均成功，[自动发布 45098776663](https://github.com/leotvgo/Leotv/actions/runs/45098776663) 成功，均为首次尝试。[5.3.0-preview.3 四套固定签名 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0-preview.3-build-45098159076) 已发布；交付证据见 `evidence/leotv-5.3.0-preview.3-delivery-20261123.json`。

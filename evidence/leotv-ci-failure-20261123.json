@@ -110,8 +110,18 @@
       }
     }
   ],
-  "pushed": false,
-  "github_rebuild_triggered": false,
+  "pushed": true,
+  "github_rebuild_triggered": true,
   "device_validation": false,
-  "signature_validation_scope": "Original GitHub TV builds signed successfully; local repaired mobile APKs are unsigned."
+  "signature_validation_scope": "Original GitHub TV builds signed successfully; local repaired mobile APKs are unsigned.",
+  "resolution": {
+    "completed_at": "2026-11-23T02:14:18.947262+00:00",
+    "source_revision": "dbc1512b94f4ca7c0d3f6b5a90b7dbb76214a68c",
+    "build_run": 45098159076,
+    "build_conclusion": "success",
+    "publish_run": 45098776663,
+    "publish_conclusion": "success",
+    "release": "https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0-preview.3-build-45098159076",
+    "delivery_evidence": "evidence/leotv-5.3.0-preview.3-delivery-20261123.json"
+  }
 }
