@@ -121,5 +121,18 @@
         ]
       }
     }
+  },
+  "qr_web_input": {
+    "asset": "assets/index.html",
+    "original_sha256": "a3aa7e849fd6daf36c3f77a1344ef6cd99d60d934f13e93f0e41528f8ed50db0",
+    "sources": [
+      "detail/web/qr-input-panel.html",
+      "detail/web/qr-input-tab.html",
+      "detail/web/qr-input.js"
+    ],
+    "variants": [
+      "tv-v7a",
+      "tv-v8a"
+    ]
   }
 }

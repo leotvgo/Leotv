@@ -48,14 +48,14 @@ public final class DanmakuPlayback {
         Object root=invoke(field(owner,"A0"),"getRoot");if(root instanceof View)DanmakuControls.menu(session,(View)root);
     }
     /** A0 starts every new episode, refresh and engine switch. Cancel the old API first. */
-    public static void begin(Activity activity){Session session=sessions.get(activity);if(session!=null)session.begin();}
+    public static void begin(Activity activity){Session session=ensure(activity);if(session!=null)session.begin();}
     /** After the native Result has been applied, site sources retain their original priority. */
     public static void result(Activity activity,Object result){
-        Session session=sessions.get(activity);if(session!=null)session.result(result);
+        Session session=ensure(activity);if(session!=null)session.result(result);
     }
     /** The original first-ready callback selects site[0]/empty; it is not a user selection. */
     public static void bootstrapBegin(Activity activity){Session session=ensure(activity);if(session!=null)session.applying=true;}
-    public static void bootstrapEnd(Activity activity){Session session=sessions.get(activity);if(session!=null){session.applying=false;session.ready=true;session.startAutomatic();}}
+    public static void bootstrapEnd(Activity activity){Session session=ensure(activity);if(session!=null){session.applying=false;session.ready=true;session.startAutomatic();}}
     public static void release(Activity activity){Session session=sessions.remove(activity);if(session!=null)session.close();}
     public static void pause(Activity activity){Session session=sessions.get(activity);if(session!=null){session.paused=true;session.needResume=!session.waiting&&(session.live!=null||session.selected!=null&&session.comments==null||session.selected==null&&session.task!=null);session.cancel();}}
     public static void resume(Activity activity){Session session=sessions.get(activity);if(session!=null){session.paused=false;if(session.needResume&&!session.waiting){session.needResume=false;if(session.selected!=null)session.choose(session.selected,session.keyword,false);else session.policyChanged();}}}

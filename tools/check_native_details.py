@@ -132,6 +132,7 @@ def check_contract(root, variant, project=None):
     contracts[('E3' if mobile else 'B3') + '/n'] = (['<init>(Ljava/lang/String;Ljava/lang/String;I)V', 'call()Ljava/lang/Object;'], [])
     contracts[('E3' if mobile else 'B3') + '/p'] = (['call()Ljava/lang/Object;'], [])
     contracts[('t3' if mobile else 'q3') + '/i'] = (['m()I'], [])
+    contracts[('t3' if mobile else 'q3') + '/a'] = (['d()L'+BEANS+'Config;'], [])
     video_methods = ['b0()V', 'w0(L' + BEANS + 'Flag;ZZ)V', 'd(L' + BEANS + 'Episode;)V', 'T0(Z)V'] if mobile else [
         'Y()V', 'O0(L' + BEANS + 'Flag;ZZ)V', 'L0(L' + BEANS + 'Episode;)V']
     video_methods.extend(['N()V','Y0()V'] if mobile else ['K()V','Y0(Landroid/view/View;)V','H0()V'])
@@ -162,6 +163,7 @@ def check_contract(root, variant, project=None):
     contracts['H3/d' if mobile else 'E3/d'] = (['e()V','d()V'], [])
     contracts['R6/g' if mobile else 'r7/g'] = ([('x' if mobile else 'r')+'()Landroid/content/SharedPreferences;'], [])
     if not mobile:
+        contracts['J3/a'] = (['b(Ljava/lang/String;)Lfi/iki/elonen/NanoHTTPD$Response;'], [])
         contracts['b4/c'] = (['d()Ljava/lang/String;'], [])
         contracts['com/github/catvod/Proxy'] = (['getPort()I'], [])
         contracts['com/bumptech/glide/d'] = (['o(IILjava/lang/String;)Landroid/graphics/Bitmap;'], [])

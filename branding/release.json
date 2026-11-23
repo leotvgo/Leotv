@@ -1,8 +1,8 @@
 {
   "channel": "prerelease",
-  "version_name": "5.3.0-preview.5",
-  "version_code": 617,
-  "title": "Leotv 5.3.0-preview.5（原生弹幕搜索图标与分组匹配修复）",
+  "version_name": "5.3.0-preview.6",
+  "version_code": 618,
+  "title": "Leotv 5.3.0-preview.6（手机自动弹幕、两端搜索界面与统一扫码输入）",
   "prerelease": true,
   "make_latest": false
 }

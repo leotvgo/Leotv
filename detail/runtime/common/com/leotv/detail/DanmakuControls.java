@@ -47,7 +47,10 @@ final class DanmakuControls implements AutoCloseable {
         if(title==null||!(title.getParent() instanceof LinearLayout))return;
         LinearLayout row=(LinearLayout)title.getParent();if(row.getOrientation()!=LinearLayout.HORIZONTAL)return;
         View template=null;for(int i=0;i<row.getChildCount();i++)if(row.getChildAt(i) instanceof ImageView){template=row.getChildAt(i);break;}
-        ImageView lens=icon(root.getContext(),template,"搜索弹幕",()->DanmakuPlayback.openSearch(activity));lens.setTag(MENU);row.addView(lens,new LinearLayout.LayoutParams(dp(root.getContext(),44),dp(root.getContext(),44)));
+        ImageView lens=icon(root.getContext(),template,"搜索弹幕",()->DanmakuPlayback.openSearch(activity));
+        int tint=title instanceof TextView?((TextView)title).getCurrentTextColor():Device.MOBILE?0xff202832:Color.WHITE;
+        lens.setImageTintList(android.content.res.ColorStateList.valueOf(tint));
+        lens.setTag(MENU);row.addView(lens,new LinearLayout.LayoutParams(dp(root.getContext(),44),dp(root.getContext(),44)));
         Switch enabled=new Switch(root.getContext());enabled.setText("弹幕");enabled.setChecked(DanmakuSettings.show(activity));enabled.setFocusable(true);
         if(title instanceof TextView)enabled.setTextColor(((TextView)title).getTextColors());
         enabled.setOnCheckedChangeListener((button,checked)->{DanmakuSettings.toggle(activity,"danmaku_show",checked);session.syncDisplay();});

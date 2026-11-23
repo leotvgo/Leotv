@@ -13,6 +13,7 @@ import sys
 import tempfile
 import xml.etree.ElementTree as ET
 import zipfile
+from apply_qr_web import apply as apply_qr_web
 
 from android_branding import ANDROID, BinaryXml, ResourceTable, sha256
 from build_preserved import VARIANTS, is_signature, run
@@ -450,7 +451,10 @@ def main():
                     layout_report.append({'resource': resource, 'path': path,
                                           'before_sha256': sha256(data), 'after_sha256': sha256(layouts[path]),
                                           'attributes': edits})
+            with zipfile.ZipFile(apk) as original:
+                web_inputs, web_report = apply_qr_web(original, ROOT, args.variant)
             expected = {'AndroidManifest.xml': manifest, 'resources.arsc': resources}
+            expected.update(web_inputs)
             expected.update(layouts)
             expected.update({item['path']: item['bytes'] for item in files.values()})
             expected[spec['default_logo_asset']] = (BRANDING / spec['default_logo_asset']).read_bytes()
@@ -494,6 +498,7 @@ def main():
                 'source_edits': changed_sources, 'manifest_edits': manifest_report,
                 'resource_edits': resource_report, 'overlay_compile': compile_report,
                 'layout_edits': layout_report,
+                'qr_web_input_edits': web_report,
                 'branding_assets_sha256': sha256((BRANDING / 'asset-provenance.json').read_bytes()),
                 'default_logo_sha256': provenance['assets'][spec['default_logo_asset']]['sha256'],
                 'resource_ids_and_configurations_retained': True,

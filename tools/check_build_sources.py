@@ -13,6 +13,7 @@ from apply_native_details import apply as apply_details
 from build_branded import apply_source_overlay, identity
 from build_preserved import VARIANTS
 from check_native_details import check_contract
+from apply_qr_web import check_contract as check_qr_web_contract
 
 ROOT = Path(__file__).resolve().parents[1]
 LOCKS = ('branding/source-lock.json', 'detail/native-source-lock.json',
@@ -20,6 +21,7 @@ LOCKS = ('branding/source-lock.json', 'detail/native-source-lock.json',
 
 
 def check_sources(root=ROOT):
+    check_qr_web_contract(root)
     # Git's spelling is authoritative even on a case-insensitive local filesystem.
     tracked = set(subprocess.check_output(['git', '-C', str(root), 'ls-files', '-z']).decode().split('\0'))
     manifests = {name: json.loads((root / name).read_text()) for name in LOCKS}

@@ -53,9 +53,16 @@ def apply(project, root, variant):
             def bootstrap(body):
                 if body.count(native_ready)!=1:
                     raise ValueError('Expected one ordinary first-ready Danmaku selection.')
-                return body.replace(native_ready,
-                    '    invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapBegin(Landroid/app/Activity;)V\n\n'+native_ready+
-                    '\n\n    invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapEnd(Landroid/app/Activity;)V')
+                begin='    invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapBegin(Landroid/app/Activity;)V'
+                end='    invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapEnd(Landroid/app/Activity;)V'
+                if mobile:
+                    # Prepared can skip f0's first-source selection. Both branches
+                    # meet here; API matching must receive readiness on either path.
+                    marker='    :cond_a\n'
+                    if body.count(marker)!=1:
+                        raise ValueError('Expected the mobile prepared-source branch join.')
+                    return body.replace(native_ready,begin+'\n\n'+native_ready).replace(marker,marker+'\n'+end+'\n')
+                return body.replace(native_ready,begin+'\n\n'+native_ready+'\n\n'+end)
             text=replace_method(text,event_signature,bootstrap)
             def resume(body):
                 marker = body.rfind('    return-void')
@@ -108,20 +115,26 @@ def apply(project, root, variant):
         elif name == 'smali/L3/f.smali':
             signature = 'b(Lfi/iki/elonen/NanoHTTPD$IHTTPSession;Ljava/lang/String;Ljava/util/HashMap;)Lfi/iki/elonen/NanoHTTPD$Response;'
             def qr(body):
-                marker = '    :cond_16\n'
-                if body.count(marker) != 1 or body.count('Lw3/j;-><init>(Lw3/i;Ljava/lang/String;Ljava/lang/String;)V') != 1:
-                    raise ValueError('Expected the pinned native config-input action.')
-                return body.replace(marker, marker + '''
-    invoke-static {v0}, Lcom/leotv/detail/NativeQrInput;->receive(Ljava/lang/String;)Z
+                marker = re.search(r'    check-cast v6, Ljava/lang/String;\s*(?:\.line \d+\s*)*',body)
+                if marker is None or body.count('Lw3/j;-><init>(Lw3/i;Ljava/lang/String;Ljava/lang/String;)V') != 1:
+                    raise ValueError('Expected the pinned native action dispatcher.')
+                # v6 is do, v5 the parsed form/query parameters; v7 is scratch.
+                added='''
+    invoke-static {v6, v5}, Lcom/leotv/detail/NativeQrInput;->webAction(Ljava/lang/String;Ljava/util/Map;)Ljava/lang/String;
 
-    move-result v2
+    move-result-object v7
 
-    if-eqz v2, :leotv_qr_original
+    if-eqz v7, :leotv_qr_original
 
-    goto/16 :goto_1
+    invoke-static {v7}, LJ3/a;->b(Ljava/lang/String;)Lfi/iki/elonen/NanoHTTPD$Response;
+
+    move-result-object v7
+
+    return-object v7
 
     :leotv_qr_original
-''')
+'''
+                return body[:marker.end()]+added+body[marker.end():]
             text = replace_method(text, signature, qr)
         elif name in ['smali/R3/p.1.smali','smali/O3/k.smali']:
             def menu(body):
