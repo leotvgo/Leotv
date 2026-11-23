@@ -39,4 +39,11 @@
 
 > The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the Billing & plans section in your settings.
 
-本轮尚无新 APK，不把源码审阅或已推送视为构建/签名验证通过。固定源码、变化声明及失败记录已保存；账号额度/付款恢复后继续同一源码构建。证据见 `evidence/leotv-5.3.0-preview.6-build-blocked-20261123.json`。
+该次失败运行未产出 APK，不把源码审阅或已推送视为构建/签名验证通过。固定源码、变化声明及失败记录已保存；后续通过用户授权的临时公开构建完成交付，见下文。证据见 `evidence/leotv-5.3.0-preview.6-build-blocked-20261123.json`。
+
+
+## 临时公开构建与完成交付
+
+用户明确同意“临时公开尝试，完成后恢复私有”。源码/凭据审计通过后临时改为公开，重新启动源码 `a1718c3a677bb5bc6a6c8aa58b786715cda94c86` 的[构建 45137567942](https://github.com/leotvgo/Leotv/actions/runs/45137567942)。源码门禁、归档准备和四个变体全部首次通过；额外 models 回归关闭。[自动发布 45138218043](https://github.com/leotvgo/Leotv/actions/runs/45138218043) 首次成功，12 个 APK/签名/审计文件齐全。
+
+[四套固定签名 APK 已交付](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0-preview.6-build-45137567942)。发布完成后已立即恢复并通过 GitHub API 核对 `private=true / visibility=private`，内部 R8 映射仍为草稿。四个签名报告的固定证书与仓库固定值一致，APK SHA256 与 Release 服务端摘要一致；API23/R8、原样/允许变化与新增 TV 单输入框网页审计通过。正式 Latest 仍为 5.2.3。本轮未做本地回归或打包，真机验收待用户测试。详细交付见 `evidence/leotv-5.3.0-preview.6-delivery-20261123.json`，下载后的 CI 报告摘要已逐一核对并保存在 `evidence/leotv-5.3.0-preview.6-ci-reports-20261123.json`。

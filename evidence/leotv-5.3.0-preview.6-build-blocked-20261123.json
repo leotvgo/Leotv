@@ -34,5 +34,12 @@
     "mobile-v7a": [],
     "mobile-v8a": []
   },
-  "observed_at": "2026-11-23T16:06:50.505563+08:00"
+  "observed_at": "2026-11-23T16:06:50.505563+08:00",
+  "resolution": {
+    "temporary_public_authorized_by_user": true,
+    "successful_build_run": 45137567942,
+    "successful_publish_run": 45138218043,
+    "restored_private": true,
+    "delivery_evidence": "evidence/leotv-5.3.0-preview.6-delivery-20261123.json"
+  }
 }
