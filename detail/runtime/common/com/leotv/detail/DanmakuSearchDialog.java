@@ -37,7 +37,7 @@ final class DanmakuSearchDialog {
     final TextView status,order;
     final int foreground,secondary,background,accent,border;
     final TextView nativeRow;
-    final ColorStateList actionColors;
+    final ColorStateList actionColors,borderColors;
     final LinkedHashMap<String,List<DanmakuSource>> sources=new LinkedHashMap<>();
     String source="",expanded="";
     String loadingSeries="";
@@ -57,8 +57,13 @@ final class DanmakuSearchDialog {
         ColorStateList colors=nativeRow==null?null:nativeRow.getTextColors();
         foreground=colors==null?Device.MOBILE?0xff202832:Color.WHITE:colors.getDefaultColor();
         accent=colors==null?Device.MOBILE?0xff2196f3:Color.YELLOW:colors.getColorForState(new int[]{android.R.attr.state_enabled,android.R.attr.state_activated},foreground);
-        border=Device.MOBILE?Color.BLACK:Color.WHITE;secondary=Device.MOBILE?0xff687582:0xffc3cbd3;background=DanmakuUi.surface(context);
-        actionColors=new ColorStateList(new int[][]{new int[]{android.R.attr.state_focused},new int[]{android.R.attr.state_activated},new int[]{android.R.attr.state_selected},new int[]{android.R.attr.state_pressed},new int[]{}},new int[]{accent,accent,accent,accent,foreground});
+        border=Device.MOBILE?Color.BLACK:Color.WHITE;secondary=Device.MOBILE?0xff687582:0xffc3cbd3;
+        int surface=DanmakuUi.surface(context);background=Device.MOBILE?surface:(surface&0x00ffffff)|(Math.round(Color.alpha(surface)*.93f)<<24);
+        int[][] states={new int[]{android.R.attr.state_focused},new int[]{android.R.attr.state_activated},new int[]{android.R.attr.state_selected},new int[]{android.R.attr.state_pressed},new int[]{}};
+        actionColors=new ColorStateList(states,new int[]{accent,accent,accent,accent,foreground});
+        int normalBorder=0xff757575,outline=context.getResources().getIdentifier("colorOutline","attr",context.getPackageName());
+        if(Device.MOBILE&&outline!=0){android.content.res.TypedArray values=context.obtainStyledAttributes(new int[]{outline});try{normalBorder=values.getColor(0,normalBorder);}finally{values.recycle();}}
+        borderColors=new ColorStateList(states,new int[]{border,border,border,border,normalBorder});
         int available=activity.getResources().getDisplayMetrics().widthPixels;
         width=Math.min(available-dp(24),Device.MOBILE&&available<dp(600)?dp(560):Math.min(dp(Device.MOBILE?920:1120),Math.round(available*(Device.MOBILE?.86f:.90f))));
         scroll=new ScrollView(context);scroll.setFillViewport(true);scroll.setClipChildren(true);scroll.setClipToPadding(true);scroll.setVerticalScrollBarEnabled(false);
@@ -153,10 +158,18 @@ final class DanmakuSearchDialog {
     Drawable actionBackground(){
         Drawable normal=nativeRow==null?null:NativeViews.drawable(nativeRow.getBackground(),nativeRow);
         if(normal==null)normal=shape(Device.MOBILE?Color.WHITE:0x1a000000,Device.MOBILE?8:4,Color.TRANSPARENT);
+        if(Device.MOBILE){
+            // Update the native outline itself. An added LayerDrawable stroke is
+            // inset by the native content padding and becomes a second inner ring.
+            if(normal instanceof LayerDrawable){LayerDrawable layers=(LayerDrawable)normal;
+                for(int i=0;i<layers.getNumberOfLayers();i++)if(layers.getId(i)!=android.R.id.mask){Drawable child=layers.getDrawable(i);if(child instanceof GradientDrawable)((GradientDrawable)child).setStroke(dp(1),borderColors);}
+            }else if(normal instanceof GradientDrawable)((GradientDrawable)normal).setStroke(dp(1),borderColors);
+            return normal;
+        }
         Drawable focused;
-        int id=Device.MOBILE?0:context.getResources().getIdentifier("shape_item_focused","drawable",context.getPackageName());
+        int id=context.getResources().getIdentifier("shape_item_focused","drawable",context.getPackageName());
         if(id!=0)focused=context.getResources().getDrawable(id).mutate();
-        else focused=new LayerDrawable(new Drawable[]{nativeRow==null?shape(Color.WHITE,8,Color.TRANSPARENT):NativeViews.drawable(nativeRow.getBackground(),nativeRow),shape(Color.TRANSPARENT,8,border)});
+        else focused=shape(0x1a000000,4,border);
         StateListDrawable states=new StateListDrawable();
         for(int state:new int[]{android.R.attr.state_focused,android.R.attr.state_activated,android.R.attr.state_selected,android.R.attr.state_pressed})states.addState(new int[]{state},focused.getConstantState()==null?focused:focused.getConstantState().newDrawable(context.getResources()).mutate());
         states.addState(new int[]{},normal);return states;

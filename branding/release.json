@@ -1,8 +1,8 @@
 {
   "channel": "prerelease",
-  "version_name": "5.3.0-preview.7",
-  "version_code": 619,
-  "title": "Leotv 5.3.0-preview.7（原生弹幕焦点样式与分类边界修正）",
+  "version_name": "5.3.0-preview.8",
+  "version_code": 620,
+  "title": "Leotv 5.3.0-preview.8（手机外框高亮与 TV 透明度修正）",
   "prerelease": true,
   "make_latest": false
 }
