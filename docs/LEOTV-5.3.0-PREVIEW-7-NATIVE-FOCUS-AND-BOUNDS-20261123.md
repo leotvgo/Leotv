@@ -20,4 +20,6 @@
 
 本轮程序修改仅限 `DanmakuSearchDialog.java`，版本元数据和取证文档同步；preview.6 已验收的自动弹幕、来源/作品归类、原生按钮/遥控、单输入框扫码与配置保存链路保持。Android 6、TV/手机和两个 ABI 的区别保持。
 
-按既定要求不运行本地回归或打包，直接 GitHub 构建四套固定签名测试 APK，保留源码、API23/R8、原样/变化与签名门禁。沿用用户已授权的临时公开构建方式，发布结束后恢复私有；正式 Latest 保持 5.2.3。构建结果待流水线完成后补齐。
+按既定要求不运行本地回归或打包，直接 GitHub 构建四套固定签名测试 APK，保留源码、API23/R8、原样/变化与签名门禁。沿用用户已授权的临时公开构建方式，发布结束后恢复私有；正式 Latest 保持 5.2.3。
+
+[四套固定签名测试 APK 已发布](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0-preview.7-build-45143104919)。源码 `7b6a0df6545eb96a2ce1ff26fa6d083d3f70e100`，[构建 45143104919](https://github.com/leotvgo/Leotv/actions/runs/45143104919) 与[自动发布 45143798101](https://github.com/leotvgo/Leotv/actions/runs/45143798101) 首次通过。四个签名证书与固定值一致，APK/签名/审计报告摘要、API23/R8、原样/允许变化和内部映射核对通过；12 个交付文件齐全。发布后已恢复并通过 GitHub API 核对私有状态，Latest 仍为 5.2.3。新 UI 真机效果待用户验收，详细交付见 `evidence/leotv-5.3.0-preview.7-delivery-20261123.json`。
