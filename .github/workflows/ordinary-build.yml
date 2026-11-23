@@ -16,7 +16,18 @@ env:
   PYTHONDONTWRITEBYTECODE: '1'
 
 jobs:
+  sources:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit source tree
+        run: bash scripts/audit-release-tree.sh
+      - name: Verify all four source variants and ordered native hooks
+        run: python3 -B tools/check_build_sources.py
+
   models:
+    needs: sources
     if: ${{ inputs.run_validation_tests }}
     runs-on: ubuntu-22.04
     timeout-minutes: 20
@@ -81,6 +92,7 @@ jobs:
           retention-days: 14
 
   apk:
+    needs: sources
     permissions:
       contents: write
     runs-on: ubuntu-22.04

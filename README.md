@@ -65,9 +65,12 @@ release 中约 4.2 MB 的 `.partNNN` 是四个完整原 APK 的压缩包按 4 Mi
 从 Git 的 smali 编译 DEX，复用原始资源和 native 库。目前 `.so` 没有恢复对应 C/C++/Go 原始源码。
 
 ```sh
+python3 -B tools/check_build_sources.py
 gh workflow run ordinary-build.yml --repo leotvgo/Leotv --ref main
 ```
 
+构建先独立核对四变体锁定源文件在 Git 中的精确大小写、原生 ABI，以及按实际打包顺序试用品牌/详情/弹幕/分页挂接。
+该源码门禁不依赖 Android SDK 或原 APK，且不随 `run_validation_tests=false` 关闭；通过后才启动依赖下载和编译。
 该工作流先审计四个普通原样基准，再编译 Leotv 覆盖层并核对精确声明的类与资源变化；
 同时执行核心 Java 的 API 23 编译/JSON 测试，以及透明按钮、上下栏绘图和生命周期检查。
 产物为固定签名、可安装的 APK 和对应报告。APK 专用签名密钥由 GitHub Secrets 提供，

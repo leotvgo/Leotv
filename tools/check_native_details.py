@@ -153,7 +153,7 @@ def check_contract(root, variant, project=None):
     if mobile:
         contracts['w3/n'] = (['getRoot()Landroid/view/View;'], ['u:Ljava/lang/Object;'])
         contracts['w3/r'] = ([], ['p:Landroid/view/View;'])
-        contracts['R3/p'] = ([], ['A0:Lv3/a;'])
+        contracts['R3/P'] = (['w0()V'], ['A0:Lv3/a;'])
     else:
         contracts['t3/p'] = (['getRoot()Landroid/view/View;'], ['p:Lcom/fongmi/android/tv/ui/custom/CustomUpDownView;'])
         contracts['O3/k'] = ([], ['A0:Lt3/j;'])

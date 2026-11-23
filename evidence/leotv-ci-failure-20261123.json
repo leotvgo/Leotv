@@ -1,0 +1,117 @@
+{
+  "recorded_at": "2026-11-23T02:00:35.003829+00:00",
+  "repo": "leotvgo/Leotv",
+  "failed_build_run_id": 45095850703,
+  "failed_build_commit": "cb96a95f1618f295e5093d7c40f0e62ee01caee3",
+  "failed_build_url": "https://github.com/leotvgo/Leotv/actions/runs/45095850703",
+  "failed_build_jobs": {
+    "tv-v7a": "success",
+    "tv-v8a": "success",
+    "mobile-v7a": "failure",
+    "mobile-v8a": "failure",
+    "models": "skipped"
+  },
+  "failed_step": "Build Leotv and verify the baseline plus declared identity and UI changes",
+  "cause": {
+    "exception": "FileNotFoundError",
+    "incorrect_path": "smali/R3/p.smali",
+    "correct_path": "smali/R3/P.smali",
+    "correct_descriptor": "LR3/P;",
+    "distinct_lowercase_descriptor_path": "smali/R3/p.1.smali",
+    "macos_path_alias_reproduced": true,
+    "local_descriptor_contract_failure_reproduced": true
+  },
+  "source_preflight": {
+    "variants_passed": [
+      "tv-v7a",
+      "tv-v8a",
+      "mobile-v7a",
+      "mobile-v8a"
+    ],
+    "exact_git_path_check": true,
+    "all_four_source_locks_sha256": true,
+    "native_abi": true,
+    "ordered_hooks": [
+      "branding",
+      "native_details",
+      "danmaku",
+      "category_paging"
+    ],
+    "bad_case_rejected": true,
+    "bad_hash_rejected": true,
+    "mobile_two_returns_hooked": true,
+    "only_uppercase_menu_hooked": true,
+    "ci_gate_remains_enabled_without_optional_regressions": true
+  },
+  "publish_guard_tests": {
+    "passed": 11,
+    "external_publication_performed": false
+  },
+  "release_tree_audit_passed": true,
+  "local_builds": [
+    {
+      "variant": "mobile-v7a",
+      "audit_path": "artifacts/ci-repair-20261123/leotv-mobile-v7a-unsigned.audit.json",
+      "version_name": "5.3.0-preview.3",
+      "version_code": 615,
+      "package": "com.leotv.app",
+      "unsigned": true,
+      "baseline_equal": true,
+      "expected_changes_match": true,
+      "min_sdk": 23,
+      "native_abis": [
+        "armeabi-v7a"
+      ],
+      "native_libraries_exact": 34,
+      "r8_mode": "r8-release-full",
+      "r8_version": "8.8.34",
+      "stable_abi_members_verified": 72,
+      "uppercase_menu_class_only": true,
+      "output_apk_sha256": "dc1469d5ca4a5f0381a0f4de4c17b2761ccd8830c10baec601909424040e2680",
+      "native_detail_contract": {
+        "variant": "mobile-v7a",
+        "public_abi_members_verified": 201,
+        "private_abi_members_verified": 1,
+        "ordinary_edit_classes_pinned": 9,
+        "native_source_files_declared": 91,
+        "client": "mobile",
+        "theme_count": 4,
+        "device_validation": false
+      }
+    },
+    {
+      "variant": "mobile-v8a",
+      "audit_path": "artifacts/ci-repair-20261123/leotv-mobile-v8a-unsigned.audit.json",
+      "version_name": "5.3.0-preview.3",
+      "version_code": 615,
+      "package": "com.leotv.app",
+      "unsigned": true,
+      "baseline_equal": true,
+      "expected_changes_match": true,
+      "min_sdk": 23,
+      "native_abis": [
+        "arm64-v8a"
+      ],
+      "native_libraries_exact": 23,
+      "r8_mode": "r8-release-full",
+      "r8_version": "8.8.34",
+      "stable_abi_members_verified": 72,
+      "uppercase_menu_class_only": true,
+      "output_apk_sha256": "9ea2cdbae1dc6f59a08be71a601f6f308181e775dca23f20a31e91eeacfc9254",
+      "native_detail_contract": {
+        "variant": "mobile-v8a",
+        "public_abi_members_verified": 201,
+        "private_abi_members_verified": 1,
+        "ordinary_edit_classes_pinned": 9,
+        "native_source_files_declared": 91,
+        "client": "mobile",
+        "theme_count": 4,
+        "device_validation": false
+      }
+    }
+  ],
+  "pushed": false,
+  "github_rebuild_triggered": false,
+  "device_validation": false,
+  "signature_validation_scope": "Original GitHub TV builds signed successfully; local repaired mobile APKs are unsigned."
+}
