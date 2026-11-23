@@ -72,3 +72,5 @@ FongMi 新设置面板依赖 `androidx.media3.ui.danmaku.DanmakuConfig`、Player
 ## GitHub 交付
 
 用户在本地修复完成后要求推送 GitHub 编译 APK。本次交付版本为 5.3.0-preview.4 / 616，保持测试预发行、固定签名和 TV/手机双 ABI；新增设置项和来源优先策略保持原状。GitHub 关闭额外回归，继续执行必须的四变体源码门禁、API23/R8、原样与允许变化审计及固定签名核对，成功后自动发布。
+
+[四套固定签名 APK 已发布](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0-preview.4-build-45115729423)。先恢复首次同名草稿归档冲突完成交付，再按用户要求修复脚本；新流程首次整轮构建、自动发布和重复发布验证均成功。详见 `evidence/leotv-5.3.0-preview.4-delivery-20261123.json`。

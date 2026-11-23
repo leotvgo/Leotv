@@ -31,3 +31,7 @@ flowchart LR
 14 项虚构 GitHub 归档测试覆盖：唯一预建、重复执行、创建已成功但响应失败、重复 tag、源码不一致、映射草稿保护、Release ID 上传、上传成功但响应失败、摘要延迟、草稿中断恢复、公开文件不可覆盖、超时重试、认证失败及依赖顺序。原有 11 项发布保护测试通过。
 
 另以新的 GitHub 整轮构建验证真实 Actions 存储不可用时的备用上传、四变体固定签名、自动发布，并核对重复发布前后的资产 ID/摘要。真实结果记入交付证据，不把仅通过模拟测试当作发布问题已解决。此次脚本修复不改 APK 功能或版本号。
+
+实际验证已完成：脚本提交 `42578a10f8fc962d8f86d0762213a9532a463fa8` 的[构建 45115729423](https://github.com/leotvgo/Leotv/actions/runs/45115729423) 和[自动发布 45116306936](https://github.com/leotvgo/Leotv/actions/runs/45116306936) 首次尝试成功，四个变体都实际使用了备用 Release 上传。prepare 完成后 matrix 才启动。再次执行准备两次，复用了相同两个 Release ID，没有创建新草稿；[重复发布 45117153172](https://github.com/leotvgo/Leotv/actions/runs/45117153172) 成功，12 个已发布资产的 ID、大小和摘要均保持一致。四个固定证书/签名报告、原样与允许变化审计和私有映射摘要通过核对，正式 Latest 保持 5.2.3。
+
+最终[四套 5.3.0-preview.4 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0-preview.4-build-45115729423) 与取证 `evidence/leotv-5.3.0-preview.4-delivery-20261123.json` 已保存。
