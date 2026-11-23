@@ -27,3 +27,5 @@
 ## 构建交付
 
 不进行本轮本地重复测试或打包。使用已修复的 GitHub 预建草稿、按 ID 上传和重复发布保护流程，四变体执行必需源码/ABI、API23/R8、原样/允许变化及固定签名核对；额外回归关闭。测试预发行版本 5.3.0-preview.5 / 617，正式 Latest 保持 5.2.3，真机 UI、自动匹配和原生遥控行为由用户验收。
+
+[四套固定签名 APK 已发布](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0-preview.5-build-45122673329)。源码 `819d5adb3121d7c894b32eb6f5ac454c37547398`，[构建 45122673329](https://github.com/leotvgo/Leotv/actions/runs/45122673329) 和[自动发布 45123409111](https://github.com/leotvgo/Leotv/actions/runs/45123409111) 首次尝试均成功。产物审计确认手机正确修改 R3/p、R3/P 字幕类恢复原样，TV 原点击/长按、上下控件和渲染器未列入变化类；固定证书、文件摘要及私有 R8 映射核对完成。交付证据见 `evidence/leotv-5.3.0-preview.5-delivery-20261123.json`。
