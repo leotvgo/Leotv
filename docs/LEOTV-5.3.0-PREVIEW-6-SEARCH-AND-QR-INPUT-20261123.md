@@ -35,4 +35,8 @@
 
 普通 smali 基础文件不修改。本轮允许变化仍限于原声明的 VideoActivity、Result/Player 挂接与 TV `L3.f` action 分发，以及恢复覆盖层；新增嵌套类由 R8 源码集合及变化类审计记录。唯一新增原 ZIP 资产修改是两个 TV 变体的 `assets/index.html`。四变体保留 API23、R8 release/full、原样与允许变化审计及固定签名。签名后手机自动匹配、两端 UI、扫码回填和遥控输入法行为由用户真机验收。
 
-GitHub 构建与发布结果待本轮流水线完成后补齐。
+源码已推送 `fc20ccfb6bd4af3c2f51fa8729c11d53df382024`。[构建 45135378697](https://github.com/leotvgo/Leotv/actions/runs/45135378697) 在 runner 启动前被 GitHub 账单门禁拒绝；sources 没有执行步骤，runner_id=0，其余编译/签名/发布均未运行。GitHub 原文：
+
+> The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the Billing & plans section in your settings.
+
+本轮尚无新 APK，不把源码审阅或已推送视为构建/签名验证通过。固定源码、变化声明及失败记录已保存；账号额度/付款恢复后继续同一源码构建。证据见 `evidence/leotv-5.3.0-preview.6-build-blocked-20261123.json`。

@@ -1,0 +1,38 @@
+{
+  "version_name": "5.3.0-preview.6",
+  "version_code": 618,
+  "source_commit": "fc20ccfb6bd4af3c2f51fa8729c11d53df382024",
+  "build_run_id": 45135378697,
+  "build_url": "https://github.com/leotvgo/Leotv/actions/runs/45135378697",
+  "workflow": "ordinary-build.yml",
+  "run_validation_tests": false,
+  "conclusion": "failure_before_runner_start",
+  "runner_id": 0,
+  "executed_steps": [],
+  "github_message": "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings",
+  "apk_produced": false,
+  "fixed_signature_verified": false,
+  "local_regression_or_packaging_run": false,
+  "required_source_api23_r8_baseline_change_audits": "pending GitHub billing recovery",
+  "authorized_tasks": [
+    "mobile automatic Danmaku readiness",
+    "mobile menu icon contrast",
+    "mobile and TV search dimensions and scrolling",
+    "mobile white and TV translucent API settings without radio circles",
+    "remove redundant API display/offset/appearance entries",
+    "dedicated single-input QR web tab with automatic TV field refill",
+    "TV search QR icon and confirm-only keyboard activation"
+  ],
+  "original_tv_danmaku_actions": "preserved",
+  "allowed_zip_changes": {
+    "tv-v7a": [
+      "assets/index.html"
+    ],
+    "tv-v8a": [
+      "assets/index.html"
+    ],
+    "mobile-v7a": [],
+    "mobile-v8a": []
+  },
+  "observed_at": "2026-11-23T16:06:50.505563+08:00"
+}
