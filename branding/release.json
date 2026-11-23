@@ -1,8 +1,8 @@
 {
   "channel": "prerelease",
-  "version_name": "5.3.0-preview.10",
-  "version_code": 622,
-  "title": "Leotv 5.3.0-preview.10（弹幕实际焦点、菜单尺寸与设置样式修复）",
+  "version_name": "5.3.0-preview.11",
+  "version_code": 623,
+  "title": "Leotv 5.3.0-preview.11（原生站源开关、TV 返回与设置间距修复）",
   "prerelease": true,
   "make_latest": false
 }

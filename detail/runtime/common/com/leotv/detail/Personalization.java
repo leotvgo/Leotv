@@ -45,9 +45,7 @@ public final class Personalization {
                 () -> {MetadataSettings.setResourceGlobalSearch(activity,!MetadataSettings.resourceGlobalSearch(activity));refresh(activity,rows);});
         add(activity, second, template, summary, HOME,
                 () -> {MetadataSettings.setNewHome(activity,!MetadataSettings.newHome(activity));refresh(activity,rows);});
-        LinearLayout third=rows;
-        if(!Device.MOBILE){third=new LinearLayout(activity);third.setOrientation(LinearLayout.HORIZONTAL);LinearLayout.LayoutParams line=new LinearLayout.LayoutParams(-1,-2);line.topMargin=rowSpacing(target);rows.addView(third,line);}
-        add(activity, third, template, summary, "弹幕 API",
+        if(Device.MOBILE)add(activity, rows, template, summary, "弹幕 API",
                 () -> DanmakuUi.settings(activity));
         View anchor = template;
         while (anchor != null && anchor.getParent() != target && anchor.getParent() instanceof View)

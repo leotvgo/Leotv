@@ -22,7 +22,7 @@ final class DetailPlayButton extends TextView {
     private final RectF progressBounds = new RectF();
     private final boolean mobile;
     private final ArgbEvaluator colours = new ArgbEvaluator();
-    private ValueAnimator tint, size;
+    private ValueAnimator feedbackAnimation;
     private int colour = NORMAL, endColour = NORMAL, targetColour = NORMAL, targetEndColour = NORMAL;
     private float visualScale = 1, targetScale = 1;
     private float progress;
@@ -109,31 +109,25 @@ final class DetailPlayButton extends TextView {
             nextEnd = pressed ? 0xff58b0c4 : focused ? 0xffa5f0ff : 0xff75e5ff;
         }
         float scale = focused && !pressed ? FOCUS_SCALE : 1;
-        if (!animate || next != targetColour || nextEnd != targetEndColour) {
-            targetColour = next; targetEndColour = nextEnd;
-            if (tint != null) { tint.cancel(); tint = null; }
-            if (animate && (colour != next || endColour != nextEnd)) {
-                final int from = colour, fromEnd = endColour, to = next, toEnd = nextEnd;
-                tint = ValueAnimator.ofFloat(0, 1);
-                tint.setDuration(pressed ? 90 : 160);
-                tint.addUpdateListener(value -> {
-                    float fraction = (Float)value.getAnimatedValue();
-                    colour = (Integer)colours.evaluate(fraction, from, to);
-                    endColour = (Integer)colours.evaluate(fraction, fromEnd, toEnd); paintFill();
-                });
-                tint.start();
-            } else { colour = next; endColour = nextEnd; paintFill(); }
+        if (animate && next == targetColour && nextEnd == targetEndColour && scale == targetScale) return;
+        targetColour = next; targetEndColour = nextEnd; targetScale = scale;
+        if (feedbackAnimation != null) { feedbackAnimation.cancel(); feedbackAnimation = null; }
+        if (!animate || colour == next && endColour == nextEnd && visualScale == scale) {
+            colour = next; endColour = nextEnd; visualScale = scale; paintFill(); invalidate(); return;
         }
-        if (!animate || scale != targetScale) {
-            targetScale = scale;
-            if (size != null) { size.cancel(); size = null; }
-            if (animate) {
-                size = ValueAnimator.ofFloat(visualScale, scale); size.setDuration(160);
-                size.setInterpolator(new android.view.animation.DecelerateInterpolator());
-                size.addUpdateListener(value -> { visualScale = (Float)value.getAnimatedValue(); invalidate(); });
-                size.start();
-            } else { visualScale = scale; invalidate(); }
-        }
+        final int from = colour, fromEnd = endColour, to = next, toEnd = nextEnd;
+        final float fromScale = visualScale, toScale = scale;
+        feedbackAnimation = ValueAnimator.ofFloat(0, 1);
+        feedbackAnimation.setDuration(mobile ? (pressed ? 90 : 160) : (pressed ? 70 : 120));
+        feedbackAnimation.setInterpolator(mobile ? new android.view.animation.AccelerateDecelerateInterpolator() : new android.view.animation.DecelerateInterpolator());
+        feedbackAnimation.addUpdateListener(value -> {
+            float fraction = (Float)value.getAnimatedValue();
+            colour = (Integer)colours.evaluate(fraction, from, to);
+            endColour = (Integer)colours.evaluate(fraction, fromEnd, toEnd);
+            visualScale = fromScale + (toScale - fromScale) * fraction;
+            paintFill(); invalidate();
+        });
+        feedbackAnimation.start();
     }
 
     private void paintFill() {
@@ -150,9 +144,12 @@ final class DetailPlayButton extends TextView {
     }
 
     @Override protected void onAttachedToWindow() { super.onAttachedToWindow(); feedback(false); }
+    @Override public void onWindowFocusChanged(boolean focused) {
+        super.onWindowFocusChanged(focused);
+        if (!mobile && !focused) { setPressed(false); feedback(false); }
+    }
     @Override protected void onDetachedFromWindow() {
-        if (tint != null) { tint.cancel(); tint = null; }
-        if (size != null) { size.cancel(); size = null; }
+        if (feedbackAnimation != null) { feedbackAnimation.cancel(); feedbackAnimation = null; }
         super.onDetachedFromWindow();
     }
 }

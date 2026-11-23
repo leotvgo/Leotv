@@ -20,27 +20,6 @@ import static org.junit.Assert.*;
 @Config(sdk=23,manifest=Config.NONE)
 @LooperMode(LooperMode.Mode.PAUSED)
 public class DanmakuRepairTest {
-    @Test public void phoneHeaderRestoresExistingSearchAfterBrieflyShowingChangedSite(){
-        HeaderActivity activity=Robolectric.buildActivity(HeaderActivity.class).create().get();
-        android.widget.FrameLayout content=new android.widget.FrameLayout(activity);activity.setContentView(content);
-        NewHome owner=new NewHome(activity,content,true);android.widget.LinearLayout toolbar=new android.widget.LinearLayout(activity);content.addView(toolbar);
-        for(String name:new String[]{"title","searchInput","searchIcon","download"}){android.view.View view=new android.view.View(activity);view.setId(activity.getResources().getIdentifier(name,"id",activity.getPackageName()));toolbar.addView(view);}
-        NativeCspUi ui=owner.nativeUi;ui.toolbar=toolbar;ui.borrowed=true;
-        try{
-            owner.identity="fictional-first";ui.phoneHeader();assertEquals(android.view.View.GONE,ui.find("title").getVisibility());assertEquals(android.view.View.VISIBLE,ui.find("searchInput").getVisibility());assertEquals(android.view.View.GONE,ui.find("searchIcon").getVisibility());
-            owner.identity="fictional-second";ui.phoneHeader();assertEquals(android.view.View.VISIBLE,ui.find("title").getVisibility());assertEquals(android.view.View.GONE,ui.find("searchInput").getVisibility());assertEquals(android.view.View.VISIBLE,ui.find("searchIcon").getVisibility());
-            Shadows.shadowOf(Looper.getMainLooper()).idleFor(4001,TimeUnit.MILLISECONDS);ui.phoneHeader();
-            assertEquals(android.view.View.GONE,ui.find("title").getVisibility());assertEquals(android.view.View.VISIBLE,ui.find("searchInput").getVisibility());assertEquals(android.view.View.GONE,ui.find("searchIcon").getVisibility());
-        }finally{toolbar.removeCallbacks(ui.phoneSearch);ui.borrowed=false;owner.close();activity.finish();}
-    }
-    public static class HeaderActivity extends android.app.Activity {
-        android.content.res.Resources resources;
-        @Override public android.content.res.Resources getResources(){
-            if(resources==null){android.content.res.Resources original=super.getResources();resources=new android.content.res.Resources(original.getAssets(),original.getDisplayMetrics(),original.getConfiguration()){
-                @Override public int getIdentifier(String name,String type,String packageName){String[] names={"title","searchInput","searchIcon","download"};for(int i=0;i<names.length;i++)if(type.equals("id")&&names[i].equals(name))return 0x7f070100+i;return super.getIdentifier(name,type,packageName);}
-            };}return resources;
-        }
-    }
     @Test public void catalogRetainsAllEpisodesAndUsesTheirCommentIdsInsteadOfVideoUrls()throws Exception{
         String root="https://fixture.invalid/website/danmu/manage/opaque%2Ftoken";
         String endpoint=root+"/api/v2/search/episodes?anime=fictional";

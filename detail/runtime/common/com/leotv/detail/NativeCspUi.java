@@ -30,9 +30,7 @@ final class NativeCspUi {
     android.graphics.Rect toolbarClip;View expand;CspRecommendation recommendation;ImageView actionSource;Drawable actionDrawable;boolean actionTop;
     View tvSite;Drawable tvSiteBackground;boolean tvSiteFocusable,tvSiteTouchFocusable;
     int siteLeft,siteTop,siteRight,siteBottom;float siteTextSize;
-    String phoneSite="";long phoneSiteUntil;
-    final Runnable phoneSearch;
-    NativeCspUi(NewHome owner){this.owner=owner;activity=owner.activity;phone=owner.phone;phoneSearch=()->{if(borrowed&&phone&&!owner.categoryMode)phoneHeader();};}
+    NativeCspUi(NewHome owner){this.owner=owner;activity=owner.activity;phone=owner.phone;}
     int dp(int value){return Math.round(value*activity.getResources().getDisplayMetrics().density);}
     void forget(){if(borrowed||categoryHeader!=null||recommendation!=null)return;toolbar=null;type=null;pager=null;categoryRow=null;host=null;toolbarParent=null;typeParent=null;toolbarParams=null;typeParams=null;expand=null;actionSource=null;actionDrawable=null;folded=0;lastScroll=0;}
     View find(String name){return NativeViews.find(activity,name);}
@@ -43,16 +41,9 @@ final class NativeCspUi {
             if(adapter!=null)for(Field field:adapter.getClass().getDeclaredFields())try{field.setAccessible(true);Object value=field.get(adapter);if(value!=null&&value.getClass().getName().equals("S3.G"))host=value;}catch(ReflectiveOperationException ignored){}
         }
     }
-    void homeVisibility(String name,int value){View view=named(activity,toolbar,name);if(view!=null){if(!visibility.containsKey(view))visibility.put(view,view.getVisibility());view.setVisibility(value);}}
     void phoneHeader(){
         if(!phone||toolbar==null)return;
-        String site=owner.identity;
-        if(!site.equals(phoneSite)){phoneSiteUntil=phoneSite.isEmpty()?0:android.os.SystemClock.uptimeMillis()+4000;phoneSite=site;}
-        long remaining=phoneSiteUntil-android.os.SystemClock.uptimeMillis();
-        homeVisibility("title",remaining>0?View.VISIBLE:View.GONE);
-        homeVisibility("searchInput",remaining>0?View.GONE:View.VISIBLE);
-        homeVisibility("searchIcon",remaining>0?View.VISIBLE:View.GONE);homeVisibility("download",View.VISIBLE);
-        toolbar.removeCallbacks(phoneSearch);if(remaining>0)toolbar.postDelayed(phoneSearch,remaining);
+        SiteFeed.invoke(host,"x0");
     }
     void borrow(CspHomePage page){
         discover();if(borrowed||toolbar==null||!(toolbar.getParent() instanceof ViewGroup))return;
@@ -63,12 +54,12 @@ final class NativeCspUi {
         FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(-1,-2,Gravity.TOP);page.addView(toolbar,params);borrowed=true;lastScroll=page.scroll.getScrollY();layoutToolbar(page);
     }
     void layoutToolbar(CspHomePage page){
-        if(!borrowed)return;FrameLayout.LayoutParams params=(FrameLayout.LayoutParams)toolbar.getLayoutParams();int above=0;
+        if(!borrowed)return;if(phone)phoneHeader();FrameLayout.LayoutParams params=(FrameLayout.LayoutParams)toolbar.getLayoutParams();int above=0;
         if(phone){android.view.WindowInsets insets=page.getRootWindowInsets();int[] origin=new int[2];page.getLocationOnScreen(origin);boolean fullscreen=(activity.getWindow().getAttributes().flags&android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN)!=0||(activity.getWindow().getDecorView().getSystemUiVisibility()&View.SYSTEM_UI_FLAG_FULLSCREEN)!=0;above=fullscreen?0:Math.max(0,(insets==null?0:insets.getSystemWindowInsetTop())-origin[1]);}
         if(params.topMargin!=above){params.topMargin=above;toolbar.requestLayout();}page.headerHeight=above+Math.max(toolbar.getHeight(),page.dp(phone?52:56));page.updateInsets();scrolled(page.scroll.getScrollY());
     }
     void scrolled(int y){if(!borrowed)return;int delta=y-lastScroll;lastScroll=y;int inset=((FrameLayout.LayoutParams)toolbar.getLayoutParams()).topMargin;int limit=Math.max(toolbar.getHeight(),dp(52))+inset;folded=y<=0?0:Math.max(0,Math.min(limit,folded+delta));if(!phone&&toolbar.hasFocus())folded=0;float translation=-folded;if(toolbar.getTranslationY()!=translation)toolbar.setTranslationY(translation);float alpha=folded>=limit?0:toolbarAlpha;if(toolbar.getAlpha()!=alpha)toolbar.setAlpha(alpha);}
-    void restoreToolbar(){if(!borrowed)return;toolbar.removeCallbacks(phoneSearch);restoreTvSite();remove(toolbar);if(tvActions!=null){remove(tvActions);tvActions=null;if(tvClock!=null){tvClock.setOrientation(clockOrientation);tvClock.setGravity(clockGravity);tvClock=null;}}for(java.util.Map.Entry<View,ViewGroup.LayoutParams> entry:tvLayouts.entrySet())entry.getKey().setLayoutParams(entry.getValue());tvLayouts.clear();for(java.util.Map.Entry<View,Integer> entry:visibility.entrySet())entry.getKey().setVisibility(entry.getValue());visibility.clear();toolbar.setClipBounds(toolbarClip);toolbar.setAlpha(toolbarAlpha);toolbar.setTranslationY(toolbarTranslation);toolbar.setVisibility(toolbarVisibility);toolbarParent.addView(toolbar,Math.min(toolbarIndex,toolbarParent.getChildCount()),toolbarParams);borrowed=false;actionSource=null;}
+    void restoreToolbar(){if(!borrowed)return;restoreTvSite();remove(toolbar);if(tvActions!=null){remove(tvActions);tvActions=null;if(tvClock!=null){tvClock.setOrientation(clockOrientation);tvClock.setGravity(clockGravity);tvClock=null;}}for(java.util.Map.Entry<View,ViewGroup.LayoutParams> entry:tvLayouts.entrySet())entry.getKey().setLayoutParams(entry.getValue());tvLayouts.clear();for(java.util.Map.Entry<View,Integer> entry:visibility.entrySet())entry.getKey().setVisibility(entry.getValue());visibility.clear();toolbar.setClipBounds(toolbarClip);toolbar.setAlpha(toolbarAlpha);toolbar.setTranslationY(toolbarTranslation);toolbar.setVisibility(toolbarVisibility);toolbarParent.addView(toolbar,Math.min(toolbarIndex,toolbarParent.getChildCount()),toolbarParams);borrowed=false;actionSource=null;}
     void borrowTvSite(){
         tvSite=named(activity,toolbar,"title");if(tvSite==null)return;
         tvSiteBackground=tvSite.getBackground();tvSiteFocusable=tvSite.isFocusable();tvSiteTouchFocusable=tvSite.isFocusableInTouchMode();

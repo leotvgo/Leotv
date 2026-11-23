@@ -47,7 +47,9 @@ public final class DanmakuUi {
         java.util.List<TextView> texts=new ArrayList<>();collect(row,texts);if(texts.isEmpty())return;
         texts.get(0).setText("弹幕 API / 自动匹配");if(texts.size()>1)texts.get(texts.size()-1).setText(DanmakuSettings.api(activity).isEmpty()?"未配置":"已配置");
         row.setTag("leotv_danmaku_api_settings");row.setFocusable(!Device.MOBILE);row.setClickable(true);row.setOnClickListener(view->settings(activity));
-        parent.addView(row,parent.indexOfChild(template)+1,new LinearLayout.LayoutParams((LinearLayout.LayoutParams)template.getLayoutParams()));
+        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams((LinearLayout.LayoutParams)template.getLayoutParams());
+        if(!Device.MOBILE)for(int i=0;i<parent.getChildCount();i++){ViewGroup.LayoutParams sibling=parent.getChildAt(i).getLayoutParams();if(sibling instanceof LinearLayout.LayoutParams&&((LinearLayout.LayoutParams)sibling).topMargin>0){params.topMargin=((LinearLayout.LayoutParams)sibling).topMargin;break;}}
+        parent.addView(row,parent.indexOfChild(template)+1,params);
     }
     private static void collect(View root,List<TextView> out){if(root instanceof TextView)out.add((TextView)root);if(root instanceof ViewGroup)for(int i=0;i<((ViewGroup)root).getChildCount();i++)collect(((ViewGroup)root).getChildAt(i),out);}
     private static void settings(Activity a,DanmakuPlayback.Session session){

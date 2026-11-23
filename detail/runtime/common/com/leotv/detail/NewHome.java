@@ -97,7 +97,7 @@ public final class NewHome implements AutoCloseable {
         if(action==android.view.KeyEvent.ACTION_UP&&code==tvDirection){tvDirection=-1;return true;}
         if(code==android.view.KeyEvent.KEYCODE_BACK){
             if(action==android.view.KeyEvent.ACTION_DOWN){if(!tvBack&&page.scroll.getScrollY()<=0&&nativeUi.siteFocused())return false;tvBack=true;return true;}
-            if(action==android.view.KeyEvent.ACTION_UP&&tvBack){tvBack=false;if(!event.isCanceled())nativeUi.focusSite();return true;}
+            if(action==android.view.KeyEvent.ACTION_UP&&tvBack){tvBack=false;if(!event.isCanceled()&&!page.focusFirstInRow(activity.getCurrentFocus()))nativeUi.focusSite();return true;}
             return false;
         }
         if(action==android.view.KeyEvent.ACTION_DOWN&&nativeUi.moveTv(code)){tvDirection=code;return true;}
