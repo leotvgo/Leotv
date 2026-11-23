@@ -6,8 +6,7 @@ import json
 import os
 from pathlib import Path
 import re
-import subprocess
-import time
+from ci_release_store import ReleaseStore
 
 
 def main():
@@ -40,40 +39,15 @@ def main():
         tag = f'leotv-symbols-{version}-build-{run_id}'
         files = [mapping]
 
-    def find_release():
-        pages = json.loads(subprocess.check_output(['gh', 'api', f'repos/{repo}/releases?per_page=100', '--paginate', '--slurp']))
-        matches = [item for page in pages for item in page if item['tag_name'] == tag]
-        if len(matches) > 1:
-            raise SystemExit('Multiple APK drafts use the same release tag.')
-        return matches[0] if matches else None
-
-    release = find_release()
+    store = ReleaseStore(repo, commit)
+    release = store.find(tag)
     if release is None:
-        created = subprocess.run(['gh', 'release', 'create', tag, '--repo', repo, '--target', commit,
-            '--title', f'Leotv {version}（内部 R8 映射）' if args.symbols else f'Leotv {version}（待发布）',
-            '--notes', '内部构建映射，保持草稿，不随安装包公开。' if args.symbols else '等待四个 APK 构建和签名报告齐备后发布。',
-            '--draft', '--latest=false', *([] if args.symbols else ['--prerelease'])], capture_output=True, text=True)
-        # The two concurrent matrix jobs may both attempt to create the same draft.
-        for attempt in range(5):
-            release = find_release()
-            if release is not None:
-                break
-            time.sleep(2)
-        if release is None:
-            raise SystemExit('Unable to prepare the APK release draft: ' + created.stderr.strip())
+        raise SystemExit('Prepared CI release is missing; run the preparation job before APK builds.')
     if release['target_commitish'] != commit:
         raise SystemExit('APK draft targets a different source commit.')
     if args.symbols and not release['draft']:
         raise SystemExit('Private R8 mappings must remain in a draft.')
-    expected = {path.name: (path.stat().st_size, 'sha256:' + hashlib.sha256(path.read_bytes()).hexdigest()) for path in files}
-    if not release['draft']:
-        assets = {asset['name']: asset for asset in release['assets']}
-        for name, (size, digest) in expected.items():
-            asset = assets.get(name)
-            if asset is None or asset['state'] != 'uploaded' or asset['size'] != size or asset.get('digest') != digest:
-                raise SystemExit('Published APK assets differ; immutable files cannot be replaced.')
-    else:
-        subprocess.run(['gh', 'release', 'upload', tag, '--repo', repo, '--clobber', *(str(path) for path in files)], check=True)
+    store.upload(release, files)
     print(('Private R8 mapping archived: ' if args.symbols else 'Verified APK staged for the publication workflow: ') + tag)
 
 

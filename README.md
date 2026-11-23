@@ -71,6 +71,8 @@ gh workflow run ordinary-build.yml --repo leotvgo/Leotv --ref main
 
 构建先独立核对四变体锁定源文件在 Git 中的精确大小写、原生 ABI，以及按实际打包顺序试用品牌/详情/弹幕/分页挂接。
 该源码门禁不依赖 Android SDK 或原 APK，且不随 `run_validation_tests=false` 关闭；通过后才启动依赖下载和编译。
+单独的 `prepare` job 在并发构建之前预建本次运行的 APK 和内部映射草稿；各变体只按已核对的 Release ID 上传，不创建共享草稿。
+上传后核对大小和 SHA-256；重复上传保留一致文件，连接中断后先核对服务器结果再重试，已发布文件不覆盖。详见[构建发布可靠性修复](docs/LEOTV-CI-RELEASE-RELIABILITY-20261123.md)。
 该工作流先审计四个普通原样基准，再编译 Leotv 覆盖层并核对精确声明的类与资源变化；
 同时执行核心 Java 的 API 23 编译/JSON 测试，以及透明按钮、上下栏绘图和生命周期检查。
 产物为固定签名、可安装的 APK 和对应报告。APK 专用签名密钥由 GitHub Secrets 提供，

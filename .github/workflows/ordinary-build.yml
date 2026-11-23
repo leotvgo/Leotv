@@ -26,6 +26,21 @@ jobs:
       - name: Verify all four source variants and ordered native hooks
         run: python3 -B tools/check_build_sources.py
 
+  prepare:
+    needs: sources
+    permissions:
+      contents: write
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify release draft ownership and upload recovery
+        run: python3 -B research/test_ci_release_store.py
+      - name: Prepare unique APK and private mapping drafts before parallel builds
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 -B tools/prepare_ci_release.py
+
   models:
     needs: sources
     if: ${{ inputs.run_validation_tests }}
@@ -92,7 +107,7 @@ jobs:
           retention-days: 14
 
   apk:
-    needs: sources
+    needs: prepare
     permissions:
       contents: write
     runs-on: ubuntu-22.04
