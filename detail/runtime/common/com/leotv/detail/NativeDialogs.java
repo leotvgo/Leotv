@@ -53,7 +53,7 @@ final class NativeDialogs {
         try {
             Object builder=builder(activity);Context context=context(builder);
             LinearLayout panel=new LinearLayout(context);panel.setOrientation(LinearLayout.VERTICAL);
-            EditText input=endpointInput(context,panel,hint,value,secret);
+            EditText input=endpointInput(activity,context,panel,hint,value,secret);
             if(!Device.MOBILE){View qr=NativeQrInput.button(activity,input,title);qr.setId(View.generateViewId());input.setId(View.generateViewId());input.setNextFocusDownId(qr.getId());qr.setNextFocusUpId(input.getId());qr.setNextFocusDownId(android.R.id.button1);panel.addView(qr,qrMargins(context));}
             if(reset!=null){Object params=builder.getClass().getField("a").get(builder);params.getClass().getField("k").set(params,"恢复默认");}
             builder.getClass().getMethod("setPositiveButton",int.class,DialogInterface.OnClickListener.class).invoke(builder,android.R.string.ok,null);
@@ -65,14 +65,15 @@ final class NativeDialogs {
                 if(defaults!=null&&reset!=null)defaults.setOnClickListener(view->{reset.run();dialog.dismiss();});
             });
             dialog.show();
+            if(!Device.MOBILE)NativeQrInput.bind(activity,input);
         }catch(ReflectiveOperationException failure){throw new IllegalStateException("Native input dialog unavailable",failure);}
     }
     static void endpoint(Activity activity, String key, String base, EndpointSaved saved, Runnable reset) {
         try {
             Object builder = builder(activity); Context context = context(builder);
             LinearLayout panel = new LinearLayout(context); panel.setOrientation(LinearLayout.VERTICAL);
-            EditText keyInput = endpointInput(context, panel, "TMDB API Key（留空使用内置 Key）", key, true);
-            EditText baseInput = endpointInput(context, panel, "TMDB API 域名", base, false);
+            EditText keyInput = endpointInput(activity,context, panel, "TMDB API Key（留空使用内置 Key）", key, true);
+            EditText baseInput = endpointInput(activity,context, panel, "TMDB API 域名", base, false);
             keyInput.setId(View.generateViewId()); baseInput.setId(View.generateViewId());
             keyInput.setNextFocusDownId(baseInput.getId()); baseInput.setNextFocusUpId(keyInput.getId());
             baseInput.setNextFocusDownId(android.R.id.button1);
@@ -105,14 +106,16 @@ final class NativeDialogs {
                 if (defaults != null) defaults.setOnClickListener(view -> { reset.run(); dialog.dismiss(); });
             });
             dialog.show();
+            if(!Device.MOBILE)NativeQrInput.bind(activity,keyInput);
         } catch (ReflectiveOperationException unavailable) { throw new IllegalStateException("Native metadata dialog unavailable", unavailable); }
     }
-    private static EditText endpointInput(Context context, LinearLayout panel, String hint, String value, boolean secret) {
+    private static EditText endpointInput(Activity activity,Context context, LinearLayout panel, String hint, String value, boolean secret) {
         View body = NativeViews.layout(context, "dialog_ua"); EditText input = findInput(body);
         if (input == null) { body = NativeViews.layout(context, "preference_dialog_edittext"); input = findInput(body); }
         if (input == null) input = new EditText(context);
         if (input.getParent() instanceof ViewGroup) ((ViewGroup) input.getParent()).removeView(input);
         input.setSingleLine(true); input.setHint(hint); input.setText(value);
+        if(!Device.MOBILE){EditText target=input;input.setOnFocusChangeListener((view,focused)->{if(focused)NativeQrInput.bind(activity,target);});}
         input.setInputType(android.text.InputType.TYPE_CLASS_TEXT | (secret
                 ? android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD : android.text.InputType.TYPE_TEXT_VARIATION_URI));
         if (secret) input.setTransformationMethod(android.text.method.PasswordTransformationMethod.getInstance());

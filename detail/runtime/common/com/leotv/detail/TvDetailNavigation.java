@@ -51,6 +51,7 @@ final class TvDetailNavigation {
         return heroEntry.isShown() && heroEntry.isEnabled() && heroEntry.isFocusable() ? heroEntry : hero;
     }
     void start() { touchMode = false; focusHero(false); }
+    boolean focusPrimary(){focusHero(false);return page.findFocus()==heroEntry;}
     void touch() { touchMode = true; controls.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS); }
 
     private void focusHero(boolean smooth) {

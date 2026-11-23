@@ -1,8 +1,8 @@
 {
   "channel": "prerelease",
-  "version_name": "5.3.0-preview.8",
-  "version_code": 620,
-  "title": "Leotv 5.3.0-preview.8（手机外框高亮与 TV 透明度修正）",
+  "version_name": "5.3.0-preview.9",
+  "version_code": 621,
+  "title": "Leotv 5.3.0-preview.9（TV 焦点、确认编辑与重复扫码修复）",
   "prerelease": true,
   "make_latest": false
 }

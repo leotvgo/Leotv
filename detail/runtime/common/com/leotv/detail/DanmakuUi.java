@@ -84,6 +84,16 @@ public final class DanmakuUi {
             TextView close=new TextView(context);close.setText(android.R.string.cancel);close.setTextColor(foreground);close.setTextSize(14);close.setGravity(Gravity.CENTER);close.setPadding(inset/2,0,inset/2,0);close.setFocusable(true);close.setClickable(true);close.setOnClickListener(v->dialog.dismiss());
             int selector=context.getResources().getIdentifier("selector_item","drawable",context.getPackageName());if(selector!=0)close.setBackgroundResource(selector);
             heading.addView(close,new LinearLayout.LayoutParams(-2,dp(activity,40)));panel.addView(heading);
+            if(!Device.MOBILE){
+                android.widget.ScrollView scroll=new android.widget.ScrollView(context);LinearLayout rows=new LinearLayout(context);rows.setOrientation(LinearLayout.VERTICAL);scroll.addView(rows,new android.widget.ScrollView.LayoutParams(-1,-2));panel.addView(scroll,new LinearLayout.LayoutParams(-1,0,1));
+                TextView nativeRow=NativeViews.text(NativeViews.layout(context,"adapter_danmaku"));int active=nativeRow==null?android.graphics.Color.YELLOW:nativeRow.getTextColors().getColorForState(new int[]{android.R.attr.state_enabled,android.R.attr.state_activated},foreground);
+                java.util.List<TextView> buttons=new java.util.ArrayList<>();close.setId(View.generateViewId());close.setFocusableInTouchMode(true);
+                for(int index=0;index<values.length;index++){int selected=index;TextView row=new TextView(context);row.setId(View.generateViewId());row.setText(values[index]);row.setTextSize(15);row.setTextColor(foreground);row.setGravity(Gravity.CENTER_VERTICAL);row.setSingleLine(true);row.setEllipsize(android.text.TextUtils.TruncateAt.END);row.setFocusable(true);row.setFocusableInTouchMode(true);row.setClickable(true);
+                    if(selector!=0)row.setBackgroundResource(selector);row.setPadding(inset,0,inset,0);row.setOnFocusChangeListener((v,focus)->row.setTextColor(focus?active:foreground));row.setOnClickListener(v->{dialog.dismiss();listener.selected(selected);});rows.addView(row,new LinearLayout.LayoutParams(-1,dp(activity,48)));buttons.add(row);
+                }
+                for(int i=0;i<buttons.size();i++){TextView row=buttons.get(i);row.setNextFocusUpId(i==0?close.getId():buttons.get(i-1).getId());row.setNextFocusDownId(i+1==buttons.size()?row.getId():buttons.get(i+1).getId());}
+                if(!buttons.isEmpty()){close.setNextFocusDownId(buttons.get(0).getId());rows.post(()->buttons.get(0).requestFocus());}
+            }else{
             ListView list=new ListView(context);list.setChoiceMode(ListView.CHOICE_MODE_NONE);
             list.setDivider(new android.graphics.drawable.ColorDrawable(Device.MOBILE?0x14202832:0x26ffffff));list.setDividerHeight(dp(activity,1));
             list.setAdapter(new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,values){
@@ -93,6 +103,7 @@ public final class DanmakuUi {
                 }
             });
             list.setOnItemClickListener((parent,view,index,id)->{dialog.dismiss();listener.selected(index);});panel.addView(list,new LinearLayout.LayoutParams(-1,0,1));
+            }
             dialog.setContentView(panel,new ViewGroup.LayoutParams(-1,-1));dialog.show();
             if(dialog.getWindow()!=null){
                 dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);

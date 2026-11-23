@@ -55,6 +55,7 @@ final class TvDetailPage implements DetailPage {
     int surfaceColour=DetailHero.DEFAULT_COLOR, theme=-1, themeWidth, themeHeight;
     boolean mounted=true, reversed, reversePlay, manualSource;
     boolean metadataResolved, artworkRevealed;
+    private boolean initialPlayFocus=!mobile;
     private boolean loadingHostApplied;
     private final android.graphics.drawable.Drawable loadingBackdrop;
     private final Window.Callback originalCallback;
@@ -104,7 +105,7 @@ final class TvDetailPage implements DetailPage {
         crewLine=label("",13);crewLine.setGravity(Gravity.CENTER);crewLine.setTextColor(0xffc0cad8);
         crewLine.setMaxLines(1);crewLine.setEllipsize(android.text.TextUtils.TruncateAt.END);crewLine.setPadding(0,dp(8),0,0);
         crewLine.setVisibility(View.GONE);info.addView(synopsis);info.addView(facts);info.addView(cast);info.addView(crewLine);cast.setVisibility(View.GONE);
-        heroFrame.setFocusable(true);heroFrame.setFocusableInTouchMode(true);heroFrame.setContentDescription("影片详情");
+        heroFrame.setFocusable(mobile);heroFrame.setFocusableInTouchMode(mobile);heroFrame.setContentDescription("影片详情");
         controls=new ClippedControls(activity);controls.setOrientation(LinearLayout.VERTICAL);
         controls.setPadding(dp(mobile?20:44),0,dp(mobile?20:44),dp(36));controls.setBackgroundColor(Color.TRANSPARENT);
         navigation=new TvDetailNavigation(scroll,page,controls,heroFrame);
@@ -176,6 +177,7 @@ final class TvDetailPage implements DetailPage {
         libraryLayout=new LibraryDetailLayout(this);
         originalCallback=activity.getWindow().getCallback();
         callback=(Window.Callback)java.lang.reflect.Proxy.newProxyInstance(Window.Callback.class.getClassLoader(),new Class<?>[]{Window.Callback.class},(proxy,method,args)->{
+            if(!mobile&&method.getName().equals("dispatchTouchEvent")&&((MotionEvent)args[0]).getActionMasked()==MotionEvent.ACTION_DOWN)initialPlayFocus=false;
             if(method.getName().equals("dispatchKeyEvent")&&key((KeyEvent)args[0]))return true;
             try{return method.invoke(originalCallback,args);}catch(java.lang.reflect.InvocationTargetException failure){throw failure.getCause();}
         });
@@ -275,8 +277,11 @@ final class TvDetailPage implements DetailPage {
         else playButton.idle(preferred==null?"暂无可播放剧集":"播放");
     }
     void suspend(){hero.setActive(false);nativeEpisodes.dismiss();if(mobileSources!=null)mobileSources.dismiss();sitePicker.dismiss();if(personPopup!=null)personPopup.close();personPopup=null;if(matchPopup!=null)matchPopup.dismiss();matchPopup=null;}
-    private boolean beforeDraw(){if(!mounted)return true;if(content.getWidth()!=themeWidth||content.getHeight()!=themeHeight)ThemeLayout.apply(this);libraryLayout.sync();loadingState();return true;}
+    private boolean beforeDraw(){if(!mounted)return true;if(content.getWidth()!=themeWidth||content.getHeight()!=themeHeight)ThemeLayout.apply(this);libraryLayout.sync();loadingState();
+        if(initialPlayFocus&&!playButton.isFocused()&&playButton.isShown()&&playButton.getWidth()>0&&playButton.getHeight()>0)navigation.focusPrimary();
+        return true;}
     private boolean key(KeyEvent event){
+        if(!mobile&&initialPlayFocus&&event.getAction()==KeyEvent.ACTION_DOWN){if(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_CENTER||event.getKeyCode()==KeyEvent.KEYCODE_ENTER)navigation.focusPrimary();initialPlayFocus=false;}
         if(nativeEpisodes.active()&&event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)nativeEpisodes.dismiss();return true;}
         if(episodeGroups!=null&&episodeGroups.key(event))return true;
         if(event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP&&!event.isCanceled()){if(sitePicker.showing()){if(mobile||!sitePicker.back())sitePicker.dismiss();}else if(personPopup!=null&&personPopup.showing())personPopup.handleBack();else activity.finish();}return true;}
@@ -286,6 +291,7 @@ final class TvDetailPage implements DetailPage {
             return false;
         }
         if(!mobile&&(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_UP||event.getKeyCode()==KeyEvent.KEYCODE_DPAD_DOWN)){
+            initialPlayFocus=false;
             View focus=activity.getCurrentFocus();if(focus!=null&&TvDetailNavigation.descendant(focus,reviews.list)&&reviews.canMoveVertically(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_DOWN))return false;
             if(event.getAction()==KeyEvent.ACTION_DOWN)navigation.move(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_DOWN);return true;
         }

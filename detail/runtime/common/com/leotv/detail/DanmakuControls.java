@@ -50,11 +50,17 @@ final class DanmakuControls implements AutoCloseable {
         ImageView lens=icon(root.getContext(),template,"搜索弹幕",()->DanmakuPlayback.openSearch(activity));
         int tint=title instanceof TextView?((TextView)title).getCurrentTextColor():Device.MOBILE?0xff202832:Color.WHITE;
         lens.setImageTintList(android.content.res.ColorStateList.valueOf(tint));
-        lens.setTag(MENU);row.addView(lens,new LinearLayout.LayoutParams(dp(root.getContext(),44),dp(root.getContext(),44)));
+        lens.setTag(MENU);lens.setId(View.generateViewId());lens.setFocusableInTouchMode(!Device.MOBILE);
+        row.addView(lens,!Device.MOBILE&&template!=null?NativeViews.copyLayout(template):new LinearLayout.LayoutParams(dp(root.getContext(),44),dp(root.getContext(),44)));
         Switch enabled=new Switch(root.getContext());enabled.setText("弹幕");enabled.setChecked(DanmakuSettings.show(activity));enabled.setFocusable(true);
         if(title instanceof TextView)enabled.setTextColor(((TextView)title).getTextColors());
         enabled.setOnCheckedChangeListener((button,checked)->{DanmakuSettings.toggle(activity,"danmaku_show",checked);session.syncDisplay();});
-        row.addView(enabled,new LinearLayout.LayoutParams(-2,dp(root.getContext(),44)));
+        if(!Device.MOBILE){
+            TextView label=new TextView(root.getContext());label.setText("弹幕");if(title instanceof TextView)label.setTextColor(((TextView)title).getTextColors());label.setGravity(android.view.Gravity.CENTER_VERTICAL);row.addView(label,new LinearLayout.LayoutParams(-2,-1));enabled.setText("");enabled.setId(View.generateViewId());enabled.setFocusableInTouchMode(true);
+            if(template!=null)enabled.setBackground(NativeViews.drawable(template.getBackground(),enabled));enabled.setPadding(dp(root.getContext(),4),0,dp(root.getContext(),4),0);
+            lens.setNextFocusRightId(enabled.getId());enabled.setNextFocusLeftId(lens.getId());if(template!=null){lens.setNextFocusLeftId(template.getId());template.setNextFocusRightId(lens.getId());}
+        }
+        row.addView(enabled,new LinearLayout.LayoutParams(-2,dp(root.getContext(),Device.MOBILE?44:32)));
     }
     static ImageView icon(Context context,View template,String description,Runnable action){
         ImageView view=template instanceof ImageView?(ImageView)NativeViews.copy(template,context):new ImageView(context);

@@ -18,13 +18,12 @@ $(function () {
                 status.text(result.message || (result.ok ? '已回填到电视' : '回填失败')).show();
                 if (result.ok) {
                     $('#leotv_input').val('');
-                    token = '';
-                } else button.prop('disabled', false);
+                }
             },
             error: function () {
                 status.text('连接失败，请检查手机与电视是否在同一网络').show();
-                button.prop('disabled', false);
-            }
+            },
+            complete: function () { button.prop('disabled', false); }
         });
     });
 });
