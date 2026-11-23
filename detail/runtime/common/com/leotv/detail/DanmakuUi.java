@@ -64,7 +64,7 @@ public final class DanmakuUi {
                 case 4:new DanmakuMatches(a).clear();android.widget.Toast.makeText(a,"匹配记忆已清除",0).show();break;
             }
             if(session!=null){if(index==1)session.loadChanged();else if(index==2||index==3)session.policyChanged();else session.syncDisplay();}settings(a,session);
-        });
+        },session!=null);
     }
     /** Same native black_70 tone as TV overlays; the mobile sheet stays white. */
     static int surface(Context context){
@@ -72,27 +72,32 @@ public final class DanmakuUi {
         int id=context.getResources().getIdentifier("black_70","color",context.getPackageName());
         return id==0?0xb3000000:context.getResources().getColor(id);
     }
-    private static void settingsActions(Activity activity,String title,String[] values,NativeDialogs.Choice listener){
+    private static void settingsActions(Activity activity,String title,String[] values,NativeDialogs.Choice listener,boolean playerStyle){
         try{
             Context context=NativeDialogs.context(NativeDialogs.builder(activity));int inset=dp(activity,16),foreground=Device.MOBILE?0xff202832:Color.WHITE;
             LinearLayout panel=new LinearLayout(context);panel.setOrientation(LinearLayout.VERTICAL);panel.setPadding(inset,inset/2,inset,inset/2);
-            GradientDrawable background=new GradientDrawable();background.setColor(surface(context));background.setCornerRadius(dp(activity,Device.MOBILE?18:12));panel.setBackground(background);
-            Dialog dialog=new Dialog(context);dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
+            if(playerStyle){GradientDrawable background=new GradientDrawable();background.setColor(surface(context));background.setCornerRadius(dp(activity,Device.MOBILE?18:12));panel.setBackground(background);}
+            Dialog dialog=playerStyle?new Dialog(context):NativeDialogs.panel(activity,title,panel,null);if(playerStyle)dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
+            int bodyHeight=playerStyle?0:Math.min(dp(activity,values.length*49),Math.round(activity.getResources().getDisplayMetrics().heightPixels*.60f));
+            TextView close=new TextView(context);
+            if(playerStyle){
             LinearLayout heading=new LinearLayout(context);heading.setGravity(Gravity.CENTER_VERTICAL);
             TextView label=new TextView(context);label.setText(title);label.setTextColor(foreground);label.setTextSize(16);label.setTypeface(android.graphics.Typeface.DEFAULT,android.graphics.Typeface.BOLD);
             heading.addView(label,new LinearLayout.LayoutParams(0,dp(activity,40),1));
-            TextView close=new TextView(context);close.setText(android.R.string.cancel);close.setTextColor(foreground);close.setTextSize(14);close.setGravity(Gravity.CENTER);close.setPadding(inset/2,0,inset/2,0);close.setFocusable(true);close.setClickable(true);close.setOnClickListener(v->dialog.dismiss());
-            int selector=context.getResources().getIdentifier("selector_item","drawable",context.getPackageName());if(selector!=0)close.setBackgroundResource(selector);
+            close.setText(android.R.string.cancel);close.setTextColor(foreground);close.setTextSize(14);close.setGravity(Gravity.CENTER);close.setPadding(inset/2,0,inset/2,0);close.setFocusable(true);close.setClickable(true);close.setOnClickListener(v->dialog.dismiss());
+            int closeSelector=context.getResources().getIdentifier("selector_item","drawable",context.getPackageName());if(closeSelector!=0)close.setBackgroundResource(closeSelector);
             heading.addView(close,new LinearLayout.LayoutParams(-2,dp(activity,40)));panel.addView(heading);
+            }
+            int selector=context.getResources().getIdentifier("selector_item","drawable",context.getPackageName());if(selector!=0)close.setBackgroundResource(selector);
             if(!Device.MOBILE){
-                android.widget.ScrollView scroll=new android.widget.ScrollView(context);LinearLayout rows=new LinearLayout(context);rows.setOrientation(LinearLayout.VERTICAL);scroll.addView(rows,new android.widget.ScrollView.LayoutParams(-1,-2));panel.addView(scroll,new LinearLayout.LayoutParams(-1,0,1));
+                android.widget.ScrollView scroll=new android.widget.ScrollView(context);LinearLayout rows=new LinearLayout(context);rows.setOrientation(LinearLayout.VERTICAL);scroll.addView(rows,new android.widget.ScrollView.LayoutParams(-1,-2));panel.addView(scroll,new LinearLayout.LayoutParams(-1,bodyHeight,playerStyle?1:0));
                 TextView nativeRow=NativeViews.text(NativeViews.layout(context,"adapter_danmaku"));int active=nativeRow==null?android.graphics.Color.YELLOW:nativeRow.getTextColors().getColorForState(new int[]{android.R.attr.state_enabled,android.R.attr.state_activated},foreground);
                 java.util.List<TextView> buttons=new java.util.ArrayList<>();close.setId(View.generateViewId());close.setFocusableInTouchMode(true);
                 for(int index=0;index<values.length;index++){int selected=index;TextView row=new TextView(context);row.setId(View.generateViewId());row.setText(values[index]);row.setTextSize(15);row.setTextColor(foreground);row.setGravity(Gravity.CENTER_VERTICAL);row.setSingleLine(true);row.setEllipsize(android.text.TextUtils.TruncateAt.END);row.setFocusable(true);row.setFocusableInTouchMode(true);row.setClickable(true);
                     if(selector!=0)row.setBackgroundResource(selector);row.setPadding(inset,0,inset,0);row.setOnFocusChangeListener((v,focus)->row.setTextColor(focus?active:foreground));row.setOnClickListener(v->{dialog.dismiss();listener.selected(selected);});rows.addView(row,new LinearLayout.LayoutParams(-1,dp(activity,48)));buttons.add(row);
                 }
-                for(int i=0;i<buttons.size();i++){TextView row=buttons.get(i);row.setNextFocusUpId(i==0?close.getId():buttons.get(i-1).getId());row.setNextFocusDownId(i+1==buttons.size()?row.getId():buttons.get(i+1).getId());}
-                if(!buttons.isEmpty()){close.setNextFocusDownId(buttons.get(0).getId());rows.post(()->buttons.get(0).requestFocus());}
+                for(int i=0;i<buttons.size();i++){TextView row=buttons.get(i);row.setNextFocusUpId(i==0?(playerStyle?close.getId():row.getId()):buttons.get(i-1).getId());row.setNextFocusDownId(i+1==buttons.size()?(playerStyle?row.getId():android.R.id.button2):buttons.get(i+1).getId());}
+                if(!buttons.isEmpty()){if(playerStyle)close.setNextFocusDownId(buttons.get(0).getId());rows.post(()->{buttons.get(0).requestFocus();if(!playerStyle){View cancel=dialog.findViewById(android.R.id.button2);if(cancel!=null)cancel.setNextFocusUpId(buttons.get(buttons.size()-1).getId());}});}
             }else{
             ListView list=new ListView(context);list.setChoiceMode(ListView.CHOICE_MODE_NONE);
             list.setDivider(new android.graphics.drawable.ColorDrawable(Device.MOBILE?0x14202832:0x26ffffff));list.setDividerHeight(dp(activity,1));
@@ -102,10 +107,10 @@ public final class DanmakuUi {
                     if(selector!=0)row.setBackgroundResource(selector);return row;
                 }
             });
-            list.setOnItemClickListener((parent,view,index,id)->{dialog.dismiss();listener.selected(index);});panel.addView(list,new LinearLayout.LayoutParams(-1,0,1));
+            list.setOnItemClickListener((parent,view,index,id)->{dialog.dismiss();listener.selected(index);});panel.addView(list,new LinearLayout.LayoutParams(-1,bodyHeight,playerStyle?1:0));
             }
-            dialog.setContentView(panel,new ViewGroup.LayoutParams(-1,-1));dialog.show();
-            if(dialog.getWindow()!=null){
+            if(playerStyle)dialog.setContentView(panel,new ViewGroup.LayoutParams(-1,-1));dialog.show();
+            if(playerStyle&&dialog.getWindow()!=null){
                 dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                 int available=activity.getResources().getDisplayMetrics().widthPixels;
                 int width=Math.min(available-dp(activity,24),dp(activity,Device.MOBILE?560:760));
