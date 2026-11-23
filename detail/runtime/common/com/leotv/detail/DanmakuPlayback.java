@@ -133,10 +133,10 @@ public final class DanmakuPlayback {
             long token=generation;String expectedApi=api,key=identity.key(),episode=identity.episode;DanmakuApi.Owner request=owner;status="正在匹配弹幕…";
             task=worker.submit(()->{
                 List<DanmakuSource> found=new ArrayList<>();String used="";
-                for(String title:titles){if(request.canceled)return;try{found=DanmakuApi.search(expectedApi,title,episode,request);if(!found.isEmpty()){used=title;break;}}catch(Exception unavailable){if(request.canceled)return;}}
+                for(String title:titles){if(request.canceled)return;try{found=DanmakuApi.automatic(expectedApi,title,episode,request);if(DanmakuTitle.matchEpisode(found,title,episode)!=null){used=title;break;}}catch(Exception unavailable){if(request.canceled)return;}}
                 List<DanmakuSource> results=found;String title=used;
                 main.post(()->{if(!owns(token,expectedApi,key))return;apiSources.clear();apiSources.addAll(results);keyword=title;
-                    DanmakuSource match=autoMatch(results,episode);if(match==null){status="未匹配到弹幕，可手动搜索";return;}choose(match,title,false);});
+                    DanmakuSource match=DanmakuTitle.matchEpisode(results,title,episode);if(match==null){status="未找到当前剧集的弹幕，可手动搜索";return;}choose(match,title,false);});
             });
         }
         void search(String title,Runnable updated){
@@ -228,9 +228,4 @@ public final class DanmakuPlayback {
     static String string(Object target,String method,String fallback){Object value=invoke(target,method);return value==null||value.toString().isEmpty()?fallback:value.toString();}
     private static String value(String s){return s==null?"":s;}
     private static void addTitle(List<String> titles,String title){if(title!=null&&!title.trim().isEmpty()&&!titles.contains(title.trim()))titles.add(title.trim());}
-    private static DanmakuSource autoMatch(List<DanmakuSource> values,String episode){
-        int wanted=DanmakuTitle.parseEpisode(episode);boolean known=false;
-        for(DanmakuSource source:values){int actual=DanmakuTitle.getEpisode(source);if(actual!=DanmakuTitle.EPISODE_UNKNOWN)known=true;if(wanted!=DanmakuTitle.EPISODE_UNKNOWN&&wanted==actual)return source;}
-        return values.isEmpty()||known&&wanted!=DanmakuTitle.EPISODE_UNKNOWN?null:values.get(0);
-    }
 }

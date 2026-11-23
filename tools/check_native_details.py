@@ -154,7 +154,8 @@ def check_contract(root, variant, project=None):
     if mobile:
         contracts['w3/n'] = (['getRoot()Landroid/view/View;'], ['u:Ljava/lang/Object;'])
         contracts['w3/r'] = ([], ['p:Landroid/view/View;'])
-        contracts['R3/P'] = (['w0()V'], ['A0:Lv3/a;'])
+        contracts['R3/p'] = (['w0()V'], ['A0:Lw3/k;'])
+        contracts['w3/k'] = (['getRoot()Landroid/view/View;'], [])
     else:
         contracts['t3/p'] = (['getRoot()Landroid/view/View;'], ['p:Lcom/fongmi/android/tv/ui/custom/CustomUpDownView;'])
         contracts['O3/k'] = ([], ['A0:Lt3/j;'])
@@ -230,6 +231,9 @@ def check_contract(root, variant, project=None):
     for name, digest in danmaku_lock.items():
         if hashlib.sha256((project / name).read_bytes()).hexdigest() != digest:
             raise ValueError('Native danmaku/QR source differs from its lock: ' + variant + ':' + name)
+    native_menu=text('R3/p' if mobile else 'O3/k')
+    if ('LF3/f;->s:Ljava/util/List;' if mobile else 'LC3/e;->s:Ljava/util/List;') not in native_menu:
+        raise ValueError('Native Danmaku menu must use the player Danmaku source list: ' + variant)
     # Cached Flag activation is private in every ordinary variant; there is no
     # boolean setter (setActivated(Flag) also replaces episode references).
     if not re.search(r'(?m)^\.field private activated:Z$', text(BEANS + 'Flag')):

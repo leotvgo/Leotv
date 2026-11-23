@@ -9,6 +9,8 @@ import org.json.JSONTokener;
 
 /** GPL-3.0 adaptation of WebHTV Danmaku's response envelopes and source grouping. */
 final class DanmakuSource {
+    private static final java.util.regex.Pattern FROM=java.util.regex.Pattern.compile("(?i)(?:from|来源)\\s*[:：]?\\s*([^|,，;；]+)");
+    private static final java.util.regex.Pattern PREFIX=java.util.regex.Pattern.compile("^[【\\[]([^】\\]]{1,18})[】\\]]");
     final String name, url, source, apiSource;
     final String seriesTitle,episodeTitle,seriesId;
     final int episodeNumber;
@@ -23,13 +25,14 @@ final class DanmakuSource {
     String getName(){return name.isEmpty()?url:name;}
     String getUrl(){return url;}
     String getSourceName(){
-        if(!source.isEmpty()&&!apiSource.isEmpty()&&!source.equals(apiSource))return apiSource+" · "+source;
-        if(!source.isEmpty())return source;if(!apiSource.isEmpty())return apiSource;
-        String text=getName();java.util.regex.Matcher m=java.util.regex.Pattern.compile("(?i)(?:from|来源)\\s*[:：]?\\s*([^|,，;；]+)").matcher(text);
-        if(m.find())return m.group(1).trim();
-        m=java.util.regex.Pattern.compile("^[【\\[]([^】\\]]{1,18})[】\\]]").matcher(text);
-        return m.find()?m.group(1):"默认";
+        String provider=provider(source),api=provider(apiSource);
+        if(provider.isEmpty()){java.util.regex.Matcher from=FROM.matcher(getName());
+            if(from.find())provider=provider(from.group(1));
+            else{java.util.regex.Matcher prefix=PREFIX.matcher(getName());if(prefix.find())provider=prefix.group(1);}}
+        if(!provider.isEmpty()&&!api.isEmpty()&&!provider.equals(api))return api+" · "+provider;
+        return !provider.isEmpty()?provider:!api.isEmpty()?api:"默认";
     }
+    private static String provider(String value){return clean(value).split("\\s+[-－—–]\\s+|[|｜]",2)[0].trim();}
     JSONObject json(){JSONObject value=new JSONObject();try{value.put("name",name).put("url",url).put("source",source).put("apiSourceName",apiSource).put("animeTitle",seriesTitle).put("episodeTitle",episodeTitle).put("animeId",seriesId).put("episodeNumber",episodeNumber);}catch(Exception ignored){}return value;}
     static List<DanmakuSource> parse(String body,String base)throws Exception{
         List<DanmakuSource> result=new ArrayList<>();String text=clean(body);

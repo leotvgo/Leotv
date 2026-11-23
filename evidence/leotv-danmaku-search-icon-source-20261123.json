@@ -1,0 +1,9 @@
+{
+  "resource": "drawable/ic_control_danmu_on",
+  "apk_path": "res/XM.xml",
+  "xml_sha256": "0e1051ed7e3ec6e87c9951ba88518c7620670a7d107c5bda639a2be55c047264",
+  "used_path_sha256": "267b2e956001b90d5d62af46d64031ef2b26d0398add622279c5fe2aa31c012e",
+  "badge": "search lens at lower right",
+  "original_check_path_not_used": true,
+  "java": "detail/runtime/common/com/leotv/detail/DanmakuSearchIcon.java"
+}

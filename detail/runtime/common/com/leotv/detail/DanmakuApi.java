@@ -65,6 +65,17 @@ final class DanmakuApi {
         // Generic/template APIs retain their original protocol and receive the current episode.
         return search(api,name,episode,owner);
     }
+    static List<DanmakuSource> automatic(String api,String name,String episode,Owner owner)throws Exception{
+        List<DanmakuSource> found=browse(api,name,episode,owner);
+        if(DanmakuTitle.matchEpisode(found,name,episode)!=null)return found;
+        List<DanmakuSource> catalogs=new java.util.ArrayList<>();for(DanmakuSource item:found)if(item.isCatalog())catalogs.add(item);
+        DanmakuTitle.sortCandidates(catalogs,name);
+        for(DanmakuSource catalog:catalogs){if(owner.canceled)throw new InterruptedException();
+            try{List<DanmakuSource> values=episodes(api,catalog,owner);found.remove(catalog);found.addAll(values);
+                if(DanmakuTitle.matchEpisode(found,name,episode)!=null)break;
+            }catch(Exception unavailable){if(owner.canceled||Thread.currentThread().isInterrupted())throw unavailable;}}
+        return found;
+    }
     static List<DanmakuSource> episodes(String api,DanmakuSource series,Owner owner)throws Exception{
         String root=catalogRoot(api);if(root.isEmpty()||series.seriesId.isEmpty())return java.util.Collections.emptyList();
         String endpoint=Uri.parse(root).buildUpon().appendPath("api").appendPath("v2").appendPath("bangumi").appendPath(series.seriesId).build().toString();

@@ -18,26 +18,14 @@ import android.widget.TextView;
 final class DanmakuControls implements AutoCloseable {
     private static final String SEARCH="leotv_danmaku_search_action",SIDE="leotv_danmaku_side_search",MENU="leotv_danmaku_menu_actions";
     final DanmakuPlayback.Session session;
-    View search,side;
+    View side;
     DanmakuControls(DanmakuPlayback.Session session){this.session=session;}
     void install(){
         Activity activity=session.activity();if(activity==null)return;
         Object binding=DanmakuPlayback.field(activity,Device.MOBILE?"M":"N");
         Object controls=DanmakuPlayback.field(binding,Device.MOBILE?"q":"s");
-        Object actions=Device.MOBILE?DanmakuPlayback.field(controls,"u"):controls;
-        Object value=DanmakuPlayback.field(actions,"p");
-        if(!(value instanceof TextView)||!(((View)value).getParent() instanceof LinearLayout))return;
-        TextView original=(TextView)value;LinearLayout parent=(LinearLayout)original.getParent();
-        if(search!=null&&search.getParent()!=parent){remove(search);search=null;}
-        View found=parent.findViewWithTag(SEARCH);
-        if(found==null){
-            TextView button=(TextView)NativeViews.copy(original,original.getContext());button.setText("弹幕搜索");button.setSingleLine(true);button.setId(View.generateViewId());button.setTag(SEARCH);button.setFocusable(!Device.MOBILE);button.setClickable(true);
-            button.setOnClickListener(v->DanmakuPlayback.openSearch(activity));
-            LinearLayout.LayoutParams params=new LinearLayout.LayoutParams((LinearLayout.LayoutParams)original.getLayoutParams());params.width=-2;params.weight=0;
-            parent.addView(button,parent.indexOfChild(original)+1,params);found=button;
-        }
-        search=found;search.setVisibility(View.VISIBLE);
-        if(Device.MOBILE){Object root=DanmakuPlayback.invoke(controls,"getRoot");if(root instanceof ViewGroup)sidebar(activity,(ViewGroup)root);}
+        Object root=DanmakuPlayback.invoke(controls,"getRoot");
+        if(root instanceof ViewGroup){remove(((ViewGroup)root).findViewWithTag(SEARCH));if(Device.MOBILE)sidebar(activity,(ViewGroup)root);}
     }
     private void sidebar(Activity activity,ViewGroup root){
         int id=activity.getResources().getIdentifier("danmuSetting","id",activity.getPackageName());View setting=id==0?null:root.findViewById(id);
@@ -47,6 +35,7 @@ final class DanmakuControls implements AutoCloseable {
         if(side!=null&&side.getParent()!=column){remove(side);side=null;}
         View found=column.findViewWithTag(SIDE);if(found==null){
             ImageView lens=icon(setting.getContext(),setting,"搜索弹幕",()->DanmakuPlayback.openSearch(activity));lens.setTag(SIDE);lens.setId(View.generateViewId());
+            lens.setImageDrawable(new DanmakuSearchIcon(setting.getContext()));
             column.addView(lens,column.indexOfChild(setting)+1,NativeViews.copyLayout(setting));found=lens;
         }
         side=found;side.setVisibility(View.VISIBLE);
@@ -71,7 +60,7 @@ final class DanmakuControls implements AutoCloseable {
     }
     static int dp(Context context,int value){return Math.round(value*context.getResources().getDisplayMetrics().density);}
     private static void remove(View view){if(view!=null&&view.getParent() instanceof ViewGroup)((ViewGroup)view.getParent()).removeView(view);}
-    @Override public void close(){remove(search);remove(side);search=side=null;}
+    @Override public void close(){remove(side);side=null;}
     private static final class Lens extends Drawable {
         final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
         Lens(){paint.setColor(Color.WHITE);paint.setStyle(Paint.Style.STROKE);}

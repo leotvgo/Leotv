@@ -59,8 +59,22 @@ public final class DanmakuTitle {
 
     /** 解析弹幕项的集数。 */
     public static int getEpisode(DanmakuSource item) {
-        if(item.episodeNumber!=EPISODE_UNKNOWN)return item.episodeNumber;
-        int number=parseEpisode(item.episodeTitle);return number==EPISODE_UNKNOWN?parseEpisode(item.getName()):number;
+        int number=parseEpisode(item.episodeTitle);
+        if(number!=EPISODE_UNKNOWN)return number;
+        number=parseEpisode(item.getName());
+        return number!=EPISODE_UNKNOWN?number:item.episodeNumber;
+    }
+    static DanmakuSource matchEpisode(List<DanmakuSource> values,String keyword,String episode){
+        int wanted=parseEpisode(episode);boolean known=false;DanmakuSource first=null,best=null;double score=-1;
+        String query=normalizeSearchText(keyword);
+        for(DanmakuSource item:values){if(item.isCatalog()||item.url.isEmpty())continue;if(first==null)first=item;
+            int actual=getEpisode(item);known|=actual!=EPISODE_UNKNOWN;
+            if(wanted!=EPISODE_UNKNOWN&&actual==wanted){double value=matchScore(titleKey(item),query);if(best==null||value>score){best=item;score=value;}}}
+        if(best!=null)return best;
+        return known&&wanted!=EPISODE_UNKNOWN?null:first;
+    }
+    static void sortCandidates(List<DanmakuSource> values,String keyword){
+        String query=normalizeSearchText(keyword);Collections.sort(values,(left,right)->Double.compare(matchScore(titleKey(right),query),matchScore(titleKey(left),query)));
     }
 
     /**

@@ -1,0 +1,102 @@
+{
+  "base_revision": "628ae23f",
+  "variants": [
+    {
+      "variant": "tv-v7a",
+      "methods": [
+        {
+          "path": "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali",
+          "method": "K()V",
+          "original_semantics_preserved": true,
+          "sha256": "678adeb11871a19b638fc11baead53ca1d974ec5617d4c97e4d8d1cc21884d72"
+        },
+        {
+          "path": "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali",
+          "method": "dispatchKeyEvent(Landroid/view/KeyEvent;)Z",
+          "original_semantics_preserved": true,
+          "sha256": "58bdfbe6dc504528485149b4962669fc4223ae04f8473a223aba881c44e49a0c"
+        },
+        {
+          "path": "smali/com/fongmi/android/tv/ui/activity/M.smali",
+          "method": "a()V",
+          "original_semantics_preserved": true,
+          "sha256": "a294bc43669f9637bd2f32c4d9d4b50e23b6be278dcfd7486f8247ee003d55b9"
+        },
+        {
+          "path": "smali/com/fongmi/android/tv/ui/activity/M.smali",
+          "method": "c()V",
+          "original_semantics_preserved": true,
+          "sha256": "3dcabf6dac27cf617cbbbe25df539dc8e21f7750dde06e640142fe4157a12a4d"
+        },
+        {
+          "path": "smali/C3/e.smali",
+          "method": "i0(Lcom/fongmi/android/tv/bean/Danmaku;)V",
+          "original_semantics_preserved": true,
+          "sha256": "7b9059e22feddc2894591ab6b36f4677816280a9eede9ee1a2a0b6bafe876418"
+        }
+      ],
+      "classes_exact": [
+        "smali/com/fongmi/android/tv/ui/activity/N.smali",
+        "smali/com/fongmi/android/tv/ui/activity/L.smali",
+        "smali/com/fongmi/android/tv/ui/custom/CustomUpDownView.smali",
+        "smali/E3/d.smali"
+      ],
+      "native_menu_methods_preserved_with_additive_hook": true,
+      "delay_step_seconds": 1,
+      "delay_limit_seconds": [
+        -120,
+        120
+      ],
+      "delay_apply_debounce_ms": 1500
+    },
+    {
+      "variant": "tv-v8a",
+      "methods": [
+        {
+          "path": "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali",
+          "method": "K()V",
+          "original_semantics_preserved": true,
+          "sha256": "678adeb11871a19b638fc11baead53ca1d974ec5617d4c97e4d8d1cc21884d72"
+        },
+        {
+          "path": "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali",
+          "method": "dispatchKeyEvent(Landroid/view/KeyEvent;)Z",
+          "original_semantics_preserved": true,
+          "sha256": "58bdfbe6dc504528485149b4962669fc4223ae04f8473a223aba881c44e49a0c"
+        },
+        {
+          "path": "smali/com/fongmi/android/tv/ui/activity/M.smali",
+          "method": "a()V",
+          "original_semantics_preserved": true,
+          "sha256": "a294bc43669f9637bd2f32c4d9d4b50e23b6be278dcfd7486f8247ee003d55b9"
+        },
+        {
+          "path": "smali/com/fongmi/android/tv/ui/activity/M.smali",
+          "method": "c()V",
+          "original_semantics_preserved": true,
+          "sha256": "3dcabf6dac27cf617cbbbe25df539dc8e21f7750dde06e640142fe4157a12a4d"
+        },
+        {
+          "path": "smali/C3/e.smali",
+          "method": "i0(Lcom/fongmi/android/tv/bean/Danmaku;)V",
+          "original_semantics_preserved": true,
+          "sha256": "7b9059e22feddc2894591ab6b36f4677816280a9eede9ee1a2a0b6bafe876418"
+        }
+      ],
+      "classes_exact": [
+        "smali/com/fongmi/android/tv/ui/activity/N.smali",
+        "smali/com/fongmi/android/tv/ui/activity/L.smali",
+        "smali/com/fongmi/android/tv/ui/custom/CustomUpDownView.smali",
+        "smali/E3/d.smali"
+      ],
+      "native_menu_methods_preserved_with_additive_hook": true,
+      "delay_step_seconds": 1,
+      "delay_limit_seconds": [
+        -120,
+        120
+      ],
+      "delay_apply_debounce_ms": 1500
+    }
+  ],
+  "device_validation": false
+}

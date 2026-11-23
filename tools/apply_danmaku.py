@@ -15,7 +15,7 @@ def apply(project, root, variant):
     config = 'smali/t3.1/i.smali' if mobile else 'smali/q3.1/i.smali'
     paths = [video, result, player, config]
     if mobile:
-        paths += ['smali/S3/x.smali','smali/R3/P.smali']
+        paths += ['smali/S3/x.smali','smali/R3/p.1.smali']
     else:
         paths += ['smali/L3/f.smali', 'smali/com/fongmi/android/tv/ui/activity/SettingDanmuActivity.smali','smali/O3/k.smali']
     for name in paths:
@@ -123,7 +123,7 @@ def apply(project, root, variant):
     :leotv_qr_original
 ''')
             text = replace_method(text, signature, qr)
-        elif name in ['smali/R3/P.smali','smali/O3/k.smali']:
+        elif name in ['smali/R3/p.1.smali','smali/O3/k.smali']:
             def menu(body):
                 position=body.rfind('    return-void')
                 if position<0:raise ValueError('Native Danmaku menu has no normal return.')

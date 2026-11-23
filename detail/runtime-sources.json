@@ -43,6 +43,7 @@
       "detail/runtime/common/com/leotv/detail/DanmakuMatches.java",
       "detail/runtime/common/com/leotv/detail/DanmakuPlayback.java",
       "detail/runtime/common/com/leotv/detail/DanmakuSearchDialog.java",
+      "detail/runtime/common/com/leotv/detail/DanmakuSearchIcon.java",
       "detail/runtime/common/com/leotv/detail/DanmakuSettings.java",
       "detail/runtime/common/com/leotv/detail/DanmakuSource.java",
       "detail/runtime/common/com/leotv/detail/DanmakuTitle.java",
