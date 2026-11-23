@@ -15,3 +15,7 @@
 本次新增源码变化仅为已有 `CspHomePage`、`CspHomePage$Shelf`、`CspHomePage$TvHomeScroll` 的跨行选择和废弃状态清理，无新增生产类或资源。前次已提交的首次焦点、弹幕设置 smali 挂接与 stable ABI 声明一起交付；原宿主其余代码、数据库、JNI/反射、回移层、原 ZIP/native 资产和双 ABI 门禁保留。
 
 版本保持 stable 5.2.6 / 626，使用 R8 8.8.34 release/full、min-api 23 与 APK 专用固定签名，输出手机/TV、32/64 位四套 APK。旧 625 已保留在撤回内部草稿中。按用户既有要求仅核对源码门禁并直接 GitHub 构建，`run_validation_tests=false`，不运行本地打包或额外回归。遥控视觉路径和安装兼容性由用户真机验收。
+
+## 最终交付
+
+源码 `73b97bcb04790f535220c3081c91cb7b38f5e067` 的[构建 45192857101](https://github.com/leotvgo/Leotv/actions/runs/45192857101)和[自动发布 45193859385](https://github.com/leotvgo/Leotv/actions/runs/45193859385)均成功。[正式版 5.2.6](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.6)含四套固定签名 APK 和八份签名/审计报告，Release 源码指向本次修复，非预发行。发布后已恢复私有，GitHub API 核对 `private=true / visibility=private`；对应 Release ID、资产摘要和恢复结果保存在 `evidence/leotv-5.2.6-626-build-dispatch-20261123.json`。
