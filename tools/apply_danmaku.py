@@ -162,6 +162,12 @@ def apply(project, root, variant):
 
     invoke-static {p0, v0}, Lcom/leotv/detail/DanmakuUi;->attach(Landroid/app/Activity;Landroid/view/View;)V''')
             text = replace_method(text, 'K()V', settings)
+            def first_focus(body):
+                marker='    invoke-virtual {v0}, Landroid/view/View;->requestFocus()Z'
+                if body.count(marker)!=1:
+                    raise ValueError('Expected one native Danmaku settings initial focus.')
+                return body.replace(marker,'    invoke-static {p0, v0}, Lcom/leotv/detail/DanmakuUi;->focusApi(Landroid/app/Activity;Landroid/view/View;)V')
+            text = replace_method(text, 'L()V', first_focus)
         path.write_text(text)
         descriptors.add(descriptor)
         changes[name] = {'before_sha256': hashlib.sha256(before.encode()).hexdigest(), 'after_sha256': hashlib.sha256(text.encode()).hexdigest()}

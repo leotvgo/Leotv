@@ -1123,7 +1123,11 @@ public final class GlobalChrome {
             if(current!=installed){
                 delegate=current;
                 installed=(Window.Callback)java.lang.reflect.Proxy.newProxyInstance(Window.Callback.class.getClassLoader(),new Class<?>[]{Window.Callback.class},(proxy,method,args)->{
-                    if(method.getName().equals("dispatchKeyEvent")&&(handle((android.view.KeyEvent)args[0])||owner.newHome.handleKey((android.view.KeyEvent)args[0])))return true;
+                    if(method.getName().equals("dispatchKeyEvent")){
+                        android.view.KeyEvent event=(android.view.KeyEvent)args[0];if(event.getAction()==android.view.KeyEvent.ACTION_DOWN)owner.newHome.userInput();
+                        if(handle(event)||owner.newHome.handleKey(event))return true;
+                    }
+                    if(method.getName().equals("dispatchTouchEvent")&&((android.view.MotionEvent)args[0]).getActionMasked()==android.view.MotionEvent.ACTION_DOWN)owner.newHome.userInput();
                     try{return method.invoke(current,args);}catch(java.lang.reflect.InvocationTargetException error){throw error.getCause();}
                 });window.setCallback(installed);
             }

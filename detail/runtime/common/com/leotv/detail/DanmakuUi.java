@@ -46,13 +46,17 @@ public final class DanmakuUi {
         LinearLayout parent=(LinearLayout)template.getParent();View row=NativeViews.copy(template,activity);
         java.util.List<TextView> texts=new ArrayList<>();collect(row,texts);if(texts.isEmpty())return;
         texts.get(0).setText("弹幕API");if(texts.size()>1)texts.get(texts.size()-1).setText(DanmakuSettings.api(activity).isEmpty()?"未配置":"已配置");
-        row.setTag("leotv_danmaku_api_settings");row.setFocusable(!Device.MOBILE);row.setClickable(true);row.setOnClickListener(view->settings(activity));
+        row.setTag("leotv_danmaku_api_settings");row.setFocusable(!Device.MOBILE);row.setFocusableInTouchMode(!Device.MOBILE);row.setClickable(true);row.setOnClickListener(view->settings(activity));
         LinearLayout.LayoutParams params=new LinearLayout.LayoutParams((LinearLayout.LayoutParams)template.getLayoutParams());
         if(!Device.MOBILE){
             params.topMargin=0;
             for(int i=0;i<parent.getChildCount();i++){ViewGroup.LayoutParams sibling=parent.getChildAt(i).getLayoutParams();if(sibling instanceof LinearLayout.LayoutParams&&((LinearLayout.LayoutParams)sibling).topMargin>0){LinearLayout.LayoutParams original=(LinearLayout.LayoutParams)template.getLayoutParams();original.topMargin=((LinearLayout.LayoutParams)sibling).topMargin;template.setLayoutParams(original);break;}}
         }
         parent.addView(row,Device.MOBILE?parent.indexOfChild(template)+1:0,params);
+    }
+    public static void focusApi(Activity activity,View original){
+        View root=activity.findViewById(android.R.id.content);View api=root==null?null:root.findViewWithTag("leotv_danmaku_api_settings");
+        if(api!=null&&api.requestFocus())return;if(original!=null)original.requestFocus();
     }
     private static void collect(View root,List<TextView> out){if(root instanceof TextView)out.add((TextView)root);if(root instanceof ViewGroup)for(int i=0;i<((ViewGroup)root).getChildCount();i++)collect(((ViewGroup)root).getChildAt(i),out);}
     private static void settings(Activity a,DanmakuPlayback.Session session){

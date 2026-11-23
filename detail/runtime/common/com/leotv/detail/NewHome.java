@@ -38,7 +38,7 @@ public final class NewHome implements AutoCloseable {
         if(!vod()){hide();return false;}
         if(page!=null){
             if(categoryMode){page.setVisibility(View.GONE);nativeUi.restoreToolbar();if(guardRecommendation(selectedCategory)){nativeRoot.setVisibility(View.INVISIBLE);nativeUi.mountRecommendation(selectedCategory);return true;}String selected=nativeUi.currentCategoryId();if(!selected.isEmpty()&&selectedCategory!=null&&!selected.equals(selectedCategory.id))for(CspHomeData.Category option:categories)if(!option.recommended&&option.id.equals(selected)){nativeUi.restoreCategory();selectedCategory=option;break;}if(selectedCategory!=null)NativeCategoryPaging.enter(activity,current.site.key,selectedCategory.id);if(nativeUi.categoryHeader==null&&!nativeUi.category(selectedCategory)){categoryMode=false;NativeCategoryPaging.leave(activity);}else {restoreNative();return false;}}
-            nativeUi.restoreCategory();nativeRoot.setVisibility(View.INVISIBLE);page.setVisibility(View.VISIBLE);nativeUi.borrow(page);nativeUi.layoutToolbar(page);nativeUi.homeAction(page.shortcut,page.scroll.getScrollY()>page.dp(120));page.active(true);
+            nativeUi.restoreCategory();nativeRoot.setVisibility(View.INVISIBLE);page.setVisibility(View.VISIBLE);nativeUi.borrow(page);nativeUi.layoutToolbar(page);nativeUi.homeAction(page.shortcut,page.scroll.getScrollY()>page.dp(120));page.active(true);page.restoreInitialFocus();
             BackdropSettings.Options options=BackdropSettings.read(activity);if(heroSource!=null&&(heroOptions==null||!heroOptions.same(options)))matchHero(heroSource);
             return true;
         }
@@ -88,6 +88,7 @@ public final class NewHome implements AutoCloseable {
     void publishBackground(){if(page!=null&&page.hero.hasArtwork())com.leotv.ui.GlobalChrome.publishHomeBackground(activity,page.backdrop.colour);}
     boolean tvBack;int tvDirection=-1;
     public boolean shown(){return !closed&&running&&!categoryMode&&page!=null&&page.isShown();}
+    public void userInput(){if(!phone&&shown())page.initialFocusPending=false;}
     public boolean canWakeShortcuts(){return shown()&&page.leftContentEdge(activity.getCurrentFocus());}
     public void openShortcut(String action){if(!phone&&!closed)nativeUi.tvAction(action);}
     public boolean focusContentAfterShortcut(View previous){if(!shown())return false;if(previous!=null&&previous.isShown()&&previous.isEnabled()&&NativeCspUi.descendant(previous,page.scroll)&&previous.requestFocus())return true;return page.focusContent();}

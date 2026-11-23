@@ -4,10 +4,10 @@
 普通 TV 的完整 Java 阅读视图，以及第一组能够独立编译的 Java 恢复代码。
 完整 Java/Gradle 应用工程仍在恢复；不能将这里的 Java 阅读视图直接当作已可编译的原始工程。
 
-本轮正式版本为 **5.2.6 / 625**，独立安装包名 **com.leotv.app**，按用户要求直接 R8 release/full 混淆、固定签名正式发布，支持覆盖升级。
+本轮正式版本为 **5.2.6 / 626**，独立安装包名 **com.leotv.app**，按用户要求保持版本号、撤回旧 625 后重新 R8 release/full 混淆、固定签名正式发布，支持覆盖升级。
 正式构建/自动发布由 GitHub 执行：[Leotv 5.2.6](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.6) 在发布完成后提供 TV/手机、32/64 位四套 APK。
 
-当前源码为 **5.2.6 / 625**：保留 5.2.5 的弹幕入口、原生站源开关、新主页返回和播放反馈修复，新增 TV 详情页返回回顶并聚焦播放按钮；到顶且播放按钮持有焦点后再返回才退出，弹窗仍优先处理返回。详见[TV 详情返回回顶](docs/LEOTV-5.2.6-TV-DETAIL-BACK-TO-PLAY-20261123.md)及[5.2.5 修复范围](docs/LEOTV-5.2.5-NATIVE-HEADER-AND-TV-ROWS-20261123.md)。
+当前源码为 **5.2.6 / 626**：TV 新首页首次默认聚焦轮播，无轮播时聚焦首张实际内容卡片；弹幕设置首次聚焦置顶的“弹幕API”。继续保留详情返回回顶、新主页返回/分类复位和 5.2.5 修复。详见[首次焦点与同版本重新交付](docs/LEOTV-5.2.6-TV-INITIAL-FOCUS-REPLACEMENT-20261123.md)、[TV 详情返回回顶](docs/LEOTV-5.2.6-TV-DETAIL-BACK-TO-PLAY-20261123.md)及[5.2.5 修复范围](docs/LEOTV-5.2.5-NATIVE-HEADER-AND-TV-ROWS-20261123.md)。
 上一版 5.3.0-preview.10 的[四套固定签名测试 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0-preview.10-build-45175234246) 已发布，构建/自动发布成功，额外回归关闭；临时公开构建后已恢复私有，实际焦点与样式待真机验收。
 启动图标、TV 横幅、默认线路动图、关于页与原生透明上下栏已接入专用构建；5.1.26 停止上下栏实时回放和模糊。
 独立原生详情页、个性设置内的本端详情主题/TMDB 配置，以及手机按视频尺寸自动旋转已接入。

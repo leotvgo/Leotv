@@ -1,0 +1,89 @@
+{
+  "repository": "leotvgo/Leotv",
+  "original_release_id": 455478238,
+  "original_tag": "leotv-5.2.6",
+  "source_commit": "aa5e8171f7cd02169d5aa846fd0e4741aef2ba7e",
+  "build_run_id": 45186036557,
+  "archive_tag": "leotv-5.2.6-withdrawn-build-45186036557",
+  "version_name": "5.2.6",
+  "version_code": 625,
+  "assets": [
+    {
+      "id": 783110644,
+      "name": "leotv-mobile-v7a-unsigned.audit.json",
+      "size": 64370,
+      "digest": "sha256:c4bfe90dc71252dccd91b6766c49b77c0643d5cc1e4809dfcf71fad2b540a87a"
+    },
+    {
+      "id": 783110598,
+      "name": "leotv-mobile-v7a.apk",
+      "size": 83427795,
+      "digest": "sha256:56f215a16bfb4ef73ec97c5991c2b421d0ca14e856ab45464a8ee73da256754f"
+    },
+    {
+      "id": 783110608,
+      "name": "leotv-mobile-v7a.signature.json",
+      "size": 355,
+      "digest": "sha256:8f6ccf9fa8dddbe174e2691c670688b55722f1675e382cd176f5e12b5175f57b"
+    },
+    {
+      "id": 783110707,
+      "name": "leotv-mobile-v8a-unsigned.audit.json",
+      "size": 64368,
+      "digest": "sha256:279ec5839cc0e83ca49b206ba2c78f9d0d0296d4e8a3072a70668b5dabcf8bcc"
+    },
+    {
+      "id": 783110676,
+      "name": "leotv-mobile-v8a.apk",
+      "size": 82640498,
+      "digest": "sha256:6f9edc4c620568222d2ecf09341071cc42de79245e9a6f26a2a18e5a33afbfed"
+    },
+    {
+      "id": 783110689,
+      "name": "leotv-mobile-v8a.signature.json",
+      "size": 355,
+      "digest": "sha256:ba383d26629ef0c88c5028b4f28873390451051397184fb7e06ece2033254262"
+    },
+    {
+      "id": 783110570,
+      "name": "leotv-tv-v7a-unsigned.audit.json",
+      "size": 54192,
+      "digest": "sha256:07ec856fc1bc2272af5929f5163e707cc4d1b9a3ac396d83649d2b9cc6cf695c"
+    },
+    {
+      "id": 783110575,
+      "name": "leotv-tv-v7a.apk",
+      "size": 88284161,
+      "digest": "sha256:aa10dbe9e81a077d83bf9655e20f790da1e41292c7ffcce363d748d3437baf3f"
+    },
+    {
+      "id": 783110573,
+      "name": "leotv-tv-v7a.signature.json",
+      "size": 351,
+      "digest": "sha256:2411c32f23caf2d11ac7829bdd5ba944526d56900f2f8533118e50d331567d53"
+    },
+    {
+      "id": 783110595,
+      "name": "leotv-tv-v8a-unsigned.audit.json",
+      "size": 54190,
+      "digest": "sha256:bcd7e4a26f10a3e30ccec6708408fe449c00904a7e98f4ec8aff8256a6503643"
+    },
+    {
+      "id": 783110574,
+      "name": "leotv-tv-v8a.apk",
+      "size": 87169188,
+      "digest": "sha256:ef865f268f863c402c0ab135907aa62b137f0419c72879af8728ccfe5950aea6"
+    },
+    {
+      "id": 783110572,
+      "name": "leotv-tv-v8a.signature.json",
+      "size": 351,
+      "digest": "sha256:d5bf7c72a56dce8f8c7859d34f6d16e080c7d3d2b3dc9f464e574538ff603473"
+    }
+  ],
+  "reason": "User requested withdrawal and replacement of 5.2.6 with TV homepage and Danmaku settings initial-focus fixes.",
+  "withdrawn": true,
+  "archive_is_draft": true,
+  "assets_retained": true,
+  "formal_tag_removed": true
+}

@@ -28,10 +28,10 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     final TextView title,facts,overview,status;final DetailTitleArt titleArt;final android.widget.ImageView shortcut;final LinearLayout dots;
     final List<JSONObject> heroItems=new ArrayList<>();final List<MobileDetailMetadata.Result> heroMetadata=new ArrayList<>();final List<Shelf> shelves=new ArrayList<>();
     final Backdrop backdrop=new Backdrop();
-    CspHomeData.Category first;boolean closed,pageActive=true;int headerHeight;
+    CspHomeData.Category first;boolean closed,pageActive=true,initialFocusPending,initialTargetReady;int headerHeight;
     Runnable viewportChanged,backgroundChanged;
     CspHomePage(Activity activity,boolean phone,Actions actions){
-        super(activity);this.activity=activity;this.phone=phone;this.actions=actions;
+        super(activity);this.activity=activity;this.phone=phone;this.actions=actions;initialFocusPending=!phone;
         backdrop.fallback=com.leotv.ui.GlobalChrome.currentBackground(activity);setTag("leotv_csp_home");
         setBackground(backdrop);images=new DetailThumbnails(activity,BackdropSettings.read(activity).proxy,!phone);
         scroll=phone?new ScrollView(activity):new TvHomeScroll();scroll.setClipToPadding(false);scroll.setVerticalScrollBarEnabled(false);scroll.setFillViewport(true);
@@ -49,7 +49,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         dots=new LinearLayout(activity);dots.setGravity(Gravity.CENTER);dots.setPadding(0,dp(14),0,0);
         info.addView(titleArt,new LinearLayout.LayoutParams(-1,dp(phone?56:64)));titleArt.setVisibility(GONE);info.addView(title,new LinearLayout.LayoutParams(-1,-2));info.addView(facts,new LinearLayout.LayoutParams(-1,-2));info.addView(overview,new LinearLayout.LayoutParams(-1,-2));info.addView(dots,new LinearLayout.LayoutParams(-1,-2));
         heroFrame.addView(info,new FrameLayout.LayoutParams(-1,-2,Gravity.BOTTOM));
-        heroFrame.setFocusable(true);heroFrame.setClickable(true);heroFrame.setOnClickListener(v->{int index=Math.max(0,Math.min(heroIndex,heroItems.size()-1));if(first!=null&&!heroItems.isEmpty())actions.resource(first,heroItems.get(index));});
+        heroFrame.setFocusable(true);heroFrame.setFocusableInTouchMode(!phone);heroFrame.setClickable(true);heroFrame.setOnClickListener(v->{int index=Math.max(0,Math.min(heroIndex,heroItems.size()-1));if(first!=null&&!heroItems.isEmpty())actions.resource(first,heroItems.get(index));});
         hero.onIndex(this::selected);hero.onIncoming(this::selected);
         shortcut=new android.widget.ImageView(activity);View nativeTop=NativeViews.find(activity,"top");if(nativeTop instanceof android.widget.ImageView)shortcut.setImageDrawable(NativeViews.drawable(((android.widget.ImageView)nativeTop).getDrawable(),shortcut));else shortcut.setImageDrawable(new NativeCspUi.Glyph(false,false));shortcut.setPadding(dp(12),dp(12),dp(12),dp(12));shortcut.setContentDescription("一键回顶");shortcut.setFocusable(true);shortcut.setClickable(true);shortcut.setBackground(TvDetailPage.focusBackground(activity));shortcut.setOnClickListener(v->scroll.smoothScrollTo(0,0));addView(shortcut,new FrameLayout.LayoutParams(dp(48),dp(48),Gravity.BOTTOM|Gravity.RIGHT));shortcut.setVisibility(phone?VISIBLE:GONE);
         status=text("正在加载分类…",15);status.setGravity(Gravity.CENTER);status.setPadding(0,dp(20),0,dp(20));rows.addView(status,new LinearLayout.LayoutParams(-1,-2));
@@ -66,9 +66,9 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         if(categories.isEmpty())failed("这个站点暂时没有分类");
     }
     void loaded(int index,List<JSONObject> items){if(closed||index<0||index>=shelves.size())return;Shelf shelf=shelves.get(index);shelf.fill(items);}
-    void failed(int index){if(index>=0&&index<shelves.size())shelves.get(index).note.setText("加载失败，点更多重试");}
+    void failed(int index){if(index>=0&&index<shelves.size())shelves.get(index).note.setText("加载失败，点更多重试");if(index==0)initialTargetReady=true;}
     void failed(String message){status.setText(message);status.setVisibility(VISIBLE);hero.finishLoading();}
-    void heroVisible(boolean visible){heroFrame.setVisibility(visible?VISIBLE:GONE);hero.setActive(pageActive&&visible&&getVisibility()==VISIBLE);updateInsets();}
+    void heroVisible(boolean visible){initialTargetReady=true;heroFrame.setVisibility(visible?VISIBLE:GONE);hero.setActive(pageActive&&visible&&getVisibility()==VISIBLE);updateInsets();}
     void beginHeroLoading(){backdrop.fallback=com.leotv.ui.GlobalChrome.currentBackground(activity);hero.loadSources(java.util.Collections.emptyList(),BackdropSettings.read(activity).proxy);heroItems.clear();heroMetadata.clear();title.setText("");facts.setText("");overview.setText("");dots.removeAllViews();titleArt.load(java.util.Collections.emptyList(),BackdropSettings.read(activity).proxy);invalidate();}
     int heroIndex;
     void hero(List<JSONObject> values,List<MobileDetailMetadata.Result> metadata){
@@ -141,6 +141,16 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         void reveal(){if(!closed&&pageActive&&focused!=null&&focused.hasFocus()&&getWidth()>0)scrollTo(getScrollX()+delta(),0);}
     }
     boolean focusContent(){View target=heroFrame.isShown()?heroFrame:null;if(target==null)for(Shelf shelf:shelves){target=shelf.rail.getChildCount()>0?shelf.rail.getChildAt(0):shelf.open;if(target.isShown())break;}if(target==null)return false;boolean focused=target.requestFocus();if(focused){android.graphics.Rect rect=new android.graphics.Rect();target.getDrawingRect(rect);target.requestRectangleOnScreen(rect,true);}return focused;}
+    void restoreInitialFocus(){
+        if(phone||closed||!pageActive||!initialFocusPending||!initialTargetReady||!isShown()||!hasWindowFocus()||isLayoutRequested())return;
+        View target=heroFrame.isShown()?heroFrame:null;
+        if(target==null)for(Shelf shelf:shelves)if(shelf.items!=null&&!shelf.items.isEmpty()&&shelf.rail.getChildCount()>0){target=shelf.rail.getChildAt(0);break;}
+        if(target==null||!target.isShown()||target.getWidth()==0||target.getHeight()==0||target.hasFocus())return;
+        target.setFocusableInTouchMode(true);
+        if(target.requestFocus()){android.graphics.Rect rect=new android.graphics.Rect(0,0,target.getWidth(),target.getHeight());target.requestRectangleOnScreen(rect,true);}
+        // Recheck the live target through initial layout/window attachment. The
+        // first user key or touch ends initialization, including loading callbacks.
+    }
     void refreshSizes(){if(closed)return;for(Shelf shelf:shelves)if(shelf.items!=null){int[] size=NativeCspUi.spec(activity,shelf.category.json);if(size[0]!=shelf.nativeWidth||size[1]!=shelf.nativeHeight||!phone&&shelf.viewportHeight!=scroll.getHeight())shelf.fill(shelf.items);}}
 
     final class Shelf {

@@ -131,7 +131,8 @@
     "com.leotv.detail.DanmakuUi": {
       "methods": [
         "settings(Landroid/app/Activity;)V",
-        "attach(Landroid/app/Activity;Landroid/view/View;)V"
+        "attach(Landroid/app/Activity;Landroid/view/View;)V",
+        "focusApi(Landroid/app/Activity;Landroid/view/View;)V"
       ]
     },
     "com.leotv.detail.NativeQrInput": {
