@@ -57,23 +57,37 @@ final class DanmakuControls implements AutoCloseable {
         enabled.setOnCheckedChangeListener((button,checked)->{DanmakuSettings.toggle(activity,"danmaku_show",checked);session.syncDisplay();});
         if(!Device.MOBILE){
             TextView label=new TextView(root.getContext());label.setText("弹幕");if(title instanceof TextView)label.setTextColor(((TextView)title).getTextColors());label.setGravity(android.view.Gravity.CENTER_VERTICAL);row.addView(label,new LinearLayout.LayoutParams(-2,-1));enabled.setText("");enabled.setId(View.generateViewId());enabled.setFocusableInTouchMode(true);
-            if(template!=null)enabled.setBackground(NativeViews.drawable(template.getBackground(),enabled));enabled.setPadding(dp(root.getContext(),4),0,dp(root.getContext(),4),0);
+            enabled.setBackground(null);enabled.setPadding(dp(root.getContext(),4),0,dp(root.getContext(),4),0);switchFocus(enabled);
             lens.setNextFocusRightId(enabled.getId());enabled.setNextFocusLeftId(lens.getId());if(template!=null){lens.setNextFocusLeftId(template.getId());template.setNextFocusRightId(lens.getId());}
         }
         row.addView(enabled,new LinearLayout.LayoutParams(-2,dp(root.getContext(),Device.MOBILE?44:32)));
     }
     static ImageView icon(Context context,View template,String description,Runnable action){
         ImageView view=template instanceof ImageView?(ImageView)NativeViews.copy(template,context):new ImageView(context);
-        int id=context.getResources().getIdentifier("ic_action_search","drawable",context.getPackageName());if(id!=0)view.setImageResource(id);else view.setImageDrawable(new Lens());
-        view.setScaleType(ImageView.ScaleType.CENTER_INSIDE);view.setContentDescription(description);view.setFocusable(true);view.setClickable(true);view.setOnClickListener(v->action.run());return view;
+        Drawable original=template instanceof ImageView?((ImageView)template).getDrawable():null;
+        int width=original==null?dp(context,24):Math.max(dp(context,24),original.getIntrinsicWidth()),height=original==null?dp(context,24):Math.max(dp(context,24),original.getIntrinsicHeight());
+        int id=context.getResources().getIdentifier("ic_action_search","drawable",context.getPackageName());if(id!=0)view.setImageResource(id);else view.setImageDrawable(new Lens(width,height));
+        if(!(template instanceof ImageView))view.setScaleType(ImageView.ScaleType.FIT_CENTER);view.setContentDescription(description);view.setFocusable(true);view.setClickable(true);view.setOnClickListener(v->action.run());return view;
+    }
+    private static void switchFocus(Switch view){
+        android.content.res.ColorStateList thumb=view.getThumbTintList(),track=view.getTrackTintList();
+        int active=themeColors(view.getContext(),android.R.attr.colorControlActivated,0xff2196f3).getDefaultColor();
+        int bright=Color.rgb((Color.red(active)*3+255)/4,(Color.green(active)*3+255)/4,(Color.blue(active)*3+255)/4);
+        view.setOnFocusChangeListener((v,focused)->{view.setThumbTintList(focused?android.content.res.ColorStateList.valueOf(bright):thumb);view.setTrackTintList(focused?android.content.res.ColorStateList.valueOf((bright&0x00ffffff)|0x99000000):track);});
+    }
+    private static android.content.res.ColorStateList themeColors(Context context,int attr,int fallback){
+        android.content.res.TypedArray values=context.obtainStyledAttributes(new int[]{attr});try{android.content.res.ColorStateList colors=values.getColorStateList(0);return colors==null?android.content.res.ColorStateList.valueOf(fallback):colors;}finally{values.recycle();}
     }
     static int dp(Context context,int value){return Math.round(value*context.getResources().getDisplayMetrics().density);}
     private static void remove(View view){if(view!=null&&view.getParent() instanceof ViewGroup)((ViewGroup)view.getParent()).removeView(view);}
     @Override public void close(){remove(side);side=null;}
     private static final class Lens extends Drawable {
         final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
-        Lens(){paint.setColor(Color.WHITE);paint.setStyle(Paint.Style.STROKE);}
-        @Override public void draw(Canvas canvas){float x=getBounds().left,w=getBounds().width(),y=getBounds().top,h=getBounds().height();paint.setStrokeWidth(Math.max(1.5f,w*.06f));canvas.drawCircle(x+w*.43f,y+h*.43f,w*.23f,paint);canvas.drawLine(x+w*.60f,y+h*.60f,x+w*.79f,y+h*.79f,paint);}
+        final int width,height;
+        Lens(int width,int height){this.width=width;this.height=height;paint.setColor(Color.WHITE);paint.setStyle(Paint.Style.STROKE);paint.setStrokeCap(Paint.Cap.ROUND);}
+        @Override public int getIntrinsicWidth(){return width;}
+        @Override public int getIntrinsicHeight(){return height;}
+        @Override public void draw(Canvas canvas){int save=canvas.save();canvas.translate(getBounds().left,getBounds().top);canvas.scale(getBounds().width()/24f,getBounds().height()/24f);paint.setStrokeWidth(2);canvas.drawCircle(10,10,7,paint);canvas.drawLine(15,15,21,21,paint);canvas.restoreToCount(save);}
         @Override public void setAlpha(int value){paint.setAlpha(value);}@Override public void setColorFilter(android.graphics.ColorFilter filter){paint.setColorFilter(filter);}@Override public int getOpacity(){return android.graphics.PixelFormat.TRANSLUCENT;}
     }
 }

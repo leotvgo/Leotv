@@ -74,7 +74,9 @@ public final class DanmakuUi {
     }
     private static void settingsActions(Activity activity,String title,String[] values,NativeDialogs.Choice listener,boolean playerStyle){
         try{
-            Context context=NativeDialogs.context(NativeDialogs.builder(activity));int inset=dp(activity,16),foreground=Device.MOBILE?0xff202832:Color.WHITE;
+            Context context=NativeDialogs.context(NativeDialogs.builder(activity));int inset=dp(activity,16);
+            TextView nativeSetting=NativeViews.text(NativeViews.layout(context,"select_dialog_item_material"));
+            int foreground=playerStyle?(Device.MOBILE?0xff202832:Color.WHITE):nativeSetting==null?new TextView(context).getCurrentTextColor():nativeSetting.getCurrentTextColor();
             LinearLayout panel=new LinearLayout(context);panel.setOrientation(LinearLayout.VERTICAL);panel.setPadding(inset,inset/2,inset,inset/2);
             if(playerStyle){GradientDrawable background=new GradientDrawable();background.setColor(surface(context));background.setCornerRadius(dp(activity,Device.MOBILE?18:12));panel.setBackground(background);}
             Dialog dialog=playerStyle?new Dialog(context):NativeDialogs.panel(activity,title,panel,null);if(playerStyle)dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
@@ -91,10 +93,13 @@ public final class DanmakuUi {
             int selector=context.getResources().getIdentifier("selector_item","drawable",context.getPackageName());if(selector!=0)close.setBackgroundResource(selector);
             if(!Device.MOBILE){
                 android.widget.ScrollView scroll=new android.widget.ScrollView(context);LinearLayout rows=new LinearLayout(context);rows.setOrientation(LinearLayout.VERTICAL);scroll.addView(rows,new android.widget.ScrollView.LayoutParams(-1,-2));panel.addView(scroll,new LinearLayout.LayoutParams(-1,bodyHeight,playerStyle?1:0));
-                TextView nativeRow=NativeViews.text(NativeViews.layout(context,"adapter_danmaku"));int active=nativeRow==null?android.graphics.Color.YELLOW:nativeRow.getTextColors().getColorForState(new int[]{android.R.attr.state_enabled,android.R.attr.state_activated},foreground);
+                TextView nativeRow=NativeViews.text(NativeViews.layout(context,playerStyle?"adapter_danmaku":"select_dialog_item_material"));int active=foreground;
+                if(playerStyle)active=nativeRow==null?android.graphics.Color.YELLOW:nativeRow.getTextColors().getColorForState(new int[]{android.R.attr.state_enabled,android.R.attr.state_activated},foreground);
+                else{android.content.res.TypedArray colors=context.obtainStyledAttributes(new int[]{android.R.attr.colorAccent});try{active=colors.getColor(0,foreground);}finally{colors.recycle();}}
+                final int focusedText=active;
                 java.util.List<TextView> buttons=new java.util.ArrayList<>();close.setId(View.generateViewId());close.setFocusableInTouchMode(true);
-                for(int index=0;index<values.length;index++){int selected=index;TextView row=new TextView(context);row.setId(View.generateViewId());row.setText(values[index]);row.setTextSize(15);row.setTextColor(foreground);row.setGravity(Gravity.CENTER_VERTICAL);row.setSingleLine(true);row.setEllipsize(android.text.TextUtils.TruncateAt.END);row.setFocusable(true);row.setFocusableInTouchMode(true);row.setClickable(true);
-                    if(selector!=0)row.setBackgroundResource(selector);row.setPadding(inset,0,inset,0);row.setOnFocusChangeListener((v,focus)->row.setTextColor(focus?active:foreground));row.setOnClickListener(v->{dialog.dismiss();listener.selected(selected);});rows.addView(row,new LinearLayout.LayoutParams(-1,dp(activity,48)));buttons.add(row);
+                for(int index=0;index<values.length;index++){int selected=index;TextView row=settingsRow(context,playerStyle);row.setId(View.generateViewId());row.setText(values[index]);row.setTextSize(15);row.setTextColor(foreground);row.setGravity(Gravity.CENTER_VERTICAL);row.setSingleLine(true);row.setEllipsize(android.text.TextUtils.TruncateAt.END);row.setFocusable(true);row.setFocusableInTouchMode(true);row.setClickable(true);
+                    if(playerStyle&&selector!=0)row.setBackgroundResource(selector);row.setPadding(inset,0,inset,0);row.setOnFocusChangeListener((v,focus)->row.setTextColor(focus?focusedText:foreground));row.setOnClickListener(v->{dialog.dismiss();listener.selected(selected);});rows.addView(row,new LinearLayout.LayoutParams(-1,dp(activity,48)));buttons.add(row);
                 }
                 for(int i=0;i<buttons.size();i++){TextView row=buttons.get(i);row.setNextFocusUpId(i==0?(playerStyle?close.getId():row.getId()):buttons.get(i-1).getId());row.setNextFocusDownId(i+1==buttons.size()?(playerStyle?row.getId():android.R.id.button2):buttons.get(i+1).getId());}
                 if(!buttons.isEmpty()){if(playerStyle)close.setNextFocusDownId(buttons.get(0).getId());rows.post(()->{buttons.get(0).requestFocus();if(!playerStyle){View cancel=dialog.findViewById(android.R.id.button2);if(cancel!=null)cancel.setNextFocusUpId(buttons.get(buttons.size()-1).getId());}});}
@@ -103,8 +108,8 @@ public final class DanmakuUi {
             list.setDivider(new android.graphics.drawable.ColorDrawable(Device.MOBILE?0x14202832:0x26ffffff));list.setDividerHeight(dp(activity,1));
             list.setAdapter(new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,values){
                 @Override public View getView(int position,View recycled,ViewGroup parent){
-                    TextView row=(TextView)super.getView(position,recycled,parent);row.setTextColor(foreground);row.setTextSize(15);row.setGravity(Gravity.CENTER_VERTICAL);row.setPadding(inset,0,inset,0);row.setMinimumHeight(dp(activity,48));
-                    if(selector!=0)row.setBackgroundResource(selector);return row;
+                    TextView row=playerStyle?(TextView)super.getView(position,recycled,parent):recycled instanceof TextView?(TextView)recycled:settingsRow(context,false);row.setText(values[position]);row.setTextColor(foreground);row.setTextSize(15);row.setGravity(Gravity.CENTER_VERTICAL);row.setPadding(inset,0,inset,0);row.setMinimumHeight(dp(activity,48));
+                    if(playerStyle&&selector!=0)row.setBackgroundResource(selector);return row;
                 }
             });
             list.setOnItemClickListener((parent,view,index,id)->{dialog.dismiss();listener.selected(index);});panel.addView(list,new LinearLayout.LayoutParams(-1,bodyHeight,playerStyle?1:0));
@@ -118,6 +123,11 @@ public final class DanmakuUi {
                 dialog.getWindow().setLayout(width,height);dialog.getWindow().setDimAmount(Device.MOBILE?.32f:.18f);
             }
         }catch(ReflectiveOperationException unavailable){throw new IllegalStateException("Native API settings dialog unavailable",unavailable);}
+    }
+    private static TextView settingsRow(Context context,boolean playerStyle){
+        TextView row=playerStyle?null:NativeViews.text(NativeViews.layout(context,"select_dialog_item_material"));if(row==null)row=new TextView(context);
+        if(!playerStyle){android.content.res.TypedArray style=context.obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackground});try{row.setBackground(style.getDrawable(0));}finally{style.recycle();}}
+        return row;
     }
     static void search(DanmakuPlayback.Session session){DanmakuSearchDialog.show(session);}
     static void settings(DanmakuPlayback.Session session){Activity activity=session.activity();if(activity!=null)settings(activity,session);}

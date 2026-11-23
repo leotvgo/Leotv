@@ -45,6 +45,9 @@ final class DanmakuSearchDialog {
     boolean reverse,selected,closed,autoExpanded;
     boolean editing;
     boolean initialFocusPending=!Device.MOBILE;
+    boolean initialCatalogPending;
+    final android.view.ViewTreeObserver.OnGlobalLayoutListener initialLayoutFocus=this::restoreInitialFocus;
+    final android.view.ViewTreeObserver.OnWindowFocusChangeListener initialWindowFocus=focused->{if(focused)restoreInitialFocus();};
     final List<List<View>> focusRows=new ArrayList<>();
     int renderedWidth;
     Dialog dialog;
@@ -80,10 +83,10 @@ final class DanmakuSearchDialog {
         if(Device.MOBILE){
             searchRow.addView(input,field);
         }else{
-            LinearLayout inputBox=new LinearLayout(context);inputBox.setGravity(Gravity.CENTER_VERTICAL);inputBox.setBackground(actionBackground());inputBox.setPadding(0,0,0,0);
-            input.setBackgroundColor(Color.TRANSPARENT);input.setShowSoftInputOnFocus(false);input.setCursorVisible(false);
+            LinearLayout inputBox=new LinearLayout(context);inputBox.setGravity(Gravity.CENTER_VERTICAL);inputBox.setPadding(0,0,0,0);
+            input.setShowSoftInputOnFocus(false);input.setCursorVisible(false);
             ((ConfirmedEditText)input).configure(()->finishEdit(true));
-            input.setOnFocusChangeListener((v,focus)->{inputBox.setActivated(focus);if(focus)NativeQrInput.bind(activity,input);else if(editing)finishEdit(false);});
+            input.setOnFocusChangeListener((v,focus)->{if(focus)NativeQrInput.bind(activity,input);else if(editing)finishEdit(false);});
             input.setOnClickListener(v->editKeyword());
             input.setOnKeyListener((v,key,event)->{
                 if(key==android.view.KeyEvent.KEYCODE_DPAD_CENTER||key==android.view.KeyEvent.KEYCODE_ENTER){if(event.getAction()==android.view.KeyEvent.ACTION_UP)editKeyword();return true;}
@@ -92,7 +95,7 @@ final class DanmakuSearchDialog {
             inputBox.addView(input,new LinearLayout.LayoutParams(0,-1,1));
             code=new ImageView(context);code.setId(View.generateViewId());code.setImageDrawable(new QrIcon(foreground));code.setImageTintList(actionColors);code.setScaleType(ImageView.ScaleType.CENTER_INSIDE);code.setContentDescription("扫码输入搜索词");code.setFocusable(true);code.setFocusableInTouchMode(true);code.setClickable(true);
             code.setBackground(actionBackground());code.setPadding(dp(8),dp(8),dp(8),dp(8));code.setOnKeyListener(this::navigate);
-            code.setOnClickListener(v->NativeQrInput.show(activity,input,"搜索关键词"));inputBox.addView(code,new LinearLayout.LayoutParams(dp(38),-1));searchRow.addView(inputBox,field);
+            code.setOnClickListener(v->{initialFocusPending=false;NativeQrInput.show(activity,input,"搜索关键词");});inputBox.addView(code,new LinearLayout.LayoutParams(dp(38),-1));searchRow.addView(inputBox,field);
         }
         qr=code;
         search=button("搜索",this::search);searchRow.addView(search,new LinearLayout.LayoutParams(dp(62),dp(36)));panel.addView(searchRow,new LinearLayout.LayoutParams(-1,dp(36)));
@@ -113,7 +116,8 @@ final class DanmakuSearchDialog {
         dialog=new Dialog(context);dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);dialog.setContentView(panel,new ViewGroup.LayoutParams(-1,-1));
     }
     void show(){
-        session.dialogs.add(dialog);dialog.setOnDismissListener(ignored->{closed=true;session.dialogs.remove(dialog);if(!selected)session.cancel();});dialog.show();
+        session.dialogs.add(dialog);dialog.setOnDismissListener(ignored->{closed=true;if(panel.getViewTreeObserver().isAlive()){panel.getViewTreeObserver().removeOnGlobalLayoutListener(initialLayoutFocus);panel.getViewTreeObserver().removeOnWindowFocusChangeListener(initialWindowFocus);}session.dialogs.remove(dialog);if(!selected)session.cancel();});dialog.show();
+        if(!Device.MOBILE){panel.getViewTreeObserver().addOnGlobalLayoutListener(initialLayoutFocus);panel.getViewTreeObserver().addOnWindowFocusChangeListener(initialWindowFocus);}
         if(dialog.getWindow()!=null){dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);dialog.getWindow().setLayout(width,Math.round(activity.getResources().getDisplayMetrics().heightPixels*(Device.MOBILE?.88f:.90f)));dialog.getWindow().setDimAmount(Device.MOBILE?.32f:.18f);dialog.getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE|android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);}
         refresh();if(Device.MOBILE||session.apiSources.isEmpty())input.requestFocus();if(!Device.MOBILE)NativeQrInput.bind(activity,input);
         if(session.apiSources.isEmpty()&&!DanmakuSettings.api(activity).isEmpty()&&!input.getText().toString().trim().isEmpty())input.post(()->search(true));
@@ -143,7 +147,7 @@ final class DanmakuSearchDialog {
         LinkedHashMap<String,List<DanmakuSource>> series=new LinkedHashMap<>();for(DanmakuSource item:values){String title=DanmakuTitle.titleKey(item);if(title==null||title.isEmpty())title=input.getText().toString().trim();if(title.isEmpty())title=DanmakuTitle.displayTitle(item);if(!item.seriesId.isEmpty())title+="@@@"+item.seriesId;List<DanmakuSource> items=series.get(title);if(items==null){items=new ArrayList<>();series.put(title,items);}items.add(item);}
         List<String> titles=new ArrayList<>(series.keySet());DanmakuTitle.sortByKeyword(titles,input.getText().toString());boolean firstExpansion=!autoExpanded&&!titles.isEmpty();if(firstExpansion){expanded=titles.get(0);autoExpanded=true;}
         if(initialFocusPending&&session.selected!=null)for(String title:titles)for(DanmakuSource item:series.get(title))if(item.url.equals(session.selected.url)){expanded=title;autoExpanded=true;}
-        View matched=null;boolean catalogPending=false;
+        boolean catalogPending=false;
         int contentWidth=scroll.getWidth()>0?scroll.getWidth():width-dp(32);
         int columns=Math.max(2,Math.min(10,contentWidth/dp(96))),cell=contentWidth/columns;
         for(String title:titles){List<DanmakuSource> items=series.get(title);DanmakuTitle.sortByEpisode(items,reverse);boolean open=title.equals(expanded);
@@ -155,18 +159,28 @@ final class DanmakuSearchDialog {
             for(int i=0;i<items.size();i++){DanmakuSource item=items.get(i);int episode=DanmakuTitle.getEpisode(item);String label=episode==DanmakuTitle.EPISODE_UNKNOWN?item.getName():"第"+episode+"集";
                 TextView entry=button(label,()->{selected=true;session.choose(item,input.getText().toString(),true);dialog.dismiss();});entry.setMaxLines(2);entry.setEllipsize(android.text.TextUtils.TruncateAt.END);
                 entry.setTag("episode@"+item.url);entry.setActivated(session.selected!=null&&session.selected.url.equals(item.url));
-                if(entry.isActivated())matched=entry;
                 if(i%columns==0)focusRows.add(new ArrayList<>());focusRows.get(focusRows.size()-1).add(entry);
                 GridLayout.LayoutParams p=new GridLayout.LayoutParams(GridLayout.spec(i/columns),GridLayout.spec(i%columns));p.width=cell-dp(8);p.height=dp(44);p.setMargins(dp(4),dp(4),dp(4),dp(4));grid.addView(entry,p);
             }results.addView(grid,new LinearLayout.LayoutParams(-1,-2));
         }
-        configureNavigation();View initial=matched;boolean loadingCatalog=catalogPending;
-        results.post(()->{if(closed)return;if(initialFocusPending&&initial!=null){if(initial.requestFocus())initialFocusPending=false;}else if(focusedTag!=null){View current=results.findViewWithTag(focusedTag);if(current!=null)current.requestFocus();}else if(initialFocusPending&&!loadingCatalog&&!session.status.startsWith("正在")&&!focusRows.isEmpty()){if(focusRows.get(0).get(0).requestFocus())initialFocusPending=false;}});
+        configureNavigation();initialCatalogPending=catalogPending;
+        results.post(()->{if(closed)return;if(initialFocusPending)restoreInitialFocus();else if(focusedTag!=null){View current=results.findViewWithTag(focusedTag);if(current!=null)current.requestFocus();}});
+    }
+    void restoreInitialFocus(){
+        if(!initialFocusPending||closed||!panel.hasWindowFocus()||results.isLayoutRequested())return;
+        // Resolve the currently attached cell after every layout/window-focus pass.
+        // A posted reference from an earlier grid can already have been removed.
+        View target=session.selected==null?null:results.findViewWithTag("episode@"+session.selected.url);
+        if(target==null){if(initialCatalogPending||session.status.startsWith("正在")||focusRows.isEmpty())return;target=focusRows.get(0).get(0);}
+        if(!target.isShown()||target.getWidth()==0||target.getHeight()==0||target.isFocused())return;
+        if(target.requestFocus()){android.graphics.Rect bounds=new android.graphics.Rect(0,0,target.getWidth(),target.getHeight());target.requestRectangleOnScreen(bounds,true);}
+        // Keep initialization valid through window attachment; user navigation or
+        // activation stops it, so later asynchronous renders cannot steal focus.
     }
     void loadSeries(DanmakuSource series){if(closed||loadingSeries.equals(series.seriesId))return;loadingSeries=series.seriesId;session.expand(series,()->{if(!session.status.startsWith("正在"))loadingSeries="";refresh();});}
     TextView text(String value,int size){TextView view=new TextView(context);view.setText(value);view.setTextSize(size);view.setTextColor(foreground);view.setGravity(Gravity.CENTER_VERTICAL);return view;}
     void focusGroup(String title){results.post(()->{if(closed)return;View group=results.findViewWithTag(title);if(group!=null){group.requestFocus();scroll.smoothScrollTo(0,group.getTop());}});}
-    TextView button(String value,Runnable click){TextView view=text(value,14);view.setId(View.generateViewId());view.setTextColor(actionColors);view.setGravity(Gravity.CENTER);view.setFocusable(true);view.setFocusableInTouchMode(!Device.MOBILE);view.setClickable(true);view.setBackground(actionBackground());view.setPadding(dp(10),dp(4),dp(10),dp(4));if(!Device.MOBILE)view.setOnKeyListener(this::navigate);view.setOnClickListener(v->click.run());return view;}
+    TextView button(String value,Runnable click){TextView view=text(value,14);view.setId(View.generateViewId());view.setTextColor(actionColors);view.setGravity(Gravity.CENTER);view.setFocusable(true);view.setFocusableInTouchMode(!Device.MOBILE);view.setClickable(true);view.setBackground(actionBackground());view.setPadding(dp(10),dp(4),dp(10),dp(4));if(!Device.MOBILE)view.setOnKeyListener(this::navigate);view.setOnClickListener(v->{initialFocusPending=false;click.run();});return view;}
     void configureNavigation(){
         if(Device.MOBILE)return;View first=focusRows.isEmpty()?input:focusRows.get(0).get(0);View tab=tabs.findViewWithTag(source);if(tab==null&&tabs.getChildCount()>0)tab=tabs.getChildAt(0);View category=tab==null?first:tab;
         link(input,input,qr==null?search:qr,setting,category);if(qr!=null)link(qr,input,search,setting,category);
@@ -204,7 +218,7 @@ final class DanmakuSearchDialog {
         if(id!=0)focused=context.getResources().getDrawable(id).mutate();
         else focused=shape(0x1a000000,4,border);
         StateListDrawable states=new StateListDrawable();
-        for(int state:new int[]{android.R.attr.state_focused,android.R.attr.state_activated,android.R.attr.state_selected,android.R.attr.state_pressed})states.addState(new int[]{state},focused.getConstantState()==null?focused:focused.getConstantState().newDrawable(context.getResources()).mutate());
+        states.addState(new int[]{android.R.attr.state_focused},focused);
         states.addState(new int[]{},normal);return states;
     }
     GradientDrawable shape(int fill,int radius,int border){GradientDrawable background=new GradientDrawable();background.setColor(fill);background.setCornerRadius(dp(radius));background.setStroke(dp(1),border);return background;}

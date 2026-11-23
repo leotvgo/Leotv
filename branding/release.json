@@ -1,8 +1,8 @@
 {
   "channel": "prerelease",
-  "version_name": "5.3.0-preview.9",
-  "version_code": 621,
-  "title": "Leotv 5.3.0-preview.9（TV 焦点、确认编辑与重复扫码修复）",
+  "version_name": "5.3.0-preview.10",
+  "version_code": 622,
+  "title": "Leotv 5.3.0-preview.10（弹幕实际焦点、菜单尺寸与设置样式修复）",
   "prerelease": true,
   "make_latest": false
 }
