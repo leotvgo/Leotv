@@ -45,11 +45,14 @@ public final class DanmakuUi {
         if(template==null||!(template.getParent() instanceof LinearLayout))return;
         LinearLayout parent=(LinearLayout)template.getParent();View row=NativeViews.copy(template,activity);
         java.util.List<TextView> texts=new ArrayList<>();collect(row,texts);if(texts.isEmpty())return;
-        texts.get(0).setText("弹幕 API / 自动匹配");if(texts.size()>1)texts.get(texts.size()-1).setText(DanmakuSettings.api(activity).isEmpty()?"未配置":"已配置");
+        texts.get(0).setText("弹幕API");if(texts.size()>1)texts.get(texts.size()-1).setText(DanmakuSettings.api(activity).isEmpty()?"未配置":"已配置");
         row.setTag("leotv_danmaku_api_settings");row.setFocusable(!Device.MOBILE);row.setClickable(true);row.setOnClickListener(view->settings(activity));
         LinearLayout.LayoutParams params=new LinearLayout.LayoutParams((LinearLayout.LayoutParams)template.getLayoutParams());
-        if(!Device.MOBILE)for(int i=0;i<parent.getChildCount();i++){ViewGroup.LayoutParams sibling=parent.getChildAt(i).getLayoutParams();if(sibling instanceof LinearLayout.LayoutParams&&((LinearLayout.LayoutParams)sibling).topMargin>0){params.topMargin=((LinearLayout.LayoutParams)sibling).topMargin;break;}}
-        parent.addView(row,parent.indexOfChild(template)+1,params);
+        if(!Device.MOBILE){
+            params.topMargin=0;
+            for(int i=0;i<parent.getChildCount();i++){ViewGroup.LayoutParams sibling=parent.getChildAt(i).getLayoutParams();if(sibling instanceof LinearLayout.LayoutParams&&((LinearLayout.LayoutParams)sibling).topMargin>0){LinearLayout.LayoutParams original=(LinearLayout.LayoutParams)template.getLayoutParams();original.topMargin=((LinearLayout.LayoutParams)sibling).topMargin;template.setLayoutParams(original);break;}}
+        }
+        parent.addView(row,Device.MOBILE?parent.indexOfChild(template)+1:0,params);
     }
     private static void collect(View root,List<TextView> out){if(root instanceof TextView)out.add((TextView)root);if(root instanceof ViewGroup)for(int i=0;i<((ViewGroup)root).getChildCount();i++)collect(((ViewGroup)root).getChildAt(i),out);}
     private static void settings(Activity a,DanmakuPlayback.Session session){
@@ -57,7 +60,7 @@ public final class DanmakuUi {
         String api=DanmakuSettings.api(a);
         String[] names={"弹幕 API · "+(api.isEmpty()?"未配置":DanmakuSettings.customApi(a).isEmpty()?"当前订阅":"手动配置"),
             "加载弹幕 · "+on(DanmakuSettings.enabled(a)),"自动匹配 · "+on(DanmakuSettings.automatic(a)),"站点弹幕优先 · "+on(DanmakuSettings.spiderFirst(a)),"清除手动匹配记忆"};
-        settingsActions(a,"弹幕 API / 自动匹配",names,index->{
+        settingsActions(a,"弹幕API",names,index->{
             switch(index){
                 case 0:NativeDialogs.edit(a,"弹幕 API",DanmakuSettings.customApi(a),"留空读取订阅；支持 {name} / {episode}",false,value->{DanmakuSettings.setApi(a,value);if(session!=null)session.changeApi();settings(a,session);},()->{DanmakuSettings.setApi(a,"");if(session!=null)session.changeApi();});return;
                 case 1:DanmakuSettings.toggle(a,"danmaku_load",!DanmakuSettings.enabled(a));break;

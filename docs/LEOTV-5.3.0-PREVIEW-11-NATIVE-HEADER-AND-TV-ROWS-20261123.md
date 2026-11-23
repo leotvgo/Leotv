@@ -4,7 +4,7 @@
 
 ## 弹幕设置
 
-`Personalization` 仅取消 TV 的第三排弹幕 API 入口及空排，手机原入口保留。TV 原弹幕设置中的 `DanmakuUi.attach` 仍从原 `danmuLoad` 行复制样式；新增行的 topMargin 改取相邻原设置行。原 APK `activity_setting_danmu` 的加载行是首项，没有 topMargin，其余行具有 16dp topMargin；此前复制首项布局让新增 API 行与上方贴近。本次不改变行内容、原设置顺序和 API 行动作。
+`Personalization` 仅取消 TV 的第三排弹幕 API 入口及空排，手机原入口保留。用户随后要求原弹幕设置中的入口改名为“弹幕API”、放到第一项。`DanmakuUi.attach` 继续复制原 `danmuLoad` 样式，新 API 首项不增加上边距，原加载项顺延为第二项并取得相邻设置行的 16dp topMargin，其余原项目的相对顺序保持。API 弹窗标题同步改为“弹幕API”，其中加载/自动匹配/站点优先等配置与动作保留。手机设置行标题同步，顺序沿用原位置。
 
 ## 手机站源和搜索胶囊
 
