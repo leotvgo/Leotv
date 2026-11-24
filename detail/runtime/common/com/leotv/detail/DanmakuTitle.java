@@ -44,6 +44,9 @@ public final class DanmakuTitle {
     private static final Pattern DASH = Pattern.compile("\\s*[-－—~～]\\s*");
     /** 连续空白 */
     private static final Pattern BLANK = Pattern.compile("\\s{2,}");
+    private static final Pattern DATE = Pattern.compile("((?:19|20)\\d{2})[-/.年]?(\\d{2})[-/.月]?(\\d{2})日?");
+    private static final Pattern EXTRA = Pattern.compile("加更|会员|會[员員]|纯享|純享|特辑|特輯|花絮|预告|預告|番外|彩蛋|先导|先導|幕后|幕後");
+    private static final Pattern PART = Pattern.compile("(?:^|[期集回\\s（(【\\[])([上中下])(?:$|[\\s）)】\\]]|半|篇|集|期)");
 
     private DanmakuTitle() {
     }
@@ -64,14 +67,49 @@ public final class DanmakuTitle {
         number=parseEpisode(item.getName());
         return number!=EPISODE_UNKNOWN?number:item.episodeNumber;
     }
+    static boolean drama(DanmakuSource item){
+        String raw=item.mediaType+" "+item.getName()+" "+item.seriesTitle;
+        if(raw.contains("综艺")||raw.contains("綜藝")||raw.contains("第")&&raw.contains("期"))return false;
+        return item.mediaType.matches("(?i)tv|drama|series|电视剧|電視劇|剧集")||raw.contains("【电视剧】")||raw.contains("[电视剧]");
+    }
+    static String episodeLabel(DanmakuSource item){
+        int number=getEpisode(item);String raw=item.episodeTitle.isEmpty()?item.getName():item.episodeTitle;
+        return drama(item)&&number!=EPISODE_UNKNOWN&&variant(raw).isEmpty()?"第"+number+"集":raw;
+    }
+    static String seriesLabel(DanmakuSource item,String fallback){return !drama(item)&&!item.seriesTitle.isEmpty()?item.seriesTitle:fallback;}
+    static boolean sameSeries(DanmakuSource item,DanmakuSource preferred){
+        if(!item.getSourceName().equals(preferred.getSourceName()))return false;
+        if(!preferred.seriesId.isEmpty()&&!item.seriesId.isEmpty())return preferred.seriesId.equals(item.seriesId);
+        String left=titleKey(item),right=titleKey(preferred);
+        return left!=null&&right!=null&&normalizeSearchText(left).equals(normalizeSearchText(right));
+    }
+    static String variant(String text){
+        StringBuilder result=new StringBuilder();Matcher extra=EXTRA.matcher(text==null?"":text);
+        while(extra.find())result.append(extra.group()).append('|');
+        Matcher part=PART.matcher(text==null?"":text);if(part.find())result.append(part.group(1));return result.toString();
+    }
+    private static String date(String text){Matcher matcher=DATE.matcher(text==null?"":text);return matcher.find()?matcher.group(1)+matcher.group(2)+matcher.group(3):"";}
+    static DanmakuSource followMatch(List<DanmakuSource> values,DanmakuSource preferred,String episode){
+        int number=parseEpisode(episode);String wantedDate=date(episode),wantedVariant=variant(episode);DanmakuSource match=null;
+        for(DanmakuSource item:values){if(item.isCatalog()||item.url.isEmpty()||!sameSeries(item,preferred))continue;
+            String label=item.episodeTitle.isEmpty()?item.getName():item.episodeTitle;
+            boolean same=!wantedDate.isEmpty()?wantedDate.equals(date(label)):number!=EPISODE_UNKNOWN?getEpisode(item)==number:normalizeSearchText(label).equals(normalizeSearchText(episode));
+            if(!same||!wantedVariant.equals(variant(label)))continue;
+            // Ambiguous specials/duplicate editions require the existing search or a manual choice.
+            if(match!=null&&!match.url.equals(item.url))return null;match=item;
+        }
+        return match;
+    }
     static DanmakuSource matchEpisode(List<DanmakuSource> values,String keyword,String episode){
         int wanted=parseEpisode(episode);boolean known=false;DanmakuSource first=null,best=null;double score=-1;
+        String wantedDate=date(episode),wantedVariant=variant(episode);
         String query=normalizeSearchText(keyword);
         for(DanmakuSource item:values){if(item.isCatalog()||item.url.isEmpty())continue;if(first==null)first=item;
             int actual=getEpisode(item);known|=actual!=EPISODE_UNKNOWN;
-            if(wanted!=EPISODE_UNKNOWN&&actual==wanted){double value=matchScore(titleKey(item),query);if(best==null||value>score){best=item;score=value;}}}
+            String label=item.episodeTitle.isEmpty()?item.getName():item.episodeTitle;
+            if((!wantedDate.isEmpty()?wantedDate.equals(date(label)):wanted!=EPISODE_UNKNOWN&&actual==wanted)&&wantedVariant.equals(variant(label))){double value=matchScore(titleKey(item),query);if(best==null||value>score){best=item;score=value;}}}
         if(best!=null)return best;
-        return known&&wanted!=EPISODE_UNKNOWN?null:first;
+        return known&&wanted!=EPISODE_UNKNOWN||!wantedDate.isEmpty()||!wantedVariant.isEmpty()?null:first;
     }
     static void sortCandidates(List<DanmakuSource> values,String keyword){
         String query=normalizeSearchText(keyword);Collections.sort(values,(left,right)->Double.compare(matchScore(titleKey(right),query),matchScore(titleKey(left),query)));

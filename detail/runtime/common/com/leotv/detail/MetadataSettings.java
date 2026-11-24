@@ -29,7 +29,9 @@ public final class MetadataSettings {
     public static void setBase(Context context, String value) { prefs(context).edit().putString("tmdb_base", normalizeBase(value)).apply(); }
     public static void setEndpoint(Context context, String key, String base) {
         String validatedKey = normalizeKey(key), validatedBase = normalizeBase(base);
+        initialize(context);
         prefs(context).edit().putString("tmdb_key", validatedKey).putString("tmdb_base", validatedBase).apply();
+        BackdropHttp.retryNow();
     }
     public static int theme(Context context) {
         int selected = prefs(context).getInt("detail_theme", Device.DEFAULT_THEME);

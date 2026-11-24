@@ -63,7 +63,7 @@ class BackdropResolver {
         if (options.key.contains("\n") || options.key.contains("\r")) throw new IOException("invalid key");
         if (bearer) headers.put("Authorization", "Bearer " + options.key);
         String auth = bearer ? "" : "&api_key=" + encode(options.key);
-        String base = MetadataSettings.base();
+        String base = options.base;
         JSONObject matched = null;
         MetadataMatchStore.Match chosen = MetadataMatchStore.find(work);
         if (chosen != null) matched = new JSONObject().put("id", chosen.tmdbId).put("media_type", chosen.mediaType);

@@ -53,16 +53,24 @@ def apply(project, root, variant):
             def bootstrap(body):
                 if body.count(native_ready)!=1:
                     raise ValueError('Expected one ordinary first-ready Danmaku selection.')
+                locals_match = re.search(r'(?m)^    \.locals (\d+)$', body)
+                if locals_match is None or int(locals_match.group(1)) > 10:
+                    raise ValueError('Native prepared callback scratch register contract changed.')
+                scratch = 'v' + locals_match.group(1)
+                body = body[:locals_match.start()] + '    .locals ' + str(int(locals_match.group(1)) + 1) + body[locals_match.end():]
                 begin='    invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapBegin(Landroid/app/Activity;)V'
                 end='    invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapEnd(Landroid/app/Activity;)V'
+                guarded = (begin + '\n\n    invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapAllowed(Landroid/app/Activity;)Z\n\n'
+                           + '    move-result ' + scratch + '\n\n    if-eqz ' + scratch + ', :leotv_danmaku_keep_manual\n\n'
+                           + native_ready + '\n\n    :leotv_danmaku_keep_manual')
                 if mobile:
                     # Prepared can skip f0's first-source selection. Both branches
                     # meet here; API matching must receive readiness on either path.
                     marker='    :cond_a\n'
                     if body.count(marker)!=1:
                         raise ValueError('Expected the mobile prepared-source branch join.')
-                    return body.replace(native_ready,begin+'\n\n'+native_ready).replace(marker,marker+'\n'+end+'\n')
-                return body.replace(native_ready,begin+'\n\n'+native_ready+'\n\n'+end)
+                    return body.replace(native_ready,guarded).replace(marker,marker+'\n'+end+'\n')
+                return body.replace(native_ready,guarded+'\n\n'+end)
             text=replace_method(text,event_signature,bootstrap)
             def resume(body):
                 marker = body.rfind('    return-void')

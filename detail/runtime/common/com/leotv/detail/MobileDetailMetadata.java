@@ -1427,7 +1427,7 @@ class MobileDetailMetadata {
     }
 
     JSONObject get(String path, BackdropSettings.Options options, Map<String, String> headers, BackdropHttp.Request request) throws Exception {
-        byte[] bytes=BackdropHttp.get(MetadataSettings.base() + path, "tmdb", options.proxy, headers, request);
+        byte[] bytes=BackdropHttp.get(options.base + path, "tmdb", options.proxy, headers, request);
         try {
             JSONObject value=new JSONObject(new String(bytes,"UTF-8"));
             if(value.has("success")&&!value.optBoolean("success",true))throw new BackdropHttp.Failure("tmdb","响应未成功（code "+value.optInt("status_code")+"）");

@@ -14,13 +14,14 @@ final class DanmakuMatches {
     synchronized DanmakuSource find(String api,String site,String vod,String episode){
         JSONObject object=read().optJSONObject(key(api,site,vod,episode));if(object==null)return null;
         String url=object.optString("url");if(url.isEmpty())return null;
-        return new DanmakuSource(object.optString("name"),url,object.optString("source"),object.optString("apiSourceName"));
+        return DanmakuSource.fromJson(object);
     }
+    synchronized DanmakuSource preferred(String api,String site,String vod){JSONObject value=read().optJSONObject(key(api,site,vod,"@series"));return value==null||value.optString("url").isEmpty()&&value.optString("animeId").isEmpty()?null:DanmakuSource.fromJson(value);}
     synchronized String title(String api,String site,String vod){JSONObject o=read().optJSONObject(key(api,site,vod,"@series"));return o==null?"":o.optString("keyword");}
     synchronized void remember(String api,String site,String vod,String episode,String keyword,DanmakuSource source){
         JSONObject root=read();try{
             JSONObject value=source.json().put("saved",System.currentTimeMillis());root.put(key(api,site,vod,episode),value);
-            root.put(key(api,site,vod,"@series"),new JSONObject().put("keyword",keyword).put("saved",System.currentTimeMillis()));
+            root.put(key(api,site,vod,"@series"),source.json().put("keyword",keyword).put("saved",System.currentTimeMillis()));
             while(root.length()>300){String victim=null;long oldest=Long.MAX_VALUE;Iterator<String> keys=root.keys();while(keys.hasNext()){String k=keys.next();JSONObject v=root.optJSONObject(k);long time=v==null?0:v.optLong("saved");if(time<oldest){oldest=time;victim=k;}}if(victim==null)break;root.remove(victim);}
             write(root);
         }catch(Exception invalid){}

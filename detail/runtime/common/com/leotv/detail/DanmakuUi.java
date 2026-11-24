@@ -34,7 +34,7 @@ public final class DanmakuUi {
                 case 2:settings(a,session);break;
                 case 3:DanmakuSettings.toggle(a,"danmaku_show",!DanmakuSettings.show(a));session.syncDisplay();break;
                 case 4:session.clear();break;
-                default:session.choose(sources.get(index-5),session.keyword,false);
+                default:session.chooseManual(sources.get(index-5),session.keyword,false);
             }
         });
     }

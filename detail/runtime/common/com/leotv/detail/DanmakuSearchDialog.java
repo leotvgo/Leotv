@@ -153,11 +153,13 @@ final class DanmakuSearchDialog {
         for(String title:titles){List<DanmakuSource> items=series.get(title);DanmakuTitle.sortByEpisode(items,reverse);boolean open=title.equals(expanded);
             DanmakuSource catalog=null;for(DanmakuSource item:items)if(item.isCatalog()){catalog=item;break;}final DanmakuSource pending=catalog;
             String groupLabel=title.contains("@@@")?title.substring(0,title.lastIndexOf("@@@")):title;
+            if(!items.isEmpty())groupLabel=DanmakuTitle.seriesLabel(items.get(0),groupLabel);
             TextView group=button((open?"▾  ":"▸  ")+groupLabel+(pending==null?"   "+items.size()+"集":"   展开剧集"),()->{initialFocusPending=false;autoExpanded=true;expanded=title.equals(expanded)?"":title;renderResults();focusGroup(title);if(title.equals(expanded)&&pending!=null)loadSeries(pending);});group.setGravity(Gravity.CENTER_VERTICAL|Gravity.START);group.setTag(title);group.setActivated(open);group.setSingleLine(true);group.setEllipsize(android.text.TextUtils.TruncateAt.END);group.setTypeface(Typeface.DEFAULT,Typeface.BOLD);LinearLayout.LayoutParams gp=new LinearLayout.LayoutParams(-1,dp(40));gp.bottomMargin=dp(6);results.addView(group,gp);focusRows.add(new ArrayList<>(java.util.Collections.singletonList(group)));
             if(!open)continue;GridLayout grid=new GridLayout(context);grid.setColumnCount(columns);grid.setClipChildren(true);grid.setClipToPadding(true);
             if(pending!=null){catalogPending=true;TextView load=button(loadingSeries.equals(pending.seriesId)?"正在加载剧集…":"加载剧集",()->loadSeries(pending));results.addView(load,new LinearLayout.LayoutParams(-1,dp(44)));focusRows.add(new ArrayList<>(java.util.Collections.singletonList(load)));if(firstExpansion)results.post(()->loadSeries(pending));continue;}
-            for(int i=0;i<items.size();i++){DanmakuSource item=items.get(i);int episode=DanmakuTitle.getEpisode(item);String label=episode==DanmakuTitle.EPISODE_UNKNOWN?item.getName():"第"+episode+"集";
-                TextView entry=button(label,()->{selected=true;session.choose(item,input.getText().toString(),true);dialog.dismiss();});entry.setMaxLines(2);entry.setEllipsize(android.text.TextUtils.TruncateAt.END);
+            for(int i=0;i<items.size();i++){DanmakuSource item=items.get(i);String label=DanmakuTitle.episodeLabel(item);
+                TextView entry=button(label,()->{selected=true;session.chooseManual(item,input.getText().toString(),true);dialog.dismiss();});entry.setMaxLines(2);entry.setEllipsize(android.text.TextUtils.TruncateAt.END);
+                entry.setContentDescription(item.getName());entry.setOnLongClickListener(v->{showOriginalName(item);return true;});
                 entry.setTag("episode@"+item.url);entry.setActivated(session.selected!=null&&session.selected.url.equals(item.url));
                 if(i%columns==0)focusRows.add(new ArrayList<>());focusRows.get(focusRows.size()-1).add(entry);
                 GridLayout.LayoutParams p=new GridLayout.LayoutParams(GridLayout.spec(i/columns),GridLayout.spec(i%columns));p.width=cell-dp(8);p.height=dp(44);p.setMargins(dp(4),dp(4),dp(4),dp(4));grid.addView(entry,p);
@@ -178,6 +180,13 @@ final class DanmakuSearchDialog {
         // activation stops it, so later asynchronous renders cannot steal focus.
     }
     void loadSeries(DanmakuSource series){if(closed||loadingSeries.equals(series.seriesId))return;loadingSeries=series.seriesId;session.expand(series,()->{if(!session.status.startsWith("正在"))loadingSeries="";refresh();});}
+    void showOriginalName(DanmakuSource item){
+        if(closed)return;
+        try{TextView name=new TextView(context);name.setText(item.getName());name.setTextSize(16);name.setPadding(dp(20),dp(16),dp(20),dp(16));name.setTextIsSelectable(true);
+            ScrollView body=new ScrollView(context);body.addView(name);Dialog full=NativeDialogs.panel(activity,"原始弹幕名称",body,null);
+            session.dialogs.add(full);full.setOnDismissListener(ignored->session.dialogs.remove(full));full.show();
+        }catch(ReflectiveOperationException unavailable){android.widget.Toast.makeText(activity,item.getName(),android.widget.Toast.LENGTH_LONG).show();}
+    }
     TextView text(String value,int size){TextView view=new TextView(context);view.setText(value);view.setTextSize(size);view.setTextColor(foreground);view.setGravity(Gravity.CENTER_VERTICAL);return view;}
     void focusGroup(String title){results.post(()->{if(closed)return;View group=results.findViewWithTag(title);if(group!=null){group.requestFocus();scroll.smoothScrollTo(0,group.getTop());}});}
     TextView button(String value,Runnable click){TextView view=text(value,14);view.setId(View.generateViewId());view.setTextColor(actionColors);view.setGravity(Gravity.CENTER);view.setFocusable(true);view.setFocusableInTouchMode(!Device.MOBILE);view.setClickable(true);view.setBackground(actionBackground());view.setPadding(dp(10),dp(4),dp(10),dp(4));if(!Device.MOBILE)view.setOnKeyListener(this::navigate);view.setOnClickListener(v->{initialFocusPending=false;click.run();});return view;}

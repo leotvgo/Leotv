@@ -119,6 +119,7 @@
         "openSearch(Landroid/app/Activity;)V",
         "menuCreated(Ljava/lang/Object;)V",
         "bootstrapBegin(Landroid/app/Activity;)V",
+        "bootstrapAllowed(Landroid/app/Activity;)Z",
         "bootstrapEnd(Landroid/app/Activity;)V"
       ]
     },

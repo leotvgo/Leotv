@@ -51,7 +51,7 @@ final class DanmakuControls implements AutoCloseable {
         int tint=title instanceof TextView?((TextView)title).getCurrentTextColor():Device.MOBILE?0xff202832:Color.WHITE;
         lens.setImageTintList(android.content.res.ColorStateList.valueOf(tint));
         lens.setTag(MENU);lens.setId(View.generateViewId());lens.setFocusableInTouchMode(!Device.MOBILE);
-        row.addView(lens,!Device.MOBILE&&template!=null?NativeViews.copyLayout(template):new LinearLayout.LayoutParams(dp(root.getContext(),44),dp(root.getContext(),44)));
+        row.addView(lens,template!=null?NativeViews.copyLayout(template):new LinearLayout.LayoutParams(dp(root.getContext(),32),dp(root.getContext(),32)));
         Switch enabled=new Switch(root.getContext());enabled.setText("弹幕");enabled.setChecked(DanmakuSettings.show(activity));enabled.setFocusable(true);
         if(title instanceof TextView)enabled.setTextColor(((TextView)title).getTextColors());
         enabled.setOnCheckedChangeListener((button,checked)->{DanmakuSettings.toggle(activity,"danmaku_show",checked);session.syncDisplay();});

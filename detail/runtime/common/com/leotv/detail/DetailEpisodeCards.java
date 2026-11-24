@@ -120,7 +120,10 @@ final class DetailEpisodeCards {
             int w = dp(tv ? 164 : 196), h = dp(tv ? 92 : 110);
             pictureWidth = w;
             label.setMaxLines(2); label.setMinimumHeight(h + dp(44)); label.setCompoundDrawablePadding(dp(8));
-            label.setTextColor(0xffedf0f3); label.setTextSize(tv ? 13 : 12);
+            int playing=textColours.getColorForState(new int[]{android.R.attr.state_enabled,android.R.attr.state_activated},0xffffd54f);
+            if(playing==textColours.getDefaultColor())playing=0xffffd54f;
+            boolean current=item.isActivated()||label.isActivated();
+            label.setTextColor(current?playing:0xffedf0f3); label.setTextSize(tv ? 13 : 12);
             label.setGravity(android.view.Gravity.TOP | android.view.Gravity.LEFT);
             // A top compound drawable is centered in the content width. Put the mobile
             // inter-card gap on the right so the first picture starts at the list's left edge.
@@ -222,7 +225,7 @@ final class DetailEpisodeCards {
                 canvas.drawBitmap(bitmap,null,image,paint);
             }
             canvas.restore();
-            if(item.isFocused()||item.isSelected()||item.isActivated()||label.isSelected()||label.isActivated()) {
+            if(item.hasFocus()||label.isFocused()) {
                 paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(dp(2));paint.setColor(0x00f2f4f6 | (alpha << 24));canvas.drawRoundRect(box,radius,radius,paint);
             }
         }

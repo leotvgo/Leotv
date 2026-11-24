@@ -15,6 +15,8 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
     private BackdropHttp.Request metadataRequest;
     private SourceGateway.Detail source;
     private MobileDetailMetadata.Result metadata;
+    private BackdropSettings.Options metadataOptions;
+    private BackdropSettings.Options requestedOptions;
     private TvDetailPage page;
     private int generation;
 
@@ -39,7 +41,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
             page.bindSource(source);enrich(token);return;
         }
         DetailSessionCache.State cached=DetailSessionCache.get(this,site,id);
-        if(cached!=null){source=cached.source;metadata=cached.metadata==null?null:cached.metadata.detached();page.bindSource(source);if(metadata!=null)page.render(metadata);else enrich(token);return;}
+        if(cached!=null){source=cached.source;metadata=cached.metadata==null?null:cached.metadata.detached();metadataOptions=BackdropSettings.read(this);page.bindSource(source);if(metadata!=null)page.render(metadata);else enrich(token);return;}
         org.json.JSONObject seed=RelatedDetail.metadata(id);
         if(seed==null)seed=NativeRouting.searchMetadata(getIntent());
         if(seed!=null){
@@ -59,17 +61,19 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
         if(source==null)return;if(metadataRequest!=null)metadataRequest.cancel();if(metadataTask!=null)metadataTask.cancel(true);
         BackdropHttp.Request request=new BackdropHttp.Request();metadataRequest=request;
         BackdropIdentity identity=identity();BackdropSettings.Options options=BackdropSettings.read(this);
+        requestedOptions=options;
         metadataTask=worker.submit(()->{
             MobileDetailMetadata.Result value=null;
             try{value=new MobileDetailMetadata().load(identity,options,request);}catch(Exception|OutOfMemoryError unavailable){}
             MobileDetailMetadata.Result result=value;
             main.post(()->{if(token!=generation||isDestroyed()||metadataRequest!=request){if(result!=null)result.release();return;}
+                if(!options.same(BackdropSettings.read(this))){if(result!=null)result.release();enrich(++generation);return;}
                 if(result==null&&metadata!=null)return;
-                MobileDetailMetadata.Result old=metadata;metadata=result;page.render(result);DetailSessionCache.put(this,source,metadata);if(old!=null&&old!=result)old.release();});
+                MobileDetailMetadata.Result old=metadata;metadata=result;metadataOptions=options;page.render(result);DetailSessionCache.put(this,source,metadata);if(old!=null&&old!=result)old.release();});
         });
     }
     @Override public void rematch(){enrich(generation);}
-    private void cacheState(){DetailSessionCache.put(this,source,source!=null&&page!=null&&source.site.equals(page.metadataSite)&&source.id.equals(page.metadataId)?metadata:null);}
+    private void cacheState(){DetailSessionCache.put(this,source,source!=null&&page!=null&&source.site.equals(page.metadataSite)&&source.id.equals(page.metadataId)&&metadataOptions!=null&&metadataOptions.same(BackdropSettings.read(this))?metadata:null);}
     @Override public void play(SourceGateway.Episode episode){
         if(source==null)return;
         cacheState();DetailSessionCache.pin(this,source);
@@ -98,7 +102,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
     @Override public void download(){
         if(page!=null)page.nativeEpisodes.open(true);
     }
-    @Override public void onResume(){super.onResume();if(page!=null)page.resume();}
+    @Override public void onResume(){super.onResume();if(page!=null){page.resume();BackdropSettings.Options previous=metadataOptions!=null?metadataOptions:requestedOptions;if(source!=null&&previous!=null&&!previous.same(BackdropSettings.read(this)))enrich(++generation);}}
     @Override public void onPause(){cacheState();if(page!=null)page.suspend();super.onPause();}
     /** The preserved AppCompat callback is final; the application lifecycle saves these extras. */
     public void saveDetailState(Bundle saved){saved.putString("leotv.detail.site",getIntent().getStringExtra("key"));saved.putString("leotv.detail.id",getIntent().getStringExtra("id"));saved.putString("leotv.detail.name",getIntent().getStringExtra("name"));saved.putString("leotv.detail.pic",getIntent().getStringExtra("pic"));}

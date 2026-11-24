@@ -86,6 +86,7 @@ final class DanmakuApi {
             if(details.optString("animeId").isEmpty())details.put("animeId",series.seriesId);
             if(details.optString("animeTitle").isEmpty())details.put("animeTitle",series.seriesTitle);
             if(details.optString("source").isEmpty()&&!series.source.isEmpty())details.put("source",series.source);
+            if(details.optString("mediaType").isEmpty()&&!series.mediaType.isEmpty())details.put("mediaType",series.mediaType);
             body=object.toString();
         }
         List<DanmakuSource> sources=DanmakuSource.parse(body,endpoint);
