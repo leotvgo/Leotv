@@ -23,3 +23,7 @@
 versionName 仍为正式 5.3.0，versionCode 从 630 增至 631，便于相同固定证书覆盖升级。旧 Release 456401740、源码 `8f8b9ca2466291a584c17de36b815028d8326af3`、构建 45343791353 将归档为内部草稿 `leotv-5.3.0-withdrawn-build-45343791353`；核对资产 ID/大小/digest 保留后再撤下仍指向该旧源码的正式标签，新构建重新发布正式标签。旧 APK、签名/审计报告、源码和取证保留。
 
 仅运行必需源码审计；不执行本地 APK 打包、反复回归或设备测试，GitHub `run_validation_tests=false`。签名后的完整字段、圆/横/列表样式、原生异常恢复与目录/分页操作效果由用户真机验收。
+
+## 交付结果
+
+源码 `07a3c9310c03031670bf7ec50b822acef8300a34` 的[构建 45348210597](https://github.com/leotvgo/Leotv/actions/runs/45348210597)及[自动发布 45348883168](https://github.com/leotvgo/Leotv/actions/runs/45348883168)均成功。[正式 5.3.0 / 631](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0)已替换为新源码的四套固定签名 APK，八份审计/签名报告及 APK 摘要对应；四套 API23/R8、原样与允许变化门禁通过，证书与此前 APK 固定证书一致。旧 630 的 12 项资产 ID/大小/digest 再核对保持，归档草稿仍存在。发布后已恢复私有并通过 API 核对。证据保存在 `evidence/leotv-5.3.0-631-build-dispatch-20261124.json` 与旧包归档记录；无本地打包或设备回归，真机效果待验收。
