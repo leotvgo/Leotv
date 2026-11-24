@@ -75,14 +75,30 @@ def check_sources(root=ROOT):
         raise ValueError('Home hero tail must use the laid-out parent viewport, including the initial frame.')
     if 'root.setPadding(side,0,side,0)' not in history:
         raise ValueError('Native recent history must retain the original outer list side padding.')
-    if 'hero.parentBackdrop(true)' not in home or 'hero.drawHomeBackdrop(canvas' not in home or 'if(parentBackdrop)return' not in hero or 'hero.onFrame(' not in home:
-        raise ValueError('Home artwork and category background must be composited by the same parent surface.')
+    if 'hero.externalTail(true)' not in home or 'hero.drawHomeFade(canvas' not in home or 'if(externalTail)' not in hero or 'setWillNotDraw(false)' not in hero or 'hero.onFrame(' not in home:
+        raise ValueError('TV artwork must draw in its own View with a continuous parent fade before list content.')
+    if 'else addView(hero,0,' not in home or 'child==scroll){backdrop.setBounds(0,0,getWidth(),getHeight());backdrop.draw(canvas)' not in home or 'if(!phone)hero.setVisibility(visible?VISIBLE:GONE)' not in home or 'hero.setTranslationY(top)' not in home:
+        raise ValueError('TV hero must draw behind the scrolling content and follow its layout and visibility.')
     if 'canvas.drawRect(0,start-top,w,height-top,paint)' not in hero or 'clipHeight>h&&imageBounds.bottom<clipHeight' not in hero:
         raise ValueError('Home tail must continue below the hero layout edge without exposing the image clip.')
     if 'scroll.setBackground(null)' not in home or 'rows.setBackground(null)' not in home:
         raise ValueError('Owned home layout containers must not cover the continuous parent background.')
-    if 'if(!phone){hero.parentBackdrop(true)' not in home or 'if(phone){paint.setShader(null)' not in home:
+    if 'if(!phone){hero.externalTail(true)' not in home or 'if(phone){paint.setShader(null)' not in home:
         raise ValueError('TV continuous backdrop must preserve the confirmed mobile rendering path.')
+    settings = (root / 'detail/runtime/common/com/leotv/detail/MetadataSettings.java').read_text()
+    personalization = (root / 'detail/runtime/common/com/leotv/detail/Personalization.java').read_text()
+    if 'getBoolean("new_home_recent",true)' not in settings or 'RECENT = "新主页最近观看"' not in personalization or 'MetadataSettings.setNewHomeRecent(' not in personalization:
+        raise ValueError('TV recent-history preference requires its native settings row and enabled default.')
+    if 'closed||!active||!enabled' not in history or '!closed&&enabled&&count>0' not in history or 'settings.unregisterOnSharedPreferenceChangeListener(settingChanged)' not in history:
+        raise ValueError('Disabled home recent history must reject refresh/late results and never expose the row.')
+    if 'ENDPOINT = "TMDB配置"' not in personalization or 'summary(endpoint,custom?"自定义":"默认内置")' not in personalization:
+        raise ValueError('Both clients must retain a short TMDB settings title and summary.')
+    if 'count=Device.MOBILE?3:6' in category or 'NativeCspUi.spec(this,appearance)[0]' not in category or 'GridLayout.spec(i/count,GridLayout.TOP)' not in category:
+        raise ValueError('TV recommendation categories require native card sizing and top-aligned grid rows.')
+    if 'fitTvCards(appearance,target,height)' not in category or 'tallest=Math.max(tallest,card.getMeasuredHeight())' not in category or 'rect.inset(-edgeX,-edgeY)' not in category:
+        raise ValueError('TV recommendation categories must measure full cards and retain focus zoom space.')
+    if 'restoreInitialFocus()' not in category or 'initialFocusPending=false' not in category or 'private boolean focusCard(int index)' not in category or 'index%columns>0' not in category:
+        raise ValueError('TV recommendation categories need initial focus and bounded directional navigation.')
     # Git's spelling is authoritative even on a case-insensitive local filesystem.
     tracked = set(subprocess.check_output(['git', '-C', str(root), 'ls-files', '-z']).decode().split('\0'))
     manifests = {name: json.loads((root / name).read_text()) for name in LOCKS}

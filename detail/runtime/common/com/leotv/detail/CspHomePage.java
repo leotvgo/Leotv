@@ -38,16 +38,16 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     CspHomePage(Activity activity,boolean phone,Actions actions){
         super(activity);this.activity=activity;this.phone=phone;this.actions=actions;initialFocusPending=!phone;
         backdrop.fallback=com.leotv.ui.GlobalChrome.currentBackground(activity);setTag("leotv_csp_home");
-        setBackground(backdrop);
+        if(phone)setBackground(backdrop);else setBackground(null);
         scroll=phone?new ScrollView(activity):new TvHomeScroll();if(!phone)scroll.setBackground(null);scroll.setClipToPadding(false);scroll.setVerticalScrollBarEnabled(false);scroll.setFillViewport(true);
         rows=new LinearLayout(activity);if(!phone)rows.setBackground(null);rows.setOrientation(LinearLayout.VERTICAL);scroll.addView(rows,new ScrollView.LayoutParams(-1,-2));addView(scroll,new FrameLayout.LayoutParams(-1,-1));
         if(!phone){setClipChildren(false);rows.setClipChildren(false);scroll.setClipChildren(false);}
         heroFrame=new FrameLayout(activity);if(!phone)heroFrame.setBackground(null);rows.addView(heroFrame,new LinearLayout.LayoutParams(-1,dp(phone?480:360)));
         hero=new DetailHero(activity,colour->{if(closed)return;backdrop.colour=DetailHero.surface(colour);backdrop.invalidateSelf();invalidate();if(backgroundChanged!=null)backgroundChanged.run();});hero.transparentWaiting(true);hero.presentation(phone,0);hero.limit(15);hero.dots(false);hero.tailWeight(.75f);hero.seamlessTail(true);
-        if(!phone){hero.parentBackdrop(true);hero.onFrame(()->{if(!closed){backdrop.invalidateSelf();invalidate();}});}
-        heroFrame.addView(hero,new FrameLayout.LayoutParams(-1,-1));
+        if(!phone){hero.externalTail(true);hero.onFrame(()->{if(!closed){backdrop.invalidateSelf();invalidate();}});}
+        if(phone)heroFrame.addView(hero,new FrameLayout.LayoutParams(-1,-1));else addView(hero,0,new FrameLayout.LayoutParams(-1,dp(360)));
         heroFrame.addOnLayoutChangeListener((view,l,t,r,b,ol,ot,or,ob)->{if(!closed){syncHeroBounds();hero.invalidate();refreshHeroBackdrop();}});
-        heroFrame.setVisibility(GONE);
+        heroFrame.setVisibility(GONE);if(!phone)hero.setVisibility(GONE);
         LinearLayout info=new LinearLayout(activity);info.setOrientation(LinearLayout.VERTICAL);info.setGravity(Gravity.CENTER);info.setPadding(dp(22),0,dp(22),dp(25));
         title=text("",phone?28:30);title.setGravity(Gravity.CENTER);title.setTypeface(title.getTypeface(),android.graphics.Typeface.BOLD);title.setMaxLines(2);
         titleArt=new DetailTitleArt(activity,()->{if(closed)return;title.setVisibility(titleArtReady()?GONE:VISIBLE);});titleArt.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);
@@ -62,10 +62,17 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         shortcut=new android.widget.ImageView(activity);View nativeTop=NativeViews.find(activity,"top");if(nativeTop instanceof android.widget.ImageView)shortcut.setImageDrawable(NativeViews.drawable(((android.widget.ImageView)nativeTop).getDrawable(),shortcut));else shortcut.setImageDrawable(new NativeCspUi.Glyph(false,false));shortcut.setPadding(dp(12),dp(12),dp(12),dp(12));shortcut.setContentDescription("一键回顶");shortcut.setFocusable(true);shortcut.setClickable(true);shortcut.setBackground(TvDetailPage.focusBackground(activity));shortcut.setOnClickListener(v->scroll.smoothScrollTo(0,0));addView(shortcut,new FrameLayout.LayoutParams(dp(48),dp(48),Gravity.BOTTOM|Gravity.RIGHT));shortcut.setVisibility(phone?VISIBLE:GONE);
         recent=phone?null:new NativeRecentHistory(activity,this::historyChanged);if(recent!=null)rows.addView(recent.root,new LinearLayout.LayoutParams(-1,-2));
         status=text("正在加载分类…",15);status.setGravity(Gravity.CENTER);status.setPadding(0,dp(20),0,dp(20));rows.addView(status,new LinearLayout.LayoutParams(-1,-2));
-        scrollChanged=()->{if(closed)return;int y=scroll.getScrollY();if(y==observedScrollY)return;observedScrollY=y;resetOffscreenRows();backdrop.shader=null;invalidate();if(viewportChanged!=null)viewportChanged.run();};scroll.getViewTreeObserver().addOnScrollChangedListener(scrollChanged);
+        scrollChanged=()->{if(closed)return;int y=scroll.getScrollY();if(y==observedScrollY)return;observedScrollY=y;if(!phone)syncHeroBounds();resetOffscreenRows();backdrop.shader=null;invalidate();if(viewportChanged!=null)viewportChanged.run();};scroll.getViewTreeObserver().addOnScrollChangedListener(scrollChanged);
         rows.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->{if(closed)return;if(viewportChanged!=null)viewportChanged.run();});
     }
-    void syncHeroBounds(){int w=heroFrame.getWidth()-heroFrame.getPaddingLeft()-heroFrame.getPaddingRight(),h=heroFrame.getHeight()-heroFrame.getPaddingTop()-heroFrame.getPaddingBottom();if(w<=0||h<=0||hero.getWidth()==w&&hero.getHeight()==h)return;hero.measure(View.MeasureSpec.makeMeasureSpec(w,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(h,View.MeasureSpec.EXACTLY));hero.layout(heroFrame.getPaddingLeft(),heroFrame.getPaddingTop(),heroFrame.getPaddingLeft()+w,heroFrame.getPaddingTop()+h);}
+    void syncHeroBounds(){
+        int w=heroFrame.getWidth()-heroFrame.getPaddingLeft()-heroFrame.getPaddingRight(),h=heroFrame.getHeight()-heroFrame.getPaddingTop()-heroFrame.getPaddingBottom();if(w<=0||h<=0)return;
+        int height=phone?h:h+Math.max(dp(48),Math.round(h*.16f));
+        if(!phone){hero.artworkHeight(h);ViewGroup.LayoutParams params=hero.getLayoutParams();if(params.width!=w||params.height!=height){params.width=w;params.height=height;hero.setLayoutParams(params);}float top=scroll.getTop()+rows.getTop()+heroFrame.getTop()+heroFrame.getPaddingTop()-scroll.getScrollY();if(hero.getTranslationY()!=top)hero.setTranslationY(top);}
+        if(hero.getWidth()==w&&hero.getHeight()==height)return;hero.measure(View.MeasureSpec.makeMeasureSpec(w,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(height,View.MeasureSpec.EXACTLY));hero.layout(phone?heroFrame.getPaddingLeft():0,phone?heroFrame.getPaddingTop():0,(phone?heroFrame.getPaddingLeft():0)+w,(phone?heroFrame.getPaddingTop():0)+height);
+    }
+    @Override protected void onLayout(boolean changed,int l,int t,int r,int b){super.onLayout(changed,l,t,r,b);if(!phone&&!closed)syncHeroBounds();}
+    @Override protected boolean drawChild(Canvas canvas,View child,long drawingTime){if(!phone&&child==scroll){backdrop.setBounds(0,0,getWidth(),getHeight());backdrop.draw(canvas);}return super.drawChild(canvas,child,drawingTime);}
     void refreshHeroBackdrop(){if(closed)return;if(hero.hasArtwork()){backdrop.colour=hero.surfaceColour();if(backgroundChanged!=null)backgroundChanged.run();}backdrop.invalidateSelf();invalidate();}
     void syncHistory(){if(recent!=null)recent.sync();}
     void historyChanged(){if(!closed&&viewportChanged!=null)viewportChanged.run();}
@@ -100,7 +107,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     void loaded(int index,List<JSONObject> items){if(closed||index<0||index>=shelves.size())return;Shelf shelf=shelves.get(index);shelf.fill(items);}
     void failed(int index){if(index>=0&&index<shelves.size())shelves.get(index).note.setText("加载失败，点更多重试");if(index==0)initialTargetReady=true;}
     void failed(String message){status.setText(message);status.setVisibility(VISIBLE);hero.finishLoading();}
-    void heroVisible(boolean visible){initialTargetReady=true;heroFrame.setVisibility(visible?VISIBLE:GONE);hero.setActive(pageActive&&visible&&getVisibility()==VISIBLE);updateInsets();}
+    void heroVisible(boolean visible){initialTargetReady=true;heroFrame.setVisibility(visible?VISIBLE:GONE);if(!phone)hero.setVisibility(visible?VISIBLE:GONE);hero.setActive(pageActive&&visible&&getVisibility()==VISIBLE);updateInsets();}
     void beginHeroLoading(){backdrop.fallback=com.leotv.ui.GlobalChrome.currentBackground(activity);heroProxy=BackdropSettings.read(activity).proxy;boundHeroIndex=-1;boundHeroItem=null;boundHeroMetadata=null;hero.loadSources(java.util.Collections.emptyList(),heroProxy);heroItems.clear();heroMetadata.clear();title.setText("");facts.setText("");overview.setText("");dots.removeAllViews();titleArt.load(java.util.Collections.emptyList(),heroProxy);invalidate();}
     int heroIndex;
     void hero(List<JSONObject> values,List<MobileDetailMetadata.Result> metadata){
@@ -263,7 +270,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
             int height=Math.max(1,getHeight()),heroTop=scroll.getTop()+rows.getTop()+heroFrame.getTop()-scroll.getScrollY(),heroBottom=Math.max(0,Math.min(height,scroll.getTop()+rows.getTop()+heroFrame.getBottom()-scroll.getScrollY()));
             if(heroBottom<height&&(shader==null||paintedHeight!=height||paintedHero!=heroBottom)){paintedHeight=height;paintedHero=heroBottom;shader=new LinearGradient(0,heroBottom,0,height,new int[]{0x0004060a,DetailHero.FLOOR},null,Shader.TileMode.CLAMP);}
             if(phone){paint.setShader(null);paint.setColor(colour);canvas.drawRect(getBounds(),paint);if(heroBottom<height){paint.setShader(shader);canvas.drawRect(0,heroBottom,getWidth(),height,paint);paint.setShader(null);}return;}
-            hero.drawHomeBackdrop(canvas,getWidth(),height,heroTop,heroFrame.getHeight(),heroBottom<height?shader:null);
+            hero.drawHomeFade(canvas,getWidth(),height,heroTop,heroFrame.getHeight(),heroBottom<height?shader:null);
         }
         @Override public void setAlpha(int value){paint.setAlpha(value);}
         @Override public void setColorFilter(android.graphics.ColorFilter value){paint.setColorFilter(value);}

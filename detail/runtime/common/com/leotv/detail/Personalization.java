@@ -5,14 +5,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 /** Uses the existing native preference rows and dialogs for Leotv's own settings. */
 public final class Personalization {
     private static final String TAG = "leotv_detail_settings";
-    private static final String THEME = "详情页主题", ENDPOINT = "TMDB 配置", SEARCH = "全局搜索", HOME = "新主页";
+    private static final String THEME = "详情页主题", ENDPOINT = "TMDB配置", SEARCH = "全局搜索", HOME = "新主页", RECENT = "新主页最近观看";
     private Personalization() {}
 
     public static void attach(Activity activity, View root) {
@@ -45,6 +44,11 @@ public final class Personalization {
                 () -> {MetadataSettings.setResourceGlobalSearch(activity,!MetadataSettings.resourceGlobalSearch(activity));refresh(activity,rows);});
         add(activity, second, template, summary, HOME,
                 () -> {MetadataSettings.setNewHome(activity,!MetadataSettings.newHome(activity));refresh(activity,rows);});
+        if(!Device.MOBILE){
+            LinearLayout third=new LinearLayout(activity);third.setOrientation(LinearLayout.HORIZONTAL);LinearLayout.LayoutParams line=new LinearLayout.LayoutParams(-1,-2);line.topMargin=rowSpacing(target);rows.addView(third,line);
+            add(activity,third,template,summary,RECENT,()->{MetadataSettings.setNewHomeRecent(activity,!MetadataSettings.newHomeRecent(activity));refresh(activity,rows);});
+            third.addView(new View(activity),new LinearLayout.LayoutParams(0,-2,1));
+        }
         if(Device.MOBILE)add(activity, rows, template, summary, "弹幕 API",
                 () -> DanmakuUi.settings(activity));
         View anchor = template;
@@ -60,13 +64,11 @@ public final class Personalization {
     private static void refresh(Activity activity, View rows) {
         View theme = rows.findViewWithTag(THEME), endpoint = rows.findViewWithTag(ENDPOINT);
         summary(theme, Device.THEME_NAMES[MetadataSettings.theme(activity)]);
-        String host;
-        try { host = new URI(MetadataSettings.base(activity)).getAuthority(); }
-        catch (java.net.URISyntaxException invalid) { host = MetadataSettings.base(activity); }
-        String image;try{image=new URI(MetadataSettings.imageBase(activity)).getAuthority();}catch(java.net.URISyntaxException invalid){image=MetadataSettings.imageBase(activity);}
-        summary(endpoint,(MetadataSettings.customKey(activity)?"自定义 Key":"内置 Key")+" · API "+(TmdbRoutes.apiBase(MetadataSettings.base(activity))?"自动":host)+" · 图片 "+(TmdbRoutes.imageRoot(MetadataSettings.imageBase(activity))?"自动":image));
+        boolean custom=MetadataSettings.customKey(activity)||!TmdbRoutes.apiBase(MetadataSettings.base(activity))||!TmdbRoutes.imageRoot(MetadataSettings.imageBase(activity));
+        summary(endpoint,custom?"自定义":"默认内置");
         summary(rows.findViewWithTag(SEARCH), MetadataSettings.resourceGlobalSearch(activity)?"开启":"关闭");
         summary(rows.findViewWithTag(HOME), MetadataSettings.newHome(activity)?"开启":"关闭");
+        summary(rows.findViewWithTag(RECENT),MetadataSettings.newHomeRecent(activity)?"开启":"关闭");
         summary(rows.findViewWithTag("弹幕 API"),DanmakuSettings.api(activity).isEmpty()?"未配置":"已配置");
     }
     private static void summary(View row, String value) {

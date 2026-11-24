@@ -68,7 +68,7 @@ class DetailHero extends View {
     private boolean gradientPortrait;
     private float gradientWeight=-1;
     private boolean seamlessTail,gradientSeamless;
-    private boolean parentBackdrop;
+    private boolean externalTail;private int artworkHeight;
     private int tailTintColour;private android.graphics.PorterDuffColorFilter tailTint;
     /** How much of the carousel's own foot scrim is kept; the home keeps less of it than the detail page. */
     private float tailWeight = 1f;
@@ -85,7 +85,8 @@ class DetailHero extends View {
     /** Scales the carousel's own bottom scrim; the artwork's last edge stays the page colour either way. */
     void tailWeight(float value) { tailWeight = Math.max(0f, Math.min(1f, value)); invalidate(); }
     void seamlessTail(boolean value){if(seamlessTail!=value){seamlessTail=value;tailGradient=null;invalidate();}}
-    void parentBackdrop(boolean value){parentBackdrop=value;if(value)setBackground(null);setWillNotDraw(value);invalidate();}
+    void externalTail(boolean value){externalTail=value;if(value)setBackground(null);setWillNotDraw(false);invalidate();}
+    void artworkHeight(int value){if(artworkHeight!=value){artworkHeight=value;invalidate();}}
     /** How many slides this carousel keeps; the detail page wants five, the home wants its whole pool. */
     void limit(int value) { limit = Math.max(1, value); }
     /** The slide pips belong to the detail page; the home draws its own entries in that corner. */
@@ -423,7 +424,9 @@ class DetailHero extends View {
     private int topExtension;
     void topExtension(int value){value=Math.max(0,value);if(topExtension!=value){topExtension=value;invalidate();}}
     @Override protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);if(parentBackdrop)return;int save=canvas.save();canvas.translate(0,-topExtension);
+        super.onDraw(canvas);
+        if(externalTail){if(transparentWaiting&&bitmap==null)return;paint.setShader(null);paint.setColorFilter(null);paint.setAlpha(255);canvas.drawColor(colour);drawArtwork(canvas,getWidth(),artworkHeight>0?artworkHeight:getHeight(),getHeight());return;}
+        int save=canvas.save();canvas.translate(0,-topExtension);
         int height=getHeight();if(seamlessTail&&getParent() instanceof View){View frame=(View)getParent();if(frame.getHeight()>0)height=Math.max(1,frame.getHeight()-getTop()-frame.getPaddingBottom());}
         drawFrame(canvas,getWidth(),height+topExtension);canvas.restoreToCount(save);
     }
@@ -455,11 +458,9 @@ class DetailHero extends View {
         }
         paint.setAlpha(255);
     }
-    /** One parent-owned surface paints both the artwork fade and the region below the layout row. */
-    void drawHomeBackdrop(Canvas canvas,int w,int height,int top,int heroHeight,Shader darkness){
-        paint.setShader(null);paint.setColorFilter(null);paint.setColor(colour);paint.setAlpha(255);canvas.drawRect(0,0,w,height,paint);
-        int extension=Math.max(Math.round(48*getResources().getDisplayMetrics().density),Math.round(heroHeight*.16f));int photoHeight=Math.max(1,heroHeight+extension);
-        if(top<height&&top+photoHeight>0){int save=canvas.save();canvas.translate(0,top);canvas.clipRect(0,0,w,photoHeight);drawArtwork(canvas,w,heroHeight,photoHeight);canvas.restoreToCount(save);}
+    /** Paint the continuous fade after the native artwork View and before list content. */
+    void drawHomeFade(Canvas canvas,int w,int height,int top,int heroHeight,Shader darkness){
+        paint.setShader(null);paint.setColorFilter(null);paint.setAlpha(255);int photoHeight=Math.max(1,getHeight());
         gradients(w,photoHeight);paint.setShader(tailGradient);tintTail();
         int save=canvas.save();canvas.translate(0,top);float start=Math.max(0,top+photoHeight*(portrait?.48f:.30f));canvas.drawRect(0,start-top,w,height-top,paint);canvas.restoreToCount(save);
         paint.setColorFilter(null);paint.setShader(darkness);if(darkness!=null)canvas.drawRect(0,Math.max(0,top+heroHeight),w,height,paint);paint.setShader(null);

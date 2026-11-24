@@ -17,22 +17,28 @@ import java.util.concurrent.Executors;
 /** Uses the shell's live History adapter, row presenter and recycler; no History-to-Vod conversion. */
 final class NativeRecentHistory implements AutoCloseable {
     final Activity activity;final Runnable changed;final LinearLayout root;
+    final android.content.SharedPreferences settings;
+    final android.content.SharedPreferences.OnSharedPreferenceChangeListener settingChanged;
     final Handler main=new Handler(Looper.getMainLooper());
     final ExecutorService worker=Executors.newSingleThreadExecutor(r->{Thread t=new Thread(r,"leotv-native-history");t.setDaemon(true);return t;});
     ArrayObjectAdapter adapter;HorizontalGridView cards;Object fragment,rowPresenter,rowHolder,headerPresenter,headerHolder;
-    boolean closed,active=true,attached,loaded;int count=-1;long generation;
+    boolean closed,active=true,attached,loaded,enabled;int count=-1;long generation;
     Class<?> holderType;
     NativeRecentHistory(Activity activity,Runnable changed){
         this.activity=activity;this.changed=changed;
+        settings=MetadataSettings.preferences(activity);enabled=MetadataSettings.newHomeRecent(activity);
+        settingChanged=(prefs,key)->{if("new_home_recent".equals(key))updateSetting();};
         root=new LinearLayout(activity){
             @Override protected void onAttachedToWindow(){super.onAttachedToWindow();attached=true;attachment(true);refresh();}
             @Override protected void onDetachedFromWindow(){attachment(false);attached=false;super.onDetachedFromWindow();}
         };
         int side=Math.round(24*activity.getResources().getDisplayMetrics().density);
         root.setOrientation(LinearLayout.VERTICAL);root.setPadding(side,0,side,0);root.setClipChildren(false);root.setClipToPadding(false);root.setTag("leotv_native_recent_history");root.setVisibility(View.GONE);
+        settings.registerOnSharedPreferenceChangeListener(settingChanged);
     }
+    private void updateSetting(){if(closed)return;boolean value=MetadataSettings.newHomeRecent(activity);if(value==enabled)return;enabled=value;if(enabled){if(active)refresh();}else{generation++;main.removeCallbacksAndMessages(null);resetDelete();release();changed.run();}}
     void refresh(){
-        if(closed||!active)return;final long token=++generation;main.removeCallbacksAndMessages(null);
+        if(closed||!active||!enabled)return;final long token=++generation;main.removeCallbacksAndMessages(null);
         try{
             Object owner=activity.getClass().getMethod("T").invoke(activity);
             ArrayObjectAdapter data=(ArrayObjectAdapter)owner.getClass().getField("l0").get(owner);
@@ -43,10 +49,10 @@ final class NativeRecentHistory implements AutoCloseable {
             final Integer configuration=SiteFeed.configId();
             worker.execute(()->{
                 try{Object values=Class.forName("com.fongmi.android.tv.bean.History",true,activity.getClassLoader()).getMethod("get").invoke(null);
-                    if(!(values instanceof List))return;main.post(()->{if(closed||!active||token!=generation||!java.util.Objects.equals(configuration,SiteFeed.configId()))return;adapter.setItems((List<?>)values,null);loaded=true;sync();});
+                    if(!(values instanceof List))return;main.post(()->{if(closed||!active||!enabled||token!=generation||!java.util.Objects.equals(configuration,SiteFeed.configId()))return;adapter.setItems((List<?>)values,null);loaded=true;sync();});
                 }catch(ReflectiveOperationException|RuntimeException unavailable){}
             });
-        }catch(ReflectiveOperationException|RuntimeException unavailable){release();main.postDelayed(()->{if(!closed&&active&&token==generation)refresh();},250);}
+        }catch(ReflectiveOperationException|RuntimeException unavailable){release();main.postDelayed(()->{if(!closed&&active&&enabled&&token==generation)refresh();},250);}
     }
     private void bind(ArrayObjectAdapter rows)throws ReflectiveOperationException{
         holderType=Class.forName("androidx.leanback.widget.Presenter$ViewHolder",true,activity.getClassLoader());
@@ -67,9 +73,9 @@ final class NativeRecentHistory implements AutoCloseable {
         try{if(rowPresenter!=null&&rowHolder!=null)rowPresenter.getClass().getMethod(value?"onViewAttachedToWindow":"onViewDetachedFromWindow",holderType).invoke(rowPresenter,rowHolder);if(headerPresenter!=null&&headerHolder!=null)headerPresenter.getClass().getMethod(value?"onViewAttachedToWindow":"onViewDetachedFromWindow",holderType).invoke(headerPresenter,headerHolder);}catch(ReflectiveOperationException|RuntimeException ignored){}
     }
     void sync(){
-        if(closed||!loaded||adapter==null)return;int size=adapter.size();if(size==count)return;count=size;root.setVisibility(size>0?View.VISIBLE:View.GONE);changed.run();
+        if(closed||!enabled||!loaded||adapter==null)return;int size=adapter.size();if(size==count)return;count=size;root.setVisibility(size>0?View.VISIBLE:View.GONE);changed.run();
     }
-    boolean visible(){return !closed&&count>0&&root.getVisibility()==View.VISIBLE;}
+    boolean visible(){return !closed&&enabled&&count>0&&root.getVisibility()==View.VISIBLE;}
     boolean contains(View view){return visible()&&NativeCspUi.descendant(view,root);}
     boolean atStart(){return cards!=null&&cards.getSelectedPosition()<=0;}
     boolean focusFirst(){if(!visible()||cards==null)return false;cards.setSelectedPosition(0);return cards.requestFocus();}
@@ -91,5 +97,5 @@ final class NativeRecentHistory implements AutoCloseable {
         }catch(ReflectiveOperationException|RuntimeException ignored){}
         root.removeAllViews();root.setVisibility(View.GONE);cards=null;adapter=null;rowPresenter=rowHolder=headerPresenter=headerHolder=fragment=null;count=-1;loaded=false;
     }
-    @Override public void close(){if(closed)return;closed=true;generation++;main.removeCallbacksAndMessages(null);worker.shutdownNow();release();}
+    @Override public void close(){if(closed)return;closed=true;settings.unregisterOnSharedPreferenceChangeListener(settingChanged);generation++;main.removeCallbacksAndMessages(null);worker.shutdownNow();release();}
 }
