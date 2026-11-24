@@ -27,3 +27,7 @@ TV 推荐来自当前首页缓存，进入 CspCategoryActivity；普通分类仍
 允许变化的生产源码限定为 CspHomePage、DetailHero、CspCategoryActivity、MetadataSettings、Personalization、NativeRecentHistory（TV），外加版本标识、本文与源码门禁。没有修改原宿主 smali、资源、数据库 schema/migration、JNI/反射、Android 6 回移层或各 ABI 原生 ZIP 资产。
 
 版本 5.3.1-preview.5 / 636；R8 8.8.34 release/full、API23、四变体原样/允许变化审计与固定签名核对保留。仅执行仓库必须的源码/发布树审计，不做本地 APK 打包或模型/UI 回归；GitHub run_validation_tests=false。沿用已授权的临时公开构建，发布后恢复并核对私有，正式 Latest 保持 5.3.0。海报、遥控、卡片边缘、设置显隐及持久化由签名后真机验收。
+
+## 交付结果
+
+源码 `1bb046077ba0c820714554934a151f80939df12e` 的[构建 45407407903](https://github.com/leotvgo/Leotv/actions/runs/45407407903)和[自动发布 45408157765](https://github.com/leotvgo/Leotv/actions/runs/45408157765)首次均成功。[preview.5 / 636 四套固定签名 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.1-preview.5-build-45407407903)及八份审计/签名报告齐备；逐套核对源码哈希、原样/允许变化、API23、R8 release/full、固定证书和 Release digest。已恢复并 API 核对仓库 PRIVATE，正式 Latest 保持 `leotv-5.3.0`。证据保存在 `evidence/leotv-5.3.1-preview.5-636-build-dispatch-20261124.json`。模型/UI 回归跳过，无本地 APK 打包或真机测试，实际效果交由用户验收。
