@@ -32,6 +32,14 @@ def check_sources(root=ROOT):
         raise ValueError('Home artwork requires merged CSP headers, pinned ALL caching and one measured load.')
     if 'NativeCspUi.rowStyle(activity,category.json,items)' not in home or 'vod.getMethod("getStyle",style).invoke(item,selected)' not in artwork:
         raise ValueError('Home card measurement/rendering must retain the native first-resource style override.')
+    category = (root / 'detail/runtime/common/com/leotv/detail/CspCategoryActivity.java').read_text()
+    recommendation = (root / 'detail/runtime/common/com/leotv/detail/CspRecommendation.java').read_text()
+    if 'NativeCspUi.card(this,grid,item,appearance,target' not in category or 'NativeCspUi.rowStyle(this,category.json,items)' not in category:
+        raise ValueError('Independent CSP categories must use complete native card binding and resource styles.')
+    if any('CspHomePage.card(' in source or 'images.bindSource(' in source for source in (home, category, recommendation)) or 'static View card(Activity activity,DetailThumbnails' in home:
+        raise ValueError('Simplified CSP poster/title cards must not remain as a fallback.')
+    if 'cloneInContext(activity).inflate(id,parent,false)' not in artwork or 'createCard(activity,retry,item,style,width,action)' not in artwork or 'vod.getMethod("getPic").invoke(bean)' not in artwork:
+        raise ValueError('Native card recovery must preserve its XML, complete Vod and native image address.')
     # Git's spelling is authoritative even on a case-insensitive local filesystem.
     tracked = set(subprocess.check_output(['git', '-C', str(root), 'ls-files', '-z']).decode().split('\0'))
     manifests = {name: json.loads((root / name).read_text()) for name in LOCKS}

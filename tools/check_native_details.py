@@ -114,7 +114,7 @@ def check_contract(root, variant, project=None):
     contracts[BEANS + 'Class'] = (['getTypeId()Ljava/lang/String;', 'getStyle()L' + BEANS + 'Style;'], [])
     contracts[BEANS + 'Style'] = (['rect()L' + BEANS + 'Style;', 'getRatio()F', 'isOval()Z', 'isList()Z'], [])
     contracts[BEANS + 'Site'] = (['getStyle(L' + BEANS + 'Style;)L' + BEANS + 'Style;'], [])
-    contracts[BEANS + 'Vod'] = (contracts[BEANS + 'Vod'][0] + ['objectFrom(Ljava/lang/String;)L' + BEANS + 'Vod;', 'getNameVisible()I', 'getYearVisible()I', 'getSiteVisible()I', 'getRemarkVisible()I'], contracts[BEANS + 'Vod'][1])
+    contracts[BEANS + 'Vod'] = (contracts[BEANS + 'Vod'][0] + ['objectFrom(Ljava/lang/String;)L' + BEANS + 'Vod;', 'getNameVisible()I', 'getYearVisible()I', 'getSiteVisible()I', 'getRemarkVisible()I', 'getYear()Ljava/lang/String;', 'getRemarks()Ljava/lang/String;', 'getSiteName()Ljava/lang/String;'], contracts[BEANS + 'Vod'][1])
     contracts[BEANS + 'Vod'][0].append('getStyle(L' + BEANS + 'Style;)L' + BEANS + 'Style;')
     contracts['U3/n' if mobile else 'S3/k'] = (['d(Landroid/widget/ImageView;Ljava/lang/String;Ljava/lang/String;Z)V', 'b(Ljava/lang/String;)Ljava/lang/Object;'], [])
     # New-home cards retain the original Glide models/listener/crop but enable the pinned ALL policy.

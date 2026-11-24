@@ -24,7 +24,7 @@ import java.util.List;
 final class CspHomePage extends FrameLayout implements AutoCloseable {
     interface Actions {void category(CspHomeData.Category category);void resource(CspHomeData.Category category,JSONObject item);void categories();void filters();}
     final ScrollView scroll;final LinearLayout rows;final DetailHero hero;final FrameLayout heroFrame;
-    final Activity activity;final boolean phone;final Actions actions;final DetailThumbnails images;
+    final Activity activity;final boolean phone;final Actions actions;
     final TextView title,facts,overview,status;final DetailTitleArt titleArt;final android.widget.ImageView shortcut;final LinearLayout dots;
     final List<JSONObject> heroItems=new ArrayList<>();final List<MobileDetailMetadata.Result> heroMetadata=new ArrayList<>();final List<Shelf> shelves=new ArrayList<>();
     final Backdrop backdrop=new Backdrop();
@@ -33,7 +33,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     CspHomePage(Activity activity,boolean phone,Actions actions){
         super(activity);this.activity=activity;this.phone=phone;this.actions=actions;initialFocusPending=!phone;
         backdrop.fallback=com.leotv.ui.GlobalChrome.currentBackground(activity);setTag("leotv_csp_home");
-        setBackground(backdrop);images=new DetailThumbnails(activity,BackdropSettings.read(activity).proxy,!phone);
+        setBackground(backdrop);
         scroll=phone?new ScrollView(activity):new TvHomeScroll();scroll.setClipToPadding(false);scroll.setVerticalScrollBarEnabled(false);scroll.setFillViewport(true);
         rows=new LinearLayout(activity);rows.setOrientation(LinearLayout.VERTICAL);scroll.addView(rows,new ScrollView.LayoutParams(-1,-2));addView(scroll,new FrameLayout.LayoutParams(-1,-1));
         if(!phone){setClipChildren(false);rows.setClipChildren(false);scroll.setClipChildren(false);}
@@ -183,7 +183,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
             View focused=rail.findFocus();int selected=focused==null?-1:rail.indexOfChild(focused),position=viewport.getScrollX();
             items=new ArrayList<>(values);rail.removeAllViews();note.setVisibility(items.isEmpty()?VISIBLE:GONE);note.setText("暂无内容");Object appearance=NativeCspUi.rowStyle(activity,category.json,items);int[] size=NativeCspUi.spec(activity,appearance);width=nativeWidth=size[0];height=nativeHeight=size[1];viewportHeight=scroll.getHeight();
             if(!phone){int inset=Math.max(dp(12),(int)Math.ceil((height+dp(48))*.05f)+dp(3));rail.setPadding(0,inset,0,inset);int edge=Math.max(dp(24),(int)Math.ceil(width*.05f)+dp(3));viewport.setPadding(edge,0,edge,0);}
-            for(int i=0;i<items.size()&&i<15;i++){JSONObject item=items.get(i);View card=NativeCspUi.card(activity,rail,item,appearance,width,()->actions.resource(category,item));if(card==null)card=card(activity,images,item,width,category.json,()->actions.resource(category,item));LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(width,-2);params.gravity=Gravity.TOP;params.rightMargin=dp(16);rail.addView(card,params);}
+            for(int i=0;i<items.size()&&i<15;i++){JSONObject item=items.get(i);View card=NativeCspUi.card(activity,rail,item,appearance,width,()->actions.resource(category,item));LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(width,-2);params.gravity=Gravity.TOP;params.rightMargin=dp(16);rail.addView(card,params);}
             if(!phone&&rail.getChildCount()>0&&viewportHeight>0){
                 View header=root.getChildAt(0);header.measure(View.MeasureSpec.makeMeasureSpec(Math.max(1,getWidth()),View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED));
                 int available=viewportHeight-dp(36)-header.getMeasuredHeight()-root.getPaddingTop()-root.getPaddingBottom()-rail.getPaddingTop()-rail.getPaddingBottom();
@@ -199,15 +199,8 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         }
         void reset(){selected=0;if(!phone)((TvShelfScroll)viewport).focused=null;viewport.scrollTo(0,0);}
     }
-    static View card(Activity activity,DetailThumbnails images,JSONObject item,int width,Runnable open){
-        return card(activity,images,item,width,null,open);
-    }
-    static View card(Activity activity,DetailThumbnails images,JSONObject item,int width,JSONObject style,Runnable open){
-        boolean landscape=style!=null&&style.optInt("land",0)==1,circle=style!=null&&style.optInt("circle",0)==1;double ratio=style==null?0:style.optDouble("ratio",0);if(ratio<=0)ratio=circle?1:landscape?1.33:.75;
-        LinearLayout card=new LinearLayout(activity);card.setOrientation(LinearLayout.VERTICAL);card.setFocusable(true);card.setClickable(true);card.setBackground(TvDetailPage.focusBackground(activity));card.setOnClickListener(v->open.run());NativeCspUi.cardFocus(card);DetailImageView image=new DetailImageView(activity);image.circular(circle);card.addView(image,new LinearLayout.LayoutParams(width,(int)Math.round(width/ratio)));TextView label=new TextView(activity);label.setText(item.optString("vod_name",item.optString("name")));label.setTextColor(Color.WHITE);label.setTextSize(Device.MOBILE?14:16);label.setMaxLines(2);label.setEllipsize(android.text.TextUtils.TruncateAt.END);label.setPadding(0,8,0,4);card.addView(label,new LinearLayout.LayoutParams(-1,-2));images.bindSource(CspHomeData.image(item,landscape),!landscape,image::setImageBitmap);return card;
-    }
     void active(boolean value){if(closed)return;boolean leaving=pageActive&&!value;pageActive=value;hero.setActive(value&&heroFrame.getVisibility()==VISIBLE);if(value)updateInsets();else if(leaving&&!phone){int y=scroll.getScrollY();for(Shelf shelf:shelves){if(shelf.rail.hasFocus()&&shelf.rail.getChildCount()>0)shelf.rail.getChildAt(0).requestFocus();shelf.reset();}scroll.scrollTo(0,y);}}
-    @Override public void close(){if(closed)return;closed=true;viewportChanged=null;backgroundChanged=null;heroFrame.setOnClickListener(null);hero.close();titleArt.close();images.close();}
+    @Override public void close(){if(closed)return;closed=true;viewportChanged=null;backgroundChanged=null;heroFrame.setOnClickListener(null);hero.close();titleArt.close();}
     final class Backdrop extends Drawable {
         Drawable fallback;final Paint paint=new Paint();int colour=DetailHero.DEFAULT_COLOR;Shader shader;int paintedHeight,paintedHero;
         @Override public void draw(Canvas canvas){if(hero==null||!hero.hasArtwork()){android.graphics.Rect before=new android.graphics.Rect(fallback.getBounds());fallback.setBounds(getBounds());fallback.draw(canvas);fallback.setBounds(before);return;}int height=Math.max(1,getHeight()),heroHeight=Math.max(0,heroFrame.getHeight()-scroll.getScrollY());if(shader==null||paintedHeight!=height||paintedHero!=heroHeight){paintedHeight=height;paintedHero=heroHeight;shader=new LinearGradient(0,0,0,height,new int[]{colour,colour,DetailHero.FLOOR},new float[]{0,Math.max(.05f,Math.min(.95f,heroHeight/(float)height)),1},Shader.TileMode.CLAMP);}paint.setShader(shader);canvas.drawRect(getBounds(),paint);}

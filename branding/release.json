@@ -1,7 +1,7 @@
 {
   "channel": "stable",
   "version_name": "5.3.0",
-  "version_code": 630,
+  "version_code": 631,
   "title": "Leotv 5.3.0",
   "prerelease": false,
   "make_latest": true

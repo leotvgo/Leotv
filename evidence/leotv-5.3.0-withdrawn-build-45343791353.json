@@ -1,0 +1,102 @@
+{
+  "repository": "leotvgo/Leotv",
+  "original_release_id": 456401740,
+  "original_tag": "leotv-5.3.0",
+  "source_commit": "8f8b9ca2466291a584c17de36b815028d8326af3",
+  "build_run_id": 45343791353,
+  "archive_tag": "leotv-5.3.0-withdrawn-build-45343791353",
+  "version_name": "5.3.0",
+  "version_code": 630,
+  "assets": [
+    {
+      "id": 786077495,
+      "name": "leotv-mobile-v7a-unsigned.audit.json",
+      "size": 64998,
+      "state": "uploaded",
+      "digest": "sha256:9614c21fd96e84a111f0d3b1bd591659fc304fb9931ddbb24b054486464b81d4"
+    },
+    {
+      "id": 786077456,
+      "name": "leotv-mobile-v7a.apk",
+      "size": 83448275,
+      "state": "uploaded",
+      "digest": "sha256:270559528dce1f46bc3f1b304212fe4d4ce5191b53952269549e743068cc38df"
+    },
+    {
+      "id": 786077470,
+      "name": "leotv-mobile-v7a.signature.json",
+      "size": 355,
+      "state": "uploaded",
+      "digest": "sha256:c9ed3945d08a1262748b3b3d80f1d82fe317367ca2decd7de3db12c433033d77"
+    },
+    {
+      "id": 786077555,
+      "name": "leotv-mobile-v8a-unsigned.audit.json",
+      "size": 64996,
+      "state": "uploaded",
+      "digest": "sha256:83c4b79c726b45c29f422c75abad34699fec516c14554437550dcaad1252fcb4"
+    },
+    {
+      "id": 786077505,
+      "name": "leotv-mobile-v8a.apk",
+      "size": 82656882,
+      "state": "uploaded",
+      "digest": "sha256:198ee84185d3769aa8b28e56a3adeb554a74a64d075afce7b56789e8f995070e"
+    },
+    {
+      "id": 786077524,
+      "name": "leotv-mobile-v8a.signature.json",
+      "size": 355,
+      "state": "uploaded",
+      "digest": "sha256:204e84fc89788bbd61ef4b5550337f05e81be99c1666158fda9aee26e387736c"
+    },
+    {
+      "id": 786077419,
+      "name": "leotv-tv-v7a-unsigned.audit.json",
+      "size": 54758,
+      "state": "uploaded",
+      "digest": "sha256:a8efa922e7fefde39ec2c8f67cdfa5c22e77d8432676bdb0417dc2f9f4128a5f"
+    },
+    {
+      "id": 786077420,
+      "name": "leotv-tv-v7a.apk",
+      "size": 88304641,
+      "state": "uploaded",
+      "digest": "sha256:983f9b9714fb13f7798a9a0bbc12cde1b26251eee3fb4010b56d164ea1333391"
+    },
+    {
+      "id": 786077428,
+      "name": "leotv-tv-v7a.signature.json",
+      "size": 351,
+      "state": "uploaded",
+      "digest": "sha256:a025cce838803c315002dd57fa3fccddf195ff5f8e3296692cd6e8e30bacf757"
+    },
+    {
+      "id": 786077457,
+      "name": "leotv-tv-v8a-unsigned.audit.json",
+      "size": 54756,
+      "state": "uploaded",
+      "digest": "sha256:3e9655d5609e0cb50dfd3c8613e94e5566dd2651b184269c2d40a4406d9850de"
+    },
+    {
+      "id": 786077429,
+      "name": "leotv-tv-v8a.apk",
+      "size": 87189668,
+      "state": "uploaded",
+      "digest": "sha256:d7f07827301a12b5eac93891bce52daa7d78a4fdac903c73a92efec650ba0382"
+    },
+    {
+      "id": 786077417,
+      "name": "leotv-tv-v8a.signature.json",
+      "size": 351,
+      "state": "uploaded",
+      "digest": "sha256:64dca7c52ed63a2f41ff68b6780103c3fdadee5a312b39214b52b3eff16a78b7"
+    }
+  ],
+  "reason": "User authorized replacing the same 5.3.0 release to use complete native cards in independent categories and recovery paths.",
+  "withdrawn": true,
+  "archive_is_draft": true,
+  "assets_retained": true,
+  "formal_tag_removed": true,
+  "updated_at": "2026-11-24T07:26:53.438621+00:00"
+}

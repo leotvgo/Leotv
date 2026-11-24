@@ -163,14 +163,37 @@ final class NativeCspUi {
         return card(activity,parent,item,style(activity,category,item),width,action);
     }
     static View card(Activity activity,ViewGroup parent,JSONObject item,Object style,int width,Runnable action){
-        try{
+        try{return createCard(activity,parent,item,style,width,action);}
+        catch(ReflectiveOperationException|RuntimeException unavailable){
+            // Keep the full resource for a later native bind; never replace it with a poster/title tile.
+            FrameLayout retry=new FrameLayout(activity);retry.setFocusable(true);retry.setClickable(true);
+            retry.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);cardFocus(retry);
+            try{View pending=inflateCard(activity,retry,style,width);pending.setDuplicateParentStateEnabled(true);pending.setClickable(false);View name=named(activity,pending,"name");if(name instanceof TextView)((TextView)name).setText("卡片加载失败，点击重试");retry.addView(pending,new FrameLayout.LayoutParams(width,-2));}
+            catch(RuntimeException pending){retry.setMinimumWidth(width);retry.setMinimumHeight(Math.max(1,Math.round(width/cardRatio(style))));}
+            Runnable restore=()->{
+                if(activity.isFinishing()||retry.getParent()==null)return;
+                try{View nativeCard=createCard(activity,retry,item,style,width,action);nativeCard.setDuplicateParentStateEnabled(true);retry.removeAllViews();retry.addView(nativeCard,new FrameLayout.LayoutParams(width,-2));retry.setOnClickListener(v->action.run());}
+                catch(ReflectiveOperationException|RuntimeException pending){}
+            };
+            retry.setOnClickListener(v->restore.run());retry.post(restore);return retry;
+        }
+    }
+    private static float cardRatio(Object style){Object ratio=SiteFeed.invoke(style,"getRatio");float value=ratio instanceof Number?((Number)ratio).floatValue():.75f;return value>0&&!Float.isInfinite(value)&&!Float.isNaN(value)?value:.75f;}
+    private static View inflateCard(Activity activity,ViewGroup parent,Object style,int width){
             boolean oval=Boolean.TRUE.equals(SiteFeed.invoke(style,"isOval")),list=Boolean.TRUE.equals(SiteFeed.invoke(style,"isList"));String layout=list?"adapter_vod_list":oval?"adapter_vod_oval":"adapter_vod_rect";
-            int id=activity.getResources().getIdentifier(layout,"layout",activity.getPackageName());if(id==0)return null;
-            View root=LayoutInflater.from(activity).inflate(id,parent,false);Class<?> vod=Class.forName("com.fongmi.android.tv.bean.Vod",true,activity.getClassLoader());Object bean=vod.getMethod("objectFrom",String.class).invoke(null,item.toString());
+            int id=activity.getResources().getIdentifier(layout,"layout",activity.getPackageName());if(id==0)throw new IllegalStateException("Missing preserved native card: "+layout);
+            View root;
+            try{root=LayoutInflater.from(activity).inflate(id,parent,false);}
+            catch(RuntimeException factory){root=LayoutInflater.from(activity.getApplicationContext()).cloneInContext(activity).inflate(id,parent,false);}
+            View image=named(activity,root,"image");if(image!=null&&!list){image.getLayoutParams().height=Math.max(1,Math.round(width/cardRatio(style)));if(oval)image.getLayoutParams().width=width;}
+            return root;
+    }
+    private static View createCard(Activity activity,ViewGroup parent,JSONObject item,Object style,int width,Runnable action)throws ReflectiveOperationException{
+            View root=inflateCard(activity,parent,style,width);
+            Class<?> vod=Class.forName("com.fongmi.android.tv.bean.Vod",true,activity.getClassLoader());Object bean=vod.getMethod("objectFrom",String.class).invoke(null,item.toString());
             bind(activity,root,"name",bean,"getName","getNameVisible");bind(activity,root,"year",bean,"getYear","getYearVisible");bind(activity,root,"site",bean,"getSiteName","getSiteVisible");bind(activity,root,"remark",bean,"getRemarks","getRemarkVisible");
-            ImageView image=(ImageView)named(activity,root,"image");if(image!=null){if(!list){Object ratio=SiteFeed.invoke(style,"getRatio");image.getLayoutParams().height=Math.round(width/(ratio instanceof Number?((Number)ratio).floatValue():.75f));}homeImage(image,item.optString("vod_name"),SourceArtwork.hostSource(item.optString("vod_pic",item.optString("pic"))));}
+            ImageView image=(ImageView)named(activity,root,"image");if(image!=null){String name=(String)vod.getMethod("getName").invoke(bean),picture=(String)vod.getMethod("getPic").invoke(bean);homeImage(image,name,SourceArtwork.hostSource(picture));}
             root.setFocusable(true);root.setClickable(true);root.setOnClickListener(v->action.run());cardFocus(root);return root;
-        }catch(ReflectiveOperationException|RuntimeException unavailable){return null;}
     }
     /** The host's posted loader drops unmeasured views and explicitly selects DiskCacheStrategy.NONE. */
     static void homeImage(ImageView image,String title,String source){
