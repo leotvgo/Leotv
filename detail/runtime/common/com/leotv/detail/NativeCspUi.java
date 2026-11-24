@@ -194,13 +194,13 @@ final class NativeCspUi {
     }
     private static View createCard(Activity activity,ViewGroup parent,JSONObject item,Object style,int width,Runnable action)throws ReflectiveOperationException{
             View root=inflateCard(activity,parent,style,width);
-            bindCard(activity,root,item,action);return root;
+            bindCard(activity,root,item,action);cardFocus(root);return root;
     }
     static void bindCard(Activity activity,View root,JSONObject item,Runnable action)throws ReflectiveOperationException{
             Class<?> vod=Class.forName("com.fongmi.android.tv.bean.Vod",true,activity.getClassLoader());Object bean=vod.getMethod("objectFrom",String.class).invoke(null,item.toString());
             bind(activity,root,"name",bean,"getName","getNameVisible");bind(activity,root,"year",bean,"getYear","getYearVisible");bind(activity,root,"site",bean,"getSiteName","getSiteVisible");bind(activity,root,"remark",bean,"getRemarks","getRemarkVisible");
             ImageView image=(ImageView)named(activity,root,"image");if(image!=null){String name=(String)vod.getMethod("getName").invoke(bean),picture=(String)vod.getMethod("getPic").invoke(bean);homeImage(image,name,SourceArtwork.hostSource(picture));}
-            root.setFocusable(true);root.setClickable(true);root.setOnClickListener(v->action.run());cardFocus(root);
+            root.setFocusable(true);root.setClickable(true);root.setOnClickListener(v->action.run());
     }
     /** The host's posted loader drops unmeasured views and explicitly selects DiskCacheStrategy.NONE. */
     static void homeImage(ImageView image,String title,String source){

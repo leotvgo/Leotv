@@ -106,6 +106,9 @@ def check_sources(root=ROOT):
         raise ValueError('Native cached categories need bounded initial focus, incremental append and retained folder pagination.')
     if 'pending.get()!=this' not in artwork or 'pendingImages.remove(image)' not in artwork:
         raise ValueError('Rebinding a native recycled image must invalidate its old queued measured load.')
+    recycled_bind = artwork.split('    static void bindCard(')[1].split('    /** The host')[0]
+    if 'cardFocus(' in recycled_bind:
+        raise ValueError('Rebinding a native recycled card must preserve the ItemBridgeAdapter focus listener chain.')
     # Git's spelling is authoritative even on a case-insensitive local filesystem.
     tracked = set(subprocess.check_output(['git', '-C', str(root), 'ls-files', '-z']).decode().split('\0'))
     manifests = {name: json.loads((root / name).read_text()) for name in LOCKS}
