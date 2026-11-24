@@ -33,3 +33,7 @@ TV 菜单顺序保持追更日历、搜索、收藏、历史、推送、设置�
 允许生产变化为已有 CspHomePage、DetailHero、NewHome、NativeCspUi、GlobalChrome（含 Scene/FollowingNavigation），新增 TV/Mobile NativeRecentHistory。新增源文件列入 runtime-sources；新增 native-history-source-lock 固定原历史、Presenter/Recycler 和核心页源码，四变体 public ABI 门禁补齐。原宿主 smali/资源、数据库 schema/migration、JNI/反射、回移层和 ABI 原生/ZIP 资产不改。
 
 按用户要求不运行本地 APK 打包或反复回归，只执行必需源码核对并直接 GitHub run_validation_tests=false 构建、签名和审计。构建前临时公开，四套测试包发布后恢复私有并核对；5.3.0 正式版及 Latest 保留。手机横滑/纵滚/点击、TV 轮播左右与菜单记忆、最近观看进度/删除/续播、各颜色海报的分界及切换丝滑程度均待签名后真机验收。
+
+## 交付结果
+
+源码 `95305f9f2c443a2b859634433f12a89edcc45fe4` 的[构建 45376007303](https://github.com/leotvgo/Leotv/actions/runs/45376007303)及[自动发布 45376861509](https://github.com/leotvgo/Leotv/actions/runs/45376861509)均成功。[5.3.1-preview.2 / 633](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.1-preview.2-build-45376007303)含四套固定签名 APK 及八份报告。逐套核对 R8 release/full 的实际类混淆、stable ABI、API23、原样/允许变化及固定证书/Release APK digest，5.3.0 正式 Latest 保留；仓库已恢复私有并 API 核对。证据见 `evidence/leotv-5.3.1-preview.2-633-build-dispatch-20261124.json`。额外回归关闭，没有本地打包、真机或帧耗时测试；本轮手势、历史完整性、渐变衔接及丝滑程度待真机验收。
