@@ -11,3 +11,7 @@ preview.6 将 `VerticalGridView.setColumnWidth(-1)` 的参数误用为普通 Vie
 源码门禁要求单列 `setColumnWidth(0)`，拒绝 -1，并核对两套原 TV 的 GridLayoutManager.setRowHeight(I) 非负数/-2 合法分支与异常字符串，避免将编译成功视为参数运行合法。生产源码仅 NativeCspCategory（TV）变更；其它变更为版本标识、README、本文和源码门禁。原宿主 smali/资源、数据库、JNI/反射、回移层与各 ABI 原生资产不改。
 
 版本 5.3.1-preview.7 / 638。遵循用户既有授权，不做本地回归或 APK 打包，直接 GitHub run_validation_tests=false；必需源码、原样/允许变化、API23/R8 release/full 和固定签名核对保留。临时公开构建后恢复私有，正式 Latest 保持 5.3.0。用户已经确认手机运行正常；修复后的 TV 进入、焦点和取景由签名后真机验收。
+
+## 测试包交付
+
+源码 `613a58409e8fa858f1046ae37eff312f37db34f1` 的[构建 45417603862](https://github.com/leotvgo/Leotv/actions/runs/45417603862)与[自动发布 45418618679](https://github.com/leotvgo/Leotv/actions/runs/45418618679)均成功。[preview.7 / 638](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.1-preview.7-build-45417603862)四套固定签名 APK 和八份报告齐备，源码哈希、原样/允许变化、API23、R8 release/full、固定签名与 Release digest 已核对。已恢复并核对仓库 PRIVATE；该测试包交付时正式 Latest 为 5.3.0。证据见 `evidence/leotv-5.3.1-preview.7-638-build-dispatch-20261124.json`。用户随后要求发布 5.3.1 正式版，正式版本另行构建。
