@@ -1,0 +1,16 @@
+{
+  "source_commit": "319066b776e40f1d8e8a7c08b286210276796453",
+  "version": "5.2.7",
+  "version_code": 627,
+  "repo": "leotvgo/Leotv",
+  "temporary_public_authorized": true,
+  "run_validation_tests": false,
+  "state": "failed",
+  "restore_private": "verified",
+  "updated_at": "2026-11-24T01:45:15.101763+00:00",
+  "build_run_id": 45307234305,
+  "build_url": "https://github.com/leotvgo/Leotv/actions/runs/45307234305",
+  "build_conclusion": "failure",
+  "error": "Build finished with failure",
+  "verified_visibility": "private"
+}
