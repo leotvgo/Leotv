@@ -38,7 +38,7 @@ final class BackdropHttp {
         }
     }
     static boolean retryable(Throwable error) { return error instanceof Failure && ((Failure)error).retryable; }
-    static void retryNow() { unavailableUntil.clear(); }
+    static void retryNow() { unavailableUntil.clear();TmdbRoutes.reset(); }
 
     static String failureMessage(Throwable error) {
         if (error instanceof Failure) return error.getMessage();
@@ -46,29 +46,34 @@ final class BackdropHttp {
         return "响应解析或图片处理失败";
     }
     static final class Request {
+        private final Request parent;
+        Request(){this(null);}
+        Request(Request parent){this.parent=parent;}
         private volatile boolean cancelled;
         private final Set<HttpURLConnection> connections = new HashSet<>();
         synchronized void attach(HttpURLConnection value) throws IOException {
-            check(); connections.add(value);
+            check(); connections.add(value);if(parent!=null)parent.attach(value);
         }
-        synchronized void detach(HttpURLConnection value) { connections.remove(value); }
+        synchronized void detach(HttpURLConnection value) { connections.remove(value);if(parent!=null)parent.detach(value); }
         void cancel() {
             final List<HttpURLConnection> pending;
             synchronized (this) { cancelled = true; pending = new ArrayList<>(connections); connections.clear(); }
-            for (HttpURLConnection connection : pending) DISCONNECT.execute(() -> {
+            for (HttpURLConnection connection : pending) {if(parent!=null)parent.detach(connection);DISCONNECT.execute(() -> {
                 try { connection.disconnect(); } catch (RuntimeException ignored) { }
-            });
+            });}
             // A saturated cleanup queue is safe: the bounded read/connect timeout and worker finally
             // still close that connection. Never run a rejected disconnect on the UI thread.
         }
         void check() throws InterruptedIOException {
             if (cancelled || Thread.currentThread().isInterrupted()) throw new InterruptedIOException("cancelled");
+            if(parent!=null)parent.check();
         }
     }
 
     static boolean allowed(URL url, String kind) {
         if (kind.equals("source-image")) return SourceArtwork.allowed(url);
         if (kind.equals("tmdb")) return MetadataSettings.allows(url.toString());
+        if(kind.equals("image")&&MetadataSettings.allowsImage(url.toString()))return true;
         if (!"https".equals(url.getProtocol()) || url.getUserInfo() != null || (url.getPort() != -1 && url.getPort() != 443)) return false;
         String host = url.getHost().toLowerCase(java.util.Locale.ROOT);
         if (kind.equals("tmdb")) return MetadataSettings.allows(url.toString());
@@ -108,6 +113,7 @@ final class BackdropHttp {
                                Request request, int byteLimit, String method, Fetcher fetcher) throws Exception {
         URL original = new URL(address);
         if (!allowed(original, kind)) throw new Failure(kind, "不支持的服务地址");
+        if(method.equals("GET")&&TmdbRoutes.automatic(address,kind))return TmdbRoutes.get(address,kind,proxyUrl,headers,request,byteLimit,fetcher);
         String primary = address;
         List<String[]> routes = new ArrayList<>(); routes.add(new String[]{primary, ""});
         // The configured API host remains authoritative; do not send a custom key to another host.

@@ -8,6 +8,7 @@ import java.net.URI;
 public final class MetadataSettings {
     private static final String PREFS = "leotv_personalization";
     private static final String DEFAULT_BASE = "https://api.tmdb.org/3";
+    private static final String DEFAULT_IMAGE = "https://image.tmdb.org";
     private static volatile Context application;
 
     private MetadataSettings() {}
@@ -26,11 +27,25 @@ public final class MetadataSettings {
     }
     public static String base(Context context) { return normalizeBase(prefs(context).getString("tmdb_base", "")); }
     static String base() { return application == null ? DEFAULT_BASE : base(application); }
+    public static String apiDomain(Context context){String value=base(context);return value.endsWith("/3")?value.substring(0,value.length()-2):value;}
+    public static String imageBase(Context context){return normalizeImage(prefs(context).getString("tmdb_image_base",""));}
+    static String imageBase(){return application==null?DEFAULT_IMAGE:imageBase(application);}
+    static boolean automaticApi(){return TmdbRoutes.apiBase(base());}
+    static boolean automaticImages(){return TmdbRoutes.imageRoot(imageBase());}
     public static void setBase(Context context, String value) { prefs(context).edit().putString("tmdb_base", normalizeBase(value)).apply(); }
     public static void setEndpoint(Context context, String key, String base) {
-        String validatedKey = normalizeKey(key), validatedBase = normalizeBase(base);
+        saveEndpoint(context,key,normalizeBase(base),imageBase(context));
+    }
+    public static void setEndpoint(Context context,String key,String base,String image){
+        String normalized=normalizeBase(base),current=base(context);
+        if(base!=null&&!base.trim().isEmpty()&&normalized.equals(normalizeBase(apiDomain(context))))normalized=current;
+        else if(!normalized.endsWith("/3"))normalized+="/3";
+        saveEndpoint(context,key,normalized,normalizeImage(image));
+    }
+    private static void saveEndpoint(Context context,String key,String base,String image){
+        String validatedKey=normalizeKey(key);
         initialize(context);
-        prefs(context).edit().putString("tmdb_key", validatedKey).putString("tmdb_base", validatedBase).apply();
+        prefs(context).edit().putString("tmdb_key", validatedKey).putString("tmdb_base", base).putString("tmdb_image_base",image).apply();
         BackdropHttp.retryNow();
     }
     public static int theme(Context context) {
@@ -63,11 +78,30 @@ public final class MetadataSettings {
     static boolean allows(String address) {
         try {
             URI target = new URI(address), configured = new URI(base());
+            if(automaticApi()&&TmdbRoutes.apiBase(target.getScheme()+"://"+target.getAuthority()+"/3"))
+                return target.getUserInfo()==null&&target.getFragment()==null&&(target.getPath().equals("/3")||target.getPath().startsWith("/3/"));
             return target.getUserInfo() == null && target.getFragment() == null
                     && configured.getScheme().equalsIgnoreCase(target.getScheme())
                     && configured.getHost().equalsIgnoreCase(target.getHost())
                     && configured.getPort() == target.getPort()
                     && (target.getPath().equals(configured.getPath()) || target.getPath().startsWith(configured.getPath() + "/"));
         } catch (RuntimeException | java.net.URISyntaxException invalid) { return false; }
+    }
+    static String normalizeImage(String value){
+        String text=value==null?"":value.trim();if(text.isEmpty())return DEFAULT_IMAGE;
+        if(!text.contains("://"))text="https://"+text;
+        try{URI uri=new URI(text);
+            if(!("https".equalsIgnoreCase(uri.getScheme())||"http".equalsIgnoreCase(uri.getScheme()))||uri.getHost()==null||uri.getUserInfo()!=null||uri.getQuery()!=null||uri.getFragment()!=null)throw new IllegalArgumentException("请填写有效的图片域名");
+            String path=uri.getPath()==null?"":uri.getPath().replaceAll("/+$","");
+            if(path.endsWith("/t/p"))path=path.substring(0,path.length()-4);else if(path.endsWith("/3"))path=path.substring(0,path.length()-2);
+            return new URI(uri.getScheme().toLowerCase(java.util.Locale.ROOT),null,uri.getHost(),uri.getPort(),path,null,null).toASCIIString();
+        }catch(java.net.URISyntaxException invalid){throw new IllegalArgumentException("图片域名格式无效");}
+    }
+    static boolean allowsImage(String address){
+        try{URI target=new URI(address),configured=new URI(imageBase());
+            if(target.getUserInfo()!=null||target.getFragment()!=null)return false;
+            if(automaticImages()&&TmdbRoutes.imageRoot(target.getScheme()+"://"+target.getAuthority()))return target.getPath().startsWith("/t/p/");
+            return configured.getScheme().equalsIgnoreCase(target.getScheme())&&configured.getHost().equalsIgnoreCase(target.getHost())&&configured.getPort()==target.getPort()&&target.getPath().startsWith(configured.getPath()+"/t/p/");
+        }catch(RuntimeException|java.net.URISyntaxException invalid){return false;}
     }
 }

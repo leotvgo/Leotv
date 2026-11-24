@@ -1176,24 +1176,23 @@ class MobileDetailMetadata {
     }
     /** Upper bound on a single actor's displayed credits; paged, never silently truncated to a screen. */
     private static final int FILMOGRAPHY_BOUND = 400;
-    private static final String TMDB_IMAGE="https://image.tmdb.org/t/p/";
     /** The file name inside a finished TMDB artwork address; empty for every other string. */
     private static String artworkFile(String value) {
         if(value==null)return "";
         String trimmed=value.trim().replace("&amp;","&");
-        if(!trimmed.startsWith(TMDB_IMAGE))return "";
-        int slash=trimmed.indexOf('/',TMDB_IMAGE.length());
-        if(slash<0)return "";
-        String file=trimmed.substring(slash+1);
-        return imagePath("/"+file).isEmpty()?"":file;
+        try{java.net.URI uri=new java.net.URI(trimmed);if(uri.getHost()==null||uri.getUserInfo()!=null||!("https".equals(uri.getScheme())||"http".equals(uri.getScheme())))return "";
+            String path=uri.getPath();int prefix=path.indexOf("/t/p/");if(prefix<0)return "";String tail=path.substring(prefix+5);int slash=tail.indexOf('/');if(slash<0||!tail.substring(0,slash).matches("w[0-9]+|h[0-9]+|original"))return "";
+            String file=tail.substring(slash+1);return imagePath("/"+file).isEmpty()?"":file;
+        }catch(java.net.URISyntaxException invalid){return "";}
     }
+    static boolean tmdbArtwork(String value){return !artworkFile(value).isEmpty();}
     static String imageAddress(String path,String size) {
-        if(!imagePath(path).isEmpty())return TMDB_IMAGE+size+path;
+        if(!imagePath(path).isEmpty())return MetadataSettings.imageBase()+"/t/p/"+size+path;
         // The shell's own history keeps whatever artwork address the line handed it, and this line
         // stores finished TMDB addresses rather than bare paths; re-point such an address at the size
         // this surface wants instead of leaving the row without artwork or pulling an original.
         String file=artworkFile(path);
-        if(!file.isEmpty())return TMDB_IMAGE+size+"/"+file;
+        if(!file.isEmpty())return MetadataSettings.imageBase()+"/t/p/"+size+"/"+file;
         String address=safeImage(path);
         // Preserve the photo identity and CDN host, selecting the website's real larger rendition.
         // Small portrait controls have a 256 KiB budget; full-screen heroes use the large photo.

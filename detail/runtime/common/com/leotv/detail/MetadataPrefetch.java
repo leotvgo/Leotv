@@ -190,7 +190,7 @@ final class MetadataPrefetch {
     private static String key(BackdropSettings.Options options, Target target) {
         // Memory only. The full options value keeps TMDB keys, language and proxy configurations apart.
         return target.type + ':' + target.id + '\n' + options.key + '\n' + options.language + '\n'
-                + options.proxy + '\n' + options.douban + '\n' + options.region + '\n' + options.base;
+                + options.proxy + '\n' + options.douban + '\n' + options.region + '\n' + options.base + '\n' + options.imageBase;
     }
 
     /** Test isolation; production entries expire or are evicted instead. */

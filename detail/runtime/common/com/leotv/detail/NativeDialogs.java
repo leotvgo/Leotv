@@ -16,7 +16,7 @@ import android.widget.TextView;
 final class NativeDialogs {
     interface Choice { void selected(int index); }
     interface Saved { void value(String text); }
-    interface EndpointSaved { void value(String key, String base); }
+    interface EndpointSaved { void value(String key, String base,String image); }
     static Object builder(Activity activity) throws ReflectiveOperationException {
         return Class.forName(Device.DIALOG_BUILDER,true,activity.getClassLoader()).getConstructor(Context.class).newInstance(activity);
     }
@@ -68,27 +68,28 @@ final class NativeDialogs {
             if(!Device.MOBILE)NativeQrInput.bind(activity,input);
         }catch(ReflectiveOperationException failure){throw new IllegalStateException("Native input dialog unavailable",failure);}
     }
-    static void endpoint(Activity activity, String key, String base, EndpointSaved saved, Runnable reset) {
+    static void endpoint(Activity activity, String key, String base,String image, EndpointSaved saved, Runnable reset) {
         try {
             Object builder = builder(activity); Context context = context(builder);
             LinearLayout panel = new LinearLayout(context); panel.setOrientation(LinearLayout.VERTICAL);
             EditText keyInput = endpointInput(activity,context, panel, "TMDB API Key（留空使用内置 Key）", key, true);
-            EditText baseInput = endpointInput(activity,context, panel, "TMDB API 域名", base, false);
-            keyInput.setId(View.generateViewId()); baseInput.setId(View.generateViewId());
+            EditText baseInput = endpointInput(activity,context, panel, "API 域名（内置域名自动择优）", base, false);
+            EditText imageInput = endpointInput(activity,context,panel,"图片域名（内置域名自动择优）",image,false);
+            keyInput.setId(View.generateViewId()); baseInput.setId(View.generateViewId());imageInput.setId(View.generateViewId());
             keyInput.setNextFocusDownId(baseInput.getId()); baseInput.setNextFocusUpId(keyInput.getId());
-            baseInput.setNextFocusDownId(android.R.id.button1);
+            baseInput.setNextFocusDownId(imageInput.getId());imageInput.setNextFocusUpId(baseInput.getId());imageInput.setNextFocusDownId(android.R.id.button1);
             if(!Device.MOBILE){
-                View keyQr=NativeQrInput.button(activity,keyInput,"Key"),baseQr=NativeQrInput.button(activity,baseInput,"域名");
-                keyQr.setId(View.generateViewId());baseQr.setId(View.generateViewId());
-                baseInput.setNextFocusDownId(keyQr.getId());keyQr.setNextFocusUpId(baseInput.getId());keyQr.setNextFocusDownId(baseQr.getId());baseQr.setNextFocusUpId(keyQr.getId());baseQr.setNextFocusDownId(android.R.id.button1);
+                View keyQr=NativeQrInput.button(activity,keyInput,"Key"),baseQr=NativeQrInput.button(activity,baseInput,"API"),imageQr=NativeQrInput.button(activity,imageInput,"图片");
+                keyQr.setId(View.generateViewId());baseQr.setId(View.generateViewId());imageQr.setId(View.generateViewId());
+                imageInput.setNextFocusDownId(keyQr.getId());keyQr.setNextFocusUpId(imageInput.getId());keyQr.setNextFocusDownId(baseQr.getId());baseQr.setNextFocusUpId(keyQr.getId());baseQr.setNextFocusDownId(imageQr.getId());imageQr.setNextFocusUpId(baseQr.getId());imageQr.setNextFocusDownId(android.R.id.button1);
                 LinearLayout qrRow=new LinearLayout(context);qrRow.setOrientation(LinearLayout.HORIZONTAL);
                 LinearLayout.LayoutParams first=new LinearLayout.LayoutParams(0,-2,1);first.setMarginEnd(Math.round(16*context.getResources().getDisplayMetrics().density));
-                qrRow.addView(keyQr,first);qrRow.addView(baseQr,new LinearLayout.LayoutParams(0,-2,1));
-                keyQr.setNextFocusRightId(baseQr.getId());baseQr.setNextFocusLeftId(keyQr.getId());
+                qrRow.addView(keyQr,first);LinearLayout.LayoutParams middle=new LinearLayout.LayoutParams(0,-2,1);middle.setMarginEnd(first.getMarginEnd());qrRow.addView(baseQr,middle);qrRow.addView(imageQr,new LinearLayout.LayoutParams(0,-2,1));
+                keyQr.setNextFocusRightId(baseQr.getId());baseQr.setNextFocusLeftId(keyQr.getId());baseQr.setNextFocusRightId(imageQr.getId());imageQr.setNextFocusLeftId(baseQr.getId());
                 panel.addView(qrRow,qrMargins(context));
             }
             keyInput.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_NEXT);
-            baseInput.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_DONE);
+            baseInput.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_NEXT);imageInput.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_DONE);
             Object params = builder.getClass().getField("a").get(builder);
             params.getClass().getField("k").set(params, "恢复默认");
             builder.getClass().getMethod("setPositiveButton", int.class, DialogInterface.OnClickListener.class)
@@ -97,9 +98,9 @@ final class NativeDialogs {
             dialog.setOnShowListener(ignored -> {
                 android.widget.Button save = (android.widget.Button) dialog.findViewById(android.R.id.button1);
                 if (save != null) save.setOnClickListener(view -> {
-                    try { saved.value(keyInput.getText().toString(), baseInput.getText().toString()); dialog.dismiss(); }
+                    try { saved.value(keyInput.getText().toString(), baseInput.getText().toString(),imageInput.getText().toString()); dialog.dismiss(); }
                     catch (IllegalArgumentException invalid) {
-                        (invalid.getMessage() != null && invalid.getMessage().startsWith("Key") ? keyInput : baseInput).setError(invalid.getMessage());
+                        (invalid.getMessage() != null && invalid.getMessage().startsWith("Key") ? keyInput : invalid.getMessage()!=null&&invalid.getMessage().contains("图片")?imageInput:baseInput).setError(invalid.getMessage());
                     }
                 });
                 android.widget.Button defaults = (android.widget.Button) dialog.findViewById(android.R.id.button3);

@@ -41,6 +41,7 @@ class DetailThumbnails {
     private final Map<String,Long> retryAt = new HashMap<>();
     private final String proxy;
     private final BackdropImages files;
+    private volatile String imageRoot="";
     private final int budget;
     private final int idleBudget;
     private int limit;
@@ -56,7 +57,7 @@ class DetailThumbnails {
         this(context, proxy, tv, BUDGET);
     }
     DetailThumbnails(Context context, String proxy, boolean tv, int budget) {
-        this.proxy = proxy; files = BackdropImages.get(context);
+        this.proxy = proxy; files = BackdropImages.get(context);if(context!=null)MetadataSettings.initialize(context);imageRoot=context==null?MetadataSettings.imageBase():MetadataSettings.imageBase(context);
         // The page owns every tile it has drawn, not only the viewport: walking away from a row and
         // coming back must be a cache hit. The ceiling is deliberately generous; the platform's own
         // trim callback is the pressure valve, while closing the page releases the bitmaps.
@@ -66,6 +67,7 @@ class DetailThumbnails {
         worker.allowCoreThreadTimeOut(true);
     }
     void begin() {
+        syncImages();
         if (idle) { idle = false; limit = budget; }
         detach();
     }
@@ -124,11 +126,13 @@ class DetailThumbnails {
         request(path,portrait,target,true);
     }
     boolean ownSource(String path){return own(path)||!SourceArtwork.address(path).isEmpty();}
-    boolean failedSource(String path,boolean portrait){return failed.contains((own(path)?"":"source:")+size(portrait)+path);}
+    boolean failedSource(String path,boolean portrait){return failed.contains(cacheKey(path,portrait,!own(path)));}
+    private void syncImages(){String root=MetadataSettings.imageBase();if(!imageRoot.equals(root)){cancelPending();cache.clear();bytes=0;needed.clear();failed.clear();failures.clear();retryAt.clear();imageRoot=root;}}
+    private String cacheKey(String path,boolean portrait,boolean source){return (source?"source:":"tmdb:"+imageRoot+":")+size(portrait)+path;}
     private void request(String path,boolean portrait,Target target){request(path,portrait,target,false);}
     private void request(String path, boolean portrait, Target target,boolean source) {
         if (closed || path==null || path.isEmpty() || (source?SourceArtwork.address(path):MobileDetailMetadata.imageAddress(path,size(portrait))).isEmpty()) return;
-        String key = (source?"source:":"")+size(portrait) + path;
+        syncImages();String key=cacheKey(path,portrait,source);
         needed.add(key);
         Bitmap bitmap = cache.get(key);
         if (bitmap != null) { if (target != null) target.show(bitmap); return; }
@@ -216,7 +220,7 @@ class DetailThumbnails {
      * the shell's own loader knows how to draw it.
      */
     boolean own(String address) { return !MobileDetailMetadata.imageAddress(address, "w300").isEmpty(); }
-    boolean failed(String path,boolean portrait) { return failed.contains(size(portrait)+path); }
+    boolean failed(String path,boolean portrait) { return failed.contains(cacheKey(path,portrait,false)); }
     int retainedBytes() { return bytes; }
 
     /** The decoded-image budget; the tests size their fixtures from it rather than from a number. */
@@ -224,7 +228,7 @@ class DetailThumbnails {
     Bitmap download(String path, boolean portrait, BackdropHttp.Request request) throws Exception {return download(path,portrait,request,false);}
     Bitmap downloadSource(String path,boolean portrait,BackdropHttp.Request request)throws Exception{return download(path,portrait,request,true);}
     private Bitmap download(String path,boolean portrait,BackdropHttp.Request request,boolean source)throws Exception{
-        String key = (source?"source:":"")+size(portrait) + path;
+        String key=cacheKey(path,portrait,source);
         long cacheTicket = files.ticket();
         byte[] data = files.read(key);
         boolean fresh = data == null;

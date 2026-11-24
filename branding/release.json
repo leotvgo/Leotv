@@ -1,8 +1,8 @@
 {
   "channel": "stable",
-  "version_name": "5.2.7",
-  "version_code": 627,
-  "title": "Leotv 5.2.7",
+  "version_name": "5.2.8",
+  "version_code": 628,
+  "title": "Leotv 5.2.8",
   "prerelease": false,
   "make_latest": true
 }

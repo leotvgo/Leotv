@@ -24,6 +24,7 @@ class DetailTitleArt extends ImageView {
     private Bitmap bitmap;
     private long generation;
     private boolean closed;
+    private String imageRoot="",lastProxy="";
 
     DetailTitleArt(Context context, Runnable changed) {
         super(context); this.changed = changed;
@@ -40,7 +41,8 @@ class DetailTitleArt extends ImageView {
                     && (path.endsWith(".png") || path.endsWith(".webp")) && !valid.contains(path)) valid.add(path);
             if (valid.size() == 5) break;
         }
-        if (paths.equals(valid)) return;
+        String root=MetadataSettings.imageBase();if(paths.equals(valid)&&imageRoot.equals(root)&&lastProxy.equals(proxy))return;
+        imageRoot=root;lastProxy=proxy;
         paths = valid; final long token = ++generation;
         if (request != null) request.cancel();
         request = null; clearBitmap(); changed.run();

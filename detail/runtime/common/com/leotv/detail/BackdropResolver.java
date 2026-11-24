@@ -110,7 +110,7 @@ class BackdropResolver {
             if (landscape ? width < 1000 || height < 540 || ratio < 1.4 || ratio > 2.4 : width < 500 || height < 700) continue;
             // Avoid downloading huge originals. Decode is also bounded to the current screen.
             String size = width <= 2560 && height <= 1600 ? "original" : landscape ? "w1280" : "w780";
-            urls.add("https://image.tmdb.org/t/p/" + size + path);
+            urls.add(MobileDetailMetadata.imageAddress(path,size));
         }
         return urls;
     }

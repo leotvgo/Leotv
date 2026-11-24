@@ -36,9 +36,9 @@ public final class Personalization {
                         index -> { MetadataSettings.setTheme(activity, index); refresh(activity, rows); }));
         add(activity, first, template, summary, ENDPOINT,
                 () -> NativeDialogs.endpoint(activity,
-                        MetadataSettings.customKey(activity) ? MetadataSettings.key(activity) : "", MetadataSettings.base(activity),
-                        (key, base) -> { MetadataSettings.setEndpoint(activity, key, base); refresh(activity, rows); },
-                        () -> { MetadataSettings.setEndpoint(activity, "", ""); refresh(activity, rows); }));
+                        MetadataSettings.customKey(activity) ? MetadataSettings.key(activity) : "", MetadataSettings.apiDomain(activity),MetadataSettings.imageBase(activity),
+                        (key, base,image) -> { MetadataSettings.setEndpoint(activity, key, base,image); refresh(activity, rows); },
+                        () -> { MetadataSettings.setEndpoint(activity, "", "",""); refresh(activity, rows); }));
         LinearLayout second=rows;
         if(!Device.MOBILE){second=new LinearLayout(activity);second.setOrientation(LinearLayout.HORIZONTAL);LinearLayout.LayoutParams line=new LinearLayout.LayoutParams(-1,-2);line.topMargin=rowSpacing(target);rows.addView(second,line);}
         add(activity, second, template, summary, SEARCH,
@@ -63,7 +63,8 @@ public final class Personalization {
         String host;
         try { host = new URI(MetadataSettings.base(activity)).getAuthority(); }
         catch (java.net.URISyntaxException invalid) { host = MetadataSettings.base(activity); }
-        summary(endpoint, (MetadataSettings.customKey(activity) ? "自定义 Key" : "内置 Key") + " · " + host);
+        String image;try{image=new URI(MetadataSettings.imageBase(activity)).getAuthority();}catch(java.net.URISyntaxException invalid){image=MetadataSettings.imageBase(activity);}
+        summary(endpoint,(MetadataSettings.customKey(activity)?"自定义 Key":"内置 Key")+" · API "+(TmdbRoutes.apiBase(MetadataSettings.base(activity))?"自动":host)+" · 图片 "+(TmdbRoutes.imageRoot(MetadataSettings.imageBase(activity))?"自动":image));
         summary(rows.findViewWithTag(SEARCH), MetadataSettings.resourceGlobalSearch(activity)?"开启":"关闭");
         summary(rows.findViewWithTag(HOME), MetadataSettings.newHome(activity)?"开启":"关闭");
         summary(rows.findViewWithTag("弹幕 API"),DanmakuSettings.api(activity).isEmpty()?"未配置":"已配置");

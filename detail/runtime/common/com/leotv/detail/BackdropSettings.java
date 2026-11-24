@@ -12,11 +12,11 @@ final class BackdropSettings {
         catch (Exception absent) { shared = new JSONObject(); }
         return new Options(true, MetadataSettings.key(context), shared.optString("tmdbLanguage", "zh-CN"),
                 shared.optString("tmdbProxy", shared.optString("httpProxyUrl")), shared.optString("doubanFrodoCookies"),
-                shared.optString("tmdbRegion", "CN"), MetadataSettings.base(context));
+                shared.optString("tmdbRegion", "CN"), MetadataSettings.base(context),MetadataSettings.imageBase(context));
     }
     static final class Options {
         final boolean enabled;
-        final String key, language, proxy, douban, region, base;
+        final String key, language, proxy, douban, region, base, imageBase;
         Options(boolean enabled, String key, String language, String proxy, String douban) {
             this(enabled, key, language, proxy, douban, "CN");
         }
@@ -24,9 +24,12 @@ final class BackdropSettings {
             this(enabled, key, language, proxy, douban, region, MetadataSettings.base());
         }
         Options(boolean enabled, String key, String language, String proxy, String douban, String region, String base) {
+            this(enabled,key,language,proxy,douban,region,base,MetadataSettings.imageBase());
+        }
+        Options(boolean enabled,String key,String language,String proxy,String douban,String region,String base,String imageBase){
             this.enabled = enabled; this.key = key.startsWith("Bearer ") ? key.substring(7).trim() : key.trim();
             this.language = language.isEmpty() ? "zh-CN" : language;
-            this.proxy = proxy; this.douban = douban; this.region = region; this.base = base;
+            this.proxy = proxy; this.douban = douban; this.region = region; this.base = base;this.imageBase=imageBase;
         }
         boolean hasCredentials() { return !key.isEmpty() || !douban.isEmpty(); }
         String doubanCookie() {
@@ -43,7 +46,7 @@ final class BackdropSettings {
         }
         boolean same(Options other) {
             return other != null && key.equals(other.key) && language.equals(other.language)
-                    && proxy.equals(other.proxy) && douban.equals(other.douban) && region.equals(other.region) && base.equals(other.base);
+                    && proxy.equals(other.proxy) && douban.equals(other.douban) && region.equals(other.region) && base.equals(other.base)&&imageBase.equals(other.imageBase);
         }
     }
 }

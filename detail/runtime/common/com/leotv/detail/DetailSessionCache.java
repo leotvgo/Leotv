@@ -17,7 +17,7 @@ final class DetailSessionCache {
     private static String key(Context context,String site,String id){
         BackdropSettings.Options options=BackdropSettings.read(context);
         String explicit="";try{org.json.JSONObject values=new org.json.JSONObject(context.getSharedPreferences("leo_metadata_matches",0).getString("matches","{}"));org.json.JSONObject value=values.optJSONObject(site+"@@@"+id);if(value!=null)explicit=value.toString();}catch(Exception absent){}
-        int settings=java.util.Objects.hash(options.key,options.language,options.proxy,options.douban,options.region,options.base,explicit);
+        int settings=java.util.Objects.hash(options.key,options.language,options.proxy,options.douban,options.region,options.base,options.imageBase,explicit);
         return SiteFeed.configId()+"@@@"+site+"@@@"+id+"@@@"+settings;
     }
     static synchronized State get(Context context,String site,String id){return entries.get(key(context,site,id));}

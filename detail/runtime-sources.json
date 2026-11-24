@@ -111,6 +111,7 @@
       "detail/runtime/common/com/leotv/detail/SourceArtwork.java",
       "detail/runtime/common/com/leotv/detail/SourceGateway.java",
       "detail/runtime/common/com/leotv/detail/TmdbDefaults.java",
+      "detail/runtime/common/com/leotv/detail/TmdbRoutes.java",
       "detail/runtime/common/com/leotv/detail/TvDetailNavigation.java",
       "detail/runtime/common/com/leotv/detail/TvDetailPage.java",
       "detail/runtime/common/com/leotv/detail/TvDetailScroll.java"

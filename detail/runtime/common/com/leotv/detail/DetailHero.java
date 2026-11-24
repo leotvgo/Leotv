@@ -54,6 +54,7 @@ class DetailHero extends View {
     private boolean dots = true;
     private int colour = DEFAULT_COLOR, fromColour, toColour;
     private String proxy = "";
+    private String imageRoot="";
     private long generation, nextAt;
     private float reveal = 1, slideProgress;
     private boolean closed, loading = true, attached, requestedActive = true, running;
@@ -95,7 +96,7 @@ class DetailHero extends View {
         load(valid,proxy,true);
     }
     void loadHomeSources(List<String> paths,List<String> fallbacks,String proxy){
-        boolean append=sourceImages&&!slides.isEmpty()&&slides.size()<=paths.size();
+        boolean append=sourceImages&&!slides.isEmpty()&&slides.size()<=paths.size()&&imageRoot.equals(imageRoute(paths,true))&&this.proxy.equals(proxy);
         for(int i=0;append&&i<slides.size();i++)append=slides.get(i).path.equals(paths.get(i));
         if(append){this.proxy=proxy;for(int i=slides.size();i<paths.size()&&i<limit;i++){Slide slide=new Slide(paths.get(i),true);slide.fallback=fallbacks.get(i);slides.add(slide);}prepareNext();schedule();return;}
         load(paths,proxy,true);for(int i=0;i<slides.size();i++)slides.get(i).fallback=fallbacks.get(i);
@@ -115,11 +116,13 @@ class DetailHero extends View {
     void load(List<String> paths, String proxy) {
         load(paths, proxy, false);
     }
+    private String imageRoute(List<String> paths,boolean source){if(!source)return MetadataSettings.imageBase();for(String path:paths)if(path.indexOf('@')<0&&MobileDetailMetadata.tmdbArtwork(path))return MetadataSettings.imageBase();return "";}
     private void load(List<String> paths, String proxy, boolean source) {
         if (closed) return;
         List<String> valid = source ? paths : accept(paths, limit);
-        this.proxy = proxy;
-        boolean same = source == sourceImages && valid.size() == slides.size();
+        String root=imageRoute(valid,source);
+        boolean same = source == sourceImages && valid.size() == slides.size()&&imageRoot.equals(root)&&this.proxy.equals(proxy);
+        this.proxy = proxy;imageRoot=root;
         for (int i = 0; same && i < valid.size(); i++) same = valid.get(i).equals(slides.get(i).path);
         if (same) { if (valid.isEmpty()) finishLoading(); return; }
         generation++; if (request != null) request.cancel(); request = null;
@@ -212,6 +215,7 @@ class DetailHero extends View {
         // page: a carousel reopened on a slide it has already shown decodes from here, not from the wire.
         final BackdropImages store = BackdropImages.get(getContext());
         final long cacheTicket = store.ticket();
+        final String cacheKey=slide.cacheKey();
         final BackdropHttp.Request pending = new BackdropHttp.Request(); request = pending;
         if (worker == null) worker = Executors.newSingleThreadExecutor(r -> {
             Thread thread = new Thread(r, "leo-detail-hero"); thread.setDaemon(true); return thread;
@@ -219,7 +223,7 @@ class DetailHero extends View {
         worker.submit(() -> {
             byte[] data = cached; Bitmap loaded = null; boolean retry=false, fetched=false;
             try {
-                if (data == null) data = store.read(slide.cacheKey());
+                if (data == null) data = store.read(cacheKey);
                 if (data == null) {try{data = slide.source ? downloadSource(slide.path, route, pending)
                         : download(slide.path, route, pending); fetched=true;}catch(Exception unavailable){pending.check();if(!slide.source||slide.fallback.isEmpty())throw unavailable;data=downloadSource(slide.fallback,route,pending);fetched=false;}}
                 pending.check();
@@ -228,7 +232,7 @@ class DetailHero extends View {
                 if((o.outWidth<=0||o.outHeight<=0)&&slide.source&&!slide.fallback.isEmpty()){data=downloadSource(slide.fallback,route,pending);fetched=false;BitmapFactory.decodeByteArray(data,0,data.length,o);}
                 if (o.outWidth > 0 && o.outHeight > 0 && o.outWidth <= 4096 && o.outHeight <= 4096) {
                     // Only an image this page can actually draw is worth keeping.
-                    if (fetched) store.write(slide.cacheKey(), data, cacheTicket);
+                    if (fetched) store.write(cacheKey, data, cacheTicket);
                     o.inSampleSize = 1; o.inJustDecodeBounds = false; o.inPreferredConfig = Bitmap.Config.RGB_565;
                     while (o.outWidth / o.inSampleSize > (portrait?780:1280) || o.outHeight / o.inSampleSize > (portrait?1170:720)) o.inSampleSize *= 2;
                     loaded = BitmapFactory.decodeByteArray(data, 0, data.length, o);
@@ -261,13 +265,14 @@ class DetailHero extends View {
         });
     }
     /** The bytes this carousel keeps per slide: the same rendition for a handset and a television. */
-    static String key(String path) { return "w1280" + path; }
+    static String key(String path) { return "tmdb:"+MetadataSettings.imageBase()+":w1280" + path; }
     byte[] download(String path, String route, BackdropHttp.Request pending) throws Exception {
         String address=MobileDetailMetadata.imageAddress(path,"w1280");
         return BackdropHttp.get(address,
                 "image", route, MobileDetailMetadata.imageHeaders(address), pending, 2 * 1024 * 1024);
     }
     byte[] downloadSource(String address, String route, BackdropHttp.Request pending) throws Exception {
+        if(address.indexOf('@')<0&&MobileDetailMetadata.tmdbArtwork(address))return download(address,route,pending);
         return SourceArtwork.fetch(address,route,pending,2*1024*1024);
     }
     private void schedule() {
@@ -500,6 +505,6 @@ class DetailHero extends View {
     private static final class Slide {
         final String path; final boolean source; String fallback="";byte[] bytes; boolean failed; int colour = DEFAULT_COLOR, attempts; long retryAt;
         Slide(String path, boolean source) { this.path = path; this.source = source; }
-        String cacheKey() { return source ? "source-poster:" + path : key(path); }
+        String cacheKey() { return source ? (path.indexOf('@')<0&&MobileDetailMetadata.tmdbArtwork(path)?"tmdb-source:"+MetadataSettings.imageBase()+":":"source-poster:") + path : key(path); }
     }
 }
