@@ -21,3 +21,7 @@ TV 独立窗口接入 NativeCspCategory：外层 VerticalGridView / ItemBridgeAd
 允许变化源码为 CspCategoryActivity、NativeCspUi、NativeCspCategory（TV 与手机配对文件），并更新 runtime-sources 声明、版本标识、本文和源码门禁。原宿主 smali、原布局资源、数据库 schema/migration、JNI/反射、回移层及原生资产不改。源码门禁新增原生回收/行容器、裁剪、图片回收、增量分页约束，并核对两套 TV 的 N3.k、VerticalGridView、RowPresenter 与 Glide 清理签名。
 
 按用户授权不做本地回归或 APK 打包，直接 GitHub run_validation_tests=false；必需源码/原样与变化审计、API23、R8 8.8.34 release/full 和固定签名核对保留。版本 5.3.1-preview.6 / 637，临时公开构建后恢复并核对私有，正式 Latest 保持 5.3.0。进入速度、所有边缘的放大卡片、跨行焦点、目录分页和返回由用户签名后真机验收；源码分析没有给出设备耗时数值。
+
+## 交付结果
+
+最终源码 `7677bd6875b05b033d40da2e80bdfa25a2399a5e` 的[构建 45413800390](https://github.com/leotvgo/Leotv/actions/runs/45413800390)与[自动发布 45414704968](https://github.com/leotvgo/Leotv/actions/runs/45414704968)均成功。[preview.6 / 637](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.1-preview.6-build-45413800390)四套固定签名 APK 和八份报告齐备，已逐套核对源码哈希、原样/允许变化审计、API23、R8 release/full、固定证书与 Release digest。仓库已恢复并 API 核对 PRIVATE，正式 Latest 仍为 `leotv-5.3.0`。证据见 `evidence/leotv-5.3.1-preview.6-637-build-dispatch-20261124.json`。较早的构建 45413283965 在交付前取消，以补齐回收绑定保留原生焦点监听链；没有发布该提交。未做本地 APK 打包或模型/UI 回归，实际性能与边缘绘制待用户真机验收。
