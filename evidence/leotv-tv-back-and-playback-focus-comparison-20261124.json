@@ -1,0 +1,34 @@
+{
+  "basis": "exact source comparison, not an installed-device trace",
+  "versions": [
+    {
+      "version": "5.2.6",
+      "revision": "5b164ca5",
+      "fullscreen_leave_sha256": "f21c454de1a1279925024d790419be797f017d7f6629b8bb2186d12ea0ef2880",
+      "back_hook_sha256": "6c73d9c24cc1bf0bec3513ca20c673445cc080a4baf68f26a0dad9b0cdd33b12",
+      "detail_navigation_sha256": "53468232ea23e3da55fb5b6814f02f04f96488ac7ed1e689f771c94960b51580",
+      "detail_resume_sha256": "591442b33a0ca26c374abbfed32ac9457cd566db06bd7d04ff9c8ab768becd2d",
+      "leave_finishes_unconditionally_for_standalone_player": true
+    },
+    {
+      "version": "5.2.7",
+      "revision": "067fa852",
+      "fullscreen_leave_sha256": "f21c454de1a1279925024d790419be797f017d7f6629b8bb2186d12ea0ef2880",
+      "back_hook_sha256": "6c73d9c24cc1bf0bec3513ca20c673445cc080a4baf68f26a0dad9b0cdd33b12",
+      "detail_navigation_sha256": "53468232ea23e3da55fb5b6814f02f04f96488ac7ed1e689f771c94960b51580",
+      "detail_resume_sha256": "591442b33a0ca26c374abbfed32ac9457cd566db06bd7d04ff9c8ab768becd2d",
+      "leave_finishes_unconditionally_for_standalone_player": true
+    },
+    {
+      "version": "5.2.8",
+      "revision": "09ea0b38",
+      "fullscreen_leave_sha256": "f21c454de1a1279925024d790419be797f017d7f6629b8bb2186d12ea0ef2880",
+      "back_hook_sha256": "6c73d9c24cc1bf0bec3513ca20c673445cc080a4baf68f26a0dad9b0cdd33b12",
+      "detail_navigation_sha256": "53468232ea23e3da55fb5b6814f02f04f96488ac7ed1e689f771c94960b51580",
+      "detail_resume_sha256": "591442b33a0ca26c374abbfed32ac9457cd566db06bd7d04ff9c8ab768becd2d",
+      "leave_finishes_unconditionally_for_standalone_player": true
+    }
+  ],
+  "finding": "5.2.7 only separated episode playing/focus drawing; fullscreen exit interception and detail focus restoration omission already exist in 5.2.6. The exact new-version trigger is not proven by source comparison.",
+  "fix": "Keep original TV key dispatch and native control/widget Back branches intact; intercept standalone exit only at the native collapse/exit decision. On return, refresh history and focus the live activated episode."
+}

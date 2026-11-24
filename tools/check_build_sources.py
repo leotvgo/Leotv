@@ -10,6 +10,7 @@ import tempfile
 from apply_category_paging import apply as apply_paging
 from apply_danmaku import apply as apply_danmaku
 from apply_native_details import apply as apply_details
+from apply_native_details import method as native_method
 from build_branded import apply_source_overlay, identity
 from build_preserved import VARIANTS
 from check_native_details import check_contract
@@ -53,6 +54,19 @@ def check_sources(root=ROOT):
             for apply in (apply_details, apply_danmaku, apply_paging):
                 descriptors, _ = apply(project, root, variant)
                 changed.update(descriptors)
+            if family=='tv':
+                video='smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali'
+                original=(source/video).read_text();patched=(project/video).read_text()
+                signature='dispatchKeyEvent(Landroid/view/KeyEvent;)Z'
+                if native_method(original,signature).group()!=native_method(patched,signature).group():
+                    raise ValueError('TV fullscreen native key dispatch was modified: '+variant)
+                before=native_method(original,'s()V').group();after=native_method(patched,'s()V').group()
+                marker='    :cond_1\n';tail='    :leotv_native_player_exit\n'
+                if before.split(marker)[0]!=after.split(marker)[0] or after.count(tail)!=1 or before.split(marker)[1]!=after.split(tail)[1]:
+                    raise ValueError('TV native Back control/widget branches or collapse behavior changed: '+variant)
+                if after.count('Lcom/leotv/detail/Playback;->leave(Landroid/app/Activity;)Z')!=1:
+                    raise ValueError('Expected one exit overlay after native TV panels: '+variant)
+                report.update({'native_tv_key_dispatch_unchanged':True,'native_tv_back_panels_before_exit':True})
             report.update({'exact_git_paths_verified': len(names),
                            'overlay_classes_verified': len(changed)})
         reports.append(report)

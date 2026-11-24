@@ -169,8 +169,21 @@ def apply(project, root, variant):
             text = replace_method(text, init, lambda body: append_call(body,
                 '    invoke-static {p0}, Lcom/leotv/detail/Playback;->initialize(Landroid/app/Activity;)V'))
             back = 'c0()V' if mobile else 's()V'
-            text = replace_method(text, back, lambda body: guard(body,
-                'Lcom/leotv/detail/Playback;->leave(Landroid/app/Activity;)Z', '    nop'))
+            if mobile:
+                text = replace_method(text, back, lambda body: guard(body,
+                    'Lcom/leotv/detail/Playback;->leave(Landroid/app/Activity;)Z', '    nop'))
+            else:
+                def native_tv_back(body):
+                    marker='    :cond_1\n'
+                    if body.count(marker)!=1:
+                        raise ValueError('Expected one native TV fullscreen exit decision.')
+                    prefix=body.split(marker)[0]
+                    if prefix.count('->o0(Z)V')!=1 or prefix.count('->n0()V')!=1:
+                        raise ValueError('Native TV control/widget Back branches changed.')
+                    added=('\n    invoke-static {p0}, Lcom/leotv/detail/Playback;->leave(Landroid/app/Activity;)Z\n\n'
+                           '    move-result v0\n\n    if-eqz v0, :leotv_native_player_exit\n\n    return-void\n\n    :leotv_native_player_exit\n')
+                    return body.replace(marker,marker+added)
+                text=replace_method(text,back,native_tv_back)
             if mobile:
                 signature = 'onPlayerEvent(Lz3/g;)V'
                 def size_event(body):

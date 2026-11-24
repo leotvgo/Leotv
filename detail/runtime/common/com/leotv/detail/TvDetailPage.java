@@ -56,6 +56,8 @@ final class TvDetailPage implements DetailPage {
     boolean mounted=true, reversed, reversePlay, manualSource;
     boolean metadataResolved, artworkRevealed;
     private boolean initialPlayFocus=!mobile;
+    private boolean playbackFocusPending;
+    private View restoredPlaybackView;
     private boolean loadingHostApplied;
     private final android.graphics.drawable.Drawable loadingBackdrop;
     private final Window.Callback originalCallback;
@@ -177,7 +179,7 @@ final class TvDetailPage implements DetailPage {
         libraryLayout=new LibraryDetailLayout(this);
         originalCallback=activity.getWindow().getCallback();
         callback=(Window.Callback)java.lang.reflect.Proxy.newProxyInstance(Window.Callback.class.getClassLoader(),new Class<?>[]{Window.Callback.class},(proxy,method,args)->{
-            if(!mobile&&method.getName().equals("dispatchTouchEvent")&&((MotionEvent)args[0]).getActionMasked()==MotionEvent.ACTION_DOWN)initialPlayFocus=false;
+            if(!mobile&&method.getName().equals("dispatchTouchEvent")&&((MotionEvent)args[0]).getActionMasked()==MotionEvent.ACTION_DOWN){initialPlayFocus=false;playbackFocusPending=false;restoredPlaybackView=null;}
             if(method.getName().equals("dispatchKeyEvent")&&key((KeyEvent)args[0]))return true;
             try{return method.invoke(originalCallback,args);}catch(java.lang.reflect.InvocationTargetException failure){throw failure.getCause();}
         });
@@ -242,7 +244,7 @@ final class TvDetailPage implements DetailPage {
         if(source!=detail)nativeEpisodes.dismiss();
         source=detail;title.setText(detail.name);synopsis.setText(android.text.Html.fromHtml(detail.overview).toString());
         facts.setText((detail.year+"  ·  "+detail.type).trim());hero.loadSource(detail.picture,BackdropSettings.read(activity).proxy);
-        preferred=NativeLibrary.resume(activity,detail,activity.getIntent().getStringExtra("mark"));
+        preferred=NativeLibrary.resume(activity,detail,playbackFocusPending?null:activity.getIntent().getStringExtra("mark"));
         boolean[] order=NativeLibrary.order(activity,detail);reversed=order[0];reversePlay=order[1];
         selectedFlag=preferred==null?"":preferred.flag;showFlags();showEpisodes();refreshActions();
         SiteFeed.Site site=SiteFeed.find(SiteFeed.sites(),detail.site);sitePicker.selected(site==null?detail.site:site.name);
@@ -276,11 +278,25 @@ final class TvDetailPage implements DetailPage {
         if(saved!=null)playButton.resume(saved.position,saved.duration);
         else playButton.idle(preferred==null?"暂无可播放剧集":"播放");
     }
-    void suspend(){hero.setActive(false);nativeEpisodes.dismiss();if(mobileSources!=null)mobileSources.dismiss();sitePicker.dismiss();if(personPopup!=null)personPopup.close();personPopup=null;if(matchPopup!=null)matchPopup.dismiss();matchPopup=null;}
+    void suspend(){playbackFocusPending=false;restoredPlaybackView=null;hero.setActive(false);nativeEpisodes.dismiss();if(mobileSources!=null)mobileSources.dismiss();sitePicker.dismiss();if(personPopup!=null)personPopup.close();personPopup=null;if(matchPopup!=null)matchPopup.dismiss();matchPopup=null;}
+    void requestPlaybackFocus(){if(!mobile){initialPlayFocus=false;playbackFocusPending=true;restoredPlaybackView=null;}}
+    private boolean restorePlaybackFocus(){
+        if(!playbackFocusPending||mobile||!mounted||source==null||preferred==null||!content.hasWindowFocus()||episodes.isLayoutRequested())return false;
+        for(int i=0;i<episodes.getChildCount();i++){View row=episodes.getChildAt(i);if(!row.isActivated())continue;
+            if(!row.isShown()||!row.isEnabled()||row.getWidth()==0||row.getHeight()==0)return false;
+            if(row==restoredPlaybackView&&row.hasFocus())return true;
+            navigation.position(episodes,i);navigation.adopt(row);
+            if(!row.hasFocus()&&!row.requestFocus())return false;
+            episodeScroll.scrollTo(Math.max(0,row.getLeft()-dp(8)),0);navigation.revealFocused();restoredPlaybackView=row;return row.hasFocus();
+        }
+        return false;
+    }
     private boolean beforeDraw(){if(!mounted)return true;if(content.getWidth()!=themeWidth||content.getHeight()!=themeHeight)ThemeLayout.apply(this);libraryLayout.sync();loadingState();
+        if(playbackFocusPending)restorePlaybackFocus();
         if(initialPlayFocus&&!playButton.isFocused()&&playButton.isShown()&&playButton.getWidth()>0&&playButton.getHeight()>0)navigation.focusPrimary();
         return true;}
     private boolean key(KeyEvent event){
+        if(!mobile&&playbackFocusPending&&event.getAction()==KeyEvent.ACTION_DOWN){restorePlaybackFocus();playbackFocusPending=false;restoredPlaybackView=null;}
         if(!mobile&&initialPlayFocus&&event.getAction()==KeyEvent.ACTION_DOWN){if(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_CENTER||event.getKeyCode()==KeyEvent.KEYCODE_ENTER)navigation.focusPrimary();initialPlayFocus=false;}
         if(nativeEpisodes.active()&&event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)nativeEpisodes.dismiss();return true;}
         if(episodeGroups!=null&&episodeGroups.key(event))return true;

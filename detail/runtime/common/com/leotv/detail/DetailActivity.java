@@ -9,6 +9,7 @@ import java.util.concurrent.*;
 
 /** Standalone resource/detail controller; the JAR composition owns the rendered page. */
 public final class DetailActivity extends androidx.appcompat.app.j implements TvDetailPage.Actions {
+    private static final String PLAYBACK_RETURN="leotv.detail.playback.return";
     private final Handler main=new Handler(Looper.getMainLooper());
     private final ExecutorService worker=Executors.newFixedThreadPool(2);
     private Future<?> sourceTask,metadataTask;
@@ -24,6 +25,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
         if(!Device.MOBILE)setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         super.onCreate(saved);
         if(saved!=null&&saved.containsKey("leotv.detail.site"))getIntent().putExtra("key",saved.getString("leotv.detail.site")).putExtra("id",saved.getString("leotv.detail.id")).putExtra("name",saved.getString("leotv.detail.name")).putExtra("pic",saved.getString("leotv.detail.pic"));
+        if(saved!=null&&saved.getBoolean(PLAYBACK_RETURN,false))getIntent().putExtra(PLAYBACK_RETURN,true);
         MetadataSettings.initialize(this);MetadataMatchStore.install(this);FollowStore.install(this);SiteFeed.initialize(this);
         page=new TvDetailPage(this,this);
         load();
@@ -81,6 +83,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
         getIntent().putExtra("leotv.episode.reverseSort",page.reversed).putExtra("leotv.episode.reversePlay",page.reversePlay);
         if(metadata!=null)getIntent().putStringArrayListExtra(NativeRouting.TITLE_LOGOS,new java.util.ArrayList<>(metadata.branding.logos));
         else getIntent().removeExtra(NativeRouting.TITLE_LOGOS);
+        if(!Device.MOBILE)getIntent().putExtra(PLAYBACK_RETURN,true);
         NativeRouting.play(this,source.site,source.id,source.name,source.picture,episode.flag,episode.url,episode.name);
     }
     @Override public void changeSource(SiteFeed.Site site,org.json.JSONObject vod){
@@ -102,10 +105,10 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
     @Override public void download(){
         if(page!=null)page.nativeEpisodes.open(true);
     }
-    @Override public void onResume(){super.onResume();if(page!=null){page.resume();BackdropSettings.Options previous=metadataOptions!=null?metadataOptions:requestedOptions;if(source!=null&&previous!=null&&!previous.same(BackdropSettings.read(this)))enrich(++generation);}}
+    @Override public void onResume(){super.onResume();if(page!=null){if(!Device.MOBILE&&getIntent().getBooleanExtra(PLAYBACK_RETURN,false)){getIntent().removeExtra(PLAYBACK_RETURN);page.requestPlaybackFocus();}page.resume();BackdropSettings.Options previous=metadataOptions!=null?metadataOptions:requestedOptions;if(source!=null&&previous!=null&&!previous.same(BackdropSettings.read(this)))enrich(++generation);}}
     @Override public void onPause(){cacheState();if(page!=null)page.suspend();super.onPause();}
     /** The preserved AppCompat callback is final; the application lifecycle saves these extras. */
-    public void saveDetailState(Bundle saved){saved.putString("leotv.detail.site",getIntent().getStringExtra("key"));saved.putString("leotv.detail.id",getIntent().getStringExtra("id"));saved.putString("leotv.detail.name",getIntent().getStringExtra("name"));saved.putString("leotv.detail.pic",getIntent().getStringExtra("pic"));}
+    public void saveDetailState(Bundle saved){saved.putString("leotv.detail.site",getIntent().getStringExtra("key"));saved.putString("leotv.detail.id",getIntent().getStringExtra("id"));saved.putString("leotv.detail.name",getIntent().getStringExtra("name"));saved.putString("leotv.detail.pic",getIntent().getStringExtra("pic"));saved.putBoolean(PLAYBACK_RETURN,getIntent().getBooleanExtra(PLAYBACK_RETURN,false));}
     @Override public void onConfigurationChanged(android.content.res.Configuration configuration){super.onConfigurationChanged(configuration);if(page!=null){page.theme=-1;page.content.requestLayout();page.refresh(BackdropSettings.read(this).proxy);}}
     @Override public void onDestroy(){
         JarIntegration.release(this);
