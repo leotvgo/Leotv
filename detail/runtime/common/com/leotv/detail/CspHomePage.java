@@ -43,8 +43,9 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         rows=new LinearLayout(activity);rows.setOrientation(LinearLayout.VERTICAL);scroll.addView(rows,new ScrollView.LayoutParams(-1,-2));addView(scroll,new FrameLayout.LayoutParams(-1,-1));
         if(!phone){setClipChildren(false);rows.setClipChildren(false);scroll.setClipChildren(false);}
         heroFrame=new FrameLayout(activity);rows.addView(heroFrame,new LinearLayout.LayoutParams(-1,dp(phone?480:360)));
-        hero=new DetailHero(activity,colour->{if(closed)return;backdrop.colour=DetailHero.surface(colour);backdrop.invalidateSelf();if(backgroundChanged!=null)backgroundChanged.run();});hero.transparentWaiting(true);hero.presentation(phone,0);hero.limit(15);hero.dots(false);hero.tailWeight(.75f);hero.seamlessTail(true);
+        hero=new DetailHero(activity,colour->{if(closed)return;backdrop.colour=DetailHero.surface(colour);backdrop.invalidateSelf();invalidate();if(backgroundChanged!=null)backgroundChanged.run();});hero.transparentWaiting(true);hero.presentation(phone,0);hero.limit(15);hero.dots(false);hero.tailWeight(.75f);hero.seamlessTail(true);
         heroFrame.addView(hero,new FrameLayout.LayoutParams(-1,-1));
+        heroFrame.addOnLayoutChangeListener((view,l,t,r,b,ol,ot,or,ob)->{if(!closed){syncHeroBounds();hero.invalidate();refreshHeroBackdrop();}});
         heroFrame.setVisibility(GONE);
         LinearLayout info=new LinearLayout(activity);info.setOrientation(LinearLayout.VERTICAL);info.setGravity(Gravity.CENTER);info.setPadding(dp(22),0,dp(22),dp(25));
         title=text("",phone?28:30);title.setGravity(Gravity.CENTER);title.setTypeface(title.getTypeface(),android.graphics.Typeface.BOLD);title.setMaxLines(2);
@@ -63,6 +64,8 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         scrollChanged=()->{if(closed)return;int y=scroll.getScrollY();if(y==observedScrollY)return;observedScrollY=y;resetOffscreenRows();backdrop.shader=null;invalidate();if(viewportChanged!=null)viewportChanged.run();};scroll.getViewTreeObserver().addOnScrollChangedListener(scrollChanged);
         rows.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->{if(closed)return;if(viewportChanged!=null)viewportChanged.run();});
     }
+    void syncHeroBounds(){int w=heroFrame.getWidth()-heroFrame.getPaddingLeft()-heroFrame.getPaddingRight(),h=heroFrame.getHeight()-heroFrame.getPaddingTop()-heroFrame.getPaddingBottom();if(w<=0||h<=0||hero.getWidth()==w&&hero.getHeight()==h)return;hero.measure(View.MeasureSpec.makeMeasureSpec(w,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(h,View.MeasureSpec.EXACTLY));hero.layout(heroFrame.getPaddingLeft(),heroFrame.getPaddingTop(),heroFrame.getPaddingLeft()+w,heroFrame.getPaddingTop()+h);}
+    void refreshHeroBackdrop(){if(closed)return;if(hero.hasArtwork()){backdrop.colour=hero.surfaceColour();if(backgroundChanged!=null)backgroundChanged.run();}backdrop.invalidateSelf();invalidate();}
     void syncHistory(){if(recent!=null)recent.sync();}
     void historyChanged(){if(!closed&&viewportChanged!=null)viewportChanged.run();}
     boolean historyBack(){return recent!=null&&recent.resetDelete();}
@@ -106,6 +109,8 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         heroVisible(!paths.isEmpty());
     }
     private void selected(int index){
+        // Artwork readiness must invalidate the background even when the metadata is unchanged.
+        refreshHeroBackdrop();
         if(heroItems.isEmpty()){title.setText("");facts.setText("");overview.setText("");return;}
         heroIndex=Math.max(0,Math.min(index,heroItems.size()-1));JSONObject item=heroItems.get(heroIndex);MobileDetailMetadata.Result match=heroMetadata.get(heroIndex);
         if(boundHeroIndex==heroIndex&&boundHeroItem==item&&boundHeroMetadata==match&&dots.getChildCount()==heroItems.size())return;
@@ -253,6 +258,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     final class Backdrop extends Drawable {
         Drawable fallback;final Paint paint=new Paint();int colour=DetailHero.DEFAULT_COLOR;Shader shader;int paintedHeight,paintedHero;
         @Override public void draw(Canvas canvas){if(hero==null||!hero.hasArtwork()){android.graphics.Rect before=new android.graphics.Rect(fallback.getBounds());fallback.setBounds(getBounds());fallback.draw(canvas);fallback.setBounds(before);return;}
+            colour=hero.surfaceColour();
             int height=Math.max(1,getHeight()),heroBottom=Math.max(0,Math.min(height,scroll.getTop()+rows.getTop()+heroFrame.getBottom()-scroll.getScrollY()));
             paint.setShader(null);paint.setColor(colour);canvas.drawRect(getBounds(),paint);if(heroBottom>=height)return;
             if(shader==null||paintedHeight!=height||paintedHero!=heroBottom){paintedHeight=height;paintedHero=heroBottom;shader=new LinearGradient(0,heroBottom,0,height,new int[]{0x0004060a,DetailHero.FLOOR},null,Shader.TileMode.CLAMP);}

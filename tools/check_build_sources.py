@@ -68,6 +68,13 @@ def check_sources(root=ROOT):
     publish = chrome.split('    public static void publishHomeBackground(')[1].split('    public static void clearHomeBackground(')[0]
     if 'known.keySet()' in publish or 'scene.invalidate()' not in publish or 'hierarchyDirty=false;borrow(content,0)' not in chrome:
         raise ValueError('Carousel palette frames must not rediscover all native activity view trees.')
+    selected = home.split('    private void selected(int index)')[1].split('    boolean titleArtReady()')[0]
+    if selected.index('refreshHeroBackdrop()') > selected.index('if(boundHeroIndex==') or 'colour=hero.surfaceColour()' not in home:
+        raise ValueError('First artwork must refresh its parent backdrop before metadata deduplication.')
+    if 'frame.getHeight()-getTop()-frame.getPaddingBottom()' not in hero or 'heroFrame.addOnLayoutChangeListener' not in home:
+        raise ValueError('Home hero tail must use the laid-out parent viewport, including the initial frame.')
+    if 'root.setPadding(side,0,side,0)' not in history:
+        raise ValueError('Native recent history must retain the original outer list side padding.')
     # Git's spelling is authoritative even on a case-insensitive local filesystem.
     tracked = set(subprocess.check_output(['git', '-C', str(root), 'ls-files', '-z']).decode().split('\0'))
     manifests = {name: json.loads((root / name).read_text()) for name in LOCKS}

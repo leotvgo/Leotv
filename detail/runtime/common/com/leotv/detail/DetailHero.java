@@ -80,6 +80,7 @@ class DetailHero extends View {
     void transparentWaiting(boolean value){transparentWaiting=value;invalidate();}
     void presentation(boolean portrait,int style) { this.portrait=portrait;this.presentation=style;invalidate(); }
     boolean hasArtwork() { return bitmap != null && !bitmap.isRecycled(); }
+    int surfaceColour(){return surface(colour);}
     /** Scales the carousel's own bottom scrim; the artwork's last edge stays the page colour either way. */
     void tailWeight(float value) { tailWeight = Math.max(0f, Math.min(1f, value)); invalidate(); }
     void seamlessTail(boolean value){if(seamlessTail!=value){seamlessTail=value;tailGradient=null;invalidate();}}
@@ -421,7 +422,8 @@ class DetailHero extends View {
     void topExtension(int value){value=Math.max(0,value);if(topExtension!=value){topExtension=value;invalidate();}}
     @Override protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);int save=canvas.save();canvas.translate(0,-topExtension);
-        drawFrame(canvas,getWidth(),getHeight()+topExtension);canvas.restoreToCount(save);
+        int height=getHeight();if(seamlessTail&&getParent() instanceof View){View frame=(View)getParent();if(frame.getHeight()>0)height=Math.max(1,frame.getHeight()-getTop()-frame.getPaddingBottom());}
+        drawFrame(canvas,getWidth(),height+topExtension);canvas.restoreToCount(save);
     }
     /** Shares the actual carousel frame with home chrome; no second download or View-tree screenshot. */
     void drawFrame(Canvas canvas,int w,int h) {

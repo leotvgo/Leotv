@@ -28,7 +28,8 @@ final class NativeRecentHistory implements AutoCloseable {
             @Override protected void onAttachedToWindow(){super.onAttachedToWindow();attached=true;attachment(true);refresh();}
             @Override protected void onDetachedFromWindow(){attachment(false);attached=false;super.onDetachedFromWindow();}
         };
-        root.setOrientation(LinearLayout.VERTICAL);root.setClipChildren(false);root.setClipToPadding(false);root.setTag("leotv_native_recent_history");root.setVisibility(View.GONE);
+        int side=Math.round(24*activity.getResources().getDisplayMetrics().density);
+        root.setOrientation(LinearLayout.VERTICAL);root.setPadding(side,0,side,0);root.setClipChildren(false);root.setClipToPadding(false);root.setTag("leotv_native_recent_history");root.setVisibility(View.GONE);
     }
     void refresh(){
         if(closed||!active)return;final long token=++generation;main.removeCallbacksAndMessages(null);
