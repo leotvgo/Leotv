@@ -68,6 +68,7 @@ class DetailHero extends View {
     private boolean gradientPortrait;
     private float gradientWeight=-1;
     private boolean seamlessTail,gradientSeamless;
+    private boolean parentBackdrop;
     private int tailTintColour;private android.graphics.PorterDuffColorFilter tailTint;
     /** How much of the carousel's own foot scrim is kept; the home keeps less of it than the detail page. */
     private float tailWeight = 1f;
@@ -84,6 +85,7 @@ class DetailHero extends View {
     /** Scales the carousel's own bottom scrim; the artwork's last edge stays the page colour either way. */
     void tailWeight(float value) { tailWeight = Math.max(0f, Math.min(1f, value)); invalidate(); }
     void seamlessTail(boolean value){if(seamlessTail!=value){seamlessTail=value;tailGradient=null;invalidate();}}
+    void parentBackdrop(boolean value){parentBackdrop=value;if(value)setBackground(null);setWillNotDraw(value);invalidate();}
     /** How many slides this carousel keeps; the detail page wants five, the home wants its whole pool. */
     void limit(int value) { limit = Math.max(1, value); }
     /** The slide pips belong to the detail page; the home draws its own entries in that corner. */
@@ -421,7 +423,7 @@ class DetailHero extends View {
     private int topExtension;
     void topExtension(int value){value=Math.max(0,value);if(topExtension!=value){topExtension=value;invalidate();}}
     @Override protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);int save=canvas.save();canvas.translate(0,-topExtension);
+        super.onDraw(canvas);if(parentBackdrop)return;int save=canvas.save();canvas.translate(0,-topExtension);
         int height=getHeight();if(seamlessTail&&getParent() instanceof View){View frame=(View)getParent();if(frame.getHeight()>0)height=Math.max(1,frame.getHeight()-getTop()-frame.getPaddingBottom());}
         drawFrame(canvas,getWidth(),height+topExtension);canvas.restoreToCount(save);
     }
@@ -429,19 +431,9 @@ class DetailHero extends View {
     void drawFrame(Canvas canvas,int w,int h) {
         if(w<=0||h<=0||transparentWaiting&&bitmap==null)return;
         paint.setShader(null); paint.setAlpha(255); canvas.drawColor(colour);
-        if (bitmap == null || reveal < 1) drawLoading(canvas,w,h);
-        if (animationMode == 2 && nextBitmap != null) {
-            if (slideDirection < 0) {
-                drawImage(canvas,bitmap,w*slideProgress,1,1,w,h);
-                drawImage(canvas,nextBitmap,-w*(1-slideProgress),1,1,w,h);
-            } else {
-                drawImage(canvas,bitmap,-w*slideProgress,1,1,w,h);
-                drawImage(canvas,nextBitmap,w*(1-slideProgress),1,1,w,h);
-            }
-        } else drawImage(canvas,bitmap,0,reveal,1+.025f*(1-reveal),w,h);
+        drawArtwork(canvas,w,h,h);
         paint.setAlpha(255);
-        gradients(w,h);paint.setShader(tailGradient);
-        if(seamlessTail){int floor=surface(colour);if(tailTint==null||tailTintColour!=floor){tailTintColour=floor;tailTint=new android.graphics.PorterDuffColorFilter(floor,android.graphics.PorterDuff.Mode.SRC_IN);}paint.setColorFilter(tailTint);}
+        gradients(w,h);paint.setShader(tailGradient);tintTail();
         canvas.drawRect(0,0,w,h,paint);paint.setColorFilter(null);paint.setShader(null);
         if(!portrait&&(presentation==1 || presentation==DetailTheme.TV_THUNDER)) {
             boolean thunder = presentation == DetailTheme.TV_THUNDER;
@@ -463,6 +455,29 @@ class DetailHero extends View {
         }
         paint.setAlpha(255);
     }
+    /** One parent-owned surface paints both the artwork fade and the region below the layout row. */
+    void drawHomeBackdrop(Canvas canvas,int w,int height,int top,int heroHeight,Shader darkness){
+        paint.setShader(null);paint.setColorFilter(null);paint.setColor(colour);paint.setAlpha(255);canvas.drawRect(0,0,w,height,paint);
+        int extension=Math.max(Math.round(48*getResources().getDisplayMetrics().density),Math.round(heroHeight*.16f));int photoHeight=Math.max(1,heroHeight+extension);
+        if(top<height&&top+photoHeight>0){int save=canvas.save();canvas.translate(0,top);canvas.clipRect(0,0,w,photoHeight);drawArtwork(canvas,w,heroHeight,photoHeight);canvas.restoreToCount(save);}
+        gradients(w,photoHeight);paint.setShader(tailGradient);tintTail();
+        int save=canvas.save();canvas.translate(0,top);float start=Math.max(0,top+photoHeight*(portrait?.48f:.30f));canvas.drawRect(0,start-top,w,height-top,paint);canvas.restoreToCount(save);
+        paint.setColorFilter(null);paint.setShader(darkness);if(darkness!=null)canvas.drawRect(0,Math.max(0,top+heroHeight),w,height,paint);paint.setShader(null);
+    }
+    private void tintTail(){if(seamlessTail){int floor=surface(colour);if(tailTint==null||tailTintColour!=floor){tailTintColour=floor;tailTint=new android.graphics.PorterDuffColorFilter(floor,android.graphics.PorterDuff.Mode.SRC_IN);}paint.setColorFilter(tailTint);}}
+    private void drawArtwork(Canvas canvas,int w,int h,int clipHeight){
+        if (bitmap == null || reveal < 1) drawLoading(canvas,w,h);
+        if (animationMode == 2 && nextBitmap != null) {
+            if (slideDirection < 0) {
+                drawImage(canvas,bitmap,w*slideProgress,1,1,w,h,clipHeight);
+                drawImage(canvas,nextBitmap,-w*(1-slideProgress),1,1,w,h,clipHeight);
+            } else {
+                drawImage(canvas,bitmap,-w*slideProgress,1,1,w,h,clipHeight);
+                drawImage(canvas,nextBitmap,w*(1-slideProgress),1,1,w,h,clipHeight);
+            }
+        } else drawImage(canvas,bitmap,0,reveal,1+.025f*(1-reveal),w,h,clipHeight);
+        paint.setAlpha(255);
+    }
     private void gradients(int w,int h){
         boolean geometry=tailGradient==null||gradientWidth!=w||gradientHeight!=h||gradientStyle!=presentation||gradientPortrait!=portrait||gradientWeight!=tailWeight||gradientSeamless!=seamlessTail;
         if(!geometry&&(seamlessTail||gradientColour==colour))return;
@@ -474,13 +489,17 @@ class DetailHero extends View {
         gradientWidth=w;gradientHeight=h;gradientColour=colour;gradientStyle=presentation;gradientPortrait=portrait;gradientWeight=tailWeight;gradientSeamless=seamlessTail;
     }
     private void drawImage(Canvas canvas, Bitmap image, float x, float alpha, float zoom,int w,int h) {
+        drawImage(canvas,image,x,alpha,zoom,w,h,h);
+    }
+    private void drawImage(Canvas canvas, Bitmap image, float x, float alpha, float zoom,int w,int h,int clipHeight) {
         if (image == null || image.isRecycled()) return;
         cover(imageBounds, w, h, image.getWidth(), image.getHeight(), portrait, x, zoom);
+        if(clipHeight>h&&imageBounds.bottom<clipHeight)cover(imageBounds,w,clipHeight,image.getWidth(),image.getHeight(),portrait,x,zoom);
         if(presentation==LIBRARY_HOME)imageBounds.offset(0,(h-imageBounds.height())*.2f-imageBounds.top);
         else if(presentation==LIBRARY_DETAIL)imageBounds.offset(0,-imageBounds.top);
         paint.setShader(null); paint.setAlpha(Math.round(255*alpha));
         paint.setFilterBitmap(canvas.isHardwareAccelerated()||android.os.Build.VERSION.SDK_INT>23);
-        canvas.save(); canvas.clipRect(x,0,x+w,h); canvas.drawBitmap(image,null,imageBounds,paint); canvas.restore();
+        canvas.save(); canvas.clipRect(x,0,x+w,clipHeight); canvas.drawBitmap(image,null,imageBounds,paint); canvas.restore();
         paint.setAlpha(255);
     }
     static void cover(RectF bounds, int w, int h, int imageWidth, int imageHeight, boolean portrait, float x, float zoom) {

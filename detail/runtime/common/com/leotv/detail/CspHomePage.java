@@ -39,11 +39,12 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         super(activity);this.activity=activity;this.phone=phone;this.actions=actions;initialFocusPending=!phone;
         backdrop.fallback=com.leotv.ui.GlobalChrome.currentBackground(activity);setTag("leotv_csp_home");
         setBackground(backdrop);
-        scroll=phone?new ScrollView(activity):new TvHomeScroll();scroll.setClipToPadding(false);scroll.setVerticalScrollBarEnabled(false);scroll.setFillViewport(true);
-        rows=new LinearLayout(activity);rows.setOrientation(LinearLayout.VERTICAL);scroll.addView(rows,new ScrollView.LayoutParams(-1,-2));addView(scroll,new FrameLayout.LayoutParams(-1,-1));
+        scroll=phone?new ScrollView(activity):new TvHomeScroll();if(!phone)scroll.setBackground(null);scroll.setClipToPadding(false);scroll.setVerticalScrollBarEnabled(false);scroll.setFillViewport(true);
+        rows=new LinearLayout(activity);if(!phone)rows.setBackground(null);rows.setOrientation(LinearLayout.VERTICAL);scroll.addView(rows,new ScrollView.LayoutParams(-1,-2));addView(scroll,new FrameLayout.LayoutParams(-1,-1));
         if(!phone){setClipChildren(false);rows.setClipChildren(false);scroll.setClipChildren(false);}
-        heroFrame=new FrameLayout(activity);rows.addView(heroFrame,new LinearLayout.LayoutParams(-1,dp(phone?480:360)));
+        heroFrame=new FrameLayout(activity);if(!phone)heroFrame.setBackground(null);rows.addView(heroFrame,new LinearLayout.LayoutParams(-1,dp(phone?480:360)));
         hero=new DetailHero(activity,colour->{if(closed)return;backdrop.colour=DetailHero.surface(colour);backdrop.invalidateSelf();invalidate();if(backgroundChanged!=null)backgroundChanged.run();});hero.transparentWaiting(true);hero.presentation(phone,0);hero.limit(15);hero.dots(false);hero.tailWeight(.75f);hero.seamlessTail(true);
+        if(!phone){hero.parentBackdrop(true);hero.onFrame(()->{if(!closed){backdrop.invalidateSelf();invalidate();}});}
         heroFrame.addView(hero,new FrameLayout.LayoutParams(-1,-1));
         heroFrame.addOnLayoutChangeListener((view,l,t,r,b,ol,ot,or,ob)->{if(!closed){syncHeroBounds();hero.invalidate();refreshHeroBackdrop();}});
         heroFrame.setVisibility(GONE);
@@ -254,15 +255,15 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         void reset(){if(selected==0&&viewport.getScrollX()==0&&(phone||((TvShelfScroll)viewport).focused==null))return;selected=0;if(!phone)((TvShelfScroll)viewport).focused=null;viewport.scrollTo(0,0);}
     }
     void active(boolean value){if(closed||!phone&&pageActive==value)return;boolean leaving=pageActive&&!value;pageActive=value;if(recent!=null)recent.active(value);hero.setActive(value&&heroFrame.getVisibility()==VISIBLE);if(value)updateInsets();else if(leaving&&!phone){int y=scroll.getScrollY();for(Shelf shelf:shelves){if(shelf.rail.hasFocus()&&shelf.rail.getChildCount()>0)shelf.rail.getChildAt(0).requestFocus();shelf.reset();}scroll.scrollTo(0,y);}}
-    @Override public void close(){if(closed)return;closed=true;if(scroll.getViewTreeObserver().isAlive())scroll.getViewTreeObserver().removeOnScrollChangedListener(scrollChanged);viewportChanged=null;backgroundChanged=null;heroFrame.setOnClickListener(null);heroFrame.setOnTouchListener(null);if(recent!=null)recent.close();hero.close();titleArt.close();}
+    @Override public void close(){if(closed)return;closed=true;if(scroll.getViewTreeObserver().isAlive())scroll.getViewTreeObserver().removeOnScrollChangedListener(scrollChanged);viewportChanged=null;backgroundChanged=null;hero.onFrame(null);heroFrame.setOnClickListener(null);heroFrame.setOnTouchListener(null);if(recent!=null)recent.close();hero.close();titleArt.close();}
     final class Backdrop extends Drawable {
         Drawable fallback;final Paint paint=new Paint();int colour=DetailHero.DEFAULT_COLOR;Shader shader;int paintedHeight,paintedHero;
         @Override public void draw(Canvas canvas){if(hero==null||!hero.hasArtwork()){android.graphics.Rect before=new android.graphics.Rect(fallback.getBounds());fallback.setBounds(getBounds());fallback.draw(canvas);fallback.setBounds(before);return;}
             colour=hero.surfaceColour();
-            int height=Math.max(1,getHeight()),heroBottom=Math.max(0,Math.min(height,scroll.getTop()+rows.getTop()+heroFrame.getBottom()-scroll.getScrollY()));
-            paint.setShader(null);paint.setColor(colour);canvas.drawRect(getBounds(),paint);if(heroBottom>=height)return;
-            if(shader==null||paintedHeight!=height||paintedHero!=heroBottom){paintedHeight=height;paintedHero=heroBottom;shader=new LinearGradient(0,heroBottom,0,height,new int[]{0x0004060a,DetailHero.FLOOR},null,Shader.TileMode.CLAMP);}
-            paint.setShader(shader);canvas.drawRect(0,heroBottom,getWidth(),height,paint);paint.setShader(null);
+            int height=Math.max(1,getHeight()),heroTop=scroll.getTop()+rows.getTop()+heroFrame.getTop()-scroll.getScrollY(),heroBottom=Math.max(0,Math.min(height,scroll.getTop()+rows.getTop()+heroFrame.getBottom()-scroll.getScrollY()));
+            if(heroBottom<height&&(shader==null||paintedHeight!=height||paintedHero!=heroBottom)){paintedHeight=height;paintedHero=heroBottom;shader=new LinearGradient(0,heroBottom,0,height,new int[]{0x0004060a,DetailHero.FLOOR},null,Shader.TileMode.CLAMP);}
+            if(phone){paint.setShader(null);paint.setColor(colour);canvas.drawRect(getBounds(),paint);if(heroBottom<height){paint.setShader(shader);canvas.drawRect(0,heroBottom,getWidth(),height,paint);paint.setShader(null);}return;}
+            hero.drawHomeBackdrop(canvas,getWidth(),height,heroTop,heroFrame.getHeight(),heroBottom<height?shader:null);
         }
         @Override public void setAlpha(int value){paint.setAlpha(value);}
         @Override public void setColorFilter(android.graphics.ColorFilter value){paint.setColorFilter(value);}

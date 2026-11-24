@@ -75,6 +75,14 @@ def check_sources(root=ROOT):
         raise ValueError('Home hero tail must use the laid-out parent viewport, including the initial frame.')
     if 'root.setPadding(side,0,side,0)' not in history:
         raise ValueError('Native recent history must retain the original outer list side padding.')
+    if 'hero.parentBackdrop(true)' not in home or 'hero.drawHomeBackdrop(canvas' not in home or 'if(parentBackdrop)return' not in hero or 'hero.onFrame(' not in home:
+        raise ValueError('Home artwork and category background must be composited by the same parent surface.')
+    if 'canvas.drawRect(0,start-top,w,height-top,paint)' not in hero or 'clipHeight>h&&imageBounds.bottom<clipHeight' not in hero:
+        raise ValueError('Home tail must continue below the hero layout edge without exposing the image clip.')
+    if 'scroll.setBackground(null)' not in home or 'rows.setBackground(null)' not in home:
+        raise ValueError('Owned home layout containers must not cover the continuous parent background.')
+    if 'if(!phone){hero.parentBackdrop(true)' not in home or 'if(phone){paint.setShader(null)' not in home:
+        raise ValueError('TV continuous backdrop must preserve the confirmed mobile rendering path.')
     # Git's spelling is authoritative even on a case-insensitive local filesystem.
     tracked = set(subprocess.check_output(['git', '-C', str(root), 'ls-files', '-z']).decode().split('\0'))
     manifests = {name: json.loads((root / name).read_text()) for name in LOCKS}
