@@ -1,8 +1,8 @@
 {
   "channel": "prerelease",
-  "version_name": "5.3.1-preview.5",
-  "version_code": 636,
-  "title": "Leotv 5.3.1-preview.5",
+  "version_name": "5.3.1-preview.6",
+  "version_code": 637,
+  "title": "Leotv 5.3.1-preview.6",
   "prerelease": true,
   "make_latest": false
 }

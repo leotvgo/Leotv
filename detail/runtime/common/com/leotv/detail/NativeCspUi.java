@@ -22,6 +22,7 @@ import java.util.List;
 
 /** Borrows existing host controls and keeps category content in the host's own pager. */
 final class NativeCspUi {
+    private static final java.util.WeakHashMap<ImageView,java.lang.ref.WeakReference<View.OnLayoutChangeListener>> pendingImages=new java.util.WeakHashMap<>();
     final Activity activity;final boolean phone;final NewHome owner;
     View toolbar,type,pager,categoryRow;Object host;ViewGroup toolbarParent,typeParent;ViewGroup.LayoutParams toolbarParams,typeParams;
     int toolbarIndex,typeIndex,toolbarVisibility,lastScroll;float toolbarTranslation,toolbarAlpha,folded;LinearLayout categoryHeader,tvActions,tvClock;int clockOrientation,clockGravity;boolean borrowed;
@@ -182,7 +183,7 @@ final class NativeCspUi {
         }
     }
     private static float cardRatio(Object style){Object ratio=SiteFeed.invoke(style,"getRatio");float value=ratio instanceof Number?((Number)ratio).floatValue():.75f;return value>0&&!Float.isInfinite(value)&&!Float.isNaN(value)?value:.75f;}
-    private static View inflateCard(Activity activity,ViewGroup parent,Object style,int width){
+    static View inflateCard(Activity activity,ViewGroup parent,Object style,int width){
             boolean oval=Boolean.TRUE.equals(SiteFeed.invoke(style,"isOval")),list=Boolean.TRUE.equals(SiteFeed.invoke(style,"isList"));String layout=list?"adapter_vod_list":oval?"adapter_vod_oval":"adapter_vod_rect";
             int id=activity.getResources().getIdentifier(layout,"layout",activity.getPackageName());if(id==0)throw new IllegalStateException("Missing preserved native card: "+layout);
             View root;
@@ -193,25 +194,39 @@ final class NativeCspUi {
     }
     private static View createCard(Activity activity,ViewGroup parent,JSONObject item,Object style,int width,Runnable action)throws ReflectiveOperationException{
             View root=inflateCard(activity,parent,style,width);
+            bindCard(activity,root,item,action);return root;
+    }
+    static void bindCard(Activity activity,View root,JSONObject item,Runnable action)throws ReflectiveOperationException{
             Class<?> vod=Class.forName("com.fongmi.android.tv.bean.Vod",true,activity.getClassLoader());Object bean=vod.getMethod("objectFrom",String.class).invoke(null,item.toString());
             bind(activity,root,"name",bean,"getName","getNameVisible");bind(activity,root,"year",bean,"getYear","getYearVisible");bind(activity,root,"site",bean,"getSiteName","getSiteVisible");bind(activity,root,"remark",bean,"getRemarks","getRemarkVisible");
             ImageView image=(ImageView)named(activity,root,"image");if(image!=null){String name=(String)vod.getMethod("getName").invoke(bean),picture=(String)vod.getMethod("getPic").invoke(bean);homeImage(image,name,SourceArtwork.hostSource(picture));}
-            root.setFocusable(true);root.setClickable(true);root.setOnClickListener(v->action.run());cardFocus(root);return root;
+            root.setFocusable(true);root.setClickable(true);root.setOnClickListener(v->action.run());cardFocus(root);
     }
     /** The host's posted loader drops unmeasured views and explicitly selects DiskCacheStrategy.NONE. */
     static void homeImage(ImageView image,String title,String source){
+        cancelHomeImage(image);
         image.setScaleType(ImageView.ScaleType.CENTER_CROP);
         View.OnLayoutChangeListener ready=new View.OnLayoutChangeListener(){
             boolean started;
             @Override public void onLayoutChange(View view,int l,int t,int r,int b,int ol,int ot,int or,int ob){
+                java.lang.ref.WeakReference<View.OnLayoutChangeListener> pending=pendingImages.get(image);
+                if(pending==null||pending.get()!=this)return;
                 if(started||image.getWidth()<=0||image.getHeight()<=0)return;
                 started=true;
                 image.removeOnLayoutChangeListener(this);
+                pendingImages.remove(image);
                 loadHomeImage(image,title,source);
             }
         };
+        pendingImages.put(image,new java.lang.ref.WeakReference<>(ready));
         image.addOnLayoutChangeListener(ready);
         image.post(()->ready.onLayoutChange(image,0,0,0,0,0,0,0,0));
+    }
+    static void cancelHomeImage(ImageView image){java.lang.ref.WeakReference<View.OnLayoutChangeListener> pending=pendingImages.remove(image);View.OnLayoutChangeListener ready=pending==null?null:pending.get();if(ready!=null)image.removeOnLayoutChangeListener(ready);}
+    static void releaseHomeImage(ImageView image){
+        cancelHomeImage(image);
+        try{ClassLoader loader=image.getContext().getClassLoader();Object manager=Class.forName("com.bumptech.glide.b",true,loader).getMethod("d",View.class).invoke(null,image);Object target=Class.forName("com.bumptech.glide.n",true,loader).getConstructor(View.class).newInstance(image);manager.getClass().getMethod("o",Class.forName("j3.f",true,loader)).invoke(manager,target);}catch(ReflectiveOperationException|RuntimeException unavailable){}
+        image.setImageDrawable(null);
     }
     private static void loadHomeImage(ImageView image,String title,String source){
         try{
