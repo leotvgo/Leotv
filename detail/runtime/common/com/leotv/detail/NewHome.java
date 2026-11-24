@@ -39,7 +39,7 @@ public final class NewHome implements AutoCloseable {
         boolean enabled=MetadataSettings.newHome(activity);
         if(!enabled){unmount();restoreNative();com.leotv.ui.GlobalChrome.clearHomeBackground(activity);return false;}
         if(!phone&&!syncPending&&page!=null&&current!=null&&!categoryMode&&nativeUi.borrowed&&SiteFeed.current(current.site,current.configuration)){
-            nativeRoot.setVisibility(View.INVISIBLE);page.setVisibility(View.VISIBLE);nativeUi.layoutToolbar(page);page.active(true);page.restoreInitialFocus();refreshHeroSettings();return true;
+            nativeRoot.setVisibility(View.INVISIBLE);page.setVisibility(View.VISIBLE);nativeUi.layoutToolbar(page);page.active(true);page.syncHistory();page.restoreInitialFocus();refreshHeroSettings();return true;
         }
         SiteFeed.Site site=SiteFeed.active();if(site==null){unmount();restoreNative();return false;}
         NewHomeSite value=new NewHomeSite(site);
@@ -48,7 +48,7 @@ public final class NewHome implements AutoCloseable {
         if(page!=null){
             if(categoryMode){page.setVisibility(View.GONE);nativeUi.restoreToolbar();if(guardRecommendation(selectedCategory)){nativeRoot.setVisibility(View.INVISIBLE);nativeUi.mountRecommendation(selectedCategory);return true;}String selected=nativeUi.currentCategoryId();if(!selected.isEmpty()&&selectedCategory!=null&&!selected.equals(selectedCategory.id))for(CspHomeData.Category option:categories)if(!option.recommended&&option.id.equals(selected)){nativeUi.restoreCategory();selectedCategory=option;break;}if(selectedCategory!=null)NativeCategoryPaging.enter(activity,current.site.key,selectedCategory.id);if(nativeUi.categoryHeader==null&&!nativeUi.category(selectedCategory)){categoryMode=false;NativeCategoryPaging.leave(activity);}else {restoreNative();return false;}}
             nativeUi.restoreCategory();nativeRoot.setVisibility(View.INVISIBLE);page.setVisibility(View.VISIBLE);nativeUi.borrow(page);nativeUi.layoutToolbar(page);nativeUi.homeAction(page.shortcut,page.scroll.getScrollY()>page.dp(120));page.active(true);page.restoreInitialFocus();
-            refreshHeroSettings();syncPending=false;
+            page.syncHistory();refreshHeroSettings();syncPending=false;
             return true;
         }
         View root=phone?find("container"):null;
@@ -107,7 +107,7 @@ public final class NewHome implements AutoCloseable {
         if(action==android.view.KeyEvent.ACTION_UP&&code==tvDirection){tvDirection=-1;return true;}
         if(code==android.view.KeyEvent.KEYCODE_BACK){
             if(action==android.view.KeyEvent.ACTION_DOWN){if(!tvBack&&page.scroll.getScrollY()<=0&&nativeUi.siteFocused())return false;tvBack=true;return true;}
-            if(action==android.view.KeyEvent.ACTION_UP&&tvBack){tvBack=false;if(!event.isCanceled()&&!page.focusFirstInRow(activity.getCurrentFocus()))nativeUi.focusSite();return true;}
+            if(action==android.view.KeyEvent.ACTION_UP&&tvBack){tvBack=false;if(!event.isCanceled()&&!page.historyBack()&&!page.focusFirstInRow(activity.getCurrentFocus()))nativeUi.focusSite();return true;}
             return false;
         }
         if(action==android.view.KeyEvent.ACTION_DOWN&&nativeUi.moveTv(code)){tvDirection=code;return true;}

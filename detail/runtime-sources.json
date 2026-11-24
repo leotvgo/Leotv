@@ -118,10 +118,12 @@
     ],
     "mobile": [
       "detail/runtime/mobile/com/leotv/detail/Device.java",
+      "detail/runtime/mobile/com/leotv/detail/NativeRecentHistory.java",
       "detail/runtime/mobile/com/leotv/detail/ThemeLayout.java"
     ],
     "tv": [
       "detail/runtime/tv/com/leotv/detail/Device.java",
+      "detail/runtime/tv/com/leotv/detail/NativeRecentHistory.java",
       "detail/runtime/tv/com/leotv/detail/ThemeLayout.java"
     ]
   }

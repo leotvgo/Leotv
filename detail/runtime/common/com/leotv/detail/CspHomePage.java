@@ -24,6 +24,7 @@ import java.util.List;
 final class CspHomePage extends FrameLayout implements AutoCloseable {
     interface Actions {void category(CspHomeData.Category category);void resource(CspHomeData.Category category,JSONObject item);void categories();void filters();}
     final ScrollView scroll;final LinearLayout rows;final DetailHero hero;final FrameLayout heroFrame;
+    final NativeRecentHistory recent;
     final Activity activity;final boolean phone;final Actions actions;
     final TextView title,facts,overview,status;final DetailTitleArt titleArt;final android.widget.ImageView shortcut;final LinearLayout dots;
     final List<JSONObject> heroItems=new ArrayList<>();final List<MobileDetailMetadata.Result> heroMetadata=new ArrayList<>();final List<Shelf> shelves=new ArrayList<>();
@@ -33,6 +34,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     final Backdrop backdrop=new Backdrop();
     CspHomeData.Category first;boolean closed,pageActive=true,initialFocusPending,initialTargetReady;int headerHeight;
     Runnable viewportChanged,backgroundChanged;
+    String heroProxy="";int boundHeroIndex=-1;JSONObject boundHeroItem;MobileDetailMetadata.Result boundHeroMetadata;
     CspHomePage(Activity activity,boolean phone,Actions actions){
         super(activity);this.activity=activity;this.phone=phone;this.actions=actions;initialFocusPending=!phone;
         backdrop.fallback=com.leotv.ui.GlobalChrome.currentBackground(activity);setTag("leotv_csp_home");
@@ -41,7 +43,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         rows=new LinearLayout(activity);rows.setOrientation(LinearLayout.VERTICAL);scroll.addView(rows,new ScrollView.LayoutParams(-1,-2));addView(scroll,new FrameLayout.LayoutParams(-1,-1));
         if(!phone){setClipChildren(false);rows.setClipChildren(false);scroll.setClipChildren(false);}
         heroFrame=new FrameLayout(activity);rows.addView(heroFrame,new LinearLayout.LayoutParams(-1,dp(phone?480:360)));
-        hero=new DetailHero(activity,colour->{if(closed)return;backdrop.colour=DetailHero.surface(colour);backdrop.shader=null;invalidate();if(backgroundChanged!=null)backgroundChanged.run();});hero.transparentWaiting(true);hero.presentation(phone,0);hero.limit(15);hero.dots(false);hero.tailWeight(.75f);
+        hero=new DetailHero(activity,colour->{if(closed)return;backdrop.colour=DetailHero.surface(colour);backdrop.invalidateSelf();if(backgroundChanged!=null)backgroundChanged.run();});hero.transparentWaiting(true);hero.presentation(phone,0);hero.limit(15);hero.dots(false);hero.tailWeight(.75f);hero.seamlessTail(true);
         heroFrame.addView(hero,new FrameLayout.LayoutParams(-1,-1));
         heroFrame.setVisibility(GONE);
         LinearLayout info=new LinearLayout(activity);info.setOrientation(LinearLayout.VERTICAL);info.setGravity(Gravity.CENTER);info.setPadding(dp(22),0,dp(22),dp(25));
@@ -53,11 +55,34 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         info.addView(titleArt,new LinearLayout.LayoutParams(-1,dp(phone?56:64)));titleArt.setVisibility(GONE);info.addView(title,new LinearLayout.LayoutParams(-1,-2));info.addView(facts,new LinearLayout.LayoutParams(-1,-2));info.addView(overview,new LinearLayout.LayoutParams(-1,-2));info.addView(dots,new LinearLayout.LayoutParams(-1,-2));
         heroFrame.addView(info,new FrameLayout.LayoutParams(-1,-2,Gravity.BOTTOM));
         heroFrame.setFocusable(true);heroFrame.setFocusableInTouchMode(!phone);heroFrame.setClickable(true);heroFrame.setOnClickListener(v->{int index=Math.max(0,Math.min(heroIndex,heroItems.size()-1));if(first!=null&&!heroItems.isEmpty())actions.resource(first,heroItems.get(index));});
+        if(phone)heroGestures();
         hero.onIndex(this::selected);hero.onIncoming(this::selected);
         shortcut=new android.widget.ImageView(activity);View nativeTop=NativeViews.find(activity,"top");if(nativeTop instanceof android.widget.ImageView)shortcut.setImageDrawable(NativeViews.drawable(((android.widget.ImageView)nativeTop).getDrawable(),shortcut));else shortcut.setImageDrawable(new NativeCspUi.Glyph(false,false));shortcut.setPadding(dp(12),dp(12),dp(12),dp(12));shortcut.setContentDescription("一键回顶");shortcut.setFocusable(true);shortcut.setClickable(true);shortcut.setBackground(TvDetailPage.focusBackground(activity));shortcut.setOnClickListener(v->scroll.smoothScrollTo(0,0));addView(shortcut,new FrameLayout.LayoutParams(dp(48),dp(48),Gravity.BOTTOM|Gravity.RIGHT));shortcut.setVisibility(phone?VISIBLE:GONE);
+        recent=phone?null:new NativeRecentHistory(activity,this::historyChanged);if(recent!=null)rows.addView(recent.root,new LinearLayout.LayoutParams(-1,-2));
         status=text("正在加载分类…",15);status.setGravity(Gravity.CENTER);status.setPadding(0,dp(20),0,dp(20));rows.addView(status,new LinearLayout.LayoutParams(-1,-2));
         scrollChanged=()->{if(closed)return;int y=scroll.getScrollY();if(y==observedScrollY)return;observedScrollY=y;resetOffscreenRows();backdrop.shader=null;invalidate();if(viewportChanged!=null)viewportChanged.run();};scroll.getViewTreeObserver().addOnScrollChangedListener(scrollChanged);
         rows.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->{if(closed)return;if(viewportChanged!=null)viewportChanged.run();});
+    }
+    void syncHistory(){if(recent!=null)recent.sync();}
+    void historyChanged(){if(!closed&&viewportChanged!=null)viewportChanged.run();}
+    boolean historyBack(){return recent!=null&&recent.resetDelete();}
+    boolean inHistory(View focus){return recent!=null&&recent.contains(focus);}
+    int screenX(View view){int[] point=new int[2];getLocationOnScreen(point);return point[0]+bounds(view,this,false).centerX();}
+    void heroGestures(){
+        final int slop=android.view.ViewConfiguration.get(activity).getScaledTouchSlop();
+        android.view.GestureDetector detector=new android.view.GestureDetector(activity,new android.view.GestureDetector.SimpleOnGestureListener(){
+            boolean horizontal,vertical,stepped;
+            @Override public boolean onDown(android.view.MotionEvent event){horizontal=vertical=stepped=false;return true;}
+            @Override public boolean onScroll(android.view.MotionEvent start,android.view.MotionEvent end,float distanceX,float distanceY){
+                if(start==null)return false;float x=end.getX()-start.getX(),y=end.getY()-start.getY();
+                if(!horizontal&&!vertical){if(Math.max(Math.abs(x),Math.abs(y))<=slop)return true;horizontal=Math.abs(x)>Math.abs(y);vertical=!horizontal;}
+                if(vertical){if(heroFrame.getParent()!=null)heroFrame.getParent().requestDisallowInterceptTouchEvent(false);return false;}
+                if(!stepped){hero.step(x<0?1:-1);stepped=true;}return true;
+            }
+            @Override public boolean onSingleTapUp(android.view.MotionEvent event){return !horizontal&&!vertical&&heroFrame.performClick();}
+        });
+        detector.setIsLongpressEnabled(false);detector.setOnDoubleTapListener(null);
+        heroFrame.setOnTouchListener((view,event)->{if(closed||!pageActive)return false;int action=event.getActionMasked();if(action==android.view.MotionEvent.ACTION_DOWN&&view.getParent()!=null)view.getParent().requestDisallowInterceptTouchEvent(true);detector.onTouchEvent(event);if((action==android.view.MotionEvent.ACTION_UP||action==android.view.MotionEvent.ACTION_CANCEL)&&view.getParent()!=null)view.getParent().requestDisallowInterceptTouchEvent(false);return true;});
     }
     int dp(int value){return Math.round(value*getResources().getDisplayMetrics().density);}
     TextView text(String value,int size){TextView view=new TextView(activity);view.setText(value);view.setTextSize(size);view.setTextColor(Color.WHITE);return view;}
@@ -72,23 +97,32 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     void failed(int index){if(index>=0&&index<shelves.size())shelves.get(index).note.setText("加载失败，点更多重试");if(index==0)initialTargetReady=true;}
     void failed(String message){status.setText(message);status.setVisibility(VISIBLE);hero.finishLoading();}
     void heroVisible(boolean visible){initialTargetReady=true;heroFrame.setVisibility(visible?VISIBLE:GONE);hero.setActive(pageActive&&visible&&getVisibility()==VISIBLE);updateInsets();}
-    void beginHeroLoading(){backdrop.fallback=com.leotv.ui.GlobalChrome.currentBackground(activity);hero.loadSources(java.util.Collections.emptyList(),BackdropSettings.read(activity).proxy);heroItems.clear();heroMetadata.clear();title.setText("");facts.setText("");overview.setText("");dots.removeAllViews();titleArt.load(java.util.Collections.emptyList(),BackdropSettings.read(activity).proxy);invalidate();}
+    void beginHeroLoading(){backdrop.fallback=com.leotv.ui.GlobalChrome.currentBackground(activity);heroProxy=BackdropSettings.read(activity).proxy;boundHeroIndex=-1;boundHeroItem=null;boundHeroMetadata=null;hero.loadSources(java.util.Collections.emptyList(),heroProxy);heroItems.clear();heroMetadata.clear();title.setText("");facts.setText("");overview.setText("");dots.removeAllViews();titleArt.load(java.util.Collections.emptyList(),heroProxy);invalidate();}
     int heroIndex;
     void hero(List<JSONObject> values,List<MobileDetailMetadata.Result> metadata){
         heroItems.clear();heroMetadata.clear();List<String> paths=new ArrayList<>(),fallbacks=new ArrayList<>();
         for(int i=0;i<values.size();i++){JSONObject item=values.get(i);MobileDetailMetadata.Result match=i<metadata.size()?metadata.get(i):null;String fallback=CspHomeData.image(item,!phone),path="";if(match!=null){List<String> candidates=phone?match.posterPaths:match.backdropPaths;String primary=phone?match.posterPath:match.backdropPath;if(primary.isEmpty()&&!candidates.isEmpty())primary=candidates.get(0);path=MobileDetailMetadata.imageAddress(primary,"w1280");}if(path.isEmpty())path=fallback;if(path.isEmpty()||paths.contains(path))continue;heroItems.add(item);heroMetadata.add(match);paths.add(path);fallbacks.add(path.equals(fallback)?"":fallback);if(paths.size()==15)break;}
-        hero.loadHomeSources(paths,fallbacks,BackdropSettings.read(activity).proxy);selected(heroIndex);
+        heroProxy=BackdropSettings.read(activity).proxy;hero.loadHomeSources(paths,fallbacks,heroProxy);selected(heroIndex);
         heroVisible(!paths.isEmpty());
     }
-    private void selected(int index){if(heroItems.isEmpty()){title.setText("");facts.setText("");overview.setText("");return;}heroIndex=Math.max(0,Math.min(index,heroItems.size()-1));JSONObject item=heroItems.get(heroIndex);MobileDetailMetadata.Result match=heroMetadata.get(heroIndex);title.setText(item.optString("vod_name"));titleArt.load(match==null?java.util.Collections.emptyList():match.branding.logos,BackdropSettings.read(activity).proxy);titleArt.setVisibility(titleArt.ready()?VISIBLE:GONE);String detail=(item.optString("vod_year")+" / "+item.optString("type_name",item.optString("vod_remarks"))).trim();facts.setText(match!=null?match.facts:detail.equals("/")?"":detail);overview.setText(match!=null?match.overview:android.text.Html.fromHtml(item.optString("vod_content")).toString());dots.removeAllViews();for(int i=0;i<heroItems.size();i++){TextView dot=text(i==heroIndex?"━":"•",14);dot.setAlpha(i==heroIndex?1f:.5f);dot.setGravity(Gravity.CENTER);dots.addView(dot,new LinearLayout.LayoutParams(dp(16),dp(20)));}}
+    private void selected(int index){
+        if(heroItems.isEmpty()){title.setText("");facts.setText("");overview.setText("");return;}
+        heroIndex=Math.max(0,Math.min(index,heroItems.size()-1));JSONObject item=heroItems.get(heroIndex);MobileDetailMetadata.Result match=heroMetadata.get(heroIndex);
+        if(boundHeroIndex==heroIndex&&boundHeroItem==item&&boundHeroMetadata==match&&dots.getChildCount()==heroItems.size())return;
+        boundHeroIndex=heroIndex;boundHeroItem=item;boundHeroMetadata=match;
+        title.setText(item.optString("vod_name"));titleArt.load(match==null?java.util.Collections.emptyList():match.branding.logos,heroProxy);titleArt.setVisibility(titleArt.ready()?VISIBLE:GONE);
+        String detail=(item.optString("vod_year")+" / "+item.optString("type_name",item.optString("vod_remarks"))).trim();facts.setText(match!=null?match.facts:detail.equals("/")?"":detail);overview.setText(match!=null?match.overview:android.text.Html.fromHtml(item.optString("vod_content")).toString());
+        if(dots.getChildCount()!=heroItems.size()){dots.removeAllViews();for(int i=0;i<heroItems.size();i++){TextView dot=text("•",14);dot.setGravity(Gravity.CENTER);dots.addView(dot,new LinearLayout.LayoutParams(dp(16),dp(20)));}}
+        for(int i=0;i<heroItems.size();i++){TextView dot=(TextView)dots.getChildAt(i);String value=i==heroIndex?"━":"•";float alpha=i==heroIndex?1f:.5f;if(!value.contentEquals(dot.getText()))dot.setText(value);if(dot.getAlpha()!=alpha)dot.setAlpha(alpha);}
+    }
     boolean titleArtReady(){boolean ready=titleArt!=null&&titleArt.ready();if(titleArt!=null)titleArt.setVisibility(ready?VISIBLE:GONE);return ready;}
     void updateInsets(){
         View navigation=NativeViews.find(activity,"navigation");int below=phone?(navigation==null||navigation.getHeight()==0?dp(56):navigation.getHeight()):dp(16);android.view.WindowInsets insets=getRootWindowInsets();if(insets!=null)below+=insets.getSystemWindowInsetBottom();if(rows.getPaddingBottom()!=below+dp(16))rows.setPadding(0,0,0,below+dp(16));
         FrameLayout.LayoutParams params=(FrameLayout.LayoutParams)shortcut.getLayoutParams();if(params.bottomMargin!=below+dp(16)||params.rightMargin!=dp(16)){params.bottomMargin=below+dp(16);params.rightMargin=dp(16);shortcut.requestLayout();}
         int above=heroFrame.getVisibility()==GONE?headerHeight+dp(12):0;if(scroll.getPaddingTop()!=above)scroll.setPadding(0,above,0,0);
     }
-    boolean firstContent(View focus){return heroFrame.isShown()?NativeCspUi.descendant(focus,heroFrame):!shelves.isEmpty()&&NativeCspUi.descendant(focus,shelves.get(0).root);}
-    boolean leftContentEdge(View focus){if(focus==null)return false;for(Shelf shelf:shelves)if(shelf.rail.getChildCount()>0&&NativeCspUi.descendant(focus,shelf.rail.getChildAt(0)))return true;return false;}
+    boolean firstContent(View focus){return heroFrame.isShown()?NativeCspUi.descendant(focus,heroFrame):recent!=null&&recent.visible()?inHistory(focus):!shelves.isEmpty()&&NativeCspUi.descendant(focus,shelves.get(0).root);}
+    boolean leftContentEdge(View focus){if(focus==null)return false;if(inHistory(focus))return recent.atStart();for(Shelf shelf:shelves)if(shelf.rail.getChildCount()>0&&NativeCspUi.descendant(focus,shelf.rail.getChildAt(0)))return true;return false;}
     Shelf shelfOf(View focus){for(View node=focus;node!=null&&node!=this;node=node.getParent() instanceof View?(View)node.getParent():null){Shelf shelf=rowOwners.get(node);if(shelf!=null)return shelf;}return null;}
     int cardIndex(Shelf shelf,View focus){for(View node=focus;node!=null&&node!=shelf.root;node=node.getParent() instanceof View?(View)node.getParent():null)if(node.getParent()==shelf.rail)return shelf.rail.indexOfChild(node);return -1;}
     boolean focusHome(View target){
@@ -97,8 +131,12 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         if(accepted){((TvShelfScroll)shelf.viewport).reveal();((TvHomeScroll)scroll).reveal();}return accepted;
     }
     void moveRow(View focus,boolean down){
+        if(recent!=null&&recent.visible()){
+            if(inHistory(focus)){recent.resetDelete();if(!down){if(heroFrame.isShown())focusHome(heroFrame);return;}if(!shelves.isEmpty()){Shelf target=shelves.get(0);View aligned=alignedCard(target,focus);if(aligned!=null)focusHome(aligned);else if(target.rail.getChildCount()>0)focusHome(target.rail.getChildAt(0));else focusHome(target.open);}return;}
+            if(down&&NativeCspUi.descendant(focus,heroFrame)){recent.focusFirst();return;}
+        }
         Shelf from=shelfOf(focus);int row=from==null?-1:shelves.indexOf(from),next=row+(down?1:-1);
-        if(next<0){if(heroFrame.isShown())focusHome(heroFrame);return;}
+        if(next<0){if(recent!=null&&recent.visible())recent.focusAt(screenX(focus));else if(heroFrame.isShown())focusHome(heroFrame);return;}
         if(next>=shelves.size())return;
         Shelf target=shelves.get(next);
         if(from!=null&&NativeCspUi.descendant(focus,from.open)){focusHome(target.open);return;}
@@ -126,8 +164,9 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         }
         return nearest;
     }
-    boolean moveCard(View focus,boolean right){Shelf shelf=shelfOf(focus);if(shelf==null)return false;int index=cardIndex(shelf,focus);if(index<0)return false;int next=Math.max(0,Math.min(shelf.rail.getChildCount()-1,index+(right?1:-1)));focusHome(shelf.rail.getChildAt(next));return true;}
+    boolean moveCard(View focus,boolean right){if(inHistory(focus))return recent.move(right);Shelf shelf=shelfOf(focus);if(shelf==null)return false;int index=cardIndex(shelf,focus);if(index<0)return false;int next=Math.max(0,Math.min(shelf.rail.getChildCount()-1,index+(right?1:-1)));focusHome(shelf.rail.getChildAt(next));return true;}
     boolean focusFirstInRow(View focus){
+        if(inHistory(focus))return !recent.atStart()&&recent.focusFirst();
         Shelf shelf=shelfOf(focus);if(shelf==null||cardIndex(shelf,focus)<=0||shelf.rail.getChildCount()==0)return false;
         return focusHome(shelf.rail.getChildAt(0));
     }
@@ -144,11 +183,11 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         return rect;
     }
     int rowScroll(View focus){
-        Shelf shelf=shelfOf(focus);if(shelf==null||scroll.getHeight()==0)return scroll.getScrollY();
-        android.graphics.Rect row=bounds(shelf.root,scroll,false);
+        Shelf shelf=shelfOf(focus);boolean history=inHistory(focus);if(shelf==null&&!history||scroll.getHeight()==0)return scroll.getScrollY();
+        android.graphics.Rect row=bounds(history?recent.root:shelf.root,scroll,false);
         int edge=Math.max(dp(12),(int)(scroll.getHeight()*.1f));
         if(row.height()>scroll.getHeight()-edge-dp(24))edge=dp(12);
-        if(row.height()>scroll.getHeight()-edge-dp(24)&&cardIndex(shelf,focus)>=0)row=bounds(focus,scroll,true);
+        if(row.height()>scroll.getHeight()-edge-dp(24)&&(history||cardIndex(shelf,focus)>=0))row=bounds(focus,scroll,true);
         int maximum=Math.max(0,rows.getHeight()+scroll.getPaddingTop()+scroll.getPaddingBottom()-scroll.getHeight());
         return Math.max(0,Math.min(maximum,row.top-edge));
     }
@@ -156,10 +195,10 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         View focused;
         TvHomeScroll(){super(activity);setSmoothScrollingEnabled(false);setVerticalFadingEdgeEnabled(false);setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);}
         @Override public void requestChildFocus(View child,View target){focused=target;super.requestChildFocus(child,target);if(!movingFocus)reveal();}
-        @Override protected int computeScrollDeltaToGetChildRectOnScreen(android.graphics.Rect rect){return shelfOf(focused)==null?super.computeScrollDeltaToGetChildRectOnScreen(rect):0;}
-        @Override public boolean requestChildRectangleOnScreen(View child,android.graphics.Rect rect,boolean immediate){if(shelfOf(focused)==null)return super.requestChildRectangleOnScreen(child,rect,immediate);if(movingFocus)return false;int before=getScrollY();reveal();return before!=getScrollY();}
+        @Override protected int computeScrollDeltaToGetChildRectOnScreen(android.graphics.Rect rect){return shelfOf(focused)==null&&!inHistory(focused)?super.computeScrollDeltaToGetChildRectOnScreen(rect):0;}
+        @Override public boolean requestChildRectangleOnScreen(View child,android.graphics.Rect rect,boolean immediate){if(shelfOf(focused)==null&&!inHistory(focused))return super.requestChildRectangleOnScreen(child,rect,immediate);if(movingFocus)return false;int before=getScrollY();reveal();return before!=getScrollY();}
         @Override protected void onLayout(boolean changed,int l,int t,int r,int b){super.onLayout(changed,l,t,r,b);if(hasFocus())reveal();}
-        void reveal(){if(closed||!pageActive||focused==null||!focused.hasFocus())return;Shelf shelf=shelfOf(focused);if(shelf==null)return;int index=cardIndex(shelf,focused);if(index>=0)shelf.selected=index;scrollTo(0,rowScroll(focused));}
+        void reveal(){if(closed||!pageActive||focused==null||!focused.hasFocus())return;Shelf shelf=shelfOf(focused);if(shelf==null){if(inHistory(focused))scrollTo(0,rowScroll(focused));return;}int index=cardIndex(shelf,focused);if(index>=0)shelf.selected=index;scrollTo(0,rowScroll(focused));}
     }
     final class TvShelfScroll extends HorizontalScrollView {
         View focused;
@@ -171,10 +210,11 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         int delta(){android.graphics.Rect rect=bounds(focused,this,true);int left=getScrollX()+getPaddingLeft(),right=getScrollX()+getWidth()-getPaddingRight();return rect.left<left?rect.left-left:rect.right>right?rect.right-right:0;}
         void reveal(){if(!closed&&pageActive&&focused!=null&&focused.hasFocus()&&getWidth()>0)scrollTo(getScrollX()+delta(),0);}
     }
-    boolean focusContent(){View target=heroFrame.isShown()?heroFrame:null;if(target==null)for(Shelf shelf:shelves){target=shelf.rail.getChildCount()>0?shelf.rail.getChildAt(0):shelf.open;if(target.isShown())break;}if(target==null)return false;boolean focused=focusHome(target);if(focused&&(phone||shelfOf(target)==null)){android.graphics.Rect rect=new android.graphics.Rect();target.getDrawingRect(rect);target.requestRectangleOnScreen(rect,true);}return focused;}
+    boolean focusContent(){View target=heroFrame.isShown()?heroFrame:null;if(target==null&&recent!=null&&recent.visible())return recent.focusFirst();if(target==null)for(Shelf shelf:shelves){target=shelf.rail.getChildCount()>0?shelf.rail.getChildAt(0):shelf.open;if(target.isShown())break;}if(target==null)return false;boolean focused=focusHome(target);if(focused&&(phone||shelfOf(target)==null)){android.graphics.Rect rect=new android.graphics.Rect();target.getDrawingRect(rect);target.requestRectangleOnScreen(rect,true);}return focused;}
     void restoreInitialFocus(){
         if(phone||closed||!pageActive||!initialFocusPending||!initialTargetReady||!isShown()||!hasWindowFocus()||isLayoutRequested())return;
         View target=heroFrame.isShown()?heroFrame:null;
+        if(target==null&&recent!=null&&recent.visible()){recent.focusFirst();return;}
         if(target==null)for(Shelf shelf:shelves)if(shelf.items!=null&&!shelf.items.isEmpty()&&shelf.rail.getChildCount()>0){target=shelf.rail.getChildAt(0);break;}
         if(target==null||!target.isShown()||target.getWidth()==0||target.getHeight()==0||target.hasFocus())return;
         target.setFocusableInTouchMode(true);
@@ -208,11 +248,16 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         }
         void reset(){if(selected==0&&viewport.getScrollX()==0&&(phone||((TvShelfScroll)viewport).focused==null))return;selected=0;if(!phone)((TvShelfScroll)viewport).focused=null;viewport.scrollTo(0,0);}
     }
-    void active(boolean value){if(closed||!phone&&pageActive==value)return;boolean leaving=pageActive&&!value;pageActive=value;hero.setActive(value&&heroFrame.getVisibility()==VISIBLE);if(value)updateInsets();else if(leaving&&!phone){int y=scroll.getScrollY();for(Shelf shelf:shelves){if(shelf.rail.hasFocus()&&shelf.rail.getChildCount()>0)shelf.rail.getChildAt(0).requestFocus();shelf.reset();}scroll.scrollTo(0,y);}}
-    @Override public void close(){if(closed)return;closed=true;if(scroll.getViewTreeObserver().isAlive())scroll.getViewTreeObserver().removeOnScrollChangedListener(scrollChanged);viewportChanged=null;backgroundChanged=null;heroFrame.setOnClickListener(null);hero.close();titleArt.close();}
+    void active(boolean value){if(closed||!phone&&pageActive==value)return;boolean leaving=pageActive&&!value;pageActive=value;if(recent!=null)recent.active(value);hero.setActive(value&&heroFrame.getVisibility()==VISIBLE);if(value)updateInsets();else if(leaving&&!phone){int y=scroll.getScrollY();for(Shelf shelf:shelves){if(shelf.rail.hasFocus()&&shelf.rail.getChildCount()>0)shelf.rail.getChildAt(0).requestFocus();shelf.reset();}scroll.scrollTo(0,y);}}
+    @Override public void close(){if(closed)return;closed=true;if(scroll.getViewTreeObserver().isAlive())scroll.getViewTreeObserver().removeOnScrollChangedListener(scrollChanged);viewportChanged=null;backgroundChanged=null;heroFrame.setOnClickListener(null);heroFrame.setOnTouchListener(null);if(recent!=null)recent.close();hero.close();titleArt.close();}
     final class Backdrop extends Drawable {
         Drawable fallback;final Paint paint=new Paint();int colour=DetailHero.DEFAULT_COLOR;Shader shader;int paintedHeight,paintedHero;
-        @Override public void draw(Canvas canvas){if(hero==null||!hero.hasArtwork()){android.graphics.Rect before=new android.graphics.Rect(fallback.getBounds());fallback.setBounds(getBounds());fallback.draw(canvas);fallback.setBounds(before);return;}int height=Math.max(1,getHeight()),heroHeight=Math.max(0,heroFrame.getHeight()-scroll.getScrollY());if(shader==null||paintedHeight!=height||paintedHero!=heroHeight){paintedHeight=height;paintedHero=heroHeight;shader=new LinearGradient(0,0,0,height,new int[]{colour,colour,DetailHero.FLOOR},new float[]{0,Math.max(.05f,Math.min(.95f,heroHeight/(float)height)),1},Shader.TileMode.CLAMP);}paint.setShader(shader);canvas.drawRect(getBounds(),paint);}
+        @Override public void draw(Canvas canvas){if(hero==null||!hero.hasArtwork()){android.graphics.Rect before=new android.graphics.Rect(fallback.getBounds());fallback.setBounds(getBounds());fallback.draw(canvas);fallback.setBounds(before);return;}
+            int height=Math.max(1,getHeight()),heroBottom=Math.max(0,Math.min(height,scroll.getTop()+rows.getTop()+heroFrame.getBottom()-scroll.getScrollY()));
+            paint.setShader(null);paint.setColor(colour);canvas.drawRect(getBounds(),paint);if(heroBottom>=height)return;
+            if(shader==null||paintedHeight!=height||paintedHero!=heroBottom){paintedHeight=height;paintedHero=heroBottom;shader=new LinearGradient(0,heroBottom,0,height,new int[]{0x0004060a,DetailHero.FLOOR},null,Shader.TileMode.CLAMP);}
+            paint.setShader(shader);canvas.drawRect(0,heroBottom,getWidth(),height,paint);paint.setShader(null);
+        }
         @Override public void setAlpha(int value){paint.setAlpha(value);}
         @Override public void setColorFilter(android.graphics.ColorFilter value){paint.setColorFilter(value);}
         @Override public int getOpacity(){return hero==null||!hero.hasArtwork()?fallback.getOpacity():android.graphics.PixelFormat.OPAQUE;}

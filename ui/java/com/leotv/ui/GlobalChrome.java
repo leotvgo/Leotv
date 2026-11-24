@@ -64,7 +64,8 @@ public final class GlobalChrome {
     }
 
     public static void publishHomeBackground(Activity activity,int colour){
-        if(homeColour!=null&&homeColour==colour)return;homeColour=colour;hostBackdrop=homeGradient();if(lifecycle!=null){lifecycle.known.put(activity,true);for(Activity page:new ArrayList<>(lifecycle.known.keySet()))lifecycle.scene(page);}
+        if(homeColour!=null&&homeColour==colour)return;homeColour=colour;hostBackdrop=null;
+        if(lifecycle!=null){lifecycle.known.put(activity,true);if(!lifecycle.scenes.containsKey(activity))lifecycle.scene(activity);for(Scene scene:lifecycle.scenes.values())if(scene.isShown()&&scene.getWindowVisibility()==View.VISIBLE)scene.invalidate();}
     }
     public static void clearHomeBackground(Activity activity){if(homeColour==null)return;homeColour=null;hostBackdrop=null;if(lifecycle!=null){ArrayList<Scene> scenes=new ArrayList<>(lifecycle.scenes.values());lifecycle.scenes.clear();for(Scene scene:scenes)scene.close();}}
     private static Drawable homeGradient(){return homeColour==null?null:new android.graphics.drawable.GradientDrawable(android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM,new int[]{homeColour,homeColour,0xff04060a});}
@@ -127,19 +128,24 @@ public final class GlobalChrome {
         void scan(View view,int top,int below){if(!view.isShown())return;boolean recycler=false;for(Class<?> cls=view.getClass();cls!=null;cls=cls.getSuperclass())if(cls.getName().equals("androidx.recyclerview.widget.RecyclerView")){recycler=true;break;}if(recycler&&view instanceof ViewGroup){ViewGroup list=(ViewGroup)view;NativeViewport value=lists.get(list);if(value==null){value=NativeViewport.borrow(list);lists.put(list,value);}view.getLocationOnScreen(at);value.insetForHeader(Math.max(0,top-at[1]),below);return;}if(view instanceof ViewGroup){ViewGroup group=(ViewGroup)view;for(int i=0;i<group.getChildCount();i++)scan(group.getChildAt(i),top,below);}}
         @Override public void close(){if(closed)return;closed=true;if(root.getViewTreeObserver().isAlive())root.getViewTreeObserver().removeOnPreDrawListener(this);for(NativeViewport list:lists.values())list.close();lists.clear();}
     }
-    private static final class Scene extends View implements AutoCloseable,ViewTreeObserver.OnPreDrawListener {
-        final FrameLayout content;final Map<View,Drawable[]> backgrounds=new IdentityHashMap<>();final Map<View,Float> wallpapers=new IdentityHashMap<>();final Paint paint=new Paint();Shader shader;Integer paintedColour;int paintedHeight;boolean closed;
-        Scene(Activity activity){super(activity);content=(FrameLayout)activity.findViewById(android.R.id.content);setTag("leotv_csp_shared_backdrop");setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);setFocusable(false);setClickable(false);content.addView(this,0,new FrameLayout.LayoutParams(-1,-1));content.getViewTreeObserver().addOnPreDrawListener(this);refresh();}
+    private static final class Scene extends View implements AutoCloseable,ViewTreeObserver.OnPreDrawListener,ViewTreeObserver.OnGlobalLayoutListener {
+        final FrameLayout content;final Map<View,Drawable[]> backgrounds=new IdentityHashMap<>();final Map<View,Float> wallpapers=new IdentityHashMap<>();final Paint paint=new Paint();Shader shader;int paintedHeight;boolean closed,hierarchyDirty=true;
+        Scene(Activity activity){super(activity);content=(FrameLayout)activity.findViewById(android.R.id.content);setTag("leotv_csp_shared_backdrop");setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);setFocusable(false);setClickable(false);content.addView(this,0,new FrameLayout.LayoutParams(-1,-1));content.getViewTreeObserver().addOnPreDrawListener(this);content.getViewTreeObserver().addOnGlobalLayoutListener(this);refresh();}
         static boolean accepts(Activity activity){String name=activity.getClass().getName();if(name.equals("com.leotv.detail.CspCategoryActivity")||name.equals("com.leotv.detail.FollowingActivity"))return true;if(!name.startsWith("com.fongmi.android.tv.ui.activity."))return false;String simple=name.substring(name.lastIndexOf('.')+1);return simple.equals("HomeActivity")||simple.equals("VodActivity")||simple.equals("FolderActivity")||simple.equals("SearchActivity")||simple.equals("CollectActivity")||simple.equals("HistoryActivity")||simple.equals("KeepActivity")||simple.equals("PushActivity")||simple.equals("CastActivity")||simple.startsWith("Setting");}
-        void refresh(){if(closed||homeColour==null)return;invalidate();borrow(content,0);}
+        void refresh(){if(closed||homeColour==null)return;hierarchyDirty=true;invalidate();}
+        @Override public void onGlobalLayout(){hierarchyDirty=true;}
         void borrow(View view,int depth){if(content.getWidth()<=0||content.getHeight()<=0)return;if(view==this||"leotv_csp_home".equals(view.getTag())||"leotv_shared_backdrop".equals(view.getTag())||"leotv_page_backdrop".equals(view.getTag()))return;boolean large=view.getWidth()>=content.getWidth()*.9f&&view.getHeight()>=content.getHeight()*.65f;
             if(large&&view instanceof ImageView&&(view.getClass()==ImageView.class||view.getClass().getName().equals("androidx.appcompat.widget.AppCompatImageView"))){if(!wallpapers.containsKey(view))wallpapers.put(view,view.getAlpha());if(view.getAlpha()!=0)view.setAlpha(0);return;}
             if(view!=content&&large){Drawable old=view.getBackground();Drawable[] state=backgrounds.get(view);if(old!=null&&(state==null||old!=state[1])){Drawable clear=new ColorDrawable(Color.TRANSPARENT);backgrounds.put(view,new Drawable[]{old,clear});view.setBackground(clear);}}
             if(depth<6&&view instanceof ViewGroup){ViewGroup group=(ViewGroup)view;for(int i=0;i<group.getChildCount();i++)borrow(group.getChildAt(i),depth+1);}
         }
-        @Override public boolean onPreDraw(){if(closed||homeColour==null)return true;if(!com.leotv.detail.MetadataSettings.newHome(getContext())){clearHomeBackground((Activity)getContext());return true;}borrow(content,0);int desired=0;for(int i=0;i<content.getChildCount();i++){View view=content.getChildAt(i);if(view!=this&&(view instanceof ImageView||"leotv_shared_backdrop".equals(view.getTag())))desired=i+1;}int current=content.indexOfChild(this);if(current<desired){content.removeView(this);content.addView(this,Math.min(desired-1,content.getChildCount()),new FrameLayout.LayoutParams(-1,-1));}return true;}
-        @Override protected void onDraw(Canvas canvas){if(homeColour==null)return;if(shader==null||!homeColour.equals(paintedColour)||paintedHeight!=getHeight()){paintedColour=homeColour;paintedHeight=getHeight();shader=new LinearGradient(0,0,0,Math.max(1,getHeight()),new int[]{homeColour,homeColour,0xff04060a},new float[]{0,.5f,1},Shader.TileMode.CLAMP);}paint.setShader(shader);canvas.drawRect(0,0,getWidth(),getHeight(),paint);}
-        @Override public void close(){if(closed)return;closed=true;if(content.getViewTreeObserver().isAlive())content.getViewTreeObserver().removeOnPreDrawListener(this);for(Map.Entry<View,Drawable[]> entry:backgrounds.entrySet())if(entry.getKey().getBackground()==entry.getValue()[1])entry.getKey().setBackground(entry.getValue()[0]);for(Map.Entry<View,Float> entry:wallpapers.entrySet())if(entry.getKey().getAlpha()==0)entry.getKey().setAlpha(entry.getValue());if(getParent()==content)content.removeView(this);backgrounds.clear();wallpapers.clear();}
+        @Override public boolean onPreDraw(){if(closed||homeColour==null)return true;if(!com.leotv.detail.MetadataSettings.newHome(getContext())){clearHomeBackground((Activity)getContext());return true;}
+            if(hierarchyDirty){hierarchyDirty=false;borrow(content,0);int desired=0;for(int i=0;i<content.getChildCount();i++){View view=content.getChildAt(i);if(view!=this&&(view instanceof ImageView||"leotv_shared_backdrop".equals(view.getTag())))desired=i+1;}int current=content.indexOfChild(this);if(current<desired){content.removeView(this);content.addView(this,Math.min(desired-1,content.getChildCount()),new FrameLayout.LayoutParams(-1,-1));}}
+            else {for(Map.Entry<View,Drawable[]> entry:backgrounds.entrySet()){Drawable[] state=entry.getValue();Drawable actual=entry.getKey().getBackground();if(actual!=null&&actual!=state[1]){state[0]=actual;entry.getKey().setBackground(state[1]);}}for(View image:wallpapers.keySet())if(image.getAlpha()!=0)image.setAlpha(0);}
+            return true;
+        }
+        @Override protected void onDraw(Canvas canvas){if(homeColour==null)return;paint.setShader(null);paint.setColor(homeColour);canvas.drawRect(0,0,getWidth(),getHeight(),paint);if(shader==null||paintedHeight!=getHeight()){paintedHeight=getHeight();shader=new LinearGradient(0,getHeight()*.5f,0,Math.max(1,getHeight()),new int[]{0x0004060a,0xff04060a},null,Shader.TileMode.CLAMP);}paint.setShader(shader);canvas.drawRect(0,getHeight()*.5f,getWidth(),getHeight(),paint);paint.setShader(null);}
+        @Override public void close(){if(closed)return;closed=true;if(content.getViewTreeObserver().isAlive()){content.getViewTreeObserver().removeOnPreDrawListener(this);content.getViewTreeObserver().removeOnGlobalLayoutListener(this);}for(Map.Entry<View,Drawable[]> entry:backgrounds.entrySet())if(entry.getKey().getBackground()==entry.getValue()[1])entry.getKey().setBackground(entry.getValue()[0]);for(Map.Entry<View,Float> entry:wallpapers.entrySet())if(entry.getKey().getAlpha()==0)entry.getKey().setAlpha(entry.getValue());if(getParent()==content)content.removeView(this);backgrounds.clear();wallpapers.clear();}
     }
 
     private static final class Lifecycle implements Application.ActivityLifecycleCallbacks {
@@ -1029,6 +1035,9 @@ public final class GlobalChrome {
         final int id=View.generateViewId();
         android.widget.ImageButton button;
         android.widget.LinearLayout shortcutMenu;int menuKey=-1;
+        final android.content.SharedPreferences shortcutPrefs;
+        final Map<String,View> shortcutButtons=new java.util.LinkedHashMap<>();
+        String lastShortcut;long shortcutGeneration;
         View nativeNavigation;
         Drawable originalBackground;
         android.content.res.ColorStateList originalTint;
@@ -1050,6 +1059,8 @@ public final class GlobalChrome {
         boolean closed,left,contentSwitchPending;
         FollowingNavigation(Controller owner){
             this.owner=owner;
+            shortcutPrefs=owner.phone?null:owner.activity.getSharedPreferences("leotv_home_shortcuts",android.content.Context.MODE_PRIVATE);
+            lastShortcut=shortcutPrefs==null?"following":shortcutPrefs.getString("last_action","following");
             glass=new NavigationGlass(owner.content.getResources().getDisplayMetrics().density);
             if(owner.phone)owner.decor.getViewTreeObserver().addOnPreDrawListener(this);
         }
@@ -1273,18 +1284,21 @@ public final class GlobalChrome {
                     if(i==0){button=icon;icon.setImageDrawable(new CalendarIcon(owner.activity));}else {int resource=owner.activity.getResources().getIdentifier("ic_home_"+action,"drawable",owner.activity.getPackageName());if(resource!=0)icon.setImageDrawable(owner.activity.getResources().getDrawable(resource));}
                     icon.setScaleType(ImageView.ScaleType.FIT_CENTER);icon.setFocusable(true);icon.setFocusableInTouchMode(true);icon.setPadding(owner.dp(12),owner.dp(12),owner.dp(12),owner.dp(12));icon.setStateListAnimator(null);icon.setOutlineProvider(null);
                     icon.setBackground(new NavigationGlass(owner.content.getResources().getDisplayMetrics().density,true));if(Build.VERSION.SDK_INT>=26)try{View.class.getMethod("setDefaultFocusHighlightEnabled",boolean.class).invoke(icon,false);}catch(ReflectiveOperationException unavailable){}
-                    icon.setOnFocusChangeListener((view,focused)->{view.animate().cancel();view.animate().scaleX(focused?1.12f:1).scaleY(focused?1.12f:1).setDuration(150).setInterpolator(new android.view.animation.DecelerateInterpolator()).start();});icon.setOnClickListener(v->{restoreContentFocus();if(action.equals("following"))open();else owner.newHome.openShortcut(action);});
+                    shortcutButtons.put(action,icon);
+                    icon.setOnFocusChangeListener((view,focused)->{if(focused&&!action.equals(lastShortcut)){lastShortcut=action;if(shortcutPrefs!=null)shortcutPrefs.edit().putString("last_action",action).apply();}view.animate().cancel();view.animate().scaleX(focused?1.12f:1).scaleY(focused?1.12f:1).setDuration(150).setInterpolator(new android.view.animation.DecelerateInterpolator()).start();});icon.setOnClickListener(v->{restoreContentFocus();if(action.equals("following"))open();else owner.newHome.openShortcut(action);});
                     android.widget.LinearLayout.LayoutParams cell=new android.widget.LinearLayout.LayoutParams(owner.dp(48),owner.dp(48));cell.bottomMargin=i==actions.length-1?0:owner.dp(4);shortcutMenu.addView(icon,cell);
                 }
                 FrameLayout.LayoutParams layout=new FrameLayout.LayoutParams(-2,-2,android.view.Gravity.LEFT|android.view.Gravity.CENTER_VERTICAL);layout.leftMargin=owner.dp(6);owner.content.addView(shortcutMenu,layout);shortcutMenu.setElevation(owner.dp(80));
             }
-            shortcutMenu.setVisibility(View.VISIBLE);button.requestFocus();
-            button.post(()->{if(!closed&&owner.running&&button.isShown())button.requestFocus();});
+            final View target=shortcutButtons.containsKey(lastShortcut)?shortcutButtons.get(lastShortcut):button;final long token=++shortcutGeneration;
+            shortcutMenu.setVisibility(View.VISIBLE);target.requestFocus();
+            target.post(()->{if(!closed&&owner.running&&token==shortcutGeneration&&target.isShown()&&!shortcutMenu.hasFocus())target.requestFocus();});
         }
-        void hide(){if(shortcutMenu!=null)shortcutMenu.setVisibility(View.GONE);}
+        void hide(){shortcutGeneration++;if(shortcutMenu!=null)shortcutMenu.setVisibility(View.GONE);}
         void close(){
             closed=true;hide();dismissCalendar();
             if(shortcutMenu!=null&&shortcutMenu.getParent()==owner.content)owner.content.removeView(shortcutMenu);
+            shortcutButtons.clear();
             if(owner.decor.getViewTreeObserver().isAlive())owner.decor.getViewTreeObserver().removeOnPreDrawListener(this);
             if(installed!=null&&owner.activity.getWindow().getCallback()==installed)owner.activity.getWindow().setCallback(delegate);
             restoreNavigation();nativeNavigation=null;

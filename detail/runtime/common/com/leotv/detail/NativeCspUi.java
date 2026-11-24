@@ -75,6 +75,9 @@ final class NativeCspUi {
     boolean moveTv(int code){
         if(!borrowed||tvSite==null||owner.page==null)return false;
         View focus=activity.getCurrentFocus();CspHomePage page=owner.page;
+        if((code==android.view.KeyEvent.KEYCODE_DPAD_LEFT||code==android.view.KeyEvent.KEYCODE_DPAD_RIGHT)&&page.heroFrame.isShown()&&descendant(focus,page.heroFrame)){
+            page.hero.step(code==android.view.KeyEvent.KEYCODE_DPAD_LEFT?-1:1);return true;
+        }
         if(siteFocused()){
             if(code==android.view.KeyEvent.KEYCODE_DPAD_DOWN){page.focusContent();return true;}
             if(code==android.view.KeyEvent.KEYCODE_DPAD_RIGHT){if(tvActions!=null&&tvActions.getChildCount()>0)tvActions.getChildAt(0).requestFocus();return true;}

@@ -4,7 +4,7 @@
 普通 TV 的完整 Java 阅读视图，以及第一组能够独立编译的 Java 恢复代码。
 完整 Java/Gradle 应用工程仍在恢复；不能将这里的 Java 阅读视图直接当作已可编译的原始工程。
 
-本轮测试版本为 **5.3.1-preview.1 / 632**，保留 R8 8.8.34 release/full 正式混淆和固定签名。修复 TV 新主页首列跨分类误跳、横向滚动的全页处理和焦点动画每帧的配置/站点开销。详见[TV 遥控焦点与帧开销修复](docs/LEOTV-5.3.1-PREVIEW-1-TV-FOCUS-PERFORMANCE-20261124.md)。
+本轮测试版本为 **5.3.1-preview.2 / 633**，保留 R8 8.8.34 release/full 正式混淆和固定签名。TV 快捷菜单记忆上次选项，手机原生手势和 TV 左右键控制新主页轮播；TV 最近观看复用原历史适配器、Presenter 和列表，置于推荐上方、无记录隐藏，轮播仍取推荐。继续保留 preview.1 遥控性能和首列修复。详见[轮播控制与原生最近观看](docs/LEOTV-5.3.1-PREVIEW-2-HERO-SHORTCUTS-NATIVE-HISTORY-20261124.md)。
 
 当前正式版本为 **5.3.0 / 631**，独立安装包名 **com.leotv.app**，R8 release/full 混淆、固定签名正式发布，支持覆盖升级。
 正式构建/自动发布由 GitHub 执行：[Leotv 5.3.0](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0) 在发布完成后提供 TV/手机、32/64 位四套 APK。

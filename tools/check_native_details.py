@@ -147,6 +147,19 @@ def check_contract(root, variant, project=None):
         contracts['M3/b'] = (['Q()V'], [])
         contracts['com/fongmi/android/tv/ui/activity/PushActivity'] = (['R(Landroidx/appcompat/app/j;I)V'], [])
         contracts['com/fongmi/android/tv/ui/activity/VodActivity'] = (['S(Landroid/app/Activity;Ljava/lang/String;L' + BEANS + 'Result;)V'], [])
+        contracts['com/fongmi/android/tv/ui/activity/HomeActivity'] = (['T()LP3/e;'], [])
+        contracts[BEANS + 'History'][0].append('get()Ljava/util/List;')
+        contracts['P3/e'] = ([], ['l0:Landroidx/leanback/widget/ArrayObjectAdapter;', 'm0:Landroidx/leanback/widget/ArrayObjectAdapter;', 'n0:LR3/E;'])
+        contracts['R3/E'] = ([], ['p:Z'])
+        contracts['androidx/leanback/widget/ObjectAdapter'] = (['getPresenter(Ljava/lang/Object;)Landroidx/leanback/widget/Presenter;'], [])
+        contracts['androidx/leanback/widget/ListRow'] = (['<init>(Landroidx/leanback/widget/ObjectAdapter;)V'], [])
+        contracts['androidx/leanback/widget/Presenter$ViewHolder'] = ([], ['view:Landroid/view/View;'])
+        contracts['androidx/leanback/widget/Presenter'] = (['onCreateViewHolder(Landroid/view/ViewGroup;)Landroidx/leanback/widget/Presenter$ViewHolder;', 'onBindViewHolder(Landroidx/leanback/widget/Presenter$ViewHolder;Ljava/lang/Object;)V', 'onUnbindViewHolder(Landroidx/leanback/widget/Presenter$ViewHolder;)V', 'onViewAttachedToWindow(Landroidx/leanback/widget/Presenter$ViewHolder;)V','onViewDetachedFromWindow(Landroidx/leanback/widget/Presenter$ViewHolder;)V'], [])
+        contracts['androidx/leanback/widget/RowPresenter'] = (['getRowViewHolder(Landroidx/leanback/widget/Presenter$ViewHolder;)Landroidx/leanback/widget/RowPresenter$ViewHolder;', 'setRowViewExpanded(Landroidx/leanback/widget/Presenter$ViewHolder;Z)V', 'setRowViewSelected(Landroidx/leanback/widget/Presenter$ViewHolder;Z)V'], [])
+        contracts['androidx/leanback/widget/ListRowPresenter$ViewHolder'] = (['getGridView()Landroidx/leanback/widget/HorizontalGridView;', 'getBridgeAdapter()Landroidx/leanback/widget/ItemBridgeAdapter;'], [])
+        contracts['androidx/leanback/widget/ItemBridgeAdapter'] = (['setAdapter(Landroidx/leanback/widget/ObjectAdapter;)V'], [])
+        contracts['androidx/leanback/widget/BaseGridView'] = (['getSelectedPosition()I', 'setSelectedPosition(I)V'], [])
+        contracts['androidx/recyclerview/widget/RecyclerView'] = (['getChildAdapterPosition(Landroid/view/View;)I'], [])
     contracts[('E3' if mobile else 'B3') + '/n'] = (['<init>(Ljava/lang/String;Ljava/lang/String;I)V', 'call()Ljava/lang/Object;'], [])
     contracts[('E3' if mobile else 'B3') + '/p'] = (['call()Ljava/lang/Object;'], [])
     contracts[('t3' if mobile else 'q3') + '/i'] = (['m()I'] + ([] if mobile else ['o()L' + BEANS + 'Site;']), [])
@@ -232,7 +245,7 @@ def check_contract(root, variant, project=None):
         contracts['C3/e'][0].extend(['P()J', 'G()J'])
         contracts['androidx/leanback/widget/ArrayObjectAdapter'] = (['size()I', 'get(I)Ljava/lang/Object;',
             '<init>(Landroidx/leanback/widget/Presenter;)V',
-            'setItems(Ljava/util/List;Landroidx/leanback/widget/DiffCallback;)V'], [])
+            'setItems(Ljava/util/List;Landroidx/leanback/widget/DiffCallback;)V','notifyArrayItemRangeChanged(II)V'], [])
     checked = 0
     paging_lock = json.loads((root / 'detail/category-paging-source-lock.json').read_text())[variant]
     for name, digest in paging_lock.items():

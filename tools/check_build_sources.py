@@ -19,7 +19,7 @@ from apply_qr_web import check_contract as check_qr_web_contract
 ROOT = Path(__file__).resolve().parents[1]
 LOCKS = ('branding/source-lock.json', 'detail/native-source-lock.json',
          'detail/danmaku-native-source-lock.json', 'detail/category-paging-source-lock.json',
-         'detail/home-artwork-source-lock.json')
+         'detail/home-artwork-source-lock.json', 'detail/native-history-source-lock.json')
 
 
 def check_sources(root=ROOT):
@@ -48,6 +48,26 @@ def check_sources(root=ROOT):
     new_home = (root / 'detail/runtime/common/com/leotv/detail/NewHome.java').read_text()
     if 'SiteFeed.current(current.site,current.configuration)' not in new_home or 'if(optionsDirty||cachedOptions==null)' not in new_home or new_home.count('unregisterOnSharedPreferenceChangeListener(settingsChanged)') != 2:
         raise ValueError('Stable TV frames require cheap native identity checks and invalidated settings snapshots.')
+    chrome = (root / 'ui/java/com/leotv/ui/GlobalChrome.java').read_text()
+    if 'putString("last_action",action).apply()' not in chrome or 'shortcutButtons.get(lastShortcut)' not in chrome or '!shortcutMenu.hasFocus()' not in chrome:
+        raise ValueError('TV shortcuts require saved action identity and must not steal an existing menu focus.')
+    if 'new android.view.GestureDetector(' not in home or 'hero.step(x<0?1:-1)' not in home or 'page.hero.step(code==' not in artwork:
+        raise ValueError('Home carousel requires Android native gesture recognition and consumed TV left/right steps.')
+    history = (root / 'detail/runtime/tv/com/leotv/detail/NativeRecentHistory.java').read_text()
+    if 'new ListRow(adapter)' not in history or 'headerPresenter=rows.getPresenter' not in history or 'rowPresenter=rows.getPresenter(row)' not in history or 'getMethod("get").invoke(null)' not in history:
+        raise ValueError('TV recent history must use native History, its native adapter and native row/header presenters.')
+    if 'new TextView' in history or 'new DetailImageView' in history or 'CspHomePage.card(' in history or 'new JSONObject' in history:
+        raise ValueError('TV recent history must not draw or synthesize resource cards.')
+    if 'rows.addView(recent.root' not in home or 'int primary=0;' not in new_home:
+        raise ValueError('Native history is a separate layout row and must not replace the CSP recommendation hero source.')
+    hero = (root / 'detail/runtime/common/com/leotv/detail/DetailHero.java').read_text()
+    if 'hero.seamlessTail(true)' not in home or 'backdrop.invalidateSelf()' not in home or 'heroFrame.getBottom()-scroll.getScrollY()' not in home:
+        raise ValueError('Carousel tail and classification background must use one surface colour and actual layout join.')
+    if 'if(animator!=null||request!=null){pendingStep=way;return true;}' not in hero or 'if(!applyPendingStep())' not in hero:
+        raise ValueError('Manual carousel steps must survive prefetch and settle without a growing input queue.')
+    publish = chrome.split('    public static void publishHomeBackground(')[1].split('    public static void clearHomeBackground(')[0]
+    if 'known.keySet()' in publish or 'scene.invalidate()' not in publish or 'hierarchyDirty=false;borrow(content,0)' not in chrome:
+        raise ValueError('Carousel palette frames must not rediscover all native activity view trees.')
     # Git's spelling is authoritative even on a case-insensitive local filesystem.
     tracked = set(subprocess.check_output(['git', '-C', str(root), 'ls-files', '-z']).decode().split('\0'))
     manifests = {name: json.loads((root / name).read_text()) for name in LOCKS}

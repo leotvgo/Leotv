@@ -51,6 +51,7 @@ class DetailHero extends View {
     private int currentIndex = -1, nextIndex = -1, animationMode, limit = 5;
     /** Which side the buffered neighbour slides in from: +1 forward, -1 backward. */
     private int slideDirection = 1;
+    private int pendingStep;
     private boolean dots = true;
     private int colour = DEFAULT_COLOR, fromColour, toColour;
     private String proxy = "";
@@ -66,6 +67,8 @@ class DetailHero extends View {
     private int gradientWidth,gradientHeight,gradientColour,gradientStyle;
     private boolean gradientPortrait;
     private float gradientWeight=-1;
+    private boolean seamlessTail,gradientSeamless;
+    private int tailTintColour;private android.graphics.PorterDuffColorFilter tailTint;
     /** How much of the carousel's own foot scrim is kept; the home keeps less of it than the detail page. */
     private float tailWeight = 1f;
 
@@ -79,6 +82,7 @@ class DetailHero extends View {
     boolean hasArtwork() { return bitmap != null && !bitmap.isRecycled(); }
     /** Scales the carousel's own bottom scrim; the artwork's last edge stays the page colour either way. */
     void tailWeight(float value) { tailWeight = Math.max(0f, Math.min(1f, value)); invalidate(); }
+    void seamlessTail(boolean value){if(seamlessTail!=value){seamlessTail=value;tailGradient=null;invalidate();}}
     /** How many slides this carousel keeps; the detail page wants five, the home wants its whole pool. */
     void limit(int value) { limit = Math.max(1, value); }
     /** The slide pips belong to the detail page; the home draws its own entries in that corner. */
@@ -128,7 +132,7 @@ class DetailHero extends View {
         generation++; if (request != null) request.cancel(); request = null;
         main.removeCallbacks(turn); stopAnimation(false);
         retire(bitmap); retire(nextBitmap); bitmap = null; nextBitmap = null;
-        currentIndex = nextIndex = -1; slideDirection = 1; slides.clear();
+        currentIndex = nextIndex = -1; slideDirection = 1;pendingStep=0; slides.clear();
         sourceImages = source;
         for (String path : valid) slides.add(new Slide(path, source));
         loading = !slides.isEmpty(); reveal = 1; slideProgress = 0; setColour(DEFAULT_COLOR);
@@ -153,7 +157,7 @@ class DetailHero extends View {
         boolean active = !closed && requestedActive && attached && getWindowVisibility() == VISIBLE && isShown();
         if (active == running) return;
         running = active; main.removeCallbacks(turn);
-        if (!running) stopAnimation(true);
+        if (!running) {pendingStep=0;stopAnimation(true);}
         else { nextAt = SystemClock.uptimeMillis() + INTERVAL; prepareNext(); schedule(); }
         refreshLoadingFrames();
     }
@@ -186,7 +190,9 @@ class DetailHero extends View {
      */
     boolean step(int direction) {
         int way = direction < 0 ? -1 : 1;
-        if (closed || slides.size() < 2 || animator != null || request != null) return false;
+        if (closed || slides.size() < 2) return false;
+        nextAt = SystemClock.uptimeMillis() + INTERVAL;main.removeCallbacks(turn);
+        if(animator!=null||request!=null){pendingStep=way;return true;}
         int target = neighbour(currentIndex, way);
         if (target < 0) return false;
         nextAt = SystemClock.uptimeMillis() + INTERVAL;
@@ -196,6 +202,7 @@ class DetailHero extends View {
         prepareNeighbour(way, true);
         return true;
     }
+    private boolean applyPendingStep(){int direction=pendingStep;pendingStep=0;return direction!=0&&step(direction);}
     private void prepareNext() { prepareNeighbour(1, false); }
     /**
      * Fetches the neighbour that lies in {@code direction}. The auto pipeline only fetches while it is
@@ -247,7 +254,7 @@ class DetailHero extends View {
                 if (value == null) {
                     slide.failed = true;
                     if(canRetry&&slide.attempts<3)slide.retryAt=SystemClock.uptimeMillis()+20000L*slide.attempts;
-                    prepareNeighbour(direction, manual); return;
+                    if(!applyPendingStep())prepareNeighbour(direction, manual); return;
                 }
                 slide.attempts=0;slide.retryAt=0;slide.bytes = encoded; slide.colour = edgeColour(value, portrait ? .86f : .72f);
                 if (bitmap == null) {
@@ -255,10 +262,10 @@ class DetailHero extends View {
                     nextAt = SystemClock.uptimeMillis() + INTERVAL;
                     if (running) animate(1, 650, DEFAULT_COLOR, slide.colour);
                     else { reveal = 1; setColour(slide.colour); }
-                    prepareNext();
+                    if(!applyPendingStep())prepareNext();
                 } else {
                     nextBitmap = value; nextIndex = index;
-                    if (manual) commit(direction); else schedule();
+                    if(!applyPendingStep()){if (manual) commit(direction); else schedule();}
                 }
                 invalidate();
             });
@@ -318,7 +325,7 @@ class DetailHero extends View {
         });
         animation.addListener(new AnimatorListenerAdapter() {
             @Override public void onAnimationEnd(Animator a) {
-                if (animator == a) { animator = null; settleAnimation(); prepareNext(); schedule(); }
+                if (animator == a) { animator = null; settleAnimation();if(!applyPendingStep()){prepareNext(); schedule();} }
             }
         });
         animation.start();
@@ -432,7 +439,8 @@ class DetailHero extends View {
         } else drawImage(canvas,bitmap,0,reveal,1+.025f*(1-reveal),w,h);
         paint.setAlpha(255);
         gradients(w,h);paint.setShader(tailGradient);
-        canvas.drawRect(0,0,w,h,paint); paint.setShader(null);
+        if(seamlessTail){int floor=surface(colour);if(tailTint==null||tailTintColour!=floor){tailTintColour=floor;tailTint=new android.graphics.PorterDuffColorFilter(floor,android.graphics.PorterDuff.Mode.SRC_IN);}paint.setColorFilter(tailTint);}
+        canvas.drawRect(0,0,w,h,paint);paint.setColorFilter(null);paint.setShader(null);
         if(!portrait&&(presentation==1 || presentation==DetailTheme.TV_THUNDER)) {
             boolean thunder = presentation == DetailTheme.TV_THUNDER;
             paint.setShader(sideGradient);
@@ -454,13 +462,14 @@ class DetailHero extends View {
         paint.setAlpha(255);
     }
     private void gradients(int w,int h){
-        if(tailGradient!=null&&gradientWidth==w&&gradientHeight==h&&gradientColour==colour&&gradientStyle==presentation&&gradientPortrait==portrait&&gradientWeight==tailWeight)return;
-        gradientWidth=w;gradientHeight=h;gradientColour=colour;gradientStyle=presentation;gradientPortrait=portrait;gradientWeight=tailWeight;
-        if(presentation==LIBRARY_HOME)tailGradient=new LinearGradient(0,0,w,0,new int[]{0xe0080808,0x8c080808,0x14080808,0},new float[]{0,.36f,.64f,1},Shader.TileMode.CLAMP);
+        boolean geometry=tailGradient==null||gradientWidth!=w||gradientHeight!=h||gradientStyle!=presentation||gradientPortrait!=portrait||gradientWeight!=tailWeight||gradientSeamless!=seamlessTail;
+        if(!geometry&&(seamlessTail||gradientColour==colour))return;
+        if(seamlessTail)tailGradient=new LinearGradient(0,h*(portrait?.48f:.30f),0,h,new int[]{0x00ffffff,shade(0x22,tailWeight,0xffffff),shade(0xc9,tailWeight,0xffffff),0xffffffff,0xffffffff},new float[]{0,.32f,.68f,.90f,1},Shader.TileMode.CLAMP);
+        else if(presentation==LIBRARY_HOME)tailGradient=new LinearGradient(0,0,w,0,new int[]{0xe0080808,0x8c080808,0x14080808,0},new float[]{0,.36f,.64f,1},Shader.TileMode.CLAMP);
         else if(presentation==LIBRARY_DETAIL)tailGradient=new LinearGradient(0,h*.62f,0,h,new int[]{0,0x6606111b,0xff06111b},new float[]{0,.7f,1},Shader.TileMode.CLAMP);
         else tailGradient=tail(colour,h,portrait,tailWeight);
-        boolean thunder=presentation==DetailTheme.TV_THUNDER;
-        sideGradient=new LinearGradient(0,0,w*(thunder?.88f:.76f),0,thunder?new int[]{0xc9080c13,0x88080c13,0x00080c13}:new int[]{0xdc0b1017,0x9e0b1017,0x000b1017},new float[]{0,.58f,1},Shader.TileMode.CLAMP);
+        if(geometry){boolean thunder=presentation==DetailTheme.TV_THUNDER;sideGradient=new LinearGradient(0,0,w*(thunder?.88f:.76f),0,thunder?new int[]{0xc9080c13,0x88080c13,0x00080c13}:new int[]{0xdc0b1017,0x9e0b1017,0x000b1017},new float[]{0,.58f,1},Shader.TileMode.CLAMP);}
+        gradientWidth=w;gradientHeight=h;gradientColour=colour;gradientStyle=presentation;gradientPortrait=portrait;gradientWeight=tailWeight;gradientSeamless=seamlessTail;
     }
     private void drawImage(Canvas canvas, Bitmap image, float x, float alpha, float zoom,int w,int h) {
         if (image == null || image.isRecycled()) return;
@@ -494,7 +503,7 @@ class DetailHero extends View {
         paint.setShader(null);
     }
     void close() {
-        if (closed) return; closed = true; running = false; generation++;
+        if (closed) return; closed = true; running = false;pendingStep=0; generation++;
         main.removeCallbacks(turn); main.removeCallbacks(loadingFrame); stopAnimation(false);
         if (request != null) request.cancel(); if (worker != null) worker.shutdownNow();
         request = null; worker = null; slides.clear();
