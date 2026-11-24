@@ -37,3 +37,11 @@
 原宿主变化仅增加到已有四变体 `VideoActivity.onPlayerEvent` 的 prepared 弹幕调用挂接。固定原 smali 摘要与唯一调用位置、局部寄存器形状由源码门禁核对，新公开 bridge 加入 R8 stable ABI；原样/允许变化及固定签名门禁保留。数据库、JNI/反射入口、回移层、两个 ABI 的原生资产与 TV/手机交付区别保持。
 
 按用户要求不运行本地打包或额外回归，仅核对源码门禁和提交树，直接 GitHub `run_validation_tests=false`。CI 必需源码、API23/R8、原样/允许变化和签名审计照常，实际域名请求、遥控颜色、自动/手动弹幕和换集由签名后真机验收。推送构建前先临时公开，发布成功后恢复私有并核对。
+
+## 最终交付
+
+首次构建 `45307234305` 在源码阶段拦住资源版本仍为 5.2.6 的不同步，没有编译或发布 APK；已补齐 `branding/res/values/strings.xml` 并保留首次失败及私有恢复记录。
+
+最终源码 `7a04ec6ff8ab1efa3bcdf84f321bf0b21915667c` 的[构建 45308155534](https://github.com/leotvgo/Leotv/actions/runs/45308155534)和[自动发布 45308750022](https://github.com/leotvgo/Leotv/actions/runs/45308750022)均成功。[正式版 5.2.7](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.7)包含手机/TV、32/64 位四套固定签名 APK，以及八份签名/审计报告。源码/API23/R8、原样/允许变化与固定签名门禁通过，额外回归关闭；安装、真实接口与本次交互仍待用户验收。
+
+发布后后台已恢复仓库私有，直接 GitHub API 再核对 `private=true / visibility=private`。Release 资产摘要、构建/发布 ID 和恢复结果见 `evidence/leotv-5.2.7-627-build-dispatch-20261124.json`。
