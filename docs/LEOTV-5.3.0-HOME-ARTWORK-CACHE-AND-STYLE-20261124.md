@@ -26,3 +26,9 @@
 增加 `detail/home-artwork-source-lock.json`，固定四变体的原图片 loader、Glide model/builder/options/strategy/listener、图片协议转换和样式模型。源码门禁核对 ALL 缓存、单次非零布局加载、请求头合并、顶对齐、全行高度和首项资源样式；四变体原反射成员签名加入必需 ABI 检查。保持原样/允许变化审计、API23/R8 release/full 与固定 APK 签名核对。
 
 按用户指示关闭额外回归（`run_validation_tests=false`），不进行本地 APK 打包和设备测试。图片在对应真实站点/网络下是否全部加载、用户截图的错位/裁剪、不同 TV 字体/海报设置及重启缓存效果，以签名后的设备验收为准。
+
+## 已交付与仍存在的原生差异
+
+源码 `8f8b9ca2466291a584c17de36b815028d8326af3` 的[构建 45343791353](https://github.com/leotvgo/Leotv/actions/runs/45343791353)及[自动发布 45344401284](https://github.com/leotvgo/Leotv/actions/runs/45344401284)均成功。[正式版 5.3.0](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0)已提供四套固定签名 APK 及八份报告。发布后恢复私有，API 核对 private=true / visibility=private。签名报告摘要与 Release APK digest 对应，四套证书一致；API23/R8、原样及允许变化审计通过。交付证据见 `evidence/leotv-5.3.0-630-build-dispatch-20261124.json`。
+
+用户追问新主页是否与原 OK 完全相同。普通原生卡片的名称/年份/站源/备注及其显隐使用原 getter，但首页纵向分类/横向每行最多 15 项属于既有新排列；轮播优先匹配 TMDB 也是既有行为。独立 CspCategoryActivity 窗口与原生卡片创建失败时仍使用 APK 的简化卡片/位图加载路径，普通新主页卡片也尚未接回原列表长按菜单。上述属于仍存在的渲染/交互差异，本次没有按追问自行删除 TMDB 轮播或新增长按功能，也没有据源码检查宣称所有路径与原 OK 完全相同。签名后运行显示、裁剪与重启缓存效果仍待用户设备验收。
