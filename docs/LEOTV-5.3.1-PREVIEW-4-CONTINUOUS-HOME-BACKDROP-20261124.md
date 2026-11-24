@@ -19,3 +19,7 @@ TV 自建的 ScrollView、rows、轮播容器明确保持背景透明，防止�
 生产变更限定为已有 CspHomePage、DetailHero；源码门禁要求父层统一绘制、子层不重复画、渐变延续到整页、扩展裁剪被完全覆盖，以及自建容器不盖背景。普通详情绘制复用同一 artwork 方法，原条目/资源、数据库、JNI/反射 ABI、Android 6 回移层和各 ABI 原生/ZIP 资产不改。
 
 版本 5.3.1-preview.4 / 635，R8 8.8.34 release/full 正式混淆、API23、固定签名和四变体必需门禁保持。按用户要求不做本地 APK 打包或反复回归，直接 GitHub run_validation_tests=false；发布前临时公开、四套测试包发布后恢复私有，5.3.0 正式 Latest 保留。绘制结构已统一，用户设备默认位置的实际分界是否消除仍需签名后真机验收，不把编译成功当作效果证明。
+
+## 交付结果
+
+源码 `efed00f87aad27bb78ba51f31af8781c7a982a25` 的[构建 45395314906](https://github.com/leotvgo/Leotv/actions/runs/45395314906)及[自动发布 45396127214](https://github.com/leotvgo/Leotv/actions/runs/45396127214)均成功。[preview.4 / 635](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.1-preview.4-build-45395314906)含四套固定签名包和八份报告；逐套核对实际 R8 release/full、API23、stable ABI、原样/允许变化与固定证书/Release digest。发布后已恢复私有并 API 核对，5.3.0 正式 Latest 保留。证据见 `evidence/leotv-5.3.1-preview.4-635-build-dispatch-20261124.json`；无本地 APK 或真机回归，TV 默认位置效果待验收。用户在发布期间追加最近观看开关，后续作为 preview.5 接入，不改变该构建来源。
