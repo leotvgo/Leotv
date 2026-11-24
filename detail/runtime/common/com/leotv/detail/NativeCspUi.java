@@ -144,22 +144,84 @@ final class NativeCspUi {
     ImageView icon(boolean grid,String description,Runnable action){ImageView view=new ImageView(activity);view.setImageDrawable(new Glyph(grid,false));view.setContentDescription(description);view.setPadding(dp(11),dp(11),dp(11),dp(11));view.setBackground(TvDetailPage.focusBackground(activity));view.setFocusable(true);view.setClickable(true);view.setOnClickListener(v->action.run());return view;}
     static void remove(View view){if(view!=null&&view.getParent() instanceof ViewGroup)((ViewGroup)view.getParent()).removeView(view);}
     static Object style(Activity activity,JSONObject value){
-        try{ClassLoader loader=activity.getClassLoader();Class<?> cls=Class.forName("com.fongmi.android.tv.bean.Class",true,loader),style=Class.forName("com.fongmi.android.tv.bean.Style",true,loader);Object gson=Class.forName("com.google.gson.Gson",true,loader).getConstructor().newInstance();Object bean=gson.getClass().getMethod("fromJson",String.class,Class.class).invoke(gson,value==null?"{}":value.toString(),cls);Object selected=SiteFeed.invoke(bean,"getStyle");if(selected==null)selected=style.getMethod("rect").invoke(null);SiteFeed.Site active=SiteFeed.active();Object configured=active==null?null:SiteFeed.invoke(active.raw,"getStyle",selected);return configured==null?selected:configured;}catch(ReflectiveOperationException unavailable){return null;}
+        return style(activity,value,null);
+    }
+    static Object style(Activity activity,JSONObject value,JSONObject first){
+        try{ClassLoader loader=activity.getClassLoader();Class<?> cls=Class.forName("com.fongmi.android.tv.bean.Class",true,loader),style=Class.forName("com.fongmi.android.tv.bean.Style",true,loader);Object gson=Class.forName("com.google.gson.Gson",true,loader).getConstructor().newInstance();Object bean=gson.getClass().getMethod("fromJson",String.class,Class.class).invoke(gson,value==null?"{}":value.toString(),cls);Object selected=SiteFeed.invoke(bean,"getStyle");if(selected==null)selected=style.getMethod("rect").invoke(null);SiteFeed.Site active=SiteFeed.active();Object configured=active==null?null:SiteFeed.invoke(active.raw,"getStyle",selected);selected=configured==null?selected:configured;if(first!=null){Class<?> vod=Class.forName("com.fongmi.android.tv.bean.Vod",true,loader);Object item=vod.getMethod("objectFrom",String.class).invoke(null,first.toString());selected=vod.getMethod("getStyle",style).invoke(item,selected);}return selected;}catch(ReflectiveOperationException unavailable){return null;}
     }
     static int[] spec(Activity activity,JSONObject value){
-        Object style=style(activity,value);
+        return spec(activity,style(activity,value));
+    }
+    static Object rowStyle(Activity activity,JSONObject value,List<JSONObject> items){
+        return style(activity,value,items==null||items.isEmpty()?null:items.get(0));
+    }
+    static int[] spec(Activity activity,Object style){
         try{if(style!=null){ClassLoader loader=activity.getClassLoader();if(Device.MOBILE)return (int[])Class.forName("p2.a",true,loader).getMethod("p",Class.forName("androidx.appcompat.app.j",true,loader),style.getClass()).invoke(null,activity,style);Class<?> product=Class.forName("com.bumptech.glide.e",true,loader);int count=((Number)product.getMethod("v").invoke(null)).intValue();return (int[])product.getMethod("w",int.class,style.getClass()).invoke(null,count,style);}}catch(ReflectiveOperationException|RuntimeException unavailable){}
         int width=Math.max(60,(activity.getResources().getDisplayMetrics().widthPixels-Math.round(32*activity.getResources().getDisplayMetrics().density))/(Device.MOBILE?5:7));return new int[]{width,Math.round(width/.75f)};
     }
     static View card(Activity activity,ViewGroup parent,JSONObject item,JSONObject category,int width,Runnable action){
+        return card(activity,parent,item,style(activity,category,item),width,action);
+    }
+    static View card(Activity activity,ViewGroup parent,JSONObject item,Object style,int width,Runnable action){
         try{
-            Object style=style(activity,category);boolean oval=Boolean.TRUE.equals(SiteFeed.invoke(style,"isOval")),list=Boolean.TRUE.equals(SiteFeed.invoke(style,"isList"));String layout=list?"adapter_vod_list":oval?"adapter_vod_oval":"adapter_vod_rect";
+            boolean oval=Boolean.TRUE.equals(SiteFeed.invoke(style,"isOval")),list=Boolean.TRUE.equals(SiteFeed.invoke(style,"isList"));String layout=list?"adapter_vod_list":oval?"adapter_vod_oval":"adapter_vod_rect";
             int id=activity.getResources().getIdentifier(layout,"layout",activity.getPackageName());if(id==0)return null;
             View root=LayoutInflater.from(activity).inflate(id,parent,false);Class<?> vod=Class.forName("com.fongmi.android.tv.bean.Vod",true,activity.getClassLoader());Object bean=vod.getMethod("objectFrom",String.class).invoke(null,item.toString());
             bind(activity,root,"name",bean,"getName","getNameVisible");bind(activity,root,"year",bean,"getYear","getYearVisible");bind(activity,root,"site",bean,"getSiteName","getSiteVisible");bind(activity,root,"remark",bean,"getRemarks","getRemarkVisible");
-            ImageView image=(ImageView)named(activity,root,"image");if(image!=null){if(!list){Object ratio=SiteFeed.invoke(style,"getRatio");image.getLayoutParams().height=Math.round(width/(ratio instanceof Number?((Number)ratio).floatValue():.75f));}String pic=item.optString("vod_pic",item.optString("pic"));if(pic.indexOf('@')<0&&!SourceArtwork.headers(pic).isEmpty())pic+="@Headers="+new JSONObject(SourceArtwork.headers(pic)).toString();Class.forName(Device.MOBILE?"U3.n":"S3.k",true,activity.getClassLoader()).getMethod("d",ImageView.class,String.class,String.class,boolean.class).invoke(null,image,item.optString("vod_name"),pic,true);}
+            ImageView image=(ImageView)named(activity,root,"image");if(image!=null){if(!list){Object ratio=SiteFeed.invoke(style,"getRatio");image.getLayoutParams().height=Math.round(width/(ratio instanceof Number?((Number)ratio).floatValue():.75f));}homeImage(image,item.optString("vod_name"),SourceArtwork.hostSource(item.optString("vod_pic",item.optString("pic"))));}
             root.setFocusable(true);root.setClickable(true);root.setOnClickListener(v->action.run());cardFocus(root);return root;
         }catch(ReflectiveOperationException|RuntimeException unavailable){return null;}
+    }
+    /** The host's posted loader drops unmeasured views and explicitly selects DiskCacheStrategy.NONE. */
+    static void homeImage(ImageView image,String title,String source){
+        image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        View.OnLayoutChangeListener ready=new View.OnLayoutChangeListener(){
+            boolean started;
+            @Override public void onLayoutChange(View view,int l,int t,int r,int b,int ol,int ot,int or,int ob){
+                if(started||image.getWidth()<=0||image.getHeight()<=0)return;
+                started=true;
+                image.removeOnLayoutChangeListener(this);
+                loadHomeImage(image,title,source);
+            }
+        };
+        image.addOnLayoutChangeListener(ready);
+        image.post(()->ready.onLayoutChange(image,0,0,0,0,0,0,0,0));
+    }
+    private static void loadHomeImage(ImageView image,String title,String source){
+        try{
+            ClassLoader loader=image.getContext().getClassLoader();boolean mobile=Device.MOBILE;
+            Class<?> host=Class.forName(mobile?"U3.n":"S3.k",true,loader);
+            if(source==null||source.isEmpty()){
+                image.setImageDrawable((Drawable)host.getMethod("a",String.class,boolean.class).invoke(null,title,true));return;
+            }
+            Object manager=Class.forName("com.bumptech.glide.b",true,loader).getMethod(mobile?"e":"d",View.class).invoke(null,image);
+            Object model=host.getMethod("b",String.class).invoke(null,source);
+            Object request=manager.getClass().getMethod(mobile?"r":"q",Object.class).invoke(manager,model);
+            Class<?> options=Class.forName(mobile?"l3.a":"i3.a",true,loader),strategy=Class.forName(mobile?"V2.j":"S2.j",true,loader);
+            options.getMethod(mobile?"z":"B",int.class,int.class).invoke(request,image.getWidth(),image.getHeight());
+            // c is ALL in each pinned original: encoded bytes survive a restart and size changes.
+            options.getMethod(mobile?"j":"k",strategy).invoke(request,strategy.getField("c").get(null));
+            Class<?> listener=Class.forName(mobile?"U3.l":"S3.i",true,loader);
+            Object failure=listener.getConstructor(ImageView.class,String.class,String.class,boolean.class).newInstance(image,title,source,true);
+            request.getClass().getMethod("a0",listener).invoke(request,failure);
+            if(lowMemory(image))options.getMethod(mobile?"p":"q").invoke(request);
+            options.getMethod("d").invoke(request);
+            request.getClass().getMethod("Y",ImageView.class).invoke(request,image);
+        }catch(ReflectiveOperationException|RuntimeException unavailable){
+            try{Class.forName(Device.MOBILE?"U3.n":"S3.k",true,image.getContext().getClassLoader()).getMethod("d",ImageView.class,String.class,String.class,boolean.class).invoke(null,image,title,source,true);}catch(ReflectiveOperationException ignored){}
+        }
+    }
+    private static boolean lowMemory(ImageView image)throws ReflectiveOperationException{
+        Class<?> app=Class.forName("com.fongmi.android.tv.App",true,image.getContext().getClassLoader());
+        if(!Device.MOBILE)return Boolean.TRUE.equals(app.getMethod("a").invoke(null));
+        // Mobile R8 inlined App's check into U3.n.d; retain its cached result and actual thresholds.
+        Object owner=app.getField("t").get(null);Field flag=app.getField("p");Object cached=flag.get(owner);
+        if(cached instanceof Boolean)return (Boolean)cached;
+        android.app.ActivityManager manager=(android.app.ActivityManager)image.getContext().getSystemService(android.content.Context.ACTIVITY_SERVICE);
+        android.app.ActivityManager.MemoryInfo memory=new android.app.ActivityManager.MemoryInfo();manager.getMemoryInfo(memory);
+        Field total=app.getField("q");long installed=total.getLong(owner);if(installed<=0){installed=memory.totalMem;total.setLong(owner,installed);}
+        boolean low=installed<-2147483648L||memory.lowMemory||memory.availMem<0x1f400000L;
+        flag.set(owner,low);return low;
     }
     static void cardFocus(View root){
         if(Device.MOBILE){root.setOnFocusChangeListener((view,focused)->{view.setScaleX(focused?1.04f:1);view.setScaleY(focused?1.04f:1);});return;}

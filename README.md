@@ -1,11 +1,13 @@
-# Leotv — 5.2.9 正式版恢复工程
+# Leotv — 5.3.0 正式版恢复工程
 
 本工作区以现有普通版为功能和 Android 6 基准。当前已得到四个样本的可重建 smali 工程，
 普通 TV 的完整 Java 阅读视图，以及第一组能够独立编译的 Java 恢复代码。
 完整 Java/Gradle 应用工程仍在恢复；不能将这里的 Java 阅读视图直接当作已可编译的原始工程。
 
-本轮正式版本为 **5.2.9 / 629**，独立安装包名 **com.leotv.app**，R8 release/full 混淆、固定签名正式发布，支持覆盖升级。
-正式构建/自动发布由 GitHub 执行：[Leotv 5.2.9](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.9) 在发布完成后提供 TV/手机、32/64 位四套 APK。
+本轮正式版本为 **5.3.0 / 630**，独立安装包名 **com.leotv.app**，R8 release/full 混淆、固定签名正式发布，支持覆盖升级。
+正式构建/自动发布由 GitHub 执行：[Leotv 5.3.0](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0) 在发布完成后提供 TV/手机、32/64 位四套 APK。
+
+5.3.0 修复新主页各站点海报的加载时序、跨启动磁盘缓存和卡片上沿对齐；豆瓣/哔哩哔哩默认请求头与 CSP 自定义参数合并，按原宿主读取首项资源样式，尺寸和绘制使用同一比例。TV 高度适配测量全行卡片并保留焦点留白。详见[新主页图片与站点样式修复](docs/LEOTV-5.3.0-HOME-ARTWORK-CACHE-AND-STYLE-20261124.md)。
 
 5.2.9 恢复 TV 全屏播放器的原生返回优先级：先收起原控制栏/面板，再退出独立全屏播放器。返回详情后根据最新播放历史聚焦当前剧集缩略图，用户开始操作后不再抢焦点；保留首次播放按钮焦点和详情返回回顶。新增源码门禁钉住原生全屏按键派发及原返回面板分支。详见[TV 原生返回与在播焦点修复](docs/LEOTV-5.2.9-TV-NATIVE-BACK-AND-PLAYBACK-FOCUS-20261124.md)。
 

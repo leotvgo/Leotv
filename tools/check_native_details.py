@@ -115,7 +115,20 @@ def check_contract(root, variant, project=None):
     contracts[BEANS + 'Style'] = (['rect()L' + BEANS + 'Style;', 'getRatio()F', 'isOval()Z', 'isList()Z'], [])
     contracts[BEANS + 'Site'] = (['getStyle(L' + BEANS + 'Style;)L' + BEANS + 'Style;'], [])
     contracts[BEANS + 'Vod'] = (contracts[BEANS + 'Vod'][0] + ['objectFrom(Ljava/lang/String;)L' + BEANS + 'Vod;', 'getNameVisible()I', 'getYearVisible()I', 'getSiteVisible()I', 'getRemarkVisible()I'], contracts[BEANS + 'Vod'][1])
+    contracts[BEANS + 'Vod'][0].append('getStyle(L' + BEANS + 'Style;)L' + BEANS + 'Style;')
     contracts['U3/n' if mobile else 'S3/k'] = (['d(Landroid/widget/ImageView;Ljava/lang/String;Ljava/lang/String;Z)V', 'b(Ljava/lang/String;)Ljava/lang/Object;'], [])
+    # New-home cards retain the original Glide models/listener/crop but enable the pinned ALL policy.
+    options, strategy, listener, glyph = ('l3/a', 'V2/j', 'U3/l', 'm5/d') if mobile else ('i3/a', 'S2/j', 'S3/i', 'V4/d')
+    contracts['U3/n' if mobile else 'S3/k'][0].append('a(Ljava/lang/String;Z)L' + glyph + ';')
+    contracts['com/bumptech/glide/b'] = ([('e' if mobile else 'd') + '(Landroid/view/View;)Lcom/bumptech/glide/p;'], [])
+    contracts['com/bumptech/glide/p'] = ([('r' if mobile else 'q') + '(Ljava/lang/Object;)Lcom/bumptech/glide/m;'], [])
+    contracts['com/bumptech/glide/m'] = (['Y(Landroid/widget/ImageView;)V', 'a0(L' + listener + ';)Lcom/bumptech/glide/m;'], [])
+    contracts[options] = ([('z' if mobile else 'B') + '(II)L' + options + ';',
+                          ('j' if mobile else 'k') + '(L' + strategy + ';)L' + options + ';',
+                          'd()L' + options + ';', ('p' if mobile else 'q') + '()L' + options + ';'], [])
+    contracts[strategy] = ([], ['c:L' + strategy + ';'])
+    contracts[listener] = (['<init>(Landroid/widget/ImageView;Ljava/lang/String;Ljava/lang/String;Z)V'], [])
+    contracts['com/fongmi/android/tv/App'] = ([], ['t:Lcom/fongmi/android/tv/App;', 'p:Ljava/lang/Boolean;', 'q:J']) if mobile else (['a()Z'], [])
     if mobile:
         contracts['p2/a'] = (['p(Landroidx/appcompat/app/j;L' + BEANS + 'Style;)[I'], [])
         contracts['S3/G'] = (['y0(I)V', 'p0()Z', 'u0()LS3/h;', 'x0()V'], [])

@@ -51,6 +51,13 @@ final class SourceArtwork {
         return result;
     }
     static void putHeader(Map<String,String> headers,String name,String value){if(name.matches("[A-Za-z0-9-]+")&&!value.contains("\r")&&!value.contains("\n")){java.util.Iterator<String> keys=headers.keySet().iterator();while(keys.hasNext())if(keys.next().equalsIgnoreCase(name))keys.remove();headers.put(name,value);}}
+    /** Preserve host models (including data/GIF), merging CDN defaults with explicit CSP headers. */
+    static String hostSource(String source) {
+        String url = address(source);
+        if (url.isEmpty()) return source;
+        Map<String,String> merged = headers(source);
+        return merged.isEmpty() ? url : url + "@Headers=" + new JSONObject(new java.util.TreeMap<>(merged)).toString();
+    }
     static byte[] fetch(String source,String proxy,BackdropHttp.Request request,int limit)throws Exception{
         String url=address(source);Map<String,String> headers=headers(source);
         try{return BackdropHttp.get(url,"source-image",route(url,proxy),headers,request,limit);}

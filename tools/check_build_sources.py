@@ -18,11 +18,20 @@ from apply_qr_web import check_contract as check_qr_web_contract
 
 ROOT = Path(__file__).resolve().parents[1]
 LOCKS = ('branding/source-lock.json', 'detail/native-source-lock.json',
-         'detail/danmaku-native-source-lock.json', 'detail/category-paging-source-lock.json')
+         'detail/danmaku-native-source-lock.json', 'detail/category-paging-source-lock.json',
+         'detail/home-artwork-source-lock.json')
 
 
 def check_sources(root=ROOT):
     check_qr_web_contract(root)
+    home = (root / 'detail/runtime/common/com/leotv/detail/CspHomePage.java').read_text()
+    artwork = (root / 'detail/runtime/common/com/leotv/detail/NativeCspUi.java').read_text()
+    if 'rail.setBaselineAligned(false)' not in home or 'params.gravity=Gravity.TOP' not in home or 'tallest=Math.max(tallest,sample.getMeasuredHeight())' not in home:
+        raise ValueError('Home shelves must align card tops and measure every card for TV height fitting.')
+    if 'SourceArtwork.hostSource(' not in artwork or 'strategy.getField("c")' not in artwork or 'image.removeOnLayoutChangeListener(this)' not in artwork or 'if(started||image.getWidth()<=0||image.getHeight()<=0)return' not in artwork:
+        raise ValueError('Home artwork requires merged CSP headers, pinned ALL caching and one measured load.')
+    if 'NativeCspUi.rowStyle(activity,category.json,items)' not in home or 'vod.getMethod("getStyle",style).invoke(item,selected)' not in artwork:
+        raise ValueError('Home card measurement/rendering must retain the native first-resource style override.')
     # Git's spelling is authoritative even on a case-insensitive local filesystem.
     tracked = set(subprocess.check_output(['git', '-C', str(root), 'ls-files', '-z']).decode().split('\0'))
     manifests = {name: json.loads((root / name).read_text()) for name in LOCKS}
