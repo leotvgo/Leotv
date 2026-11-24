@@ -31,3 +31,9 @@ APK 详情发起 TV 全屏播放前记录一次返回标记，包含父 Activity
 `tools/check_build_sources.py` 新增 TV 强制核对：四变体按实际顺序挂接后，TV 原 `dispatchKeyEvent` 方法完整文本一致；`s()` 原控制栏/面板前缀和原退出尾部完整一致，唯一 APK 退出调用位于两段原面板判断之后。原 smali 固定摘要、API/源码路径、R8 stable ABI、原样/允许变化审计和固定签名核对照常。
 
 版本 stable 5.2.9 / 629，R8 8.8.34 release/full、min-api 23、固定 APK 签名和 TV/手机双 ABI。按用户既有要求不运行本地打包或额外回归，直接 GitHub `run_validation_tests=false`；必要源码、编译和签名门禁保留。原生 Back 实际优先级、播放器内换集后回详情的焦点/滚动，由用户签名后真机验收。推送构建前临时公开，发布成功后恢复私有并核对。
+
+## 最终交付
+
+源码 `8d96b2e8e91d0c6868367572d17ff4af557fdf36` 的[构建 45329910891](https://github.com/leotvgo/Leotv/actions/runs/45329910891)和[自动发布 45330465248](https://github.com/leotvgo/Leotv/actions/runs/45330465248)均成功。[正式版 5.2.9](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.9)包含手机/TV、32/64 位四套固定签名 APK 和八份签名/审计报告；必需源码、API23/R8、原样/允许变化和固定证书门禁通过，额外回归关闭。
+
+发布后已恢复仓库私有，直接 GitHub API 再核对 `private=true / visibility=private`。对应 Release 精确源码、构建/发布 ID、资产摘要和恢复结果保存在 `evidence/leotv-5.2.9-629-build-dispatch-20261124.json`。未进行本地打包或设备回归，实际两次返回顺序、当前集焦点及不同主题的取景仍待用户真机验收。
