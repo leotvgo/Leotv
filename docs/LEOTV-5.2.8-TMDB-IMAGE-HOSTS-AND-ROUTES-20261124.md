@@ -41,3 +41,9 @@
 新增生产类只为 `TmdbRoutes` 与其 State/Route/Answer，加入 `detail/runtime-sources.json`，受现有源码集精确声明、编译类准入、R8 mapping 输入/产物命名空间门禁审计。更新已有 `MetadataSettings`、`BackdropSettings`/Options、`BackdropHttp`/Request、`MobileDetailMetadata`、`BackdropResolver`、`MetadataPrefetch`、`DetailSessionCache`、`DetailHero`/Slide、`DetailTitleArt`、`DetailThumbnails`、`NativeDialogs`/EndpointSaved 和 `Personalization`，以及版本、文档和网络取证工具。无本轮原宿主 smali、布局资源、数据库、JNI/反射接口、回移层或 native/ZIP 资产变化。
 
 版本 stable 5.2.8 / 628，保留 5.2.7 功能和固定 APK 签名，可覆盖升级。直接推送 GitHub，`run_validation_tests=false`，保留四变体必需的源码、API23/R8 release/full、原样/允许变化和签名门禁，不进行本地 APK 打包或额外回归。域名与代理的实际 Android 6/TV/手机效果由用户真机验收。构建前临时公开，发布成功后恢复私有；同级 coos/JAR 发布与独立设置不在本轮改动中。
+
+## 最终交付
+
+源码 `b633611bce7b974ef2e8889a69b0176eb6e45904` 的[构建 45314108154](https://github.com/leotvgo/Leotv/actions/runs/45314108154)及其自动发布均成功。[正式版 5.2.8](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.2.8)含手机/TV、32/64 位四套固定签名 APK 和八份签名/审计报告；必需的源码、API23/R8、原样/允许变化与固定签名门禁通过，额外回归关闭。
+
+发布后已恢复私有，直接 GitHub API 再核对 `private=true / visibility=private`；Release 精确源码、构建/发布 ID、资产摘要及恢复结果保存于 `evidence/leotv-5.2.8-628-build-dispatch-20261124.json`。网络功能、代理服务协议和本次页面刷新仍由用户实际设备验收。
