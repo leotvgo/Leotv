@@ -4,7 +4,9 @@
 普通 TV 的完整 Java 阅读视图，以及第一组能够独立编译的 Java 恢复代码。
 完整 Java/Gradle 应用工程仍在恢复；不能将这里的 Java 阅读视图直接当作已可编译的原始工程。
 
-本轮正式版本为 **5.3.0 / 631**，独立安装包名 **com.leotv.app**，R8 release/full 混淆、固定签名正式发布，支持覆盖升级。
+本轮测试版本为 **5.3.1-preview.1 / 632**，保留 R8 8.8.34 release/full 正式混淆和固定签名。修复 TV 新主页首列跨分类误跳、横向滚动的全页处理和焦点动画每帧的配置/站点开销。详见[TV 遥控焦点与帧开销修复](docs/LEOTV-5.3.1-PREVIEW-1-TV-FOCUS-PERFORMANCE-20261124.md)。
+
+当前正式版本为 **5.3.0 / 631**，独立安装包名 **com.leotv.app**，R8 release/full 混淆、固定签名正式发布，支持覆盖升级。
 正式构建/自动发布由 GitHub 执行：[Leotv 5.3.0](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0) 在发布完成后提供 TV/手机、32/64 位四套 APK。
 
 5.3.0 同版本补交：独立分类窗口和原生卡片异常恢复统一使用原 OK 的完整卡片布局、字段及图片协议，恢复圆形卡片宽高绑定。内部版本码升至 631，旧 630 发布归档为内部草稿。详见[完整原生卡片与同版本替换](docs/LEOTV-5.3.0-NATIVE-CATEGORY-CARDS-REPLACEMENT-20261124.md)。

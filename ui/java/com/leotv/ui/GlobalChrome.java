@@ -1231,7 +1231,7 @@ public final class GlobalChrome {
             if(nativeNavigation.getOutlineProvider()==null)nativeNavigation.setOutlineProvider(originalOutline);
             if(nativeNavigation.getStateListAnimator()==null)nativeNavigation.setStateListAnimator(originalAnimator);
         }
-        boolean firstTab(){View pager=owner.find("pager");return !closed&&owner.running&&(owner.newHome.shown()||owner.contentScreen(pager)&&owner.currentPage(pager)==0);}
+        boolean firstTab(){if(closed||!owner.running)return false;if(owner.newHome.shown())return true;View pager=owner.find("pager");return owner.contentScreen(pager)&&owner.currentPage(pager)==0;}
         boolean shortcutEdge(){
             if(!firstTab())return false;
             if(owner.newHome.shown())return owner.newHome.canWakeShortcuts();

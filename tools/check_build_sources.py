@@ -40,6 +40,14 @@ def check_sources(root=ROOT):
         raise ValueError('Simplified CSP poster/title cards must not remain as a fallback.')
     if 'cloneInContext(activity).inflate(id,parent,false)' not in artwork or 'createCard(activity,retry,item,style,width,action)' not in artwork or 'vod.getMethod("getPic").invoke(bean)' not in artwork:
         raise ValueError('Native card recovery must preserve its XML, complete Vod and native image address.')
+    aligned = home.split('    View alignedCard(')[1].split('    boolean moveCard(')[0]
+    if 'bounds(card,this,false)' not in aligned or 'bounds(card,this,true)' in aligned:
+        raise ValueError('Visual row selection must not demote the first card because its focus zoom enters padding.')
+    if 'if(y==observedScrollY)return' not in home or 'removeOnScrollChangedListener(scrollChanged)' not in home or 'rowOwners.get(node)' not in home or 'movingFocus=true' not in home or 'if(!movingFocus)reveal()' not in home:
+        raise ValueError('TV focus must avoid repeated global scroll work, stale listeners and duplicate reveal passes.')
+    new_home = (root / 'detail/runtime/common/com/leotv/detail/NewHome.java').read_text()
+    if 'SiteFeed.current(current.site,current.configuration)' not in new_home or 'if(optionsDirty||cachedOptions==null)' not in new_home or new_home.count('unregisterOnSharedPreferenceChangeListener(settingsChanged)') != 2:
+        raise ValueError('Stable TV frames require cheap native identity checks and invalidated settings snapshots.')
     # Git's spelling is authoritative even on a case-insensitive local filesystem.
     tracked = set(subprocess.check_output(['git', '-C', str(root), 'ls-files', '-z']).decode().split('\0'))
     manifests = {name: json.loads((root / name).read_text()) for name in LOCKS}

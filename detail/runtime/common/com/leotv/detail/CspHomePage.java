@@ -27,6 +27,9 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     final Activity activity;final boolean phone;final Actions actions;
     final TextView title,facts,overview,status;final DetailTitleArt titleArt;final android.widget.ImageView shortcut;final LinearLayout dots;
     final List<JSONObject> heroItems=new ArrayList<>();final List<MobileDetailMetadata.Result> heroMetadata=new ArrayList<>();final List<Shelf> shelves=new ArrayList<>();
+    final java.util.Map<View,Shelf> rowOwners=new java.util.IdentityHashMap<>();
+    int observedScrollY;boolean movingFocus;
+    final android.view.ViewTreeObserver.OnScrollChangedListener scrollChanged;
     final Backdrop backdrop=new Backdrop();
     CspHomeData.Category first;boolean closed,pageActive=true,initialFocusPending,initialTargetReady;int headerHeight;
     Runnable viewportChanged,backgroundChanged;
@@ -53,16 +56,16 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         hero.onIndex(this::selected);hero.onIncoming(this::selected);
         shortcut=new android.widget.ImageView(activity);View nativeTop=NativeViews.find(activity,"top");if(nativeTop instanceof android.widget.ImageView)shortcut.setImageDrawable(NativeViews.drawable(((android.widget.ImageView)nativeTop).getDrawable(),shortcut));else shortcut.setImageDrawable(new NativeCspUi.Glyph(false,false));shortcut.setPadding(dp(12),dp(12),dp(12),dp(12));shortcut.setContentDescription("一键回顶");shortcut.setFocusable(true);shortcut.setClickable(true);shortcut.setBackground(TvDetailPage.focusBackground(activity));shortcut.setOnClickListener(v->scroll.smoothScrollTo(0,0));addView(shortcut,new FrameLayout.LayoutParams(dp(48),dp(48),Gravity.BOTTOM|Gravity.RIGHT));shortcut.setVisibility(phone?VISIBLE:GONE);
         status=text("正在加载分类…",15);status.setGravity(Gravity.CENTER);status.setPadding(0,dp(20),0,dp(20));rows.addView(status,new LinearLayout.LayoutParams(-1,-2));
-        scroll.getViewTreeObserver().addOnScrollChangedListener(()->{if(closed)return;resetOffscreenRows();backdrop.shader=null;invalidate();if(viewportChanged!=null)viewportChanged.run();});
+        scrollChanged=()->{if(closed)return;int y=scroll.getScrollY();if(y==observedScrollY)return;observedScrollY=y;resetOffscreenRows();backdrop.shader=null;invalidate();if(viewportChanged!=null)viewportChanged.run();};scroll.getViewTreeObserver().addOnScrollChangedListener(scrollChanged);
         rows.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->{if(closed)return;if(viewportChanged!=null)viewportChanged.run();});
     }
     int dp(int value){return Math.round(value*getResources().getDisplayMetrics().density);}
     TextView text(String value,int size){TextView view=new TextView(activity);view.setText(value);view.setTextSize(size);view.setTextColor(Color.WHITE);return view;}
     @Override protected void onSizeChanged(int w,int h,int ow,int oh){super.onSizeChanged(w,h,ow,oh);int height=Math.max(dp(220),Math.round(phone?Math.min(w*1.55f,h*.74f):Math.min(w*.5625f,h*.68f)));if(heroFrame.getLayoutParams().height!=height){heroFrame.getLayoutParams().height=height;heroFrame.requestLayout();}backdrop.shader=null;if(!phone&&(w!=ow||h!=oh))post(this::refreshSizes);}
     void categories(String name,List<CspHomeData.Category> categories){
-        status.setVisibility(GONE);for(Shelf shelf:shelves)rows.removeView(shelf.root);shelves.clear();
+        status.setVisibility(GONE);for(Shelf shelf:shelves)rows.removeView(shelf.root);shelves.clear();rowOwners.clear();
         first=categories.isEmpty()?null:categories.get(0);
-        for(CspHomeData.Category category:categories){Shelf shelf=new Shelf(category);shelves.add(shelf);rows.addView(shelf.root,new LinearLayout.LayoutParams(-1,-2));}
+        for(CspHomeData.Category category:categories){Shelf shelf=new Shelf(category);shelves.add(shelf);rowOwners.put(shelf.root,shelf);rows.addView(shelf.root,new LinearLayout.LayoutParams(-1,-2));}
         if(categories.isEmpty())failed("这个站点暂时没有分类");
     }
     void loaded(int index,List<JSONObject> items){if(closed||index<0||index>=shelves.size())return;Shelf shelf=shelves.get(index);shelf.fill(items);}
@@ -86,18 +89,23 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     }
     boolean firstContent(View focus){return heroFrame.isShown()?NativeCspUi.descendant(focus,heroFrame):!shelves.isEmpty()&&NativeCspUi.descendant(focus,shelves.get(0).root);}
     boolean leftContentEdge(View focus){if(focus==null)return false;for(Shelf shelf:shelves)if(shelf.rail.getChildCount()>0&&NativeCspUi.descendant(focus,shelf.rail.getChildAt(0)))return true;return false;}
-    Shelf shelfOf(View focus){if(focus==null)return null;for(Shelf shelf:shelves)if(NativeCspUi.descendant(focus,shelf.root))return shelf;return null;}
-    int cardIndex(Shelf shelf,View focus){for(int i=0;i<shelf.rail.getChildCount();i++)if(NativeCspUi.descendant(focus,shelf.rail.getChildAt(i)))return i;return -1;}
+    Shelf shelfOf(View focus){for(View node=focus;node!=null&&node!=this;node=node.getParent() instanceof View?(View)node.getParent():null){Shelf shelf=rowOwners.get(node);if(shelf!=null)return shelf;}return null;}
+    int cardIndex(Shelf shelf,View focus){for(View node=focus;node!=null&&node!=shelf.root;node=node.getParent() instanceof View?(View)node.getParent():null)if(node.getParent()==shelf.rail)return shelf.rail.indexOfChild(node);return -1;}
+    boolean focusHome(View target){
+        if(target==null)return false;Shelf shelf=shelfOf(target);if(phone||shelf==null)return target.requestFocus();
+        boolean accepted;movingFocus=true;try{accepted=target.requestFocus();}finally{movingFocus=false;}
+        if(accepted){((TvShelfScroll)shelf.viewport).reveal();((TvHomeScroll)scroll).reveal();}return accepted;
+    }
     void moveRow(View focus,boolean down){
         Shelf from=shelfOf(focus);int row=from==null?-1:shelves.indexOf(from),next=row+(down?1:-1);
-        if(next<0){if(heroFrame.isShown())heroFrame.requestFocus();return;}
+        if(next<0){if(heroFrame.isShown())focusHome(heroFrame);return;}
         if(next>=shelves.size())return;
         Shelf target=shelves.get(next);
-        if(from!=null&&NativeCspUi.descendant(focus,from.open)){target.open.requestFocus();return;}
+        if(from!=null&&NativeCspUi.descendant(focus,from.open)){focusHome(target.open);return;}
         int index=from==null?target.selected:cardIndex(from,focus);
         View aligned=from!=null&&index>=0?alignedCard(target,focus):null;
-        if(aligned!=null){aligned.requestFocus();return;}
-        if(target.rail.getChildCount()>0){index=Math.max(0,Math.min(index<0?target.selected:index,target.rail.getChildCount()-1));target.rail.getChildAt(index).requestFocus();}else target.open.requestFocus();
+        if(aligned!=null){focusHome(aligned);return;}
+        if(target.rail.getChildCount()>0){index=Math.max(0,Math.min(index<0?target.selected:index,target.rail.getChildCount()-1));focusHome(target.rail.getChildAt(index));}else focusHome(target.open);
     }
     /** Keep vertical moves at the current screen column, including horizontal row scrolling. */
     View alignedCard(Shelf target,View focus){
@@ -109,7 +117,8 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         for(int i=0;i<target.rail.getChildCount();i++){
             View card=target.rail.getChildAt(i);
             if(!card.isFocusable()||!card.isEnabled()||card.getVisibility()!=VISIBLE||card.getWidth()==0)continue;
-            android.graphics.Rect rect=bounds(card,this,true);
+            // Visibility is the card's layout box. The focus zoom is allowed inside rail padding.
+            android.graphics.Rect rect=bounds(card,this,false);
             if(rect.right<=left||rect.left>=right)continue;
             int visibility=rect.left>=left-dp(2)&&rect.right<=right+dp(2)?2:1;
             int distance=Math.abs(rect.centerX()-x);
@@ -117,15 +126,15 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         }
         return nearest;
     }
-    boolean moveCard(View focus,boolean right){Shelf shelf=shelfOf(focus);if(shelf==null)return false;int index=cardIndex(shelf,focus);if(index<0)return false;int next=Math.max(0,Math.min(shelf.rail.getChildCount()-1,index+(right?1:-1)));shelf.rail.getChildAt(next).requestFocus();return true;}
+    boolean moveCard(View focus,boolean right){Shelf shelf=shelfOf(focus);if(shelf==null)return false;int index=cardIndex(shelf,focus);if(index<0)return false;int next=Math.max(0,Math.min(shelf.rail.getChildCount()-1,index+(right?1:-1)));focusHome(shelf.rail.getChildAt(next));return true;}
     boolean focusFirstInRow(View focus){
         Shelf shelf=shelfOf(focus);if(shelf==null||cardIndex(shelf,focus)<=0||shelf.rail.getChildCount()==0)return false;
-        return shelf.rail.getChildAt(0).requestFocus();
+        return focusHome(shelf.rail.getChildAt(0));
     }
     void resetOffscreenRows(){
         if(phone||!pageActive||scroll.getHeight()==0)return;
         int top=scroll.getScrollY()+scroll.getPaddingTop(),bottom=scroll.getScrollY()+scroll.getHeight()-scroll.getPaddingBottom();
-        for(Shelf shelf:shelves){if(shelf.root.hasFocus()||shelf.root.getHeight()==0)continue;android.graphics.Rect row=bounds(shelf.root,scroll,false);if(row.bottom<=top||row.top>=bottom)shelf.reset();}
+        int offset=rows.getTop();for(Shelf shelf:shelves){if(shelf.root.hasFocus()||shelf.root.getHeight()==0)continue;int y=offset+shelf.root.getTop();if(y+shelf.root.getHeight()<=top||y>=bottom)shelf.reset();}
     }
     /** Layout bounds in the ancestor's unscrolled content coordinates, including the final focus zoom. */
     android.graphics.Rect bounds(View view,ViewGroup ancestor,boolean zoom){
@@ -146,23 +155,23 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     final class TvHomeScroll extends ScrollView {
         View focused;
         TvHomeScroll(){super(activity);setSmoothScrollingEnabled(false);setVerticalFadingEdgeEnabled(false);setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);}
-        @Override public void requestChildFocus(View child,View target){focused=target;super.requestChildFocus(child,target);reveal();}
-        @Override protected int computeScrollDeltaToGetChildRectOnScreen(android.graphics.Rect rect){return shelfOf(focused)==null?super.computeScrollDeltaToGetChildRectOnScreen(rect):rowScroll(focused)-getScrollY();}
-        @Override public boolean requestChildRectangleOnScreen(View child,android.graphics.Rect rect,boolean immediate){if(shelfOf(focused)==null)return super.requestChildRectangleOnScreen(child,rect,immediate);int before=getScrollY();reveal();return before!=getScrollY();}
+        @Override public void requestChildFocus(View child,View target){focused=target;super.requestChildFocus(child,target);if(!movingFocus)reveal();}
+        @Override protected int computeScrollDeltaToGetChildRectOnScreen(android.graphics.Rect rect){return shelfOf(focused)==null?super.computeScrollDeltaToGetChildRectOnScreen(rect):0;}
+        @Override public boolean requestChildRectangleOnScreen(View child,android.graphics.Rect rect,boolean immediate){if(shelfOf(focused)==null)return super.requestChildRectangleOnScreen(child,rect,immediate);if(movingFocus)return false;int before=getScrollY();reveal();return before!=getScrollY();}
         @Override protected void onLayout(boolean changed,int l,int t,int r,int b){super.onLayout(changed,l,t,r,b);if(hasFocus())reveal();}
         void reveal(){if(closed||!pageActive||focused==null||!focused.hasFocus())return;Shelf shelf=shelfOf(focused);if(shelf==null)return;int index=cardIndex(shelf,focused);if(index>=0)shelf.selected=index;scrollTo(0,rowScroll(focused));}
     }
     final class TvShelfScroll extends HorizontalScrollView {
         View focused;
         TvShelfScroll(){super(activity);setSmoothScrollingEnabled(false);setHorizontalFadingEdgeEnabled(false);setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);}
-        @Override public void requestChildFocus(View child,View target){focused=target;super.requestChildFocus(child,target);reveal();}
-        @Override protected int computeScrollDeltaToGetChildRectOnScreen(android.graphics.Rect rect){return focused==null?super.computeScrollDeltaToGetChildRectOnScreen(rect):delta();}
-        @Override public boolean requestChildRectangleOnScreen(View child,android.graphics.Rect rect,boolean immediate){if(focused==null)return super.requestChildRectangleOnScreen(child,rect,immediate);int before=getScrollX();reveal();return before!=getScrollX();}
+        @Override public void requestChildFocus(View child,View target){focused=target;super.requestChildFocus(child,target);if(!movingFocus)reveal();}
+        @Override protected int computeScrollDeltaToGetChildRectOnScreen(android.graphics.Rect rect){return focused==null?super.computeScrollDeltaToGetChildRectOnScreen(rect):0;}
+        @Override public boolean requestChildRectangleOnScreen(View child,android.graphics.Rect rect,boolean immediate){if(focused==null)return super.requestChildRectangleOnScreen(child,rect,immediate);if(movingFocus)return false;int before=getScrollX();reveal();return before!=getScrollX();}
         @Override protected void onLayout(boolean changed,int l,int t,int r,int b){super.onLayout(changed,l,t,r,b);if(hasFocus())reveal();}
         int delta(){android.graphics.Rect rect=bounds(focused,this,true);int left=getScrollX()+getPaddingLeft(),right=getScrollX()+getWidth()-getPaddingRight();return rect.left<left?rect.left-left:rect.right>right?rect.right-right:0;}
         void reveal(){if(!closed&&pageActive&&focused!=null&&focused.hasFocus()&&getWidth()>0)scrollTo(getScrollX()+delta(),0);}
     }
-    boolean focusContent(){View target=heroFrame.isShown()?heroFrame:null;if(target==null)for(Shelf shelf:shelves){target=shelf.rail.getChildCount()>0?shelf.rail.getChildAt(0):shelf.open;if(target.isShown())break;}if(target==null)return false;boolean focused=target.requestFocus();if(focused){android.graphics.Rect rect=new android.graphics.Rect();target.getDrawingRect(rect);target.requestRectangleOnScreen(rect,true);}return focused;}
+    boolean focusContent(){View target=heroFrame.isShown()?heroFrame:null;if(target==null)for(Shelf shelf:shelves){target=shelf.rail.getChildCount()>0?shelf.rail.getChildAt(0):shelf.open;if(target.isShown())break;}if(target==null)return false;boolean focused=focusHome(target);if(focused&&(phone||shelfOf(target)==null)){android.graphics.Rect rect=new android.graphics.Rect();target.getDrawingRect(rect);target.requestRectangleOnScreen(rect,true);}return focused;}
     void restoreInitialFocus(){
         if(phone||closed||!pageActive||!initialFocusPending||!initialTargetReady||!isShown()||!hasWindowFocus()||isLayoutRequested())return;
         View target=heroFrame.isShown()?heroFrame:null;
@@ -197,10 +206,10 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
             TextView more=text("更多\n›",20);more.setGravity(Gravity.CENTER);more.setFocusable(true);more.setClickable(true);more.setBackground(TvDetailPage.focusBackground(activity));more.setOnClickListener(v->actions.category(category));rail.addView(more,new LinearLayout.LayoutParams(width,height));
             if(selected>=0&&selected<rail.getChildCount())rail.getChildAt(selected).requestFocus();viewport.post(()->{if(!closed){if(!phone){if(pageActive&&viewport.hasFocus())((TvShelfScroll)viewport).reveal();else viewport.scrollTo(this.selected==0?0:position,0);resetOffscreenRows();}else viewport.scrollTo(position,0);}});
         }
-        void reset(){selected=0;if(!phone)((TvShelfScroll)viewport).focused=null;viewport.scrollTo(0,0);}
+        void reset(){if(selected==0&&viewport.getScrollX()==0&&(phone||((TvShelfScroll)viewport).focused==null))return;selected=0;if(!phone)((TvShelfScroll)viewport).focused=null;viewport.scrollTo(0,0);}
     }
-    void active(boolean value){if(closed)return;boolean leaving=pageActive&&!value;pageActive=value;hero.setActive(value&&heroFrame.getVisibility()==VISIBLE);if(value)updateInsets();else if(leaving&&!phone){int y=scroll.getScrollY();for(Shelf shelf:shelves){if(shelf.rail.hasFocus()&&shelf.rail.getChildCount()>0)shelf.rail.getChildAt(0).requestFocus();shelf.reset();}scroll.scrollTo(0,y);}}
-    @Override public void close(){if(closed)return;closed=true;viewportChanged=null;backgroundChanged=null;heroFrame.setOnClickListener(null);hero.close();titleArt.close();}
+    void active(boolean value){if(closed||!phone&&pageActive==value)return;boolean leaving=pageActive&&!value;pageActive=value;hero.setActive(value&&heroFrame.getVisibility()==VISIBLE);if(value)updateInsets();else if(leaving&&!phone){int y=scroll.getScrollY();for(Shelf shelf:shelves){if(shelf.rail.hasFocus()&&shelf.rail.getChildCount()>0)shelf.rail.getChildAt(0).requestFocus();shelf.reset();}scroll.scrollTo(0,y);}}
+    @Override public void close(){if(closed)return;closed=true;if(scroll.getViewTreeObserver().isAlive())scroll.getViewTreeObserver().removeOnScrollChangedListener(scrollChanged);viewportChanged=null;backgroundChanged=null;heroFrame.setOnClickListener(null);hero.close();titleArt.close();}
     final class Backdrop extends Drawable {
         Drawable fallback;final Paint paint=new Paint();int colour=DetailHero.DEFAULT_COLOR;Shader shader;int paintedHeight,paintedHero;
         @Override public void draw(Canvas canvas){if(hero==null||!hero.hasArtwork()){android.graphics.Rect before=new android.graphics.Rect(fallback.getBounds());fallback.setBounds(getBounds());fallback.draw(canvas);fallback.setBounds(before);return;}int height=Math.max(1,getHeight()),heroHeight=Math.max(0,heroFrame.getHeight()-scroll.getScrollY());if(shader==null||paintedHeight!=height||paintedHero!=heroHeight){paintedHeight=height;paintedHero=heroHeight;shader=new LinearGradient(0,0,0,height,new int[]{colour,colour,DetailHero.FLOOR},new float[]{0,Math.max(.05f,Math.min(.95f,heroHeight/(float)height)),1},Shader.TileMode.CLAMP);}paint.setShader(shader);canvas.drawRect(getBounds(),paint);}

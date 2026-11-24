@@ -114,6 +114,11 @@ def check_contract(root, variant, project=None):
     contracts[BEANS + 'Class'] = (['getTypeId()Ljava/lang/String;', 'getStyle()L' + BEANS + 'Style;'], [])
     contracts[BEANS + 'Style'] = (['rect()L' + BEANS + 'Style;', 'getRatio()F', 'isOval()Z', 'isList()Z'], [])
     contracts[BEANS + 'Site'] = (['getStyle(L' + BEANS + 'Style;)L' + BEANS + 'Style;'], [])
+    contracts[BEANS + 'Site'][0].append('getKey()Ljava/lang/String;')
+    contracts[BEANS + 'Config'] = (['getId()I'], [])
+    contracts['t3/h' if mobile else 'q3/h'] = ([], ['a:L' + ('t3/i' if mobile else 'q3/i') + ';'])
+    if not mobile:
+        contracts['q3/i'] = (['o()L' + BEANS + 'Site;'], [])
     contracts[BEANS + 'Vod'] = (contracts[BEANS + 'Vod'][0] + ['objectFrom(Ljava/lang/String;)L' + BEANS + 'Vod;', 'getNameVisible()I', 'getYearVisible()I', 'getSiteVisible()I', 'getRemarkVisible()I', 'getYear()Ljava/lang/String;', 'getRemarks()Ljava/lang/String;', 'getSiteName()Ljava/lang/String;'], contracts[BEANS + 'Vod'][1])
     contracts[BEANS + 'Vod'][0].append('getStyle(L' + BEANS + 'Style;)L' + BEANS + 'Style;')
     contracts['U3/n' if mobile else 'S3/k'] = (['d(Landroid/widget/ImageView;Ljava/lang/String;Ljava/lang/String;Z)V', 'b(Ljava/lang/String;)Ljava/lang/Object;'], [])
@@ -144,7 +149,7 @@ def check_contract(root, variant, project=None):
         contracts['com/fongmi/android/tv/ui/activity/VodActivity'] = (['S(Landroid/app/Activity;Ljava/lang/String;L' + BEANS + 'Result;)V'], [])
     contracts[('E3' if mobile else 'B3') + '/n'] = (['<init>(Ljava/lang/String;Ljava/lang/String;I)V', 'call()Ljava/lang/Object;'], [])
     contracts[('E3' if mobile else 'B3') + '/p'] = (['call()Ljava/lang/Object;'], [])
-    contracts[('t3' if mobile else 'q3') + '/i'] = (['m()I'], [])
+    contracts[('t3' if mobile else 'q3') + '/i'] = (['m()I'] + ([] if mobile else ['o()L' + BEANS + 'Site;']), [])
     contracts[('t3' if mobile else 'q3') + '/a'] = (['d()L'+BEANS+'Config;'], [])
     video_methods = ['b0()V', 'w0(L' + BEANS + 'Flag;ZZ)V', 'd(L' + BEANS + 'Episode;)V', 'T0(Z)V'] if mobile else [
         'Y()V', 'O0(L' + BEANS + 'Flag;ZZ)V', 'L0(L' + BEANS + 'Episode;)V']
