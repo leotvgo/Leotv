@@ -25,3 +25,7 @@
 新增源码门禁约束布局矩形选择、纵向滚动变化后处理、observer 注销、统一焦点派发、稳定帧身份核对与配置缓存注销。固定原生配置/站点访问和焦点动画类摘要，补齐 public ABI 核对。预发行仍由已启用的同一 hardening.json 执行 R8 release/full，不改成 debug/no-minify。
 
 按用户既有要求仅执行必需源码审计，直接 GitHub `run_validation_tests=false` 构建/发布，不进行本地 APK 打包或反复回归。构建前临时公开，四套测试 APK 发布后恢复私有并核对。首列跨行、连按/长按方向键、不同卡片样式和实际丝滑程度由签名后真机验收，不将编译通过记为性能实测通过。
+
+## 交付结果
+
+源码 `46140c95fff051f8fb6d5b5f92b923c4a85559a9` 的[构建 45359145561](https://github.com/leotvgo/Leotv/actions/runs/45359145561)及[自动发布 45359885050](https://github.com/leotvgo/Leotv/actions/runs/45359885050)均成功。[5.3.1-preview.1 / 632 测试 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.1-preview.1-build-45359145561)含四套固定签名包及八份报告；逐套核对实际 R8 release/full、类混淆数量、stable ABI、API23、原样/允许变化及证书/Release APK 摘要。5.3.0 正式 Latest 保留。发布后恢复私有并 API 验证。证据见 `evidence/leotv-5.3.1-preview.1-632-build-dispatch-20261124.json`。额外回归关闭，没有本地打包或设备帧耗时测试，实际按键节奏和首列跨行仍由真机验收。
