@@ -98,6 +98,8 @@ def check_sources(root=ROOT):
         raise ValueError('TV cached categories must bypass eager ScrollView/GridLayout inflation and full-list measurement.')
     if 'new VerticalGridView(owner)' not in native_category or 'new ItemBridgeAdapter(rows)' not in native_category or 'new ListRow(row)' not in native_category or 'Class.forName("N3.k"' not in native_category:
         raise ValueError('TV cached categories require the original two-level Leanback recycling and native row presenter.')
+    if 'list.setNumColumns(1);list.setColumnWidth(0)' not in native_category or 'setColumnWidth(-1)' in native_category:
+        raise ValueError('Leanback category column width must use 0 for available width; MATCH_PARENT (-1) crashes.')
     if 'NativeCspUi.inflateCard(owner,parent,appearance,cell)' not in native_category or 'NativeCspUi.bindCard(owner,holder.view,item' not in native_category or 'NativeCspUi.releaseHomeImage((ImageView)image)' not in native_category:
         raise ValueError('Recycled cards must retain complete native layouts/binding and cancel recycled image work.')
     if 'list.setClipChildren(false);list.setClipToPadding(false)' not in native_category or 'cards.setClipChildren(false);cards.setClipToPadding(false)' not in native_category or '((ViewGroup)node).setClipToPadding(false)' not in native_category:
@@ -120,6 +122,9 @@ def check_sources(root=ROOT):
         if variant.startswith('tv'):
             native_method((source / 'smali/N3/k.smali').read_text(), '<init>(III)V')
             native_method((source / 'smali/androidx/leanback/widget/VerticalGridView.smali').read_text(), '<init>(Landroid/content/Context;)V')
+            row_size = native_method((source / 'smali/androidx/leanback/widget/GridLayoutManager.smali').read_text(), 'setRowHeight(I)V').group()
+            if 'if-gez p1' not in row_size or 'const/4 v0, -0x2' not in row_size or 'Invalid row height: ' not in row_size:
+                raise ValueError('Pinned Leanback row-size contract must accept nonnegative sizes and reject -1.')
             native_method((source / 'smali/androidx/leanback/widget/RowPresenter.smali').read_text(), 'getRowViewHolder(Landroidx/leanback/widget/Presenter$ViewHolder;)Landroidx/leanback/widget/RowPresenter$ViewHolder;')
             native_method((source / 'smali/com/bumptech/glide/p.smali').read_text(), 'o(Lj3/f;)V')
         names = set()

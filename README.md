@@ -4,7 +4,7 @@
 普通 TV 的完整 Java 阅读视图，以及第一组能够独立编译的 Java 恢复代码。
 完整 Java/Gradle 应用工程仍在恢复；不能将这里的 Java 阅读视图直接当作已可编译的原始工程。
 
-本轮测试版本为 **5.3.1-preview.6 / 637**，保留 R8 8.8.34 release/full 正式混淆和固定签名。TV 推荐“更多”改用原生两层可回收列表与行容器，修正焦点放大裁剪，避免进入时创建全部缓存卡片；保留 preview.5 已验收的轮播衔接、最近观看设置及两端 TMDB 摘要。详见[推荐列表回收与裁剪修复](docs/LEOTV-5.3.1-PREVIEW-6-NATIVE-RECOMMENDATION-LIST-20261124.md)。
+本轮测试版本为 **5.3.1-preview.7 / 638**，保留 R8 8.8.34 release/full 正式混淆和固定签名。只修复 TV 推荐窗口初始化的 `Invalid row height: -1` 崩溃：Leanback 单列宽度改为合法的 `0`，保留原生回收、焦点和裁剪修复；手机端已由用户确认正常，代码保持。详见[TV 推荐窗口启动修复](docs/LEOTV-5.3.1-PREVIEW-7-TV-CATEGORY-ROW-SIZE-20261124.md)。
 
 当前正式版本为 **5.3.0 / 631**，独立安装包名 **com.leotv.app**，R8 release/full 混淆、固定签名正式发布，支持覆盖升级。
 正式构建/自动发布由 GitHub 执行：[Leotv 5.3.0](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.0) 在发布完成后提供 TV/手机、32/64 位四套 APK。

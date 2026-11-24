@@ -29,7 +29,8 @@ final class NativeCspCategory implements AutoCloseable {
     Cards cards;
     NativeCspCategory(CspCategoryActivity owner){
         this.owner=owner;list=new VerticalGridView(owner);list.setTag("leotv_native_csp_category");
-        list.setNumColumns(1);list.setColumnWidth(-1);list.setVerticalSpacing(owner.dp(16));
+        // Leanback uses 0 to divide the available width; LayoutParams.MATCH_PARENT (-1) is invalid here.
+        list.setNumColumns(1);list.setColumnWidth(0);list.setVerticalSpacing(owner.dp(16));
         list.setClipChildren(false);list.setClipToPadding(false);list.setFocusScrollStrategy(1);
         list.setFocusable(true);list.setFocusableInTouchMode(true);list.setBackground(null);
         list.setItemAnimator(null);list.setExtraLayoutSpace(0);
