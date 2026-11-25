@@ -50,3 +50,9 @@ TV/手机个性设置加入“首页缓存上限”，默认 **500 MB**，支持
 版本 stable 5.3.2 / 640，保留固定 APK 证书，可覆盖 5.3.1。按用户既有规则直接 GitHub 构建，`run_validation_tests=false`；不进行本地 APK 打包或额外模型/UI 回归。必须源码/API23/R8 release/full、原样/允许变化和固定签名核对保留。缓存命中可省去网络等待；首次冷加载、备用域名和实际 Android 6 速度由真机验收，不以本机读缓存或静态代码宣称所有请求必定一秒完成。
 
 前置比较证据见 [流浪壳调查报告](LEOTV-LIULANG-TMDB-RESEARCH-20261125.md)。构建与发布记录由本轮 `evidence/leotv-5.3.2-640-build-dispatch-20261125.json` 维护。
+
+## 最终交付
+
+源码 `2b5ef7a041436f6a98238f9a049688ee44a23b8a` 的[构建 45528669777](https://github.com/leotvgo/Leotv/actions/runs/45528669777)与[自动发布 45529255694](https://github.com/leotvgo/Leotv/actions/runs/45529255694)成功。[Leotv 5.3.2 / 640](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.2)包含四套固定签名 APK 和八份审计/签名报告，为正式 Latest，支持覆盖升级。逐套核对 APK release digest、固定证书、原样/变化审计、原生库、API23、R8 mapping 与实际编译源码 SHA-256，全部通过；仓库已恢复并 API 核对 PRIVATE。更新日志已同步到 Release body。
+
+私有任务因 GitHub 计费未启动，按既有授权临时公开；首轮编译参考 JAR 的内部类/Throws 属性差异已按原 ABI 修正，第二轮完整成功。每次构建结束均恢复私有，安装包与签名私钥未进入 Git。没有本轮本地 APK 打包或额外模型/UI 回归，网络、向下滚动及缓存速度待用户真机验收。
