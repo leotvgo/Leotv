@@ -36,3 +36,13 @@
 [GitHub官方说明](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility)另外明确指出，若公开期间存在public fork，改私有会将它脱离为新网络而不将fork私有化；这不属于用户已排除副本/fork的前提。本轮未声称公开窗口没有被外部抓取，也未以恢复私有声称收回副本。
 
 最终构建、归档、正式发布、资产核对与私有恢复记录将在本轮交付evidence补充。加载速度与真实电视/手机表现由用户安装646后验收。
+
+## 最终交付
+
+源码 `d0735ef44cd3d17050789165b7178dc332d84b34` 的[构建45604955683](https://github.com/leotvgo/Leotv/actions/runs/45604955683)与[发布45606363504](https://github.com/leotvgo/Leotv/actions/runs/45606363504)成功。首次私有任务被账单限制拦住；第一次公开任务在新增CI夹具中缺少JSONObject导入，修正导入和线程清理后通过。4份运行源码保持最初修复内容。
+
+首次发布45605794757被旧正式标签的不同源码门禁阻止；按用户明确授权，将旧644和645的release转为内部草稿，全部24个资产ID/大小/digest原样保留，旧Git对象保留在对应withdrawn-build标签。5.3.3正式标签已更新到646源码，新的12项正式资产为非预发行、Latest。
+
+四包核对API23、固定证书、release digest、原样/允许变化、原生库、全部编译源码SHA-256、字符串加固与公开/完整内部审计绑定，通过。阻塞站点时仍发布入口/History元数据等针对性检查在CI通过；未进行本地APK打包或以此声称真机速度。
+
+仓库按用户要求在公开构建/发布完成后恢复PRIVATE并API核对。完整报告副本保存在忽略的 `artifacts/leotv-5.3.3-646-delivery/`；交付、撤回与构建记录见本轮 `evidence/leotv-5.3.3-646-*.json`。

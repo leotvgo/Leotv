@@ -1,0 +1,28 @@
+{
+  "source_commit": "d0735ef44cd3d17050789165b7178dc332d84b34",
+  "build_run_id": 45604955683,
+  "version_name": "5.3.3",
+  "version_code": 646,
+  "archives": [
+    {
+      "old_tag": "leotv-5.3.3",
+      "archive_tag": "leotv-5.3.3-withdrawn-build-45581122289",
+      "release_id": 457867076,
+      "source_commit": "68849f7119f251ded8fcc2358e18fd767fb0e524",
+      "assets_unchanged": true,
+      "asset_count": 12,
+      "archive_git_object": "68849f7119f251ded8fcc2358e18fd767fb0e524"
+    },
+    {
+      "old_tag": "leotv-5.3.4",
+      "archive_tag": "leotv-5.3.4-withdrawn-build-45592296904",
+      "release_id": 457940120,
+      "source_commit": "4b130447d1bbc7cd03d6863b27d8b02834498e87",
+      "assets_unchanged": true,
+      "asset_count": 12,
+      "archive_git_object": "4b130447d1bbc7cd03d6863b27d8b02834498e87"
+    }
+  ],
+  "formal_tag_updated": true,
+  "all_24_old_assets_retained": true
+}

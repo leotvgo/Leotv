@@ -1,0 +1,36 @@
+{
+  "source_commit": "d0735ef44cd3d17050789165b7178dc332d84b34",
+  "version": "5.3.3",
+  "version_code": 646,
+  "repo": "leotvgo/Leotv",
+  "run_validation_tests": false,
+  "release_channel": "stable",
+  "build_run_id": 45604955683,
+  "build_url": "https://github.com/leotvgo/Leotv/actions/runs/45604955683",
+  "state": "published-and-verified",
+  "initial_visibility": "private",
+  "build_attempt": 1,
+  "initial_failure": "Private Actions job did not start: account payments/spending limit blocked execution.",
+  "temporary_public_authorized": true,
+  "authorization_basis": "Existing temporary-public APK build authorization retained in prior deliveries and current request to continue building.",
+  "restore_private": "verified PRIVATE",
+  "withdraw_after_success": [
+    "leotv-5.3.3/644",
+    "leotv-5.3.4/645"
+  ],
+  "local_packaging": false,
+  "device_validation": false,
+  "recorded_at_utc": "2026-11-25T11:20:57.278078+00:00",
+  "publish_run_id": 45606363504,
+  "release_url": "https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.3",
+  "prior_failures": [
+    {
+      "build_run_id": 45602808675,
+      "reason": "Private billing block, then public CI fixture missing JSONObject import; corrected without runtime source changes."
+    },
+    {
+      "publish_run_id": 45605794757,
+      "reason": "Old formal 5.3.3 targeted a different source; old releases archived before successful retry."
+    }
+  ]
+}

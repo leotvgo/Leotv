@@ -47,3 +47,7 @@ R8沿用8.8.34 release/full/API23，用无语义ASCII字典混淆内部类与成
 [正式5.3.4/645](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4)为非预发行、Latest，12个正式资产完整。四包逐套核对发布digest、固定证书、API23/R8、原生库、原样/允许变化、全部编译源码SHA-256及公开/内部审计绑定。TV每包76个唯一常量完成保护、337个输出类实际改名；手机每包75个常量、324个类改名。完整审计和mapping在内部符号草稿的8个资产中保留，公开JSON为绑定摘要。
 
 JAR移植编号、详情优先、API实际对应项和手选目录下一集的纯Java针对性检查在CI通过。未安装新APK到用户电视，未将旧644的ADB诊断视为645的真机验收。交付摘要见 `evidence/leotv-5.3.4-645-ci-reports-20261125.json` 与 `evidence/leotv-5.3.4-645-build-dispatch-20261125.json`；完整审计的本地副本保存在忽略的 `artifacts/leotv-5.3.4-delivery/`。
+
+## 2026-11-25 撤回归档
+
+用户明确要求发布5.3.3/646并撤下旧版本。本记录的5.3.4/645及12项资产已转为内部草稿 `leotv-5.3.4-withdrawn-build-45592296904`，资产ID/大小/digest与旧源码Git对象完整保留。当前正式下载为5.3.3/646，旧运行包未被删除或覆盖。
