@@ -30,6 +30,7 @@ FIXTURES={
 HARNESS=r'''package com.leotv.detail;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.json.JSONObject;
 public class DetailParallelCheck {
  static class DetailActivity extends android.app.Activity {
   final android.os.Handler main=new android.os.Handler();
@@ -39,7 +40,8 @@ public class DetailParallelCheck {
   BackdropSettings.Options metadataOptions,requestedOptions;BackdropIdentity requestedIdentity;
   boolean sourcePending;TvDetailPage page=new TvDetailPage();int generation,sourceGeneration;long metadataCacheTicket=1;
   __CONTROLLER_METHODS__
-  void close(){SourceGateway.allowSource.countDown();worker.shutdownNow();metadataWorker.shutdownNow();}
+  void close(){SourceGateway.allowSource.countDown();worker.shutdownNow();metadataWorker.shutdownNow();
+   try{worker.awaitTermination(5,TimeUnit.SECONDS);metadataWorker.awaitTermination(5,TimeUnit.SECONDS);}catch(InterruptedException interrupted){Thread.currentThread().interrupt();}}
  }
  static void await(CountDownLatch latch,String reason)throws Exception{if(!latch.await(5,TimeUnit.SECONDS))throw new AssertionError(reason);}
  static void run(String title,String history,boolean refresh,boolean failure)throws Exception{
