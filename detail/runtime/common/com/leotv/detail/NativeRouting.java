@@ -10,6 +10,7 @@ public final class NativeRouting {
     static final String EPISODE = "leotv.episode.url", FLAG = "leotv.episode.flag";
     static final String APPLIED = "leotv.selection.applied";
     static final String TITLE_LOGOS = "leotv.title.logos";
+    static final String DANMAKU_WORK = "leotv.danmaku.work";
     private static final String INDEX_METADATA="leotv.resource.metadata";
     private static final String INDEX_SITE="leotv.resource.metadata.site";
     private NativeRouting() {}
@@ -140,6 +141,7 @@ public final class NativeRouting {
             intent.putExtra("leotv.episode.reversePlay",incoming.getBooleanExtra("leotv.episode.reversePlay",false));
             java.util.ArrayList<String> logos = incoming.getStringArrayListExtra(TITLE_LOGOS);
             if (logos != null) intent.putStringArrayListExtra(TITLE_LOGOS, new java.util.ArrayList<>(logos));
+            String work=incoming.getStringExtra(DANMAKU_WORK);if(work!=null)intent.putExtra(DANMAKU_WORK,work);
         }
         // A resource-list preview may carry collect/search state that closes the native player.
         // A selected episode always gets a fresh fullscreen playback request.

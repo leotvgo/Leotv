@@ -26,9 +26,15 @@ public final class DanmakuTitle {
 
     public static final int EPISODE_UNKNOWN = Integer.MAX_VALUE;
 
-    private static final Pattern EPISODE_CN = Pattern.compile("第\\s*([零〇一二两三四五六七八九十百千0-9]{1,6})\\s*[集话話回期章节節]");
-    private static final Pattern EPISODE_SEASON = Pattern.compile("\\bS\\d{1,2}\\s*E\\s*0*([0-9]{1,5})\\b", Pattern.CASE_INSENSITIVE);
-    private static final Pattern EPISODE_EP = Pattern.compile("\\b(?:EP|E|Episode)\\s*0*([0-9]{1,5})\\b", Pattern.CASE_INSENSITIVE);
+    private static final Pattern EPISODE_CN = Pattern.compile("(?:第\\s*)?([零〇一二两三四五六七八九十百千0-9]{1,6})\\s*[集话話回期章节節]");
+    private static final Pattern EPISODE_SEASON = Pattern.compile("(?<![a-z0-9])S\\d{1,2}[-._\\s]*E[-._\\s]*0*([0-9]{1,5})(?![0-9])", Pattern.CASE_INSENSITIVE);
+    private static final Pattern EPISODE_EP = Pattern.compile("(?<![a-z0-9])(?:Episode|EP|E)[-._\\s]*0*([0-9]{1,5})(?![0-9])", Pattern.CASE_INSENSITIVE);
+    private static final Pattern EPISODE_SUFFIX = Pattern.compile("[_\\-]0*([0-9]{1,3})(?=$|[. _、（(]|集|话|話|回)");
+    private static final Pattern SEASON = Pattern.compile("(?:第\\s*([零〇一二两三四五六七八九十百0-9]+)\\s*季|(?<![a-z0-9])S([0-9]{1,2})(?![0-9])|season\\s*([0-9]{1,2}))",Pattern.CASE_INSENSITIVE);
+    private static final Pattern NUMERIC = Pattern.compile("(?:^|[\\s._\\-\\[（(【])([0-9]{1,3})(?=$|[\\s._\\-\\]）)】])");
+    private static final Pattern NOISE = Pattern.compile("(?i)(?<![a-z0-9])(?:(?:2160|1080|720|576|480)[pi]|[248]k|[xh][ .]?26[45]|hevc|avc|hdr10?\\+?|aac(?:[ .]?\\d(?:\\.\\d)?)?|(?:ddp|dd|dts|ac3|eac3)[ .]?\\d(?:\\.\\d)?|\\d+(?:\\.\\d+)?\\s*(?:gb|mb|gib|mib|fps)|v\\d+(?:\\.\\d+)?)(?![a-z0-9])");
+    /** Numbered resource filenames such as 02.mkv/02_高清; four-digit years are not episode numbers. */
+    private static final Pattern EPISODE_FILE = Pattern.compile("^\\s*0*([0-9]{1,3})(?=$|[. _、\\-（(]|集|话|話|回)");
 
     /** "from" 来源关键字（已基于来源分组，from 及其后的来源名都属于冗余信息） */
     private static final Pattern SOURCE_FROM = Pattern.compile("\\bfrom\\b", Pattern.CASE_INSENSITIVE);
@@ -53,18 +59,86 @@ public final class DanmakuTitle {
 
     /** 解析集数；无法解析返回 {@link #EPISODE_UNKNOWN}。 */
     public static int parseEpisode(CharSequence text) {
-        int episode = matchEpisode(EPISODE_CN, text);
-        if (episode == EPISODE_UNKNOWN) episode = matchEpisode(EPISODE_SEASON, text);
-        if (episode == EPISODE_UNKNOWN) episode = matchEpisode(EPISODE_EP, text);
-        if(episode==EPISODE_UNKNOWN&&text!=null&&text.toString().trim().matches("[0-9]{1,5}"))episode=Integer.parseInt(text.toString().trim());
-        return episode;
+        String value=numberText(text==null?"":text.toString());
+        int episode=EPISODE_UNKNOWN;boolean explicit=false;
+        for(Pattern pattern:new Pattern[]{EPISODE_SEASON,EPISODE_CN,EPISODE_EP})if(pattern.matcher(value).find()){
+            explicit=true;int number=uniqueEpisode(pattern,value);
+            if(number==EPISODE_UNKNOWN||episode!=EPISODE_UNKNOWN&&episode!=number)return EPISODE_UNKNOWN;
+            episode=number;
+        }
+        if(explicit)return episode;
+        if(!date(value).isEmpty())return EPISODE_UNKNOWN;
+        // Bare filenames are accepted only when their remaining numeric evidence is unique.
+        value=SEASON.matcher(value).replaceAll(" ").replaceAll("(?<![0-9])(?:19|20)[0-9]{2}(?![0-9])"," ");
+        return uniqueEpisode(NUMERIC,value);
+    }
+    private static String numberText(String value){
+        value=java.text.Normalizer.normalize(value,java.text.Normalizer.Form.NFKC);
+        value=URL.matcher(value).replaceAll(" ");
+        value=value.replaceAll("(?i)(?:全|共|更新至|更至)\\s*[零〇一二两三四五六七八九十百0-9]+\\s*集"," ");
+        return NOISE.matcher(value).replaceAll(" ").replaceAll("(?i)\\.(?:mkv|mp4|avi|ts|m4v|rmvb|mov)$"," ").trim();
+    }
+    private static int uniqueEpisode(Pattern pattern,String value){
+        Matcher matcher=pattern.matcher(value);int found=EPISODE_UNKNOWN;
+        while(matcher.find()){
+            int number=matchEpisode(pattern,matcher.group());
+            if(number<=0||number==EPISODE_UNKNOWN)continue;
+            if(found!=EPISODE_UNKNOWN&&found!=number)return EPISODE_UNKNOWN;
+            found=number;
+        }
+        return found;
+    }
+    static int season(String value){Matcher matcher=SEASON.matcher(value==null?"":java.text.Normalizer.normalize(value,java.text.Normalizer.Form.NFKC));
+        if(!matcher.find())return EPISODE_UNKNOWN;String number=matcher.group(1)!=null?matcher.group(1):matcher.group(2)!=null?matcher.group(2):matcher.group(3);
+        return matchEpisode(EPISODE_CN,"第"+number+"集");
+    }
+    /** Current native label first; matched metadata names may resolve an otherwise unnamed episode. */
+    static String resolveEpisode(String raw,String mediaTitle,org.json.JSONObject work){
+        String kind=work.optString("type"),label=raw==null?"":raw;
+        if(kind.matches("(?i)movie|film|电影|電影")&&variant(label).isEmpty()&&date(label).isEmpty())return "正片";
+        int selectedSeason=season(label);
+        if(selectedSeason==EPISODE_UNKNOWN)selectedSeason=season(work.optString("sourceTitle",mediaTitle));
+        if(selectedSeason==EPISODE_UNKNOWN&&work.optInt("season",-1)>0)selectedSeason=work.optInt("season");
+        String reduced=label;
+        for(String title:new String[]{work.optString("title"),work.optString("sourceTitle"),mediaTitle})
+            if(title!=null&&title.length()>1)reduced=reduced.replaceAll("(?i)"+Pattern.quote(title)," ");
+        int number=parseEpisode(reduced);
+        if(number==EPISODE_UNKNOWN){
+            String target=episodeText(reduced);org.json.JSONArray episodes=work.optJSONArray("episodes");
+            int matched=EPISODE_UNKNOWN,matchedSeason=EPISODE_UNKNOWN;boolean ambiguous=false;
+            for(int i=0;episodes!=null&&i<episodes.length();i++){
+                org.json.JSONObject item=episodes.optJSONObject(i);if(item==null)continue;
+                int itemSeason=item.optInt("season",-1),itemNumber=item.optInt("number",-1);
+                if(itemNumber<=0||selectedSeason!=EPISODE_UNKNOWN&&itemSeason!=selectedSeason)continue;
+                String name=episodeText(item.optString("name"));if(target.isEmpty()||name.isEmpty()||!target.equals(name))continue;
+                if(matched!=EPISODE_UNKNOWN&&(matched!=itemNumber||matchedSeason!=itemSeason)){ambiguous=true;break;}
+                matched=itemNumber;matchedSeason=itemSeason;
+            }
+            if(!ambiguous){number=matched;if(selectedSeason==EPISODE_UNKNOWN&&matchedSeason>0)selectedSeason=matchedSeason;}
+        }
+        // Only explicit episode markers in a media title can supplement an empty native label.
+        if(number==EPISODE_UNKNOWN&&(EPISODE_SEASON.matcher(mediaTitle).find()||EPISODE_CN.matcher(mediaTitle).find()||EPISODE_EP.matcher(mediaTitle).find()))number=parseEpisode(mediaTitle);
+        if(number==EPISODE_UNKNOWN||!date(label).isEmpty())return label;
+        return (selectedSeason==EPISODE_UNKNOWN?"第"+number+"集":"S"+selectedSeason+"E"+number)+" "+label;
+    }
+    private static String episodeText(String value){return numberText(value).replaceAll("[\\[【(（][^\\]】)）]*[\\]】)）]"," ")
+            .replaceAll("[\\p{P}\\s]+","").toLowerCase(java.util.Locale.ROOT);}
+    private static String year(String value){Matcher m=Pattern.compile("(?<![0-9])((?:19|20)[0-9]{2})(?![0-9])").matcher(value==null?"":value);return m.find()?m.group(1):"";}
+    private static boolean editionMatches(DanmakuSource item,String title,String episode,String wantedYear){
+        int wantedSeason=season(episode);if(wantedSeason==EPISODE_UNKNOWN)wantedSeason=season(title);
+        int foundSeason=season(item.episodeTitle+" "+item.seriesTitle+" "+item.getName());
+        if(wantedSeason!=EPISODE_UNKNOWN&&foundSeason!=EPISODE_UNKNOWN&&wantedSeason!=foundSeason)return false;
+        String requested=year(wantedYear),found=year(item.seriesTitle.isEmpty()?item.getName():item.seriesTitle);
+        return requested.isEmpty()||found.isEmpty()||requested.equals(found);
     }
 
     /** 解析弹幕项的集数。 */
     public static int getEpisode(DanmakuSource item) {
+        if(item.episodeNumber>0&&item.episodeNumber!=EPISODE_UNKNOWN)return item.episodeNumber;
         int number=parseEpisode(item.episodeTitle);
         if(number!=EPISODE_UNKNOWN)return number;
-        number=parseEpisode(item.getName());
+        String label=item.getName();if(!item.seriesTitle.isEmpty())label=label.replace(item.seriesTitle," ");
+        number=parseEpisode(label);
         return number!=EPISODE_UNKNOWN?number:item.episodeNumber;
     }
     static boolean drama(DanmakuSource item){
@@ -79,6 +153,7 @@ public final class DanmakuTitle {
     static String seriesLabel(DanmakuSource item,String fallback){return !drama(item)&&!item.seriesTitle.isEmpty()?item.seriesTitle:fallback;}
     static boolean sameSeries(DanmakuSource item,DanmakuSource preferred){
         if(!item.getSourceName().equals(preferred.getSourceName()))return false;
+        if(!editionMatches(item,preferred.seriesTitle.isEmpty()?preferred.getName():preferred.seriesTitle,preferred.episodeTitle,year(preferred.seriesTitle)))return false;
         if(!preferred.seriesId.isEmpty()&&!item.seriesId.isEmpty())return preferred.seriesId.equals(item.seriesId);
         String left=titleKey(item),right=titleKey(preferred);
         return left!=null&&right!=null&&normalizeSearchText(left).equals(normalizeSearchText(right));
@@ -88,10 +163,10 @@ public final class DanmakuTitle {
         while(extra.find())result.append(extra.group()).append('|');
         Matcher part=PART.matcher(text==null?"":text);if(part.find())result.append(part.group(1));return result.toString();
     }
-    private static String date(String text){Matcher matcher=DATE.matcher(text==null?"":text);return matcher.find()?matcher.group(1)+matcher.group(2)+matcher.group(3):"";}
+    static String date(String text){Matcher matcher=DATE.matcher(text==null?"":text);return matcher.find()?matcher.group(1)+matcher.group(2)+matcher.group(3):"";}
     static DanmakuSource followMatch(List<DanmakuSource> values,DanmakuSource preferred,String episode){
         int number=parseEpisode(episode);String wantedDate=date(episode),wantedVariant=variant(episode);DanmakuSource match=null;
-        for(DanmakuSource item:values){if(item.isCatalog()||item.url.isEmpty()||!sameSeries(item,preferred))continue;
+        for(DanmakuSource item:values){if(item.isCatalog()||item.url.isEmpty()||!sameSeries(item,preferred)||!editionMatches(item,"",episode,""))continue;
             String label=item.episodeTitle.isEmpty()?item.getName():item.episodeTitle;
             boolean same=!wantedDate.isEmpty()?wantedDate.equals(date(label)):number!=EPISODE_UNKNOWN?getEpisode(item)==number:normalizeSearchText(label).equals(normalizeSearchText(episode));
             if(!same||!wantedVariant.equals(variant(label)))continue;
@@ -100,16 +175,47 @@ public final class DanmakuTitle {
         }
         return match;
     }
+    /** A flat/template API can return a new current-episode URL without a catalogue/name envelope. */
+    static DanmakuSource followFresh(List<DanmakuSource> values,DanmakuSource preferred,String episode){
+        DanmakuSource matched=followMatch(values,preferred,episode);if(matched!=null)return matched;
+        if(values.size()!=1||parseEpisode(episode)==EPISODE_UNKNOWN||!date(episode).isEmpty()||!variant(episode).isEmpty())return null;
+        DanmakuSource fresh=values.get(0);
+        if(fresh.isCatalog()||fresh.url.isEmpty()||fresh.url.equals(preferred.url)||getEpisode(fresh)!=EPISODE_UNKNOWN||!fresh.getSourceName().equals(preferred.getSourceName()))return null;
+        return titleKey(fresh)==null||sameSeries(fresh,preferred)?fresh:null;
+    }
     static DanmakuSource matchEpisode(List<DanmakuSource> values,String keyword,String episode){
-        int wanted=parseEpisode(episode);boolean known=false;DanmakuSource first=null,best=null;double score=-1;
+        return matchEpisode(values,keyword,episode,"");
+    }
+    static DanmakuSource matchEpisode(List<DanmakuSource> values,String keyword,String episode,String year){
+        int wanted=parseEpisode(episode),playable=0;boolean known=false;DanmakuSource first=null,best=null;double score=-1;
         String wantedDate=date(episode),wantedVariant=variant(episode);
         String query=normalizeSearchText(keyword);
-        for(DanmakuSource item:values){if(item.isCatalog()||item.url.isEmpty())continue;if(first==null)first=item;
+        for(DanmakuSource item:values){if(item.isCatalog()||item.url.isEmpty()||!editionMatches(item,keyword,episode,year))continue;
+            double titleScore=matchScore(titleKey(item),query);if(titleKey(item)!=null&&!query.isEmpty()&&titleScore<0.65)continue;
+            playable++;if(first==null)first=item;
             int actual=getEpisode(item);known|=actual!=EPISODE_UNKNOWN;
             String label=item.episodeTitle.isEmpty()?item.getName():item.episodeTitle;
             if((!wantedDate.isEmpty()?wantedDate.equals(date(label)):wanted!=EPISODE_UNKNOWN&&actual==wanted)&&wantedVariant.equals(variant(label))){double value=matchScore(titleKey(item),query);if(best==null||value>score){best=item;score=value;}}}
         if(best!=null)return best;
-        return known&&wanted!=EPISODE_UNKNOWN||!wantedDate.isEmpty()||!wantedVariant.isEmpty()?null:first;
+        if(!wantedDate.isEmpty()||!wantedVariant.isEmpty())return null;
+        if(wanted==EPISODE_UNKNOWN&&first!=null&&!drama(first)&&(first.mediaType.matches("(?i)movie|film|电影|電影")||first.getName().contains("【电影】")||episode!=null&&episode.trim().matches("(?i)正片|电影|電影|movie|全集|播放|HD|蓝光|藍光|超清")))return first;
+        if(known)return null;
+        // A fresh direct API reply may contain one URL without episode metadata, never pick an
+        // arbitrary first item from a numbered catalogue or an ambiguous multi-URL reply.
+        return playable==1?first:null;
+    }
+    static boolean rememberedEpisode(DanmakuSource source,String episode){
+        if(!editionMatches(source,"",episode,""))return false;
+        int expected=parseEpisode(episode),actual=getEpisode(source);
+        String label=source.episodeTitle.isEmpty()?source.getName():source.episodeTitle;
+        String expectedDate=date(episode);
+        if(!expectedDate.isEmpty())return expectedDate.equals(date(label))&&variant(episode).equals(variant(label));
+        return (actual==EPISODE_UNKNOWN||expected!=EPISODE_UNKNOWN&&actual==expected)&&variant(episode).equals(variant(label));
+    }
+    /** The standard Fongmi endpoint expects a numeric episode; dates/special editions stay intact. */
+    static String requestEpisode(String episode){
+        if(!date(episode).isEmpty()||!variant(episode).isEmpty())return episode;
+        int value=parseEpisode(episode);return value==EPISODE_UNKNOWN?episode:String.valueOf(value);
     }
     static void sortCandidates(List<DanmakuSource> values,String keyword){
         String query=normalizeSearchText(keyword);Collections.sort(values,(left,right)->Double.compare(matchScore(titleKey(right),query),matchScore(titleKey(left),query)));
@@ -154,7 +260,8 @@ public final class DanmakuTitle {
         Matcher episode=EPISODE_CN.matcher(value);
         if(episode.find())value=value.substring(0,episode.start());
         else{episode=EPISODE_SEASON.matcher(value);if(episode.find())value=value.substring(0,episode.start());
-            else{episode=EPISODE_EP.matcher(value);if(episode.find())value=value.substring(0,episode.start());}}
+            else{episode=EPISODE_EP.matcher(value);if(episode.find())value=value.substring(0,episode.start());
+                else{episode=EPISODE_SUFFIX.matcher(value);if(episode.find())value=value.substring(0,episode.start());}}}
         // 再清洗来源/类型/年份标记
         value = SOURCE_MARK.matcher(value).replaceAll(" ");
         value = YEAR.matcher(value).replaceAll(" ");
@@ -220,10 +327,11 @@ public final class DanmakuTitle {
     /** 归一化搜索文本：去 from/括号/年份/空白，小写。 */
     public static String normalizeSearchText(String text) {
         if (TextUtils.isEmpty(text)) return "";
+        text=SEASON.matcher(numberText(text)).replaceAll(" ");
         return text.replaceAll("(?i)\\s*from\\s*.*$", "")
                 .replaceAll("[【\\[][^】\\]]{0,24}[】\\]]", "")
                 .replaceAll("[(\\[（【]\\s*(?:19|20)\\d{2}\\s*[)\\]）】]", "")
-                .replaceAll("\\s+", "")
+                .replaceAll("[\\p{P}\\s]+", "")
                 .trim()
                 .toLowerCase();
     }
@@ -232,7 +340,7 @@ public final class DanmakuTitle {
         String normTitle = normalizeSearchText(title);
         if (TextUtils.isEmpty(normTitle) || TextUtils.isEmpty(normKeyword)) return 0.0;
         if (normTitle.equals(normKeyword)) return 3.0;
-        if (normTitle.contains(normKeyword)) return 2.0 + (double) normKeyword.length() / normTitle.length();
+        if (normTitle.contains(normKeyword)) return normTitle.startsWith(normKeyword)?2.0 + (double) normKeyword.length() / normTitle.length():0.0;
         if (normKeyword.contains(normTitle)) return 1.8 + (double) normTitle.length() / normKeyword.length();
         return similarity(normTitle, normKeyword);
     }

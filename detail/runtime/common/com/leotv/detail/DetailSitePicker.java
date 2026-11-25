@@ -169,7 +169,7 @@ final class DetailSitePicker {
         if (!(parent instanceof ScrollView)) return;
         ScrollView scroll = (ScrollView) parent; int position = scroll.getScrollY();
         content.removeAllViews(); sourceRows.clear();
-        List<DetailSiteSearch.Entry> entries = search.found();
+        List<DetailSiteSearch.Entry> entries = search.foundByCompletion();
         for (DetailSiteSearch.Entry entry : entries) {
             TextView row = item(entry.site.name, () -> {
                 if (entry.state != DetailSiteSearch.State.FOUND) return;

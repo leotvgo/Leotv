@@ -22,7 +22,6 @@ final class DetailSiteSearch {
         Future<?> task;
         Runnable timeout;
         long completedOrder;
-        boolean currentPlaceholder;
         Entry(SiteFeed.Site site) { this.site = site; }
     }
     interface Listener {
@@ -39,6 +38,7 @@ final class DetailSiteSearch {
     }
     private final Handler main = new Handler(Looper.getMainLooper());
     static final int MAX_CONCURRENT_SEARCHES = 16;
+    private static final long GLOBAL_SEARCH_TIMEOUT=30000;
     private final ThreadPoolExecutor searches = pool(MAX_CONCURRENT_SEARCHES);
     private final ThreadPoolExecutor resolver = pool(4);
     private final List<Future<?>> tasks = new ArrayList<>();
@@ -46,11 +46,12 @@ final class DetailSiteSearch {
     private final Backend backend;
     private final List<Entry> entries = new ArrayList<>();
     private BackdropIdentity target;
+    private String keyword="";
     private Integer configuration;
     private long generation;
     private long completionSequence;
     private boolean closed;
-    private boolean automatic, unavailableSent,includeCurrentSite;
+    private boolean automatic, unavailableSent;
     private long selectionGeneration;
     private final java.util.Set<String> attempted = new java.util.HashSet<>();
     private static final class Resolution {Entry entry;Future<?> task;Runnable timeout;boolean done;}
@@ -79,19 +80,8 @@ final class DetailSiteSearch {
     }
     DetailSiteSearch(Listener listener, Backend backend) { this.listener = listener; this.backend = backend; }
     boolean started() { return target != null; }
-    /** A playable source adopted for this same work must not cancel and restart every site. */
-    boolean reuse(BackdropIdentity work){
-        if(closed||target==null||work==null||!java.util.Objects.equals(configuration,SiteFeed.configId())
-                ||!target.normalized.equals(work.normalized)||!target.year.isEmpty()&&!work.year.isEmpty()&&!target.year.equals(work.year)
-                ||!target.type.isEmpty()&&!work.type.isEmpty()&&!target.type.equals(work.type)
-                ||!season(target.sourceTitle).equals(season(work.sourceTitle)))return false;
-        stopAutomatic();target=work;
-        for(Entry entry:entries)if(entry.currentPlaceholder){
-            if(entry.site.key.equals(work.site))try{entry.matches=Collections.singletonList(new JSONObject().put("vod_id",work.id).put("vod_name",work.sourceTitle));}catch(Exception ignored){}
-            else {entry.currentPlaceholder=false;entry.state=State.EMPTY;entry.matches=Collections.emptyList();}
-        }
-        listener.changed();return true;
-    }
+    /** Selecting playback ends automatic adoption while every site continues its original search. */
+    void adoptedSource(){stopAutomatic();}
     List<Entry> entries() { return new ArrayList<>(entries); }
     List<Entry> found() {
         List<Entry> result = new ArrayList<>();
@@ -114,22 +104,21 @@ final class DetailSiteSearch {
         if(closed||work==null||work.title.isEmpty())return;
         begin(work,automatically,SiteFeed.searchSites(),includeCurrent);
     }
+    void begin(BackdropIdentity work,boolean automatically,String keyword){
+        begin(work,automatically,SiteFeed.searchSites(),true,keyword);
+    }
     void begin(BackdropIdentity work, boolean automatically,List<SiteFeed.Site> sites) {
         begin(work,automatically,sites,false);
     }
     void begin(BackdropIdentity work, boolean automatically,List<SiteFeed.Site> sites,boolean includeCurrent) {
+        begin(work,automatically,sites,includeCurrent,work==null?"":work.sourceTitle);
+    }
+    private void begin(BackdropIdentity work,boolean automatically,List<SiteFeed.Site> sites,boolean includeCurrent,String keyword){
         if (closed || work == null || work.title.isEmpty()) return;
-        cancel(); target = work;configuration=SiteFeed.configId();completionSequence = 0; automatic = automatically;includeCurrentSite=includeCurrent;
+        cancel(); target = work;this.keyword=keyword==null||keyword.trim().isEmpty()?work.sourceTitle:keyword.trim();configuration=SiteFeed.configId();completionSequence = 0; automatic = automatically;
         final long token = generation;
+        final String query=this.keyword;
         for (SiteFeed.Site site : sites) {
-            if (!work.music && musicSite(site)) continue;
-            if (site.key.equals(work.site)&&!includeCurrentSite) {
-                Entry entry = new Entry(site); entry.state = State.FOUND;entry.currentPlaceholder=true;
-                entry.completedOrder = 0;
-                try { entry.matches = Collections.singletonList(new JSONObject().put("vod_id", work.id).put("vod_name", work.sourceTitle)); }
-                catch (Exception ignored) { }
-                entries.add(entry); continue;
-            }
             if (!SiteFeed.searchable(site)) continue;
             Entry entry = new Entry(site); entries.add(entry);
             entry.timeout = () -> {
@@ -141,10 +130,10 @@ final class DetailSiteSearch {
             try {
                 final Future<?> task = searches.submit(() -> {
                     main.post(() -> {
-                        if (!closed && token == generation && entry.state == State.SEARCHING) main.postDelayed(entry.timeout, SiteFeed.searchTimeout(site));
+                        if (!closed && token == generation && entry.state == State.SEARCHING) main.postDelayed(entry.timeout, GLOBAL_SEARCH_TIMEOUT);
                     });
                     List<JSONObject> matches = Collections.emptyList(); boolean failed = false;
-                    try { matches = matches(backend.search(site, work.title), work, site); }
+                    try { matches = matches(backend.search(site, query), work, site); }
                     catch (Exception error) { failed = true; }
                     final List<JSONObject> result = matches; final boolean failure = failed;
                     main.post(() -> {
@@ -172,11 +161,11 @@ final class DetailSiteSearch {
             listener.resolved(site, found); return;
         }
         for (Entry entry : foundByCompletion()) {
-            if (entry.site.key.equals(target.site)&&!includeCurrentSite) continue;
             boolean busy=false;for(Resolution resolution:resolutions)if(resolution.entry==entry){busy=true;break;}
             if(busy)continue;
             for (JSONObject candidate : entry.matches) {
                 if (candidate == null || folder(candidate) || candidate.optString("vod_id").isEmpty()) continue;
+                if(!automaticCandidate(target,entry.site,candidate))continue;
                 String key = entry.site.key + "@@@" + candidate.optString("vod_id");
                 if(resolutions.size()>=4)return;
                 if (!attempted.add(key)) continue;
@@ -245,8 +234,7 @@ final class DetailSiteSearch {
     }
     void selectFromDirectory(Entry entry, JSONObject candidate) {
         if (closed || target == null || entry == null || candidate == null || !entries.contains(entry)
-                || candidate.optString("vod_id").isEmpty() || folder(candidate)
-                || !compatible(target, entry.site, candidate)) return;
+                || candidate.optString("vod_id").isEmpty() || folder(candidate)) return;
         stopAutomatic();
         listener.loading(entry.site);
         listener.ready(entry.site, candidate);
@@ -272,29 +260,25 @@ final class DetailSiteSearch {
         return new BackdropIdentity(site.key + " " + site.name + " " + site.api, "", "", "", "").music;
     }
 
+    private static boolean automaticCandidate(BackdropIdentity work,SiteFeed.Site site,JSONObject vod){
+        if(!compatible(work,site,vod))return false;
+        BackdropIdentity candidate=new BackdropIdentity(work.site,vod.optString("vod_id"),vod.optString("vod_name"),vod.optString("vod_year",HomeFeed.year(vod.optString("vod_remarks"))),vod.optString("type_name"));
+        if(candidate.normalized.isEmpty()||!candidate.normalized.equals(work.normalized))return false;
+        if(!work.year.isEmpty()&&!candidate.year.isEmpty()&&!work.year.equals(candidate.year))return false;
+        if(!work.type.isEmpty()&&!candidate.type.isEmpty()&&!work.type.equals(candidate.type))return false;
+        String requested=season(work.sourceTitle),found=season(candidate.sourceTitle);
+        return requested.isEmpty()||found.isEmpty()||requested.equals(found);
+    }
+    /** Keep the original global-search result order and titles; matching only governs auto adoption. */
     private static List<JSONObject> matches(String body, BackdropIdentity work, SiteFeed.Site site) throws Exception {
         JSONArray list = new JSONObject(body).optJSONArray("list");
         List<JSONObject> result = new ArrayList<>();
-        java.util.Set<String> seen = new java.util.HashSet<>();
-        for (int index = 0; list != null && index < Math.min(200, list.length()); index++) {
+        for (int index = 0; list != null && index < list.length(); index++) {
             JSONObject vod = list.optJSONObject(index);
             if (vod == null || vod.optString("vod_id").isEmpty()) continue;
-            if (!compatible(work, site, vod)) continue;
-            if (folder(vod)) {
-                if (seen.add(vod.optString("vod_id"))) result.add(vod);
-                continue;
-            }
-            BackdropIdentity candidate = new BackdropIdentity(work.site, vod.optString("vod_id"), vod.optString("vod_name"),
-                    vod.optString("vod_year", HomeFeed.year(vod.optString("vod_remarks"))), vod.optString("type_name"));
-            if (!candidate.normalized.equals(work.normalized) || candidate.normalized.isEmpty()) continue;
-            if (!work.year.isEmpty() && !candidate.year.isEmpty() && !work.year.equals(candidate.year)) continue;
-            if (!work.type.isEmpty() && !candidate.type.isEmpty() && !work.type.equals(candidate.type)) continue;
-            String requestedSeason = season(work.sourceTitle), foundSeason = season(candidate.sourceTitle);
-            if (!requestedSeason.isEmpty() && !foundSeason.isEmpty() && !requestedSeason.equals(foundSeason)) continue;
-            if (!seen.add(vod.optString("vod_id"))) continue;
             result.add(vod);
         }
-        return result;
+        return Collections.unmodifiableList(result);
     }
     private static String season(String title) {
         java.util.regex.Matcher match = java.util.regex.Pattern.compile("(?i)(?:第([一二三四五六七八九十0-9]+)季|\\bS([0-9]{1,2})\\b|season\\s*([0-9]+))").matcher(title);
@@ -308,14 +292,14 @@ final class DetailSiteSearch {
     }
     private static ThreadPoolExecutor pool(int threads) {
         ThreadPoolExecutor pool = new ThreadPoolExecutor(threads, threads, 10, TimeUnit.SECONDS,
-                new LinkedBlockingQueue<Runnable>(128), task -> { Thread thread = new Thread(task, "leo-detail-sites"); thread.setDaemon(true); return thread; });
+                new LinkedBlockingQueue<Runnable>(), task -> { Thread thread = new Thread(task, "leo-detail-sites"); thread.setDaemon(true); return thread; });
         pool.allowCoreThreadTimeOut(true); return pool;
     }
     void cancel() {
         stopAutomatic(); attempted.clear(); unavailableSent = false;
         generation++;
         for (Future<?> task : tasks) task.cancel(true);
-        tasks.clear(); searches.getQueue().clear(); entries.clear(); target = null;
+        tasks.clear(); searches.getQueue().clear(); entries.clear(); target = null;keyword="";
         main.removeCallbacksAndMessages(null);
     }
     void close() { closed = true; cancel(); searches.shutdownNow(); resolver.shutdownNow(); }

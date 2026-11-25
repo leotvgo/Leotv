@@ -127,11 +127,16 @@ final class DetailReviews {
      * doing nothing at all.
      */
     boolean canMoveVertically(boolean down) {
-        if (cards.isEmpty()) return false;
+        return neighbour(down)!=null;
+    }
+    /** The page owns vertical scrolling, so reviews must explicitly focus the next offscreen card. */
+    View neighbour(boolean down){
+        if (cards.isEmpty()) return null;
         View focused = activity.getCurrentFocus();
-        int index = cards.indexOf(focused);
-        if (index < 0) return false;
-        return down ? index < cards.size() - 1 : index > 0;
+        int index=-1;for(int i=0;i<cards.size();i++)if(TvDetailNavigation.descendant(focused,cards.get(i))){index=i;break;}
+        if(index<0)return null;
+        int next=index+(down?1:-1);
+        return next>=0&&next<cards.size()?cards.get(next):null;
     }
 
     /** Whether this section is drawing anything at all. */

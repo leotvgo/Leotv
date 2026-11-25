@@ -53,8 +53,7 @@ final class SiteFeed {
         }
     }
     static List<Site> searchSites() {
-        List<Site> result=collect(invoke(store(),"r"));
-        return result.isEmpty()?sites():result;
+        return sites();
     }
     private static List<Site> collect(Object value) {
         List<Site> result=new ArrayList<>();

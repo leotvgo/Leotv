@@ -1,0 +1,473 @@
+{
+  "version_name": "5.3.3",
+  "version_code": 644,
+  "base_commit": "37c946f20563d945c5acb803f4e733773e2fda40",
+  "allowed_changes": [
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DanmakuApi.java",
+      "sha256": "1909113f88d171f83cd0d5a6b206e5e4d47c138249cdb4acad2ab5dbe3eca71f",
+      "previous_sha256": "c24d35fe7b68c1471a64109663ebba7a4da3337b154122ea24806db720f33353"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DanmakuPlayback.java",
+      "sha256": "710e99febab21fed6de4493f6fca43515c4f95c0d4f2640986b880227692493f",
+      "previous_sha256": "702cac8488e94bafde4fa0c86ad3bca89cd0bf6a4939ef13de6c3a4cf02c0e46"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DanmakuSource.java",
+      "sha256": "6c8a3dab4a4b39c976aa3842ef796ec203a390abdad4c79da7985df439e3b91b",
+      "previous_sha256": "7e5d9208be5fffdab78b4e61eb9129098728eef42220e903731562d522658591"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DanmakuTitle.java",
+      "sha256": "e329e631649e320d7cbd4ee0e5bec8770734e3bb48d7a77a413e5bb2147864c0",
+      "previous_sha256": "db292de542f915d877450682aa83c004d6f998a18d3486910587fbd0519a4f35"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DanmakuUi.java",
+      "sha256": "eec6f011c2e9cd84ab949cdc7d37af8ce9e10d7a3d1b3d5c94bc501529082945",
+      "previous_sha256": "a21c4db55257a12fcd79ca8fa4b26b6f9589b5ae49d1d1820737d56698292758"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailActivity.java",
+      "sha256": "531633b6ce3a4a8f120dbaa2386ae57e1cce0a14698e6c52430087696bd9a144",
+      "previous_sha256": "9b08b7006bc5740a49291a3850fdeb3f6f8f0a0329436b5723cc65817b8a8336"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailReviews.java",
+      "sha256": "6ab3dc11f12708f1d138008f50d6c3489d318c2a1cd0b4f81c2fdba40f7235fe",
+      "previous_sha256": "1d64d46a27fce3cf4faa393be7ffe024c7ecb2ffab3d42483112902686098320"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailSitePicker.java",
+      "sha256": "adf2633399be893f8c2fe739eb3ec2abe018cc0985aca54edc5d908fcd74ca0b",
+      "previous_sha256": "87f9c97196ddd43bdc8ff344347cd2bb503e4bbe8eef8ee34c510c50f07fd380"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailSiteSearch.java",
+      "sha256": "6f4f512efe3f120b49ba59d04d83ec664c1b10f40400bc19448882ed7538b970",
+      "previous_sha256": "6658607a7042f2f314b61fa53b59b9943c1fe1620c33b74176fc1111f695189d"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/MobileDetailMetadata.java",
+      "sha256": "df690994a21ea1ca4959606bfd5910a788db3b4902ca02293c2e9845b3aaa713",
+      "previous_sha256": "4907fa328665e22d59f1520d4e1a507043405199ddf8fe3db55726e5b68c9f02"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/NativeRouting.java",
+      "sha256": "224bd3502ed36949845af7f2a6b2e7d1df2165848fb9e62e07f9a4e670aa24b8",
+      "previous_sha256": "19c9ab3c801cd6e237726ae3bb01fa902299764c320b3d2948e5a822a7a9355c"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/SiteFeed.java",
+      "sha256": "e1d2eb7fb7ee469516ce0f18d96d450b10d002bfeb8721f8ff7d2473d76a9759",
+      "previous_sha256": "86ec7096647a61c2b6ea6663a3cb3af858123addf58282d6bc3d45f5272c5a60"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/TvDetailPage.java",
+      "sha256": "5666b591d166ea0892a408293664b345cfb63d252df6ce76f45470e1f36ede56",
+      "previous_sha256": "51d043cb62d0d1ca1551d5892f0bf0d005c4e9db30395dc46bc051f140201716"
+    }
+  ],
+  "unchanged_sources": [
+    {
+      "path": "detail/runtime/common/com/leotv/detail/BackdropHttp.java",
+      "sha256": "b65a640c1a37885f5c1ce6a74a9ef3e083b0593b6d589cce4691221cf35f080b"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/BackdropIdentity.java",
+      "sha256": "f425628ed2fa984047c4f03fe703f160abfd2ca98d1591dabac0e11cb2894c26"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/BackdropImages.java",
+      "sha256": "aca2b4c9196134a5e649e8528f09547fd9948ff466c4a4bb4dbf20d99d510657"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/BackdropResolver.java",
+      "sha256": "ea93a5c8a67b03cc3fde10a721d37e7b98dd23e845504f56c364bb58f7bdc05b"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/BackdropSettings.java",
+      "sha256": "7f16b153488487f04ef0376a847640a9fadeae2abf84428f92ced520bfeca67a"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/BackdropTls.java",
+      "sha256": "4af4d62204483184c479c3db9f2a2dd194fec1f029709a1e10f35c8bfd593392"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/CacheMaintenance.java",
+      "sha256": "256cb01f99904edd42a49c609174825e451d2978d3c3496980ae5850ec15c84a"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/CalendarBackdrop.java",
+      "sha256": "16e87fb59d05265a9590da2443cee0a71aa6568a7b223d660f504902fd377c1e"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/CspCategoryActivity.java",
+      "sha256": "9348e321fb6483de453b1b32d89319ad59fb7d5e3dea03755ccada677d552756"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/CspHeroMetadata.java",
+      "sha256": "a5361174cf4c844810c3f3232f45202b6083b78fe029fcc94a8602442f959f00"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/CspHomeData.java",
+      "sha256": "cc656b1d5061496c71e025f09e5a2df4963a6848806afab52a093fb0b5d490f9"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+      "sha256": "4bdcb26f09b17ac4fec6995107531d6c0642910cc1c4e4e28a66d9bab545db61"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/CspRecommendation.java",
+      "sha256": "d1eec92b844270903da1cf100963dfac9198a3e964388520fcf80457570c75c3"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DanmakuControls.java",
+      "sha256": "7e5003241a9a2542c37b657ddc3a0e2a5e3f068dd2e2b777c7ad8c9d81c18622"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DanmakuFile.java",
+      "sha256": "70788f4c0a8828b48dfd5b82414f94761f4d20119a5a8b04726eeec088a170b2"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DanmakuLive.java",
+      "sha256": "0b6ef92a60873b9431e47fcd3030cda750e4c501d3ead2ec24981c5f358cc4d1"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DanmakuMatches.java",
+      "sha256": "a7acaa2866641503945f323f1d0582e0076104c2fd4bb99c806178ec14c997f6"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DanmakuSearchDialog.java",
+      "sha256": "2493ad4d9f2c7e735e7cd643d44c3c99ecb79ed14ebf8194a5f5feed86807b2c"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DanmakuSearchIcon.java",
+      "sha256": "0d6de998b88d89b137ba0db23c2613cd4a5a3dd606e13fc6af4e38d66c6f05a3"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DanmakuSettings.java",
+      "sha256": "a52ce7a42bf3ed240fa296b96ee1560395bbcfe8b9ba7887941feb25f61b7788"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailActionButton.java",
+      "sha256": "b61b368a74096f83bdc4147d40189979e5f9dd27162c59528f54ed2760c78974"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailBadges.java",
+      "sha256": "694e5f96422cc6d5cdfb7f76be41e826f2b043490ad551aef45c2b10073fd938"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailEpisodeCards.java",
+      "sha256": "f9fc6b3353b6105403b6348269442691905e918b92fe0d403a51aa67f830d9ad"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailHero.java",
+      "sha256": "846033baa7168a5ea8e15f7b00823591d9e23fdb9d80c1ca8c89cbec2c99cfcd"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailImageView.java",
+      "sha256": "8d3f6bc5c5e7874b571df6a0b7d26705abf60db61f9367a2ce2d184c7d6e56c6"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailMatchPopup.java",
+      "sha256": "6ac1b444c4b50db00cd1216470d6f04ab1ce7d3f8f6c8a8294e2d847f78f6f55"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailPage.java",
+      "sha256": "b9408045416931ea93829d43d9b10cf492b43fb0cb534889a8783c6f1cbc007f"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailPersonPopup.java",
+      "sha256": "662f855ecd6406d434a4a2a897634b0811a340b8926dad60fb6c51735d399472"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailPlayButton.java",
+      "sha256": "3a63cddc8cc5be5ff8837c363f965a302d31873322569460ff28e114ceb896e5"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailRecommendations.java",
+      "sha256": "40fffff09972c7b296f6619e5ed35029a7d5284d866d41d54d4f0d07352255df"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailSessionCache.java",
+      "sha256": "2d0653255aba507dad787f55fb5967e1c0f82e10f66ec3d64948d3c60ae8142d"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailSiteDirectory.java",
+      "sha256": "e665d841d1fc78c5e6c5650a66c7ba61a664f5fbba3cf2e6bc20d73a7b1f6b3c"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailSourcePopup.java",
+      "sha256": "1107f7e0a321f047446ad5d61cf270ace5331a5833d880e3024824ad00823f9b"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailStills.java",
+      "sha256": "b550e5d5521e9f214519714a3b7c9861ca2f4d53b7f4a38e3948ca460735b31d"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailSurface.java",
+      "sha256": "db63c89ea2e2d8d460fd79ab5759e28440ff83fa4102d4b6cbf9d89cdf09350e"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailTheme.java",
+      "sha256": "f5f93ade04663afdb1e9ef0ca315f454d51c5375aeec6ba57f760ff8b8b8a777"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailThumbnails.java",
+      "sha256": "977e8f4edda23ef96d36cd0cfd6b57a12e8530c9bf990dc8bc9a3a06857342fb"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DetailTitleArt.java",
+      "sha256": "6000abb12e89aefd12ddd40102c4c6c66eea961666c93c8e66eb1bc508003214"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DoubanDetailMetadata.java",
+      "sha256": "8388411e0faef4563f0de3f54bb4d473f09ed4700a698202eeb998867272de56"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/DoubanReviewMetadata.java",
+      "sha256": "6c2fe42965d4a1e39a2ddbab4dcac36f5ad5412a81e551cf2fca48816d5b56d2"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/FollowCalendarPage.java",
+      "sha256": "89b1797958464df9f36f153aaf60575c1606212450cf5284bcb1dc88245724b0"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/FollowDateStrip.java",
+      "sha256": "79cefe94dfa23ffd9dfb374122e351ba144114ac9d80d0c8012261a4a97b2396"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/FollowFeed.java",
+      "sha256": "def20638b53765cc57ab5e73485c28ba151fc5d5710c1f5591cd91cefd3ca67d"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/FollowMonthPicker.java",
+      "sha256": "7ede9bcd1841eb0e08b285fd825a854deee17b1806096c3b60fe5091e0bd3577"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/FollowStore.java",
+      "sha256": "57640fe9deceeb6ae517e4e5fc6e1bb05a901400cea0505bc6676ece51d5c1af"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/FollowingActivity.java",
+      "sha256": "1d0a32420013f622b4ef4fbe833b835a989eba3f5034bf25b437171382776145"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/Guard.java",
+      "sha256": "ab8f7414fa3b18a892799fa8c3ddca1e4b4eda395eb85c8ecb2e87559af5535d"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/HomeFeed.java",
+      "sha256": "fc65441cc07fcb405d042aa8164a5148fdbe3b227b9664b3afc6027b54a091df"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/JarIntegration.java",
+      "sha256": "96db064ac22518ecb0b7f4c3bc6cf74e2f79f5774ca75eab979d02b0fa5746f1"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/LibraryDetailLayout.java",
+      "sha256": "049f9286ce35eee2e3e3ef5c6494e5e8391258352a2172b45fd8384147fab9a2"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/LibraryStyle.java",
+      "sha256": "eef7da6e113ce93bb434bf7a84a39e97d3d9fbc7c3346bd42a356de5faa73681"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/MetadataCache.java",
+      "sha256": "d747b5e65bf2dbb42194a68bc51773f0577f6ce3c7d2271f1a9453d678186def"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/MetadataMatchStore.java",
+      "sha256": "140bd2572978e348930f1446568375f87a35cd039b6a5859975314551393c4a8"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/MetadataPrefetch.java",
+      "sha256": "a71edce49384a6c225e21f1adc93265315eac0ffa2f789a6cad16a6c066076b5"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/MetadataSettings.java",
+      "sha256": "39428ab84d50e00d2bc8e47248cf2f0fae299abb7dab6fc6257bdc9875c58dc2"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/MobileEpisodeKey.java",
+      "sha256": "c9e3bf72cb8a890bd7b68d79fabefce6a4ba0728026e9dc95f1f1ed3ee7a1e83"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/MobileSourceBar.java",
+      "sha256": "de5dfcdf45952e9e20cce473eb7ae49a0e4b9e36970a2cb9fc69dd7cc4cd177a"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/MusicText.java",
+      "sha256": "93c76c71c360a160a8fd58c8b5723e6dcbcd4a11b7fd5eee5a02d139a1dc7128"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/NativeCategoryPaging.java",
+      "sha256": "4093fa5b9618d7a348e5a7c1d18cc54b4e84c5a79f13334e2a1c021f62227e9c"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/NativeCspUi.java",
+      "sha256": "c6c177cd1fbdff422ee14a0df4b4ccac2046709cf094755cd060aaf18096bb8e"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/NativeDialogs.java",
+      "sha256": "ee02e7f06f1db27a0afe2bd05aa49f2f572221a499a9b3fbd9a3da1e088a4157"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/NativeDownload.java",
+      "sha256": "574a9ef6c0accb966cf6296c69c5de03b4dc1e60eb40154d625cfc7702a54d47"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/NativeEpisodeGroups.java",
+      "sha256": "4cf2c1a49c260d69bd699436b52de74a9e05a50a07dff128dd28d9f479630ec7"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/NativeEpisodeUi.java",
+      "sha256": "087725ff6fe5de46cfd8bf5e7d0c2ae04660665589b544a5b3c333856d32914e"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/NativeLibrary.java",
+      "sha256": "b95c3f756cd64b47a1aa0accdcd657cc444c93b699a8764a285aba91f265dd32"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/NativeQrInput.java",
+      "sha256": "4f30ebbc7841bf3f6ecfa8c970eeed341f83733b2ccdfe4c38260453adb77e5f"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/NativeViews.java",
+      "sha256": "aed442d9c127bde2af1cd6937798b5bf5cd1dd8ab02332d693f973184fae1007"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/NewHome.java",
+      "sha256": "64c7225ef0c23fd229b58f7d17297016e1168383b17ccc75df8d4e9c6f8689c8"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/Personalization.java",
+      "sha256": "4aac4236f9208687a1c724045cd2e4796d641ac7dbfaab8da586b33356d4f93b"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/Playback.java",
+      "sha256": "925903c08a44f4f7cab219c858baab7026fb128a7daf7347c041780cd35dba5f"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/PlayerOverlayAnchor.java",
+      "sha256": "932014719f8ee65c053809e72ce03e785c4b5677a8a4b6c07f588326d55a5078"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/PlayerOverlayPosition.java",
+      "sha256": "7e8cc250c57e35ed987f38a9859e3e8f1b50f6d1d638716ed34804ad4bced907"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/PlayerTitleArt.java",
+      "sha256": "f1c9cf5b2f5215a3e5f5f743be0849e2acb7f3d9180fc82619ef8521d0bcc32c"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/RelatedDetail.java",
+      "sha256": "52d6816486be4daf28cc46a5fd3ce2e969386f7f0f28bf599327ebe646eb08cc"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/SourceArtwork.java",
+      "sha256": "40ca505b79bafd2f030606d1dc51bbadf08bb1bc75a0214dbd91393b1836b151"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/SourceGateway.java",
+      "sha256": "59e3ad9cc673c614a6201d3f35924cb9264e41c62c9c277257b7adc364280b4b"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/TmdbArtwork.java",
+      "sha256": "0b86de79bf42fa69b7ba330e6f2ec6cf43b67832ff8553d93ce84b4b838a0413"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/TmdbDefaults.java",
+      "sha256": "a08a4c37422bfce2bf890189ee855a84606862bc8a9772d696cc54b52d64053b"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/TmdbNetwork.java",
+      "sha256": "035498d321f7d341ddccb27fb75a65624233d285e965209d75a2062606c751aa"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/TmdbRoutes.java",
+      "sha256": "80fe9f7fdadbed78d3d71e7d3df8531156b414202c38f0420944d6a1414e27f7"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/TvDetailNavigation.java",
+      "sha256": "53468232ea23e3da55fb5b6814f02f04f96488ac7ed1e689f771c94960b51580"
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/TvDetailScroll.java",
+      "sha256": "c3cb826c5332a8cdc01d8022442d17e1e95e8451ffc64d13044b1b3df6f5b76e"
+    },
+    {
+      "path": "detail/runtime/mobile/com/leotv/detail/Device.java",
+      "sha256": "28d584db7384224a450029f2ff2cd2231ea9f6a36505fa0856af3f1792411804"
+    },
+    {
+      "path": "detail/runtime/mobile/com/leotv/detail/NativeCspCategory.java",
+      "sha256": "05b21369c1daffc2429fb21bb81915bc623e52e6aaedbc22182444d4673c27f2"
+    },
+    {
+      "path": "detail/runtime/mobile/com/leotv/detail/NativeRecentHistory.java",
+      "sha256": "a835712341c312c5b5aac5916f7cb7e3a4408aec7b343a88568feddfd57499af"
+    },
+    {
+      "path": "detail/runtime/mobile/com/leotv/detail/ThemeLayout.java",
+      "sha256": "e7cb703864f65de7c9ba2738fc24766917e882d9b5c42216112e2ad055815b17"
+    },
+    {
+      "path": "detail/runtime/tv/com/leotv/detail/Device.java",
+      "sha256": "5b6ba52fe8ec85a3a4885c8bcfd0c684d010221bee634cfd5adc9713ed34801c"
+    },
+    {
+      "path": "detail/runtime/tv/com/leotv/detail/NativeCspCategory.java",
+      "sha256": "da0f1a9b9dcd44dd746ddbd72dff1b8502321cf923a9dbe07bfa9f09dcb96bf3"
+    },
+    {
+      "path": "detail/runtime/tv/com/leotv/detail/NativeRecentHistory.java",
+      "sha256": "b9bda816bce35f69cec1ca2252b0c87184812d34d0ba7eb4819b09f818bd2cfd"
+    },
+    {
+      "path": "detail/runtime/tv/com/leotv/detail/ThemeLayout.java",
+      "sha256": "f0363b00d5ec992a7523c53e6052daa499eb1d7a5c7066cfc4d8e48f977b0086"
+    },
+    {
+      "path": "ui/java/com/leotv/ui/GlobalChrome.java",
+      "sha256": "00690830cecbcd925ab771b13e8954c911b940314c0a2a392fb53869895dee82"
+    },
+    {
+      "path": "ui/java/com/leotv/ui/NativePhoneInsets.java",
+      "sha256": "a6dc830a7cc63200799139602db531234caaf9a209dfbdcd1e63e71eadb4e555"
+    },
+    {
+      "path": "ui/java/com/leotv/ui/NativeViewport.java",
+      "sha256": "256fe13c131deecf981fb06488edbad4296a93f746c53723ad817628d435eb88"
+    },
+    {
+      "path": "ui/java/com/leotv/ui/ProgressiveBlur.java",
+      "sha256": "863b6900c55961562fffcea64edcf20f8475324e8656d0d9e35a21f54ec9b251"
+    },
+    {
+      "path": "ui/java/com/leotv/ui/TvCategoryChrome.java",
+      "sha256": "5dfc0e828751b7dfb208078ad794706160a0b038b156b4a16eea21575707a8d1"
+    }
+  ],
+  "jar_reference": [
+    {
+      "path": "../coos/coos-master/app/src/main/java/com/github/catvod/spider/TitleNormalizer.java",
+      "sha256": "372f36b709e741af879feef124dfb3e05e4d59203869522ae1e8ad045dff4cdb"
+    },
+    {
+      "path": "../coos/coos-master/app/src/main/java/com/github/catvod/spider/DanmakuScanner.java",
+      "sha256": "8d15f9ff06ab64af9b68ec70ab56f92f18652193b7c1f55c07978b0c006d733d"
+    },
+    {
+      "path": "../coos/coos-master/app/src/main/java/com/github/catvod/spider/LeoDanmakuService.java",
+      "sha256": "4940922dcec33d597d8981a6cf19b880292560ae9ce5697becfb1d66aa996d60"
+    }
+  ],
+  "scope": "TV review focus/reveal; page-owned native global search and stable keyword/results; immediate API setting summary; current native episode identity, matched page metadata and returned catalogue matching; no inferred comment IDs.",
+  "local_packaging": false,
+  "local_regression_tests": false,
+  "required_source_guards": true,
+  "device_validation": false
+}

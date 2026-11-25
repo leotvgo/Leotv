@@ -55,14 +55,14 @@ public final class DanmakuPlayback {
     }
     /** The original first-ready callback selects site[0]/empty; it is not a user selection. */
     public static void bootstrapBegin(Activity activity){Session session=ensure(activity);if(session!=null)session.applying=true;}
-    public static boolean bootstrapAllowed(Activity activity){Session session=ensure(activity);return session==null||!session.manualOwned()&&session.selected==null;}
-    public static void bootstrapEnd(Activity activity){Session session=ensure(activity);if(session!=null){session.applying=false;session.ready=true;if(session.manualOwned()){if(session.selected==null)session.choose(session.manualSource,session.keyword,false);}else session.startAutomatic();}}
+    public static boolean bootstrapAllowed(Activity activity){Session session=ensure(activity);return session==null||!session.manualOwned()&&!session.manualSeriesOwned()&&session.selected==null;}
+    public static void bootstrapEnd(Activity activity){Session session=ensure(activity);if(session!=null){session.applying=false;session.ready=true;session.startAutomatic();}}
     public static void release(Activity activity){Session session=sessions.remove(activity);if(session!=null)session.close();}
     public static void pause(Activity activity){Session session=sessions.get(activity);if(session!=null){session.paused=true;session.needResume=!session.waiting&&(session.live!=null||session.selected!=null&&session.comments==null||session.selected==null&&session.task!=null);session.cancel();}}
     public static void resume(Activity activity){Session session=sessions.get(activity);if(session!=null){session.paused=false;if(session.needResume&&!session.waiting){session.needResume=false;if(session.selected!=null)session.choose(session.selected,session.keyword,false);else session.policyChanged();}}}
     public static void nativeSelection(Object player){
         if(Looper.myLooper()!=Looper.getMainLooper()){main.post(()->nativeSelection(player));return;}
-        for(Session session:new ArrayList<>(sessions.values()))if(!session.waiting&&!session.applying&&session.player()==player){session.cancel();session.automaticStarted=true;session.manualSource=null;session.manualKey="";session.selected=null;session.comments=null;session.status="使用原播放器弹幕";}
+        for(Session session:new ArrayList<>(sessions.values()))if(!session.waiting&&!session.applying&&session.player()==player){session.cancel();session.automaticStarted=true;session.manualSource=null;session.manualKey=session.manualWork="";session.selected=null;session.comments=null;session.status="使用原播放器弹幕";}
     }
     public static boolean fileResult(Activity activity,int request,int result,Intent data){
         if(request!=0x4c64)return false;Session session=sessions.get(activity);
@@ -75,15 +75,23 @@ public final class DanmakuPlayback {
         return(SharedPreferences)Class.forName(Device.MOBILE?"R6.g":"r7.g",true,activity.getClassLoader()).getMethod(Device.MOBILE?"x":"r").invoke(null);
     }
     static final class Identity {
-        final String config,site,vod,title,episode,url;
+        final String config,site,vod,title,episode,url,year,rawEpisode;
         Identity(Activity activity){
             config=DanmakuSettings.configKey(activity);site=value(activity.getIntent().getStringExtra("key"));vod=value(activity.getIntent().getStringExtra("id"));
             Object history=field(activity,Device.MOBILE?"b0":"g0");
-            title=string(history,"getVodName",value(activity.getIntent().getStringExtra("name")));
-            episode=string(history,"getVodRemarks",value(activity.getIntent().getStringExtra("mark")));
-            url=string(history,"getEpisodeUrl",value(activity.getIntent().getStringExtra(NativeRouting.EPISODE)));
+            Object current=currentEpisode(activity);
+            String mediaTitle=string(history,"getVodName",value(activity.getIntent().getStringExtra("name")));
+            rawEpisode=string(current,"getName",string(history,"getVodRemarks",value(activity.getIntent().getStringExtra("mark"))));
+            url=string(current,"getUrl",string(history,"getEpisodeUrl",value(activity.getIntent().getStringExtra(NativeRouting.EPISODE))));
+            org.json.JSONObject work=new org.json.JSONObject();
+            try{org.json.JSONObject supplied=new org.json.JSONObject(value(activity.getIntent().getStringExtra(NativeRouting.DANMAKU_WORK)));
+                if(site.equals(supplied.optString("site"))&&vod.equals(supplied.optString("id")))work=supplied;
+            }catch(org.json.JSONException absent){}
+            title=work.optString("title",mediaTitle);year=work.optString("year");
+            episode=DanmakuTitle.resolveEpisode(rawEpisode,mediaTitle,work);
         }
-        String key(){return config+"@@@"+site+"@@@"+vod+"@@@"+episode+"@@@"+url;}
+        String workKey(){return config+"@@@"+site+"@@@"+vod;}
+        String key(){return config+"@@@"+site+"@@@"+vod+"@@@"+rawEpisode+"@@@"+url;}
     }
     static final class Session {
         final WeakReference<Activity> activity;
@@ -95,7 +103,7 @@ public final class DanmakuPlayback {
         DanmakuSource selected;
         DanmakuSource manualSource;
         boolean manualRemember;
-        String manualKey="",manualApi="",preferredWork="";
+        String manualKey="",manualWork="",manualApi="",preferredWork="";
         final List<DanmakuSource> preferredEpisodes=new ArrayList<>();
         List<DanmakuFile.Comment> comments;
         DanmakuApi.Owner owner=new DanmakuApi.Owner();
@@ -109,32 +117,58 @@ public final class DanmakuPlayback {
         Activity activity(){Activity a=activity.get();return a==null||a.isFinishing()||a.isDestroyed()?null:a;}
         void begin(){cancel();waiting=true;ready=resultReceived=automaticStarted=false;selected=null;comments=null;apiSources.clear();siteSources.clear();dismissDialogs();}
         void cancel(){generation++;owner.cancel();owner=new DanmakuApi.Owner();if(task!=null)task.cancel(true);task=null;if(live!=null){live.close();live=null;}}
-        void close(){closed=true;cancel();dismissDialogs();if(controls!=null){controls.close();controls=null;}comments=null;apiSources.clear();siteSources.clear();}
+        void close(){closed=true;cancel();dismissDialogs();if(controls!=null){controls.close();controls=null;}comments=null;manualSource=null;manualKey=manualWork="";preferredEpisodes.clear();apiSources.clear();siteSources.clear();}
         void dismissDialogs(){for(android.app.Dialog dialog:new ArrayList<>(dialogs))dialog.dismiss();dialogs.clear();}
         void result(Object result){
             Activity a=activity();if(a==null||closed)return;cancel();waiting=false;resultReceived=true;identity=new Identity(a);api=DanmakuSettings.api(a);siteSources.clear();
             String work=identity.config+"@@@"+identity.site+"@@@"+identity.vod+"@@@"+api;
             if(!work.equals(preferredWork)){preferredEpisodes.clear();preferredWork=work;}
-            if(!manualOwned()){manualSource=null;manualKey="";}
+            if(!manualOwned()&&!manualSeriesOwned()){manualSource=null;manualKey=manualWork="";}
             Object values=invoke(result,"getDanmaku");if(values instanceof List)for(Object value:(List<?>)values){String url=string(value,"getUrl","");if(!url.isEmpty())siteSources.add(new DanmakuSource(string(value,"getName",url),url,"站点",""));}
             syncDisplay();
             main.post(()->{Activity current=activity();if(current!=null)installControls(current);});
-            if(manualOwned()){if(ready)choose(manualSource,keyword,false);}else {automaticStarted=false;startAutomatic();}
+            automaticStarted=false;startAutomatic();
         }
         boolean manualOwned(){Activity a=activity();return a!=null&&manualSource!=null&&manualKey.equals(new Identity(a).key())&&manualApi.equals(DanmakuSettings.api(a));}
+        boolean manualSeriesOwned(){Activity a=activity();return a!=null&&manualSource!=null&&!manualSource.url.startsWith("file:")&&!manualSource.url.startsWith("content:")&&manualWork.equals(new Identity(a).workKey())&&manualApi.equals(DanmakuSettings.api(a));}
         void startAutomatic(){
             Activity a=activity();if(a==null||closed||waiting||!ready||!resultReceived||automaticStarted)return;
             if(!DanmakuSettings.enabled(a)){status="弹幕加载已关闭";return;}
-            if(manualOwned())return;
+            if(manualOwned()){automaticStarted=true;if(selected==null)choose(manualSource,keyword,false);return;}
+            if(manualSeriesOwned()){if(paused){needResume=true;return;}automaticStarted=true;emptyNative();followManual();return;}
             DanmakuSource preferred=matches.preferred(api,identity.site,identity.vod);
             if(DanmakuSettings.spiderFirst(a)&&!siteSources.isEmpty()&&(!DanmakuSettings.automatic(a)||preferred==null)){status="使用站点弹幕";return;}
             if(!DanmakuSettings.automatic(a)){status="自动匹配已关闭，可手动搜索";return;}
             if(api.isEmpty()){status="未配置弹幕 API，可在弹幕设置中填写";return;}
             if(paused){needResume=true;return;}
             automaticStarted=true;
-            DanmakuSource remembered=matches.find(api,identity.site,identity.vod,identity.episode+"@@@"+identity.url);
-            if(remembered!=null){choose(remembered,"",false);return;}
+            DanmakuSource remembered=matches.find(api,identity.site,identity.vod,identity.rawEpisode+"@@@"+identity.url);
+            if(remembered!=null&&DanmakuTitle.rememberedEpisode(remembered,identity.episode)){choose(remembered,"",false);return;}
             searchAutomatically();
+        }
+        /** A new episode keeps the selected platform/catalogue without entering automatic global search. */
+        void followManual(){
+            final DanmakuSource preferred=manualSource;final List<DanmakuSource> directory=new ArrayList<>(preferredEpisodes);
+            final String expectedApi=api,key=identity.key(),episode=identity.episode;
+            final String title=!keyword.isEmpty()?keyword:!preferred.seriesTitle.isEmpty()?preferred.seriesTitle:identity.title;
+            final long token=generation;final DanmakuApi.Owner request=owner;
+            if((preferred.url.startsWith("ws:")||preferred.url.startsWith("wss:"))&&DanmakuTitle.getEpisode(preferred)==DanmakuTitle.EPISODE_UNKNOWN){manualKey=key;choose(preferred,title,false);return;}
+            if("站点".equals(preferred.source)){
+                for(DanmakuSource source:siteSources)if(source.getName().equals(preferred.getName())){manualSource=source;manualKey=key;choose(source,title,false);return;}
+                status="所选站点暂无当前集弹幕，可手动选择";return;
+            }
+            status="正在加载所选平台的当前集弹幕…";
+            task=worker.submit(()->{
+                List<DanmakuSource> found=directory;DanmakuSource next=DanmakuTitle.followMatch(found,preferred,episode);
+                if(next==null&&!preferred.seriesId.isEmpty())try{found=DanmakuApi.episodes(expectedApi,preferred,request);next=DanmakuTitle.followMatch(found,preferred,episode);}catch(Exception unavailable){if(request.canceled)return;}
+                if(next==null&&preferred.seriesId.isEmpty()&&!expectedApi.isEmpty())try{found=DanmakuApi.search(expectedApi,title,episode,request);next=DanmakuTitle.followFresh(found,preferred,episode);}catch(Exception unavailable){if(request.canceled)return;}
+                final List<DanmakuSource> results=new ArrayList<>(found);final DanmakuSource matched=next;
+                main.post(()->{if(!owns(token,expectedApi,key))return;
+                    if(matched==null){status="所选平台暂无当前集弹幕，可手动选择";return;}
+                    preferredEpisodes.clear();apiSources.clear();for(DanmakuSource source:results)if(DanmakuTitle.sameSeries(source,preferred)){preferredEpisodes.add(source);apiSources.add(source);}
+                    manualSource=matched;manualKey=key;choose(matched,title,false);
+                });
+            });
         }
         boolean owns(long token,String expectedApi,String identityKey){Activity a=activity();return !closed&&!paused&&a!=null&&generation==token&&!owner.canceled&&identity.key().equals(identityKey)&&new Identity(a).key().equals(identityKey)&&DanmakuSettings.api(a).equals(expectedApi);}
         void searchAutomatically(){
@@ -142,7 +176,7 @@ public final class DanmakuPlayback {
             addTitle(titles,matches.title(api,identity.site,identity.vod));addTitle(titles,identity.title);
             addTitle(titles,identity.title.replaceAll("[【\\[].*?[】\\]]"," ").replaceAll("\\s+"," ").trim());
             DanmakuSource preferred=matches.preferred(api,identity.site,identity.vod);List<DanmakuSource> directory=new ArrayList<>(preferredEpisodes);
-            long token=generation;String expectedApi=api,key=identity.key(),episode=identity.episode;DanmakuApi.Owner request=owner;status="正在匹配弹幕…";
+            long token=generation;String expectedApi=api,key=identity.key(),episode=identity.episode,year=identity.year;DanmakuApi.Owner request=owner;status="正在匹配弹幕…";
             task=worker.submit(()->{
                 List<DanmakuSource> found=new ArrayList<>();String used="";
                 DanmakuSource follow=null;
@@ -153,10 +187,10 @@ public final class DanmakuPlayback {
                     if(follow!=null){List<DanmakuSource> results=new ArrayList<>(found);DanmakuSource matched=follow;String title=used.isEmpty()?titles.isEmpty()?identity.title:titles.get(0):used;
                         main.post(()->{if(!owns(token,expectedApi,key))return;apiSources.clear();apiSources.addAll(results);preferredEpisodes.clear();for(DanmakuSource item:results)if(DanmakuTitle.sameSeries(item,preferred))preferredEpisodes.add(item);keyword=title;choose(matched,title,false);});return;}
                 }
-                for(String title:titles){if(request.canceled)return;try{found=DanmakuApi.automatic(expectedApi,title,episode,request);if(DanmakuTitle.matchEpisode(found,title,episode)!=null){used=title;break;}}catch(Exception unavailable){if(request.canceled)return;}}
+                for(String title:titles){if(request.canceled)return;try{found=DanmakuApi.automatic(expectedApi,title,episode,year,request);if(DanmakuTitle.matchEpisode(found,title,episode,year)!=null){used=title;break;}}catch(Exception unavailable){if(request.canceled)return;}}
                 List<DanmakuSource> results=found;String title=used;
                 main.post(()->{if(!owns(token,expectedApi,key))return;apiSources.clear();apiSources.addAll(results);keyword=title;
-                    DanmakuSource match=DanmakuTitle.matchEpisode(results,title,episode);if(match==null){status="未找到当前剧集的弹幕，可手动搜索";return;}choose(match,title,false);});
+                    DanmakuSource match=DanmakuTitle.matchEpisode(results,title,episode,year);if(match==null){status="未找到当前剧集的弹幕，可手动搜索";return;}choose(match,title,false);});
             });
         }
         void search(String title,Runnable updated){
@@ -183,9 +217,10 @@ public final class DanmakuPlayback {
         }
         void chooseManual(DanmakuSource source,String title,boolean remember){
             Activity a=activity();if(a==null||source.isCatalog()||source.url.isEmpty())return;
-            Identity current=new Identity(a);manualSource=source;manualKey=current.key();manualApi=DanmakuSettings.api(a);manualRemember=remember;automaticStarted=true;
+            Identity current=new Identity(a);manualSource=source;manualKey=current.key();manualWork=current.workKey();manualApi=DanmakuSettings.api(a);manualRemember=remember;automaticStarted=true;
+            if(!title.isEmpty())keyword=title;
             preferredWork=current.config+"@@@"+current.site+"@@@"+current.vod+"@@@"+manualApi;
-            if(remember){preferredEpisodes.clear();for(DanmakuSource item:apiSources)if(!item.isCatalog()&&DanmakuTitle.sameSeries(item,source))preferredEpisodes.add(item);}
+            preferredEpisodes.clear();for(DanmakuSource item:apiSources)if(!item.isCatalog()&&DanmakuTitle.sameSeries(item,source))preferredEpisodes.add(item);
             choose(source,title,remember);
         }
         void choose(DanmakuSource source,String title,boolean remember){
@@ -204,7 +239,7 @@ public final class DanmakuPlayback {
                     if(!CacheMaintenance.valid(cacheTicket))return;
                     File file=DanmakuFile.write(a,data,DanmakuSettings.offset(a),source.url,cacheTicket);
                     main.post(()->{if(!owns(token,expectedApi,key)||!CacheMaintenance.valid(cacheTicket))return;comments=data;status="已加载 "+data.size()+" 条弹幕";boolean applied=apply(file,source);
-                        if(applied&&(remember||manualOwned()&&manualRemember)&&!expectedApi.isEmpty())matches.remember(expectedApi,identity.site,identity.vod,identity.episode+"@@@"+identity.url,title.isEmpty()?keyword:title,source);});
+                        if(applied&&(remember||manualOwned()&&manualRemember)&&!expectedApi.isEmpty())matches.remember(expectedApi,identity.site,identity.vod,identity.rawEpisode+"@@@"+identity.url,title.isEmpty()?keyword:title,source);});
                 }catch(Exception unavailable){if(!CacheMaintenance.valid(cacheTicket))return;main.post(()->{if(!owns(token,expectedApi,key)||!CacheMaintenance.valid(cacheTicket))return;status="弹幕加载失败，可重新选源";android.widget.Toast.makeText(a,status,android.widget.Toast.LENGTH_SHORT).show();});}
             });
         }
@@ -223,7 +258,7 @@ public final class DanmakuPlayback {
                 syncDisplay();return true;
             }catch(ReflectiveOperationException unavailable){status="原播放器弹幕接口不可用";android.widget.Toast.makeText(a,status,android.widget.Toast.LENGTH_SHORT).show();return false;}
         }
-        void clear(){cancel();manualSource=null;manualKey="";automaticStarted=true;selected=null;comments=null;emptyNative();status="已关闭当前弹幕";}
+        void clear(){cancel();manualSource=null;manualKey=manualWork="";preferredEpisodes.clear();automaticStarted=true;selected=null;comments=null;emptyNative();status="已关闭当前弹幕";}
         void emptyNative(){Activity a=activity();if(a==null)return;
             try{Object player=player();Class<?> bean=Class.forName("com.fongmi.android.tv.bean.Danmaku",true,a.getClassLoader());applying=true;try{player.getClass().getMethod(Device.MOBILE?"k0":"i0",bean).invoke(player,bean.getMethod("empty").invoke(null));}finally{applying=false;}}catch(ReflectiveOperationException unavailable){}
         }
@@ -233,6 +268,7 @@ public final class DanmakuPlayback {
             Activity a=activity();if(a==null||closed)return;cancel();identity=new Identity(a);api=DanmakuSettings.api(a);syncDisplay();
             if(!DanmakuSettings.enabled(a)){emptyNative();return;}
             if(manualOwned()){automaticStarted=true;choose(manualSource,keyword,false);return;}
+            if(manualSeriesOwned()){automaticStarted=true;followManual();return;}
             if(DanmakuSettings.spiderFirst(a)&&!siteSources.isEmpty()){choose(siteSources.get(0),"",false);return;}
             automaticStarted=false;startAutomatic();
         }
@@ -254,6 +290,13 @@ public final class DanmakuPlayback {
         }
     }
     static Object field(Object target,String name){if(target==null)return null;try{return target.getClass().getField(name).get(target);}catch(ReflectiveOperationException unavailable){return null;}}
+    /** Same selected Episode that native A0 reads; initial Intent extras are only the final fallback. */
+    private static Object currentEpisode(Activity activity){
+        if(!Device.MOBILE)return invoke(activity,"d0");
+        Object adapter=field(activity,"S"),values=field(adapter,"g"),position=invoke(adapter,"p");
+        if(values instanceof List&&position instanceof Number){int index=((Number)position).intValue();List<?> episodes=(List<?>)values;if(index>=0&&index<episodes.size())return episodes.get(index);}
+        return null;
+    }
     static Object invoke(Object target,String name){if(target==null)return null;try{return target.getClass().getMethod(name).invoke(target);}catch(ReflectiveOperationException unavailable){return null;}}
     static String string(Object target,String method,String fallback){Object value=invoke(target,method);return value==null||value.toString().isEmpty()?fallback:value.toString();}
     private static String value(String s){return s==null?"":s;}

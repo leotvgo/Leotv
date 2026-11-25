@@ -43,7 +43,7 @@ final class DanmakuApi {
     static List<DanmakuSource> search(String api,String name,String episode,Owner owner)throws Exception{
         String endpoint=searchUrl(api);Request request;
         if(endpoint.contains("{name}")||endpoint.contains("{episode}"))request=sourceRequest(endpoint.replace("{name}",Uri.encode(name)).replace("{episode}",Uri.encode(episode)));
-        else if(Uri.parse(endpoint).getPath().endsWith("/api/v2/fongmi/danmaku"))request=sourceRequest(Uri.parse(endpoint).buildUpon().appendQueryParameter("name",name).appendQueryParameter("episode",episode).build().toString());
+        else if(Uri.parse(endpoint).getPath().endsWith("/api/v2/fongmi/danmaku"))request=sourceRequest(Uri.parse(endpoint).buildUpon().appendQueryParameter("name",name).appendQueryParameter("episode",DanmakuTitle.requestEpisode(episode)).build().toString());
         else request=formRequest(endpoint,name,episode);
         byte[] bytes=request(request,owner,4*1024*1024);if(owner.canceled)throw new InterruptedException();
         return DanmakuSource.parse(new String(bytes,"UTF-8"),endpoint.replace("{name}","name").replace("{episode}","episode"));
@@ -66,13 +66,16 @@ final class DanmakuApi {
         return search(api,name,episode,owner);
     }
     static List<DanmakuSource> automatic(String api,String name,String episode,Owner owner)throws Exception{
+        return automatic(api,name,episode,"",owner);
+    }
+    static List<DanmakuSource> automatic(String api,String name,String episode,String year,Owner owner)throws Exception{
         List<DanmakuSource> found=browse(api,name,episode,owner);
-        if(DanmakuTitle.matchEpisode(found,name,episode)!=null)return found;
+        if(DanmakuTitle.matchEpisode(found,name,episode,year)!=null)return found;
         List<DanmakuSource> catalogs=new java.util.ArrayList<>();for(DanmakuSource item:found)if(item.isCatalog())catalogs.add(item);
         DanmakuTitle.sortCandidates(catalogs,name);
         for(DanmakuSource catalog:catalogs){if(owner.canceled)throw new InterruptedException();
             try{List<DanmakuSource> values=episodes(api,catalog,owner);found.remove(catalog);found.addAll(values);
-                if(DanmakuTitle.matchEpisode(found,name,episode)!=null)break;
+                if(DanmakuTitle.matchEpisode(found,name,episode,year)!=null)break;
             }catch(Exception unavailable){if(owner.canceled||Thread.currentThread().isInterrupted())throw unavailable;}}
         return found;
     }
@@ -81,11 +84,13 @@ final class DanmakuApi {
         String endpoint=Uri.parse(root).buildUpon().appendPath("api").appendPath("v2").appendPath("bangumi").appendPath(series.seriesId).build().toString();
         String body=new String(request(sourceRequest(endpoint),owner,4*1024*1024),"UTF-8");
         Object decoded=new org.json.JSONTokener(body).nextValue();
+        if(decoded instanceof org.json.JSONArray){decoded=new org.json.JSONObject().put("episodes",decoded);body=decoded.toString();}
         if(decoded instanceof org.json.JSONObject){org.json.JSONObject object=(org.json.JSONObject)decoded;
             org.json.JSONObject details=object.optJSONObject("bangumi");if(details==null)details=object;
             if(details.optString("animeId").isEmpty())details.put("animeId",series.seriesId);
             if(details.optString("animeTitle").isEmpty())details.put("animeTitle",series.seriesTitle);
             if(details.optString("source").isEmpty()&&!series.source.isEmpty())details.put("source",series.source);
+            if(details.optString("apiSourceName").isEmpty()&&!series.apiSource.isEmpty())details.put("apiSourceName",series.apiSource);
             if(details.optString("mediaType").isEmpty()&&!series.mediaType.isEmpty())details.put("mediaType",series.mediaType);
             body=object.toString();
         }

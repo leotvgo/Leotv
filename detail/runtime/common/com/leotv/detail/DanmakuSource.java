@@ -43,30 +43,32 @@ final class DanmakuSource {
         if(text.isEmpty())return result;
         Object value;
         if(text.startsWith("[")||text.startsWith("{")||text.startsWith("\""))value=new JSONTokener(text).nextValue();else value=text;
-        collect(value,base,result,0,"","","","");return result;
+        collect(value,base,result,0,"","","","","");return result;
     }
-    private static void collect(Object value,String base,List<DanmakuSource> result,int depth,String parentTitle,String parentSource,String parentId,String parentType)throws Exception{
+    private static void collect(Object value,String base,List<DanmakuSource> result,int depth,String parentTitle,String parentSource,String parentId,String parentType,String parentApi)throws Exception{
         if(depth>10||result.size()>=5000||value==null||value==JSONObject.NULL)return;
-        if(value instanceof JSONArray){JSONArray a=(JSONArray)value;for(int i=0;i<a.length()&&result.size()<5000;i++)collect(a.opt(i),base,result,depth+1,parentTitle,parentSource,parentId,parentType);return;}
+        if(value instanceof JSONArray){JSONArray a=(JSONArray)value;for(int i=0;i<a.length()&&result.size()<5000;i++)collect(a.opt(i),base,result,depth+1,parentTitle,parentSource,parentId,parentType,parentApi);return;}
         if(value instanceof JSONObject){JSONObject o=(JSONObject)value;
             String title=alias(o,"animeTitle","seriesTitle");if(title.isEmpty())title=parentTitle;
             String source=alias(o,"source","from","site","provider","platform");if(source.isEmpty())source=parentSource;
             String seriesId=alias(o,"bangumiId","animeId");if(seriesId.isEmpty())seriesId=parentId;
             String mediaType=alias(o,"mediaType","typeName","animeType","type");if(mediaType.isEmpty())mediaType=parentType;
+            String apiSource=alias(o,"apiSourceName","apiSource","api_source","api_source_name");if(apiSource.isEmpty())apiSource=parentApi;
             for(String key:new String[]{"animes","bangumi","episodes","links","data","list","result","results","items","danmakus","danmaku"}){
-                int before=result.size();if(o.has(key))collect(o.opt(key),base,result,depth+1,title,source,seriesId,mediaType);if(result.size()>before)return;
+                int before=result.size();if(o.has(key))collect(o.opt(key),base,result,depth+1,title,source,seriesId,mediaType,apiSource);if(result.size()>before)return;
             }
             String episode=alias(o,"episodeTitle","episodeName"),episodeId=alias(o,"episodeId","epId");
+            if(episode.isEmpty()&&(!parentTitle.isEmpty()||!episodeId.isEmpty()))episode=o.optString("title");
             String apiRoot=DanmakuApi.catalogRoot(base);
             String url=normalize(base,o.optString("url"));
             // Dandan episode URLs describe videos; load comments through their episode ID.
             if(!episodeId.isEmpty()&&!apiRoot.isEmpty())url=android.net.Uri.parse(apiRoot).buildUpon().appendPath("api").appendPath("v2").appendPath("comment").appendPath(episodeId).appendQueryParameter("format","xml").build().toString();
             if(url.isEmpty()&&(seriesId.isEmpty()||title.isEmpty()))return;
             String name=o.optString("name");if(name.isEmpty())name=title+(episode.isEmpty()?"":" - "+episode);
-            result.add(new DanmakuSource(name,url,source,alias(o,"apiSourceName","apiSource","api_source","api_source_name"),title,episode,seriesId,o.optInt("episodeNumber",DanmakuTitle.EPISODE_UNKNOWN),mediaType));return;
+            result.add(new DanmakuSource(name,url,source,apiSource,title,episode,seriesId,o.optInt("episodeNumber",DanmakuTitle.EPISODE_UNKNOWN),mediaType));return;
         }
         if(value instanceof String){String text=clean((String)value);
-            if(text.startsWith("[")||text.startsWith("{")){collect(new JSONTokener(text).nextValue(),base,result,depth+1,parentTitle,parentSource,parentId,parentType);return;}
+            if(text.startsWith("[")||text.startsWith("{")){collect(new JSONTokener(text).nextValue(),base,result,depth+1,parentTitle,parentSource,parentId,parentType,parentApi);return;}
             String url=normalize(base,text);if(!url.isEmpty())result.add(new DanmakuSource("",url,"",""));
         }
     }

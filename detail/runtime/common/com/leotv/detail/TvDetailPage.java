@@ -52,6 +52,7 @@ final class TvDetailPage implements DetailPage {
     SourceGateway.Episode preferred;
     String selectedFlag="";
     String metadataSite="",metadataId="";
+    private BackdropIdentity searchWork;
     private String sourceArtwork="";
     int surfaceColour=DetailHero.DEFAULT_COLOR, theme=-1, themeWidth, themeHeight;
     boolean mounted=true, reversed, reversePlay, manualSource;
@@ -251,6 +252,12 @@ final class TvDetailPage implements DetailPage {
     void bindSource(SourceGateway.Detail detail,boolean keepArtwork){
         if(source!=detail)nativeEpisodes.dismiss();
         source=detail;
+        if(searchWork==null){
+            String name=activity.getIntent().getStringExtra("leotv.detail.search.name");if(name==null||name.trim().isEmpty())name=activity.getIntent().getStringExtra("name");if(name==null||name.trim().isEmpty())name=detail.name;
+            String site=activity.getIntent().getStringExtra("leotv.detail.search.site"),id=activity.getIntent().getStringExtra("leotv.detail.search.id");
+            boolean same=new BackdropIdentity(detail.site,detail.id,name,"","").normalized.equals(new BackdropIdentity(detail.site,detail.id,detail.name,"","").normalized);
+            searchWork=new BackdropIdentity(site==null?detail.site:site,id==null?detail.id:id,name,same?detail.year:"",same?detail.type:"");
+        }
         if(!keepArtwork){sourceArtwork=detail.picture;title.setText(detail.name);synopsis.setText(android.text.Html.fromHtml(detail.overview).toString());
             facts.setText((detail.year+"  ·  "+detail.type).trim());hero.loadSource(detail.picture,BackdropSettings.read(activity).proxy);}
         else if(metadata!=null){metadataSite=detail.site;metadataId=detail.id;
@@ -259,7 +266,8 @@ final class TvDetailPage implements DetailPage {
         boolean[] order=NativeLibrary.order(activity,detail);reversed=order[0];reversePlay=order[1];
         selectedFlag=preferred==null?"":preferred.flag;showFlags();showEpisodes();refreshActions();
         SiteFeed.Site site=SiteFeed.find(SiteFeed.sites(),detail.site);sitePicker.selected(site==null?detail.site:site.name);
-        if(mobile||detail.episodes.isEmpty()||!siteSearch.reuse(new BackdropIdentity(detail.site,detail.id,detail.name,detail.year,detail.type)))searchSources();
+        if(keepArtwork)siteSearch.adoptedSource();
+        if(!siteSearch.started())searchSources();
     }
     private void showFlags(){
         flags.removeAllViews();LinkedHashSet<String> names=new LinkedHashSet<>();for(SourceGateway.Episode episode:source.episodes)names.add(episode.flag);
@@ -282,7 +290,8 @@ final class TvDetailPage implements DetailPage {
     private void episodePicker(){
         nativeEpisodes.open(false);
     }
-    void searchSources(){if(source!=null){boolean automatic=source.episodes.isEmpty()&&!manualSource&&(source.searchCurrentSite||!NativeLibrary.hasSavedSource(activity,source));if(automatic)playButton.idle("正在加载…");siteSearch.begin(new BackdropIdentity(source.site,source.id,source.name,source.year,source.type),automatic,source.searchCurrentSite);}}
+    BackdropIdentity searchWork(){return searchWork;}
+    void searchSources(){if(source!=null&&searchWork!=null){boolean automatic=source.episodes.isEmpty()&&!manualSource;if(automatic)playButton.idle("正在加载…");String keyword=metadata!=null&&!metadata.resourceTitle.isEmpty()?metadata.resourceTitle:searchWork.sourceTitle;siteSearch.begin(searchWork,automatic,keyword);}}
     void resume(){hero.setActive(true);if(source!=null){preferred=NativeLibrary.resume(activity,source,null);updatePlayButton();if(preferred!=null&&!preferred.flag.equals(selectedFlag)){selectedFlag=preferred.flag;showFlags();}showEpisodes();refreshActions();}ThemeLayout.apply(this);refresh(BackdropSettings.read(activity).proxy);}
     private void updatePlayButton(){
         NativeLibrary.Progress saved=NativeLibrary.progress(activity,source,preferred);
@@ -319,7 +328,10 @@ final class TvDetailPage implements DetailPage {
         }
         if(!mobile&&(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_UP||event.getKeyCode()==KeyEvent.KEYCODE_DPAD_DOWN)){
             initialPlayFocus=false;
-            View focus=activity.getCurrentFocus();if(focus!=null&&TvDetailNavigation.descendant(focus,reviews.list)&&reviews.canMoveVertically(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_DOWN))return false;
+            View focus=activity.getCurrentFocus();if(focus!=null&&TvDetailNavigation.descendant(focus,reviews.list)){
+                View next=reviews.neighbour(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_DOWN);
+                if(next!=null){if(event.getAction()==KeyEvent.ACTION_DOWN&&next.requestFocus()){navigation.adopt(next);navigation.revealFocused();}return true;}
+            }
             if(event.getAction()==KeyEvent.ACTION_DOWN)navigation.move(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_DOWN);return true;
         }
         return false;

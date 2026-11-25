@@ -267,7 +267,7 @@ class MobileDetailMetadata {
     static final class Result {
         final String overview, facts, cast, posterPath, backdropPath;
         final String provider;
-        String sourceChannel="",sourceAuthor="";
+        String sourceChannel="",sourceAuthor="",resourceTitle="";
         final List<String> backdropPaths;
         final List<String> posterPaths;
         final List<Recommendation> recommendations;
@@ -358,6 +358,7 @@ class MobileDetailMetadata {
             if (source == null) return;
             tmdbId = source.tmdbId; tmdbType = source.tmdbType; status = source.status;
             complete=source.complete;
+            resourceTitle=source.resourceTitle;
             releaseDate = source.releaseDate; lastAirDate = source.lastAirDate; nextAirDate = source.nextAirDate;
             totalSeasons = source.totalSeasons; totalEpisodes = source.totalEpisodes;
             stills = source.stills; tagline = source.tagline; imdbId = source.imdbId; collection = source.collection;
@@ -570,6 +571,7 @@ class MobileDetailMetadata {
                 new Branding(tv ? "剧集" : "电影", detail.optString(tv ? "original_name" : "original_title"),
                         logos(detail, imageLanguage), badgeValues));
         built.tmdbId = match.optLong("id", 0); built.tmdbType = match.optString("media_type");
+        built.resourceTitle=detail.optString(tv?"name":"title").trim();
         built.status = detail.optString("status"); built.releaseDate = detail.optString("release_date");
         built.lastAirDate = detail.optString("last_air_date"); built.totalSeasons = detail.optInt("number_of_seasons");
         built.totalEpisodes = detail.optInt("number_of_episodes");
@@ -619,7 +621,7 @@ class MobileDetailMetadata {
     private Result summary(JSONObject detail,boolean tv,boolean images,BackdropSettings.Options options){
         Result value=new Result(detail.optString("overview"),facts(detail),"",null,imagePath(detail.optString("poster_path")),imagePath(detail.optString("backdrop_path")),Collections.emptyList(),Collections.emptyMap(),-1,backdrops(detail),"tmdb",posters(detail),Collections.emptyList(),
                 new Branding(tv?"剧集":"电影",detail.optString(tv?"original_name":"original_title"),images?logos(detail,imageLanguage(options)):Collections.emptyList(),badges(detail)));
-        value.complete=false;value.tmdbId=detail.optLong("id");value.tmdbType=tv?"tv":"movie";value.status=detail.optString("status");value.totalEpisodes=detail.optInt("number_of_episodes");value.totalSeasons=detail.optInt("number_of_seasons");return value;
+        value.complete=false;value.resourceTitle=detail.optString(tv?"name":"title").trim();value.tmdbId=detail.optLong("id");value.tmdbType=tv?"tv":"movie";value.status=detail.optString("status");value.totalEpisodes=detail.optInt("number_of_episodes");value.totalSeasons=detail.optInt("number_of_seasons");return value;
     }
     private static List<Review> initialReviews(JSONObject value){
         return reviews(value);

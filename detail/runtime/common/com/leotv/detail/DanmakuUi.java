@@ -38,9 +38,10 @@ public final class DanmakuUi {
             }
         });
     }
-    public static void settings(Activity activity){settings(activity,null);}
+    public static void settings(Activity activity){refreshApiSummary(activity);settings(activity,null);}
     public static void attach(Activity activity,View root){
-        if(activity==null||root==null||root.findViewWithTag("leotv_danmaku_api_settings")!=null)return;
+        if(activity==null||root==null)return;
+        if(root.findViewWithTag("leotv_danmaku_api_settings")!=null){refreshApiSummary(activity);return;}
         int id=activity.getResources().getIdentifier("danmuLoad","id",activity.getPackageName());View template=id==0?null:root.findViewById(id);
         if(template==null||!(template.getParent() instanceof LinearLayout))return;
         LinearLayout parent=(LinearLayout)template.getParent();View row=NativeViews.copy(template,activity);
@@ -59,6 +60,17 @@ public final class DanmakuUi {
         if(api!=null&&api.requestFocus())return;if(original!=null)original.requestFocus();
     }
     private static void collect(View root,List<TextView> out){if(root instanceof TextView)out.add((TextView)root);if(root instanceof ViewGroup)for(int i=0;i<((ViewGroup)root).getChildCount();i++)collect(((ViewGroup)root).getChildAt(i),out);}
+    /** Saving/resetting updates both the original settings row and the mobile personalization row. */
+    private static void refreshApiSummary(Activity activity){
+        if(activity==null)return;View root=activity.findViewById(android.R.id.content);if(root==null)return;
+        String state=DanmakuSettings.api(activity).isEmpty()?"未配置":"已配置";
+        for(String tag:new String[]{"leotv_danmaku_api_settings","弹幕 API"}){
+            View row=root.findViewWithTag(tag);if(row==null)continue;
+            View value=row.findViewWithTag("leotv_preference_value");
+            if(value instanceof TextView)((TextView)value).setText(state);
+            else{List<TextView> texts=new ArrayList<>();collect(row,texts);if(texts.size()>1)texts.get(texts.size()-1).setText(state);}
+        }
+    }
     private static void settings(Activity a,DanmakuPlayback.Session session){
         DanmakuSettings.initialize(a);
         String api=DanmakuSettings.api(a);
@@ -66,7 +78,7 @@ public final class DanmakuUi {
             "加载弹幕 · "+on(DanmakuSettings.enabled(a)),"自动匹配 · "+on(DanmakuSettings.automatic(a)),"站点弹幕优先 · "+on(DanmakuSettings.spiderFirst(a)),"清除手动匹配记忆"};
         settingsActions(a,"弹幕API",names,index->{
             switch(index){
-                case 0:NativeDialogs.edit(a,"弹幕 API",DanmakuSettings.customApi(a),"留空读取订阅；支持 {name} / {episode}",false,value->{DanmakuSettings.setApi(a,value);if(session!=null)session.changeApi();settings(a,session);},()->{DanmakuSettings.setApi(a,"");if(session!=null)session.changeApi();});return;
+                case 0:NativeDialogs.edit(a,"弹幕 API",DanmakuSettings.customApi(a),"留空读取订阅；支持 {name} / {episode}",false,value->{DanmakuSettings.setApi(a,value);refreshApiSummary(a);if(session!=null)session.changeApi();settings(a,session);},()->{DanmakuSettings.setApi(a,"");refreshApiSummary(a);if(session!=null)session.changeApi();});return;
                 case 1:DanmakuSettings.toggle(a,"danmaku_load",!DanmakuSettings.enabled(a));break;
                 case 2:DanmakuSettings.toggle(a,"danmaku_auto",!DanmakuSettings.automatic(a));break;
                 case 3:DanmakuSettings.toggle(a,"danmaku_spider_first",!DanmakuSettings.spiderFirst(a));break;

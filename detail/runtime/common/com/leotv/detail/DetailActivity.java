@@ -10,6 +10,7 @@ import java.util.concurrent.*;
 /** Standalone resource/detail controller; the JAR composition owns the rendered page. */
 public final class DetailActivity extends androidx.appcompat.app.j implements TvDetailPage.Actions {
     private static final String PLAYBACK_RETURN="leotv.detail.playback.return";
+    private static final String SEARCH_NAME="leotv.detail.search.name",SEARCH_SITE="leotv.detail.search.site",SEARCH_ID="leotv.detail.search.id";
     private final Handler main=new Handler(Looper.getMainLooper());
     private final ExecutorService worker=Executors.newFixedThreadPool(2);
     private Future<?> sourceTask,metadataTask;
@@ -25,6 +26,11 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
     @Override public void onCreate(Bundle saved){
         if(!Device.MOBILE)setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         super.onCreate(saved);
+        for(String key:new String[]{SEARCH_NAME,SEARCH_SITE,SEARCH_ID}){
+            String original=key.equals(SEARCH_NAME)?"name":key.equals(SEARCH_SITE)?"key":"id";
+            if(saved!=null&&saved.containsKey(key))getIntent().putExtra(key,saved.getString(key));
+            else if(!getIntent().hasExtra(key))getIntent().putExtra(key,getIntent().getStringExtra(original));
+        }
         if(saved!=null&&saved.containsKey("leotv.detail.site"))getIntent().putExtra("key",saved.getString("leotv.detail.site")).putExtra("id",saved.getString("leotv.detail.id")).putExtra("name",saved.getString("leotv.detail.name")).putExtra("pic",saved.getString("leotv.detail.pic"));
         if(saved!=null&&saved.getBoolean(PLAYBACK_RETURN,false))getIntent().putExtra(PLAYBACK_RETURN,true);
         MetadataSettings.initialize(this);MetadataMatchStore.install(this);FollowStore.install(this);SiteFeed.initialize(this);
@@ -59,7 +65,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
             }catch(Exception unavailable){main.post(()->{if(!isDestroyed()&&token==generation&&sourceToken==sourceGeneration)page.playButton.idle("线路详情暂不可用");});}
         });
     }
-    private BackdropIdentity identity(){return new BackdropIdentity(source.site,source.id,source.name,source.year,source.type);}
+    private BackdropIdentity identity(){BackdropIdentity work=page.searchWork();return new BackdropIdentity(source.site,source.id,work==null?source.name:work.sourceTitle,work==null?source.year:work.year,work==null?source.type:work.music?"音乐":work.animated?"动漫":work.inferredType?"":work.type);}
     private void enrich(int token){
         if(source==null)return;if(metadataRequest!=null)metadataRequest.cancel();if(metadataTask!=null)metadataTask.cancel(true);
         BackdropHttp.Request request=new BackdropHttp.Request();metadataRequest=request;
@@ -90,6 +96,21 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
         getIntent().putExtra("leotv.episode.reverseSort",page.reversed).putExtra("leotv.episode.reversePlay",page.reversePlay);
         if(metadata!=null)getIntent().putStringArrayListExtra(NativeRouting.TITLE_LOGOS,new java.util.ArrayList<>(metadata.branding.logos));
         else getIntent().removeExtra(NativeRouting.TITLE_LOGOS);
+        // Reuse this page's work and episode metadata without another network request.
+        org.json.JSONObject work=new org.json.JSONObject();
+        try{
+            BackdropIdentity entry=page.searchWork();
+            work.put("site",source.site).put("id",source.id).put("sourceTitle",source.name)
+                    .put("title",metadata!=null&&!metadata.resourceTitle.isEmpty()?metadata.resourceTitle:entry==null?source.name:entry.sourceTitle)
+                    .put("type",metadata!=null&&!metadata.tmdbType.isEmpty()?metadata.tmdbType:source.type)
+                    .put("year",metadata!=null&&!metadata.releaseDate.isEmpty()?metadata.releaseDate:entry==null?source.year:entry.year)
+                    .put("season",metadata==null?-1:metadata.season);
+            org.json.JSONArray names=new org.json.JSONArray();
+            if(metadata!=null)for(MobileDetailMetadata.Episode item:metadata.episodes.values())if(item!=null&&item.number>0&&names.length()<1000)
+                names.put(new org.json.JSONObject().put("name",item.name).put("number",item.number).put("season",item.season));
+            work.put("episodes",names);if(work.toString().length()>128*1024)work.remove("episodes");
+            getIntent().putExtra(NativeRouting.DANMAKU_WORK,work.toString());
+        }catch(org.json.JSONException invalid){getIntent().removeExtra(NativeRouting.DANMAKU_WORK);}
         if(!Device.MOBILE)getIntent().putExtra(PLAYBACK_RETURN,true);
         NativeRouting.play(this,source.site,source.id,source.name,source.picture,episode.flag,episode.url,episode.name);
     }
@@ -125,7 +146,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
     @Override public void onResume(){super.onResume();if(page!=null){if(!Device.MOBILE&&getIntent().getBooleanExtra(PLAYBACK_RETURN,false)){getIntent().removeExtra(PLAYBACK_RETURN);page.requestPlaybackFocus();}page.resume();BackdropSettings.Options previous=metadataOptions!=null?metadataOptions:requestedOptions;if(source!=null&&previous!=null&&!previous.same(BackdropSettings.read(this)))enrich(++generation);}}
     @Override public void onPause(){cacheState();if(page!=null)page.suspend();super.onPause();}
     /** The preserved AppCompat callback is final; the application lifecycle saves these extras. */
-    public void saveDetailState(Bundle saved){saved.putString("leotv.detail.site",getIntent().getStringExtra("key"));saved.putString("leotv.detail.id",getIntent().getStringExtra("id"));saved.putString("leotv.detail.name",getIntent().getStringExtra("name"));saved.putString("leotv.detail.pic",getIntent().getStringExtra("pic"));saved.putBoolean(PLAYBACK_RETURN,getIntent().getBooleanExtra(PLAYBACK_RETURN,false));}
+    public void saveDetailState(Bundle saved){saved.putString("leotv.detail.site",getIntent().getStringExtra("key"));saved.putString("leotv.detail.id",getIntent().getStringExtra("id"));saved.putString("leotv.detail.name",getIntent().getStringExtra("name"));saved.putString("leotv.detail.pic",getIntent().getStringExtra("pic"));saved.putBoolean(PLAYBACK_RETURN,getIntent().getBooleanExtra(PLAYBACK_RETURN,false));for(String key:new String[]{SEARCH_NAME,SEARCH_SITE,SEARCH_ID})saved.putString(key,getIntent().getStringExtra(key));}
     @Override public void onConfigurationChanged(android.content.res.Configuration configuration){super.onConfigurationChanged(configuration);if(page!=null){page.theme=-1;page.content.requestLayout();page.refresh(BackdropSettings.read(this).proxy);}}
     @Override public void onDestroy(){
         JarIntegration.release(this);
