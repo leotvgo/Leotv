@@ -1,0 +1,79 @@
+{
+  "recorded_at_utc": "2026-11-25T15:33:35.249411+00:00",
+  "source_revision": "48a6a9f0b7169c76013b2b1d0ca4616ee3799a2e",
+  "build_run_id": 45644523918,
+  "build_url": "https://github.com/leotvgo/Leotv/actions/runs/45644523918",
+  "publish_run_id": 45645566644,
+  "publish_url": "https://github.com/leotvgo/Leotv/actions/runs/45645566644",
+  "release_tag": "leotv-5.3.4-preview.1-build-45644523918",
+  "release_url": "https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4-preview.1-build-45644523918",
+  "version_name": "5.3.4-preview.1",
+  "version_code": 647,
+  "release_is_prerelease": true,
+  "formal_latest": "leotv-5.3.3",
+  "assets_verified": 12,
+  "internal_reports_local_copy": "artifacts/leotv-5.3.4-preview.1-647-delivery",
+  "repository_visibility_after_publish": "private",
+  "private_attempt": {
+    "run_id": 45644054466,
+    "code_executed": false,
+    "reason": "The job was not started because recent account payments have failed or your spending limit needs to be increased."
+  },
+  "temporary_public_build_used_existing_recorded_authorization": true,
+  "verification_mode": "release asset digests, fixed signature reports, full audit binding and all compiled source hashes",
+  "local_apk_build_or_regression_run": false,
+  "variants": [
+    {
+      "variant": "tv-v7a",
+      "apk_sha256": "b33b41795ead7e57dbe623324e9582d7ba26f32e9d2dbf8e39ece3408e31ab66",
+      "apk_bytes": 88407041,
+      "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+      "source_files_verified": 115,
+      "full_audit_sha256": "e1ba13f01f2c840950a7b9ef4b548931b4a92d67b3792ac0b12d3b9402a4e919",
+      "baseline_equal": true,
+      "expected_changes_match": true,
+      "min_sdk": 23,
+      "fixed_signature": true,
+      "device_validation": false
+    },
+    {
+      "variant": "tv-v8a",
+      "apk_sha256": "8880178305b419c9739972ef0d6d23bcfc4dff252cfaa1373385af1ab10e20e3",
+      "apk_bytes": 87292068,
+      "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+      "source_files_verified": 115,
+      "full_audit_sha256": "bc04d60a0fe544eaf73110689ea95e4a4eb9b6a1b85d7b6ee40e3cc81d6b8845",
+      "baseline_equal": true,
+      "expected_changes_match": true,
+      "min_sdk": 23,
+      "fixed_signature": true,
+      "device_validation": false
+    },
+    {
+      "variant": "mobile-v7a",
+      "apk_sha256": "d8779e47553fa84733120ba7b048414746ca6bd60fde32e1b3d1bad319c551b6",
+      "apk_bytes": 83538387,
+      "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+      "source_files_verified": 115,
+      "full_audit_sha256": "ffd1e6b1ef860f42de4a27369b9b94976ef874a0c14abf058ae2c8fe7a50ddd3",
+      "baseline_equal": true,
+      "expected_changes_match": true,
+      "min_sdk": 23,
+      "fixed_signature": true,
+      "device_validation": false
+    },
+    {
+      "variant": "mobile-v8a",
+      "apk_sha256": "198afe669a4a26020bb7c11fda44a166a132ec8893777a492b96e05331fdeac1",
+      "apk_bytes": 82751090,
+      "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+      "source_files_verified": 115,
+      "full_audit_sha256": "c1b2a276d4b279755f87777446d135cc7a39c8297561cc0301bfb588db630b17",
+      "baseline_equal": true,
+      "expected_changes_match": true,
+      "min_sdk": 23,
+      "fixed_signature": true,
+      "device_validation": false
+    }
+  ]
+}

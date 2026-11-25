@@ -42,4 +42,10 @@ Exo 使用原 F3/e（手机 I3/d）的独立 HTTP 请求头实例、原媒体源
 
 版本 Manifest/app_version 为 647 / 5.3.4-preview.1。没有新增二进制依赖、播放器库或 native 资源。`check_build_sources.py` 保留 TV 原按键派发与返回面板顺序，并核对新增接口、四变体精确 Git 路径、构造仅追加、独立请求和共享缓存。GitHub 保留 API23 编译、R8 release/full、原样/变化语义与 ZIP 审计、APK 专用固定签名核对；额外模型/UI 回归关闭，本地不打包 APK。
 
-交付状态：待 GitHub 构建/发布结果更新。运行效果由用户真机验收，重点为开启后当前集不断流、暂停/恢复、正/反序、手动换源/画质、长集片尾预取、过期地址回退、缓存满与清除、Exo/IJK、字幕/音轨/弹幕和历史进度。
+运行效果由用户真机验收，重点为开启后当前集不断流、暂停/恢复、正/反序、手动换源/画质、长集片尾预取、过期地址回退、缓存满与清除、Exo/IJK、字幕/音轨/弹幕和历史进度。
+
+## 已完成交付
+
+源码 `48a6a9f0b7169c76013b2b1d0ca4616ee3799a2e` 的[构建 45644523918](https://github.com/leotvgo/Leotv/actions/runs/45644523918)和[自动发布 45645566644](https://github.com/leotvgo/Leotv/actions/runs/45645566644)成功。[5.3.4-preview.1 / 647 测试 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4-preview.1-build-45644523918)的四包、8 份公开报告均完整，发布 digest、固定签名、API23/R8、原生库、原样/允许变化、完整审计绑定及所有实际编译源码 SHA-256 逐套核对通过。完整审计与 mapping 保留于内部草稿，报告副本留在忽略的 `artifacts/leotv-5.3.4-preview.1-647-delivery/`。
+
+首次私有任务 45644054466 因账单/预算限制未启动，沿用上一轮记载的临时公开构建授权后完成；公开源码窗口已告知用户。构建/发布完成后已恢复 PRIVATE 并通过 API 核对，正式 Latest 仍为 `leotv-5.3.3`。没有本地 APK 打包或额外 UI/模型回归，运行兼容性仍待用户真机确认。详见 `evidence/leotv-5.3.4-preview.1-647-delivery-20261125.json`。
