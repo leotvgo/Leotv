@@ -27,3 +27,9 @@ versionName 继续 **5.3.2**，versionCode 640 → **641**，沿用固定证书�
 旧 640 四套安装包及签名/审计证据保留。在新 641 四套构建成功后，将旧发布 `457551335` 归档为内部草稿 `leotv-5.3.2-withdrawn-build-45528669777`，保留旧源码标签、资产 ID/大小/digest，再替换正式 `leotv-5.3.2`，防止下载混入旧源码。继续使用此前已授权的临时公开构建，结束恢复并核对私有；原 APK 和签名私钥不进入 Git。
 
 首次整屏、其它主题差异及播放返回行为最终由用户真机验收，加载链路不改变。
+
+## 最终交付
+
+源码 `2ee44e988248c3507d4f148e9e70ab4f83d7966d` 的[构建 45532606695](https://github.com/leotvgo/Leotv/actions/runs/45532606695)和[自动发布 45533212856](https://github.com/leotvgo/Leotv/actions/runs/45533212856)成功。[正式 5.3.2 / 641](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.2)含四套固定签名 APK 和八份审计/签名报告；逐套核对版本码、release digest、固定证书、API23/R8、原样/允许变化、精确编译源码及 640 的性能/主题源码快照，全部通过。正式标签和 Latest 均指向新源码；旧 640 的 12 项资产 ID/大小/digest 保持，原源码归档标签保留，发布归档为内部草稿。仓库已恢复并 API 核对私有。
+
+证据见 `evidence/leotv-5.3.2-641-build-dispatch-20261125.json` 与 `evidence/leotv-5.3.2-640-withdrawn-build-45528669777-20261125.json`。无本轮本地打包或额外回归，修复后的首次视口与加载速度由用户实际设备验收。
