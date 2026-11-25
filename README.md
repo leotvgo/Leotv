@@ -12,7 +12,7 @@
 
 上一正式版本为 **5.3.1 / 639**，沿用 preview.7 的 TV 推荐原生回收列表与启动崩溃修复，保留轮播连续背景、最近观看开关及手机/TV 简短 TMDB 摘要。用户要求直接正式发布；R8 8.8.34 release/full、固定签名及 Android 6 基准保持。详见[5.3.1 正式发布记录](docs/LEOTV-5.3.1-OFFICIAL-20261124.md)。
 
-当前正式版本为 **5.3.2 / 641**，独立安装包名 **com.leotv.app**，R8 release/full 混淆、固定签名正式发布，支持覆盖升级。
+当前正式版本为 **5.3.2 / 642**，独立安装包名 **com.leotv.app**，R8 release/full 混淆、固定签名正式发布，支持覆盖升级。
 正式构建/自动发布由 GitHub 执行：[Leotv 5.3.2](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.2) 已提供 TV/手机、32/64 位四套 APK。
 
 5.3.0 同版本补交：独立分类窗口和原生卡片异常恢复统一使用原 OK 的完整卡片布局、字段及图片协议，恢复圆形卡片宽高绑定。内部版本码升至 631，旧 630 发布归档为内部草稿。详见[完整原生卡片与同版本替换](docs/LEOTV-5.3.0-NATIVE-CATEGORY-CARDS-REPLACEMENT-20261124.md)。

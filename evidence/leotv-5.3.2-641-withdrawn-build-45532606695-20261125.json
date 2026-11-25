@@ -84,5 +84,10 @@
     }
   ],
   "reason": "User requested keeping 5.3.2 while fixing phone/TV staged artwork and same-work source-switch continuity.",
-  "withdrawn": false
+  "withdrawn": true,
+  "archive_is_draft": true,
+  "assets_retained": true,
+  "formal_tag_removed": true,
+  "source_archive_tag_verified": true,
+  "updated_at": "2026-11-25T03:12:13.391582+00:00"
 }
