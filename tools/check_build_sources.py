@@ -19,6 +19,7 @@ from check_tmdb_loading import check as check_tmdb_loading
 from check_cache_maintenance import check as check_cache_maintenance, check_native as check_native_cache
 from check_detail_search import check as check_detail_search
 from check_tmdb_optimization import check as check_tmdb_optimization
+from check_detail_parallel import check as check_detail_parallel
 
 ROOT = Path(__file__).resolve().parents[1]
 LOCKS = ('branding/source-lock.json', 'detail/native-source-lock.json',
@@ -31,6 +32,7 @@ def check_sources(root=ROOT):
     check_cache_maintenance(root)
     check_detail_search(root)
     check_tmdb_optimization(root)
+    check_detail_parallel(root)
     detail_page=(root / 'detail/runtime/common/com/leotv/detail/TvDetailPage.java').read_text()
     detail_scroll=(root / 'detail/runtime/common/com/leotv/detail/TvDetailScroll.java').read_text()
     if 'if(!Device.MOBILE)setSmoothScrollingEnabled(false)' not in detail_scroll or 'return Device.MOBILE || touchScroll ? super.computeScrollDeltaToGetChildRectOnScreen(rectangle) : 0' not in detail_scroll:

@@ -22,6 +22,11 @@ final class NativeLibrary {
         return ((Number) config.getMethod("m").invoke(null)).intValue();
     }
     private static String key(SourceGateway.Detail detail, int cid) { return detail.site + "@@@" + detail.id + "@@@" + cid; }
+    static String historyTitle(Context context,String site,String id){
+        try{Object value=model(context,"History").getMethod("find",String.class).invoke(null,site+"@@@"+id+"@@@"+cid(context));
+            return value==null?"":text(value,"getVodName");}
+        catch(ReflectiveOperationException|RuntimeException unavailable){return "";}
+    }
     static boolean isKept(Context context, SourceGateway.Detail detail) throws ReflectiveOperationException {
         int cid = cid(context);
         return model(context, "Keep").getMethod("find", int.class, String.class).invoke(null, cid, key(detail, cid)) != null;

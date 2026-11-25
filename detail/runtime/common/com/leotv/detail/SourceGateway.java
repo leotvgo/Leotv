@@ -27,6 +27,17 @@ final class SourceGateway {
             episodes = episodes(json);
         }
     }
+    /** Entry/history labels can start metadata without invoking any provider or player task. */
+    static Detail preview(android.app.Activity activity,String site,String id){
+        android.content.Intent intent=activity.getIntent();String name=intent.getStringExtra("leotv.detail.search.name");
+        if(name==null||name.trim().isEmpty())name=intent.getStringExtra("name");
+        if(name==null||name.trim().isEmpty())name=NativeLibrary.historyTitle(activity,site,id);
+        if(name==null||BackdropIdentity.normalize(name).isEmpty()||name.matches("(?i)^(?:https?|file|content)://.*"))return null;
+        try{return new Detail(site,id,new JSONObject().put("vod_name",name.trim()).put("vod_pic",text(intent.getStringExtra("pic")))
+                .put("vod_year",text(intent.getStringExtra("year"))).put("type_name",text(intent.getStringExtra("type"))));}
+        catch(org.json.JSONException invalid){return null;}
+    }
+    private static String text(String value){return value==null?"":value;}
     static Detail load(Context context, String key, String id) throws Exception {
         ClassLoader loader = context.getClassLoader();
         Class<?> task = Class.forName(Device.MOBILE ? "E3.n" : "B3.n", true, loader);

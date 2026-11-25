@@ -13,12 +13,15 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
     private static final String SEARCH_NAME="leotv.detail.search.name",SEARCH_SITE="leotv.detail.search.site",SEARCH_ID="leotv.detail.search.id";
     private final Handler main=new Handler(Looper.getMainLooper());
     private final ExecutorService worker=Executors.newFixedThreadPool(2);
+    private final ExecutorService metadataWorker=Executors.newFixedThreadPool(2);
     private Future<?> sourceTask,metadataTask;
     private BackdropHttp.Request metadataRequest;
     private SourceGateway.Detail source;
     private MobileDetailMetadata.Result metadata;
     private BackdropSettings.Options metadataOptions;
     private BackdropSettings.Options requestedOptions;
+    private BackdropIdentity requestedIdentity;
+    private boolean sourcePending;
     private TvDetailPage page;
     private int generation,sourceGeneration;
     private long metadataCacheTicket=CacheMaintenance.ticket();
@@ -50,7 +53,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
             page.bindSource(source);enrich(token);return;
         }
         DetailSessionCache.State cached=DetailSessionCache.get(this,site,id);
-        if(cached!=null){metadataCacheTicket=cached.cacheTicket;source=cached.source;metadata=cached.metadata==null?null:cached.metadata.detached();metadataOptions=BackdropSettings.read(this);page.bindSource(source);if(metadata!=null)page.render(metadata);if(metadata==null||!metadata.complete)enrich(token);return;}
+        if(cached!=null){metadataCacheTicket=cached.cacheTicket;source=cached.source;metadata=cached.metadata==null?null:cached.metadata.detached();metadataOptions=BackdropSettings.read(this);page.bindSource(source,metadata!=null);if(metadata!=null)page.render(metadata);if(metadata==null||!metadata.complete)enrich(token);return;}
         org.json.JSONObject seed=RelatedDetail.metadata(id);
         if(seed==null)seed=NativeRouting.searchMetadata(getIntent());
         if(seed!=null){
@@ -59,19 +62,37 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
             if(tmdb>0)MetadataMatchStore.save(identity,seed.optString("tmdb_type"),tmdb);
             enrich(token);return;
         }
+        SourceGateway.Detail preview=SourceGateway.preview(this,site,id);
+        sourcePending=true;
+        if(preview!=null){source=preview;page.previewSource(preview);if(!identity().music)enrich(token);}
         sourceTask=worker.submit(()->{
             try{SourceGateway.Detail value=SourceGateway.load(this,site,id);
-                main.post(()->{if(isDestroyed()||token!=generation||sourceToken!=sourceGeneration)return;source=value;page.bindSource(value);enrich(token);});
-            }catch(Exception unavailable){main.post(()->{if(!isDestroyed()&&token==generation&&sourceToken==sourceGeneration)page.playButton.idle("线路详情暂不可用");});}
+                main.post(()->completeSource(sourceToken,value));
+            }catch(Exception unavailable){main.post(()->{if(!isDestroyed()&&sourceToken==sourceGeneration){page.sourceFailed();page.playButton.idle("线路详情暂不可用");}});}
         });
     }
-    private BackdropIdentity identity(){BackdropIdentity work=page.searchWork();return new BackdropIdentity(source.site,source.id,work==null?source.name:work.sourceTitle,work==null?source.year:work.year,work==null?source.type:work.music?"音乐":work.animated?"动漫":work.inferredType?"":work.type);}
+    private void completeSource(int sourceToken,SourceGateway.Detail value){
+        if(isDestroyed()||sourceToken!=sourceGeneration)return;
+        boolean keepArtwork=source!=null;sourcePending=false;source=value;page.bindSource(value,keepArtwork);
+        if(metadata!=null)page.render(metadata);
+        BackdropIdentity resolved=identity();
+        // Same evidence keeps its live job and poster; newly supplied year/type refines matching once.
+        if(requestedIdentity==null||!requestedIdentity.same(resolved))enrich(generation);else cacheState();
+    }
+    private BackdropIdentity identity(){
+        BackdropIdentity work=page.searchWork();String name=work==null?source.name:work.sourceTitle;
+        boolean same=BackdropIdentity.normalize(name).equals(BackdropIdentity.normalize(source.name));
+        String year=work==null?source.year:work.year;
+        String type=work==null?source.type:work.music?"音乐":work.animated?"动漫":work.inferredType?"":work.type;
+        if(same){if(year.isEmpty())year=source.year;if(type.isEmpty())type=source.type;}
+        return new BackdropIdentity(source.site,source.id,name,year,type);
+    }
     private void enrich(int token){
         if(source==null)return;if(metadataRequest!=null)metadataRequest.cancel();if(metadataTask!=null)metadataTask.cancel(true);
         BackdropHttp.Request request=new BackdropHttp.Request();metadataRequest=request;
         BackdropIdentity identity=identity();BackdropSettings.Options options=BackdropSettings.read(this);
-        requestedOptions=options;
-        metadataTask=worker.submit(()->{
+        requestedOptions=options;requestedIdentity=identity;
+        metadataTask=metadataWorker.submit(()->{
             MobileDetailMetadata.Result value=null;
             try{value=new MobileDetailMetadata().loadProgressive(identity,options,request,stage->{
                 MobileDetailMetadata.Result snapshot=stage.detached();
@@ -85,10 +106,10 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
         if(token!=generation||isDestroyed()||metadataRequest!=request){if(result!=null)result.release();return;}
         if(!options.same(BackdropSettings.read(this))){if(result!=null)result.release();enrich(++generation);return;}
         if(result==null&&metadata!=null)return;
-        MobileDetailMetadata.Result old=metadata;metadata=result;metadataOptions=options;metadataCacheTicket=request.cacheTicket;page.render(result);DetailSessionCache.put(this,source,metadata,metadataCacheTicket);if(old!=null&&old!=result)old.release();
+        MobileDetailMetadata.Result old=metadata;metadata=result;metadataOptions=options;metadataCacheTicket=request.cacheTicket;page.render(result);if(!sourcePending)DetailSessionCache.put(this,source,metadata,metadataCacheTicket);if(old!=null&&old!=result)old.release();
     }
     @Override public void rematch(){enrich(generation);}
-    private void cacheState(){DetailSessionCache.put(this,source,source!=null&&page!=null&&source.site.equals(page.metadataSite)&&source.id.equals(page.metadataId)&&metadataOptions!=null&&metadataOptions.same(BackdropSettings.read(this))?metadata:null,metadataCacheTicket);}
+    private void cacheState(){if(sourcePending)return;DetailSessionCache.put(this,source,source!=null&&page!=null&&source.site.equals(page.metadataSite)&&source.id.equals(page.metadataId)&&metadataOptions!=null&&metadataOptions.same(BackdropSettings.read(this))?metadata:null,metadataCacheTicket);}
     @Override public void play(SourceGateway.Episode episode){
         if(source==null)return;
         cacheState();DetailSessionCache.pin(this,source);
@@ -137,7 +158,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
     }
     /** A source picker changes the playable rows of the same work, not its artwork or metadata job. */
     private void bindChangedSource(SourceGateway.Detail detail){
-        source=detail;page.bindSource(detail,true);cacheState();
+        sourcePending=false;source=detail;page.bindSource(detail,true);cacheState();
     }
     @Override public void automaticSource(SiteFeed.Site site,SourceGateway.Detail detail){
         if(isFinishing()||isDestroyed()||source==null||!source.episodes.isEmpty())return;
@@ -158,6 +179,6 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
     @Override public void onDestroy(){
         JarIntegration.release(this);
         generation++;sourceGeneration++;if(sourceTask!=null)sourceTask.cancel(true);if(metadataTask!=null)metadataTask.cancel(true);if(metadataRequest!=null)metadataRequest.cancel();
-        worker.shutdownNow();main.removeCallbacksAndMessages(null);if(page!=null)page.close();if(metadata!=null)metadata.release();super.onDestroy();
+        worker.shutdownNow();metadataWorker.shutdownNow();main.removeCallbacksAndMessages(null);if(page!=null)page.close();if(metadata!=null)metadata.release();super.onDestroy();
     }
 }

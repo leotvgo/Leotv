@@ -57,6 +57,7 @@ final class TvDetailPage implements DetailPage {
     int surfaceColour=DetailHero.DEFAULT_COLOR, theme=-1, themeWidth, themeHeight;
     boolean mounted=true, reversed, reversePlay, manualSource;
     boolean metadataResolved, artworkRevealed;
+    private boolean sourcePending;
     private boolean initialPlayFocus=!mobile;
     private boolean playbackFocusPending;
     private View restoredPlaybackView;
@@ -250,6 +251,12 @@ final class TvDetailPage implements DetailPage {
     }
     void bindSource(SourceGateway.Detail detail){bindSource(detail,false);}
     void bindSource(SourceGateway.Detail detail,boolean keepArtwork){
+        showSource(detail,keepArtwork,false);
+    }
+    void previewSource(SourceGateway.Detail detail){showSource(detail,false,true);}
+    void sourceFailed(){sourcePending=false;}
+    private void showSource(SourceGateway.Detail detail,boolean keepArtwork,boolean pending){
+        boolean wasPending=sourcePending;sourcePending=pending;
         if(source!=detail)nativeEpisodes.dismiss();
         source=detail;
         if(searchWork==null){
@@ -258,10 +265,13 @@ final class TvDetailPage implements DetailPage {
             boolean same=new BackdropIdentity(detail.site,detail.id,name,"","").normalized.equals(new BackdropIdentity(detail.site,detail.id,detail.name,"","").normalized);
             searchWork=new BackdropIdentity(site==null?detail.site:site,id==null?detail.id:id,name,same?detail.year:"",same?detail.type:"");
         }
-        if(!keepArtwork){sourceArtwork=detail.picture;title.setText(detail.name);synopsis.setText(android.text.Html.fromHtml(detail.overview).toString());
-            facts.setText((detail.year+"  ·  "+detail.type).trim());hero.loadSource(detail.picture,BackdropSettings.read(activity).proxy);}
+        if(!keepArtwork||wasPending||title.getText().length()==0){sourceArtwork=detail.picture;title.setText(detail.name);synopsis.setText(android.text.Html.fromHtml(detail.overview).toString());
+            facts.setText((detail.year+"  ·  "+detail.type).trim());
+            List<String> artwork=metadata==null?Collections.emptyList():mobile&&!DetailTheme.library(activity,mobile)?metadata.posterPaths:metadata.backdropPaths;
+            if(!keepArtwork||wasPending&&DetailHero.accept(artwork,5).isEmpty())hero.loadSource(detail.picture,BackdropSettings.read(activity).proxy);}
         else if(metadata!=null){metadataSite=detail.site;metadataId=detail.id;
             if(metadata.complete)FollowStore.update(new BackdropIdentity(detail.site,detail.id,detail.name,detail.year,detail.type),metadata);}
+        if(pending){preferred=null;playButton.idle("资源仍在加载…");return;}
         preferred=NativeLibrary.resume(activity,detail,playbackFocusPending?null:activity.getIntent().getStringExtra("mark"));
         boolean[] order=NativeLibrary.order(activity,detail);reversed=order[0];reversePlay=order[1];
         selectedFlag=preferred==null?"":preferred.flag;showFlags();showEpisodes();refreshActions();
@@ -292,7 +302,7 @@ final class TvDetailPage implements DetailPage {
     }
     BackdropIdentity searchWork(){return searchWork;}
     void searchSources(){if(source!=null&&searchWork!=null){boolean automatic=source.episodes.isEmpty()&&!manualSource;if(automatic)playButton.idle("正在加载…");String keyword=metadata!=null&&!metadata.resourceTitle.isEmpty()?metadata.resourceTitle:searchWork.sourceTitle;siteSearch.begin(searchWork,automatic,keyword);}}
-    void resume(){hero.setActive(true);if(source!=null){preferred=NativeLibrary.resume(activity,source,null);updatePlayButton();if(preferred!=null&&!preferred.flag.equals(selectedFlag)){selectedFlag=preferred.flag;showFlags();}showEpisodes();refreshActions();}ThemeLayout.apply(this);refresh(BackdropSettings.read(activity).proxy);}
+    void resume(){hero.setActive(true);if(source!=null&&!sourcePending){preferred=NativeLibrary.resume(activity,source,null);updatePlayButton();if(preferred!=null&&!preferred.flag.equals(selectedFlag)){selectedFlag=preferred.flag;showFlags();}showEpisodes();refreshActions();}ThemeLayout.apply(this);refresh(BackdropSettings.read(activity).proxy);}
     private void updatePlayButton(){
         NativeLibrary.Progress saved=NativeLibrary.progress(activity,source,preferred);
         if(saved!=null)playButton.resume(saved.position,saved.duration);
@@ -339,7 +349,7 @@ final class TvDetailPage implements DetailPage {
     @Override public void render(MobileDetailMetadata.Result value){
         MobileDetailMetadata.Result previous=metadata;metadata=value;metadataResolved=true;
         metadataSite=value!=null&&source!=null?source.site:"";metadataId=value!=null&&source!=null?source.id:"";
-        if(value!=null&&value.complete&&source!=null)FollowStore.update(new BackdropIdentity(source.site,source.id,source.name,source.year,source.type),value);
+        if(value!=null&&value.complete&&source!=null&&!sourcePending)FollowStore.update(new BackdropIdentity(source.site,source.id,source.name,source.year,source.type),value);
         if(value==null){hero.finishLoading();actorFallback.setText("暂无演员资料");loadingState();return;}
         if(previous==null||!previous.stills.equals(value.stills)||!previous.backdropPaths.equals(value.backdropPaths))stills.render(value.stills.isEmpty()?value.backdropPaths:value.stills);
         if(previous==null||!previous.collectionParts.equals(value.collectionParts))collection.render(value.collectionParts);
@@ -390,7 +400,7 @@ final class TvDetailPage implements DetailPage {
         boolean current=source!=null&&source.site.equals(metadataSite)&&source.id.equals(metadataId);
         return JarIntegration.metadata(source,current?metadata:null);
     }
-    private boolean bridgeSourceReady(){return source!=null&&source.site.equals(activity.getIntent().getStringExtra("key"))&&source.id.equals(activity.getIntent().getStringExtra("id"));}
+    private boolean bridgeSourceReady(){return !sourcePending&&source!=null&&source.site.equals(activity.getIntent().getStringExtra("key"))&&source.id.equals(activity.getIntent().getStringExtra("id"));}
     private void refreshActions(){
         android.os.Bundle data=bridgeMetadata();
         if(bridgeSourceReady())JarIntegration.publish(activity,data);

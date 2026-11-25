@@ -27,6 +27,8 @@ jobs:
         run: python3 -B tools/check_build_sources.py
       - name: Verify ported episode normalization and detail precedence using fictional fixtures
         run: python3 -B research/check_episode_port.py
+      - name: Verify entry and history metadata do not wait for a blocked provider
+        run: python3 -B research/check_detail_parallel.py
 
   prepare:
     needs: sources
