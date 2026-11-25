@@ -116,6 +116,7 @@ public final class Playback {
             if(video!=null)video.setBackground(new android.graphics.drawable.ColorDrawable(android.graphics.Color.BLACK));
         }
         DanmakuPlayback.initialize(activity);
+        VideoPreload.initialize(activity);
     }
     private static void titleArtwork(Activity activity) {
         List<String> logos = activity.getIntent().getStringArrayListExtra(NativeRouting.TITLE_LOGOS);
@@ -136,7 +137,7 @@ public final class Playback {
         }
         title.anchor(anchor); title.load(logos, BackdropSettings.read(activity).proxy); titles.put(activity, title);
     }
-    public static void checkpoint(Activity activity){DanmakuPlayback.pause(activity);NativeLibrary.checkpoint(activity);}
+    public static void checkpoint(Activity activity){VideoPreload.pause(activity);DanmakuPlayback.pause(activity);NativeLibrary.checkpoint(activity);}
     /** The TV touch callback shows the bottom bar alone; reuse the native widget title/size panel. */
     public static void controlsShown(Activity activity){
         if(Device.MOBILE||!NativeRouting.isFullscreenPlayer(activity))return;
@@ -226,6 +227,7 @@ public final class Playback {
             oriented.put(activity, media);
     }
     public static void release(Activity activity) {
+        VideoPreload.release(activity);
         DanmakuPlayback.release(activity);
         if(NativeRouting.isFullscreenPlayer(activity)&&!activity.isChangingConfigurations())DetailSessionCache.unpin();
         PlayerTitleArt title = titles.remove(activity); if (title != null) title.close();

@@ -1,0 +1,106 @@
+{
+  "repo": "FongMi/TV",
+  "revision": "d3a0b84b24cf6628d72a4dbc2be453875b005536",
+  "files": [
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/playback/vod/VodPreloader.java",
+      "sha256": "a388282bcbd795b68a4a3f5335a94a92fdf0394b6e5e24f1c939dcefdd14b314",
+      "size": 5774
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/player/exo/ExoDiskPreload.java",
+      "sha256": "906496fa6fa3b5b35219e002deb463301537ed092cf3fe993f643d238761040d",
+      "size": 2512
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/setting/PreloadSetting.java",
+      "sha256": "4d66936fb8be070bb830e1d53f67d08b7c05cfd83a40376394a2a2c8efd0e208",
+      "size": 2853
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/player/exo/ExoPlayerEngine.java",
+      "sha256": "319c625024fc258e0fcbd03e0e5b6f09daf78092cf333c2cbc93cd7e181ca7ac",
+      "size": 16189
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/player/exo/ExoPlayerSession.java",
+      "sha256": "69c3ef25a62da9bb97b7892237bad472b5cd2ce7b36aa64ce1435611adf64136",
+      "size": 16020
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/player/exo/ExoUtil.java",
+      "sha256": "9def0ffa3895f8a2e9c50c12c138964f9e59a1948062d1b8a36fbe05daf129ed",
+      "size": 8310
+    },
+    {
+      "path": "app/src/leanback/java/com/fongmi/android/tv/ui/activity/VideoActivity.java",
+      "sha256": "33d48b144313641114731e3a85d491efafd90d4df5cdb2296f1bd5d56cb286f6",
+      "size": 59894
+    },
+    {
+      "path": "app/src/mobile/java/com/fongmi/android/tv/ui/activity/VideoActivity.java",
+      "sha256": "940ca8c2c4fc10e63d0a58e6ab60abb7e0a66d5085fba7f6c9b03aece530fbdc",
+      "size": 69590
+    },
+    {
+      "path": "app/src/leanback/java/com/fongmi/android/tv/ui/activity/SettingPreloadActivity.java",
+      "sha256": "dde9e9e5fdef277c64d43c4f88b582aedfe419797988ed9a4a10fa86af22039c",
+      "size": 4483
+    },
+    {
+      "path": "app/build.gradle",
+      "sha256": "a25a464091ddf2064679f9e60c2bc2f67999b136b8f94925801bbc6f2664b5b7",
+      "size": 4097
+    },
+    {
+      "path": "build.gradle",
+      "sha256": "d2ed692126652e51fed2480848feef0583705eda619398bd1d34ff1c78c8f01f",
+      "size": 1753
+    },
+    {
+      "path": "gradle/libs.versions.toml",
+      "sha256": "468cacb4a5ac0067093036739c34d2c337a776fc18205a4b2eb763ee94fcc86f",
+      "size": 7171
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/player/exo/ExoMediaSourceFactory.java",
+      "sha256": "2b6ca2ae8255d07cdcdfe371d43ae7eb61bddd24b8224667fe36a573dcbc436c",
+      "size": 8351
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/playback/vod/VodDataSource.java",
+      "sha256": "a095171773db90658fa486abf3a8c67da1605dd903b8d7a80385481a7dffe27a",
+      "size": 599
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/playback/vod/VodPlaybackState.java",
+      "sha256": "3ed6e3270ffd1036f236b3362ace0c495fd27c654cd5f7bb4ff1bc5d313fa226",
+      "size": 7539
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/playback/vod/VodPlayRequest.java",
+      "sha256": "322891d748328fea620d080f8a9c68c28ed211b98bb65e1dde77686c481fe954",
+      "size": 2700
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/player/extractor/Source.java",
+      "sha256": "6eccbbf50dafd373b789eb7fd67983e2debd6958f2190d2db4d04028decad0f3",
+      "size": 6800
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/utils/SourceUrl.java",
+      "sha256": "796042198991427d22dda2568a069c6e90d0158cbbfc61583c78dc8cef47e421",
+      "size": 1644
+    },
+    {
+      "path": "app/src/main/java/com/fongmi/android/tv/player/PlayerManager.java",
+      "sha256": "638eda7d4270d028d26ca30e49b5c3f39af06d94a71b9ddffc4be904e5c0b9b6",
+      "size": 49398
+    },
+    {
+      "path": "runtime/build.gradle",
+      "sha256": "2cddbcdeb8a20ce687543fb71a68fddc612fb67c91cb20efbefaac1f055cd41d",
+      "size": 6646
+    }
+  ]
+}

@@ -50,6 +50,9 @@ public final class Personalization {
             add(activity,third,template,summary,CACHE,()->cacheLimit(activity,rows));
         }
         if(Device.MOBILE)add(activity,rows,template,summary,CACHE,()->cacheLimit(activity,rows));
+        LinearLayout preloadRows=rows;
+        if(!Device.MOBILE){preloadRows=new LinearLayout(activity);preloadRows.setOrientation(LinearLayout.HORIZONTAL);LinearLayout.LayoutParams line=new LinearLayout.LayoutParams(-1,-2);line.topMargin=rowSpacing(target);rows.addView(preloadRows,line);}
+        add(activity,preloadRows,template,summary,"视频预加载",()->PreloadSettings.show(activity,()->refresh(activity,rows)));
         if(Device.MOBILE)add(activity, rows, template, summary, "弹幕 API",
                 () -> DanmakuUi.settings(activity));
         View anchor = template;
@@ -71,6 +74,7 @@ public final class Personalization {
         summary(rows.findViewWithTag(HOME), MetadataSettings.newHome(activity)?"开启":"关闭");
         summary(rows.findViewWithTag(RECENT),MetadataSettings.newHomeRecent(activity)?"开启":"关闭");
         summary(rows.findViewWithTag(CACHE),MetadataSettings.homeCacheMb(activity)+" MB");
+        summary(rows.findViewWithTag("视频预加载"),PreloadSettings.enabled(activity)?"开启":"关闭");
         summary(rows.findViewWithTag("弹幕 API"),DanmakuSettings.api(activity).isEmpty()?"未配置":"已配置");
     }
     private static void cacheLimit(Activity activity,View rows){

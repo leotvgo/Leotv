@@ -162,6 +162,15 @@
         "afterClear()V",
         "install(Landroid/app/Application;)V"
       ]
+    },
+    "com.leotv.detail.VideoPreload": {
+      "methods": [
+        "begin(Landroid/app/Activity;)V",
+        "wrap(Landroid/app/Activity;Ljava/util/concurrent/Callable;)Ljava/util/concurrent/Callable;",
+        "result(Ljava/lang/Object;Ljava/lang/Object;Z)V",
+        "resume(Landroid/app/Activity;)V",
+        "error(Landroid/app/Activity;Ljava/lang/Object;)Z"
+      ]
     }
   }
 }

@@ -73,6 +73,7 @@
       "detail/runtime/common/com/leotv/detail/DetailTitleArt.java",
       "detail/runtime/common/com/leotv/detail/DoubanDetailMetadata.java",
       "detail/runtime/common/com/leotv/detail/DoubanReviewMetadata.java",
+      "detail/runtime/common/com/leotv/detail/ExoMediaPreload.java",
       "detail/runtime/common/com/leotv/detail/FollowCalendarPage.java",
       "detail/runtime/common/com/leotv/detail/FollowDateStrip.java",
       "detail/runtime/common/com/leotv/detail/FollowFeed.java",
@@ -112,6 +113,9 @@
       "detail/runtime/common/com/leotv/detail/PlayerOverlayAnchor.java",
       "detail/runtime/common/com/leotv/detail/PlayerOverlayPosition.java",
       "detail/runtime/common/com/leotv/detail/PlayerTitleArt.java",
+      "detail/runtime/common/com/leotv/detail/PreloadHost.java",
+      "detail/runtime/common/com/leotv/detail/PreloadPolicy.java",
+      "detail/runtime/common/com/leotv/detail/PreloadSettings.java",
       "detail/runtime/common/com/leotv/detail/RelatedDetail.java",
       "detail/runtime/common/com/leotv/detail/RuntimeStrings.java",
       "detail/runtime/common/com/leotv/detail/SiteFeed.java",
@@ -123,7 +127,8 @@
       "detail/runtime/common/com/leotv/detail/TmdbRoutes.java",
       "detail/runtime/common/com/leotv/detail/TvDetailNavigation.java",
       "detail/runtime/common/com/leotv/detail/TvDetailPage.java",
-      "detail/runtime/common/com/leotv/detail/TvDetailScroll.java"
+      "detail/runtime/common/com/leotv/detail/TvDetailScroll.java",
+      "detail/runtime/common/com/leotv/detail/VideoPreload.java"
     ],
     "mobile": [
       "detail/runtime/mobile/com/leotv/detail/Device.java",

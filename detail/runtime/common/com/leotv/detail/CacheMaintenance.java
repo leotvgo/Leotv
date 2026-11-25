@@ -44,6 +44,7 @@ public final class CacheMaintenance implements ComponentCallbacks2 {
         CLEAR_LOCK.lock();
         IO_GATE.writeLock().lock();
         try{generation++;clearing=true;}finally{IO_GATE.writeLock().unlock();}
+        VideoPreload.clearCache();
         if(application!=null){clearingImages=BackdropImages.get(application);imageTicket=clearingImages.suspendWrites();}
         clearAnswers();trimClients();
     }

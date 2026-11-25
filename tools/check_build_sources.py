@@ -20,11 +20,14 @@ from check_cache_maintenance import check as check_cache_maintenance, check_nati
 from check_detail_search import check as check_detail_search
 from check_tmdb_optimization import check as check_tmdb_optimization
 from check_detail_parallel import check as check_detail_parallel
+from apply_video_preload import apply as apply_preload
+from check_video_preload import check as check_video_preload, check_native as check_native_preload
 
 ROOT = Path(__file__).resolve().parents[1]
 LOCKS = ('branding/source-lock.json', 'detail/native-source-lock.json',
          'detail/danmaku-native-source-lock.json', 'detail/category-paging-source-lock.json',
-         'detail/home-artwork-source-lock.json', 'detail/native-history-source-lock.json')
+         'detail/home-artwork-source-lock.json', 'detail/native-history-source-lock.json',
+         'detail/preload-native-source-lock.json')
 
 
 def check_sources(root=ROOT):
@@ -33,6 +36,7 @@ def check_sources(root=ROOT):
     check_detail_search(root)
     check_tmdb_optimization(root)
     check_detail_parallel(root)
+    check_video_preload(root)
     detail_page=(root / 'detail/runtime/common/com/leotv/detail/TvDetailPage.java').read_text()
     detail_scroll=(root / 'detail/runtime/common/com/leotv/detail/TvDetailScroll.java').read_text()
     if 'if(!Device.MOBILE)setSmoothScrollingEnabled(false)' not in detail_scroll or 'return Device.MOBILE || touchScroll ? super.computeScrollDeltaToGetChildRectOnScreen(rectangle) : 0' not in detail_scroll:
@@ -164,9 +168,10 @@ def check_sources(root=ROOT):
             # Match build_branded.py's order, including overlapping native hooks.
             changed, _ = apply_source_overlay(project, spec[family], values,
                 Path(apk_name).stem, manifests['branding/source-lock.json'][variant], spec)
-            for apply in (apply_details, apply_danmaku, apply_paging):
+            for apply in (apply_details, apply_danmaku, apply_paging, apply_preload):
                 descriptors, _ = apply(project, root, variant)
                 changed.update(descriptors)
+            check_native_preload(root,variant,project)
             cache_path='smali/U3/g.smali' if family=='mobile' else 'smali/S3/d.smali'
             check_native_cache((source/cache_path).read_text(),(project/cache_path).read_text(),family=='mobile')
             if family=='tv':

@@ -20,6 +20,7 @@ from build_preserved import VARIANTS, is_signature, run
 from apply_native_details import apply as apply_native_details
 from apply_danmaku import apply as apply_danmaku
 from apply_category_paging import apply as apply_category_paging
+from apply_video_preload import apply as apply_video_preload
 from check_native_details import check_contract as check_detail_contract, source_set as detail_source_set
 from harden_overlays import compile_program, audit_program
 
@@ -407,6 +408,8 @@ def main():
             changed.update(danmaku_changed); changed_sources.update(danmaku_sources)
             paging_changed, paging_sources = apply_category_paging(project, ROOT, args.variant)
             changed.update(paging_changed); changed_sources.update(paging_sources)
+            preload_changed, preload_sources = apply_video_preload(project, ROOT, args.variant)
+            changed.update(preload_changed); changed_sources.update(preload_sources)
             print(f'{args.variant}: compiling Leotv branding and native chrome against API 23...', flush=True)
             compile_report, added, protected_dex, mapping = compile_overlays(project, profile, spec, apk, args.sdk, apktool, work, log, args.r8)
             if release['channel'] == 'stable' and not compile_report.get('hardening'):
