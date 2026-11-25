@@ -16,6 +16,7 @@ from build_preserved import VARIANTS
 from check_native_details import check_contract
 from apply_qr_web import check_contract as check_qr_web_contract
 from check_tmdb_loading import check as check_tmdb_loading
+from check_cache_maintenance import check as check_cache_maintenance, check_native as check_native_cache
 
 ROOT = Path(__file__).resolve().parents[1]
 LOCKS = ('branding/source-lock.json', 'detail/native-source-lock.json',
@@ -25,6 +26,7 @@ LOCKS = ('branding/source-lock.json', 'detail/native-source-lock.json',
 
 def check_sources(root=ROOT):
     check_tmdb_loading(root)
+    check_cache_maintenance(root)
     detail_page=(root / 'detail/runtime/common/com/leotv/detail/TvDetailPage.java').read_text()
     detail_scroll=(root / 'detail/runtime/common/com/leotv/detail/TvDetailScroll.java').read_text()
     if 'if(!Device.MOBILE)setSmoothScrollingEnabled(false)' not in detail_scroll or 'return Device.MOBILE || touchScroll ? super.computeScrollDeltaToGetChildRectOnScreen(rectangle) : 0' not in detail_scroll:
@@ -159,6 +161,8 @@ def check_sources(root=ROOT):
             for apply in (apply_details, apply_danmaku, apply_paging):
                 descriptors, _ = apply(project, root, variant)
                 changed.update(descriptors)
+            cache_path='smali/U3/g.smali' if family=='mobile' else 'smali/S3/d.smali'
+            check_native_cache((source/cache_path).read_text(),(project/cache_path).read_text(),family=='mobile')
             if family=='tv':
                 video='smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali'
                 original=(source/video).read_text();patched=(project/video).read_text()

@@ -115,6 +115,7 @@ public final class GlobalChrome {
 
     public static synchronized void install(Application app) {
         if (installed != null && installed.get() == app) return;
+        com.leotv.detail.CacheMaintenance.install(app);
         com.leotv.detail.DanmakuSettings.initialize(app);
         lifecycle = new Lifecycle();
         app.registerActivityLifecycleCallbacks(lifecycle);

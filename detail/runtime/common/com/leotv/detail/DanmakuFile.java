@@ -57,6 +57,16 @@ final class DanmakuFile {
     }
     private static void add(List<Comment> out,Comment item){if(Double.isNaN(item.seconds)||Double.isInfinite(item.seconds)||item.seconds<0||item.seconds>604800||item.text==null||item.text.isEmpty())return;out.add(item);}
     static File write(Context context,List<Comment> comments,long offset,String identity)throws Exception{
+        return write(context,comments,offset,identity,CacheMaintenance.ticket());
+    }
+    static File write(Context context,List<Comment> comments,long offset,String identity,long ticket)throws Exception{
+        if(!CacheMaintenance.enterWrite())throw new java.io.InterruptedIOException("cache clearing");
+        try{
+            if(!CacheMaintenance.valid(ticket))throw new java.io.InterruptedIOException("cache cleared");
+            return writeAllowed(context,comments,offset,identity);
+        }finally{CacheMaintenance.exitWrite();}
+    }
+    private static File writeAllowed(Context context,List<Comment> comments,long offset,String identity)throws Exception{
         File directory=new File(context.getCacheDir(),"leotv-api-danmaku");if(!directory.isDirectory()&&!directory.mkdirs())throw new java.io.IOException("无法保存弹幕缓存");
         File target=new File(directory,DanmakuSettings.digest(identity+"@@@"+offset)+".xml");
         File temporary=File.createTempFile("pending-",".tmp",directory);

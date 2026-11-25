@@ -519,7 +519,7 @@ class MobileDetailMetadata {
         }
         if (match == null || match.optLong("id") <= 0) return null;
         request.check();
-        MetadataCache.rememberMatch(work,options,match);
+        MetadataCache.rememberMatch(work,options,match,request);
         boolean tv = "tv".equals(match.getString("media_type"));
         if(progress!=null){Result initial=summary(match,tv,match.optJSONObject("images")!=null,options);if(!initial.overview.isEmpty()||!initial.posterPath.isEmpty()||!initial.backdropPath.isEmpty())progress.ready(initial);}
         String base = "/" + match.getString("media_type") + "/" + match.getLong("id");
@@ -534,7 +534,7 @@ class MobileDetailMetadata {
                 + encode("null,zh," + imageLanguage + ",en") + query, options, headers, request);
         JSONObject identified=copy(detail);identified.put("media_type",match.getString("media_type"));
         request.check();
-        MetadataCache.rememberMatch(work,options,identified);
+        MetadataCache.rememberMatch(work,options,identified,request);
         if(heroOnly)return summary(identified,tv,true,options);
         if(progress!=null)progress.ready(summary(identified,tv,true,options));
         List<Actor> actors = actors(detail.optJSONObject(creditsKey));

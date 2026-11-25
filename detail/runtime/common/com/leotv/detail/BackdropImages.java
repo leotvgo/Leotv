@@ -116,6 +116,7 @@ final class BackdropImages {
     }
 
     synchronized byte[] read(String key) {
+        if(CacheMaintenance.ticket()<0)return null;
         if (suspended || !safeRoot() || root == null || key == null || key.isEmpty()) return null;
         try {
             File file = new File(root, name(key));
@@ -139,6 +140,11 @@ final class BackdropImages {
     synchronized void write(String key, byte[] data) { write(key, data, ticket()); }
 
     synchronized void write(String key, byte[] data, long token) {
+        if(!CacheMaintenance.enterWrite())return;
+        try{writeAllowed(key,data,token);}finally{CacheMaintenance.exitWrite();}
+    }
+    private void writeAllowed(String key,byte[] data,long token){
+        if(CacheMaintenance.ticket()<0)return;
         if (suspended || token < 0 || token != generation || !safeRoot() || root == null || data == null || data.length == 0 || data.length > ENTRY_LIMIT) return;
         try {
             reclaimOnce();

@@ -157,9 +157,9 @@ final class FollowFeed {
     private static JSONObject cached(MobileDetailMetadata client, String path, BackdropSettings.Options options,
                                      Map<String, String> headers, BackdropHttp.Request request, long now) throws Exception {
         String key = path.replaceAll("[?&]api_key=[^&]*", "");
-        synchronized (CACHE_DATA) { Cached hit = CACHE_DATA.get(key); if (hit != null && now >= hit.at && now - hit.at < TTL) return hit.data; }
+        synchronized (CACHE_DATA) { Cached hit = CACHE_DATA.get(key); if (CacheMaintenance.valid(request.cacheTicket)&&hit != null && now >= hit.at && now - hit.at < TTL) return hit.data; }
         JSONObject value = client.get(path, options, headers, request);
-        synchronized (CACHE_DATA) { if (value != null) CACHE_DATA.put(key, new Cached(value, now)); }
+        synchronized (CACHE_DATA) { if (value != null&&CacheMaintenance.valid(request.cacheTicket)) CACHE_DATA.put(key, new Cached(value, now)); }
         return value;
     }
 

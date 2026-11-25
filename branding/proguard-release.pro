@@ -23,6 +23,7 @@
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.NativeQrInput { public <methods>; }
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.NativeCategoryPaging { public <methods>; }
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.MetadataSettings { public <methods>; }
+-keep,includedescriptorclasses,allowoptimization class com.leotv.detail.CacheMaintenance { public <methods>; }
 -keep class com.leotv.detail.Device { boolean MOBILE; }
 
 # Serialized contracts must retain annotation semantics if source models are added.

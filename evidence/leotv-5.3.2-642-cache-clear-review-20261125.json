@@ -1,0 +1,88 @@
+{
+  "version_name": "5.3.2",
+  "version_code": 642,
+  "delivered_source": "cd3c548382e5717b6c532016f67df46b0a9fb243",
+  "audit_type": "source-review-only",
+  "device_memory_measurements": false,
+  "device_cache_deleted": false,
+  "runtime_changes": false,
+  "build_triggered": false,
+  "disk_cache_directories": [
+    "cache/leotv-metadata-v1",
+    "cache/leo-home/images",
+    "cache/leotv-api-danmaku"
+  ],
+  "disk_directories_covered_by_native_recursive_clear": true,
+  "new_memory_caches_cleared_by_button": false,
+  "old_background_writes_invalidated_by_button": false,
+  "detail_memory_pressure_callback_wired": false,
+  "home_cache_budget_mib": 500,
+  "metadata_disk_budget_mib": 32,
+  "metadata_memory_payload_budget_mib": 6,
+  "encoded_images_default_budget_mib": 468,
+  "detail_thumbnail_budget_mib_per_instance": 100,
+  "detail_thumbnail_budget_is_soft": true,
+  "same_tmdb_artwork_can_use_multiple_disk_keys": true,
+  "preserved_user_preferences": [
+    "leo_following",
+    "leo_metadata_matches",
+    "leotv_personalization"
+  ],
+  "runtime_sources_match_delivered_compilation": {
+    "detail/runtime/common/com/leotv/detail/MetadataCache.java": "293838f39b4e497744a227c6112b80ce8ef3a80b220d1752c9c242faa6b549ec",
+    "detail/runtime/common/com/leotv/detail/BackdropImages.java": "1314fe6243a25fbdd516bbf4150f044f06ff2506645568d35346f99b809d3511",
+    "detail/runtime/common/com/leotv/detail/DetailSessionCache.java": "b9a61625e5088c5761ac767540f4dfb601e1d3d499375997fb9b0a972079d35f",
+    "detail/runtime/common/com/leotv/detail/DetailThumbnails.java": "d1b9c647831f1d40748878bc129ff9316551c341b9cfc37b0eaa0eb98b2ca4c8",
+    "detail/runtime/common/com/leotv/detail/DetailHero.java": "0be7637b14ea6656db7aef61a839077e61556458429cf97ee480c155202b2cb5",
+    "detail/runtime/common/com/leotv/detail/DetailTitleArt.java": "6000abb12e89aefd12ddd40102c4c6c66eea961666c93c8e66eb1bc508003214",
+    "detail/runtime/common/com/leotv/detail/FollowFeed.java": "32694ad0cf44a9de4f0a9f5fd23db5037b5d9b3fc2f0bd086c5d5a3728ef7f9e",
+    "detail/runtime/common/com/leotv/detail/FollowStore.java": "57640fe9deceeb6ae517e4e5fc6e1bb05a901400cea0505bc6676ece51d5c1af",
+    "detail/runtime/common/com/leotv/detail/MetadataSettings.java": "39428ab84d50e00d2bc8e47248cf2f0fae299abb7dab6fc6257bdc9875c58dc2",
+    "detail/runtime/common/com/leotv/detail/MetadataMatchStore.java": "140bd2572978e348930f1446568375f87a35cd039b6a5859975314551393c4a8",
+    "detail/runtime/common/com/leotv/detail/MetadataPrefetch.java": "a71edce49384a6c225e21f1adc93265315eac0ffa2f789a6cad16a6c066076b5",
+    "detail/runtime/common/com/leotv/detail/TmdbArtwork.java": "339b8eb4546e8ae5ea69ec528b6c0167beb19e6ce91db74e7ff4fd3673cfa416",
+    "detail/runtime/common/com/leotv/detail/TmdbNetwork.java": "035498d321f7d341ddccb27fb75a65624233d285e965209d75a2062606c751aa",
+    "detail/runtime/common/com/leotv/detail/TmdbRoutes.java": "80fe9f7fdadbed78d3d71e7d3df8531156b414202c38f0420944d6a1414e27f7",
+    "detail/runtime/common/com/leotv/detail/NativeLibrary.java": "b95c3f756cd64b47a1aa0accdcd657cc444c93b699a8764a285aba91f265dd32",
+    "detail/runtime/common/com/leotv/detail/DanmakuFile.java": "290ad3c228ccfba7230266391c9ea81d49664a463fdaab1346e48d7ec4f79392",
+    "detail/runtime/common/com/leotv/detail/DanmakuPlayback.java": "4eb8ce18adeae8217627cfa110288f6f45356bdf9211ae64fc28906ed4243c15"
+  },
+  "native_clear_paths": {
+    "tv-v7a": {
+      "worker": "tv-armeabi-v7a/bytecode-project/smali/S3/d.smali",
+      "utility": "tv-armeabi-v7a/bytecode-project/smali/q6/i.smali",
+      "worker_sha256": "79e35b4e4ad2ae62dd92f718e2ed374eb852fa13e417b22718e45e123ef5986c",
+      "utility_sha256": "ae3537fbe298dc660040ede34601e27baee7f0e37dd0eab1c940b196cd7cc96e",
+      "root_method": "e",
+      "recursive_delete_method": "h",
+      "workers_and_utilities_semantically_preserved_in_ci": true
+    },
+    "tv-v8a": {
+      "worker": "tv-arm64-v8a/bytecode-project/smali/S3/d.smali",
+      "utility": "tv-arm64-v8a/bytecode-project/smali/q6/i.smali",
+      "worker_sha256": "79e35b4e4ad2ae62dd92f718e2ed374eb852fa13e417b22718e45e123ef5986c",
+      "utility_sha256": "ae3537fbe298dc660040ede34601e27baee7f0e37dd0eab1c940b196cd7cc96e",
+      "root_method": "e",
+      "recursive_delete_method": "h",
+      "workers_and_utilities_semantically_preserved_in_ci": true
+    },
+    "mobile-v7a": {
+      "worker": "mobile-armeabi-v7a/bytecode-project/smali/U3/g.smali",
+      "utility": "mobile-armeabi-v7a/bytecode-project/smali_classes3/K7/a.smali",
+      "worker_sha256": "c53b115178729c42bc7f19b661540c0ee4675e48d7bd0da56bf5abbfdcc977ca",
+      "utility_sha256": "dce8e358a45285136b486eb0435133b69367d2672bfcd1fca7401df73dc989c8",
+      "root_method": "c",
+      "recursive_delete_method": "f",
+      "workers_and_utilities_semantically_preserved_in_ci": true
+    },
+    "mobile-v8a": {
+      "worker": "mobile-arm64-v8a/bytecode-project/smali/U3/g.smali",
+      "utility": "mobile-arm64-v8a/bytecode-project/smali_classes3/K7/a.smali",
+      "worker_sha256": "c53b115178729c42bc7f19b661540c0ee4675e48d7bd0da56bf5abbfdcc977ca",
+      "utility_sha256": "dce8e358a45285136b486eb0435133b69367d2672bfcd1fca7401df73dc989c8",
+      "root_method": "c",
+      "recursive_delete_method": "f",
+      "workers_and_utilities_semantically_preserved_in_ci": true
+    }
+  }
+}

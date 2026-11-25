@@ -72,9 +72,10 @@ public final class NewHome implements AutoCloseable {
         nativeUi.borrow(page);nativeRoot.setVisibility(View.INVISIBLE);syncPending=false;worker.execute(()->load(value,token));return true;
     }
     void load(NewHomeSite value,long token){
+        long cacheTicket=CacheMaintenance.ticket();
         JSONObject cached=MetadataCache.home(value.site,value.configuration);
         if(cached!=null)main.post(()->applyHome(value,token,cached));
-        try{JSONObject home=new JSONObject(SiteFeed.homeBody(value.site));MetadataCache.home(value.site,value.configuration,home);
+        try{JSONObject home=new JSONObject(SiteFeed.homeBody(value.site));MetadataCache.home(value.site,value.configuration,home,cacheTicket);
             if(cached==null||!cached.toString().equals(home.toString()))main.post(()->applyHome(value,token,home));}
         catch(Exception unavailable){if(cached==null)main.post(()->{if(valid(value,token))page.failed("分类加载失败，点击站点名称切换站点");});}
     }

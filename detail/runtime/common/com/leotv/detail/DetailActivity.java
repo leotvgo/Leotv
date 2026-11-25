@@ -20,6 +20,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
     private BackdropSettings.Options requestedOptions;
     private TvDetailPage page;
     private int generation,sourceGeneration;
+    private long metadataCacheTicket=CacheMaintenance.ticket();
 
     @Override public void onCreate(Bundle saved){
         if(!Device.MOBILE)setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -43,7 +44,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
             page.bindSource(source);enrich(token);return;
         }
         DetailSessionCache.State cached=DetailSessionCache.get(this,site,id);
-        if(cached!=null){source=cached.source;metadata=cached.metadata==null?null:cached.metadata.detached();metadataOptions=BackdropSettings.read(this);page.bindSource(source);if(metadata!=null)page.render(metadata);if(metadata==null||!metadata.complete)enrich(token);return;}
+        if(cached!=null){metadataCacheTicket=cached.cacheTicket;source=cached.source;metadata=cached.metadata==null?null:cached.metadata.detached();metadataOptions=BackdropSettings.read(this);page.bindSource(source);if(metadata!=null)page.render(metadata);if(metadata==null||!metadata.complete)enrich(token);return;}
         org.json.JSONObject seed=RelatedDetail.metadata(id);
         if(seed==null)seed=NativeRouting.searchMetadata(getIntent());
         if(seed!=null){
@@ -78,10 +79,10 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
         if(token!=generation||isDestroyed()||metadataRequest!=request){if(result!=null)result.release();return;}
         if(!options.same(BackdropSettings.read(this))){if(result!=null)result.release();enrich(++generation);return;}
         if(result==null&&metadata!=null)return;
-        MobileDetailMetadata.Result old=metadata;metadata=result;metadataOptions=options;page.render(result);DetailSessionCache.put(this,source,metadata);if(old!=null&&old!=result)old.release();
+        MobileDetailMetadata.Result old=metadata;metadata=result;metadataOptions=options;metadataCacheTicket=request.cacheTicket;page.render(result);DetailSessionCache.put(this,source,metadata,metadataCacheTicket);if(old!=null&&old!=result)old.release();
     }
     @Override public void rematch(){enrich(generation);}
-    private void cacheState(){DetailSessionCache.put(this,source,source!=null&&page!=null&&source.site.equals(page.metadataSite)&&source.id.equals(page.metadataId)&&metadataOptions!=null&&metadataOptions.same(BackdropSettings.read(this))?metadata:null);}
+    private void cacheState(){DetailSessionCache.put(this,source,source!=null&&page!=null&&source.site.equals(page.metadataSite)&&source.id.equals(page.metadataId)&&metadataOptions!=null&&metadataOptions.same(BackdropSettings.read(this))?metadata:null,metadataCacheTicket);}
     @Override public void play(SourceGateway.Episode episode){
         if(source==null)return;
         cacheState();DetailSessionCache.pin(this,source);

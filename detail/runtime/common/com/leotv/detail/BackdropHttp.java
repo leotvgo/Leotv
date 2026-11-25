@@ -47,8 +47,9 @@ final class BackdropHttp {
     }
     static final class Request {
         private final Request parent;
+        final long cacheTicket;
         Request(){this(null);}
-        Request(Request parent){this.parent=parent;}
+        Request(Request parent){this.parent=parent;cacheTicket=parent==null?CacheMaintenance.ticket():parent.cacheTicket;}
         private volatile boolean cancelled;
         private final Set<HttpURLConnection> connections = new HashSet<>();
         private final Set<okhttp3.Call> calls = new HashSet<>();

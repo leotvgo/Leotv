@@ -193,6 +193,7 @@ public final class DanmakuPlayback {
             selected=source;comments=null;status="正在加载弹幕…";long token=generation;String expectedApi=api,key=identity.key();DanmakuApi.Owner request=owner;
             if(paused){needResume=true;return;}
             if(source.url.startsWith("ws:")||source.url.startsWith("wss:")){emptyNative();status="实时弹幕连接中…";DanmakuLive.start(this,source,token,expectedApi,key);return;}
+            final long cacheTicket=CacheMaintenance.ticket();
             task=worker.submit(()->{
                 try{
                     byte[] bytes;
@@ -200,10 +201,11 @@ public final class DanmakuPlayback {
                     else if(source.url.startsWith("file:")){try(InputStream input=new java.io.FileInputStream(new File(Uri.parse(source.url).getPath()))){bytes=bounded(input);}}
                     else bytes=DanmakuApi.download(nativeUrl(a,source.url),request);
                     List<DanmakuFile.Comment> data=DanmakuFile.parse(bytes);if(data.isEmpty())throw new java.io.IOException("empty");
-                    File file=DanmakuFile.write(a,data,DanmakuSettings.offset(a),source.url);
-                    main.post(()->{if(!owns(token,expectedApi,key))return;comments=data;status="已加载 "+data.size()+" 条弹幕";boolean applied=apply(file,source);
+                    if(!CacheMaintenance.valid(cacheTicket))return;
+                    File file=DanmakuFile.write(a,data,DanmakuSettings.offset(a),source.url,cacheTicket);
+                    main.post(()->{if(!owns(token,expectedApi,key)||!CacheMaintenance.valid(cacheTicket))return;comments=data;status="已加载 "+data.size()+" 条弹幕";boolean applied=apply(file,source);
                         if(applied&&(remember||manualOwned()&&manualRemember)&&!expectedApi.isEmpty())matches.remember(expectedApi,identity.site,identity.vod,identity.episode+"@@@"+identity.url,title.isEmpty()?keyword:title,source);});
-                }catch(Exception unavailable){main.post(()->{if(!owns(token,expectedApi,key))return;status="弹幕加载失败，可重新选源";android.widget.Toast.makeText(a,status,android.widget.Toast.LENGTH_SHORT).show();});}
+                }catch(Exception unavailable){if(!CacheMaintenance.valid(cacheTicket))return;main.post(()->{if(!owns(token,expectedApi,key)||!CacheMaintenance.valid(cacheTicket))return;status="弹幕加载失败，可重新选源";android.widget.Toast.makeText(a,status,android.widget.Toast.LENGTH_SHORT).show();});}
             });
         }
         boolean apply(File file,DanmakuSource source){

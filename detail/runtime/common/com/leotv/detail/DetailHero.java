@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /** Page-scoped carousel: five encoded images, only current/next decoded images. */
-class DetailHero extends View {
+class DetailHero extends View implements CacheMaintenance.Client {
     static final int LIBRARY_HOME=100,LIBRARY_DETAIL=101;
     static final int DEFAULT_COLOR = 0xff101923;
     /**
@@ -77,6 +77,7 @@ class DetailHero extends View {
 
     DetailHero(Context context, Palette palette) {
         super(context); this.palette = palette;
+        CacheMaintenance.track(this);
         setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
     }
     private boolean transparentWaiting;
@@ -282,7 +283,7 @@ class DetailHero extends View {
                 if((o.outWidth<=0||o.outHeight<=0)&&slide.source&&!slide.fallback.isEmpty()){data=downloadSource(slide.fallback,route,pending);fetched=false;BitmapFactory.decodeByteArray(data,0,data.length,o);}
                 if (o.outWidth > 0 && o.outHeight > 0 && o.outWidth <= 4096 && o.outHeight <= 4096) {
                     // Only an image this page can actually draw is worth keeping.
-                    if (fetched) store.write(cacheKey, data, cacheTicket);
+                    if (fetched&&CacheMaintenance.valid(pending.cacheTicket)) store.write(cacheKey, data, cacheTicket);
                     o.inSampleSize = 1; o.inJustDecodeBounds = false; o.inPreferredConfig = Bitmap.Config.RGB_565;
                     while (o.outWidth / o.inSampleSize > (portrait?780:1280) || o.outHeight / o.inSampleSize > (portrait?1170:720)) o.inSampleSize *= 2;
                     loaded = BitmapFactory.decodeByteArray(data, 0, data.length, o);
@@ -301,7 +302,7 @@ class DetailHero extends View {
                     if(canRetry&&slide.attempts<3)slide.retryAt=SystemClock.uptimeMillis()+20000L*slide.attempts;
                     if(!applyPendingStep())prepareNeighbour(direction, manual); return;
                 }
-                slide.attempts=0;slide.retryAt=0;slide.bytes = encoded; slide.colour = edgeColour(value, portrait ? .86f : .72f);
+                slide.attempts=0;slide.retryAt=0;slide.bytes = CacheMaintenance.valid(pending.cacheTicket)?encoded:null; slide.colour = edgeColour(value, portrait ? .86f : .72f);
                 // Keep a completed fetch in the slide cache, but honour newly inserted neighbours.
                 if(bitmap!=null&&!replacingCurrent&&!manual&&resolvedIndex!=neighbour(currentIndex,direction)){
                     recycle(value);if(!applyPendingStep())prepareNeighbour(direction,false);return;
@@ -573,16 +574,20 @@ class DetailHero extends View {
     }
     void close() {
         if (closed) return; closed = true; running = false;pendingStep=0; generation++;
+        CacheMaintenance.forget(this);
         main.removeCallbacks(turn); main.removeCallbacks(loadingFrame); stopAnimation(false);
         if (request != null) request.cancel(); if (worker != null) worker.shutdownNow();
         request = null;pendingSlide=null; worker = null; slides.clear();
         retire(bitmap); retire(nextBitmap); bitmap = nextBitmap = null; invalidate();
     }
     private void retire(Bitmap b) { if (b != null) main.postDelayed(() -> recycle(b),64); }
+    /** Current/next decoded pixels and their animation remain owned by this visible carousel. */
+    @Override public void trimCache(){for(Slide slide:slides)slide.bytes=null;}
     private static void recycle(Bitmap b) { if (b != null && !b.isRecycled()) b.recycle(); }
     private static final class Slide {
         final String path; final boolean source; String fallback="";byte[] bytes; boolean failed; int colour = DEFAULT_COLOR, attempts; long retryAt;
         Slide(String path, boolean source) { this.path = path; this.source = source; }
-        String cacheKey() { return source ? (path.indexOf('@')<0&&MobileDetailMetadata.tmdbArtwork(path)?"tmdb-source:"+MetadataSettings.imageBase()+":":"source-poster:") + path : key(path); }
+        String cacheKey() { return !source||path.indexOf('@')<0&&MobileDetailMetadata.tmdbArtwork(path)
+                ?TmdbArtwork.key(MobileDetailMetadata.imageAddress(path,"w1280")):"source-poster:"+path; }
     }
 }

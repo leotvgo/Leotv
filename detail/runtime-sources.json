@@ -30,6 +30,7 @@
       "detail/runtime/common/com/leotv/detail/BackdropResolver.java",
       "detail/runtime/common/com/leotv/detail/BackdropSettings.java",
       "detail/runtime/common/com/leotv/detail/BackdropTls.java",
+      "detail/runtime/common/com/leotv/detail/CacheMaintenance.java",
       "detail/runtime/common/com/leotv/detail/CalendarBackdrop.java",
       "detail/runtime/common/com/leotv/detail/CspCategoryActivity.java",
       "detail/runtime/common/com/leotv/detail/CspHeroMetadata.java",

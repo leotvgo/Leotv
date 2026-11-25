@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  * memory on. What it must not throw away is the bytes they came from - keeping those is the difference
  * between a return to the home that draws immediately and one that downloads every poster again.
  */
-class DetailThumbnails {
+class DetailThumbnails implements CacheMaintenance.Client {
     interface Target { void show(Bitmap bitmap); }
     private static final Handler MAIN = new Handler(Looper.getMainLooper());
     /** One page's decoded artwork is allowed to grow to this before older entries are dropped. */
@@ -65,6 +65,7 @@ class DetailThumbnails {
         idleBudget = this.budget;
         limit = this.budget;
         worker.allowCoreThreadTimeOut(true);
+        CacheMaintenance.track(this);
     }
     void begin() {
         syncImages();
@@ -93,6 +94,15 @@ class DetailThumbnails {
         if (!visible) { idle = true; detach(); }
         limit = 0;
         trim(0);
+    }
+    /** Views retain their displayed bitmaps; only cache ownership and speculative work are dropped. */
+    @Override public void trimCache(){
+        if(closed)return;
+        cache.clear();bytes=0;failed.clear();failures.clear();retryAt.clear();
+        Iterator<Map.Entry<String,Pending>> tasks=pending.entrySet().iterator();
+        while(tasks.hasNext()){Pending task=tasks.next().getValue();if(task.target==null){task.cancel();tasks.remove();}}
+        Iterator<Request> queued=wanted.values().iterator();while(queued.hasNext())if(queued.next().priority()>=2)queued.remove();
+        worker.purge();
     }
 
     private void cancelPending() {
@@ -180,6 +190,10 @@ class DetailThumbnails {
                     pump(); return;
                 }
                 failures.remove(key);retryAt.remove(key);
+                if(!CacheMaintenance.valid(task.request.cacheTicket)){
+                    if(needed.contains(key)&&task.target!=null)task.target.show(result);else recycle(result);
+                    pump();return;
+                }
                 trim(result.getAllocationByteCount());
                 // A pressure-limited visible page can still fill its current viewport.
                 int allowed = needed.contains(key) ? Math.max(limit, idleBudget) : limit;
@@ -214,6 +228,7 @@ class DetailThumbnails {
     }
     void close() {
         if (closed) return; closed = true;
+        CacheMaintenance.forget(this);
         cancelPending();
         // Only this page's decoded images go. The bytes they were decoded from stay in the bounded store,
         // which is what lets the next page - this one reopened, or the home - draw instead of download.
@@ -250,7 +265,7 @@ class DetailThumbnails {
         while (options.outWidth / options.inSampleSize > w || options.outHeight / options.inSampleSize > h) options.inSampleSize *= 2;
         Bitmap result = BitmapFactory.decodeByteArray(data, 0, data.length, options);
         try { request.check(); } catch (Exception e) { recycle(result); throw e; }
-        if (fresh && result != null) files.write(key, data, cacheTicket);
+        if (fresh && result != null&&CacheMaintenance.valid(request.cacheTicket)) files.write(key, data, cacheTicket);
         return result;
     }
 

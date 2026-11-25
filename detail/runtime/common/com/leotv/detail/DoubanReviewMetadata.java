@@ -11,7 +11,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /** Public, hot, watched short comments; never the permission-gated latest feed. */
-class DoubanReviewMetadata extends DoubanDetailMetadata {
+class DoubanReviewMetadata extends DoubanDetailMetadata implements CacheMaintenance.Client {
+    DoubanReviewMetadata(){CacheMaintenance.track(this);}
+    @Override public void trimCache(){synchronized(cache){cache.clear();}}
     /** The detail page keeps 20; the player drawer asks for {@link #PLAYER_LIMIT}. */
     private static final int LIMIT = 20, PAGE = 20, PAGES = 3;
     private static final int LONG_LIMIT = 10;
@@ -41,7 +43,7 @@ class DoubanReviewMetadata extends DoubanDetailMetadata {
         synchronized (cache) {
             if (!options.same(cacheOptions)) { cache.clear(); cacheOptions = options; }
             Cached found = cache.get(key);
-            if (found != null && found.expires > now()) return found.values;
+            if (CacheMaintenance.valid(request.cacheTicket)&&found != null && found.expires > now()) return found.values;
         }
         // The site's own pages read these endpoints with the stored 豆瓣 login, while an anonymous caller
         // can simply be handed an empty list. Offer the configured session first and keep the anonymous
@@ -68,7 +70,7 @@ class DoubanReviewMetadata extends DoubanDetailMetadata {
         if (read.partial) return Collections.unmodifiableList(read.values); // Retry on next visit.
         Cached stored = new Cached(read.values, now() + (read.values.isEmpty() ? 60_000L : 600_000L));
         synchronized (cache) {
-            if (options.same(cacheOptions)) {
+            if (CacheMaintenance.valid(request.cacheTicket)&&options.same(cacheOptions)) {
                 if (cache.size() >= 24) cache.remove(cache.keySet().iterator().next());
                 cache.put(key, stored);
             }

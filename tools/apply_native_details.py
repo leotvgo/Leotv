@@ -45,12 +45,13 @@ def apply(project, root, variant):
     player_path = 'smali/F3/f.smali'
     source_path = 'smali/E3/n.smali' if mobile else 'smali/B3/n.smali'
     home_path = 'smali/E3/p.smali' if mobile else 'smali/B3/p.smali'
+    cache_path = 'smali/U3/g.smali' if mobile else 'smali/S3/d.smali'
     episode_path = 'smali/S3/f.1.smali'
     tv_episode_callback = 'smali/A0/a.smali'
     tv_episode_key = 'smali/O3/l.smali'
     lock = json.loads((root / 'detail/native-source-lock.json').read_text())[variant]
     changes, descriptors = {}, set()
-    paths = [base_path, settings_path, VIDEO, result_path,source_path,home_path]
+    paths = [base_path, settings_path, VIDEO, result_path,source_path,home_path,cache_path]
     index_paths=['smali/S3/z.smali'] if mobile else ['smali/P3/e.smali','smali/P3/f.smali']
     paths.extend(index_paths)
     if mobile:
@@ -65,7 +66,35 @@ def apply(project, root, variant):
         text = original.decode()
         descriptor = re.search(r'(?m)^\.class[^\n]* (L[^;]+;)', text).group(1)
         descriptors.add(descriptor)
-        if path == home_path:
+        if path == cache_path:
+            def native_clear(body):
+                owner='LK7/a;' if mobile else 'Lq6/i;'
+                name='f' if mobile else 'h'
+                root_name='c' if mobile else 'e'
+                marker='    :pswitch_3\n    invoke-static {}, '+owner+'->'+root_name+'()Ljava/io/File;'
+                if body.count(marker)!=1:
+                    raise ValueError('Expected the original cache-only worker branch: '+path)
+                start=body.index(marker)
+                delete='    invoke-static {v0}, '+owner+'->'+name+'(Ljava/io/File;)V'
+                position=body.index(delete,start)
+                added='''    :leotv_cache_begin
+    invoke-static {}, Lcom/leotv/detail/CacheMaintenance;->beforeClear()V
+
+'''+delete+'''
+    :leotv_cache_end
+    invoke-static {}, Lcom/leotv/detail/CacheMaintenance;->afterClear()V
+    goto :leotv_cache_continue
+    .catchall {:leotv_cache_begin .. :leotv_cache_end} :leotv_cache_failure
+
+    :leotv_cache_failure
+    move-exception v1
+    invoke-static {}, Lcom/leotv/detail/CacheMaintenance;->afterClear()V
+    throw v1
+
+    :leotv_cache_continue'''
+                return body[:position]+added+body[position+len(delete):]
+            text=replace_method(text,'run()V',native_clear)
+        elif path == home_path:
             if re.search(r'(?m)^\.method.* <init>\(\)V$',text):
                 raise ValueError('Expected the preserved constructor-elided home callable.')
             text += '''
