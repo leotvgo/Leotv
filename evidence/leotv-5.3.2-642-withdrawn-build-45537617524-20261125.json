@@ -84,5 +84,10 @@
     }
   ],
   "reason": "User accepted 642 and requested integrating new caches with the original native clearing policy without disrupting stable interaction.",
-  "withdrawn": false
+  "withdrawn": true,
+  "archive_is_draft": true,
+  "assets_retained": true,
+  "formal_tag_removed": true,
+  "source_archive_tag_verified": true,
+  "updated_at": "2026-11-25T05:10:08.322244+00:00"
 }

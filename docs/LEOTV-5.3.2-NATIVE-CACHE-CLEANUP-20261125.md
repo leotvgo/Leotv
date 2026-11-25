@@ -33,3 +33,9 @@ TV `S3/d.run()` 与手机 `U3/g.run()` 的 cache 分支仍使用各端原方法�
 版本名保持 **5.3.2**，内部版本码升至 **643**，继续四套固定签名 APK。按既有要求不做本地 APK 打包或额外回归；GitHub `run_validation_tests=false`，保留必需源码/API23/R8、原样/允许变化和固定签名核对。实际清理大小、内存释放、轮播、遥控/触摸和播放/续播仍由用户真机验收，当前 View/播放器持有的数据保留不等于进程内存立即归零。
 
 新四套包成功后，旧 642 的四套 APK 和八份报告完整归档为内部草稿，再替换同版本正式下载。沿用此前已授权的临时公开构建流程，完成后恢复并核对私有；交付记录见 `evidence/leotv-5.3.2-643-build-dispatch-20261125.json`。
+
+## 最终交付
+
+源码 `8b42c21744a3e48b038455b258bb59eb5bda18cf` 的[构建 45550937600](https://github.com/leotvgo/Leotv/actions/runs/45550937600)首次成功；[发布 45551506274](https://github.com/leotvgo/Leotv/actions/runs/45551506274)在旧 642 归档完成后第二次尝试成功。[正式 5.3.2 / 643](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.2)含四套固定签名 APK 和八份审计/签名报告，正式标签及 Latest 指向新源码。逐套核对 release digest、固定证书、API23/R8、原样/允许变化、原生库及全部编译源码 SHA-256，通过；完整报告保存在 `evidence/leotv-5.3.2-643-ci-reports-20261125.json`。
+
+旧 642 的 12 项资产 ID/大小/digest 完整保留，发布归档为内部草稿 `leotv-5.3.2-withdrawn-build-45537617524`，旧源码标签保留。已恢复并 API 核对 PRIVATE。本轮没有本地 APK 打包或额外回归，实际缓存大小、内存回收和稳定操作体验由用户真机验收。
