@@ -33,6 +33,19 @@ def check(root):
         raise ValueError('Distant prefetches must preserve capacity for visible and nearby images.')
     if 'addOnScrollChangedListener(viewportChanged)' not in read('TvDetailPage'):
         raise ValueError('Scrolling must update the viewport image priorities.')
+    carousel = read('DetailHero')
+    retain = carousel[carousel.index('if(keepCurrent||keepInitial||keepReplacement)'):carousel.index('// A genuinely different image')]
+    if any(call in retain for call in ('stopAnimation(', 'retire(bitmap)', 'request.cancel()', 'generation++')):
+        raise ValueError('Enriching a compatible carousel must preserve the visible animation and reusable request.')
+    for required in ('pendingSlide!=null&&updated.contains(pendingSlide)', 'int resolvedIndex=slides.indexOf(slide)',
+                     'if (running&&firstArtwork) animate(1, 650', 'if(slides.isEmpty()){retire(bitmap);bitmap=null;'):
+        if required not in carousel:
+            raise ValueError('Carousel replacement must retain artwork, resolve reordered slides and reveal only first artwork: ' + required)
+    switches = activity[activity.index('@Override public void changeSource'):activity.index('@Override public void download')]
+    if any(call in switches for call in ('enrich(', 'page.render(', 'metadataRequest.cancel()', 'metadataTask.cancel(', 'load();')) or 'page.bindSource(detail,true)' not in switches:
+        raise ValueError('Same-work source changes must keep artwork and the existing metadata pipeline.')
+    if 'hero.loadSource(sourceArtwork,proxy)' not in read('TvDetailPage'):
+        raise ValueError('Later viewport refreshes must retain the same-work fallback artwork after source changes.')
     if 'hash("api-v1' not in cache or 'choice(work)' not in cache or 'work.configuration' not in cache or 'DISK_BUDGET=32*1024*1024' not in cache:
         raise ValueError('Cache filenames, matching overrides, subscription isolation and disk bounds are required.')
     if 'home_cache_mb",500' not in settings or '/t/p/(?:w[0-9]+|h[0-9]+|original)$' not in settings:
@@ -47,7 +60,9 @@ def check(root):
     return {'tmdb_staged_loading': True, 'persistent_metadata_and_recommendations': True,
             'carousel_matching_workers': 6, 'encoded_artwork_prefetch_workers': 4,
             'detail_supplement_workers': 4, 'default_home_cache_mb': 500,
-            'image_backup_delay_ms': 900, 'min_api': 23}
+            'image_backup_delay_ms': 900, 'min_api': 23,
+            'same_artwork_animation_and_requests_preserved': True,
+            'same_work_source_changes_keep_artwork': True}
 
 
 if __name__ == '__main__':

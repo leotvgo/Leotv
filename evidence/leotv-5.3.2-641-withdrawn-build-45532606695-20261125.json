@@ -1,0 +1,88 @@
+{
+  "repository": "leotvgo/Leotv",
+  "original_release_id": 457574153,
+  "original_tag": "leotv-5.3.2",
+  "source_commit": "2ee44e988248c3507d4f148e9e70ab4f83d7966d",
+  "build_run_id": 45532606695,
+  "archive_tag": "leotv-5.3.2-withdrawn-build-45532606695",
+  "version_name": "5.3.2",
+  "version_code": 641,
+  "original_release_name": "Leotv 5.3.2",
+  "original_release_body": "Leotv 5.3.2 正式版，来自成功构建 #45532606695。\n\n应用包名 com.leotv.app；提供 TV/手机、32/64 位四个固定签名 APK。保留已验收的原生详情、手机玻璃状态栏和悬浮导航、追更日历、跨订阅自动找源、收藏与续播。\n\n新增代码采用 R8 release/full 混淆优化；原宿主字节码、数据库、JAR/JNI 及反射接口、回移层和各 ABI 原生库保留。混淆映射单独存入内部草稿，不进入 APK 或正式下载文件。\n\nAndroid 6（API 23）编译、原样/变化审计与固定签名检查已通过；签名后真机运行验收单独记录。\n\n构建：https://github.com/leotvgo/Leotv/actions/runs/45532606695\n\n641 修订：修复 TV 详情异步刷新时的系统焦点自动滚动，经典/影院首屏保持整屏海报；保留 640 已验收的 TMDB 异步加载、并发和持久缓存优化。版本号仍为 5.3.2，内部版本码为 641，支持固定签名覆盖升级。\n\n# Leotv 5.3.2 更新日志\n\n- 首页缓存上限默认 500MB，支持在个性设置中调整。\n- 保存推荐资源、TMDB 匹配与资料缓存，启动先恢复轮播，再后台核对更新。\n- 首页 15 项轮播并发匹配，已有结果及时显示，后续更新合并提交。\n- 详情先显示海报、简介和评分，演员、季信息、选集缩略图、评论及合集并行补齐。\n- 提前缓存详情最多五张高清海报；演员、选集及剧照图片按当前屏幕和附近屏幕优先加载。\n- 图片更新保留当前画面，补充数据保留已有卡片，减少闪动和焦点中断。\n- 增加并发 DNS 与共享连接池；图片首选 images.tmdb.org，慢响应或失败时由原域名接替，兼容完整 /t/p/w500 前缀。\n\n保留 TV/手机、32/64 位四套 APK，沿用固定签名并支持覆盖升级。缓存命中可直接显示已有内容，首次冷加载速度仍受网络影响，实际效果由真机验收。\n",
+  "assets": [
+    {
+      "id": 789736634,
+      "name": "leotv-mobile-v7a-unsigned.audit.json",
+      "size": 67353,
+      "digest": "sha256:44a8264907b3bfb7701b6b097b3a3343df1b7fd8d11de2873b6fc4e709f9eb76"
+    },
+    {
+      "id": 789736616,
+      "name": "leotv-mobile-v7a.apk",
+      "size": 83476947,
+      "digest": "sha256:c1fa12cf5211f76653323350d077447e420d141908cf0a94e5e7fe28248a8d7c"
+    },
+    {
+      "id": 789736614,
+      "name": "leotv-mobile-v7a.signature.json",
+      "size": 355,
+      "digest": "sha256:bf2f6852020f92ddec6a2eaa9fb2b01dece71576a91bf4b706b55280cb55510f"
+    },
+    {
+      "id": 789736677,
+      "name": "leotv-mobile-v8a-unsigned.audit.json",
+      "size": 67351,
+      "digest": "sha256:b5894aac1ea69cbeaa0329b63ae2f981b92306b20df596759e18b274b5524351"
+    },
+    {
+      "id": 789736640,
+      "name": "leotv-mobile-v8a.apk",
+      "size": 82689650,
+      "digest": "sha256:3076acf0a1c00f6d3c687d7862f5cd3added7739dfee399150971417eac5b9ce"
+    },
+    {
+      "id": 789736662,
+      "name": "leotv-mobile-v8a.signature.json",
+      "size": 355,
+      "digest": "sha256:03156299bc4d22d18ce7d84c73f89d2d99e1396164b2e3ca1465f41b1227c5bc"
+    },
+    {
+      "id": 789736588,
+      "name": "leotv-tv-v7a-unsigned.audit.json",
+      "size": 57539,
+      "digest": "sha256:d1542afa463b7d036743e4c450e3ae776fe9da1c143f74e47b8f751b267e057c"
+    },
+    {
+      "id": 789736590,
+      "name": "leotv-tv-v7a.apk",
+      "size": 88345601,
+      "digest": "sha256:4a9e36b19920deb5d3fb09316ec1183d09193a283e35c0fd9589c16e56c63d26"
+    },
+    {
+      "id": 789736589,
+      "name": "leotv-tv-v7a.signature.json",
+      "size": 351,
+      "digest": "sha256:f0eff806fb8c508aed093dc48d2660fe071ea730d9a24895f558fa1400b49d29"
+    },
+    {
+      "id": 789736613,
+      "name": "leotv-tv-v8a-unsigned.audit.json",
+      "size": 57537,
+      "digest": "sha256:6cb4751df9a19fa1f3bede0a1a6b153c101905ac7911e06db53cb489febbac14"
+    },
+    {
+      "id": 789736587,
+      "name": "leotv-tv-v8a.apk",
+      "size": 87230628,
+      "digest": "sha256:ea0aa923922f381aa1ec4bfc815365a3df21b3b7f166ac4ea1c06f8b57dcc2f3"
+    },
+    {
+      "id": 789736592,
+      "name": "leotv-tv-v8a.signature.json",
+      "size": 351,
+      "digest": "sha256:b919429597a47915d94028b39d7ad7be6c3cfcb031dc05ecf98473c21ef577ce"
+    }
+  ],
+  "reason": "User requested keeping 5.3.2 while fixing phone/TV staged artwork and same-work source-switch continuity.",
+  "withdrawn": false
+}

@@ -19,7 +19,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
     private BackdropSettings.Options metadataOptions;
     private BackdropSettings.Options requestedOptions;
     private TvDetailPage page;
-    private int generation;
+    private int generation,sourceGeneration;
 
     @Override public void onCreate(Bundle saved){
         if(!Device.MOBILE)setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -31,7 +31,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
         load();
     }
     private void load(){
-        int token=++generation;String site=getIntent().getStringExtra("key"),id=getIntent().getStringExtra("id");
+        int token=++generation,sourceToken=++sourceGeneration;String site=getIntent().getStringExtra("key"),id=getIntent().getStringExtra("id");
         org.json.JSONObject followed=FollowingActivity.metadata(getIntent());
         if(site==null||id==null||id.isEmpty()||site.isEmpty()&&followed==null)return;
         // Always resolve calendar titles against this subscription. An old site's id or
@@ -54,8 +54,8 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
         }
         sourceTask=worker.submit(()->{
             try{SourceGateway.Detail value=SourceGateway.load(this,site,id);
-                main.post(()->{if(isDestroyed()||token!=generation)return;source=value;page.bindSource(value);enrich(token);});
-            }catch(Exception unavailable){main.post(()->{if(!isDestroyed()&&token==generation)page.playButton.idle("线路详情暂不可用");});}
+                main.post(()->{if(isDestroyed()||token!=generation||sourceToken!=sourceGeneration)return;source=value;page.bindSource(value);enrich(token);});
+            }catch(Exception unavailable){main.post(()->{if(!isDestroyed()&&token==generation&&sourceToken==sourceGeneration)page.playButton.idle("线路详情暂不可用");});}
         });
     }
     private BackdropIdentity identity(){return new BackdropIdentity(source.site,source.id,source.name,source.year,source.type);}
@@ -94,19 +94,29 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
     }
     @Override public void changeSource(SiteFeed.Site site,org.json.JSONObject vod){
         if(sourceTask!=null)sourceTask.cancel(true);
+        int token=++sourceGeneration;
         FollowingActivity.resolved(getIntent());
         getIntent().putExtra("key",site.key).putExtra("id",vod.optString("vod_id")).putExtra("name",vod.optString("vod_name")).putExtra("pic",vod.optString("vod_pic"));
-        load();
+        String id=vod.optString("vod_id");
+        DetailSessionCache.State cached=DetailSessionCache.get(this,site.key,id);
+        if(cached!=null){bindChangedSource(cached.source);return;}
+        sourceTask=worker.submit(()->{
+            try{SourceGateway.Detail detail=SourceGateway.load(this,site.key,id);
+                main.post(()->{if(!isDestroyed()&&token==sourceGeneration)bindChangedSource(detail);});
+            }catch(Exception unavailable){main.post(()->{if(!isDestroyed()&&token==sourceGeneration)page.playButton.idle("线路详情暂不可用");});}
+        });
+    }
+    /** A source picker changes the playable rows of the same work, not its artwork or metadata job. */
+    private void bindChangedSource(SourceGateway.Detail detail){
+        source=detail;page.bindSource(detail,true);cacheState();
     }
     @Override public void automaticSource(SiteFeed.Site site,SourceGateway.Detail detail){
         if(isFinishing()||isDestroyed()||source==null||!source.episodes.isEmpty())return;
-        if(sourceTask!=null)sourceTask.cancel(true);if(metadataTask!=null)metadataTask.cancel(true);if(metadataRequest!=null)metadataRequest.cancel();
-        int token=++generation;
+        if(sourceTask!=null)sourceTask.cancel(true);++sourceGeneration;
         FollowingActivity.resolved(getIntent());
         getIntent().putExtra("key",site.key).putExtra("id",detail.id).putExtra("name",detail.name).putExtra("pic",detail.picture);
         getIntent().removeExtra("mark");
-        source=detail;page.bindSource(detail);
-        if(metadata!=null)page.render(metadata);if(metadata==null||!metadata.complete)enrich(token);
+        bindChangedSource(detail);
     }
     @Override public void download(){
         if(page!=null)page.nativeEpisodes.open(true);
@@ -118,7 +128,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
     @Override public void onConfigurationChanged(android.content.res.Configuration configuration){super.onConfigurationChanged(configuration);if(page!=null){page.theme=-1;page.content.requestLayout();page.refresh(BackdropSettings.read(this).proxy);}}
     @Override public void onDestroy(){
         JarIntegration.release(this);
-        generation++;if(sourceTask!=null)sourceTask.cancel(true);if(metadataTask!=null)metadataTask.cancel(true);if(metadataRequest!=null)metadataRequest.cancel();
+        generation++;sourceGeneration++;if(sourceTask!=null)sourceTask.cancel(true);if(metadataTask!=null)metadataTask.cancel(true);if(metadataRequest!=null)metadataRequest.cancel();
         worker.shutdownNow();main.removeCallbacksAndMessages(null);if(page!=null)page.close();if(metadata!=null)metadata.release();super.onDestroy();
     }
 }

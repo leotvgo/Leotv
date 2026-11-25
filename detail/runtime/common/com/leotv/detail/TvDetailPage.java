@@ -52,6 +52,7 @@ final class TvDetailPage implements DetailPage {
     SourceGateway.Episode preferred;
     String selectedFlag="";
     String metadataSite="",metadataId="";
+    private String sourceArtwork="";
     int surfaceColour=DetailHero.DEFAULT_COLOR, theme=-1, themeWidth, themeHeight;
     boolean mounted=true, reversed, reversePlay, manualSource;
     boolean metadataResolved, artworkRevealed;
@@ -246,10 +247,14 @@ final class TvDetailPage implements DetailPage {
         for(String id:new String[]{"reverse","download","more"}){View view=new View(activity);NativeViews.identify(activity,view,id);
             view.setOnClickListener(v->{if(id.equals("reverse")){reversed=!reversed;showEpisodes();}else if(id.equals("download"))actions.download();else episodePicker();});hidden.addView(view);}
     }
-    void bindSource(SourceGateway.Detail detail){
+    void bindSource(SourceGateway.Detail detail){bindSource(detail,false);}
+    void bindSource(SourceGateway.Detail detail,boolean keepArtwork){
         if(source!=detail)nativeEpisodes.dismiss();
-        source=detail;title.setText(detail.name);synopsis.setText(android.text.Html.fromHtml(detail.overview).toString());
-        facts.setText((detail.year+"  ·  "+detail.type).trim());hero.loadSource(detail.picture,BackdropSettings.read(activity).proxy);
+        source=detail;
+        if(!keepArtwork){sourceArtwork=detail.picture;title.setText(detail.name);synopsis.setText(android.text.Html.fromHtml(detail.overview).toString());
+            facts.setText((detail.year+"  ·  "+detail.type).trim());hero.loadSource(detail.picture,BackdropSettings.read(activity).proxy);}
+        else if(metadata!=null){metadataSite=detail.site;metadataId=detail.id;
+            if(metadata.complete)FollowStore.update(new BackdropIdentity(detail.site,detail.id,detail.name,detail.year,detail.type),metadata);}
         preferred=NativeLibrary.resume(activity,detail,playbackFocusPending?null:activity.getIntent().getStringExtra("mark"));
         boolean[] order=NativeLibrary.order(activity,detail);reversed=order[0];reversePlay=order[1];
         selectedFlag=preferred==null?"":preferred.flag;showFlags();showEpisodes();refreshActions();
@@ -345,7 +350,7 @@ final class TvDetailPage implements DetailPage {
     }
     @Override public void refresh(String proxy){
         if(!mounted)return;List<String> artwork=metadata==null?Collections.emptyList():mobile&&!DetailTheme.library(activity,mobile)?metadata.posterPaths:metadata.backdropPaths;
-        if(!DetailHero.accept(artwork,5).isEmpty())hero.load(artwork,proxy);else if(source!=null)hero.loadSource(source.picture,proxy);
+        if(!DetailHero.accept(artwork,5).isEmpty())hero.load(artwork,proxy);else if(source!=null)hero.loadSource(sourceArtwork,proxy);
         if(metadata!=null)titleArt.load(metadata.branding.logos,proxy);
         if(images==null)images=new DetailThumbnails(activity,proxy,!mobile);images.begin();
         if(metadata!=null)cards.refresh(metadata,images,true);for(Portrait portrait:portraits)images.bindNear(portrait.path,true,portrait.view,portrait.view::setImageBitmap);
