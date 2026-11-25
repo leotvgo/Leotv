@@ -35,7 +35,7 @@ final class TmdbNetwork {
         OkHttpClient found=CLIENTS.get(key);if(found!=null)return found;
         synchronized(CLIENTS){
             found=CLIENTS.get(key);if(found!=null)return found;
-            OkHttpClient.Builder builder=new OkHttpClient.Builder().connectionPool(POOL).dns(DNS)
+            okhttp3.OkHttpClient$Builder builder=new okhttp3.OkHttpClient$Builder().connectionPool(POOL).dns(DNS)
                     .connectTimeout(4,TimeUnit.SECONDS).readTimeout(6,TimeUnit.SECONDS)
                     .callTimeout(12,TimeUnit.SECONDS).followRedirects(false).followSslRedirects(false);
             if(supplement)builder.sslSocketFactory(BackdropTls.socketFactory(),BackdropTls.trustManager());
@@ -55,7 +55,7 @@ final class TmdbNetwork {
         int limit=image?8*1024*1024:2*1024*1024;if(byteLimit>0)limit=Math.min(limit,byteLimit);
         for(int redirect=0;redirect<4;redirect++){
             request.check();if(!BackdropHttp.allowed(url,kind))throw new BackdropHttp.Failure(kind,"不支持的服务地址");
-            okhttp3.Request.Builder builder=new okhttp3.Request.Builder().url(url.toString())
+            okhttp3.Request$Builder builder=new okhttp3.Request$Builder().url(url.toString())
                     .header("User-Agent","Mozilla/5.0 (Android) LeocatBackdrop/1");
             for(Map.Entry<String,String> header:headers.entrySet()){
                 boolean credential=header.getKey().equalsIgnoreCase("Authorization")||header.getKey().equalsIgnoreCase("Cookie");
@@ -86,10 +86,14 @@ final class TmdbNetwork {
         private volatile Dns ali,tencent;
         RacingDns(){workers.allowCoreThreadTimeOut(true);}
         private Dns doh(String ip)throws Exception{
-            return new DnsOverHttps.Builder().client(new OkHttpClient.Builder().connectTimeout(2,TimeUnit.SECONDS).callTimeout(2,TimeUnit.SECONDS).proxy(Proxy.NO_PROXY).build())
+            return new okhttp3.dnsoverhttps.DnsOverHttps$Builder().client(new okhttp3.OkHttpClient$Builder().connectTimeout(2,TimeUnit.SECONDS).callTimeout(2,TimeUnit.SECONDS).proxy(Proxy.NO_PROXY).build())
                     .url(HttpUrl.get("https://"+ip+"/dns-query")).bootstrapDnsHosts(java.util.Collections.singletonList(InetAddress.getByName(ip))).build();
         }
-        @Override public List<InetAddress> lookup(String host)throws java.net.UnknownHostException{
+        @Override public List<InetAddress> lookup(String host){
+            // The signature-only JAR omits dalvik Throws; preserve the original runtime exception.
+            try{return lookupChecked(host);}catch(Exception error){return TmdbNetwork.<RuntimeException>throwDns(error);}
+        }
+        private List<InetAddress> lookupChecked(String host)throws Exception{
             if(!host.equals("tmdb.org")&&!host.endsWith(".tmdb.org")&&!host.equals("themoviedb.org")&&!host.endsWith(".themoviedb.org"))return Dns.SYSTEM.lookup(host);
             Answer saved=cache.get(host);long now=android.os.SystemClock.elapsedRealtime();
             if(saved!=null&&saved.until>now)return new ArrayList<>(saved.addresses);
@@ -112,5 +116,7 @@ final class TmdbNetwork {
         final List<InetAddress> addresses;final long until;
         Answer(List<InetAddress> values,long until){addresses=new ArrayList<>(values);this.until=until;}
     }
+    @SuppressWarnings("unchecked")
+    private static <T extends Throwable> List<InetAddress> throwDns(Throwable error)throws T{throw (T)error;}
     private TmdbNetwork(){}
 }

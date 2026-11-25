@@ -270,9 +270,9 @@ class DetailThumbnails {
         Request(String path, boolean portrait, Target target,boolean source,android.view.View view) { this.path = path; this.portrait = portrait; this.target = target; this.source=source;this.view=view; }
         int priority(){
             if(target==null)return 3;if(view==null||view.getHeight()==0)return 1;
-            int[] location=new int[2];view.getLocationInWindow(location);int height=Math.max(1,view.getRootView().getHeight());
-            if(location[1]+view.getHeight()>=0&&location[1]<=height)return 0;
-            if(location[1]+view.getHeight()>=-height&&location[1]<=height*2)return 1;
+            int[] location=new int[2];view.getLocationInWindow(location);int height=Math.max(1,view.getRootView().getHeight()),width=Math.max(1,view.getRootView().getWidth());
+            if(location[1]+view.getHeight()>=0&&location[1]<=height&&location[0]+view.getWidth()>=0&&location[0]<=width)return 0;
+            if(location[1]+view.getHeight()>=-height&&location[1]<=height*2&&location[0]+view.getWidth()>=-width&&location[0]<=width*2)return 1;
             return 2;
         }
     }

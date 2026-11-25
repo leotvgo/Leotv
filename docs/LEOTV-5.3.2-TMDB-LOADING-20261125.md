@@ -45,7 +45,7 @@ TV/手机个性设置加入“首页缓存上限”，默认 **500 MB**，支持
 
 新增生产类为 `MetadataCache`、`TmdbArtwork`、`TmdbNetwork` 及其内部实现，加入 `detail/runtime-sources.json`，继续由编译源码精确声明、R8 mapping 和程序类准入核对。变化限于已拥有的 `BackdropHttp`、`BackdropIdentity`、`BackdropImages`、`BackdropTls`、`CspHeroMetadata`、`DetailActivity`、`DetailHero`、`DetailThumbnails`、`DetailEpisodeCards`、`DetailStills`、`DetailRecommendations`、`MetadataSettings`、`MobileDetailMetadata`、`NewHome`、`Personalization`、`TmdbRoutes`、`TvDetailPage`，以及版本、门禁与文档。
 
-新增 `check_tmdb_loading.py` 并接入必需的 `check_build_sources.py`，防止回退到首次三项等待、首屏等待附加模块、未接通缓存、未隔离匹配或提前无条件竞争图片备用。四变体核对本轮使用的原 OkHttp/DnsOverHttps 公共 ABI。原宿主 smali、数据库 schema/migration、JAR/JNI/反射入口、java.util.function/j$ 回移层和各 ABI 原生/ZIP 资产不改变。
+新增 `check_tmdb_loading.py` 并接入必需的 `check_build_sources.py`，防止回退到首次三项等待、首屏等待附加模块、未接通缓存、未隔离匹配或提前无条件竞争图片备用。四变体核对本轮使用的原 OkHttp/DnsOverHttps 公共 ABI。编译参考 JAR 没有内部类和 checked Throws 的源码属性，新网络类按原 `$Builder` 名字直接引用，并保留 DNS 实际异常对象传播；参考 JAR 不进入 APK。原宿主 smali、数据库 schema/migration、JAR/JNI/反射入口、java.util.function/j$ 回移层和各 ABI 原生/ZIP 资产不改变。
 
 版本 stable 5.3.2 / 640，保留固定 APK 证书，可覆盖 5.3.1。按用户既有规则直接 GitHub 构建，`run_validation_tests=false`；不进行本地 APK 打包或额外模型/UI 回归。必须源码/API23/R8 release/full、原样/允许变化和固定签名核对保留。缓存命中可省去网络等待；首次冷加载、备用域名和实际 Android 6 速度由真机验收，不以本机读缓存或静态代码宣称所有请求必定一秒完成。
 
