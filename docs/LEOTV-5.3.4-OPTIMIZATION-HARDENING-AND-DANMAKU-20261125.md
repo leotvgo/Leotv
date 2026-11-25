@@ -39,3 +39,11 @@ R8沿用8.8.34 release/full/API23，用无语义ASCII字典混淆内部类与成
 不做本地APK打包或整套UI回归。GitHub使用 `run_validation_tests=false`，保留必需源码、API23编译、R8/字符串往返与明文检查、原样/允许变化、公开/内部审计绑定、固定签名核对。发布正式5.3.4/645，四套手机/TV、32/64位APK支持同证书覆盖升级；真机重点验收用户示例第4集自动应用、手选后下一集、返回/切换来源、缓存清理和低内存表现。
 
 构建/发布状态及最终摘要在本轮 evidence 交付记录中补充。
+
+## 最终交付
+
+源码 `4b130447d1bbc7cd03d6863b27d8b02834498e87` 的[构建45592296904](https://github.com/leotvgo/Leotv/actions/runs/45592296904)与[自动发布45593692109](https://github.com/leotvgo/Leotv/actions/runs/45593692109)成功。首次私有任务因账单/预算限制未启动，沿用已有授权的临时公开流程后完成，并已API核对恢复PRIVATE；公开源码窗口已向用户说明。
+
+[正式5.3.4/645](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4)为非预发行、Latest，12个正式资产完整。四包逐套核对发布digest、固定证书、API23/R8、原生库、原样/允许变化、全部编译源码SHA-256及公开/内部审计绑定。TV每包76个唯一常量完成保护、337个输出类实际改名；手机每包75个常量、324个类改名。完整审计和mapping在内部符号草稿的8个资产中保留，公开JSON为绑定摘要。
+
+JAR移植编号、详情优先、API实际对应项和手选目录下一集的纯Java针对性检查在CI通过。未安装新APK到用户电视，未将旧644的ADB诊断视为645的真机验收。交付摘要见 `evidence/leotv-5.3.4-645-ci-reports-20261125.json` 与 `evidence/leotv-5.3.4-645-build-dispatch-20261125.json`；完整审计的本地副本保存在忽略的 `artifacts/leotv-5.3.4-delivery/`。

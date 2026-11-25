@@ -1,0 +1,440 @@
+{
+  "repo": "leotvgo/Leotv",
+  "source_commit": "4b130447d1bbc7cd03d6863b27d8b02834498e87",
+  "version": "5.3.4",
+  "version_code": 645,
+  "build_run_id": 45592296904,
+  "publish_run_id": 45593692109,
+  "release_url": "https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4",
+  "release_id": 457940120,
+  "visibility": "PRIVATE",
+  "is_latest": true,
+  "device_validation": false,
+  "verified_compiled_source_files": 115,
+  "variants": {
+    "tv-v7a": {
+      "signature": {
+        "apk": "leotv-tv-v7a.apk",
+        "apk_sha256": "06df341cb53673000a82cdc8392d9012da9ebd06e4cae6935dab5ab26aa12788",
+        "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+        "android6_v1_verified": true,
+        "fixed_signature": true,
+        "payload_unchanged_by_signing": true,
+        "private_key_in_git_or_artifacts": false
+      },
+      "audit": {
+        "variant": "tv-v7a",
+        "package": "com.leotv.app",
+        "version_name": "5.3.4",
+        "version_code": 645,
+        "min_sdk": 23,
+        "release_channel": "stable",
+        "protected_release": true,
+        "expected_changes_match": true,
+        "output_apk_sha256": "8700236ec309f5dc32f6ff8471082e368c75f8e0d2c5250241c17fe0de872d94",
+        "unsigned": true,
+        "native_zip_alignment_kib": 16,
+        "native_libraries_exact": 32,
+        "native_abis": [
+          "armeabi-v7a"
+        ],
+        "resource_ids_and_configurations_retained": true,
+        "resource_style_spans_retained": true,
+        "device_validation": false,
+        "added_dex_paths": [
+          "classes4.dex"
+        ],
+        "baseline_audit": {
+          "equal": true,
+          "original_classes": 10701,
+          "rebuilt_classes": 10701,
+          "changed_classes": 0
+        },
+        "overlay_compile": {
+          "hardening": {
+            "mode": "r8-release-full",
+            "r8_version": "R8 8.8.34 (build e4c4b8c78485b4b879001e60600d9ef799083345 from go/r8bot (luci-r8-custom-ci-archive-0-stmt))",
+            "r8_sha256": "f8370523cb41819bb83ae0747c8373d6faef8457b620111bdea5d49066f33bd2",
+            "rules_sha256": "a9b8564a89a024815cf2f249bd05f61ca774c4196f26e045b1b0cae2c0d13dcc",
+            "min_api": 23,
+            "mapping_sha256": "25c04e358b543c0f4cbf25ef44a7049a750bec8d1a00b0bdc0e3d9d4d9f067d8",
+            "compiler_marker": {
+              "backend": "dex",
+              "compilation-mode": "release",
+              "has-checksums": false,
+              "min-api": 23,
+              "pg-map-id": "12e79f4",
+              "r8-mode": "full",
+              "version": "8.8.34"
+            },
+            "reference_jar_packaged": false,
+            "program_classes": 359,
+            "renamed_program_classes": 337,
+            "stable_abi_members_verified": 79,
+            "mapping_inputs_declared": true,
+            "source_file_names_removed": true,
+            "client_flag_verified": true,
+            "string_protection": {
+              "mode": "aes-128-ctr-literals",
+              "literal_sites": 177,
+              "changed_input_classes": 37,
+              "plaintext_absence_verified": true,
+              "roundtrip_verified": true,
+              "unique_literals": 76
+            },
+            "neutral_dictionary_sha256": "2a6cdbb3875101abf5dbe094ad584abfd1213f017781e468558abdc5bc8b7beb"
+          }
+        },
+        "audit_scope": "Summary of the verified build; full source and change evidence retained in its private symbol draft.",
+        "full_audit_sha256": "ba35ec82610f219a6572e9290871108fa40b0316765f93bb316e6172d2349b14"
+      }
+    },
+    "tv-v8a": {
+      "signature": {
+        "apk": "leotv-tv-v8a.apk",
+        "apk_sha256": "b428f17426e295bfd9685afc7d462c59871048026568ec7cd5b453aa5047e1b4",
+        "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+        "android6_v1_verified": true,
+        "fixed_signature": true,
+        "payload_unchanged_by_signing": true,
+        "private_key_in_git_or_artifacts": false
+      },
+      "audit": {
+        "variant": "tv-v8a",
+        "package": "com.leotv.app",
+        "version_name": "5.3.4",
+        "version_code": 645,
+        "min_sdk": 23,
+        "release_channel": "stable",
+        "protected_release": true,
+        "expected_changes_match": true,
+        "output_apk_sha256": "b5e150786fa8ffc248fdd3f49a9fb75758884c708cc1805a8791e20aa0719528",
+        "unsigned": true,
+        "native_zip_alignment_kib": 16,
+        "native_libraries_exact": 21,
+        "native_abis": [
+          "arm64-v8a"
+        ],
+        "resource_ids_and_configurations_retained": true,
+        "resource_style_spans_retained": true,
+        "device_validation": false,
+        "added_dex_paths": [
+          "classes4.dex"
+        ],
+        "baseline_audit": {
+          "equal": true,
+          "original_classes": 10701,
+          "rebuilt_classes": 10701,
+          "changed_classes": 0
+        },
+        "overlay_compile": {
+          "hardening": {
+            "mode": "r8-release-full",
+            "r8_version": "R8 8.8.34 (build e4c4b8c78485b4b879001e60600d9ef799083345 from go/r8bot (luci-r8-custom-ci-archive-0-stmt))",
+            "r8_sha256": "f8370523cb41819bb83ae0747c8373d6faef8457b620111bdea5d49066f33bd2",
+            "rules_sha256": "a9b8564a89a024815cf2f249bd05f61ca774c4196f26e045b1b0cae2c0d13dcc",
+            "min_api": 23,
+            "mapping_sha256": "e5e52c793241d38a90d6b697a9ee761a5ae3da7cea9e2503d31729bfd4305666",
+            "compiler_marker": {
+              "backend": "dex",
+              "compilation-mode": "release",
+              "has-checksums": false,
+              "min-api": 23,
+              "pg-map-id": "0ea1f1e",
+              "r8-mode": "full",
+              "version": "8.8.34"
+            },
+            "reference_jar_packaged": false,
+            "program_classes": 359,
+            "renamed_program_classes": 337,
+            "stable_abi_members_verified": 79,
+            "mapping_inputs_declared": true,
+            "source_file_names_removed": true,
+            "client_flag_verified": true,
+            "string_protection": {
+              "mode": "aes-128-ctr-literals",
+              "literal_sites": 177,
+              "changed_input_classes": 37,
+              "plaintext_absence_verified": true,
+              "roundtrip_verified": true,
+              "unique_literals": 76
+            },
+            "neutral_dictionary_sha256": "9052181b0b06ac992a3dd1dae9abc9605cd10d471afb0543183b6fcd5a99c11d"
+          }
+        },
+        "audit_scope": "Summary of the verified build; full source and change evidence retained in its private symbol draft.",
+        "full_audit_sha256": "53134dfa0f2a5e57caa184cf1355406871566bb4329fc440496cdb63d039e1db"
+      }
+    },
+    "mobile-v7a": {
+      "signature": {
+        "apk": "leotv-mobile-v7a.apk",
+        "apk_sha256": "c1d75b94555472b5ccf9fb1d533909a00d877a081d4298110cc792f89a6f59a6",
+        "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+        "android6_v1_verified": true,
+        "fixed_signature": true,
+        "payload_unchanged_by_signing": true,
+        "private_key_in_git_or_artifacts": false
+      },
+      "audit": {
+        "variant": "mobile-v7a",
+        "package": "com.leotv.app",
+        "version_name": "5.3.4",
+        "version_code": 645,
+        "min_sdk": 23,
+        "release_channel": "stable",
+        "protected_release": true,
+        "expected_changes_match": true,
+        "output_apk_sha256": "33f283d88d140c9ad2550b7cdffe5142307668c9139585f4c8a3d706ae2eb105",
+        "unsigned": true,
+        "native_zip_alignment_kib": 16,
+        "native_libraries_exact": 34,
+        "native_abis": [
+          "armeabi-v7a"
+        ],
+        "resource_ids_and_configurations_retained": true,
+        "resource_style_spans_retained": true,
+        "device_validation": false,
+        "added_dex_paths": [
+          "classes4.dex"
+        ],
+        "baseline_audit": {
+          "equal": true,
+          "original_classes": 10438,
+          "rebuilt_classes": 10438,
+          "changed_classes": 0
+        },
+        "overlay_compile": {
+          "hardening": {
+            "mode": "r8-release-full",
+            "r8_version": "R8 8.8.34 (build e4c4b8c78485b4b879001e60600d9ef799083345 from go/r8bot (luci-r8-custom-ci-archive-0-stmt))",
+            "r8_sha256": "f8370523cb41819bb83ae0747c8373d6faef8457b620111bdea5d49066f33bd2",
+            "rules_sha256": "a9b8564a89a024815cf2f249bd05f61ca774c4196f26e045b1b0cae2c0d13dcc",
+            "min_api": 23,
+            "mapping_sha256": "9c7956e1e7a57ff10b57a4ba03d59ffcbed2563fd9216775445277e061030e41",
+            "compiler_marker": {
+              "backend": "dex",
+              "compilation-mode": "release",
+              "has-checksums": false,
+              "min-api": 23,
+              "pg-map-id": "38ab727",
+              "r8-mode": "full",
+              "version": "8.8.34"
+            },
+            "reference_jar_packaged": false,
+            "program_classes": 346,
+            "renamed_program_classes": 324,
+            "stable_abi_members_verified": 79,
+            "mapping_inputs_declared": true,
+            "source_file_names_removed": true,
+            "client_flag_verified": true,
+            "string_protection": {
+              "mode": "aes-128-ctr-literals",
+              "literal_sites": 172,
+              "changed_input_classes": 35,
+              "plaintext_absence_verified": true,
+              "roundtrip_verified": true,
+              "unique_literals": 75
+            },
+            "neutral_dictionary_sha256": "ad6c56fce71e8738fcc56f0812c74799cc29028b360eb82c4947f2521b7b046e"
+          }
+        },
+        "audit_scope": "Summary of the verified build; full source and change evidence retained in its private symbol draft.",
+        "full_audit_sha256": "2e32713ea4c426bcd34cd79b949fc108bdafadfacd78fef3ed813ca06fa9f7f2"
+      }
+    },
+    "mobile-v8a": {
+      "signature": {
+        "apk": "leotv-mobile-v8a.apk",
+        "apk_sha256": "104b5fa7533d18dd09eec9c37314fad9cf7f4d06428ed5396893a8c5e4b82555",
+        "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+        "android6_v1_verified": true,
+        "fixed_signature": true,
+        "payload_unchanged_by_signing": true,
+        "private_key_in_git_or_artifacts": false
+      },
+      "audit": {
+        "variant": "mobile-v8a",
+        "package": "com.leotv.app",
+        "version_name": "5.3.4",
+        "version_code": 645,
+        "min_sdk": 23,
+        "release_channel": "stable",
+        "protected_release": true,
+        "expected_changes_match": true,
+        "output_apk_sha256": "c15542fd117cf10bdb7b48f12f1aa3b623057988f5ef0ac453ddb5d86549b09d",
+        "unsigned": true,
+        "native_zip_alignment_kib": 16,
+        "native_libraries_exact": 23,
+        "native_abis": [
+          "arm64-v8a"
+        ],
+        "resource_ids_and_configurations_retained": true,
+        "resource_style_spans_retained": true,
+        "device_validation": false,
+        "added_dex_paths": [
+          "classes4.dex"
+        ],
+        "baseline_audit": {
+          "equal": true,
+          "original_classes": 10438,
+          "rebuilt_classes": 10438,
+          "changed_classes": 0
+        },
+        "overlay_compile": {
+          "hardening": {
+            "mode": "r8-release-full",
+            "r8_version": "R8 8.8.34 (build e4c4b8c78485b4b879001e60600d9ef799083345 from go/r8bot (luci-r8-custom-ci-archive-0-stmt))",
+            "r8_sha256": "f8370523cb41819bb83ae0747c8373d6faef8457b620111bdea5d49066f33bd2",
+            "rules_sha256": "a9b8564a89a024815cf2f249bd05f61ca774c4196f26e045b1b0cae2c0d13dcc",
+            "min_api": 23,
+            "mapping_sha256": "a4e99e4448bcb1e843382bcd1c78679f5d765f24504fd0d93d07525b59bba477",
+            "compiler_marker": {
+              "backend": "dex",
+              "compilation-mode": "release",
+              "has-checksums": false,
+              "min-api": 23,
+              "pg-map-id": "668df1b",
+              "r8-mode": "full",
+              "version": "8.8.34"
+            },
+            "reference_jar_packaged": false,
+            "program_classes": 346,
+            "renamed_program_classes": 324,
+            "stable_abi_members_verified": 79,
+            "mapping_inputs_declared": true,
+            "source_file_names_removed": true,
+            "client_flag_verified": true,
+            "string_protection": {
+              "mode": "aes-128-ctr-literals",
+              "literal_sites": 172,
+              "changed_input_classes": 35,
+              "plaintext_absence_verified": true,
+              "roundtrip_verified": true,
+              "unique_literals": 75
+            },
+            "neutral_dictionary_sha256": "882d3d72d20903aa41ad9eba13edda22fbe97b0a58df7d293f9889265c801613"
+          }
+        },
+        "audit_scope": "Summary of the verified build; full source and change evidence retained in its private symbol draft.",
+        "full_audit_sha256": "0f6b473749ae0b6334b7397f99db5e501ba418e3141402950f741edddb376f72"
+      }
+    }
+  },
+  "public_assets": [
+    {
+      "id": 791056237,
+      "name": "leotv-mobile-v7a-unsigned.audit.json",
+      "size": 2325,
+      "digest": "sha256:01f12a00f68ddc611f28ad2c382009f8fea267c1dc495e6251a1717392004efb"
+    },
+    {
+      "id": 791056211,
+      "name": "leotv-mobile-v7a.apk",
+      "size": 83517907,
+      "digest": "sha256:c1d75b94555472b5ccf9fb1d533909a00d877a081d4298110cc792f89a6f59a6"
+    },
+    {
+      "id": 791056213,
+      "name": "leotv-mobile-v7a.signature.json",
+      "size": 355,
+      "digest": "sha256:41888548f0184a37fa895c842e9fa14bf238b543f88392ab39dd2a7424545682"
+    },
+    {
+      "id": 791056307,
+      "name": "leotv-mobile-v8a-unsigned.audit.json",
+      "size": 2323,
+      "digest": "sha256:e15a1dd756cbb32e9543a5c5007d05d9c2671ddb63db4efdd00da31ec2df326b"
+    },
+    {
+      "id": 791056245,
+      "name": "leotv-mobile-v8a.apk",
+      "size": 82730610,
+      "digest": "sha256:104b5fa7533d18dd09eec9c37314fad9cf7f4d06428ed5396893a8c5e4b82555"
+    },
+    {
+      "id": 791056278,
+      "name": "leotv-mobile-v8a.signature.json",
+      "size": 355,
+      "digest": "sha256:833bd60c74f78183dadce381e54d6d916402b6d62e7de3da9c18aee71a5726b2"
+    },
+    {
+      "id": 791056169,
+      "name": "leotv-tv-v7a-unsigned.audit.json",
+      "size": 2321,
+      "digest": "sha256:0ffdf3a49e08cf2818465b2b838cb28429a13e5d4e44cf3842eed4467223c9e3"
+    },
+    {
+      "id": 791056170,
+      "name": "leotv-tv-v7a.apk",
+      "size": 88386561,
+      "digest": "sha256:06df341cb53673000a82cdc8392d9012da9ebd06e4cae6935dab5ab26aa12788"
+    },
+    {
+      "id": 791056178,
+      "name": "leotv-tv-v7a.signature.json",
+      "size": 351,
+      "digest": "sha256:686ffeeef180d61574f2880e17f6df9efedcad78aef7a48806061d2dbef70b53"
+    },
+    {
+      "id": 791056212,
+      "name": "leotv-tv-v8a-unsigned.audit.json",
+      "size": 2319,
+      "digest": "sha256:849fbdb461cabd6fd0a92e3ad28c7955a6847b3ea8a1dc16499e6ccb9d31fe0d"
+    },
+    {
+      "id": 791056177,
+      "name": "leotv-tv-v8a.apk",
+      "size": 87271588,
+      "digest": "sha256:b428f17426e295bfd9685afc7d462c59871048026568ec7cd5b453aa5047e1b4"
+    },
+    {
+      "id": 791056173,
+      "name": "leotv-tv-v8a.signature.json",
+      "size": 351,
+      "digest": "sha256:7d428697f608310296cbc48d32dc1478d17e9ccc98f8015c30bde6ec26b3fd9e"
+    }
+  ],
+  "private_symbol_assets": [
+    {
+      "name": "leotv-mobile-v7a-unsigned.full-audit.json",
+      "size": 75940,
+      "digest": "sha256:2e32713ea4c426bcd34cd79b949fc108bdafadfacd78fef3ed813ca06fa9f7f2"
+    },
+    {
+      "name": "leotv-mobile-v7a-unsigned.mapping.txt",
+      "size": 1924492,
+      "digest": "sha256:9c7956e1e7a57ff10b57a4ba03d59ffcbed2563fd9216775445277e061030e41"
+    },
+    {
+      "name": "leotv-mobile-v8a-unsigned.full-audit.json",
+      "size": 75938,
+      "digest": "sha256:0f6b473749ae0b6334b7397f99db5e501ba418e3141402950f741edddb376f72"
+    },
+    {
+      "name": "leotv-mobile-v8a-unsigned.mapping.txt",
+      "size": 1924492,
+      "digest": "sha256:a4e99e4448bcb1e843382bcd1c78679f5d765f24504fd0d93d07525b59bba477"
+    },
+    {
+      "name": "leotv-tv-v7a-unsigned.full-audit.json",
+      "size": 66421,
+      "digest": "sha256:ba35ec82610f219a6572e9290871108fa40b0316765f93bb316e6172d2349b14"
+    },
+    {
+      "name": "leotv-tv-v7a-unsigned.mapping.txt",
+      "size": 1983750,
+      "digest": "sha256:25c04e358b543c0f4cbf25ef44a7049a750bec8d1a00b0bdc0e3d9d4d9f067d8"
+    },
+    {
+      "name": "leotv-tv-v8a-unsigned.full-audit.json",
+      "size": 66419,
+      "digest": "sha256:53134dfa0f2a5e57caa184cf1355406871566bb4329fc440496cdb63d039e1db"
+    },
+    {
+      "name": "leotv-tv-v8a-unsigned.mapping.txt",
+      "size": 1983750,
+      "digest": "sha256:e5e52c793241d38a90d6b697a9ee761a5ae3da7cea9e2503d31729bfd4305666"
+    }
+  ]
+}
