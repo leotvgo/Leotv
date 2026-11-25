@@ -49,9 +49,11 @@ final class ExoMediaPreload {
                     if(locks instanceof java.util.Collection&&!((java.util.Collection<?>)locks).isEmpty()){close();return;}
                 }
                 Object http=PreloadHost.call(factory,"a"),properties=PreloadHost.field(http,"i");
-                @SuppressWarnings("unchecked") Map<String,String> headers=(Map<String,String>)PreloadHost.call(result,"getHeader");
+                @SuppressWarnings("unchecked") Map<String,String> rawHeaders=(Map<String,String>)PreloadHost.call(result,"getHeader");
+                Map<String,String> headers=PreloadHost.headers(context,rawHeaders);
                 synchronized(properties){@SuppressWarnings("unchecked") Map<String,String> values=(Map<String,String>)PreloadHost.field(properties,Device.MOBILE?"n":"a");values.clear();values.putAll(headers);PreloadHost.set(properties,Device.MOBILE?"o":"b",null);}
-                // Never block the playing player's cache reader behind our background reader.
+                // n disables CacheDataSink creation when true. Enable writes for this
+                // independent preload factory; o=2 retains nonblocking cache reads.
                 PreloadHost.set(PreloadHost.field(factory,"c"),"n",false);
                 Class<?> itemType=PreloadHost.type(context,Device.MOBILE?"n0.y":"o0.z");
                 Object item=itemType.getMethod("b",android.net.Uri.class).invoke(null,android.net.Uri.parse(PreloadHost.text(PreloadHost.call(result,"getRealUrl"))));
@@ -73,7 +75,7 @@ final class ExoMediaPreload {
                 });
                 PreloadHost.call(source,"k",callback,null,playerId);
                 handler.postDelayed(this::pump,100);
-            }catch(ReflectiveOperationException|RuntimeException failure){close();}
+            }catch(ReflectiveOperationException|RuntimeException failure){failed(failure);}
         }
         void timeline(Object timeline){
             if(period!=null)return;
@@ -92,7 +94,7 @@ final class ExoMediaPreload {
                     if(!closed&&valid(ticket)&&method.getName().equals(Device.MOBILE?"v":"p"))select();return null;
                 });
                 PreloadHost.call(period,Device.MOBILE?"d":"k",listener,positionUs);
-            }catch(ReflectiveOperationException|RuntimeException failure){close();}
+            }catch(ReflectiveOperationException|RuntimeException failure){failed(failure);}
         }
         void select(){
             try{
@@ -111,7 +113,7 @@ final class ExoMediaPreload {
                 for(int i=0;i<selected.size();i++)Array.set(selections,i,selected.get(i));
                 PreloadHost.call(period,"l",selections,new boolean[selected.size()],streams,new boolean[selected.size()],positionUs);
                 prepared=true;
-            }catch(ReflectiveOperationException|RuntimeException failure){close();}
+            }catch(ReflectiveOperationException|RuntimeException failure){failed(failure);}
         }
         void pump(){
             if(closed)return;
@@ -121,7 +123,7 @@ final class ExoMediaPreload {
                     PreloadHost.call(period,Device.MOBILE?"g":"f");
                     long buffered=PreloadHost.number(PreloadHost.call(period,Device.MOBILE?"t":"o"));
                     int allocated=PreloadHost.integer(PreloadHost.field(allocator,"d"))*PreloadHost.integer(PreloadHost.field(allocator,"b"));
-                    if(prepared&&(buffered==Long.MIN_VALUE||buffered-positionUs>=durationUs)){close();return;}
+                    if(prepared&&(buffered==Long.MIN_VALUE||buffered-positionUs>=durationUs)){android.util.Log.i("LeotvPreload","Media data cached");close();return;}
                     if(prepared&&buffered>readPositionUs+500000&&allocated>=budget/2){
                         readPositionUs=buffered-250000;
                         for(int i=0;i<Array.getLength(streams);i++){Object stream=Array.get(streams,i);if(stream!=null)PreloadHost.call(stream,Device.MOBILE?"j":"i",readPositionUs);}
@@ -136,8 +138,9 @@ final class ExoMediaPreload {
                     PreloadHost.call(period,"e",info);
                 }else if(source!=null)PreloadHost.call(source,"j");
                 handler.postDelayed(this::pump,100);
-            }catch(ReflectiveOperationException|RuntimeException failure){close();}
+            }catch(ReflectiveOperationException|RuntimeException failure){failed(failure);}
         }
+        void failed(Throwable failure){android.util.Log.w("LeotvPreload","Media preload failed: "+failure.getClass().getSimpleName());close();}
         void close(){
             if(closed)return;closed=true;handler.removeCallbacks(this::pump);
             if(period!=null&&source!=null)try{PreloadHost.call(source,Device.MOBILE?"o":"n",period);}catch(ReflectiveOperationException|RuntimeException ignored){}

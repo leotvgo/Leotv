@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.TreeMap;
+import java.util.Arrays;
 
 /** Exact TV/phone host ABI; it never invokes the foreground callable during prefetch. */
 final class PreloadHost {
@@ -14,7 +17,7 @@ final class PreloadHost {
     static Object call(Object owner,String name,Object...args)throws ReflectiveOperationException{
         if(owner==null)throw new IllegalStateException("Missing native preload interface");
         for(Method method:owner.getClass().getMethods())if(method.getName().equals(name)&&method.getParameterTypes().length==args.length){
-            try{return method.invoke(owner,args);}catch(IllegalArgumentException mismatch){}
+            try{method.setAccessible(true);return method.invoke(owner,args);}catch(IllegalArgumentException mismatch){}
         }
         throw new NoSuchMethodException(name);
     }
@@ -41,7 +44,7 @@ final class PreloadHost {
             android.net.Uri uri=android.net.Uri.parse(url);
             for(Object extractor:(List<?>)values)if(Boolean.TRUE.equals(call(extractor,"b",uri)))return true;
             return false;
-        }catch(ReflectiveOperationException unavailable){return true;}
+        }catch(ReflectiveOperationException|RuntimeException unavailable){return true;}
     }
     static final class Snapshot {
         final PreloadPolicy.Key key;
@@ -63,7 +66,9 @@ final class PreloadHost {
         Object config=singleton(activity,Device.MOBILE?"t3.h":"q3.h","a");
         // Config JSON includes subscription URL/ext/auth changes even when its database ID is reused.
         Object rawConfig=call(config,"d");String configuration=text(rawConfig)+":"+SiteFeed.configId();
-        String credentials=text(site)+":"+text(field(player,"q"));
+        // A0 clears player.q before wrapping the foreground task. Only durable source
+        // configuration and native UA settings belong in the request identity.
+        Object credentials=sourceScope(activity,site);
         int quality=integer(field(field(activity,Device.MOBILE?"T":"Z"),Device.MOBILE?"e":"d")),engine=integer(field(player,"K"));
         PreloadPolicy.Key key=new PreloadPolicy.Key(configuration,site,credentials,text(call(activity,Device.MOBILE?"i0":"k0")),text(call(flag,"getFlag")),order.get(index),quality,engine);
         boolean reverse=Boolean.TRUE.equals(call(history,"isRevPlay"));
@@ -72,13 +77,43 @@ final class PreloadHost {
     static boolean direct(Object result){
         if(result==null)return false;
         try{return !Boolean.TRUE.equals(call(result,"hasMsg"))&&integer(call(result,"getParse"))==0&&integer(call(result,"getJx"))==0
-                &&text(call(result,"getPlayUrl")).isEmpty()&&http(text(call(result,"getRealUrl")));}
+                &&http(text(call(result,"getRealUrl")));}
         catch(ReflectiveOperationException|RuntimeException invalid){return false;}
     }
     static boolean http(String url){
         if(url.contains("***")||url.contains("|||")||url.contains("@@")||url.contains("\n"))return false;
         android.net.Uri uri=android.net.Uri.parse(url);String scheme=uri.getScheme(),host=uri.getHost();
-        return ("http".equalsIgnoreCase(scheme)||"https".equalsIgnoreCase(scheme))&&host!=null&&!host.equals("localhost")&&!host.equals("127.0.0.1")&&!host.equals("::1");
+        return ("http".equalsIgnoreCase(scheme)||"https".equalsIgnoreCase(scheme))&&host!=null;
+    }
+    static Map<String,String> headers(Context context,Map<String,String> input)throws ReflectiveOperationException{
+        Map<String,String> copy=new HashMap<>();if(input!=null)copy.putAll(input);
+        Class<?> player=type(context,Device.MOBILE?"F3.f":"C3.e");
+        @SuppressWarnings("unchecked") Map<String,String> normalized=(Map<String,String>)player.getMethod(Device.MOBILE?"s":"r",Map.class).invoke(null,copy);
+        return new TreeMap<>(normalized);
+    }
+    static Object sourceScope(Context context,Object site)throws ReflectiveOperationException{
+        @SuppressWarnings("unchecked") Map<String,String> configured=(Map<String,String>)call(site,"getHeader");
+        return Arrays.asList(call(site,"getApi"),call(site,"getExt"),call(site,"getJar"),call(site,"getPlayUrl"),headers(context,configured));
+    }
+    static boolean usable(Object result){
+        if(result==null)return false;
+        try{return !Boolean.TRUE.equals(call(result,"hasMsg"))&&!text(call(call(result,"getUrl"),"v")).isEmpty();}
+        catch(ReflectiveOperationException|RuntimeException invalid){return false;}
+    }
+    /** Restore only the source resolution stage of the native callable at actual handoff. */
+    static Object finish(Context context,Object result)throws ReflectiveOperationException{
+        Object source=singleton(context,Device.MOBILE?"F3.i":"C3.h","a");Object extractors=field(source,"i");
+        if(extractors instanceof List)for(Object extractor:new ArrayList<>((List<?>)extractors))call(extractor,"stop");
+        call(result,"setUrl",call(source,"e",result));return result;
+    }
+    /** The actual opened URL is available after native parsing/adblock/proxy handling. */
+    static Object mediaResult(Context context,Object player)throws ReflectiveOperationException{
+        String url=text(field(player,"D"));if(!http(url))return null;
+        Object result=create(context,"com.fongmi.android.tv.bean.Result");
+        call(result,"setUrl",url);call(result,"setParse",Integer.valueOf(0));
+        @SuppressWarnings("unchecked") Map<String,String> active=(Map<String,String>)field(player,"q");
+        call(result,"setHeader",headers(context,active));call(result,"setFormat",field(player,"A"));call(result,"setDrm",field(player,"F"));
+        return result;
     }
     static Object request(Context context,Snapshot snapshot)throws ReflectiveOperationException{
         Object site=snapshot.site;String key=text(call(site,"getKey")),episode=snapshot.order.get(snapshot.next);
@@ -97,15 +132,16 @@ final class PreloadHost {
             result=type(context,"com.fongmi.android.tv.bean.Result").getMethod("fromJson",String.class).invoke(null,json);
         }else{
             Class<?> recognizer=type(context,Device.MOBILE?"U3.t":"S3.q");
-            if(!Boolean.TRUE.equals(recognizer.getMethod("c",String.class).invoke(null,episode)))return null;
-            result=create(context,"com.fongmi.android.tv.bean.Result");call(result,"setUrl",episode);call(result,"setParse",Integer.valueOf(0));
-            call(result,"setPlayUrl",call(site,"getPlayUrl"));
+            boolean video=Boolean.TRUE.equals(recognizer.getMethod("c",String.class).invoke(null,episode));
+            Object playUrl=call(site,"getPlayUrl");
+            result=create(context,"com.fongmi.android.tv.bean.Result");call(result,"setUrl",episode);call(result,"setParse",Integer.valueOf(video&&text(playUrl).isEmpty()?0:1));
+            call(result,"setPlayUrl",playUrl);
         }
         if(text(call(result,"getFlag")).isEmpty())call(result,"setFlag",snapshot.key.flag);
         call(result,"setKey",key);call(result,"setHeader",call(site,"getHeader"));
         Object urls=call(result,"getUrl");Object values=call(urls,"getValues");
         if(values instanceof List&&!((List<?>)values).isEmpty())call(urls,"set",Math.max(0,Math.min(snapshot.key.quality,((List<?>)values).size()-1)));
-        return direct(result)?result:null;
+        return usable(result)?result:null;
     }
     private PreloadHost(){}
 }

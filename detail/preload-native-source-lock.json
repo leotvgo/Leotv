@@ -38,7 +38,11 @@
     "smali_classes3/t7/a.smali": "930006bab91a7651be13af0087e6b76c9e02e1955b02510f9c98be4ab9c67675",
     "smali/w0.1/a.smali": "50eabd28dc0b02ce01e07d421523fa0c42d74b734b320564f11e2fca9f8f1d85",
     "smali/u0.1/x.smali": "2f2002476719b643c0d7b0113963aeab03726cb534916419d75ac90fe4a30c4d",
-    "smali/m6/w.smali": "82bb78881279747a2318e509b34c080db720e17f84d14881359befa28d46ea42"
+    "smali/m6/w.smali": "82bb78881279747a2318e509b34c080db720e17f84d14881359befa28d46ea42",
+    "smali/com/fongmi/android/tv/bean/Site.smali": "41663dc37337730ed7095aa8fcaf080e7e7da7540d8d94bad3ed6083feeeefea",
+    "smali/com/fongmi/android/tv/bean/Result.smali": "8ec712d5c8dfebed39541dada87f8f358b9a8400a7f2bff46f87b34625027863",
+    "smali/com/fongmi/android/tv/bean/Url.smali": "5d20e3166fa9860056564bb660c09a7b334e1b04fd02851be520a54118281cb8",
+    "smali/com/fongmi/android/tv/bean/Config.smali": "cb67d52fe37e75ef66a5e94f730a8d9410840d153329e7c1a7e5d912c7bb4e1e"
   },
   "tv-v8a": {
     "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": "c010e5f836f13abc27338149748703d3ce9e87065af581c79e91b9b248790489",
@@ -79,7 +83,11 @@
     "smali_classes3/t7/a.smali": "930006bab91a7651be13af0087e6b76c9e02e1955b02510f9c98be4ab9c67675",
     "smali/w0.1/a.smali": "50eabd28dc0b02ce01e07d421523fa0c42d74b734b320564f11e2fca9f8f1d85",
     "smali/u0.1/x.smali": "2f2002476719b643c0d7b0113963aeab03726cb534916419d75ac90fe4a30c4d",
-    "smali/m6/w.smali": "82bb78881279747a2318e509b34c080db720e17f84d14881359befa28d46ea42"
+    "smali/m6/w.smali": "82bb78881279747a2318e509b34c080db720e17f84d14881359befa28d46ea42",
+    "smali/com/fongmi/android/tv/bean/Site.smali": "41663dc37337730ed7095aa8fcaf080e7e7da7540d8d94bad3ed6083feeeefea",
+    "smali/com/fongmi/android/tv/bean/Result.smali": "8ec712d5c8dfebed39541dada87f8f358b9a8400a7f2bff46f87b34625027863",
+    "smali/com/fongmi/android/tv/bean/Url.smali": "5d20e3166fa9860056564bb660c09a7b334e1b04fd02851be520a54118281cb8",
+    "smali/com/fongmi/android/tv/bean/Config.smali": "cb67d52fe37e75ef66a5e94f730a8d9410840d153329e7c1a7e5d912c7bb4e1e"
   },
   "mobile-v7a": {
     "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": "19420b2396fec4311fc579ca861d935815d2ada3f42b3e06ca0deeaafb567591",
@@ -120,7 +128,11 @@
     "smali/com/bumptech/glide/e.smali": "4407040aafaf25f97eadcbff1914f8b97cc812f84f31680b24c96cca24c7c528",
     "smali/v0.1/a.smali": "9eebc379f9da65c5c1b180318790eb687c51a2ecf3104fb856f667b6c3398bb1",
     "smali/c3.1/b.1.smali": "dafff62dd86034846a950f61b1622313ce427c95bbea97cab7b1a446df0e3bd2",
-    "smali/D6/w.smali": "e723aa83cdc7ee53d5def2ffdbddfb9b17f71be20e038652488a8918e6a9c462"
+    "smali/D6/w.smali": "e723aa83cdc7ee53d5def2ffdbddfb9b17f71be20e038652488a8918e6a9c462",
+    "smali/com/fongmi/android/tv/bean/Site.smali": "b7d7ed7a34070a98798aa0e1832c4f13122606b5707a64f28a7aac1480283b85",
+    "smali/com/fongmi/android/tv/bean/Result.smali": "2d2f7bbb30f477e39397f0dfaa28d91f7b3a5fd81d9dd9d59809fb1ac12b2af2",
+    "smali/com/fongmi/android/tv/bean/Url.smali": "5d20e3166fa9860056564bb660c09a7b334e1b04fd02851be520a54118281cb8",
+    "smali/com/fongmi/android/tv/bean/Config.smali": "296444e07e6344dcb6bc28811c977a54ee11c7a469a3bb4a76c50d7d90302ed6"
   },
   "mobile-v8a": {
     "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": "19420b2396fec4311fc579ca861d935815d2ada3f42b3e06ca0deeaafb567591",
@@ -161,6 +173,10 @@
     "smali/com/bumptech/glide/e.smali": "4407040aafaf25f97eadcbff1914f8b97cc812f84f31680b24c96cca24c7c528",
     "smali/v0.1/a.smali": "9eebc379f9da65c5c1b180318790eb687c51a2ecf3104fb856f667b6c3398bb1",
     "smali/c3.1/b.1.smali": "dafff62dd86034846a950f61b1622313ce427c95bbea97cab7b1a446df0e3bd2",
-    "smali/D6/w.smali": "e723aa83cdc7ee53d5def2ffdbddfb9b17f71be20e038652488a8918e6a9c462"
+    "smali/D6/w.smali": "e723aa83cdc7ee53d5def2ffdbddfb9b17f71be20e038652488a8918e6a9c462",
+    "smali/com/fongmi/android/tv/bean/Site.smali": "b7d7ed7a34070a98798aa0e1832c4f13122606b5707a64f28a7aac1480283b85",
+    "smali/com/fongmi/android/tv/bean/Result.smali": "2d2f7bbb30f477e39397f0dfaa28d91f7b3a5fd81d9dd9d59809fb1ac12b2af2",
+    "smali/com/fongmi/android/tv/bean/Url.smali": "5d20e3166fa9860056564bb660c09a7b334e1b04fd02851be520a54118281cb8",
+    "smali/com/fongmi/android/tv/bean/Config.smali": "296444e07e6344dcb6bc28811c977a54ee11c7a469a3bb4a76c50d7d90302ed6"
   }
 }

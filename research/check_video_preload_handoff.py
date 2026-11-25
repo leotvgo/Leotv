@@ -1,0 +1,82 @@
+#!/usr/bin/env python3
+"""CI fixtures execute the real preload bridge across the native A0 header reset."""
+from pathlib import Path
+import subprocess
+import tempfile
+
+ROOT = Path(__file__).resolve().parents[1]
+STUBS = {
+    'android/content/SharedPreferences.java': '''package android.content; public interface SharedPreferences {boolean getBoolean(String k,boolean d);int getInt(String k,int d);Editor edit();interface Editor{Editor putBoolean(String k,boolean v);Editor putInt(String k,int v);void apply();}}''',
+    'android/content/Context.java': '''package android.content; public class Context {public static final int MODE_PRIVATE=0;public static final String ACTIVITY_SERVICE="activity";public final Prefs prefs=new Prefs();public Context getApplicationContext(){return this;}public ClassLoader getClassLoader(){return getClass().getClassLoader();}public SharedPreferences getSharedPreferences(String n,int m){return prefs;}public Object getSystemService(String n){return new android.app.ActivityManager();}public static class Prefs implements SharedPreferences,SharedPreferences.Editor {java.util.Map<String,Object> data=new java.util.HashMap<>();public boolean getBoolean(String k,boolean d){Object v=data.get(k);return v instanceof Boolean?(Boolean)v:d;}public int getInt(String k,int d){Object v=data.get(k);return v instanceof Integer?(Integer)v:d;}public Editor edit(){return this;}public Editor putBoolean(String k,boolean v){data.put(k,v);return this;}public Editor putInt(String k,int v){data.put(k,v);return this;}public void apply(){}}}''',
+    'android/app/Activity.java': '''package android.app; public class Activity extends android.content.Context {public boolean isFinishing(){return false;}public boolean isDestroyed(){return false;}}''',
+    'android/app/ActivityManager.java': '''package android.app;public class ActivityManager {public int getMemoryClass(){return 128;}}''',
+    'android/os/SystemClock.java': '''package android.os;public class SystemClock {public static long now;public static long elapsedRealtime(){return now;}}''',
+    'android/os/Looper.java': '''package android.os;public class Looper {public static Looper getMainLooper(){return new Looper();}}''',
+    'android/os/Handler.java': '''package android.os;public class Handler {public static java.util.concurrent.CountDownLatch done=new java.util.concurrent.CountDownLatch(0);public Handler(Looper l){}public boolean post(Runnable r){try{r.run();}finally{done.countDown();}return true;}public boolean postDelayed(Runnable r,long ms){return true;}}''',
+    'android/util/Log.java': '''package android.util;public class Log {public static int i(String t,String m){return 0;}public static int w(String t,String m){return 0;}}''',
+    'android/net/Uri.java': '''package android.net;public class Uri {java.net.URI value;public static Uri parse(String s){Uri u=new Uri();try{u.value=new java.net.URI(s);}catch(Exception e){u.value=java.net.URI.create("");}return u;}public String getScheme(){return value.getScheme();}public String getHost(){return value.getHost();}public String getQueryParameter(String k){String q=value.getRawQuery();if(q!=null)for(String item:q.split("&")){String[] p=item.split("=",2);if(p[0].equals(k))return p.length==2?p[1]:"";}return null;}}''',
+    'com/leotv/detail/Device.java': '''package com.leotv.detail;public class Device {public static final boolean MOBILE=Boolean.getBoolean("mobile");}''',
+    'com/leotv/detail/CacheMaintenance.java': '''package com.leotv.detail;public class CacheMaintenance {interface Client{void trimCache();}static long generation;static void track(Client c){}static void forget(Client c){}static long ticket(){return generation;}static boolean valid(long t){return t==generation;}}''',
+    'com/leotv/detail/NativeRouting.java': '''package com.leotv.detail;public class NativeRouting {static boolean isFullscreenPlayer(android.app.Activity a){return true;}}''',
+    'com/leotv/detail/SiteFeed.java': '''package com.leotv.detail;public class SiteFeed {static Integer configId(){return 1;}}''',
+    'com/leotv/detail/DanmakuPlayback.java': '''package com.leotv.detail;public class DanmakuPlayback {static Object field(Object o,String n){try{return o==null?null:o.getClass().getField(n).get(o);}catch(Exception e){return null;}}static Object invoke(Object o,String n){try{return o==null?null:o.getClass().getMethod(n).invoke(o);}catch(Exception e){return null;}}}''',
+    'com/leotv/detail/NativeDialogs.java': '''package com.leotv.detail;public class NativeDialogs {interface Choice{void selected(int i);}static void choose(android.app.Activity a,String t,String[] v,int i,Choice c){}}''',
+    'com/leotv/detail/ExoMediaPreload.java': '''package com.leotv.detail;public class ExoMediaPreload {static int starts,nextStarts;ExoMediaPreload(android.content.Context c){}void start(Object r,long p,long d,int b,int s){starts++;if(r instanceof com.fongmi.android.tv.bean.Result&&((com.fongmi.android.tv.bean.Result)r).getRealUrl().contains("episode-2"))nextStarts++;}void stop(){}void release(){}}''',
+    'com/fongmi/android/tv/bean/Drm.java': '''package com.fongmi.android.tv.bean;public class Drm {}''',
+    'com/fongmi/android/tv/bean/Url.java': '''package com.fongmi.android.tv.bean;public class Url {String value="";public java.util.List<String> getValues(){return java.util.Collections.singletonList(value);}public Url set(int i){return this;}public String v(){return value;}}''',
+    'com/fongmi/android/tv/bean/Result.java': '''package com.fongmi.android.tv.bean;public class Result {Url url=new Url();String flag="",key="",playUrl="",format="";Integer parse=0;java.util.Map<String,String> header=new java.util.HashMap<>();Drm drm;public static Result fromJson(String json){Result r=new Result();r.setUrl("http://127.0.0.1:9988/media/episode-2.mp4");if(json.equals("parse"))r.parse=1;r.header.put("X-Media-Episode","2");return r;}public boolean hasMsg(){return false;}public Integer getParse(){return parse;}public Integer getJx(){return 0;}public Url getUrl(){return url;}public String getRealUrl(){return playUrl+url.v();}public String getFlag(){return flag;}public void setFlag(String s){flag=s;}public void setKey(String s){key=s;}public void setUrl(String s){url.value=s;}public void setParse(Integer i){parse=i;}public void setPlayUrl(String s){playUrl=s;}public String getPlayUrl(){return playUrl;}public java.util.Map<String,String> getHeader(){return header;}public void setHeader(java.util.Map<String,String> h){if(header.isEmpty())header.putAll(h);}public void setFormat(String s){format=s;}public void setDrm(Drm d){drm=d;}}''',
+    'com/fongmi/android/tv/bean/Site.java': '''package com.fongmi.android.tv.bean;public class Site {public int type=3;public String auth="credential-a";public String mode="direct";public java.util.concurrent.atomic.AtomicInteger requests=new java.util.concurrent.atomic.AtomicInteger();public String getKey(){return "fiction-site";}public Integer getType(){return type;}public String getApi(){return "csp_fiction";}public String getExt(){return "fiction-ext";}public String getJar(){return "fiction.jar";}public String getPlayUrl(){return "";}public java.util.Map<String,String> getHeader(){java.util.Map<String,String> h=new java.util.HashMap<>();h.put("Authorization",auth);return h;}public Spider spider(){return new Spider(this);}public static class Spider {final Site site;Spider(Site s){site=s;}public String playerContent(String flag,String id,java.util.List<?> flags){site.requests.incrementAndGet();return site.mode;}}}''',
+    'com/leotv/detail/Fiction.java': '''package com.leotv.detail;public class Fiction {public static final com.fongmi.android.tv.bean.Site site=new com.fongmi.android.tv.bean.Site();public static class Player {public java.util.Map<String,String> q=new java.util.HashMap<>();public String D="http://fiction.invalid/episode-1.mp4",A="video/mp4",B="fixture";public Object F;public int K=2;public Core u=new Core();public boolean Y(){return true;}public boolean a0(){return true;}public long P(){return 1000;}public long N(){return 1000;}public long G(){return 1000000;}public long H(){return 1000000;}public static java.util.Map<String,String> ua(java.util.Map<String,String> h){h.put("User-Agent","fiction-ua");return h;}}public static class Core {public long D(){return 30000;}}public static class History {public boolean isRevPlay(){return false;}public long getOpening(){return 0;}}public static class Episode {public final String url;Episode(String u){url=u;}public String getUrl(){return url;}}public static class Adapter {public java.util.List<Object> g=java.util.Arrays.asList(new Episode("episode-1"),new Episode("episode-2"));public int index,d,e;public int size(){return g.size();}public Object get(int i){return g.get(i);}public int p(){return index;}}public static class Flag {public String getFlag(){return "line-a";}}public static class Config {public String toString(){return "fiction-subscription";}}public static class Store {public java.util.List<String> l=java.util.Collections.emptyList();public Config d(){return new Config();}}public static class Extractor {public int stops;public void stop(){stops++;}public boolean b(android.net.Uri u){return false;}}public static class Source {public java.util.List<Extractor> i=java.util.Collections.singletonList(new Extractor());public int resolves;public String e(com.fongmi.android.tv.bean.Result r){resolves++;if(i.get(0).stops<resolves)throw new AssertionError("Native Source.stop must precede fetch");return r.getUrl().v();}}}''',
+    'C3/e.java': '''package C3;public class e extends com.leotv.detail.Fiction.Player {public static java.util.Map<String,String> r(java.util.Map<String,String> h){return ua(h);}}''',
+    'F3/f.java': '''package F3;public class f extends com.leotv.detail.Fiction.Player {public static java.util.Map<String,String> s(java.util.Map<String,String> h){return ua(h);}}''',
+    'C3/h.java': '''package C3;public class h {public static com.leotv.detail.Fiction.Source a=new com.leotv.detail.Fiction.Source();}''',
+    'F3/i.java': '''package F3;public class i {public static com.leotv.detail.Fiction.Source a=new com.leotv.detail.Fiction.Source();}''',
+    'q3/h.java': '''package q3;public class h {public static com.leotv.detail.Fiction.Store a=new com.leotv.detail.Fiction.Store();}''',
+    't3/h.java': '''package t3;public class h {public static com.leotv.detail.Fiction.Store a=new com.leotv.detail.Fiction.Store();}''',
+    'p/e.java': '''package p;public class e extends java.util.HashMap<String,String> {}''',
+    'q/e.java': '''package q;public class e extends java.util.HashMap<String,String> {}''',
+    't7/a.java': '''package t7;public class a {public static String d(com.fongmi.android.tv.bean.Site s,p.e params){s.requests.incrementAndGet();return s.mode;}}''',
+    'com/bumptech/glide/e.java': '''package com.bumptech.glide;public class e {public static String c(com.fongmi.android.tv.bean.Site s,q.e params){s.requests.incrementAndGet();return s.mode;}}''',
+    'S3/q.java': '''package S3;public class q {public static boolean c(String s){return s.startsWith("http");}}''',
+    'U3/t.java': '''package U3;public class t {public static boolean c(String s){return s.startsWith("http");}}''',
+    'com/fongmi/android/tv/ui/activity/VideoActivity.java': '''package com.fongmi.android.tv.ui.activity;public class VideoActivity extends android.app.Activity {public C3.e h0=new C3.e();public F3.f c0=new F3.f();public com.leotv.detail.Fiction.History g0=new com.leotv.detail.Fiction.History(),b0=g0;public com.leotv.detail.Fiction.Adapter Q=new com.leotv.detail.Fiction.Adapter(),S=Q,Z=new com.leotv.detail.Fiction.Adapter(),T=Z;public com.leotv.detail.Fiction.Flag g0(){return new com.leotv.detail.Fiction.Flag();}public int e0(){return Q.index;}public com.fongmi.android.tv.bean.Site m0(){return com.leotv.detail.Fiction.site;}public String k0(){return "fiction-work";}public String i0(){return k0();}public void A0(){}}''',
+    'com/leotv/detail/PreloadHandoffCheck.java': '''package com.leotv.detail;
+import java.lang.reflect.*;import java.util.concurrent.*;import com.fongmi.android.tv.ui.activity.VideoActivity;import com.fongmi.android.tv.bean.Result;
+public class PreloadHandoffCheck {
+ static void expect(boolean value,String message){if(!value)throw new AssertionError(message);}
+ static Object session(VideoActivity a)throws Exception {Field f=VideoPreload.class.getDeclaredField("SESSIONS");f.setAccessible(true);return ((java.util.Map<?,?>)f.get(null)).get(a);}
+ static Object slot(Object o,String n)throws Exception {Field f=o.getClass().getDeclaredField(n);f.setAccessible(true);return f.get(o);}
+ static void tick(Object s)throws Exception {Method m=s.getClass().getDeclaredMethod("tick");m.setAccessible(true);m.invoke(s);}
+ static void exercise(int type,boolean credentialChange,boolean parse)throws Exception {
+  Fiction.site.type=type;Fiction.site.auth="credential-a";Fiction.site.mode=parse?"parse":"direct";Fiction.site.requests.set(0);
+  Fiction.Source source=Device.MOBILE?F3.i.a:C3.h.a;source.resolves=0;source.i.get(0).stops=0;ExoMediaPreload.starts=ExoMediaPreload.nextStarts=0;
+  VideoActivity a=new VideoActivity();a.prefs.putBoolean("enabled",true).putBoolean("site:1:fiction-site",false).apply();
+  Fiction.Player player=Device.MOBILE?a.c0:a.h0;player.q.put("X-Playback-Episode","1");
+  android.os.SystemClock.now=0;VideoPreload.initialize(a);VideoPreload.result(player,new Result(),parse);Object s=session(a);tick(s);
+  android.os.Handler.done=new CountDownLatch(1);android.os.SystemClock.now=16000;tick(s);expect(android.os.Handler.done.await(3,TimeUnit.SECONDS),"All enabled CSP/API-4 sites must submit a request");
+  expect(Fiction.site.requests.get()==1&&slot(s,"next")!=null,"Complete raw provider response must become available");
+  if(parse)expect(ExoMediaPreload.nextStarts==0,"Raw parse response must not be treated as direct media");
+  if(credentialChange)Fiction.site.auth="credential-b";
+  android.os.SystemClock.now=240000;a.Q.index=1;PreloadHost.Snapshot before=PreloadHost.snapshot(a);VideoPreload.begin(a);player.q=null;PreloadHost.Snapshot after=PreloadHost.snapshot(a);
+  expect(before.key.matches(after.key),"Native v/w header clearing must not invalidate the request key");
+  java.util.concurrent.atomic.AtomicInteger foreground=new java.util.concurrent.atomic.AtomicInteger();
+  Result result=(Result)VideoPreload.wrap(a,()->{foreground.incrementAndGet();return new Result();}).call();
+  expect(foreground.get()==(credentialChange?1:0),"Only changed durable credentials may force playerContent to run again");
+  expect(source.resolves==(credentialChange?0:1),"Consumed raw response must run exactly one native Source.fetch");
+  if(!credentialChange){expect(result.getParse()==(parse?1:0),"Parser flags must be preserved");expect("2".equals(result.getHeader().get("X-Media-Episode")),"Target response headers must survive consumption");}
+  VideoPreload.release(a);
+ }
+ public static void main(String[] args)throws Exception {exercise(3,false,false);exercise(4,false,false);exercise(3,false,true);exercise(3,true,false);System.out.println((Device.MOBILE?"Phone":"TV")+" real preload handoff: all-site switch, proxy/raw parse response, native header reset, durable auth rejection and Source resolution passed.");}
+}''',
+}
+
+if __name__ == '__main__':
+    with tempfile.TemporaryDirectory(prefix='leotv-preload-handoff-ci-') as temporary:
+        folder=Path(temporary);files=[]
+        for name,text in STUBS.items():
+            path=folder/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text(text);files.append(str(path))
+        for name in ('PreloadPolicy','PreloadHost','PreloadSettings','VideoPreload'):
+            files.append(str(ROOT/'detail/runtime/common/com/leotv/detail'/f'{name}.java'))
+        subprocess.run(['javac','--release','8','-d',str(folder),*files],check=True)
+        for mobile in ('false','true'):
+            subprocess.run(['java',f'-Dmobile={mobile}','-cp',str(folder),'com.leotv.detail.PreloadHandoffCheck'],check=True,timeout=15)

@@ -5,7 +5,7 @@ import java.util.Objects;
 
 /** Pure request/clock rules shared by the native bridge and the CI fixtures. */
 final class PreloadPolicy {
-    static final long DELAY_MS=15000, MAX_AGE_MS=90000;
+    static final long DELAY_MS=15000, MAX_AGE_MS=2*60*60*1000L;
     static final class Clock {
         long played, since=-1;
         void update(long now,boolean playing){

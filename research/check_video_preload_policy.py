@@ -26,7 +26,7 @@ public class VideoPreloadPolicyCheck {
   expect(!saved.matches(key("subscription-a",site,"credential-a","work-a","line-a","episode-c",0,2)));
   expect(!saved.matches(key("subscription-a",site,"credential-a","work-a","line-a","episode-b",1,2)));
   expect(!saved.matches(key("subscription-a",site,"credential-a","work-a","line-a","episode-b",0,1)));
-  expect(!saved.matches(null));expect(PreloadPolicy.fresh(1000,89999,0,0));expect(!PreloadPolicy.fresh(1000,91000,0,0));
+  expect(!saved.matches(null));expect(PreloadPolicy.fresh(1000,89999,0,0));expect(PreloadPolicy.fresh(1000,241000,0,0));expect(!PreloadPolicy.fresh(1000,1000+PreloadPolicy.MAX_AGE_MS,0,0));
   expect(!PreloadPolicy.fresh(1000,999,0,0));expect(!PreloadPolicy.fresh(1000,2000,15000,0));expect(PreloadPolicy.fresh(1000,2000,15001,0));
   expect(!PreloadPolicy.sameOrder(Arrays.asList("a","b"),Arrays.asList("b","a")));
   System.out.println("Preload pause accumulation, order/boundary, full request identity and expiry fixtures passed.");

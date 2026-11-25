@@ -31,6 +31,8 @@ jobs:
         run: python3 -B research/check_detail_parallel.py
       - name: Verify preload pause, expiry, subscription identity and episode boundaries
         run: python3 -B research/check_video_preload_policy.py
+      - name: Verify all-site raw preload handoff across native playback header reset
+        run: python3 -B research/check_video_preload_handoff.py
 
   prepare:
     needs: sources
