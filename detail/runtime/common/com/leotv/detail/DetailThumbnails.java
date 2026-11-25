@@ -29,9 +29,9 @@ class DetailThumbnails {
     private static final Handler MAIN = new Handler(Looper.getMainLooper());
     /** One page's decoded artwork is allowed to grow to this before older entries are dropped. */
     private static final int BUDGET = 100 * 1024 * 1024;
-    /** Enough work to keep four workers busy without queuing hundreds of decoded bitmaps on the main thread. */
-    private static final int MAX_ACTIVE = 32;
-    private final ThreadPoolExecutor worker = new ThreadPoolExecutor(4, 4, 5, TimeUnit.SECONDS,
+    /** Six workers with a short queue; distant prefetches leave room for visible images. */
+    private static final int MAX_ACTIVE = 8;
+    private final ThreadPoolExecutor worker = new ThreadPoolExecutor(6, 6, 5, TimeUnit.SECONDS,
             new LinkedBlockingQueue<Runnable>(), r -> { Thread t = new Thread(r, "leo-detail-thumbnails"); t.setDaemon(true); return t; });
     private final Map<String, Bitmap> cache = new LinkedHashMap<>(16, 0.75f, true);
     private final Map<String, Pending> pending = new HashMap<>();
@@ -111,6 +111,7 @@ class DetailThumbnails {
     void bind(String path, boolean portrait, Target target) {
         request(path, portrait, target);
     }
+    void bindNear(String path,boolean portrait,android.view.View view,Target target){request(path,portrait,target,false,view);}
 
     /**
      * Starts the same fetch/decode a visible tile would, without a tile to draw into. The result joins
@@ -131,6 +132,9 @@ class DetailThumbnails {
     private String cacheKey(String path,boolean portrait,boolean source){return (source?"source:":"tmdb:"+imageRoot+":")+size(portrait)+path;}
     private void request(String path,boolean portrait,Target target){request(path,portrait,target,false);}
     private void request(String path, boolean portrait, Target target,boolean source) {
+        request(path,portrait,target,source,null);
+    }
+    private void request(String path,boolean portrait,Target target,boolean source,android.view.View view){
         if (closed || path==null || path.isEmpty() || (source?SourceArtwork.address(path):MobileDetailMetadata.imageAddress(path,size(portrait))).isEmpty()) return;
         syncImages();String key=cacheKey(path,portrait,source);
         needed.add(key);
@@ -139,21 +143,23 @@ class DetailThumbnails {
         Pending existing = pending.get(key);
         if (existing != null) { if (target != null) existing.target = target; return; }
         Request waiting = wanted.get(key);
-        if (waiting != null) { if (target != null) waiting.target = target; return; }
+        if (waiting != null) { if (target != null) {waiting.target = target;waiting.view=view;pump();} return; }
         if (failed.contains(key)) {
             Long due=retryAt.get(key);
             if(due==null || android.os.SystemClock.uptimeMillis()<due)return;
             failed.remove(key);retryAt.remove(key);
         }
-        wanted.put(key, new Request(path, portrait, target,source));
+        wanted.put(key, new Request(path, portrait, target,source,view));
         pump();
     }
     private void pump() {
         if (closed) return;
-        Iterator<Map.Entry<String, Request>> entries = wanted.entrySet().iterator();
-        while (pending.size() < MAX_ACTIVE && entries.hasNext()) {
-            Map.Entry<String, Request> entry = entries.next(); entries.remove();
-            start(entry.getKey(), entry.getValue());
+        while(pending.size()<MAX_ACTIVE&&!wanted.isEmpty()){
+            Map.Entry<String,Request> best=null;int priority=Integer.MAX_VALUE;
+            for(Map.Entry<String,Request> entry:wanted.entrySet()){int candidate=entry.getValue().priority();if(candidate<priority){best=entry;priority=candidate;if(candidate==0)break;}}
+            // Far-away and unbound prefetches leave room for the current and next viewport.
+            if(best==null||priority>=2&&pending.size()>=4)break;
+            wanted.remove(best.getKey());start(best.getKey(),best.getValue());
         }
     }
     private void start(String key, Request request) {
@@ -187,6 +193,7 @@ class DetailThumbnails {
     void end() {
         // Scrolling only detaches targets. Already accepted downloads can finish into this page's cache.
         worker.purge();
+        pump();
     }
     private void trim(int incoming) {
         Iterator<Map.Entry<String, Bitmap>> it = cache.entrySet().iterator();
@@ -259,7 +266,14 @@ class DetailThumbnails {
         void cancel() { request.cancel(); if (future != null) future.cancel(true); target = null; }
     }
     private static final class Request {
-        final String path; final boolean portrait,source; Target target;
-        Request(String path, boolean portrait, Target target,boolean source) { this.path = path; this.portrait = portrait; this.target = target; this.source=source; }
+        final String path; final boolean portrait,source; Target target;android.view.View view;
+        Request(String path, boolean portrait, Target target,boolean source,android.view.View view) { this.path = path; this.portrait = portrait; this.target = target; this.source=source;this.view=view; }
+        int priority(){
+            if(target==null)return 3;if(view==null||view.getHeight()==0)return 1;
+            int[] location=new int[2];view.getLocationInWindow(location);int height=Math.max(1,view.getRootView().getHeight());
+            if(location[1]+view.getHeight()>=0&&location[1]<=height)return 0;
+            if(location[1]+view.getHeight()>=-height&&location[1]<=height*2)return 1;
+            return 2;
+        }
     }
 }

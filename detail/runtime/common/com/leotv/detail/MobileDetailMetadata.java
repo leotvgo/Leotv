@@ -12,6 +12,14 @@ import org.json.JSONObject;
 
 /** TMDB enriches labels/images; source controls still own every playback action. */
 class MobileDetailMetadata {
+    interface Progress { void ready(Result result); }
+    private static final java.util.concurrent.ThreadPoolExecutor SUPPLEMENTS=new java.util.concurrent.ThreadPoolExecutor(4,4,10,java.util.concurrent.TimeUnit.SECONDS,
+            new java.util.concurrent.LinkedBlockingQueue<Runnable>(),r->{Thread t=new Thread(r,"leotv-detail-supplement");t.setDaemon(true);return t;});
+    static {SUPPLEMENTS.allowCoreThreadTimeOut(true);}
+    private static final class Supplement {
+        final int kind;final JSONObject data;final List<Review> reviews;
+        Supplement(int kind,JSONObject data,List<Review> reviews){this.kind=kind;this.data=data;this.reviews=reviews;}
+    }
     private final DoubanReviewMetadata douban;
     MobileDetailMetadata() { this(new DoubanReviewMetadata()); }
     MobileDetailMetadata(DoubanReviewMetadata douban) { this.douban = douban; }
@@ -271,6 +279,7 @@ class MobileDetailMetadata {
         final Map<String, Episode> episodes;
         final int season;
         long tmdbId;
+        boolean complete=true;
         String tmdbType = "";
         String status = "", releaseDate = "", lastAirDate = "", nextAirDate = "";
         int totalSeasons, totalEpisodes;
@@ -333,6 +342,11 @@ class MobileDetailMetadata {
             this.reviews=Collections.unmodifiableList(new ArrayList<>(reviews));
             this.branding = branding;
         }
+        Result withCastEpisodes(List<Actor> values,Map<String,Episode> episodeValues){
+            StringBuilder names=new StringBuilder();for(Actor actor:values){if(names.length()>0)names.append(" / ");names.append(actor.name);}
+            Result result=new Result(overview,facts,names.toString(),poster,posterPath,backdropPath,values,episodeValues,season,backdropPaths,provider,posterPaths,recommendations,reviews,branding);
+            result.copyTmdb(this);result.trailers=trailers;return result;
+        }
         Result withReviews(List<Review> values) {
             Result result = new Result(overview, facts, cast, poster, posterPath, backdropPath, actors, episodes,
                     season, backdropPaths, provider, posterPaths, recommendations, values, branding);
@@ -343,6 +357,7 @@ class MobileDetailMetadata {
         void copyTmdb(Result source) {
             if (source == null) return;
             tmdbId = source.tmdbId; tmdbType = source.tmdbType; status = source.status;
+            complete=source.complete;
             releaseDate = source.releaseDate; lastAirDate = source.lastAirDate; nextAirDate = source.nextAirDate;
             totalSeasons = source.totalSeasons; totalEpisodes = source.totalEpisodes;
             stills = source.stills; tagline = source.tagline; imdbId = source.imdbId; collection = source.collection;
@@ -366,6 +381,17 @@ class MobileDetailMetadata {
 
     Result load(BackdropIdentity work, BackdropSettings.Options options, BackdropHttp.Request request) throws Exception {
         return load(work, options, request, null);
+    }
+    Result loadProgressive(BackdropIdentity work,BackdropSettings.Options options,BackdropHttp.Request request,Progress progress)throws Exception{
+        Exception failure=null;
+        if(!options.key.isEmpty())try{
+            BackdropIdentity.Selection[] searched=new BackdropIdentity.Selection[1];
+            Result value=loadTmdb(work,options,request,null,searched,false,progress);if(value!=null)return value;
+            if(searched[0]!=null&&searched[0].exact)return null;
+        }catch(Exception error){request.check();failure=error;}
+        if(MetadataMatchStore.find(work)!=null){if(failure!=null)throw failure;return null;}
+        try{Result value=loadDouban(work,options,request);if(value!=null)return value;}catch(Exception error){request.check();if(failure==null)failure=error;}
+        if(failure!=null)throw failure;return null;
     }
 
     /**
@@ -430,8 +456,15 @@ class MobileDetailMetadata {
     Result loadHero(BackdropIdentity work,BackdropSettings.Options options,BackdropHttp.Request request,MetadataPrefetch.Target known)throws Exception{
         return work.music?null:loadTmdb(work,options,request,known,null,true);
     }
+    Result loadHero(BackdropIdentity work,BackdropSettings.Options options,BackdropHttp.Request request,MetadataPrefetch.Target known,Progress progress)throws Exception{
+        return work.music?null:loadTmdb(work,options,request,known,null,true,progress);
+    }
     private Result loadTmdb(BackdropIdentity work, BackdropSettings.Options options, BackdropHttp.Request request,
                             MetadataPrefetch.Target known, BackdropIdentity.Selection[] searched,boolean heroOnly) throws Exception {
+        return loadTmdb(work,options,request,known,searched,heroOnly,null);
+    }
+    private Result loadTmdb(BackdropIdentity work, BackdropSettings.Options options, BackdropHttp.Request request,
+                            MetadataPrefetch.Target known, BackdropIdentity.Selection[] searched,boolean heroOnly,Progress progress) throws Exception {
         if (options.key.isEmpty() || options.key.contains("\n") || options.key.contains("\r")) return null;
         Map<String, String> headers = new HashMap<>(); headers.put("Accept", "application/json");
         boolean bearer = options.key.startsWith("eyJ");
@@ -446,6 +479,8 @@ class MobileDetailMetadata {
         } else if (chosen != null) {
             match = new JSONObject().put("id", chosen.tmdbId).put("media_type", chosen.mediaType);
             if (searched != null) searched[0] = new BackdropIdentity.Selection(null, true, true);
+        } else if((match=MetadataCache.match(work,options))!=null){
+            if(searched!=null)searched[0]=new BackdropIdentity.Selection(match,false,true);
         } else {
             JSONObject search = get("/search/multi?include_adult=false&page=1&query=" + encode(work.title) + query, options, headers, request);
             JSONArray results = search.optJSONArray("results") == null ? new JSONArray() : search.optJSONArray("results");
@@ -483,7 +518,10 @@ class MobileDetailMetadata {
             match = selection.ambiguous ? null : selection.item;
         }
         if (match == null || match.optLong("id") <= 0) return null;
+        request.check();
+        MetadataCache.rememberMatch(work,options,match);
         boolean tv = "tv".equals(match.getString("media_type"));
+        if(progress!=null){Result initial=summary(match,tv,match.optJSONObject("images")!=null,options);if(!initial.overview.isEmpty()||!initial.posterPath.isEmpty()||!initial.backdropPath.isEmpty())progress.ready(initial);}
         String base = "/" + match.getString("media_type") + "/" + match.getLong("id");
         String creditsKey = tv ? "aggregate_credits" : "credits";
         String imageLanguage = imageLanguage(options);
@@ -494,13 +532,14 @@ class MobileDetailMetadata {
         if(heroOnly)append="images";
         JSONObject detail = get(base + "?append_to_response=" + append + "&include_image_language="
                 + encode("null,zh," + imageLanguage + ",en") + query, options, headers, request);
-        if(heroOnly){Result value=new Result(detail.optString("overview"),facts(detail),"",null,imagePath(detail.optString("poster_path")),imagePath(detail.optString("backdrop_path")),Collections.emptyList(),Collections.emptyMap(),-1,backdrops(detail),"tmdb",posters(detail),Collections.emptyList(),new Branding(tv?"剧集":"电影",detail.optString(tv?"original_name":"original_title"),logos(detail,imageLanguage),badges(detail)));value.tmdbId=match.optLong("id");value.tmdbType=match.optString("media_type");return value;}
+        JSONObject identified=copy(detail);identified.put("media_type",match.getString("media_type"));
+        request.check();
+        MetadataCache.rememberMatch(work,options,identified);
+        if(heroOnly)return summary(identified,tv,true,options);
+        if(progress!=null)progress.ready(summary(identified,tv,true,options));
         List<Actor> actors = actors(detail.optJSONObject(creditsKey));
         if (actors.isEmpty()) actors = actors(detail.optJSONObject("credits"));
-        if (actors.isEmpty()) {
-            try { actors = actors(get(base + "/" + creditsKey + "?" + query.substring(1), options, headers, request)); }
-            catch (Exception ignored) { request.check(); }
-        }
+        boolean missingCast=actors.isEmpty();
         int season = tv ? selectSeason(work, detail.optJSONArray("seasons")) : -1;
         Map<String, Episode> episodes = new LinkedHashMap<>();
         if(!tv) {
@@ -508,21 +547,9 @@ class MobileDetailMetadata {
             String image=pictures.isEmpty()?imagePath(detail.optString("poster_path")):pictures.get(0);
             if(!image.isEmpty())episodes.put("movie",new Episode(-1,0,detail.optString("title"),detail.optString("overview"),image));
         }
-        if (tv && season >= 0) {
-            try {
-                JSONObject data = get(base + "/season/" + season + "?append_to_response=credits" + query, options, headers, request);
-                if (data.optInt("season_number", -1) == season) {
-                    episodes = episodes(data.optJSONArray("episodes"), season);
-                    List<Actor> seasonCast = actors(data.optJSONObject("credits"));
-                    if (!seasonCast.isEmpty()) actors = seasonCast;
-                }
-            } catch (Exception ignored) { request.check(); /* Source episode controls remain usable. */ }
-        }
         actors = withDirectors(actors, detail, tv);
         StringBuilder names = new StringBuilder();
         for (Actor actor : actors) { if (names.length() > 0) names.append(" / "); names.append(actor.name); }
-        List<Review> preferred = loadDoubanReviews(new BackdropIdentity(work.site, work.id, work.sourceTitle,
-                detail.optString(tv ? "first_air_date" : "release_date", work.year), tv ? "电视剧" : "电影"), options, request);
         // Related titles come from both lists TMDB keeps: what it recommends, and what it calls similar.
         // They overlap heavily, so the second only ever adds the titles the first did not already carry.
         List<Recommendation> related = new ArrayList<>(recommendations(detail.optJSONObject("recommendations"), match.getLong("id")));
@@ -539,7 +566,7 @@ class MobileDetailMetadata {
         Result built = new Result(detail.optString("overview"), facts(detail), names.toString(), null,
                 imagePath(detail.optString("poster_path")), imagePath(detail.optString("backdrop_path")), actors, episodes, season,
                 backdrops(detail),"tmdb",posters(detail),related,
-                preferred.isEmpty() ? loadReviews(base, detail.optJSONObject("reviews"), options, headers, auth, request) : preferred,
+                initialReviews(detail.optJSONObject("reviews")),
                 new Branding(tv ? "剧集" : "电影", detail.optString(tv ? "original_name" : "original_title"),
                         logos(detail, imageLanguage), badgeValues));
         built.tmdbId = match.optLong("id", 0); built.tmdbType = match.optString("media_type");
@@ -557,16 +584,45 @@ class MobileDetailMetadata {
         built.imdbId = imdbId(detail);
         built.keywords = keywords(detail);
         built.collection = collectionName(detail);
-        long collectionId = collectionId(detail);
-        if (!tv && collectionId > 0) {
-            // A film that belongs to a series: the other parts are one more call, and a failure there must
-            // never cost the page its own facts.
-            try {
-                JSONObject data = get("/collection/" + collectionId + "?" + query.substring(1), options, headers, request);
-                built.collectionParts = collectionParts(data, match.getLong("id"));
-            } catch (Exception ignored) { request.check(); }
-        }
-        return built;
+        if(progress!=null){built.complete=false;progress.ready(built.detached());}
+        java.util.concurrent.ExecutorCompletionService<Supplement> finished=new java.util.concurrent.ExecutorCompletionService<>(SUPPLEMENTS);
+        List<java.util.concurrent.Future<Supplement>> tasks=new ArrayList<>();
+        if(tv&&season>=0)tasks.add(finished.submit(()->new Supplement(1,get(base+"/season/"+season+"?append_to_response=credits"+query,options,headers,request),null)));
+        if(missingCast)tasks.add(finished.submit(()->new Supplement(2,get(base+"/"+creditsKey+"?"+query.substring(1),options,headers,request),null)));
+        long collectionId=collectionId(detail);
+        if(!tv&&collectionId>0)tasks.add(finished.submit(()->new Supplement(3,get("/collection/"+collectionId+"?"+query.substring(1),options,headers,request),null)));
+        tasks.add(finished.submit(()->{
+            List<Review> preferred=loadDoubanReviews(new BackdropIdentity(work.site,work.id,work.sourceTitle,
+                    detail.optString(tv?"first_air_date":"release_date",work.year),tv?"电视剧":"电影"),options,request);
+            return new Supplement(4,null,preferred.isEmpty()?loadReviews(base,detail.optJSONObject("reviews"),options,headers,auth,request):preferred);
+        }));
+        try{
+            int remaining=tasks.size();boolean seasonCast=false;
+            while(remaining>0){
+                request.check();java.util.concurrent.Future<Supplement> ready=finished.poll(100,java.util.concurrent.TimeUnit.MILLISECONDS);if(ready==null)continue;remaining--;
+                try{
+                    Supplement part=ready.get();
+                    if(part.kind==1&&part.data.optInt("season_number",-1)==season){
+                        List<Actor> cast=actors(part.data.optJSONObject("credits"));
+                        if(!cast.isEmpty()){seasonCast=true;cast=withDirectors(cast,detail,tv);}else cast=built.actors;
+                        built=built.withCastEpisodes(cast,episodes(part.data.optJSONArray("episodes"),season));
+                    }else if(part.kind==2&&!seasonCast)built=built.withCastEpisodes(withDirectors(actors(part.data),detail,tv),built.episodes);
+                    else if(part.kind==3){built=built.detached();built.collectionParts=collectionParts(part.data,match.optLong("id"));}
+                    else if(part.kind==4)built=built.withReviews(part.reviews);
+                    if(progress!=null)progress.ready(built.detached());
+                }catch(java.util.concurrent.ExecutionException ignored){request.check();}
+            }
+        }catch(InterruptedException error){Thread.currentThread().interrupt();throw error;}
+        finally{for(java.util.concurrent.Future<Supplement> task:tasks)task.cancel(true);}
+        built.complete=true;return built;
+    }
+    private Result summary(JSONObject detail,boolean tv,boolean images,BackdropSettings.Options options){
+        Result value=new Result(detail.optString("overview"),facts(detail),"",null,imagePath(detail.optString("poster_path")),imagePath(detail.optString("backdrop_path")),Collections.emptyList(),Collections.emptyMap(),-1,backdrops(detail),"tmdb",posters(detail),Collections.emptyList(),
+                new Branding(tv?"剧集":"电影",detail.optString(tv?"original_name":"original_title"),images?logos(detail,imageLanguage(options)):Collections.emptyList(),badges(detail)));
+        value.complete=false;value.tmdbId=detail.optLong("id");value.tmdbType=tv?"tv":"movie";value.status=detail.optString("status");value.totalEpisodes=detail.optInt("number_of_episodes");value.totalSeasons=detail.optInt("number_of_seasons");return value;
+    }
+    private static List<Review> initialReviews(JSONObject value){
+        return reviews(value);
     }
 
     /** Search answers for the manual-match panel, including works whose titles are not exact. */
@@ -1426,7 +1482,7 @@ class MobileDetailMetadata {
     }
 
     JSONObject get(String path, BackdropSettings.Options options, Map<String, String> headers, BackdropHttp.Request request) throws Exception {
-        byte[] bytes=BackdropHttp.get(options.base + path, "tmdb", options.proxy, headers, request);
+        byte[] bytes=MetadataCache.api(path,options,headers,request);
         try {
             JSONObject value=new JSONObject(new String(bytes,"UTF-8"));
             if(value.has("success")&&!value.optBoolean("success",true))throw new BackdropHttp.Failure("tmdb","响应未成功（code "+value.optInt("status_code")+"）");

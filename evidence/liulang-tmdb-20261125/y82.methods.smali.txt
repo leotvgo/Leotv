@@ -1,0 +1,327 @@
+# Verbatim method excerpts from Liulang 32-bit 261124; see provenance.json.
+
+.method public static declared-synchronized c()Lokhttp3/OkHttpClient;
+    .locals 3
+
+    const-class v0, Ly82;
+
+    monitor-enter v0
+
+    :try_start_0
+    sget-object v1, Lpr3;->s:Ly82;
+
+    iget-object v1, v1, Ly82;->f:Lokhttp3/OkHttpClient;
+
+    if-eqz v1, :cond_0
+
+    sget-object v1, Lpr3;->s:Ly82;
+
+    iget-object v1, v1, Ly82;->f:Lokhttp3/OkHttpClient;
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catchall_0
+
+    monitor-exit v0
+
+    return-object v1
+
+    :catchall_0
+    move-exception v1
+
+    goto :goto_0
+
+    :cond_0
+    :try_start_1
+    sget-object v1, Lpr3;->s:Ly82;
+
+    const/4 v2, 0x0
+
+    invoke-static {v2}, Ly82;->f(Z)Lokhttp3/OkHttpClient$Builder;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Lokhttp3/OkHttpClient$Builder;->build()Lokhttp3/OkHttpClient;
+
+    move-result-object v2
+
+    iput-object v2, v1, Ly82;->f:Lokhttp3/OkHttpClient;
+    :try_end_1
+    .catchall {:try_start_1 .. :try_end_1} :catchall_0
+
+    monitor-exit v0
+
+    return-object v2
+
+    :goto_0
+    :try_start_2
+    monitor-exit v0
+    :try_end_2
+    .catchall {:try_start_2 .. :try_end_2} :catchall_0
+
+    throw v1
+.end method
+
+.method public static d(J)Lokhttp3/OkHttpClient;
+    .locals 2
+
+    invoke-static {}, Ly82;->c()Lokhttp3/OkHttpClient;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Lokhttp3/OkHttpClient;->newBuilder()Lokhttp3/OkHttpClient$Builder;
+
+    move-result-object v0
+
+    sget-object v1, Ljava/util/concurrent/TimeUnit;->MILLISECONDS:Ljava/util/concurrent/TimeUnit;
+
+    invoke-virtual {v0, p0, p1, v1}, Lokhttp3/OkHttpClient$Builder;->connectTimeout(JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;
+
+    move-result-object v0
+
+    invoke-virtual {v0, p0, p1, v1}, Lokhttp3/OkHttpClient$Builder;->readTimeout(JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;
+
+    move-result-object v0
+
+    invoke-virtual {v0, p0, p1, v1}, Lokhttp3/OkHttpClient$Builder;->writeTimeout(JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;
+
+    move-result-object p0
+
+    invoke-virtual {p0}, Lokhttp3/OkHttpClient$Builder;->build()Lokhttp3/OkHttpClient;
+
+    move-result-object p0
+
+    return-object p0
+.end method
+
+.method public static e()Lv82;
+    .locals 2
+
+    sget-object v0, Lpr3;->s:Ly82;
+
+    iget-object v1, v0, Ly82;->h:Lv82;
+
+    if-eqz v1, :cond_0
+
+    return-object v1
+
+    :cond_0
+    new-instance v1, Lv82;
+
+    invoke-direct {v1}, Lv82;-><init>()V
+
+    iput-object v1, v0, Ly82;->h:Lv82;
+
+    return-object v1
+.end method
+
+.method public static f(Z)Lokhttp3/OkHttpClient$Builder;
+    .locals 7
+
+    new-instance v0, Lokhttp3/Dispatcher;
+
+    invoke-direct {v0}, Lokhttp3/Dispatcher;-><init>()V
+
+    const/16 v1, 0x40
+
+    invoke-virtual {v0, v1}, Lokhttp3/Dispatcher;->setMaxRequests(I)V
+
+    const/16 v1, 0xf
+
+    invoke-virtual {v0, v1}, Lokhttp3/Dispatcher;->setMaxRequestsPerHost(I)V
+
+    new-instance v1, Lokhttp3/ConnectionPool;
+
+    const-wide/16 v2, 0x5
+
+    sget-object v4, Ljava/util/concurrent/TimeUnit;->MINUTES:Ljava/util/concurrent/TimeUnit;
+
+    const/16 v5, 0x20
+
+    invoke-direct {v1, v5, v2, v3, v4}, Lokhttp3/ConnectionPool;-><init>(IJLjava/util/concurrent/TimeUnit;)V
+
+    new-instance v2, Lokhttp3/OkHttpClient$Builder;
+
+    invoke-direct {v2}, Lokhttp3/OkHttpClient$Builder;-><init>()V
+
+    invoke-virtual {v2, v0}, Lokhttp3/OkHttpClient$Builder;->dispatcher(Lokhttp3/Dispatcher;)Lokhttp3/OkHttpClient$Builder;
+
+    move-result-object v0
+
+    invoke-virtual {v0, v1}, Lokhttp3/OkHttpClient$Builder;->connectionPool(Lokhttp3/ConnectionPool;)Lokhttp3/OkHttpClient$Builder;
+
+    move-result-object v0
+
+    sget-object v1, Lpr3;->s:Ly82;
+
+    iget-object v2, v1, Ly82;->b:Lqp2;
+
+    if-eqz v2, :cond_0
+
+    goto :goto_0
+
+    :cond_0
+    new-instance v2, Lqp2;
+
+    invoke-direct {v2}, Lqp2;-><init>()V
+
+    iput-object v2, v1, Ly82;->b:Lqp2;
+
+    :goto_0
+    invoke-virtual {v0, v2}, Lokhttp3/OkHttpClient$Builder;->addInterceptor(Lokhttp3/Interceptor;)Lokhttp3/OkHttpClient$Builder;
+
+    move-result-object v0
+
+    iget-object v2, v1, Ly82;->c:Lnf;
+
+    if-eqz v2, :cond_1
+
+    goto :goto_1
+
+    :cond_1
+    new-instance v2, Lnf;
+
+    invoke-direct {v2}, Lnf;-><init>()V
+
+    iput-object v2, v1, Ly82;->c:Lnf;
+
+    :goto_1
+    invoke-virtual {v0, v2}, Lokhttp3/OkHttpClient$Builder;->addInterceptor(Lokhttp3/Interceptor;)Lokhttp3/OkHttpClient$Builder;
+
+    move-result-object v0
+
+    iget-object v2, v1, Ly82;->a:Luq2;
+
+    if-eqz v2, :cond_2
+
+    goto :goto_2
+
+    :cond_2
+    new-instance v2, Luq2;
+
+    invoke-direct {v2}, Luq2;-><init>()V
+
+    iput-object v2, v1, Ly82;->a:Luq2;
+
+    :goto_2
+    invoke-virtual {v0, v2}, Lokhttp3/OkHttpClient$Builder;->addNetworkInterceptor(Lokhttp3/Interceptor;)Lokhttp3/OkHttpClient$Builder;
+
+    move-result-object v0
+
+    const-wide/16 v2, 0x7530
+
+    sget-object v4, Ljava/util/concurrent/TimeUnit;->MILLISECONDS:Ljava/util/concurrent/TimeUnit;
+
+    invoke-virtual {v0, v2, v3, v4}, Lokhttp3/OkHttpClient$Builder;->connectTimeout(JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;
+
+    move-result-object v0
+
+    invoke-virtual {v0, v2, v3, v4}, Lokhttp3/OkHttpClient$Builder;->readTimeout(JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;
+
+    move-result-object v0
+
+    invoke-virtual {v0, v2, v3, v4}, Lokhttp3/OkHttpClient$Builder;->writeTimeout(JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;
+
+    move-result-object v0
+
+    invoke-static {}, Ly82;->e()Lv82;
+
+    move-result-object v2
+
+    invoke-virtual {v0, v2}, Lokhttp3/OkHttpClient$Builder;->dns(Lokhttp3/Dns;)Lokhttp3/OkHttpClient$Builder;
+
+    move-result-object v0
+
+    new-instance v2, Lw82;
+
+    invoke-direct {v2}, Ljava/lang/Object;-><init>()V
+
+    invoke-virtual {v0, v2}, Lokhttp3/OkHttpClient$Builder;->hostnameVerifier(Ljavax/net/ssl/HostnameVerifier;)Lokhttp3/OkHttpClient$Builder;
+
+    move-result-object v0
+
+    const/4 v2, 0x0
+
+    :try_start_0
+    const-string v3, "TLS"
+
+    invoke-static {v3}, Ljavax/net/ssl/SSLContext;->getInstance(Ljava/lang/String;)Ljavax/net/ssl/SSLContext;
+
+    move-result-object v3
+
+    new-instance v4, Lx82;
+
+    invoke-direct {v4}, Ljava/lang/Object;-><init>()V
+
+    const/4 v5, 0x1
+
+    new-array v5, v5, [Ljavax/net/ssl/TrustManager;
+
+    const/4 v6, 0x0
+
+    aput-object v4, v5, v6
+
+    new-instance v4, Ljava/security/SecureRandom;
+
+    invoke-direct {v4}, Ljava/security/SecureRandom;-><init>()V
+
+    invoke-virtual {v3, v2, v5, v4}, Ljavax/net/ssl/SSLContext;->init([Ljavax/net/ssl/KeyManager;[Ljavax/net/ssl/TrustManager;Ljava/security/SecureRandom;)V
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catchall_0
+
+    move-object v2, v3
+
+    :catchall_0
+    invoke-virtual {v2}, Ljavax/net/ssl/SSLContext;->getSocketFactory()Ljavax/net/ssl/SSLSocketFactory;
+
+    move-result-object v2
+
+    new-instance v3, Lx82;
+
+    invoke-direct {v3}, Ljava/lang/Object;-><init>()V
+
+    invoke-virtual {v0, v2, v3}, Lokhttp3/OkHttpClient$Builder;->sslSocketFactory(Ljavax/net/ssl/SSLSocketFactory;Ljavax/net/ssl/X509TrustManager;)Lokhttp3/OkHttpClient$Builder;
+
+    move-result-object v0
+
+    iget-object v2, v1, Ly82;->d:Lt82;
+
+    if-eqz v2, :cond_3
+
+    goto :goto_3
+
+    :cond_3
+    new-instance v2, Lt82;
+
+    invoke-static {}, Ly82;->l()Lg92;
+
+    move-result-object v3
+
+    invoke-direct {v2, v3}, Lt82;-><init>(Lg92;)V
+
+    iput-object v2, v1, Ly82;->d:Lt82;
+
+    :goto_3
+    invoke-virtual {v0, v2}, Lokhttp3/OkHttpClient$Builder;->proxyAuthenticator(Lokhttp3/Authenticator;)Lokhttp3/OkHttpClient$Builder;
+
+    if-eqz p0, :cond_4
+
+    new-instance p0, Lokhttp3/logging/HttpLoggingInterceptor;
+
+    invoke-direct {p0}, Lokhttp3/logging/HttpLoggingInterceptor;-><init>()V
+
+    sget-object v1, Lokhttp3/logging/HttpLoggingInterceptor$Level;->HEADERS:Lokhttp3/logging/HttpLoggingInterceptor$Level;
+
+    invoke-virtual {p0, v1}, Lokhttp3/logging/HttpLoggingInterceptor;->setLevel(Lokhttp3/logging/HttpLoggingInterceptor$Level;)Lokhttp3/logging/HttpLoggingInterceptor;
+
+    move-result-object p0
+
+    invoke-virtual {v0, p0}, Lokhttp3/OkHttpClient$Builder;->addNetworkInterceptor(Lokhttp3/Interceptor;)Lokhttp3/OkHttpClient$Builder;
+
+    :cond_4
+    invoke-static {}, Ly82;->l()Lg92;
+
+    move-result-object p0
+
+    invoke-virtual {v0, p0}, Lokhttp3/OkHttpClient$Builder;->proxySelector(Ljava/net/ProxySelector;)Lokhttp3/OkHttpClient$Builder;
+
+    return-object v0
+.end method

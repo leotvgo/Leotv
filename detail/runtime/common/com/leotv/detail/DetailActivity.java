@@ -43,7 +43,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
             page.bindSource(source);enrich(token);return;
         }
         DetailSessionCache.State cached=DetailSessionCache.get(this,site,id);
-        if(cached!=null){source=cached.source;metadata=cached.metadata==null?null:cached.metadata.detached();metadataOptions=BackdropSettings.read(this);page.bindSource(source);if(metadata!=null)page.render(metadata);else enrich(token);return;}
+        if(cached!=null){source=cached.source;metadata=cached.metadata==null?null:cached.metadata.detached();metadataOptions=BackdropSettings.read(this);page.bindSource(source);if(metadata!=null)page.render(metadata);if(metadata==null||!metadata.complete)enrich(token);return;}
         org.json.JSONObject seed=RelatedDetail.metadata(id);
         if(seed==null)seed=NativeRouting.searchMetadata(getIntent());
         if(seed!=null){
@@ -66,13 +66,19 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
         requestedOptions=options;
         metadataTask=worker.submit(()->{
             MobileDetailMetadata.Result value=null;
-            try{value=new MobileDetailMetadata().load(identity,options,request);}catch(Exception|OutOfMemoryError unavailable){}
+            try{value=new MobileDetailMetadata().loadProgressive(identity,options,request,stage->{
+                MobileDetailMetadata.Result snapshot=stage.detached();
+                main.post(()->applyMetadata(token,options,request,snapshot));
+            });}catch(Exception|OutOfMemoryError unavailable){}
             MobileDetailMetadata.Result result=value;
-            main.post(()->{if(token!=generation||isDestroyed()||metadataRequest!=request){if(result!=null)result.release();return;}
-                if(!options.same(BackdropSettings.read(this))){if(result!=null)result.release();enrich(++generation);return;}
-                if(result==null&&metadata!=null)return;
-                MobileDetailMetadata.Result old=metadata;metadata=result;metadataOptions=options;page.render(result);DetailSessionCache.put(this,source,metadata);if(old!=null&&old!=result)old.release();});
+            main.post(()->applyMetadata(token,options,request,result));
         });
+    }
+    private void applyMetadata(int token,BackdropSettings.Options options,BackdropHttp.Request request,MobileDetailMetadata.Result result){
+        if(token!=generation||isDestroyed()||metadataRequest!=request){if(result!=null)result.release();return;}
+        if(!options.same(BackdropSettings.read(this))){if(result!=null)result.release();enrich(++generation);return;}
+        if(result==null&&metadata!=null)return;
+        MobileDetailMetadata.Result old=metadata;metadata=result;metadataOptions=options;page.render(result);DetailSessionCache.put(this,source,metadata);if(old!=null&&old!=result)old.release();
     }
     @Override public void rematch(){enrich(generation);}
     private void cacheState(){DetailSessionCache.put(this,source,source!=null&&page!=null&&source.site.equals(page.metadataSite)&&source.id.equals(page.metadataId)&&metadataOptions!=null&&metadataOptions.same(BackdropSettings.read(this))?metadata:null);}
@@ -100,7 +106,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
         getIntent().putExtra("key",site.key).putExtra("id",detail.id).putExtra("name",detail.name).putExtra("pic",detail.picture);
         getIntent().removeExtra("mark");
         source=detail;page.bindSource(detail);
-        if(metadata!=null)page.render(metadata);else enrich(token);
+        if(metadata!=null)page.render(metadata);if(metadata==null||!metadata.complete)enrich(token);
     }
     @Override public void download(){
         if(page!=null)page.nativeEpisodes.open(true);

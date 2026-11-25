@@ -84,7 +84,7 @@ final class DetailRecommendations {
         for (int i=0;i<images.size();i++) {
             ImageView view=images.get(i);
             MobileDetailMetadata.Recommendation item=items.get(i);
-            cache.bind(item.image,true,view::setImageBitmap);
+            cache.bindNear(item.image,true,view,view::setImageBitmap);
         }
     }
     void detach() { for(ImageView image:images)image.setImageDrawable(null); }

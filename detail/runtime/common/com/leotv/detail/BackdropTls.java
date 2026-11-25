@@ -78,14 +78,14 @@ final class BackdropTls {
     static boolean supplemented(String host) {
         if (host == null) return false;
         String name = host.toLowerCase(java.util.Locale.ROOT);
-        return name.equals("image.tmdb.org")
+        return name.equals("image.tmdb.org") || name.equals("images.tmdb.org")
                 || name.equals("api.introdb.app") || name.equals("api.aniskip.com")
                 || name.equals("graphql.anilist.co")
                 || name.equals("assrt.net") || name.endsWith(".assrt.net")
                 || name.equals("zimuku.org") || name.endsWith(".zimuku.org");
     }
 
-    private static synchronized SSLSocketFactory socketFactory() throws Exception {
+    static synchronized SSLSocketFactory socketFactory() throws Exception {
         if (factory == null) {
             SSLContext context = SSLContext.getInstance("TLS");
             context.init(null, new TrustManager[]{trustManager()}, null);

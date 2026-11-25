@@ -11,7 +11,7 @@ import java.util.List;
 /** Uses the existing native preference rows and dialogs for Leotv's own settings. */
 public final class Personalization {
     private static final String TAG = "leotv_detail_settings";
-    private static final String THEME = "详情页主题", ENDPOINT = "TMDB配置", SEARCH = "全局搜索", HOME = "新主页", RECENT = "新主页最近观看";
+    private static final String THEME = "详情页主题", ENDPOINT = "TMDB配置", SEARCH = "全局搜索", HOME = "新主页", RECENT = "新主页最近观看", CACHE="首页缓存上限";
     private Personalization() {}
 
     public static void attach(Activity activity, View root) {
@@ -47,8 +47,9 @@ public final class Personalization {
         if(!Device.MOBILE){
             LinearLayout third=new LinearLayout(activity);third.setOrientation(LinearLayout.HORIZONTAL);LinearLayout.LayoutParams line=new LinearLayout.LayoutParams(-1,-2);line.topMargin=rowSpacing(target);rows.addView(third,line);
             add(activity,third,template,summary,RECENT,()->{MetadataSettings.setNewHomeRecent(activity,!MetadataSettings.newHomeRecent(activity));refresh(activity,rows);});
-            third.addView(new View(activity),new LinearLayout.LayoutParams(0,-2,1));
+            add(activity,third,template,summary,CACHE,()->cacheLimit(activity,rows));
         }
+        if(Device.MOBILE)add(activity,rows,template,summary,CACHE,()->cacheLimit(activity,rows));
         if(Device.MOBILE)add(activity, rows, template, summary, "弹幕 API",
                 () -> DanmakuUi.settings(activity));
         View anchor = template;
@@ -69,7 +70,14 @@ public final class Personalization {
         summary(rows.findViewWithTag(SEARCH), MetadataSettings.resourceGlobalSearch(activity)?"开启":"关闭");
         summary(rows.findViewWithTag(HOME), MetadataSettings.newHome(activity)?"开启":"关闭");
         summary(rows.findViewWithTag(RECENT),MetadataSettings.newHomeRecent(activity)?"开启":"关闭");
+        summary(rows.findViewWithTag(CACHE),MetadataSettings.homeCacheMb(activity)+" MB");
         summary(rows.findViewWithTag("弹幕 API"),DanmakuSettings.api(activity).isEmpty()?"未配置":"已配置");
+    }
+    private static void cacheLimit(Activity activity,View rows){
+        NativeDialogs.edit(activity,CACHE,String.valueOf(MetadataSettings.homeCacheMb(activity)),"MB",false,value->{
+            int size;try{size=Integer.parseInt(value.trim());}catch(NumberFormatException invalid){throw new IllegalArgumentException("请填写 100–2000 MB");}
+            MetadataSettings.setHomeCacheMb(activity,size);refresh(activity,rows);
+        },()->{MetadataSettings.setHomeCacheMb(activity,500);refresh(activity,rows);});
     }
     private static void summary(View row, String value) {
         if (row == null) return;

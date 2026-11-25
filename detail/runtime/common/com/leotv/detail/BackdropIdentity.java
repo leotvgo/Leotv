@@ -26,6 +26,7 @@ final class BackdropIdentity {
     /** True when the type came from episode/season evidence rather than the source's own label. */
     final boolean inferredType;
     final int sourceEpisodes;
+    final Integer configuration=SiteFeed.configId();
 
     BackdropIdentity(String site, String id, String title, String year, String type) {
         this(site, id, title, year, type, 0, false);

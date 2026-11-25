@@ -51,13 +51,20 @@ final class BackdropHttp {
         Request(Request parent){this.parent=parent;}
         private volatile boolean cancelled;
         private final Set<HttpURLConnection> connections = new HashSet<>();
+        private final Set<okhttp3.Call> calls = new HashSet<>();
+        synchronized void attach(okhttp3.Call value) throws IOException {
+            check(); calls.add(value); if(parent!=null)parent.attach(value);
+        }
+        synchronized void detach(okhttp3.Call value) { calls.remove(value); if(parent!=null)parent.detach(value); }
         synchronized void attach(HttpURLConnection value) throws IOException {
             check(); connections.add(value);if(parent!=null)parent.attach(value);
         }
         synchronized void detach(HttpURLConnection value) { connections.remove(value);if(parent!=null)parent.detach(value); }
         void cancel() {
             final List<HttpURLConnection> pending;
-            synchronized (this) { cancelled = true; pending = new ArrayList<>(connections); connections.clear(); }
+            final List<okhttp3.Call> pendingCalls;
+            synchronized (this) { cancelled = true; pending = new ArrayList<>(connections); connections.clear(); pendingCalls=new ArrayList<>(calls);calls.clear(); }
+            for(okhttp3.Call call:pendingCalls){if(parent!=null)parent.detach(call);DISCONNECT.execute(call::cancel);}
             for (HttpURLConnection connection : pending) {if(parent!=null)parent.detach(connection);DISCONNECT.execute(() -> {
                 try { connection.disconnect(); } catch (RuntimeException ignored) { }
             });}
@@ -83,7 +90,7 @@ final class BackdropHttp {
         // suggest route answers nothing.
         if (kind.equals("douban")) return host.equals("movie.douban.com") || host.equals("m.douban.com")
                 || host.equals("www.douban.com");
-        return host.equals("image.tmdb.org") || host.endsWith(".doubanio.com") || host.endsWith(".douban.com");
+        return host.equals("image.tmdb.org") || host.equals("images.tmdb.org") || host.endsWith(".doubanio.com") || host.endsWith(".douban.com");
     }
 
     private static boolean image(String kind) { return kind.equals("image") || kind.equals("source-image"); }
@@ -154,6 +161,8 @@ final class BackdropHttp {
     }
 
     private static byte[] getInternal(String address, String kind, String proxyUrl, Map<String, String> headers, Request request, int byteLimit) throws Exception {
+        if(kind.equals("tmdb") || kind.equals("image") && MetadataSettings.allowsImage(address))
+            return TmdbNetwork.get(address,kind,proxyUrl,headers,request,byteLimit);
         return requestInternal(address, kind, proxyUrl, headers, request, byteLimit, "GET", null);
     }
 

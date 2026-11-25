@@ -1,0 +1,47 @@
+# Verbatim method excerpts from Liulang 32-bit 261124; see provenance.json.
+
+.method static constructor <clinit>()V
+    .locals 2
+
+    const/4 v0, 0x5
+
+    invoke-static {v0}, Ljava/util/concurrent/Executors;->newFixedThreadPool(I)Ljava/util/concurrent/ExecutorService;
+
+    move-result-object v0
+
+    invoke-static {v0}, Lgm;->N(Ljava/util/concurrent/ExecutorService;)Lx32;
+
+    move-result-object v0
+
+    sput-object v0, Lfe3;->a:Lx32;
+
+    const/16 v0, 0x14
+
+    invoke-static {v0}, Ljava/util/concurrent/Executors;->newFixedThreadPool(I)Ljava/util/concurrent/ExecutorService;
+
+    move-result-object v1
+
+    invoke-static {v1}, Lgm;->N(Ljava/util/concurrent/ExecutorService;)Lx32;
+
+    move-result-object v1
+
+    sput-object v1, Lfe3;->b:Lx32;
+
+    invoke-static {v0}, Ljava/util/concurrent/Executors;->newFixedThreadPool(I)Ljava/util/concurrent/ExecutorService;
+
+    move-result-object v0
+
+    invoke-static {v0}, Lgm;->N(Ljava/util/concurrent/ExecutorService;)Lx32;
+
+    move-result-object v0
+
+    sput-object v0, Lfe3;->c:Lx32;
+
+    invoke-static {}, Ljava/util/concurrent/Executors;->newSingleThreadScheduledExecutor()Ljava/util/concurrent/ScheduledExecutorService;
+
+    move-result-object v0
+
+    sput-object v0, Lfe3;->d:Ljava/util/concurrent/ScheduledExecutorService;
+
+    return-void
+.end method

@@ -1,0 +1,294 @@
+# Verbatim method excerpts from Liulang 32-bit 261124; see provenance.json.
+
+.method static constructor <clinit>()V
+    .locals 2
+
+    new-instance v0, Lah0;
+
+    const/4 v1, 0x3
+
+    invoke-direct {v0, v1}, Lah0;-><init>(I)V
+
+    const/16 v1, 0x8
+
+    invoke-static {v1, v0}, Ljava/util/concurrent/Executors;->newFixedThreadPool(ILjava/util/concurrent/ThreadFactory;)Ljava/util/concurrent/ExecutorService;
+
+    move-result-object v0
+
+    sput-object v0, Lv82;->e:Ljava/util/concurrent/ExecutorService;
+
+    return-void
+.end method
+
+.method public constructor <init>()V
+    .locals 2
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    new-instance v0, Ljava/util/concurrent/ConcurrentHashMap;
+
+    invoke-direct {v0}, Ljava/util/concurrent/ConcurrentHashMap;-><init>()V
+
+    iput-object v0, p0, Lv82;->a:Ljava/util/concurrent/ConcurrentHashMap;
+
+    new-instance v0, Lu82;
+
+    const-string v1, "223.5.5.5"
+
+    invoke-direct {v0, v1}, Lu82;-><init>(Ljava/lang/String;)V
+
+    iput-object v0, p0, Lv82;->b:Lu82;
+
+    new-instance v0, Lu82;
+
+    const-string v1, "119.29.29.29"
+
+    invoke-direct {v0, v1}, Lu82;-><init>(Ljava/lang/String;)V
+
+    iput-object v0, p0, Lv82;->c:Lu82;
+
+    return-void
+.end method
+
+.method public final lookup(Ljava/lang/String;)Ljava/util/List;
+    .locals 7
+
+    iget-object v0, p0, Lv82;->a:Ljava/util/concurrent/ConcurrentHashMap;
+
+    invoke-virtual {v0, p1}, Ljava/util/concurrent/ConcurrentHashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Ljava/lang/String;
+
+    if-eqz v1, :cond_0
+
+    move-object v3, v1
+
+    goto :goto_0
+
+    :cond_0
+    invoke-virtual {v0}, Ljava/util/concurrent/ConcurrentHashMap;->entrySet()Ljava/util/Set;
+
+    move-result-object v0
+
+    invoke-interface {v0}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+
+    move-result-object v0
+
+    :cond_1
+    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v1
+
+    if-eqz v1, :cond_2
+
+    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Ljava/util/Map$Entry;
+
+    invoke-interface {v1}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Ljava/lang/String;
+
+    invoke-static {p1, v2}, Lrr3;->a(Ljava/lang/String;Ljava/lang/String;)Z
+
+    move-result v2
+
+    if-eqz v2, :cond_1
+
+    invoke-interface {v1}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+
+    move-result-object p1
+
+    check-cast p1, Ljava/lang/String;
+
+    :cond_2
+    move-object v3, p1
+
+    :goto_0
+    iget-object p1, p0, Lv82;->d:Lokhttp3/dnsoverhttps/DnsOverHttps;
+
+    if-eqz p1, :cond_3
+
+    invoke-virtual {p1, v3}, Lokhttp3/dnsoverhttps/DnsOverHttps;->lookup(Ljava/lang/String;)Ljava/util/List;
+
+    move-result-object p0
+
+    return-object p0
+
+    :cond_3
+    const-string p1, "^[0-9.]+$"
+
+    invoke-virtual {v3, p1}, Ljava/lang/String;->matches(Ljava/lang/String;)Z
+
+    move-result p1
+
+    if-eqz p1, :cond_4
+
+    sget-object p0, Lokhttp3/Dns;->SYSTEM:Lokhttp3/Dns;
+
+    invoke-interface {p0, v3}, Lokhttp3/Dns;->lookup(Ljava/lang/String;)Ljava/util/List;
+
+    move-result-object p0
+
+    return-object p0
+
+    :cond_4
+    const-string p1, "tmdb.org"
+
+    invoke-virtual {v3, p1}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
+
+    move-result p1
+
+    if-nez p1, :cond_6
+
+    const-string p1, "themoviedb.org"
+
+    invoke-virtual {v3, p1}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
+
+    move-result p1
+
+    if-eqz p1, :cond_5
+
+    goto :goto_1
+
+    :cond_5
+    sget-object p0, Lokhttp3/Dns;->SYSTEM:Lokhttp3/Dns;
+
+    invoke-interface {p0, v3}, Lokhttp3/Dns;->lookup(Ljava/lang/String;)Ljava/util/List;
+
+    move-result-object p0
+
+    return-object p0
+
+    :cond_6
+    :goto_1
+    new-instance v4, Ljava/util/ArrayList;
+
+    invoke-direct {v4}, Ljava/util/ArrayList;-><init>()V
+
+    new-instance v5, Ljava/util/concurrent/CountDownLatch;
+
+    const/4 p1, 0x1
+
+    invoke-direct {v5, p1}, Ljava/util/concurrent/CountDownLatch;-><init>(I)V
+
+    iget-object v0, p0, Lv82;->b:Lu82;
+
+    iget-object p0, p0, Lv82;->c:Lu82;
+
+    const/4 v1, 0x3
+
+    new-array v1, v1, [Lokhttp3/Dns;
+
+    sget-object v2, Lokhttp3/Dns;->SYSTEM:Lokhttp3/Dns;
+
+    const/4 v6, 0x0
+
+    aput-object v2, v1, v6
+
+    aput-object v0, v1, p1
+
+    const/4 p1, 0x2
+
+    aput-object p0, v1, p1
+
+    invoke-static {v1}, Ljava/util/Arrays;->asList([Ljava/lang/Object;)Ljava/util/List;
+
+    move-result-object p0
+
+    invoke-interface {p0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object p0
+
+    :goto_2
+    invoke-interface {p0}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result p1
+
+    if-eqz p1, :cond_7
+
+    invoke-interface {p0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object p1
+
+    move-object v2, p1
+
+    check-cast v2, Lokhttp3/Dns;
+
+    sget-object p1, Lv82;->e:Ljava/util/concurrent/ExecutorService;
+
+    new-instance v0, Lli;
+
+    const/16 v1, 0x10
+
+    invoke-direct/range {v0 .. v5}, Lli;-><init>(ILjava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V
+
+    invoke-interface {p1, v0}, Ljava/util/concurrent/Executor;->execute(Ljava/lang/Runnable;)V
+
+    goto :goto_2
+
+    :cond_7
+    :try_start_0
+    sget-object p0, Ljava/util/concurrent/TimeUnit;->SECONDS:Ljava/util/concurrent/TimeUnit;
+
+    const-wide/16 v0, 0x2
+
+    invoke-virtual {v5, v0, v1, p0}, Ljava/util/concurrent/CountDownLatch;->await(JLjava/util/concurrent/TimeUnit;)Z
+    :try_end_0
+    .catch Ljava/lang/InterruptedException; {:try_start_0 .. :try_end_0} :catch_0
+
+    :catch_0
+    monitor-enter v4
+
+    :try_start_1
+    invoke-virtual {v4}, Ljava/util/ArrayList;->isEmpty()Z
+
+    move-result p0
+
+    if-nez p0, :cond_8
+
+    invoke-virtual {v4, v6}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+
+    move-result-object p0
+
+    check-cast p0, Ljava/util/List;
+
+    monitor-exit v4
+
+    goto :goto_3
+
+    :catchall_0
+    move-exception v0
+
+    move-object p0, v0
+
+    goto :goto_4
+
+    :cond_8
+    monitor-exit v4
+    :try_end_1
+    .catchall {:try_start_1 .. :try_end_1} :catchall_0
+
+    sget-object p0, Lokhttp3/Dns;->SYSTEM:Lokhttp3/Dns;
+
+    invoke-interface {p0, v3}, Lokhttp3/Dns;->lookup(Ljava/lang/String;)Ljava/util/List;
+
+    move-result-object p0
+
+    :goto_3
+    return-object p0
+
+    :goto_4
+    :try_start_2
+    monitor-exit v4
+    :try_end_2
+    .catchall {:try_start_2 .. :try_end_2} :catchall_0
+
+    throw p0
+.end method

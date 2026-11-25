@@ -176,7 +176,27 @@ def check_contract(root, variant, project=None):
     contracts[BEANS+'Danmaku'] = (['from(Ljava/lang/String;)L'+BEANS+'Danmaku;', 'empty()L'+BEANS+'Danmaku;',
                                  'getName()Ljava/lang/String;', 'getUrl()Ljava/lang/String;', 'getRealUrl()Ljava/lang/String;', 'setName(Ljava/lang/String;)V'], [])
     contracts['okhttp3/OkHttpClient$Builder'] = (['<init>()V', 'connectTimeout(JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;', 'readTimeout(JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;', 'build()Lokhttp3/OkHttpClient;'], [])
+    contracts['okhttp3/OkHttpClient$Builder'][0].extend([
+        'callTimeout(JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;',
+        'connectionPool(Lokhttp3/ConnectionPool;)Lokhttp3/OkHttpClient$Builder;',
+        'dns(Lokhttp3/Dns;)Lokhttp3/OkHttpClient$Builder;',
+        'proxy(Ljava/net/Proxy;)Lokhttp3/OkHttpClient$Builder;',
+        'followRedirects(Z)Lokhttp3/OkHttpClient$Builder;',
+        'followSslRedirects(Z)Lokhttp3/OkHttpClient$Builder;',
+        'sslSocketFactory(Ljavax/net/ssl/SSLSocketFactory;Ljavax/net/ssl/X509TrustManager;)Lokhttp3/OkHttpClient$Builder;'])
+    contracts['okhttp3/ConnectionPool'] = (['<init>(IJLjava/util/concurrent/TimeUnit;)V'], [])
+    contracts['okhttp3/Dns'] = (['lookup(Ljava/lang/String;)Ljava/util/List;'], ['SYSTEM:Lokhttp3/Dns;'])
+    contracts['okhttp3/dnsoverhttps/DnsOverHttps$Builder'] = (['<init>()V',
+        'client(Lokhttp3/OkHttpClient;)Lokhttp3/dnsoverhttps/DnsOverHttps$Builder;',
+        'url(Lokhttp3/HttpUrl;)Lokhttp3/dnsoverhttps/DnsOverHttps$Builder;',
+        'bootstrapDnsHosts(Ljava/util/List;)Lokhttp3/dnsoverhttps/DnsOverHttps$Builder;',
+        'build()Lokhttp3/dnsoverhttps/DnsOverHttps;'], [])
+    contracts['okhttp3/HttpUrl'] = (['get(Ljava/lang/String;)Lokhttp3/HttpUrl;'], [])
     contracts['okhttp3/Request$Builder'] = (['<init>()V', 'url(Ljava/lang/String;)Lokhttp3/Request$Builder;', 'post(Lokhttp3/RequestBody;)Lokhttp3/Request$Builder;', 'build()Lokhttp3/Request;'], [])
+    contracts['okhttp3/Request$Builder'][0].append('header(Ljava/lang/String;Ljava/lang/String;)Lokhttp3/Request$Builder;')
+    contracts['okhttp3/Call'] = (['execute()Lokhttp3/Response;', 'cancel()V'], [])
+    contracts['okhttp3/Response'] = (['code()I', 'body()Lokhttp3/ResponseBody;', 'header(Ljava/lang/String;)Ljava/lang/String;', 'header(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;', 'close()V'], [])
+    contracts['okhttp3/ResponseBody'] = (['contentLength()J', 'byteStream()Ljava/io/InputStream;'], [])
     contracts['okhttp3/FormBody$Builder'] = (['<init>()V', 'add(Ljava/lang/String;Ljava/lang/String;)Lokhttp3/FormBody$Builder;', 'build()Lokhttp3/FormBody;'], [])
     contracts['okhttp3/OkHttpClient'] = (['newWebSocket(Lokhttp3/Request;Lokhttp3/WebSocketListener;)Lokhttp3/WebSocket;', 'newCall(Lokhttp3/Request;)Lokhttp3/Call;'], [])
     contracts[BEANS+'Result'][0].append('getDanmaku()Ljava/util/List;')

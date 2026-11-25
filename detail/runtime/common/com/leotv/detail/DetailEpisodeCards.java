@@ -40,7 +40,7 @@ final class DetailEpisodeCards {
             card.render(episode);
             if (episode != null && images != null) {
                 Card current = card; String key = episode.image;
-                images.bind(key, false, bitmap -> { if (cards.get(label) == current && key.equals(current.path)) current.picture(bitmap); });
+                images.bindNear(key, false,current.item, bitmap -> { if (cards.get(label) == current && key.equals(current.path)) current.picture(bitmap); });
             }
         }
         if (metadata != null && images != null) for (MobileDetailMetadata.Episode episode : metadata.episodes.values())

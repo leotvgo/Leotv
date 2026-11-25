@@ -1,0 +1,12 @@
+{
+  "tested_at": "2026-11-25T00:59:26.216953+00:00",
+  "sample": "public movie 550; direct HTTPS; built-in Liulang key only; no saved user settings",
+  "curl_exit": 0,
+  "http_status": "200",
+  "total_seconds": "1.295908",
+  "valid_movie_550": true,
+  "key_length": 32,
+  "key_sha256": "bf66b6b8bfec605c90c39c0a843d01a5edd910e46be2ca90b99ab8e48a3e14d3",
+  "same_as_leotv_builtin": true,
+  "error": ""
+}

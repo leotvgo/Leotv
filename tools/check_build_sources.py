@@ -15,6 +15,7 @@ from build_branded import apply_source_overlay, identity
 from build_preserved import VARIANTS
 from check_native_details import check_contract
 from apply_qr_web import check_contract as check_qr_web_contract
+from check_tmdb_loading import check as check_tmdb_loading
 
 ROOT = Path(__file__).resolve().parents[1]
 LOCKS = ('branding/source-lock.json', 'detail/native-source-lock.json',
@@ -23,6 +24,7 @@ LOCKS = ('branding/source-lock.json', 'detail/native-source-lock.json',
 
 
 def check_sources(root=ROOT):
+    check_tmdb_loading(root)
     check_qr_web_contract(root)
     home = (root / 'detail/runtime/common/com/leotv/detail/CspHomePage.java').read_text()
     artwork = (root / 'detail/runtime/common/com/leotv/detail/NativeCspUi.java').read_text()

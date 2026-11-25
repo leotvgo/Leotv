@@ -46,6 +46,7 @@ class DetailHero extends View {
     private ExecutorService worker;
     private BackdropHttp.Request request;
     private Bitmap bitmap, nextBitmap;
+    private boolean replacingCurrent;
     private ValueAnimator animator;
     private Shader glow, sweep, baseGradient;
     private int currentIndex = -1, nextIndex = -1, animationMode, limit = 5;
@@ -107,6 +108,16 @@ class DetailHero extends View {
         boolean append=sourceImages&&!slides.isEmpty()&&slides.size()<=paths.size()&&imageRoot.equals(imageRoute(paths,true))&&this.proxy.equals(proxy);
         for(int i=0;append&&i<slides.size();i++)append=slides.get(i).path.equals(paths.get(i));
         if(append){this.proxy=proxy;for(int i=slides.size();i<paths.size()&&i<limit;i++){Slide slide=new Slide(paths.get(i),true);slide.fallback=fallbacks.get(i);slides.add(slide);}prepareNext();schedule();return;}
+        if(sourceImages&&bitmap!=null&&!paths.isEmpty()&&imageRoot.equals(imageRoute(paths,true))&&this.proxy.equals(proxy)){
+            String visible=currentIndex>=0&&currentIndex<slides.size()?slides.get(currentIndex).path:"";
+            generation++;if(request!=null)request.cancel();request=null;stopAnimation(false);retire(nextBitmap);nextBitmap=null;nextIndex=-1;
+            List<Slide> previous=new ArrayList<>(slides);slides.clear();currentIndex=-1;
+            for(int i=0;i<paths.size()&&i<limit;i++){
+                String path=paths.get(i);Slide slide=null;for(Slide old:previous)if(old.path.equals(path)){slide=old;break;}
+                if(slide==null)slide=new Slide(path,true);slide.fallback=fallbacks.get(i);slides.add(slide);if(path.equals(visible))currentIndex=i;
+            }
+            replacingCurrent=currentIndex<0;pendingStep=0;if(!replacingCurrent)notifyIndex();prepareNext();schedule();invalidate();return;
+        }
         load(paths,proxy,true);for(int i=0;i<slides.size();i++)slides.get(i).fallback=fallbacks.get(i);
     }
     /**
@@ -129,16 +140,26 @@ class DetailHero extends View {
         if (closed) return;
         List<String> valid = source ? paths : accept(paths, limit);
         String root=imageRoute(valid,source);
+        boolean compatible=source==sourceImages&&imageRoot.equals(root)&&this.proxy.equals(proxy);
         boolean same = source == sourceImages && valid.size() == slides.size()&&imageRoot.equals(root)&&this.proxy.equals(proxy);
         this.proxy = proxy;imageRoot=root;
         for (int i = 0; same && i < valid.size(); i++) same = valid.get(i).equals(slides.get(i).path);
         if (same) { if (valid.isEmpty()) finishLoading(); return; }
+        if(!source&&compatible&&bitmap!=null&&!valid.isEmpty()){
+            String visible=currentIndex>=0&&currentIndex<slides.size()?slides.get(currentIndex).path:"";
+            generation++;if(request!=null)request.cancel();request=null;stopAnimation(false);retire(nextBitmap);nextBitmap=null;nextIndex=-1;
+            List<Slide> previous=new ArrayList<>(slides);slides.clear();currentIndex=-1;
+            for(String path:valid){Slide slide=null;for(Slide old:previous)if(old.path.equals(path)){slide=old;break;}if(slide==null)slide=new Slide(path,false);slides.add(slide);if(path.equals(visible))currentIndex=slides.size()-1;TmdbArtwork.prefetch(getContext(),path,proxy);}
+            replacingCurrent=currentIndex<0;pendingStep=0;if(!replacingCurrent)notifyIndex();prepareNext();schedule();invalidate();return;
+        }
         generation++; if (request != null) request.cancel(); request = null;
         main.removeCallbacks(turn); stopAnimation(false);
         retire(bitmap); retire(nextBitmap); bitmap = null; nextBitmap = null;
         currentIndex = nextIndex = -1; slideDirection = 1;pendingStep=0; slides.clear();
+        replacingCurrent=false;
         sourceImages = source;
         for (String path : valid) slides.add(new Slide(path, source));
+        if(!source)for(String path:valid)if(MetadataSettings.allowsImage(MobileDetailMetadata.imageAddress(path,"w1280")))TmdbArtwork.prefetch(getContext(),path,proxy);
         loading = !slides.isEmpty(); reveal = 1; slideProgress = 0; setColour(DEFAULT_COLOR);
         refreshLoadingFrames(); prepareNext(); invalidate();
     }
@@ -261,7 +282,8 @@ class DetailHero extends View {
                     if(!applyPendingStep())prepareNeighbour(direction, manual); return;
                 }
                 slide.attempts=0;slide.retryAt=0;slide.bytes = encoded; slide.colour = edgeColour(value, portrait ? .86f : .72f);
-                if (bitmap == null) {
+                if (bitmap == null || replacingCurrent) {
+                    retire(bitmap);replacingCurrent=false;
                     bitmap = value; currentIndex = index; loading = false; notifyIndex(); refreshLoadingFrames();
                     nextAt = SystemClock.uptimeMillis() + INTERVAL;
                     if (running) animate(1, 650, DEFAULT_COLOR, slide.colour);
@@ -279,6 +301,7 @@ class DetailHero extends View {
     static String key(String path) { return "tmdb:"+MetadataSettings.imageBase()+":w1280" + path; }
     byte[] download(String path, String route, BackdropHttp.Request pending) throws Exception {
         String address=MobileDetailMetadata.imageAddress(path,"w1280");
+        if(MetadataSettings.allowsImage(address))return TmdbArtwork.get(getContext(),path,route,pending);
         return BackdropHttp.get(address,
                 "image", route, MobileDetailMetadata.imageHeaders(address), pending, 2 * 1024 * 1024);
     }

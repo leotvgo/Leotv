@@ -8,11 +8,11 @@ import java.net.URI;
 public final class MetadataSettings {
     private static final String PREFS = "leotv_personalization";
     private static final String DEFAULT_BASE = "https://api.tmdb.org/3";
-    private static final String DEFAULT_IMAGE = "https://image.tmdb.org";
+    private static final String DEFAULT_IMAGE = "https://images.tmdb.org";
     private static volatile Context application;
 
     private MetadataSettings() {}
-    public static void initialize(Context context) { application = context.getApplicationContext(); }
+    public static void initialize(Context context) { application = context.getApplicationContext(); MetadataCache.initialize(context); }
     private static SharedPreferences prefs(Context context) { return context.getSharedPreferences(PREFS, Context.MODE_PRIVATE); }
     static SharedPreferences preferences(Context context) { return prefs(context); }
     public static String key(Context context) { return TmdbDefaults.key(prefs(context).getString("tmdb_key", "")); }
@@ -62,6 +62,11 @@ public final class MetadataSettings {
     public static void setNewHome(Context context, boolean enabled) { prefs(context).edit().putBoolean("new_home", enabled).apply(); }
     public static boolean newHomeRecent(Context context){return prefs(context).getBoolean("new_home_recent",true);}
     public static void setNewHomeRecent(Context context,boolean enabled){prefs(context).edit().putBoolean("new_home_recent",enabled).apply();}
+    public static int homeCacheMb(Context context){return Math.max(100,Math.min(2000,prefs(context).getInt("home_cache_mb",500)));}
+    public static void setHomeCacheMb(Context context,int value){
+        if(value<100||value>2000)throw new IllegalArgumentException("请填写 100–2000 MB");
+        prefs(context).edit().putInt("home_cache_mb",value).apply();BackdropImages.resize(context);
+    }
     static String normalizeBase(String value) {
         String text = value == null ? "" : value.trim();
         if (text.isEmpty()) return DEFAULT_BASE;
@@ -95,6 +100,7 @@ public final class MetadataSettings {
         try{URI uri=new URI(text);
             if(!("https".equalsIgnoreCase(uri.getScheme())||"http".equalsIgnoreCase(uri.getScheme()))||uri.getHost()==null||uri.getUserInfo()!=null||uri.getQuery()!=null||uri.getFragment()!=null)throw new IllegalArgumentException("请填写有效的图片域名");
             String path=uri.getPath()==null?"":uri.getPath().replaceAll("/+$","");
+            path=path.replaceFirst("/t/p/(?:w[0-9]+|h[0-9]+|original)$","");
             if(path.endsWith("/t/p"))path=path.substring(0,path.length()-4);else if(path.endsWith("/3"))path=path.substring(0,path.length()-2);
             return new URI(uri.getScheme().toLowerCase(java.util.Locale.ROOT),null,uri.getHost(),uri.getPort(),path,null,null).toASCIIString();
         }catch(java.net.URISyntaxException invalid){throw new IllegalArgumentException("图片域名格式无效");}

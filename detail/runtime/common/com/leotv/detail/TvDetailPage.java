@@ -65,6 +65,11 @@ final class TvDetailPage implements DetailPage {
     private final ViewTreeObserver.OnPreDrawListener preDraw=this::beforeDraw;
     private final android.content.SharedPreferences.OnSharedPreferenceChangeListener themeChanges;
     private final Runnable followRefresh = this::refreshActions;
+    private final android.os.Handler viewportHandler=new android.os.Handler(android.os.Looper.getMainLooper());
+    private boolean viewportQueued;
+    private final Runnable viewportImages=this::refreshViewport;
+    private final ViewTreeObserver.OnScrollChangedListener viewportChanged=()->{if(!viewportQueued&&mounted){viewportQueued=true;viewportHandler.postDelayed(viewportImages,60);}};
+    private void refreshViewport(){viewportQueued=false;if(mounted&&metadata!=null&&scroll.isShown())refresh(BackdropSettings.read(activity).proxy);}
 
     TvDetailPage(Activity activity,Actions actions) {
         this.activity=activity;this.actions=actions;
@@ -184,6 +189,7 @@ final class TvDetailPage implements DetailPage {
             try{return method.invoke(originalCallback,args);}catch(java.lang.reflect.InvocationTargetException failure){throw failure.getCause();}
         });
         activity.getWindow().setCallback(callback);content.getViewTreeObserver().addOnPreDrawListener(preDraw);
+        scroll.getViewTreeObserver().addOnScrollChangedListener(viewportChanged);
         themeChanges = (prefs, key) -> {
             if (!"detail_theme".equals(key)) return;
             activity.runOnUiThread(() -> {
@@ -314,17 +320,19 @@ final class TvDetailPage implements DetailPage {
         return false;
     }
     @Override public void render(MobileDetailMetadata.Result value){
-        metadata=value;metadataResolved=true;
+        MobileDetailMetadata.Result previous=metadata;metadata=value;metadataResolved=true;
         metadataSite=value!=null&&source!=null?source.site:"";metadataId=value!=null&&source!=null?source.id:"";
-        if(value!=null&&source!=null)FollowStore.update(new BackdropIdentity(source.site,source.id,source.name,source.year,source.type),value);
+        if(value!=null&&value.complete&&source!=null)FollowStore.update(new BackdropIdentity(source.site,source.id,source.name,source.year,source.type),value);
         if(value==null){hero.finishLoading();actorFallback.setText("暂无演员资料");loadingState();return;}
-        stills.render(value.stills.isEmpty()?value.backdropPaths:value.stills);collection.render(value.collectionParts);
-        recommendations.render(value.recommendations);reviews.render(value.reviews);
+        if(previous==null||!previous.stills.equals(value.stills)||!previous.backdropPaths.equals(value.backdropPaths))stills.render(value.stills.isEmpty()?value.backdropPaths:value.stills);
+        if(previous==null||!previous.collectionParts.equals(value.collectionParts))collection.render(value.collectionParts);
+        if(previous==null||!previous.recommendations.equals(value.recommendations))recommendations.render(value.recommendations);
+        if(previous==null||!previous.reviews.equals(value.reviews))reviews.render(value.reviews);
         tagline.setText(value.tagline);tagline.setVisibility(DetailTheme.library(activity,mobile)||value.tagline.isEmpty()?View.GONE:View.VISIBLE);
         String crew=crewOf(value);crewLine.setText(crew);crewLine.setVisibility(DetailTheme.library(activity,mobile)||crew.isEmpty()?View.GONE:View.VISIBLE);
         if(!value.facts.isEmpty())facts.setText(value.facts);if(!value.overview.isEmpty())synopsis.setText(value.overview);if(!value.cast.isEmpty())cast.setText(value.cast);
-        actorFallback.setVisibility(value.actors.isEmpty()?View.VISIBLE:View.GONE);actorFallback.setText(value.cast.isEmpty()?"暂无演员资料":value.cast);
-        portraits.clear();actors.removeAllViews();
+        actorFallback.setVisibility(value.actors.isEmpty()?View.VISIBLE:View.GONE);actorFallback.setText(value.cast.isEmpty()?(value.complete?"暂无演员资料":"演员资料加载中…"):value.cast);
+        if(previous==null||previous.actors!=value.actors){portraits.clear();actors.removeAllViews();
         for(MobileDetailMetadata.Actor actor:value.actors){LinearLayout cell=column();cell.setPadding(dp(6),dp(8),dp(6),dp(8));
             cell.setFocusable(true);cell.setBackground(focusBackground(activity));
             String role=actor.role.isEmpty()?"":"导演".equals(actor.role)?"，"+actor.role:"，饰 "+actor.role;
@@ -332,7 +340,7 @@ final class TvDetailPage implements DetailPage {
             ImageView image=new DetailImageView(activity);image.setContentDescription(actor.name);cell.addView(image,new LinearLayout.LayoutParams(dp(64),dp(68)));
             TextView name=label(actor.name,12);name.setMaxLines(1);cell.addView(name);
             if(!actor.role.isEmpty()){TextView character=label(actor.role,10);character.setMaxLines(1);cell.addView(character);}
-            actors.addView(cell,new LinearLayout.LayoutParams(dp(80),-2));portraits.add(new Portrait(image,actor.image));}
+            actors.addView(cell,new LinearLayout.LayoutParams(dp(80),-2));portraits.add(new Portrait(image,actor.image));}}
         actorTheme();renderBranding();refreshActions();refresh(BackdropSettings.read(activity).proxy);
     }
     @Override public void refresh(String proxy){
@@ -340,7 +348,7 @@ final class TvDetailPage implements DetailPage {
         if(!DetailHero.accept(artwork,5).isEmpty())hero.load(artwork,proxy);else if(source!=null)hero.loadSource(source.picture,proxy);
         if(metadata!=null)titleArt.load(metadata.branding.logos,proxy);
         if(images==null)images=new DetailThumbnails(activity,proxy,!mobile);images.begin();
-        if(metadata!=null)cards.refresh(metadata,images,true);for(Portrait portrait:portraits)images.bind(portrait.path,true,portrait.view::setImageBitmap);
+        if(metadata!=null)cards.refresh(metadata,images,true);for(Portrait portrait:portraits)images.bindNear(portrait.path,true,portrait.view,portrait.view::setImageBitmap);
         recommendations.refresh(images);collection.refresh(images);stills.refresh(images,proxy);images.end();
     }
     void surfaceColour(int colour){
@@ -389,6 +397,7 @@ final class TvDetailPage implements DetailPage {
     @Override public void fallback(){}
     @Override public void trimMemory(){if(images!=null)images.trimMemory(owns()&&scroll.isShown());}
     @Override public void close(){if(!mounted)return;mounted=false;suspend();nativeEpisodes.close();siteSearch.close();sitePicker.close();cards.clear();stills.close();recommendations.detach();collection.detach();
+        viewportHandler.removeCallbacksAndMessages(null);if(scroll.getViewTreeObserver().isAlive())scroll.getViewTreeObserver().removeOnScrollChangedListener(viewportChanged);
         MetadataSettings.preferences(activity).unregisterOnSharedPreferenceChangeListener(themeChanges);
         if(images!=null)images.close();hero.close();titleArt.close();scroll.stopAnimation();content.getViewTreeObserver().removeOnPreDrawListener(preDraw);
         if(activity.getWindow().getCallback()==callback)activity.getWindow().setCallback(originalCallback);if(scroll.getParent()==content)content.removeView(scroll);}

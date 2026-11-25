@@ -1,0 +1,116 @@
+# Verbatim method excerpts from Liulang 32-bit 261124; see provenance.json.
+
+.method public constructor <init>(Ljava/lang/String;)V
+    .locals 3
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    iput-object p1, p0, Lu82;->a:Ljava/lang/String;
+
+    new-instance p1, Lokhttp3/OkHttpClient$Builder;
+
+    invoke-direct {p1}, Lokhttp3/OkHttpClient$Builder;-><init>()V
+
+    const-wide/16 v0, 0x2
+
+    sget-object v2, Ljava/util/concurrent/TimeUnit;->SECONDS:Ljava/util/concurrent/TimeUnit;
+
+    invoke-virtual {p1, v0, v1, v2}, Lokhttp3/OkHttpClient$Builder;->connectTimeout(JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;
+
+    move-result-object p1
+
+    invoke-virtual {p1}, Lokhttp3/OkHttpClient$Builder;->build()Lokhttp3/OkHttpClient;
+
+    move-result-object p1
+
+    iput-object p1, p0, Lu82;->b:Lokhttp3/OkHttpClient;
+
+    return-void
+.end method
+
+.method public final lookup(Ljava/lang/String;)Ljava/util/List;
+    .locals 4
+
+    iget-object v0, p0, Lu82;->a:Ljava/lang/String;
+
+    const-string v1, "https://"
+
+    :try_start_0
+    iget-object v2, p0, Lu82;->c:Lokhttp3/dnsoverhttps/DnsOverHttps;
+
+    if-nez v2, :cond_0
+
+    new-instance v2, Lokhttp3/dnsoverhttps/DnsOverHttps$Builder;
+
+    invoke-direct {v2}, Lokhttp3/dnsoverhttps/DnsOverHttps$Builder;-><init>()V
+
+    iget-object v3, p0, Lu82;->b:Lokhttp3/OkHttpClient;
+
+    invoke-virtual {v2, v3}, Lokhttp3/dnsoverhttps/DnsOverHttps$Builder;->client(Lokhttp3/OkHttpClient;)Lokhttp3/dnsoverhttps/DnsOverHttps$Builder;
+
+    move-result-object v2
+
+    new-instance v3, Ljava/lang/StringBuilder;
+
+    invoke-direct {v3, v1}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+
+    invoke-virtual {v3, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v1, "/dns-query"
+
+    invoke-virtual {v3, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {v1}, Lokhttp3/HttpUrl;->get(Ljava/lang/String;)Lokhttp3/HttpUrl;
+
+    move-result-object v1
+
+    invoke-virtual {v2, v1}, Lokhttp3/dnsoverhttps/DnsOverHttps$Builder;->url(Lokhttp3/HttpUrl;)Lokhttp3/dnsoverhttps/DnsOverHttps$Builder;
+
+    move-result-object v1
+
+    invoke-static {v0}, Ljava/net/InetAddress;->getByName(Ljava/lang/String;)Ljava/net/InetAddress;
+
+    move-result-object v0
+
+    filled-new-array {v0}, [Ljava/net/InetAddress;
+
+    move-result-object v0
+
+    invoke-virtual {v1, v0}, Lokhttp3/dnsoverhttps/DnsOverHttps$Builder;->bootstrapDnsHosts([Ljava/net/InetAddress;)Lokhttp3/dnsoverhttps/DnsOverHttps$Builder;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Lokhttp3/dnsoverhttps/DnsOverHttps$Builder;->build()Lokhttp3/dnsoverhttps/DnsOverHttps;
+
+    move-result-object v0
+
+    iput-object v0, p0, Lu82;->c:Lokhttp3/dnsoverhttps/DnsOverHttps;
+
+    :cond_0
+    iget-object p0, p0, Lu82;->c:Lokhttp3/dnsoverhttps/DnsOverHttps;
+
+    invoke-virtual {p0, p1}, Lokhttp3/dnsoverhttps/DnsOverHttps;->lookup(Ljava/lang/String;)Ljava/util/List;
+
+    move-result-object p0
+    :try_end_0
+    .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_0} :catch_0
+
+    return-object p0
+
+    :catch_0
+    move-exception p0
+
+    new-instance p1, Ljava/net/UnknownHostException;
+
+    invoke-virtual {p0}, Ljava/lang/Throwable;->getMessage()Ljava/lang/String;
+
+    move-result-object p0
+
+    invoke-direct {p1, p0}, Ljava/net/UnknownHostException;-><init>(Ljava/lang/String;)V
+
+    throw p1
+.end method

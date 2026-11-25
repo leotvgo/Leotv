@@ -1,0 +1,255 @@
+# Verbatim method excerpts from Liulang 32-bit 261124; see provenance.json.
+
+.method public static E()Ljava/lang/String;
+    .locals 3
+
+    const-string v0, "tmdb_image_base"
+
+    invoke-static {v0}, Ln01;->H(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_0
+
+    const-string v0, "https://images.tmdb.org/t/p/w500"
+
+    :cond_0
+    const-string v1, "/t/p/"
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
+
+    move-result v1
+
+    if-nez v1, :cond_2
+
+    const-string v1, "/"
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
+
+    move-result v2
+
+    if-eqz v2, :cond_1
+
+    goto :goto_0
+
+    :cond_1
+    invoke-virtual {v0, v1}, Ljava/lang/String;->concat(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    :goto_0
+    const-string v1, "t/p/w500"
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->concat(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    :cond_2
+    return-object v0
+.end method
+
+.method public static F()Ljava/lang/String;
+    .locals 3
+
+    const-string v0, "tmdb_image_base"
+
+    invoke-static {v0}, Ln01;->H(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_0
+
+    const-string v0, "https://images.tmdb.org"
+
+    return-object v0
+
+    :cond_0
+    const-string v1, "/t/p/"
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->indexOf(Ljava/lang/String;)I
+
+    move-result v1
+
+    const/4 v2, 0x0
+
+    if-lez v1, :cond_1
+
+    invoke-virtual {v0, v2, v1}, Ljava/lang/String;->substring(II)Ljava/lang/String;
+
+    move-result-object v0
+
+    :cond_1
+    const-string v1, "/"
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_2
+
+    const/4 v1, 0x1
+
+    invoke-static {v1, v2, v0}, Lm80;->f(IILjava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    :cond_2
+    return-object v0
+.end method
+
+.method public static G()Ljava/lang/String;
+    .locals 2
+
+    const-string v0, "tmdb_key"
+
+    invoke-static {v0}, Ln01;->H(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_0
+
+    const-string v0, "d7040155454e7fdf547c4d889ebbcca7"
+
+    :cond_0
+    return-object v0
+.end method
+
+.method public static u()Ljava/lang/String;
+    .locals 3
+
+    const-string v0, "tmdb_api_url"
+
+    invoke-static {v0}, Ln01;->H(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_0
+
+    const-string v0, "https://api.tmdb.org/3"
+
+    :cond_0
+    const-string v1, "/"
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_1
+
+    const/4 v1, 0x0
+
+    const/4 v2, 0x1
+
+    invoke-static {v2, v1, v0}, Lm80;->f(IILjava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    :cond_1
+    const-string v1, "/3"
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
+
+    move-result v2
+
+    if-nez v2, :cond_2
+
+    const-string v2, "/4"
+
+    invoke-virtual {v0, v2}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
+
+    move-result v2
+
+    if-nez v2, :cond_2
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->concat(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    :cond_2
+    return-object v0
+.end method
+
+.method public static v()Ljava/lang/String;
+    .locals 3
+
+    const-string v0, "tmdb_api_url"
+
+    invoke-static {v0}, Ln01;->H(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-static {v0}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_0
+
+    const-string v0, "https://api.tmdb.org"
+
+    return-object v0
+
+    :cond_0
+    const-string v1, "/"
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
+
+    move-result v1
+
+    const/4 v2, 0x0
+
+    if-eqz v1, :cond_1
+
+    const/4 v1, 0x1
+
+    invoke-static {v1, v2, v0}, Lm80;->f(IILjava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    :cond_1
+    const-string v1, "/3"
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
+
+    move-result v1
+
+    if-nez v1, :cond_3
+
+    const-string v1, "/4"
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->endsWith(Ljava/lang/String;)Z
+
+    move-result v1
+
+    if-eqz v1, :cond_2
+
+    goto :goto_0
+
+    :cond_2
+    return-object v0
+
+    :cond_3
+    :goto_0
+    const/4 v1, 0x2
+
+    invoke-static {v1, v2, v0}, Lm80;->f(IILjava/lang/String;)Ljava/lang/String;
+
+    move-result-object v0
+
+    return-object v0
+.end method

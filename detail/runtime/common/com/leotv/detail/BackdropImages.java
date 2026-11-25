@@ -28,7 +28,8 @@ import java.util.regex.Pattern;
  */
 final class BackdropImages {
     /** What the whole store may hold: a home is a few hundred posters plus its carousel. */
-    private static final long BUDGET = 48L * 1024 * 1024;
+    private static final long BUDGET = (500L-32) * 1024 * 1024;
+    private static final java.util.concurrent.ExecutorService TRIM=java.util.concurrent.Executors.newSingleThreadExecutor(r->{Thread t=new Thread(r,"leotv-home-cache-trim");t.setDaemon(true);return t;});
     /** What one entry may hold: a master still opened full screen is larger than a poster or a slide. */
     private static final long ENTRY_LIMIT = 6L * 1024 * 1024;
     /** Nothing here is worth keeping forever; a poster address outlives this by a lot anyway. */
@@ -46,7 +47,7 @@ final class BackdropImages {
     private final File root;
     private final File anchor;
     private final String relativeRoot;
-    private final long budget;
+    private volatile long budget;
     /** Bytes written by this process; a lower bound on what the directory holds. */
     private long tracked;
     private boolean scanned, reclaimed, suspended;
@@ -58,16 +59,18 @@ final class BackdropImages {
         if (cache == null) return NONE;
         File target = new File(cache, DIRECTORY);
         BackdropImages current = shared;
-        if (current != null && target.equals(current.root)) return current;
+        long budget=(MetadataSettings.homeCacheMb(context)-32L)*1024*1024;
+        if (current != null && target.equals(current.root)) {current.budget=budget;return current;}
         synchronized (BackdropImages.class) {
             current = shared;
             if (current == null || !target.equals(current.root)) {
-                current = new BackdropImages(target, BUDGET, cache, DIRECTORY);
+                current = new BackdropImages(target, budget, cache, DIRECTORY);
                 shared = current;
             }
             return current;
         }
     }
+    static void resize(Context context){BackdropImages store=get(context);TRIM.execute(()->{synchronized(store){store.sweep();}});}
 
     /** The tests size their own store from this seam rather than from a real 24 MiB directory. */
     BackdropImages(File root, long budget) {

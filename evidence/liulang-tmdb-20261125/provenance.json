@@ -1,0 +1,345 @@
+{
+  "created_at": "2026-11-25T01:02:53.865985+00:00",
+  "leotv_revision": "62d155ef4b2dd5080382c4e8b9a765a89f250fdc",
+  "format": "verbatim selected smali method blocks; reading evidence only; never application input",
+  "inputs": [
+    {
+      "path": "/Users/leiatai/Downloads/leowork/流浪壳32位261124.apk",
+      "sha256": "139dfc45a5496156fab6a20d712bb8a38e84a6ac894d9bb0841ce351006ba882"
+    },
+    {
+      "path": "/Users/leiatai/Downloads/leowork/流浪壳64位261124.apk",
+      "sha256": "432420be33f9f6096ae8ba13abc97f27c900ea3cfe2b87e97527b9f4949997dc"
+    }
+  ],
+  "excerpts": [
+    {
+      "class": "Lxr3;",
+      "signature": "public static E()Ljava/lang/String;",
+      "source": "research/liulang-261124/apktool-v7a/smali/xr3.smali",
+      "source_line": 183,
+      "method_sha256": "7c4f78235de3b2228da7d0e67c2a453f1194f64c7acedfdf0fd641d96aac7c5f",
+      "evidence_file": "evidence/liulang-tmdb-20261125/xr3.methods.smali.txt"
+    },
+    {
+      "class": "Lxr3;",
+      "signature": "public static F()Ljava/lang/String;",
+      "source": "research/liulang-261124/apktool-v7a/smali/xr3.smali",
+      "source_line": 235,
+      "method_sha256": "9036585a3b79435935326191a6c6aa8483168c0c042fc70e79cac1403cbe2089",
+      "evidence_file": "evidence/liulang-tmdb-20261125/xr3.methods.smali.txt"
+    },
+    {
+      "class": "Lxr3;",
+      "signature": "public static G()Ljava/lang/String;",
+      "source": "research/liulang-261124/apktool-v7a/smali/xr3.smali",
+      "source_line": 288,
+      "method_sha256": "3330b5e5dd49beba72877407aab8061530ad4a21556f878d1cd9c93cb8c9d7f1",
+      "evidence_file": "evidence/liulang-tmdb-20261125/xr3.methods.smali.txt"
+    },
+    {
+      "class": "Lxr3;",
+      "signature": "public static u()Ljava/lang/String;",
+      "source": "research/liulang-261124/apktool-v7a/smali/xr3.smali",
+      "source_line": 4054,
+      "method_sha256": "0b7a4bbfb4ed5fc070d03eccf75bb725704538ebfc0608105f66ff92b1870033",
+      "evidence_file": "evidence/liulang-tmdb-20261125/xr3.methods.smali.txt"
+    },
+    {
+      "class": "Lxr3;",
+      "signature": "public static v()Ljava/lang/String;",
+      "source": "research/liulang-261124/apktool-v7a/smali/xr3.smali",
+      "source_line": 4178,
+      "method_sha256": "c9f5fda9845b407d124bbe2671efa81766caa6e483812bd9361b29c72988a415",
+      "evidence_file": "evidence/liulang-tmdb-20261125/xr3.methods.smali.txt"
+    },
+    {
+      "class": "Lvg3;",
+      "signature": "static constructor <clinit>()V",
+      "source": "research/liulang-261124/apktool-v7a/smali/vg3.smali",
+      "source_line": 35,
+      "method_sha256": "61ad5ebf08b0b7c0ca85635fbe17a73c490ad73a7b730ec13dd07b4eeb6aab9a",
+      "evidence_file": "evidence/liulang-tmdb-20261125/vg3.methods.smali.txt"
+    },
+    {
+      "class": "Lvg3;",
+      "signature": "public static h(ILjava/lang/String;Ljava/lang/String;)[Ljava/lang/String;",
+      "source": "research/liulang-261124/apktool-v7a/smali/vg3.smali",
+      "source_line": 1100,
+      "method_sha256": "257a1fc2eb4f95aa01d6ec58311d2e48c13e143f5ed4a6dd802b77b0f4e7f7ca",
+      "evidence_file": "evidence/liulang-tmdb-20261125/vg3.methods.smali.txt"
+    },
+    {
+      "class": "Lvg3;",
+      "signature": "public static i(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/String;",
+      "source": "research/liulang-261124/apktool-v7a/smali/vg3.smali",
+      "source_line": 1866,
+      "method_sha256": "7f8239cb00af3545169983fda450d3a534d227e3a7540b55e239a8c30668356c",
+      "evidence_file": "evidence/liulang-tmdb-20261125/vg3.methods.smali.txt"
+    },
+    {
+      "class": "Lvg3;",
+      "signature": "public static p(Lcom/google/gson/JsonObject;)[Ljava/lang/String;",
+      "source": "research/liulang-261124/apktool-v7a/smali/vg3.smali",
+      "source_line": 2807,
+      "method_sha256": "bc8e852164146236b5906aefdf477dbb5116ebe31cd91015325553330dfefcb2",
+      "evidence_file": "evidence/liulang-tmdb-20261125/vg3.methods.smali.txt"
+    },
+    {
+      "class": "Lvg3;",
+      "signature": "public static w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/google/gson/JsonObject;",
+      "source": "research/liulang-261124/apktool-v7a/smali/vg3.smali",
+      "source_line": 3863,
+      "method_sha256": "7fb5964ea70e7b64d585eec4b124466e48b312c79cea7433348131189a47242e",
+      "evidence_file": "evidence/liulang-tmdb-20261125/vg3.methods.smali.txt"
+    },
+    {
+      "class": "Lvg3;",
+      "signature": "public static x(Ljava/lang/String;Ljava/lang/String;)Lcom/google/gson/JsonObject;",
+      "source": "research/liulang-261124/apktool-v7a/smali/vg3.smali",
+      "source_line": 4099,
+      "method_sha256": "0cfcd71729bb5632cef799ae73ddcb7cad1a6136f604b704b53cd6867c976d69",
+      "evidence_file": "evidence/liulang-tmdb-20261125/vg3.methods.smali.txt"
+    },
+    {
+      "class": "Lgi3;",
+      "signature": "static constructor <clinit>()V",
+      "source": "research/liulang-261124/apktool-v7a/smali/gi3.smali",
+      "source_line": 81,
+      "method_sha256": "1ff52dd56bc2ee126d49af70793d5a55393b6ff65ae955d74a49d5cc0c9f18cb",
+      "evidence_file": "evidence/liulang-tmdb-20261125/gi3.methods.smali.txt"
+    },
+    {
+      "class": "Lgi3;",
+      "signature": "public static H(Ljava/lang/String;)Z",
+      "source": "research/liulang-261124/apktool-v7a/smali/gi3.smali",
+      "source_line": 1520,
+      "method_sha256": "e7073ae7e03abcd1f8d6c284fde387ab39478f8a4732d998633a4879d116e4a3",
+      "evidence_file": "evidence/liulang-tmdb-20261125/gi3.methods.smali.txt"
+    },
+    {
+      "class": "Lgi3;",
+      "signature": "public static L(Lcom/fongmi/android/tv/bean/Vod;Lcom/google/gson/JsonObject;ILjava/util/function/Consumer;)V",
+      "source": "research/liulang-261124/apktool-v7a/smali/gi3.smali",
+      "source_line": 1918,
+      "method_sha256": "c16778263363eb0f012af006aff9a460bcfeace110d315b2c2f94357a8b6801f",
+      "evidence_file": "evidence/liulang-tmdb-20261125/gi3.methods.smali.txt"
+    },
+    {
+      "class": "Lgi3;",
+      "signature": "public static S(Lcom/fongmi/android/tv/bean/Vod;Ljava/lang/String;)V",
+      "source": "research/liulang-261124/apktool-v7a/smali/gi3.smali",
+      "source_line": 2538,
+      "method_sha256": "42c812024e4378b45b7077a0a78a5717b9c1ed6924b93f1ea03ae92d11ef34cd",
+      "evidence_file": "evidence/liulang-tmdb-20261125/gi3.methods.smali.txt"
+    },
+    {
+      "class": "Lgi3;",
+      "signature": "public static c0(Lcom/fongmi/android/tv/bean/Vod;Ljava/util/function/Consumer;)V",
+      "source": "research/liulang-261124/apktool-v7a/smali/gi3.smali",
+      "source_line": 3307,
+      "method_sha256": "9e395341c54f4578d25b9d72e0c879034e0716686377968c184ff229029866a8",
+      "evidence_file": "evidence/liulang-tmdb-20261125/gi3.methods.smali.txt"
+    },
+    {
+      "class": "Lgi3;",
+      "signature": "public static d0(Lcom/fongmi/android/tv/bean/Vod;Ljava/util/function/Consumer;)V",
+      "source": "research/liulang-261124/apktool-v7a/smali/gi3.smali",
+      "source_line": 3489,
+      "method_sha256": "42126cc3c649175a97379d34cee1cb54adc496798746c3c773f7334292c0254f",
+      "evidence_file": "evidence/liulang-tmdb-20261125/gi3.methods.smali.txt"
+    },
+    {
+      "class": "Lgi3;",
+      "signature": "public static i(Ljava/util/ArrayList;Ljava/util/function/Consumer;)V",
+      "source": "research/liulang-261124/apktool-v7a/smali/gi3.smali",
+      "source_line": 4098,
+      "method_sha256": "e03b858ed4949705f3da382fc07ad7061291888d4dde67787b18293d6eed3fcd",
+      "evidence_file": "evidence/liulang-tmdb-20261125/gi3.methods.smali.txt"
+    },
+    {
+      "class": "Lgi3;",
+      "signature": "public static i0()V",
+      "source": "research/liulang-261124/apktool-v7a/smali/gi3.smali",
+      "source_line": 4294,
+      "method_sha256": "a65ff2c6ec12163dc8465146f966604946ad572f60ad22652170ae420e4d6c08",
+      "evidence_file": "evidence/liulang-tmdb-20261125/gi3.methods.smali.txt"
+    },
+    {
+      "class": "Lgi3;",
+      "signature": "public static j(Lcom/fongmi/android/tv/bean/Vod;Ljava/util/function/Consumer;Ljava/lang/String;IZ)V",
+      "source": "research/liulang-261124/apktool-v7a/smali/gi3.smali",
+      "source_line": 4318,
+      "method_sha256": "4757ab5866ca8fa7062d9afced2aa30fc15bcf980dc71209f8bd795d706d1823",
+      "evidence_file": "evidence/liulang-tmdb-20261125/gi3.methods.smali.txt"
+    },
+    {
+      "class": "Ln62;",
+      "signature": "public final run()V",
+      "source": "research/liulang-261124/apktool-v7a/smali/n62.smali",
+      "source_line": 64,
+      "method_sha256": "f0fb49b216ba8c4c27df9b2ab6cf32832468cb51cad7f675a8fdb63cc2f8585c",
+      "evidence_file": "evidence/liulang-tmdb-20261125/n62.methods.smali.txt"
+    },
+    {
+      "class": "Lrh3;",
+      "signature": "public final run()V",
+      "source": "research/liulang-261124/apktool-v7a/smali/rh3.smali",
+      "source_line": 50,
+      "method_sha256": "39ffadffa20a384c09886527140c9a7e72e41c7347da9d8a0b11b556be13327c",
+      "evidence_file": "evidence/liulang-tmdb-20261125/rh3.methods.smali.txt"
+    },
+    {
+      "class": "Lpw1;",
+      "signature": "public final run()V",
+      "source": "research/liulang-261124/apktool-v7a/smali/pw1.smali",
+      "source_line": 102,
+      "method_sha256": "0d151241c967474b12886cc94df9a178985553a759663defe5aecd529ba5e6e8",
+      "evidence_file": "evidence/liulang-tmdb-20261125/pw1.methods.smali.txt"
+    },
+    {
+      "class": "Les1;",
+      "signature": "public final run()V",
+      "source": "research/liulang-261124/apktool-v7a/smali/es1.smali",
+      "source_line": 70,
+      "method_sha256": "a2916f2721fd4a43e54e2b6ad991afae07b0930008d5d78c9b51e494392632bf",
+      "evidence_file": "evidence/liulang-tmdb-20261125/es1.methods.smali.txt"
+    },
+    {
+      "class": "Ly82;",
+      "signature": "public static declared-synchronized c()Lokhttp3/OkHttpClient;",
+      "source": "research/liulang-261124/apktool-v7a/smali/y82.smali",
+      "source_line": 242,
+      "method_sha256": "1040cc9bdf974316496ab0e76fddf024353ef6fe0e7087245387d107c9f9c1ca",
+      "evidence_file": "evidence/liulang-tmdb-20261125/y82.methods.smali.txt"
+    },
+    {
+      "class": "Ly82;",
+      "signature": "public static d(J)Lokhttp3/OkHttpClient;",
+      "source": "research/liulang-261124/apktool-v7a/smali/y82.smali",
+      "source_line": 302,
+      "method_sha256": "0c59ef8c63069e148cb7bc4a94cb3c3b040ffe8ec3bc5d0db0a39f16bb4f5300",
+      "evidence_file": "evidence/liulang-tmdb-20261125/y82.methods.smali.txt"
+    },
+    {
+      "class": "Ly82;",
+      "signature": "public static e()Lv82;",
+      "source": "research/liulang-261124/apktool-v7a/smali/y82.smali",
+      "source_line": 334,
+      "method_sha256": "f9edc050f47f29947ebae670942e8166c5726d9daa5c434787bccb5a8c6f14bf",
+      "evidence_file": "evidence/liulang-tmdb-20261125/y82.methods.smali.txt"
+    },
+    {
+      "class": "Ly82;",
+      "signature": "public static f(Z)Lokhttp3/OkHttpClient$Builder;",
+      "source": "research/liulang-261124/apktool-v7a/smali/y82.smali",
+      "source_line": 355,
+      "method_sha256": "0fa7d2a23237af5351c7d1e95f5b968d5b22e55df34f0297b99a7f82f8d61942",
+      "evidence_file": "evidence/liulang-tmdb-20261125/y82.methods.smali.txt"
+    },
+    {
+      "class": "Lv82;",
+      "signature": "static constructor <clinit>()V",
+      "source": "research/liulang-261124/apktool-v7a/smali/v82.smali",
+      "source_line": 24,
+      "method_sha256": "950549adc51e21e63d122629088e01bb79bbba9d8c68291964ef079006934a16",
+      "evidence_file": "evidence/liulang-tmdb-20261125/v82.methods.smali.txt"
+    },
+    {
+      "class": "Lv82;",
+      "signature": "public constructor <init>()V",
+      "source": "research/liulang-261124/apktool-v7a/smali/v82.smali",
+      "source_line": 44,
+      "method_sha256": "12a0476b8092707f5f61e46a48aac39bfe3902331a37edb5279dda7649cf455e",
+      "evidence_file": "evidence/liulang-tmdb-20261125/v82.methods.smali.txt"
+    },
+    {
+      "class": "Lv82;",
+      "signature": "public final lookup(Ljava/lang/String;)Ljava/util/List;",
+      "source": "research/liulang-261124/apktool-v7a/smali/v82.smali",
+      "source_line": 133,
+      "method_sha256": "28759b1a2edf7e7e77f06ee797d5acd3fc9a842cb269b0ceeba08d03ed5cab37",
+      "evidence_file": "evidence/liulang-tmdb-20261125/v82.methods.smali.txt"
+    },
+    {
+      "class": "Lu82;",
+      "signature": "public constructor <init>(Ljava/lang/String;)V",
+      "source": "research/liulang-261124/apktool-v7a/smali/u82.smali",
+      "source_line": 18,
+      "method_sha256": "04859c8d76f01fe2a2a6bba029f55a4cfe2b2647f6c90fd5c1b9eb7b10b2f506",
+      "evidence_file": "evidence/liulang-tmdb-20261125/u82.methods.smali.txt"
+    },
+    {
+      "class": "Lu82;",
+      "signature": "public final lookup(Ljava/lang/String;)Ljava/util/List;",
+      "source": "research/liulang-261124/apktool-v7a/smali/u82.smali",
+      "source_line": 48,
+      "method_sha256": "e9fbad6afcbe5d93d168fbd734e21b9b85068e8c7486c979f17b3c81c6aea31a",
+      "evidence_file": "evidence/liulang-tmdb-20261125/u82.methods.smali.txt"
+    },
+    {
+      "class": "Lfe3;",
+      "signature": "static constructor <clinit>()V",
+      "source": "research/liulang-261124/apktool-v7a/smali/fe3.smali",
+      "source_line": 17,
+      "method_sha256": "8a68dcc64bd9e18f3ccd10a3606c6fcb20e7abc39ac48990581f482e521e7b23",
+      "evidence_file": "evidence/liulang-tmdb-20261125/fe3.methods.smali.txt"
+    },
+    {
+      "class": "Lrd1;",
+      "signature": "static constructor <clinit>()V",
+      "source": "research/liulang-261124/apktool-v7a/smali/rd1.smali",
+      "source_line": 20,
+      "method_sha256": "13dddd75b49e99387d90e2fc48862b94eb9eb0941eafbfdb718ed6f6442242fd",
+      "evidence_file": "evidence/liulang-tmdb-20261125/rd1.methods.smali.txt"
+    },
+    {
+      "class": "Lrd1;",
+      "signature": "public static b(Ljava/lang/String;Ljava/lang/String;)Lpd1;",
+      "source": "research/liulang-261124/apktool-v7a/smali/rd1.smali",
+      "source_line": 103,
+      "method_sha256": "81c2f7122f23e5ae175ead6db1689dcf8751a3cb9df6cda3434755ffbc940f33",
+      "evidence_file": "evidence/liulang-tmdb-20261125/rd1.methods.smali.txt"
+    },
+    {
+      "class": "Lrd1;",
+      "signature": "public final lookup(Ljava/lang/String;)Ljava/util/List;",
+      "source": "research/liulang-261124/apktool-v7a/smali/rd1.smali",
+      "source_line": 506,
+      "method_sha256": "7dbeccb29d83e898c239ee61c538d479657da5442de2542eadb02c718ce59445",
+      "evidence_file": "evidence/liulang-tmdb-20261125/rd1.methods.smali.txt"
+    },
+    {
+      "class": "La73;",
+      "signature": "public constructor <init>()V",
+      "source": "research/liulang-261124/apktool-v7a/smali/a73.smali",
+      "source_line": 39,
+      "method_sha256": "48fbbda468f50295e11dd08655059ba03bc14e0ee2221b2ae8da0008ccaddcdf",
+      "evidence_file": "evidence/liulang-tmdb-20261125/a73.methods.smali.txt"
+    },
+    {
+      "class": "La73;",
+      "signature": "public final a(Ljava/lang/String;)Ljava/lang/String;",
+      "source": "research/liulang-261124/apktool-v7a/smali/a73.smali",
+      "source_line": 73,
+      "method_sha256": "2c4d56298e8d1053a488fd8db33c6295c2ad52c7f0ffdc401f6d4e25981be8df",
+      "evidence_file": "evidence/liulang-tmdb-20261125/a73.methods.smali.txt"
+    },
+    {
+      "class": "Llh2;",
+      "signature": "public final lookup(Ljava/lang/String;)Ljava/util/List;",
+      "source": "research/liulang-261124/apktool-v7a/smali/lh2.smali",
+      "source_line": 10,
+      "method_sha256": "3b64b52a3e548d614e9a34aed724452a09625cb6774cdb122c5cc347b6b0642f",
+      "evidence_file": "evidence/liulang-tmdb-20261125/lh2.methods.smali.txt"
+    },
+    {
+      "class": "Lkd1;",
+      "signature": "public final onClick(Landroid/view/View;)V",
+      "source": "research/liulang-261124/apktool-v7a/smali/kd1.smali",
+      "source_line": 42,
+      "method_sha256": "55c276aa55e9d22f9d2de6372c4579a72f4248b3b0a7a71fb3fff6e7e5338fbc",
+      "evidence_file": "evidence/liulang-tmdb-20261125/kd1.methods.smali.txt"
+    }
+  ]
+}

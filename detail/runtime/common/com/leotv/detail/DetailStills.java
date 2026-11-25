@@ -118,7 +118,7 @@ final class DetailStills {
     void refresh(DetailThumbnails cache, String proxy) {
         this.proxy = proxy == null ? "" : proxy;
         for (int i = 0; i < images.size(); i++) {
-            cache.bind(items.get(i), false, images.get(i)::setImageBitmap);
+            cache.bindNear(items.get(i), false,images.get(i), images.get(i)::setImageBitmap);
         }
     }
 

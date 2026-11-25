@@ -1,0 +1,276 @@
+# Verbatim method excerpts from Liulang 32-bit 261124; see provenance.json.
+
+.method public final onClick(Landroid/view/View;)V
+    .locals 6
+
+    iget p1, p0, Lkd1;->c:I
+
+    const/4 v0, 0x0
+
+    packed-switch p1, :pswitch_data_0
+
+    iget-object p1, p0, Lkd1;->h:Ljava/lang/Object;
+
+    check-cast p1, Lse2;
+
+    iget-object v1, p0, Lkd1;->i:Ljava/lang/Object;
+
+    check-cast v1, Lre2;
+
+    iget-object v2, p0, Lkd1;->j:Ljava/lang/Object;
+
+    check-cast v2, Lrm3;
+
+    iget-object p0, p0, Lkd1;->k:Ljava/lang/Object;
+
+    check-cast p0, Lze2;
+
+    const/16 v3, 0x1d
+
+    invoke-interface {v1, v3}, Lre2;->U0(I)Z
+
+    move-result v3
+
+    if-nez v3, :cond_0
+
+    goto :goto_1
+
+    :cond_0
+    invoke-interface {v1}, Lre2;->C0()Lbn3;
+
+    move-result-object v3
+
+    invoke-virtual {v3}, Lbn3;->a()Lan3;
+
+    move-result-object v3
+
+    new-instance v4, Lxm3;
+
+    iget v5, p0, Lze2;->b:I
+
+    invoke-static {v5}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+
+    move-result-object v5
+
+    invoke-static {v5}, Lta1;->p(Ljava/lang/Object;)Leo2;
+
+    move-result-object v5
+
+    invoke-direct {v4, v2, v5}, Lxm3;-><init>(Lrm3;Ljava/util/List;)V
+
+    invoke-virtual {v3, v4}, Lan3;->h(Lxm3;)Lan3;
+
+    move-result-object v2
+
+    iget-object v3, p0, Lze2;->a:Lin3;
+
+    iget-object v3, v3, Lin3;->b:Lrm3;
+
+    iget v3, v3, Lrm3;->c:I
+
+    invoke-virtual {v2, v3, v0}, Lan3;->l(IZ)Lan3;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Lan3;->b()Lbn3;
+
+    move-result-object v0
+
+    invoke-interface {v1, v0}, Lre2;->M(Lbn3;)V
+
+    iget-object p0, p0, Lze2;->c:Ljava/lang/String;
+
+    iget v0, p1, Lse2;->c:I
+
+    packed-switch v0, :pswitch_data_1
+
+    goto :goto_0
+
+    :pswitch_0
+    iget-object v0, p1, Lse2;->d:Lbf2;
+
+    iget-object v0, v0, Lbf2;->s:Lxe2;
+
+    iget-object v0, v0, Lxe2;->c:Ljava/lang/Object;
+
+    check-cast v0, [Ljava/lang/String;
+
+    const/4 v1, 0x1
+
+    aput-object p0, v0, v1
+
+    :goto_0
+    iget-object p0, p1, Lse2;->b:Lbf2;
+
+    iget-object p0, p0, Lbf2;->x:Landroid/widget/PopupWindow;
+
+    invoke-virtual {p0}, Landroid/widget/PopupWindow;->dismiss()V
+
+    :goto_1
+    return-void
+
+    :pswitch_1
+    iget-object p1, p0, Lkd1;->h:Ljava/lang/Object;
+
+    check-cast p1, Lmd1;
+
+    iget-object v1, p0, Lkd1;->i:Ljava/lang/Object;
+
+    check-cast v1, Ljava/lang/String;
+
+    iget-object v2, p0, Lkd1;->j:Ljava/lang/Object;
+
+    check-cast v2, Landroid/widget/CheckBox;
+
+    iget-object p0, p0, Lkd1;->k:Ljava/lang/Object;
+
+    check-cast p0, Landroid/widget/TextView;
+
+    sget-object v3, Lmd1;->y0:Ljava/lang/String;
+
+    invoke-virtual {v2}, Landroid/widget/CompoundButton;->isChecked()Z
+
+    move-result v2
+
+    iget-object v3, p1, Lmd1;->u0:Ljava/lang/String;
+
+    if-nez v3, :cond_1
+
+    goto/16 :goto_5
+
+    :cond_1
+    if-eqz v2, :cond_6
+
+    sget-object v2, La73;->h:La73;
+
+    invoke-virtual {v2}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+
+    if-eqz v1, :cond_3
+
+    invoke-virtual {v1}, Ljava/lang/String;->isEmpty()Z
+
+    move-result v4
+
+    if-eqz v4, :cond_2
+
+    goto :goto_2
+
+    :cond_2
+    iput-object v3, v2, La73;->g:Ljava/lang/String;
+
+    iput-object v1, v2, La73;->f:Ljava/lang/String;
+
+    :cond_3
+    :goto_2
+    iget-object p1, p1, Lmd1;->v0:Ljava/util/HashMap;
+
+    invoke-virtual {p1}, Ljava/util/HashMap;->entrySet()Ljava/util/Set;
+
+    move-result-object p1
+
+    invoke-interface {p1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+
+    move-result-object p1
+
+    :cond_4
+    :goto_3
+    invoke-interface {p1}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_5
+
+    invoke-interface {p1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Ljava/util/Map$Entry;
+
+    invoke-interface {v2}, Ljava/util/Map$Entry;->getKey()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Ljava/lang/CharSequence;
+
+    invoke-static {v3, v1}, Landroid/text/TextUtils;->equals(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Z
+
+    move-result v3
+
+    if-nez v3, :cond_4
+
+    invoke-interface {v2}, Ljava/util/Map$Entry;->getValue()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Landroid/widget/CheckBox;
+
+    invoke-virtual {v2, v0}, Landroid/widget/CompoundButton;->setChecked(Z)V
+
+    goto :goto_3
+
+    :cond_5
+    new-instance p1, Ljava/lang/StringBuilder;
+
+    const-string v0, "\u5f3a\u5236\u4f7f\u7528 "
+
+    invoke-direct {p1, v0}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+
+    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {p1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object p1
+
+    invoke-virtual {p0, p1}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
+
+    goto :goto_4
+
+    :cond_6
+    sget-object p1, La73;->h:La73;
+
+    iget-object v0, p1, La73;->g:Ljava/lang/String;
+
+    if-eqz v0, :cond_7
+
+    iget-object v0, p1, La73;->g:Ljava/lang/String;
+
+    invoke-virtual {v3, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    if-eqz v0, :cond_8
+
+    :cond_7
+    const/4 v0, 0x0
+
+    iput-object v0, p1, La73;->f:Ljava/lang/String;
+
+    iput-object v0, p1, La73;->g:Ljava/lang/String;
+
+    :cond_8
+    const-string p1, "\u5df2\u6062\u590d\u81ea\u52a8\u89e3\u6790"
+
+    invoke-virtual {p0, p1}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
+
+    :goto_4
+    new-instance p0, Lv2;
+
+    const/4 p1, 0x3
+
+    invoke-direct {p0, p1}, Lv2;-><init>(I)V
+
+    invoke-static {p0}, Lfe3;->a(Ljava/lang/Runnable;)V
+
+    :goto_5
+    return-void
+
+    :pswitch_data_0
+    .packed-switch 0x0
+        :pswitch_1
+    .end packed-switch
+
+    :pswitch_data_1
+    .packed-switch 0x0
+        :pswitch_0
+    .end packed-switch
+.end method

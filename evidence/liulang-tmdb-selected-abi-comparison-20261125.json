@@ -1,0 +1,9 @@
+{
+  "original_classes": 31,
+  "rebuilt_classes": 31,
+  "changed_classes": 0,
+  "equal": true,
+  "original_semantic_sha256": "9723ca6de4e1bd4126858ffeb67b196a3102e2743a732fe418b0caf72af3040a",
+  "rebuilt_semantic_sha256": "9723ca6de4e1bd4126858ffeb67b196a3102e2743a732fe418b0caf72af3040a",
+  "first_changed_class_names": []
+}
