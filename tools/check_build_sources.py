@@ -25,6 +25,13 @@ LOCKS = ('branding/source-lock.json', 'detail/native-source-lock.json',
 
 def check_sources(root=ROOT):
     check_tmdb_loading(root)
+    detail_page=(root / 'detail/runtime/common/com/leotv/detail/TvDetailPage.java').read_text()
+    detail_scroll=(root / 'detail/runtime/common/com/leotv/detail/TvDetailScroll.java').read_text()
+    if 'if(!Device.MOBILE)setSmoothScrollingEnabled(false)' not in detail_scroll or 'return Device.MOBILE || touchScroll ? super.computeScrollDeltaToGetChildRectOnScreen(rectangle) : 0' not in detail_scroll:
+        raise ValueError('TV focus/layout changes must not start framework scrolling; mobile and touch retain their original path.')
+    initial_view=detail_page.split('    private boolean beforeDraw()')[1].split('    private boolean key(')[0]
+    if 'initialPlayFocus' not in initial_view or '(!playButton.isFocused()||scroll.getScrollY()!=0)' not in initial_view or 'navigation.focusPrimary()' not in initial_view:
+        raise ValueError('TV initial hero must stay at the top even when the play button already holds focus.')
     check_qr_web_contract(root)
     home = (root / 'detail/runtime/common/com/leotv/detail/CspHomePage.java').read_text()
     artwork = (root / 'detail/runtime/common/com/leotv/detail/NativeCspUi.java').read_text()

@@ -1,0 +1,8 @@
+{
+  "framework": "Android API23 ScrollView source",
+  "framework_source_sha256": "a03bfe1b071ffdaecb3c33e78188080c386bf4a0643950696d987ab13324c2a9",
+  "size_change_starts_focus_scroll": "onSizeChanged -> doScrollY -> smoothScrollBy",
+  "animation_bypasses_scrollTo": "computeScroll -> overScrollBy -> actual scroll offsets",
+  "theme_classes_unchanged_since_640": true,
+  "runtime_device_scroll_trace_collected": false
+}

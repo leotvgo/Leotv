@@ -14,8 +14,16 @@ final class TvDetailScroll extends ScrollView {
     private boolean touchScroll;
     private View hero, controls;
     private final Rect clip = new Rect();
-    TvDetailScroll(Context context) { super(context); }
+    TvDetailScroll(Context context) {
+        super(context);
+        // ScrollView's focus/size animation writes mScrollY without calling our scrollTo override.
+        // Remote movement already has its own animator; keep the framework focus path immediate.
+        if(!Device.MOBILE)setSmoothScrollingEnabled(false);
+    }
     @Override public void scrollTo(int x, int y) { if (touchScroll) super.scrollTo(x, y); }
+    @Override protected int computeScrollDeltaToGetChildRectOnScreen(Rect rectangle) {
+        return Device.MOBILE || touchScroll ? super.computeScrollDeltaToGetChildRectOnScreen(rectangle) : 0;
+    }
     @Override public boolean requestChildRectangleOnScreen(View child, Rect rectangle, boolean immediate) { return false; }
     void pinHero(View hero, View controls) { this.hero = hero; this.controls = controls; }
     int pinnedHeight() {

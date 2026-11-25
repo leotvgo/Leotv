@@ -299,7 +299,7 @@ final class TvDetailPage implements DetailPage {
     }
     private boolean beforeDraw(){if(!mounted)return true;if(content.getWidth()!=themeWidth||content.getHeight()!=themeHeight)ThemeLayout.apply(this);libraryLayout.sync();loadingState();
         if(playbackFocusPending)restorePlaybackFocus();
-        if(initialPlayFocus&&!playButton.isFocused()&&playButton.isShown()&&playButton.getWidth()>0&&playButton.getHeight()>0)navigation.focusPrimary();
+        if(initialPlayFocus&&playButton.isShown()&&playButton.getWidth()>0&&playButton.getHeight()>0&&(!playButton.isFocused()||scroll.getScrollY()!=0))navigation.focusPrimary();
         return true;}
     private boolean key(KeyEvent event){
         if(!mobile&&playbackFocusPending&&event.getAction()==KeyEvent.ACTION_DOWN){restorePlaybackFocus();playbackFocusPending=false;restoredPlaybackView=null;}
