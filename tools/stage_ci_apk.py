@@ -37,7 +37,9 @@ def main():
         if not audit.get('protected_release') or not hardening or hashlib.sha256(mapping.read_bytes()).hexdigest() != hardening['mapping_sha256']:
             raise SystemExit('Private mapping differs from the protected APK build.')
         tag = f'leotv-symbols-{version}-build-{run_id}'
-        files = [mapping]
+        full_audit=root / f'leotv-{args.variant}-unsigned.full-audit.json'
+        full_audit.write_bytes(audit_path.read_bytes())
+        files = [mapping,full_audit]
 
     store = ReleaseStore(repo, commit)
     release = store.find(tag)

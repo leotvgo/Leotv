@@ -70,7 +70,10 @@ def apply(project, root, variant):
                     if body.count(marker)!=1:
                         raise ValueError('Expected the mobile prepared-source branch join.')
                     return body.replace(native_ready,guarded).replace(marker,marker+'\n'+end+'\n')
-                return body.replace(native_ready,guarded+'\n\n'+end)
+                marker='    :cond_9\n'
+                if body.count(marker)!=1:
+                    raise ValueError('Expected the TV prepared-source branch join.')
+                return body.replace(native_ready,guarded).replace(marker,marker+'\n'+end+'\n')
             text=replace_method(text,event_signature,bootstrap)
             def resume(body):
                 marker = body.rfind('    return-void')

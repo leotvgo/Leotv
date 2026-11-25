@@ -109,6 +109,13 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
             if(metadata!=null)for(MobileDetailMetadata.Episode item:metadata.episodes.values())if(item!=null&&item.number>0&&names.length()<1000)
                 names.put(new org.json.JSONObject().put("name",item.name).put("number",item.number).put("season",item.season));
             work.put("episodes",names);if(work.toString().length()>128*1024)work.remove("episodes");
+            org.json.JSONObject hints=new org.json.JSONObject();
+            if(metadata!=null)for(SourceGateway.Episode playable:source.episodes){
+                MobileDetailMetadata.Episode matched=metadata.episode(playable.name);
+                if(matched!=null&&matched.number>0&&hints.length()<1000)hints.put(MetadataCache.hash(playable.url+'\n'+playable.name),
+                        new org.json.JSONObject().put("number",matched.number).put("season",matched.season));
+            }
+            work.put("episodeHints",hints);if(work.toString().length()>128*1024){work.remove("episodes");if(work.toString().length()>128*1024)work.remove("episodeHints");}
             getIntent().putExtra(NativeRouting.DANMAKU_WORK,work.toString());
         }catch(org.json.JSONException invalid){getIntent().removeExtra(NativeRouting.DANMAKU_WORK);}
         if(!Device.MOBILE)getIntent().putExtra(PLAYBACK_RETURN,true);

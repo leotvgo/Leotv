@@ -474,11 +474,11 @@ class MobileDetailMetadata {
         String query = "&language=" + encode(options.language) + auth;
         JSONObject match = null;
         MetadataMatchStore.Match chosen = MetadataMatchStore.find(work);
-        if (known != null) {
-            match = new JSONObject().put("id", known.id).put("media_type", known.type);
-            if (searched != null) searched[0] = new BackdropIdentity.Selection(null, true, true);
-        } else if (chosen != null) {
+        if (chosen != null) {
             match = new JSONObject().put("id", chosen.tmdbId).put("media_type", chosen.mediaType);
+            if (searched != null) searched[0] = new BackdropIdentity.Selection(null, true, true);
+        } else if (known != null) {
+            match = new JSONObject().put("id", known.id).put("media_type", known.type);
             if (searched != null) searched[0] = new BackdropIdentity.Selection(null, true, true);
         } else if((match=MetadataCache.match(work,options))!=null){
             if(searched!=null)searched[0]=new BackdropIdentity.Selection(match,false,true);
@@ -520,9 +520,13 @@ class MobileDetailMetadata {
         }
         if (match == null || match.optLong("id") <= 0) return null;
         request.check();
+        JSONObject shared=MetadataCache.entityPreview(match.getString("media_type"),match.getLong("id"),options);
+        if(shared!=null){JSONObject merged=copy(match);java.util.Iterator<String> keys=shared.keys();while(keys.hasNext()){String field=keys.next();merged.put(field,shared.opt(field));}match=merged;}
         MetadataCache.rememberMatch(work,options,match,request);
         boolean tv = "tv".equals(match.getString("media_type"));
         if(progress!=null){Result initial=summary(match,tv,match.optJSONObject("images")!=null,options);if(!initial.overview.isEmpty()||!initial.posterPath.isEmpty()||!initial.backdropPath.isEmpty())progress.ready(initial);}
+        // A fresh full image collection can satisfy the home; detail still loads every existing module.
+        if(heroOnly&&shared!=null&&shared.optJSONObject("images")!=null&&MetadataCache.entity(match.getString("media_type"),match.getLong("id"),options)!=null)return summary(match,tv,true,options);
         String base = "/" + match.getString("media_type") + "/" + match.getLong("id");
         String creditsKey = tv ? "aggregate_credits" : "credits";
         String imageLanguage = imageLanguage(options);

@@ -70,10 +70,16 @@ public final class DanmakuTitle {
         if(!date(value).isEmpty())return EPISODE_UNKNOWN;
         // Bare filenames are accepted only when their remaining numeric evidence is unique.
         value=SEASON.matcher(value).replaceAll(" ").replaceAll("(?<![0-9])(?:19|20)[0-9]{2}(?![0-9])"," ");
-        return uniqueEpisode(NUMERIC,value);
+        // Share the parser used by the accurate TMDB episode cards, including ]04~ after size/4K noise.
+        MobileEpisodeKey key=MobileEpisodeKey.parse(value,0);
+        if(key!=null)return key.episode;
+        try{int number=Integer.parseInt(JarEpisodeNormalizer.extractEpisodeNum(value));return number>0&&number<=999?number:EPISODE_UNKNOWN;}
+        catch(NumberFormatException unknown){return EPISODE_UNKNOWN;}
     }
     private static String numberText(String value){
         value=java.text.Normalizer.normalize(value,java.text.Normalizer.Form.NFKC);
+        // Remove compound audio/size tokens before the JAR cleanup removes their prefix alone.
+        value=JarEpisodeNormalizer.clean(NOISE.matcher(value).replaceAll(" "));
         value=URL.matcher(value).replaceAll(" ");
         value=value.replaceAll("(?i)(?:全|共|更新至|更至)\\s*[零〇一二两三四五六七八九十百0-9]+\\s*集"," ");
         return NOISE.matcher(value).replaceAll(" ").replaceAll("(?i)\\.(?:mkv|mp4|avi|ts|m4v|rmvb|mov)$"," ").trim();
@@ -99,6 +105,13 @@ public final class DanmakuTitle {
         int selectedSeason=season(label);
         if(selectedSeason==EPISODE_UNKNOWN)selectedSeason=season(work.optString("sourceTitle",mediaTitle));
         if(selectedSeason==EPISODE_UNKNOWN&&work.optInt("season",-1)>0)selectedSeason=work.optInt("season");
+        org.json.JSONObject hints=work.optJSONObject("episodeHints");
+        org.json.JSONObject hint=hints==null?null:hints.optJSONObject(work.optString("currentEpisodeHash"));
+        if(hint!=null&&hint.optInt("number",-1)>0){
+            int hintSeason=hint.optInt("season",-1),number=hint.optInt("number");
+            // The detail card already resolved this exact source episode. It outranks label noise/conflicts.
+            return hintSeason>0?"S"+hintSeason+"E"+number:"第"+number+"集";
+        }
         String reduced=label;
         for(String title:new String[]{work.optString("title"),work.optString("sourceTitle"),mediaTitle})
             if(title!=null&&title.length()>1)reduced=reduced.replaceAll("(?i)"+Pattern.quote(title)," ");
@@ -170,8 +183,8 @@ public final class DanmakuTitle {
             String label=item.episodeTitle.isEmpty()?item.getName():item.episodeTitle;
             boolean same=!wantedDate.isEmpty()?wantedDate.equals(date(label)):number!=EPISODE_UNKNOWN?getEpisode(item)==number:normalizeSearchText(label).equals(normalizeSearchText(episode));
             if(!same||!wantedVariant.equals(variant(label)))continue;
-            // Ambiguous specials/duplicate editions require the existing search or a manual choice.
-            if(match!=null&&!match.url.equals(item.url))return null;match=item;
+            // Keep the first actual matching item in the selected platform/group; do not skip a known episode.
+            if(match==null)match=item;
         }
         return match;
     }
@@ -190,12 +203,13 @@ public final class DanmakuTitle {
         int wanted=parseEpisode(episode),playable=0;boolean known=false;DanmakuSource first=null,best=null;double score=-1;
         String wantedDate=date(episode),wantedVariant=variant(episode);
         String query=normalizeSearchText(keyword);
+        JarTitleMatch target=JarTitleNormalizer.parse(keyword+" "+episode);
         for(DanmakuSource item:values){if(item.isCatalog()||item.url.isEmpty()||!editionMatches(item,keyword,episode,year))continue;
             double titleScore=matchScore(titleKey(item),query);if(titleKey(item)!=null&&!query.isEmpty()&&titleScore<0.65)continue;
             playable++;if(first==null)first=item;
             int actual=getEpisode(item);known|=actual!=EPISODE_UNKNOWN;
             String label=item.episodeTitle.isEmpty()?item.getName():item.episodeTitle;
-            if((!wantedDate.isEmpty()?wantedDate.equals(date(label)):wanted!=EPISODE_UNKNOWN&&actual==wanted)&&wantedVariant.equals(variant(label))){double value=matchScore(titleKey(item),query);if(best==null||value>score){best=item;score=value;}}}
+            if((!wantedDate.isEmpty()?wantedDate.equals(date(label)):wanted!=EPISODE_UNKNOWN&&actual==wanted)&&wantedVariant.equals(variant(label))){double value=matchScore(titleKey(item),query)+JarTitleNormalizer.score(target,JarTitleNormalizer.parse(item.seriesTitle+" "+label))/100.0;if(best==null||value>score){best=item;score=value;}}}
         if(best!=null)return best;
         if(!wantedDate.isEmpty()||!wantedVariant.isEmpty())return null;
         if(wanted==EPISODE_UNKNOWN&&first!=null&&!drama(first)&&(first.mediaType.matches("(?i)movie|film|电影|電影")||first.getName().contains("【电影】")||episode!=null&&episode.trim().matches("(?i)正片|电影|電影|movie|全集|播放|HD|蓝光|藍光|超清")))return first;
@@ -327,7 +341,7 @@ public final class DanmakuTitle {
     /** 归一化搜索文本：去 from/括号/年份/空白，小写。 */
     public static String normalizeSearchText(String text) {
         if (TextUtils.isEmpty(text)) return "";
-        text=SEASON.matcher(numberText(text)).replaceAll(" ");
+        text=JarTitleNormalizer.parse(SEASON.matcher(numberText(text)).replaceAll(" ")).coreTitle;
         return text.replaceAll("(?i)\\s*from\\s*.*$", "")
                 .replaceAll("[【\\[][^】\\]]{0,24}[】\\]]", "")
                 .replaceAll("[(\\[（【]\\s*(?:19|20)\\d{2}\\s*[)\\]）】]", "")

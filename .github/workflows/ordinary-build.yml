@@ -25,6 +25,8 @@ jobs:
         run: bash scripts/audit-release-tree.sh
       - name: Verify all four source variants and ordered native hooks
         run: python3 -B tools/check_build_sources.py
+      - name: Verify ported episode normalization and detail precedence using fictional fixtures
+        run: python3 -B research/check_episode_port.py
 
   prepare:
     needs: sources
@@ -177,6 +179,10 @@ jobs:
           APK_CERT_SHA256: ${{ vars.APK_CERT_SHA256 }}
           VARIANT: ${{ matrix.variant }}
         run: python3 tools/stage_ci_apk.py --variant "$VARIANT" --symbols
+      - name: Publish only a bound audit summary after preserving the full source audit privately
+        env:
+          VARIANT: ${{ matrix.variant }}
+        run: python3 tools/public_apk_audit.py --variant "$VARIANT"
       - id: signed_artifact
         uses: actions/upload-artifact@v4
         continue-on-error: true

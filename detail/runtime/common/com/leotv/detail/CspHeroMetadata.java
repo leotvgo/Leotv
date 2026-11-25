@@ -30,13 +30,13 @@ final class CspHeroMetadata implements AutoCloseable {
         for(int i=0;i<items.size();i++){
             final int index=i;final JSONObject item=items.get(i);final BackdropHttp.Request request=new BackdropHttp.Request();requests.add(request);
             MobileDetailMetadata.Progress ready=value->main.post(()->{
-                if(closed||token!=generation)return;
+                if(closed||token!=generation||!options.same(BackdropSettings.read(activity)))return;
                 results.set(index,value);
                 if(!submitted[0])publish.run();else if(!queued[0]){queued[0]=true;main.postDelayed(publish,40);}
                 String path=Device.MOBILE?value.posterPath:value.backdropPath;
                 List<String> paths=Device.MOBILE?value.posterPaths:value.backdropPaths;
                 if(path.isEmpty()&&!paths.isEmpty())path=paths.get(0);
-                if(!path.isEmpty())TmdbArtwork.prefetch(activity,path,options.proxy);
+                if(index<3&&!path.isEmpty())TmdbArtwork.prefetch(activity,path,options.proxy,this);
             });
             worker.execute(()->{
                 try{
@@ -48,6 +48,6 @@ final class CspHeroMetadata implements AutoCloseable {
             });
         }
     }
-    void cancel(){generation++;for(BackdropHttp.Request request:requests)request.cancel();requests.clear();worker.getQueue().clear();}
+    void cancel(){generation++;TmdbArtwork.releaseOwner(this);for(BackdropHttp.Request request:requests)request.cancel();requests.clear();worker.getQueue().clear();}
     @Override public void close(){closed=true;cancel();worker.shutdownNow();main.removeCallbacksAndMessages(null);}
 }

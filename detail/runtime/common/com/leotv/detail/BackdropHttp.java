@@ -28,17 +28,32 @@ final class BackdropHttp {
             new java.util.concurrent.ThreadPoolExecutor.DiscardPolicy());
     static final class Failure extends IOException {
         final boolean retryable;
+        final int status;final long retryAfterMillis;
         Failure(String kind, String reason) {
             this(kind, reason, false);
         }
         Failure(String kind, String reason, boolean retryable) {
+            this(kind,reason,retryable,0,0);
+        }
+        Failure(String kind,String reason,boolean retryable,int status,long retryAfterMillis){
             super((kind.equals("tmdb") ? "TMDB" : kind.equals("douban") ? "豆瓣"
                     : kind.equals("introdb") ? "片头片尾" : "背景图片") + "：" + reason);
             this.retryable = retryable;
+            this.status=status;this.retryAfterMillis=retryAfterMillis;
         }
     }
+    static Failure httpFailure(String kind,int status,String retryAfter){
+        long delay=status==429?20000:0;
+        if(retryAfter!=null)try{
+            String value=retryAfter.trim();long seconds;
+            if(value.matches("[0-9]+")){seconds=Long.parseLong(value);delay=Math.max(delay,Math.min(86400L,seconds)*1000L);}
+            else {java.text.SimpleDateFormat date=new java.text.SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz",java.util.Locale.US);date.setTimeZone(java.util.TimeZone.getTimeZone("GMT"));delay=Math.max(delay,Math.min(86400000L,Math.max(0,date.parse(value).getTime()-System.currentTimeMillis())));}
+        }catch(Exception invalid){}
+        return new Failure(kind,status==401&&kind.equals("tmdb")?"密钥无效或已失效（HTTP 401）":"HTTP "+status,status==408||status==429||status>=500,status,delay);
+    }
     static boolean retryable(Throwable error) { return error instanceof Failure && ((Failure)error).retryable; }
-    static void retryNow() { unavailableUntil.clear();TmdbRoutes.reset(); }
+    static void retryNow() { unavailableUntil.clear();TmdbRoutes.reset();MetadataCache.clearFailures(); }
+    static void networkChanged(){unavailableUntil.clear();TmdbRoutes.reset();MetadataCache.clearFailures();}
 
     static String failureMessage(Throwable error) {
         if (error instanceof Failure) return error.getMessage();
@@ -121,6 +136,7 @@ final class BackdropHttp {
                                Request request, int byteLimit, String method, Fetcher fetcher) throws Exception {
         URL original = new URL(address);
         if (!allowed(original, kind)) throw new Failure(kind, "不支持的服务地址");
+        TmdbNetwork.checkRateLimit(address,kind,proxyUrl,headers);
         if(method.equals("GET")&&TmdbRoutes.automatic(address,kind))return TmdbRoutes.get(address,kind,proxyUrl,headers,request,byteLimit,fetcher);
         String primary = address;
         List<String[]> routes = new ArrayList<>(); routes.add(new String[]{primary, ""});
@@ -133,6 +149,7 @@ final class BackdropHttp {
             } catch (java.net.MalformedURLException ignored) { /* A bad optional proxy must not break direct access. */ }
         }
         Failure last = null;
+        final long network=TmdbNetwork.generation();
         for (String[] route : routes) {
             request.check();
             String key = kind + ":" + method + ":" + new URL(route[0]).getHost() + ":" + route[1];
@@ -145,6 +162,7 @@ final class BackdropHttp {
                 request.check();
                 if (error instanceof InterruptedIOException && !(error instanceof java.net.SocketTimeoutException)) throw error;
                 last = failure(kind, error);
+                if(last.status==429){TmdbNetwork.rateLimited(address,kind,proxyUrl,headers,last,network);throw last;}
                 if (!last.retryable) throw last;
                 if(unavailableUntil.size()>=64)unavailableUntil.clear();
                 unavailableUntil.put(key, android.os.SystemClock.uptimeMillis() + 20000);
@@ -209,8 +227,7 @@ final class BackdropHttp {
                     if (location == null) throw new IOException("invalid redirect");
                     url = new URL(url, location); continue;
                 }
-                if (status != 200) throw new Failure(kind, status == 401 && kind.equals("tmdb") ? "密钥无效或已失效（HTTP 401）" : "HTTP " + status,
-                        status == 408 || status == 429 || status >= 500);
+                if (status != 200) throw httpFailure(kind,status,connection.getHeaderField("Retry-After"));
                 String mime = connection.getContentType();
                 if (image(kind) && (mime == null || !mime.toLowerCase(java.util.Locale.ROOT).matches("image/(jpeg|png|webp|gif)(;.*)?")))
                     throw new Failure(kind, "不支持的图片格式");

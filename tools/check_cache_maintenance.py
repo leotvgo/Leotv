@@ -23,7 +23,8 @@ def check(root):
             raise ValueError('Parallel disk writes must observe the native cache-clear boundary: ' + name)
     for name in ('MetadataCache', 'TmdbArtwork'):
         text = read(name)
-        if 'protected void done(){RUNNING.remove(running,this);}' not in text:
+        removal='protected void done(){RUNNING.remove(identity,this);}' if name=='TmdbArtwork' else 'protected void done(){RUNNING.remove(running,this);}'
+        if removal not in text:
             raise ValueError('Old completions must not remove a new shared cache task: ' + name)
     if 'CacheMaintenance.valid(request.cacheTicket)' not in read('FollowFeed') or 'CacheMaintenance.valid(cacheTicket)' not in read('DetailSessionCache'):
         raise ValueError('Stale results must not refill the schedule/detail session caches.')

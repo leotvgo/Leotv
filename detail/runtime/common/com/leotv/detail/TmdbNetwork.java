@@ -1,6 +1,11 @@
 package com.leotv.detail;
 
 import android.os.Build;
+import android.content.Context;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -29,6 +34,48 @@ final class TmdbNetwork {
     private static final ConnectionPool POOL = new ConnectionPool(12,5,TimeUnit.MINUTES);
     private static final RacingDns DNS = new RacingDns();
     private static final Map<String,OkHttpClient> CLIENTS = new ConcurrentHashMap<>();
+    private static final Map<String,Limited> LIMITED=new ConcurrentHashMap<>();
+    private static volatile long networkGeneration;
+    private static boolean installed;
+    private static String networkIdentity="";
+    private static final class Limited {
+        final long until;final BackdropHttp.Failure error;
+        Limited(long until,BackdropHttp.Failure error){this.until=until;this.error=error;}
+    }
+    static long generation(){return networkGeneration;}
+    static synchronized void initialize(Context context){
+        if(installed||context==null)return;installed=true;
+        final Context app=context.getApplicationContext();networkIdentity=identity(app);
+        try{app.registerReceiver(new BroadcastReceiver(){@Override public void onReceive(Context ignored,Intent intent){
+            String next=identity(app);boolean changed;
+            synchronized(TmdbNetwork.class){changed=!next.equals(networkIdentity);if(changed){networkIdentity=next;networkGeneration++;}}
+            if(changed){DNS.clear();LIMITED.clear();BackdropHttp.networkChanged();}
+        }},new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));}catch(RuntimeException unavailable){/* TTL fallback remains available. */}
+    }
+    private static String identity(Context context){
+        try{ConnectivityManager manager=(ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if(manager==null)return "";android.net.Network network=manager.getActiveNetwork();
+            android.net.NetworkInfo info=manager.getActiveNetworkInfo();return String.valueOf(network)+":"+(info==null?"offline":info.getType()+":"+info.isConnected());
+        }catch(RuntimeException unavailable){return "";}
+    }
+    private static String service(String address,String kind,String proxy,Map<String,String> headers)throws Exception{
+        URL url=new URL(address);String host=url.getHost();
+        String root=kind.equals("tmdb")&&(host.equals("api.tmdb.org")||host.equals("api.themoviedb.org"))?"builtin-api"
+                :kind.equals("image")&&(host.equals("image.tmdb.org")||host.equals("images.tmdb.org"))?"builtin-image":url.getProtocol()+"://"+host+":"+url.getPort();
+        String credential=headers.get("Authorization");java.util.regex.Matcher key=java.util.regex.Pattern.compile("(?:[?&])api_key=([^&]+)").matcher(address);
+        if(key.find())credential=key.group(1);
+        return MetadataCache.hash(kind+'\n'+root+'\n'+String.valueOf(credential));
+    }
+    static void checkRateLimit(String address,String kind,String proxy,Map<String,String> headers)throws Exception{
+        String key=service(address,kind,proxy,headers);Limited limited=LIMITED.get(key);
+        if(limited!=null){if(limited.until>android.os.SystemClock.elapsedRealtime())throw limited.error;LIMITED.remove(key,limited);}
+    }
+    static void rateLimited(String address,String kind,String proxy,Map<String,String> headers,BackdropHttp.Failure error,long network)throws Exception{
+        if(error.status!=429||network!=networkGeneration)return;
+        String key=service(address,kind,proxy,headers);long until=android.os.SystemClock.elapsedRealtime()+Math.max(20000,error.retryAfterMillis);
+        synchronized(LIMITED){if(network!=networkGeneration)return;Limited old=LIMITED.get(key);if(old!=null)until=Math.max(until,old.until);
+            if(LIMITED.size()>=64&&!LIMITED.containsKey(key))LIMITED.clear();LIMITED.put(key,new Limited(until,error));}
+    }
     private static OkHttpClient client(URL url,String proxy) throws Exception {
         boolean supplement=Build.VERSION.SDK_INT<26 && BackdropTls.supplemented(url.getHost());
         String key=(supplement?"roots":"system")+'\n'+proxy;
@@ -51,6 +98,7 @@ final class TmdbNetwork {
         }
     }
     static byte[] get(String address,String kind,String proxy,Map<String,String> headers,BackdropHttp.Request request,int byteLimit)throws Exception {
+        final long network=networkGeneration;checkRateLimit(address,kind,proxy,headers);
         URL url=new URL(address);String credentialHost=url.getHost();boolean image=kind.equals("image");
         int limit=image?8*1024*1024:2*1024*1024;if(byteLimit>0)limit=Math.min(limit,byteLimit);
         for(int redirect=0;redirect<4;redirect++){
@@ -66,7 +114,7 @@ final class TmdbNetwork {
             try(Response response=call.execute()){
                 int code=response.code();
                 if(code>=300&&code<=399){String location=response.header("Location");if(location==null)throw new java.io.IOException("invalid redirect");url=new URL(url,location);continue;}
-                if(code!=200)throw new BackdropHttp.Failure(kind,code==401&&kind.equals("tmdb")?"密钥无效或已失效（HTTP 401）":"HTTP "+code,code==408||code==429||code>=500);
+                if(code!=200){BackdropHttp.Failure error=BackdropHttp.httpFailure(kind,code,response.header("Retry-After"));rateLimited(address,kind,proxy,headers,error,network);throw error;}
                 String mime=response.header("Content-Type","").toLowerCase(java.util.Locale.ROOT);
                 if(image&&!mime.matches("image/(jpeg|png|webp|gif)(;.*)?"))throw new BackdropHttp.Failure(kind,"不支持的图片格式");
                 if(response.body()==null)throw new java.io.IOException("empty body");
@@ -84,6 +132,7 @@ final class TmdbNetwork {
         private final Map<String,Answer> cache=new ConcurrentHashMap<>();
         private final ThreadPoolExecutor workers=new ThreadPoolExecutor(6,6,10,TimeUnit.SECONDS,new ArrayBlockingQueue<Runnable>(48),r->{Thread t=new Thread(r,"leotv-tmdb-dns");t.setDaemon(true);return t;},new ThreadPoolExecutor.AbortPolicy());
         private volatile Dns ali,tencent;
+        void clear(){cache.clear();}
         RacingDns(){workers.allowCoreThreadTimeOut(true);}
         private Dns doh(String ip)throws Exception{
             return new okhttp3.dnsoverhttps.DnsOverHttps$Builder().client(new okhttp3.OkHttpClient$Builder().connectTimeout(2,TimeUnit.SECONDS).callTimeout(2,TimeUnit.SECONDS).proxy(Proxy.NO_PROXY).build())
@@ -94,6 +143,7 @@ final class TmdbNetwork {
             try{return lookupChecked(host);}catch(Exception error){return TmdbNetwork.<RuntimeException>throwDns(error);}
         }
         private List<InetAddress> lookupChecked(String host)throws Exception{
+            final long network=networkGeneration;
             if(!host.equals("tmdb.org")&&!host.endsWith(".tmdb.org")&&!host.equals("themoviedb.org")&&!host.endsWith(".themoviedb.org"))return Dns.SYSTEM.lookup(host);
             Answer saved=cache.get(host);long now=android.os.SystemClock.elapsedRealtime();
             if(saved!=null&&saved.until>now)return new ArrayList<>(saved.addresses);
@@ -109,7 +159,7 @@ final class TmdbNetwork {
             }
             try{ready.await(2,TimeUnit.SECONDS);}catch(InterruptedException error){Thread.currentThread().interrupt();throw new java.net.UnknownHostException("cancelled");}
             List<InetAddress> values=winner.get();if(values==null)values=Dns.SYSTEM.lookup(host);
-            if(cache.size()>=32)cache.clear();cache.put(host,new Answer(values,now+10*60*1000));return new ArrayList<>(values);
+            if(cache.size()>=32)cache.clear();if(network==networkGeneration)cache.put(host,new Answer(values,now+10*60*1000));return new ArrayList<>(values);
         }
     }
     private static final class Answer {

@@ -32,6 +32,7 @@ final class TmdbRoutes {
     static void reset(){states.clear();}
     private static final class State {
         String best="";long nextProbe;boolean probing;
+        volatile BackdropHttp.Failure limited;
         final Map<String,Long> blocked=new ConcurrentHashMap<>();
     }
     private static final class Route {
@@ -45,6 +46,7 @@ final class TmdbRoutes {
     static byte[] get(String address,String kind,String proxy,Map<String,String> headers,BackdropHttp.Request request,int limit,BackdropHttp.Fetcher fetcher)throws Exception{
         String key=kind+"@@@"+proxy;if(states.size()>=32&&!states.containsKey(key))states.clear();State fresh=new State();State previous=states.putIfAbsent(key,fresh);State state=previous==null?fresh:previous;
         List<Route> routes=routes(address,kind,proxy);boolean probe;
+        if(state.limited!=null){TmdbNetwork.checkRateLimit(address,kind,proxy,headers);state.limited=null;}
         if(kind.equals("image"))return imageGet(routes,state,headers,request,limit,fetcher);
         synchronized(state){probe=!state.probing&&SystemClock.uptimeMillis()>=state.nextProbe;if(probe){state.probing=true;state.nextProbe=SystemClock.uptimeMillis()+RECHECK;}}
         if(probe)return race(routes,state,kind,headers,request,limit,fetcher);
@@ -64,6 +66,7 @@ final class TmdbRoutes {
         long started=SystemClock.uptimeMillis(),deadline=started+15000;int next=0,pending=0;Exception last=null;
         try{
             while(next<routes.size()||pending>0){
+                if(state.limited!=null)throw state.limited;
                 request.check();long now=SystemClock.uptimeMillis();if(now>=deadline)throw new BackdropHttp.Failure("image","图片服务响应超时",true);
                 if(next<routes.size()&&(pending==0||now-started>=IMAGE_BACKUP_DELAY)){
                     Route route=routes.get(next++);Long blocked=state.blocked.get(route.id);
@@ -93,6 +96,7 @@ final class TmdbRoutes {
             for(Route route:routes){BackdropHttp.Request child=new BackdropHttp.Request(request);children.add(child);tasks.add(completed.submit(()->new Answer(route,fetch(route,state,kind,headers,child,limit,fetcher))));}
             int pending=tasks.size();
             while(pending>0){request.check();if(SystemClock.uptimeMillis()>=deadline)throw new BackdropHttp.Failure(kind,"内置服务响应超时",true);
+                if(state.limited!=null)throw state.limited;
                 Future<Answer> ready=completed.poll(100,TimeUnit.MILLISECONDS);if(ready==null)continue;pending--;
                 try{Answer answer=ready.get();request.check();synchronized(state){state.best=answer.route.id;}return answer.bytes;}
                 catch(java.util.concurrent.ExecutionException error){Throwable cause=error.getCause();last=cause instanceof Exception?(Exception)cause:new BackdropHttp.Failure(kind,"内置服务响应无效",true);}
@@ -102,10 +106,14 @@ final class TmdbRoutes {
         finally{for(Future<Answer> task:tasks)task.cancel(true);for(BackdropHttp.Request child:children)child.cancel();synchronized(state){state.probing=false;if(state.best.isEmpty())state.nextProbe=SystemClock.uptimeMillis()+20000;}}
     }
     private static byte[] fetch(Route route,State state,String kind,Map<String,String> headers,BackdropHttp.Request request,int limit,BackdropHttp.Fetcher fetcher)throws Exception{
+        final long network=TmdbNetwork.generation();
         try{request.check();byte[] bytes=fetcher.fetch(route.url,kind,route.proxy,headers,request,limit);request.check();
             if(!valid(bytes,kind))throw new BackdropHttp.Failure(kind,"内置服务响应不是有效内容",true);
             state.blocked.remove(route.id);return bytes;
-        }catch(Exception error){request.check();if(!(error instanceof BackdropHttp.Failure)||BackdropHttp.retryable(error))state.blocked.put(route.id,SystemClock.uptimeMillis()+20000);throw error;}
+        }catch(Exception error){request.check();if(error instanceof BackdropHttp.Failure&&((BackdropHttp.Failure)error).status==429){
+                state.limited=(BackdropHttp.Failure)error;TmdbNetwork.rateLimited(route.url,kind,route.proxy,headers,state.limited,network);
+            }
+            if(!(error instanceof BackdropHttp.Failure)||BackdropHttp.retryable(error))state.blocked.put(route.id,SystemClock.uptimeMillis()+20000);throw error;}
     }
     private static boolean valid(byte[] bytes,String kind){
         if(bytes==null||bytes.length==0)return false;

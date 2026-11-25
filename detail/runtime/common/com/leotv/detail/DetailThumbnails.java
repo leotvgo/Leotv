@@ -61,7 +61,7 @@ class DetailThumbnails implements CacheMaintenance.Client {
         // The page owns every tile it has drawn, not only the viewport: walking away from a row and
         // coming back must be a cache hit. The ceiling is deliberately generous; the platform's own
         // trim callback is the pressure valve, while closing the page releases the bitmaps.
-        this.budget = Math.max(1, budget);
+        this.budget = Math.max(1,context==null?budget:Math.min(budget,ImageBudget.register(this,context)));
         idleBudget = this.budget;
         limit = this.budget;
         worker.allowCoreThreadTimeOut(true);
@@ -98,7 +98,7 @@ class DetailThumbnails implements CacheMaintenance.Client {
     /** Views retain their displayed bitmaps; only cache ownership and speculative work are dropped. */
     @Override public void trimCache(){
         if(closed)return;
-        cache.clear();bytes=0;failed.clear();failures.clear();retryAt.clear();
+        cache.clear();bytes=0;ImageBudget.update(this,0);failed.clear();failures.clear();retryAt.clear();
         Iterator<Map.Entry<String,Pending>> tasks=pending.entrySet().iterator();
         while(tasks.hasNext()){Pending task=tasks.next().getValue();if(task.target==null){task.cancel();tasks.remove();}}
         Iterator<Request> queued=wanted.values().iterator();while(queued.hasNext())if(queued.next().priority()>=2)queued.remove();
@@ -138,7 +138,7 @@ class DetailThumbnails implements CacheMaintenance.Client {
     }
     boolean ownSource(String path){return own(path)||!SourceArtwork.address(path).isEmpty();}
     boolean failedSource(String path,boolean portrait){return failed.contains(cacheKey(path,portrait,!own(path)));}
-    private void syncImages(){String root=MetadataSettings.imageBase();if(!imageRoot.equals(root)){cancelPending();cache.clear();bytes=0;needed.clear();failed.clear();failures.clear();retryAt.clear();imageRoot=root;}}
+    private void syncImages(){String root=MetadataSettings.imageBase();if(!imageRoot.equals(root)){cancelPending();cache.clear();bytes=0;ImageBudget.update(this,0);needed.clear();failed.clear();failures.clear();retryAt.clear();imageRoot=root;}}
     private String cacheKey(String path,boolean portrait,boolean source){return (source?"source:":"tmdb:"+imageRoot+":")+size(portrait)+path;}
     private void request(String path,boolean portrait,Target target){request(path,portrait,target,false);}
     private void request(String path, boolean portrait, Target target,boolean source) {
@@ -194,11 +194,14 @@ class DetailThumbnails implements CacheMaintenance.Client {
                     if(needed.contains(key)&&task.target!=null)task.target.show(result);else recycle(result);
                     pump();return;
                 }
-                trim(result.getAllocationByteCount());
-                // A pressure-limited visible page can still fill its current viewport.
-                int allowed = needed.contains(key) ? Math.max(limit, idleBudget) : limit;
-                if (bytes + result.getAllocationByteCount() > allowed) { recycle(result); pump(); return; }
+                limit=Math.min(budget,ImageBudget.available(this));trim(result.getAllocationByteCount());
+                // A visible image is still delivered when the cache budget is full; View owns its pixels.
+                if (bytes + result.getAllocationByteCount() > limit) {
+                    if(needed.contains(key)&&task.target!=null)task.target.show(result);else recycle(result);
+                    pump();return;
+                }
                 cache.put(key, result); bytes += result.getAllocationByteCount();
+                ImageBudget.update(this,bytes);
                 if (needed.contains(key) && task.target != null) task.target.show(result);
                 pump();
             }));
@@ -225,10 +228,12 @@ class DetailThumbnails implements CacheMaintenance.Client {
                 bytes -= e.getValue().getAllocationByteCount(); it.remove();
             }
         }
+        ImageBudget.update(this,bytes);
     }
     void close() {
         if (closed) return; closed = true;
         CacheMaintenance.forget(this);
+        ImageBudget.forget(this);
         cancelPending();
         // Only this page's decoded images go. The bytes they were decoded from stay in the bounded store,
         // which is what lets the next page - this one reopened, or the home - draw instead of download.
@@ -255,7 +260,7 @@ class DetailThumbnails implements CacheMaintenance.Client {
         byte[] data = files.read(key);
         boolean fresh = data == null;
         String address=source?SourceArtwork.address(path):MobileDetailMetadata.imageAddress(path,size(portrait));
-        if (fresh) data = source?SourceArtwork.fetch(path,proxy,request,2048*1024):BackdropHttp.get(address,"image",proxy,MobileDetailMetadata.imageHeaders(address),request,512*1024);
+        if (fresh) data = source?SourceArtwork.fetch(path,proxy,request,2048*1024):TmdbArtwork.getImage(address,proxy,request,512*1024,files);
         request.check();
         BitmapFactory.Options options = new BitmapFactory.Options(); options.inJustDecodeBounds = true;
         BitmapFactory.decodeByteArray(data, 0, data.length, options);
@@ -265,7 +270,7 @@ class DetailThumbnails implements CacheMaintenance.Client {
         while (options.outWidth / options.inSampleSize > w || options.outHeight / options.inSampleSize > h) options.inSampleSize *= 2;
         Bitmap result = BitmapFactory.decodeByteArray(data, 0, data.length, options);
         try { request.check(); } catch (Exception e) { recycle(result); throw e; }
-        if (fresh && result != null&&CacheMaintenance.valid(request.cacheTicket)) files.write(key, data, cacheTicket);
+        if (fresh && result != null&&CacheMaintenance.valid(request.cacheTicket)&&source) files.write(key, data, cacheTicket);
         return result;
     }
 

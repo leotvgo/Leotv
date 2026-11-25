@@ -5,6 +5,9 @@ import json
 from pathlib import Path
 import re
 import subprocess
+import secrets
+import base64
+import struct
 
 
 def sha256(path):
@@ -20,8 +23,17 @@ def compile_program(root, classes, android, reference, r8, output, work, run, lo
         raise ValueError('Unexpected R8 compiler version.')
     mapping, seeds, usage = (work / ('r8-' + name + '.txt') for name in ['mapping', 'seeds', 'usage'])
     rules = root / settings['rules']
+    private_seed=secrets.token_bytes(32)
+    seed_file=work / 'literal-seed.bin';seed_file.write_bytes(private_seed);seed_file.chmod(0o600)
+    protection_tools=work / 'protection-tools';export='java.base/jdk.internal.org.objectweb.asm=ALL-UNNAMED'
+    run(['javac','--add-exports',export,'-d',protection_tools,root / 'research/ProtectStrings.java'],log)
+    protection_report=work / 'literal-protection.json'
+    run(['java','--add-exports',export,'-cp',protection_tools,'ProtectStrings',classes,seed_file,protection_report],log)
+    protection=json.loads(protection_report.read_text())
+    dictionary=work / 'r8-dictionary.txt'
+    dictionary.write_text(''.join('q'+hashlib.sha256(private_seed+index.to_bytes(4,'big')).hexdigest()[:10]+'\n' for index in range(4096)))
     outputs = work / 'r8-output.pro'
-    outputs.write_text(f'-printmapping {mapping}\n-printseeds {seeds}\n-printusage {usage}\n')
+    outputs.write_text(f'-printmapping {mapping}\n-printseeds {seeds}\n-printusage {usage}\n-classobfuscationdictionary {dictionary}\n-obfuscationdictionary {dictionary}\n')
     run(['java', '-Xmx1536m', '-cp', r8, 'com.android.tools.r8.R8', '--release', '--min-api', str(settings['min_api']),
         '--lib', android, '--lib', reference, '--pg-conf', rules, '--pg-conf', outputs,
         '--output', output, *sorted(classes.rglob('*.class'))], log)
@@ -32,10 +44,24 @@ def compile_program(root, classes, android, reference, r8, output, work, run, lo
         and value.get('compilation-mode') == 'release' and value.get('r8-mode') == 'full' and value.get('min-api') == settings['min_api']), None)
     if marker is None:
         raise ValueError('R8 DEX compiler marker differs from the protected release contract.')
+    # Selected literals are ASCII; audit every actual output DEX string, including fields and recipes.
+    data=(output / 'classes.dex').read_bytes();count,offset=struct.unpack_from('<II',data,56)
+    protected=set(protection['literal_sha256']);leaked=0
+    for index in range(count):
+        position=struct.unpack_from('<I',data,offset+index*4)[0]
+        while data[position]&128:position+=1
+        position+=1;end=data.index(0,position)
+        if hashlib.sha256(data[position:end]).hexdigest() in protected:leaked+=1
+    if leaked:
+        raise ValueError('Protected literal plaintext remains in the new program DEX.')
+    mapping.write_text(mapping.read_text()+'\n# Leotv private literal/dictionary seed: '+base64.b64encode(private_seed).decode()+'\n')
+    protection.update({'plaintext_absence_verified':True,'roundtrip_verified':True,'unique_literals':len(protected)})
+    protection.pop('literal_sha256')
     return settings, {'mode': 'r8-release-full', 'r8_version': version, 'r8_sha256': sha256(r8),
         'rules_sha256': sha256(rules), 'min_api': settings['min_api'], 'mapping_sha256': sha256(mapping),
         'compiler_marker': marker,
-        'program_input_classes': len(list(classes.rglob('*.class'))), 'reference_jar_packaged': False}, mapping
+        'program_input_classes': len(list(classes.rglob('*.class'))), 'reference_jar_packaged': False,
+        'string_protection':protection,'neutral_dictionary_sha256':sha256(dictionary)}, mapping
 
 
 def audit_program(classes, decoded, mapping, settings, expected_mobile=None):

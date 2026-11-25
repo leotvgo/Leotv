@@ -1,0 +1,33 @@
+{
+  "read_only_source_root": "/Users/leiatai/Downloads/leowork/coos/coos-master/app/src/main/java/com/github/catvod/spider",
+  "source_files": {
+    "TitleNormalizer.java": "372f36b709e741af879feef124dfb3e05e4d59203869522ae1e8ad045dff4cdb",
+    "TitleMatchInfo.java": "93080d2fa3ba7f158fede381fd31f9ffa86d84d8e11222efc3ba5155b80ee9be",
+    "DanmakuScanner.java": "8d15f9ff06ab64af9b68ec70ab56f92f18652193b7c1f55c07978b0c006d733d",
+    "LeoDanmakuService.java": "4940922dcec33d597d8981a6cf19b880292560ae9ce5697becfb1d66aa996d60"
+  },
+  "copied_scanner_methods": [
+    "extractEpisodeNum",
+    "preprocessTitle",
+    "isLikelyFileSize",
+    "isLikelyEpisodeNumber",
+    "isPureEpisodeNumber",
+    "calculatePriority",
+    "getContext",
+    "convertChineseNumberToArabic",
+    "MatchCandidate"
+  ],
+  "apk_files": [
+    "JarTitleNormalizer.java",
+    "JarTitleMatch.java",
+    "JarEpisodeNormalizer.java"
+  ],
+  "excluded": [
+    "JAR/V6 publishing",
+    "device view scanning",
+    "logging source labels",
+    "comment ID stepping"
+  ],
+  "reported_regression_label": "[1.2GB]04～4K",
+  "metadata_precedence": "verified detail mapping first; title parser fallback"
+}

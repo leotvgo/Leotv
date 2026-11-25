@@ -28,3 +28,6 @@
 
 # Serialized contracts must retain annotation semantics if source models are added.
 -keepclassmembers,allowoptimization class com.leotv.** { @com.google.gson.annotations.SerializedName <fields>; }
+
+# Preserve decoder calls without exposing their implementation names or folding decrypted values.
+-keep,allowobfuscation class com.leotv.detail.RuntimeStrings { public static java.lang.String decode(java.lang.String,long,long); }

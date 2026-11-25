@@ -88,6 +88,7 @@ public final class DanmakuPlayback {
                 if(site.equals(supplied.optString("site"))&&vod.equals(supplied.optString("id")))work=supplied;
             }catch(org.json.JSONException absent){}
             title=work.optString("title",mediaTitle);year=work.optString("year");
+            try{work.put("currentEpisodeHash",MetadataCache.hash(url+'\n'+rawEpisode));}catch(org.json.JSONException ignored){}
             episode=DanmakuTitle.resolveEpisode(rawEpisode,mediaTitle,work);
         }
         String workKey(){return config+"@@@"+site+"@@@"+vod;}

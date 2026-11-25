@@ -24,9 +24,10 @@ RELEASE_ID = 42
 
 
 class GitHub:
-    def __init__(self, existing=None, invalid=None, conclusion='success', official=False):
+    def __init__(self, existing=None, invalid=None, conclusion='success', official=False, protection=False):
         self.existing, self.invalid, self.conclusion = existing, invalid, conclusion
         self.official = official
+        self.protection = protection
         self.tag = 'leotv-5.1.8' if official else TAG
         self.mutations, self.files, self.api_requests = [], {}, []
 
@@ -48,12 +49,16 @@ class GitHub:
             signature = {'certificate_sha256': 'wrong' if self.invalid == 'certificate' else CERT,
                          'apk_sha256': 'wrong' if self.invalid == 'hash' else hashlib.sha256(apk).hexdigest()}
             audit = {'package': 'com.leotv.app', 'expected_changes_match': self.invalid != 'audit',
-                     'baseline_audit': {'equal': True}, 'version_name': '5.1.8'}
+                     'baseline_audit': {'equal': True}, 'version_name': '5.1.8', 'version_code': 645 if self.protection else 508}
             if self.official:
                 audit.update({'release_channel': 'stable', 'protected_release': self.invalid != 'unprotected',
                     'added_dex_paths': ['classes4.dex'], 'overlay_compile': {'hardening': {'mode': 'r8-release-full',
                     'min_api': 23, 'mapping_inputs_declared': True, 'renamed_program_classes': 10,
                     'stable_abi_members_verified': 0 if self.invalid == 'missing_abi' else 41}}})
+                if self.protection:
+                    audit['full_audit_sha256']='c'*64
+                    audit['overlay_compile']['hardening']['string_protection']={
+                        'plaintext_absence_verified':self.invalid!='plaintext','roundtrip_verified':True}
             items = {f'leotv-{variant}.apk': apk,
                      f'leotv-{variant}.signature.json': json.dumps(signature).encode(),
                      f'leotv-{variant}-unsigned.audit.json': json.dumps(audit).encode()}
@@ -173,6 +178,17 @@ class PublishWorkflowTest(unittest.TestCase):
         self.assertNotIn('--prerelease', github.mutations[0][1])
         self.assertIn('prerelease=false', github.mutations[-1][1])
         self.assertIn('make_latest=true', github.mutations[-1][1])
+
+    def test_new_literal_protected_release_is_accepted(self):
+        github=GitHub(official=True,protection=True)
+        self.execute(github)
+        self.assertEqual([action for action,_ in github.mutations],['create','edit'])
+
+    def test_new_release_with_plaintext_literals_never_publishes(self):
+        github=GitHub(official=True,protection=True,invalid='plaintext')
+        with self.assertRaisesRegex(SystemExit,'literal protection'):
+            self.execute(github)
+        self.assertEqual(github.mutations,[])
 
     def test_completed_official_transport_draft_is_promoted_without_reupload(self):
         github = GitHub(existing='draft', official=True)

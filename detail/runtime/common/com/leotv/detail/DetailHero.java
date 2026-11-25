@@ -173,7 +173,11 @@ class DetailHero extends View implements CacheMaintenance.Client {
         prefetch();refreshLoadingFrames();prepareNext();invalidate();
     }
     private void prefetch(){
-        if(!sourceImages)for(Slide slide:slides)if(MetadataSettings.allowsImage(MobileDetailMetadata.imageAddress(slide.path,"w1280")))TmdbArtwork.prefetch(getContext(),slide.path,proxy);
+        TmdbArtwork.releaseOwner(this);
+        if(!sourceImages&&!slides.isEmpty())for(int offset=0;offset<Math.min(3,slides.size());offset++){
+            Slide slide=slides.get((Math.max(0,currentIndex)+offset)%slides.size());
+            if(MetadataSettings.allowsImage(MobileDetailMetadata.imageAddress(slide.path,"w1280")))TmdbArtwork.prefetch(getContext(),slide.path,proxy,this);
+        }
     }
     private void cancelPending(){
         generation++;if(request!=null)request.cancel();request=null;pendingSlide=null;
@@ -247,7 +251,7 @@ class DetailHero extends View implements CacheMaintenance.Client {
         return true;
     }
     private boolean applyPendingStep(){int direction=pendingStep;pendingStep=0;return direction!=0&&step(direction);}
-    private void prepareNext() { prepareNeighbour(1, false); }
+    private void prepareNext() { prefetch();prepareNeighbour(1, false); }
     /**
      * Fetches the neighbour that lies in {@code direction}. The auto pipeline only fetches while it is
      * running; a hand-driven step fetches even while the carousel is paused on focus, because the press
@@ -575,6 +579,7 @@ class DetailHero extends View implements CacheMaintenance.Client {
     void close() {
         if (closed) return; closed = true; running = false;pendingStep=0; generation++;
         CacheMaintenance.forget(this);
+        TmdbArtwork.releaseOwner(this);
         main.removeCallbacks(turn); main.removeCallbacks(loadingFrame); stopAnimation(false);
         if (request != null) request.cancel(); if (worker != null) worker.shutdownNow();
         request = null;pendingSlide=null; worker = null; slides.clear();

@@ -22,10 +22,15 @@ final class MetadataCache {
     private static final int MAX_ENTRY=2*1024*1024,DISK_BUDGET=32*1024*1024,MEMORY_BUDGET=6*1024*1024;
     private static final Map<String,Entry> MEMORY=new LinkedHashMap<>(64,.75f,true);
     private static final ConcurrentHashMap<String,FutureTask<byte[]>> RUNNING=new ConcurrentHashMap<>();
+    private static final Map<String,Failed> FAILURES=new LinkedHashMap<>(64,.75f,true);
     private static final ThreadPoolExecutor REFRESH=new ThreadPoolExecutor(2,2,10,TimeUnit.SECONDS,new ArrayBlockingQueue<Runnable>(64),r->{Thread t=new Thread(r,"leotv-metadata-refresh");t.setDaemon(true);return t;},new ThreadPoolExecutor.AbortPolicy());
     private static volatile Context application;
     static {REFRESH.allowCoreThreadTimeOut(true);}
-    static void initialize(Context context){application=context.getApplicationContext();}
+    static void initialize(Context context){application=context.getApplicationContext();TmdbNetwork.initialize(application);}
+    private static final class Failed {
+        final Exception error;final int count;final long until;
+        Failed(Exception error,int count,long until){this.error=error;this.count=count;this.until=until;}
+    }
     private static final class Entry {
         final byte[] bytes;final long saved;
         Entry(byte[] bytes,long saved){this.bytes=bytes;this.saved=saved;}
@@ -40,6 +45,29 @@ final class MetadataCache {
     }
     private static String choice(BackdropIdentity work){MetadataMatchStore.Match selected=MetadataMatchStore.find(work);return selected==null?"auto":selected.mediaType+":"+selected.tmdbId;}
     private static String sourceKey(BackdropIdentity work,BackdropSettings.Options options){return hash("source-v1\n"+scope(options)+'\n'+work.configuration+'\n'+work.site+'\n'+work.id+'\n'+choice(work));}
+    private static String entityKey(String type,long id,BackdropSettings.Options options){return hash("entity-v1\n"+scope(options)+'\n'+type+':'+id);}
+    static JSONObject entity(String type,long id,BackdropSettings.Options options){
+        return json(read(entityKey(type,id,options),type.equals("tv")?3600000L:6*3600000L));
+    }
+    static JSONObject entityPreview(String type,long id,BackdropSettings.Options options){return json(read(entityKey(type,id,options),7*DAY));}
+    private static void rememberEntity(String path,BackdropSettings.Options options,JSONObject value,long ticket){
+        // Only an actual successful title response advances freshness; reading old matches does not.
+        int query=path.indexOf('?');String endpoint=query<0?path:path.substring(0,query);
+        if(!endpoint.matches("/(tv|movie)/[0-9]+"))return;
+        String[] parts=endpoint.split("/");long id;
+        try{id=Long.parseLong(parts[2]);}catch(NumberFormatException invalid){return;}
+        if(id<=0||value.optLong("id")!=id)return;
+        String key=entityKey(parts[1],id,options);JSONObject previous=json(read(key,parts[1].equals("tv")?3600000L:6*3600000L));
+        // A basic response must not make older image collections appear freshly fetched.
+        JSONObject compact=new JSONObject();
+        try{
+            for(String field:new String[]{"id","poster_path","backdrop_path","overview","title","name","original_title","original_name","release_date","first_air_date","number_of_episodes","number_of_seasons","genres","vote_average","vote_count","status"}){
+                if(value.has(field))compact.put(field,value.opt(field));else if(previous!=null&&previous.has(field))compact.put(field,previous.opt(field));
+            }
+            if(value.optJSONObject("images")!=null)compact.put("images",value.optJSONObject("images"));
+            compact.put("media_type",parts[1]);write(key,compact.toString(),ticket);
+        }catch(org.json.JSONException ignored){}
+    }
     static JSONObject match(BackdropIdentity work,BackdropSettings.Options options){
         JSONObject exact=json(read(identity(work,options),7*DAY));if(exact!=null)return exact;
         JSONObject receipt=json(read(sourceKey(work,options),7*DAY));if(receipt==null)return null;
@@ -72,19 +100,33 @@ final class MetadataCache {
         task.run();return await(task,request);
     }
     private static FutureTask<byte[]> start(String key,String path,BackdropSettings.Options options,Map<String,String> headers,long ticket){
-        String running=key+":"+ticket;
+        final long network=TmdbNetwork.generation();String running=key+":"+ticket+":"+network;
         FutureTask<byte[]> task=new FutureTask<byte[]>(()->{
+                synchronized(FAILURES){Failed failed=FAILURES.get(running);if(failed!=null&&failed.until>android.os.SystemClock.elapsedRealtime())throw failed.error;}
+                try{
                 byte[] bytes=BackdropHttp.get(options.base+path,"tmdb",options.proxy,headers,new BackdropHttp.Request());
                 JSONObject value=new JSONObject(new String(bytes,"UTF-8"));
                 if(value.has("success")&&!value.optBoolean("success",true))throw new BackdropHttp.Failure("tmdb","响应未成功");
                 // A failed match is retried; never persist negative results or error JSON.
-                if(value.optJSONArray("results")==null||value.optJSONArray("results").length()>0)write(key,bytes,ticket);
+                if(value.optJSONArray("results")==null||value.optJSONArray("results").length()>0){write(key,bytes,ticket);rememberEntity(path,options,value,ticket);}
+                synchronized(FAILURES){FAILURES.remove(running);}
                 return bytes;
+                }catch(Exception error){
+                    if(!(error instanceof java.io.InterruptedIOException)||error instanceof java.net.SocketTimeoutException)
+                    synchronized(FAILURES){if(network==TmdbNetwork.generation()&&CacheMaintenance.valid(ticket)){
+                        Failed old=FAILURES.get(running);int count=old==null?1:Math.min(6,old.count+1);
+                        long delay=Math.min(60000L,2000L<<(count-1));
+                        if(error instanceof BackdropHttp.Failure)delay=Math.max(delay,((BackdropHttp.Failure)error).retryAfterMillis);
+                        FAILURES.put(running,new Failed(error,count,android.os.SystemClock.elapsedRealtime()+delay));
+                        while(FAILURES.size()>256)FAILURES.remove(FAILURES.keySet().iterator().next());
+                    }}throw error;
+                }
         }){@Override protected void done(){RUNNING.remove(running,this);}};
         FutureTask<byte[]> previous=RUNNING.putIfAbsent(running,task);return previous==null?task:previous;
     }
     private static void refresh(String key,String path,BackdropSettings.Options options,Map<String,String> headers,long ticket){
-        String running=key+":"+ticket;
+        String running=key+":"+ticket+":"+TmdbNetwork.generation();
+        synchronized(FAILURES){Failed failed=FAILURES.get(running);if(failed!=null&&failed.until>android.os.SystemClock.elapsedRealtime())return;}
         if(!CacheMaintenance.valid(ticket)||RUNNING.containsKey(running))return;FutureTask<byte[]> task=start(key,path,options,headers,ticket);
         try{REFRESH.execute(task);}catch(java.util.concurrent.RejectedExecutionException ignored){RUNNING.remove(running,task);}
     }
@@ -132,6 +174,7 @@ final class MetadataCache {
         MEMORY.put(key,entry);int size=0;for(Entry value:MEMORY.values())size+=value.bytes.length;
         java.util.Iterator<Entry> oldest=MEMORY.values().iterator();while(oldest.hasNext()&&(MEMORY.size()>64||size>MEMORY_BUDGET)){size-=oldest.next().bytes.length;oldest.remove();}
     }
-    static synchronized void clearMemory(){MEMORY.clear();REFRESH.getQueue().clear();RUNNING.clear();}
+    static void clearFailures(){synchronized(FAILURES){FAILURES.clear();}}
+    static synchronized void clearMemory(){MEMORY.clear();REFRESH.getQueue().clear();RUNNING.clear();clearFailures();}
     private MetadataCache(){}
 }
