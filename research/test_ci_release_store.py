@@ -182,7 +182,8 @@ class ReleaseStoreTest(unittest.TestCase):
     def test_matrix_cannot_start_before_preparation_and_never_creates_shared_drafts(self):
         root = Path(__file__).resolve().parents[1]
         workflow = (root / '.github/workflows/ordinary-build.yml').read_text()
-        self.assertRegex(workflow, r'(?m)^  prepare:\n    needs: sources\n')
+        self.assertRegex(workflow, r'(?m)^  effects:\n    needs: sources\n')
+        self.assertRegex(workflow, r'(?m)^  prepare:\n    needs: \[sources, effects\]\n')
         self.assertRegex(workflow, r'(?m)^  apk:\n    needs: prepare\n')
         self.assertNotIn("'create'", (root / 'tools/stage_ci_apk.py').read_text())
 

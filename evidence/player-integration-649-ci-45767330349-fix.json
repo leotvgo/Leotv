@@ -1,0 +1,27 @@
+{
+  "build_run_id": 45767330349,
+  "build_commit": "14637e9648c01c39273fea783e4a24a5750156bb",
+  "build_conclusion": "failure",
+  "source_job": "success",
+  "effects_job": "success",
+  "models_job": "skipped by run_validation_tests=false",
+  "prepare_job": "failed at Verify release draft ownership and upload recovery",
+  "apk_matrix": "not started",
+  "publication": "no successful APK publication",
+  "failure": "test_matrix_cannot_start_before_preparation_and_never_creates_shared_drafts expected prepare needs:sources, while preserved649 uses needs:[sources,effects]",
+  "failed_log_sha256": "9c124510900812c02368b71a0f451635d49a1f081d277a3c873b212e6968e9d5",
+  "fix": "Update only the existing dependency assertion; require effects needs:sources, prepare needs:[sources,effects], apk needs:prepare, and no shared-draft creation by stage_ci_apk",
+  "validation": {
+    "command": "python3 -B research/test_ci_release_store.py",
+    "tests": 14,
+    "result": "passed",
+    "other_stale_prepare_dependency_assertions": "none found in research/tools Python sources",
+    "git_diff_check": "passed"
+  },
+  "workflow_changed": false,
+  "native_or_r8_recompiled": false,
+  "apk_built_locally": false,
+  "signing_or_version_changed": false,
+  "repository_visibility_observed": "PRIVATE",
+  "remaining": "Coordinator review, merge and PUBLIC-confirmed new final APK build plus publication/signature/source audit"
+}
