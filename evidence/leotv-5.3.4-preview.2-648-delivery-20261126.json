@@ -1,0 +1,111 @@
+{
+  "recorded_at_utc": "2026-11-26T01:25:01.685833+00:00",
+  "source_revision": "72e7eeb587e3b35a610e8ba2710b5d8f9f5010bf",
+  "build_run_id": 45734249273,
+  "build_url": "https://github.com/leotvgo/Leotv/actions/runs/45734249273",
+  "publish_run_id": 45734818145,
+  "publish_url": "https://github.com/leotvgo/Leotv/actions/runs/45734818145",
+  "release_tag": "leotv-5.3.4-preview.2-build-45734249273",
+  "release_url": "https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4-preview.2-build-45734249273",
+  "version_name": "5.3.4-preview.2",
+  "version_code": 648,
+  "release_is_prerelease": true,
+  "formal_latest": "leotv-5.3.3",
+  "assets_verified": 12,
+  "reports_local_copy": "artifacts/leotv-5.3.4-preview.2-648-delivery",
+  "repository_visibility_after_publish": "private",
+  "source_checks": [
+    {
+      "name": "Verify all four source variants and ordered native hooks",
+      "conclusion": "success"
+    },
+    {
+      "name": "Verify ported episode normalization and detail precedence using fictional fixtures",
+      "conclusion": "success"
+    },
+    {
+      "name": "Verify entry and history metadata do not wait for a blocked provider",
+      "conclusion": "success"
+    },
+    {
+      "name": "Verify preload pause, expiry, subscription identity and episode boundaries",
+      "conclusion": "success"
+    },
+    {
+      "name": "Verify all-site raw preload handoff across native playback header reset",
+      "conclusion": "success"
+    }
+  ],
+  "private_attempt_before_new_preference": {
+    "run_id": 45733851635,
+    "code_executed": false,
+    "reason": "Account payment/spending-limit restriction"
+  },
+  "temporary_public_build_policy_recorded": {
+    "user_requested_on": "2026-11-26",
+    "through_inclusive": "2026-12-01",
+    "timezone": "Asia/Shanghai",
+    "instructions_commit": "969c96691e806f823cf523513e793475579d6205",
+    "direct_public_no_private_trial": true,
+    "restore_private_after_completion": true
+  },
+  "local_apk_build_or_regression_run": false,
+  "variants": [
+    {
+      "variant": "tv-v7a",
+      "apk_sha256": "d6915869e236a016d4c40d27d25c4db4ace7bb069e5fc0402286b52849ec2470",
+      "apk_bytes": 88407041,
+      "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+      "source_files_verified": 115,
+      "full_audit_sha256": "a62a68a574952fa4beb840c5b63d0cbc1f97170decd1fb1ce9fe58fffd429ce3",
+      "baseline_equal": true,
+      "expected_changes_match": true,
+      "min_sdk": 23,
+      "fixed_signature": true,
+      "native_libraries_exact": 32,
+      "device_validation": false
+    },
+    {
+      "variant": "tv-v8a",
+      "apk_sha256": "84b4097e98de77532be0626043178d4a5ae74b50f7af7673d03db3174af183ae",
+      "apk_bytes": 87292068,
+      "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+      "source_files_verified": 115,
+      "full_audit_sha256": "c34807798ca1bc7a6cfb892bb073a9f7273d99efb31d3295298f3a11b1794164",
+      "baseline_equal": true,
+      "expected_changes_match": true,
+      "min_sdk": 23,
+      "fixed_signature": true,
+      "native_libraries_exact": 21,
+      "device_validation": false
+    },
+    {
+      "variant": "mobile-v7a",
+      "apk_sha256": "4e4c27ec6246bc157ef26b39c6c8df2512cfe5b152fba7dd474c1d67856811fd",
+      "apk_bytes": 83538387,
+      "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+      "source_files_verified": 115,
+      "full_audit_sha256": "4a38ca7bfc2a2aa11360789ba3a22a0adf0ac4a177a5c92d36b37dbf1a619709",
+      "baseline_equal": true,
+      "expected_changes_match": true,
+      "min_sdk": 23,
+      "fixed_signature": true,
+      "native_libraries_exact": 34,
+      "device_validation": false
+    },
+    {
+      "variant": "mobile-v8a",
+      "apk_sha256": "9359493144e05bf86b053fee14fa2d362952a8ea9817ed17ad5baf49c228222c",
+      "apk_bytes": 82751090,
+      "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+      "source_files_verified": 115,
+      "full_audit_sha256": "141a35bc1c980246cf8c6eb4392b9619a6005741a3a962c1dac725d10732bba6",
+      "baseline_equal": true,
+      "expected_changes_match": true,
+      "min_sdk": 23,
+      "fixed_signature": true,
+      "native_libraries_exact": 23,
+      "device_validation": false
+    }
+  ]
+}

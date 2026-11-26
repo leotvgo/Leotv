@@ -25,4 +25,14 @@
 
 源码门禁核对 TV/手机真实的 `v/w` 请求头清空、UA 规范化、Source.stop/fetch、Result/Url/Site 方法及所有精确 Git 路径。CI 新增 `research/check_video_preload_handoff.py`：使用虚构站点和响应编译实际 `VideoPreload / PreloadHost / PreloadSettings / PreloadPolicy`，分别执行 TV/手机的自动预取和原 A0 交接。检查 CSP、API-4、解析响应、本地代理、四分钟后切集、临时请求头清空、真实鉴权变化及 Source.fetch；未变化时原 playerContent Callable 执行次数必须为零。
 
-本地不打包、不运行额外回归；直接 GitHub `run_validation_tests=false`，保留必需源码/针对性交接检查、API23/R8、原样/变化审计与固定签名。实际播放效果由用户真机验收，尤其是开关开启后直接换集、长集片尾、代理/解析来源、字幕/音轨/弹幕和历史。交付结果将在构建/发布完成后记录。
+本地不打包、不运行额外回归；直接 GitHub `run_validation_tests=false`，保留必需源码/针对性交接检查、API23/R8、原样/变化审计与固定签名。实际播放效果由用户真机验收，尤其是开关开启后直接换集、长集片尾、代理/解析来源、字幕/音轨/弹幕和历史。
+
+## 已完成交付
+
+源码 `72e7eeb587e3b35a610e8ba2710b5d8f9f5010bf` 的[构建 45734249273](https://github.com/leotvgo/Leotv/actions/runs/45734249273)和[自动发布 45734818145](https://github.com/leotvgo/Leotv/actions/runs/45734818145)成功。[5.3.4-preview.2 / 648 四套测试 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4-preview.2-build-45734249273)为预发行，12 个公开资产完整，正式 Latest 仍为 `leotv-5.3.3`。TV/手机的实际桥接夹具均通过，四分钟后清空请求头再切集，未改变鉴权时不调用原取链 Callable；修改真实鉴权时正确回退。
+
+四包的发布 digest、固定证书、API23、R8 release/full/字符串保护、原生库/原样与允许变化、完整审计绑定和每份编译源码 SHA-256 已逐套核对。内部完整审计与 mapping 留在私有草稿，报告副本保存在忽略的 `artifacts/leotv-5.3.4-preview.2-648-delivery/`，交付记录为 `evidence/leotv-5.3.4-preview.2-648-delivery-20261126.json`。没有以这些检查替代用户真机验收。
+
+11月25日晚 Actions 故障期间无法触发公开任务；11月26日官方状态恢复正常后完成本次构建。私有尝试 45733851635 在代码运行前仍被账户账单/预算拦住，之后临时公开完成；公开源码窗口已告知用户，发布核对后已恢复 PRIVATE 并 API 核对。
+
+用户本轮明确要求截至 **2026-12-01（含当日，Asia/Shanghai）** 的后续 GitHub 构建/编译/发布直接采用临时公开流程，完成后恢复私有，不先试私有；该规则已写入 AGENTS.md/README，并以 `969c96691e806f823cf523513e793475579d6205` 推送。
