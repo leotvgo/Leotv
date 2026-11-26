@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "aar_sha256": "cd1855371bc0008e89ef7ec1fcb0042e740ee185d79408193f02d3824c88cb61",
+  "classes_jar_sha256": "32b9f7c7ecca03216d09a2a2a5717c4c1bbb87ff6c7f4fd115470ec93cfea05c",
+  "native_sources": [
+    {
+      "component": "libvlcjni",
+      "commit": "05d76f37559e2a2e5cd4248053a76ceff5a523e1",
+      "url": "https://code.videolan.org/videolan/libvlcjni/-/archive/05d76f37559e2a2e5cd4248053a76ceff5a523e1/libvlcjni-05d76f37559e2a2e5cd4248053a76ceff5a523e1.tar.gz",
+      "sha256": "a966d91b6c25327f7edb853e047214cbbed9c34f24e26a7aa7fded39e024e42f",
+      "license": "LGPL-2.1-or-later"
+    },
+    {
+      "component": "vlc-base",
+      "commit": "5ee481afa798f281304754b001572dfe5dc0078e",
+      "url": "https://code.videolan.org/videolan/vlc/-/archive/5ee481afa798f281304754b001572dfe5dc0078e/vlc-5ee481afa798f281304754b001572dfe5dc0078e.tar.gz",
+      "sha256": "e02007790715967e869e0f34df137de3de9c61ee6944b3266c27a299a0424a64",
+      "license": "LGPL-2.1-or-later/GPL-2.0-or-later"
+    }
+  ],
+  "java_source_files_matching": 39,
+  "generated_file": "org/videolan/BuildConfig.java",
+  "native_recipe": "libvlcjni/buildsystem/get-vlc.sh: VLC_TESTED_HASH plus libvlc/patches/*.patch",
+  "recipe_patches": 20,
+  "upstream_build_attestation": "not published in the Maven artifact; source match and official packaging recipe recorded independently",
+  "native_license_note": "The AAR native aggregate identifies GPL-2.0-or-later libpostproc as well as LGPL-2.1-or-later FFmpeg libraries; the Maven LGPL POM is not the license inventory of every native plugin.",
+  "checks": [
+    "Full AAR SHA256 and member hashes",
+    "39 Java source files exactly match fixed LibVLCJNI source; BuildConfig generated",
+    "Both ARM complete companion sets: API23 strong imports/SONAME/4KiB alignment pass"
+  ],
+  "device_test": false
+}

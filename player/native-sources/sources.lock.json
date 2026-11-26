@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "ndk": "27.0.12077973",
+  "api": 23,
+  "sources": {
+    "mpv": {
+      "repository": "mpv-player/mpv",
+      "version": "v0.38.0",
+      "commit": "02254b92dd237f03aa0a151c2a68778c4ea848f9",
+      "url": "https://codeload.github.com/mpv-player/mpv/tar.gz/02254b92dd237f03aa0a151c2a68778c4ea848f9",
+      "sha256": "dad9517224f0cbf257f1476f8609743b73edcf0a8d5333dd7ab81166e306ad9f",
+      "license": "GPL-2.0-or-later"
+    },
+    "libplacebo": {
+      "repository": "haasn/libplacebo",
+      "version": "v7.349.0",
+      "commit": "1fd3c7bde7b943fe8985c893310b5269a09b46c5",
+      "url": "https://codeload.github.com/haasn/libplacebo/tar.gz/1fd3c7bde7b943fe8985c893310b5269a09b46c5",
+      "sha256": "067cd40a3f7ff78d03eeb15665db15e8de45c02423c16a4af07e3c79864f2415",
+      "license": "LGPL-2.1-or-later"
+    },
+    "ffmpeg": {
+      "repository": "FFmpeg/FFmpeg",
+      "version": "n7.0.1",
+      "commit": "af25a4bfd2503caf3ee485b27b99b620302f5718",
+      "url": "https://codeload.github.com/FFmpeg/FFmpeg/tar.gz/af25a4bfd2503caf3ee485b27b99b620302f5718",
+      "sha256": "477f6c653bbf6c3928bc6c0e283c07c279b2df5357533c6020927c5345d79412",
+      "license": "GPL-3.0-or-later"
+    },
+    "dav1d": {
+      "repository": "videolan/dav1d",
+      "version": "1.4.3",
+      "commit": "e9986de7f4264940af6fa1df1498fd2754077de4",
+      "url": "https://codeload.github.com/videolan/dav1d/tar.gz/e9986de7f4264940af6fa1df1498fd2754077de4",
+      "sha256": "ba147ff83d6c73f578a12f8eece636226e9c1f40cd55a11841a3bcb2c88cd46a",
+      "license": "BSD-2-Clause"
+    },
+    "mbedtls": {
+      "repository": "Mbed-TLS/mbedtls",
+      "version": "mbedtls-3.5.2",
+      "commit": "daca7a3979c22da155ec9dce49ab1abf3b65d3a9",
+      "url": "https://codeload.github.com/Mbed-TLS/mbedtls/tar.gz/daca7a3979c22da155ec9dce49ab1abf3b65d3a9",
+      "sha256": "d58e67ccdfc1a210c95012ca81b0f6940093537851008f9cdc95adc1b928497b",
+      "license": "Apache-2.0"
+    },
+    "freetype2": {
+      "repository": "freetype/freetype",
+      "version": "VER-2-13-2",
+      "commit": "920c5502cc3ddda88f6c7d85ee834ac611bb11cc",
+      "url": "https://codeload.github.com/freetype/freetype/tar.gz/920c5502cc3ddda88f6c7d85ee834ac611bb11cc",
+      "sha256": "da541ec0fc99514a8aea8ccc8ec4f955c19d17556e1888374fc564cb31e1c437",
+      "license": "FTL"
+    },
+    "libass": {
+      "repository": "libass/libass",
+      "version": "0.17.2",
+      "commit": "cbb48cc4f2f076300004b8b06a86bec55281d0c2",
+      "url": "https://codeload.github.com/libass/libass/tar.gz/cbb48cc4f2f076300004b8b06a86bec55281d0c2",
+      "sha256": "9ea99db42b8c08a25faa801aba67ee3696839b96fefe020b4ac6de3a14d4381c",
+      "license": "ISC"
+    },
+    "fribidi": {
+      "repository": "fribidi/fribidi",
+      "version": "v1.0.14",
+      "commit": "bca04dc3cd3af85a9d9220c430737333634d622a",
+      "url": "https://codeload.github.com/fribidi/fribidi/tar.gz/bca04dc3cd3af85a9d9220c430737333634d622a",
+      "sha256": "ce56149aebacb6767729a09103fb24008fcf3090af26885c83e2309df0a92103",
+      "license": "LGPL-2.1-or-later"
+    },
+    "harfbuzz": {
+      "repository": "harfbuzz/harfbuzz",
+      "version": "8.5.0",
+      "commit": "30485ee8c3d43c553afb9d78b9924cb71c8d2f19",
+      "url": "https://codeload.github.com/harfbuzz/harfbuzz/tar.gz/30485ee8c3d43c553afb9d78b9924cb71c8d2f19",
+      "sha256": "815c5895fc393e9b302ae0dd9d9ad7149224c039b3044ac334de638e0d3ea98f",
+      "license": "MIT"
+    },
+    "unibreak": {
+      "repository": "adah1972/libunibreak",
+      "version": "libunibreak_6_1",
+      "commit": "304585d8e2d63187507368d612c3d5fff1486368",
+      "url": "https://codeload.github.com/adah1972/libunibreak/tar.gz/304585d8e2d63187507368d612c3d5fff1486368",
+      "sha256": "bb39d83139073d4f927e9e41633556df87db0b937179ee6687ed52320387a02d",
+      "license": "Zlib"
+    },
+    "mpv-android": {
+      "repository": "mpv-android/mpv-android",
+      "version": "66276e03e13437f54c409a9150669f0e47641faf",
+      "commit": "66276e03e13437f54c409a9150669f0e47641faf",
+      "url": "https://codeload.github.com/mpv-android/mpv-android/tar.gz/66276e03e13437f54c409a9150669f0e47641faf",
+      "sha256": "3506691a81156c217521776f92096161f9c73fc490cf0d186af0038cb292d775",
+      "license": "MIT"
+    },
+    "lua": {
+      "version": "5.2.4",
+      "url": "https://www.lua.org/ftp/lua-5.2.4.tar.gz",
+      "sha256": "b9e2e4aad6789b3b63a056d442f7b39f0ecfca3ae0f1fc0ae4e9614401b69f4b",
+      "license": "MIT"
+    },
+    "glad": {
+      "repository": "Dav1dde/glad",
+      "commit": "d08b1aa01f8fe57498f04d47b5fa8c48725be877",
+      "url": "https://codeload.github.com/Dav1dde/glad/tar.gz/d08b1aa01f8fe57498f04d47b5fa8c48725be877",
+      "sha256": "7a5fb3299a20e8088a504f3bb2b7247d85c4207706754180a1b4a4840a8728e4",
+      "license": "MIT",
+      "parent": "libplacebo",
+      "destination": "3rdparty/glad"
+    },
+    "jinja": {
+      "repository": "pallets/jinja",
+      "commit": "b08cd4bc64bb980df86ed2876978ae5735572280",
+      "url": "https://codeload.github.com/pallets/jinja/tar.gz/b08cd4bc64bb980df86ed2876978ae5735572280",
+      "sha256": "9a20bab550a760ccb9b38a45d4fe76be92649206ee04633c646d0935a1872b0e",
+      "license": "BSD-3-Clause",
+      "parent": "libplacebo",
+      "destination": "3rdparty/jinja"
+    },
+    "markupsafe": {
+      "repository": "pallets/markupsafe",
+      "commit": "c0254f0cfe51720ecc9e72e8896022af29af5b44",
+      "url": "https://codeload.github.com/pallets/markupsafe/tar.gz/c0254f0cfe51720ecc9e72e8896022af29af5b44",
+      "sha256": "1826c5d89cc1aa0b3088f538726d339e0c5cd69fbe03f7b8f9a3f880474d1120",
+      "license": "BSD-3-Clause",
+      "parent": "libplacebo",
+      "destination": "3rdparty/markupsafe"
+    },
+    "fast_float": {
+      "repository": "fastfloat/fast_float",
+      "commit": "2b2395f9ac836ffca6404424bcc252bff7aa80e4",
+      "url": "https://codeload.github.com/fastfloat/fast_float/tar.gz/2b2395f9ac836ffca6404424bcc252bff7aa80e4",
+      "sha256": "230d20e4e4ac1f6a9df92c4d746c6ec536cdb0c085bc8635d4b88cead5dc22cb",
+      "license": "MIT/Apache-2.0",
+      "parent": "libplacebo",
+      "destination": "3rdparty/fast_float"
+    },
+    "dlg": {
+      "repository": "nyorain/dlg",
+      "commit": "72dfcc858c040c54a6a0b88fcb7e70ee186d3167",
+      "url": "https://codeload.github.com/nyorain/dlg/tar.gz/72dfcc858c040c54a6a0b88fcb7e70ee186d3167",
+      "sha256": "f46472bea5854cf3c738f0e7aea90d7b0645629ec78fdf7a67bf7696955e7446",
+      "license": "BSL-1.0",
+      "parent": "freetype2",
+      "destination": "subprojects/dlg"
+    }
+  }
+}

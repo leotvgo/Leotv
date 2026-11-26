@@ -1,0 +1,53 @@
+name: Player native API23
+on:
+  workflow_dispatch:
+  push:
+    branches: [leotvgo/leotv-player-native-api23]
+    paths:
+      - .github/workflows/player-native-build.yml
+      - player/native-sources/**
+      - player/native/**
+      - tools/build_player_native.py
+      - tools/check_player_native.py
+permissions:
+  contents: read
+concurrency:
+  group: player-native-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [mpv, vlc]
+        abi: [armeabi-v7a, arm64-v8a]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Require the authorized public native build window
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$(gh api "repos/$GITHUB_REPOSITORY" --jq .visibility)" = public
+      - name: Audit fixed source and input manifest
+        run: python3 tools/check_player_native.py --sources
+      - name: Install fixed NDK and build tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends autoconf automake libtool pkg-config ninja-build nasm gettext python3-venv
+          python3 -m venv .native-venv
+          .native-venv/bin/pip install meson==1.4.1
+          echo "$PWD/.native-venv/bin" >> "$GITHUB_PATH"
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'ndk;27.0.12077973'
+      - name: Build or stage native inputs only
+        run: |
+          python3 tools/build_player_native.py --engine '${{ matrix.engine }}' --abi '${{ matrix.abi }}' --ndk "$ANDROID_HOME/ndk/27.0.12077973" --work '.work/native-ci/${{ matrix.engine }}-${{ matrix.abi }}' --output '.work/native-output/${{ matrix.engine }}-${{ matrix.abi }}' --jobs 4
+      - name: Save auditable native inputs and corresponding source
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: player-native-${{ matrix.engine }}-${{ matrix.abi }}-${{ github.sha }}
+          path: .work/native-output/${{ matrix.engine }}-${{ matrix.abi }}/
+          if-no-files-found: error
+          compression-level: 6
+          retention-days: 30
