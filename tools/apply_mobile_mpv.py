@@ -140,9 +140,23 @@ def apply(project, root, variant):
     invoke-static {{v2, v3, v1}}, {BRIDGE}->tracks(Ljava/lang/Object;ILjava/util/List;)V
 '''+marker))
         elif name == 'smali/S3/x.smali':
-            text = replace(text,'t0()V',lambda b:tail(b,f'    invoke-static {{p0}}, {BRIDGE}->settings(Ljava/lang/Object;)V'))
+            for signature in ('t0()V','x0()V'):
+                text = replace(text,signature,lambda b:tail(b,f'    invoke-static {{p0}}, {BRIDGE}->settings(Ljava/lang/Object;)V'))
+            # FragmentStateManager invokes Fragment.X() for onResume in both original ABIs.
+            text += f'''
+.method public X()V
+    .locals 1
+    invoke-super {{p0}}, LP3/d;->X()V
+    iget-object v0, p0, LS3/x;->l0:Lw3/o;
+    if-eqz v0, :mobile_mpv_no_binding
+    invoke-virtual {{p0}}, LS3/x;->t0()V
+    :mobile_mpv_no_binding
+    return-void
+.end method
+'''
         elif name == 'smali/S3/v.smali':
-            text = replace(text,'onClick(Landroid/view/View;)V',lambda b:prepend(b,f'''    invoke-static {{p0, p1}}, {BRIDGE}->settingsClick(Ljava/lang/Object;Landroid/view/View;)Z
+            text = replace(text,'onClick(Landroid/view/View;)V',lambda b:prepend(b,f'''    iget-object v0, p0, LS3/v;->n:LS3/x;
+    invoke-static {{v0, p1}}, {BRIDGE}->settingsClick(Ljava/lang/Object;Landroid/view/View;)Z
     move-result v0
     if-eqz v0, :mobile_mpv_original
     return-void

@@ -89,11 +89,15 @@ final class MpvStore {
     LinkedHashMap<String,String> options() throws Exception {
         LinkedHashMap<String,String> o=MpvOptions.parse(readConfig());
         String selectedFont=prefs.getString("font","");if(!selectedFont.isEmpty()){boolean found=false;for(Item i:items())if(i.id.equals(selectedFont)&&i.kind.equals("font")&&file(i).isFile())found=true;if(!found)throw new IOException("所选字体副本已丢失，请重新选择字体");}
-        int decode=prefs.getInt("decode",0);o.put("hwdec",decode==2?"no":"mediacodec-copy");
-        o.put("hwdec-software-fallback",decode==1?"no":"yes");
-        o.put("ao",prefs.getString("ao","audiotrack,opensles"));
-        o.put("video-sync",prefs.getString("video-sync","audio"));
-        for(String[] entry:new String[][]{{"audio-delay","0"},{"sub-delay","0"},{"sub-font-size","40"},{"sub-scale","1"},{"sub-color","#FFFFFFFF"},{"sub-border-color","#FF000000"},{"sub-border-size","3"},{"sub-shadow-offset","0"},{"sub-pos","100"},{"sub-ass-override","no"}})o.put(entry[0],prefs.getString(entry[0],entry[1]));
+        MpvOptions.decoder(o,prefs.getInt("decode",0));
+        o.put("ao",MpvOptions.choice("ao",prefs.getString("ao","audiotrack,opensles"),"audiotrack,opensles","audiotrack","opensles"));
+        o.put("video-sync",MpvOptions.choice("video-sync",prefs.getString("video-sync","audio"),"audio","display-resample"));
+        // Keep 649 UI defaults/ranges, all inside the fixed native float option ranges.
+        for(String[] entry:new String[][]{{"audio-delay","0","-30","30"},{"sub-delay","0","-600","600"},{"sub-font-size","40","1","200"},{"sub-scale","1","0.1","5"},{"sub-border-size","3","0","10"},{"sub-shadow-offset","0","0","10"},{"sub-pos","100","0","100"}})
+            o.put(entry[0],MpvOptions.numeric(entry[0],prefs.getString(entry[0],entry[1]),Double.parseDouble(entry[2]),Double.parseDouble(entry[3])));
+        o.put("sub-color",MpvOptions.color(prefs.getString("sub-color","#FFFFFFFF")));
+        o.put("sub-border-color",MpvOptions.color(prefs.getString("sub-border-color","#FF000000")));
+        o.put("sub-ass-override",MpvOptions.choice("sub-ass-override",prefs.getString("sub-ass-override","no"),"no","force"));
         o.put("sub-fonts-dir",fontsDirectory.getAbsolutePath());o.put("sub-font",prefs.getString("sub-font","sans-serif"));
         o.put("glsl-shaders",shaderList());return o;
     }

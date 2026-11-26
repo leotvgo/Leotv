@@ -63,5 +63,18 @@
     2
   ],
   "new_player_number": 3,
-  "default_player_number": 2
+  "default_player_number": 2,
+  "settings_click_owner": "S3.v.n (S3.x), passed explicitly by preserved smali; signature unchanged",
+  "mobile_settings_fields": {
+    "binding": "S3.x.l0 / w3.o",
+    "decoder_row": "z",
+    "decoder_value": "A",
+    "renderer_row": "H",
+    "renderer_value": "I",
+    "player_row": "F",
+    "player_value": "G",
+    "flag_row_preserved": "B",
+    "scale_row_preserved": "J",
+    "on_resume": "X()V"
+  }
 }

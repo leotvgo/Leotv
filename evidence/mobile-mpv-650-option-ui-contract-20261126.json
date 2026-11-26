@@ -1,0 +1,303 @@
+{
+  "base_commit": "d6a959481e8a859f3a31ee02fe0529f8f59fb5c7",
+  "mpv_source": {
+    "repository": "mpv-player/mpv",
+    "version": "v0.38.0",
+    "commit": "02254b92dd237f03aa0a151c2a68778c4ea848f9",
+    "url": "https://codeload.github.com/mpv-player/mpv/tar.gz/02254b92dd237f03aa0a151c2a68778c4ea848f9",
+    "sha256": "dad9517224f0cbf257f1476f8609743b73edcf0a8d5333dd7ab81166e306ad9f",
+    "license": "GPL-2.0-or-later"
+  },
+  "source_files_sha256": {
+    "audio/out/ao.c": "65725f142419f2f80accec649914eff244b7ac240204a9b8f1945ed1243a043d",
+    "audio/out/ao_audiotrack.c": "7f3885fffba6825c315216a935dc39f62b04c013b1e923fa5114196f291f7d55",
+    "audio/out/ao_opensles.c": "da5fd5345c1f75a72269c61a01f6e55be4867b3d6551c16a5aa0a6042080b6ea",
+    "demux/demux.c": "73f8e1e7f9489acb5d1a3dc5c3ee5b88735f65be51b80366941a49859f420986",
+    "filters/f_decoder_wrapper.c": "daab7a9a7b76278fa7799e924faa7daf2d67bec096bf6f54a859430fe3bf24a0",
+    "input/input.c": "947f82195f3be0a08251ff0ea6a824b815c2c6c5004b6a68ab0d7edb831a5cc2",
+    "options/m_option.c": "7de6f1aa16a0d0badf39ecf7b308fcc0fe878c43ce52455a9e5330d456ed13d4",
+    "options/m_option.h": "06243c6f16f0b2600ed82fbf9c216166bdb808256a10b772bb0291059f081f25",
+    "options/options.c": "a7a4e4c9c702cb268e97587ce787b25ab0b9f52c151316a6d49032d936442857",
+    "stream/stream_lavf.c": "a12dff340168366d26b07688b360e29ea957a62f73dcecfe860fb866832efb24",
+    "sub/osd.c": "c2e276b0b6941d9d69de30680976a5cb2fd613fd55d14509ab592ec8587e4e03",
+    "video/decode/vd_lavc.c": "504920f2f6d2beb3351a1c45f5da9b55c75930ddeb3b710bbf41d61685c3c124",
+    "video/out/gpu/context.c": "d63c5ae3a1991adfb4bc9edf6648c7a5dc1f2983de71d4251ebb5bdf353202ee",
+    "video/out/gpu/video.c": "e64b3c6a974e66358543d5d9f1e0f357d16a5341aca29f8a9de5c111c5501aa0"
+  },
+  "generated_option_definitions": {
+    "config": {
+      "source": "options/options.c",
+      "line": 520,
+      "definition": "{\"config\", OPT_BOOL(load_config), .flags = CONF_PRE_PARSE}"
+    },
+    "load-scripts": {
+      "source": "options/options.c",
+      "line": 529,
+      "definition": "{\"load-scripts\", OPT_BOOL(auto_load_scripts)}"
+    },
+    "terminal": {
+      "source": "options/options.c",
+      "line": 499,
+      "definition": "{\"terminal\", OPT_BOOL(use_terminal), .flags = CONF_PRE_PARSE | UPDATE_TERM}"
+    },
+    "input-default-bindings": {
+      "source": "input/input.c",
+      "line": 190,
+      "definition": "{\"input-default-bindings\", OPT_BOOL(default_bindings)}"
+    },
+    "idle": {
+      "source": "options/options.c",
+      "line": 853,
+      "definition": "{\"idle\", OPT_CHOICE(player_idle_mode,\n        {\"no\",   0}, {\"once\", 1}, {\"yes\",  2})}"
+    },
+    "keep-open": {
+      "source": "options/options.c",
+      "line": 580,
+      "definition": "{\"keep-open\", OPT_CHOICE(keep_open,\n        {\"no\", 0},\n        {\"yes\", 1},\n        {\"always\", 2})}"
+    },
+    "vo": {
+      "source": "options/options.c",
+      "line": 113,
+      "definition": "{\"vo\", OPT_SETTINGSLIST(video_driver_list, &vo_obj_list)}"
+    },
+    "gpu-api": {
+      "source": "video/out/gpu/context.c",
+      "line": 264,
+      "definition": "{\"gpu-api\",\n            OPT_STRING_VALIDATE(context_type, ra_ctx_validate_api),\n            .help = ra_ctx_api_help}"
+    },
+    "gpu-context": {
+      "source": "video/out/gpu/context.c",
+      "line": 261,
+      "definition": "{\"gpu-context\",\n            OPT_STRING_VALIDATE(context_name, ra_ctx_validate_context),\n            .help = ra_ctx_context_help}"
+    },
+    "force-window": {
+      "source": "options/options.c",
+      "line": 714,
+      "definition": "{\"force-window\", OPT_CHOICE(force_vo,\n        {\"no\", 0}, {\"yes\", 1}, {\"immediate\", 2})}"
+    },
+    "tls-verify": {
+      "source": "stream/stream_lavf.c",
+      "line": 63,
+      "definition": "{\"tls-verify\", OPT_BOOL(tls_verify)}"
+    },
+    "tls-ca-file": {
+      "source": "stream/stream_lavf.c",
+      "line": 64,
+      "definition": "{\"tls-ca-file\", OPT_STRING(tls_ca_file), .flags = M_OPT_FILE}"
+    },
+    "http-header-fields": {
+      "source": "stream/stream_lavf.c",
+      "line": 58,
+      "definition": "{\"http-header-fields\", OPT_STRINGLIST(http_header_fields)}"
+    },
+    "start": {
+      "source": "options/options.c",
+      "line": 562,
+      "definition": "{\"start\", OPT_REL_TIME(play_start)}"
+    },
+    "slang": {
+      "source": "options/options.c",
+      "line": 598,
+      "definition": "{\"slang\", OPT_STRINGLIST(stream_lang[STREAM_SUB])}"
+    },
+    "alang": {
+      "source": "options/options.c",
+      "line": 597,
+      "definition": "{\"alang\", OPT_STRINGLIST(stream_lang[STREAM_AUDIO])}"
+    },
+    "demuxer-max-bytes": {
+      "source": "demux/demux.c",
+      "line": 95,
+      "definition": "{\"demuxer-max-bytes\", OPT_BYTE_SIZE(max_bytes),\n            M_RANGE(0, M_MAX_MEM_BYTES)}"
+    },
+    "demuxer-max-back-bytes": {
+      "source": "demux/demux.c",
+      "line": 97,
+      "definition": "{\"demuxer-max-back-bytes\", OPT_BYTE_SIZE(max_bytes_bw),\n            M_RANGE(0, M_MAX_MEM_BYTES)}"
+    },
+    "audio-spdif": {
+      "source": "filters/f_decoder_wrapper.c",
+      "line": 120,
+      "definition": "{\"audio-spdif\", OPT_STRING(audio_spdif),\n            .help = decoder_list_help}"
+    },
+    "pause": {
+      "source": "options/options.c",
+      "line": 579,
+      "definition": "{\"pause\", OPT_BOOL(pause)}"
+    },
+    "speed": {
+      "source": "options/options.c",
+      "line": 649,
+      "definition": "{\"speed\", OPT_DOUBLE(playback_speed), M_RANGE(0.01, 100.0)}"
+    },
+    "hwdec": {
+      "source": "video/decode/vd_lavc.c",
+      "line": 125,
+      "definition": "{\"hwdec\", OPT_STRINGLIST(hwdec_api),\n            .help = hwdec_opt_help,\n            .flags = M_OPT_OPTIONAL_PARAM | UPDATE_HWDEC}"
+    },
+    "vd-lavc-software-fallback": {
+      "source": "video/decode/vd_lavc.c",
+      "line": 119,
+      "definition": "{\"vd-lavc-software-fallback\", OPT_CHOICE(software_fallback,\n            {\"no\", INT_MAX}, {\"yes\", 1}), M_RANGE(1, INT_MAX)}"
+    },
+    "ao": {
+      "source": "audio/out/ao.c",
+      "line": 142,
+      "definition": "{\"ao\", OPT_SETTINGSLIST(audio_driver_list, &ao_obj_list),\n            .flags = UPDATE_AUDIO}"
+    },
+    "video-sync": {
+      "source": "options/options.c",
+      "line": 175,
+      "definition": "{\"video-sync\", OPT_CHOICE(video_sync,\n        {\"audio\", VS_DEFAULT},\n        {\"display-resample\", VS_DISP_RESAMPLE},\n        {\"display-resample-vdrop\", VS_DISP_RESAMPLE_VDROP},\n        {\"display-resample-desync\", VS_DISP_RESAMPLE_NONE},\n        {\"display-tempo\", VS_DISP_TEMPO},\n        {\"display-adrop\", VS_DISP_ADROP},\n        {\"display-vdrop\", VS_DISP_VDROP},\n        {\"display-desync\", VS_DISP_NONE},\n        {\"desync\", VS_NONE})}"
+    },
+    "audio-delay": {
+      "source": "options/options.c",
+      "line": 654,
+      "definition": "{\"audio-delay\", OPT_FLOAT(audio_delay)}"
+    },
+    "sub-delay": {
+      "source": "options/options.c",
+      "line": 354,
+      "definition": "{\"sub-delay\", OPT_FLOAT(sub_delay[0])}"
+    },
+    "sub-font-size": {
+      "source": "sub/osd.c",
+      "line": 49,
+      "definition": "{\"font-size\", OPT_FLOAT(font_size), M_RANGE(1, 9000)}"
+    },
+    "sub-scale": {
+      "source": "options/options.c",
+      "line": 301,
+      "definition": "{\"sub-scale\", OPT_FLOAT(sub_scale), M_RANGE(0, 100)}"
+    },
+    "sub-color": {
+      "source": "sub/osd.c",
+      "line": 50,
+      "definition": "{\"color\", OPT_COLOR(color)}"
+    },
+    "sub-border-color": {
+      "source": "sub/osd.c",
+      "line": 51,
+      "definition": "{\"border-color\", OPT_COLOR(border_color)}"
+    },
+    "sub-border-size": {
+      "source": "sub/osd.c",
+      "line": 54,
+      "definition": "{\"border-size\", OPT_FLOAT(border_size)}"
+    },
+    "sub-shadow-offset": {
+      "source": "sub/osd.c",
+      "line": 55,
+      "definition": "{\"shadow-offset\", OPT_FLOAT(shadow_offset)}"
+    },
+    "sub-pos": {
+      "source": "options/options.c",
+      "line": 356,
+      "definition": "{\"sub-pos\", OPT_FLOAT(sub_pos[0]), M_RANGE(0.0, 150.0)}"
+    },
+    "sub-ass-override": {
+      "source": "options/options.c",
+      "line": 360,
+      "definition": "{\"sub-ass-override\", OPT_CHOICE(ass_style_override[0],\n            {\"no\", 0}, {\"yes\", 1}, {\"force\", 3}, {\"scale\", 4}, {\"strip\", 5}),\n            .flags = UPDATE_SUB_HARD}"
+    },
+    "sub-fonts-dir": {
+      "source": "sub/osd.c",
+      "line": 70,
+      "definition": "{\"fonts-dir\", OPT_STRING(fonts_dir),\n        .flags = M_OPT_FILE | UPDATE_SUB_HARD}"
+    },
+    "sub-font": {
+      "source": "sub/osd.c",
+      "line": 48,
+      "definition": "{\"font\", OPT_STRING(font)}"
+    },
+    "glsl-shaders": {
+      "source": "video/out/gpu/video.c",
+      "line": 459,
+      "definition": "{\"glsl-shaders\", OPT_PATHLIST(user_shaders), .flags = M_OPT_FILE}"
+    }
+  },
+  "fallback": {
+    "unsupported_649_name": "hwdec-software-fallback",
+    "correct_038_name": "vd-lavc-software-fallback",
+    "type": "OPT_CHOICE plus M_RANGE(1, INT_MAX)",
+    "default": 3,
+    "auto": "3",
+    "hard_required": "no",
+    "software": "hwdec=no; fallback=3",
+    "yes_semantics": "1 error before fallback; supported only with the canonical option name",
+    "hard_decode_unavailable_feedback_preserved": true
+  },
+  "colors": {
+    "ui": "#AARRGGBB",
+    "native": "#AARRGGBB or #RRGGBB or r/g/b/a",
+    "alpha": "opacity: 00 transparent, FF opaque",
+    "conversion": "validate 8 hex digits and normalize case; retain ARGB order and alpha",
+    "samples": {
+      "#80FF0000": "50% opaque red",
+      "#400000FF": "25% opaque blue",
+      "#FF000000": "opaque black outline"
+    },
+    "source": "options/m_option.c:2005 parse_color / print_color"
+  },
+  "default_policy": {
+    "native_sub_font_size": 55,
+    "649_ui_sub_font_size_retained": 40,
+    "native_ass_override": "yes",
+    "649_ui_ass_override_retained": "no",
+    "649_numeric_ui_ranges_retained": true,
+    "source_options_recompiled": false
+  },
+  "host_ui": {
+    "binding": "w3.o",
+    "fragment": "S3.x",
+    "listener": "S3.v; public final n is S3.x",
+    "decoder": "z / A / 0x7f0a00cf / 0x7f0a00d0 / selector 3",
+    "renderer": "H / I / 0x7f0a0282 / 0x7f0a0283 / selector 4",
+    "flag_preserved": "B / selector 13",
+    "scale_preserved": "J / selector 14",
+    "resume": "FragmentStateManager -> androidx.fragment.app.v.X()V; subclass calls super and t0()V",
+    "first_refresh": "t0()V",
+    "option_change_refresh": "x0()V + settings save + file-result callback"
+  },
+  "original_zip_resource_sha256": {
+    "mobile-v7a": {
+      "input_sha256": "d54b917ecfff10fd8d4a1959a95df1cdcf8e43cae8d3e96cb546d3f84c9e1148",
+      "resources": {
+        "res/up.xml": "0a4445f2b8c204401153d80ce72262a0b05423bb301de8847cad7757a044792d",
+        "res/nN.xml": "6e54998329f508708f816933c539cd4e5bbd20f5fbfd94e7c87156fe01b2d523",
+        "res/an.xml": "fee118c37ebdff525f241da402bc9bb9fb8755b111d6d3d54859082d8be22cd3",
+        "res/hc.xml": "aeefc0b9818c2a16392316db0f03d41645c317e89928dc943453da19881697ab",
+        "res/Qu.xml": "ed22d618177225e361b6413e3bfc37f8ccbc294cd381d161d6c14ee5386e0b8f"
+      }
+    },
+    "mobile-v8a": {
+      "input_sha256": "76fdb7edfc46cab43a3d6ead66822f97be2e6b06cf15e5bf200395360d372d17",
+      "resources": {
+        "res/up.xml": "0a4445f2b8c204401153d80ce72262a0b05423bb301de8847cad7757a044792d",
+        "res/nN.xml": "6e54998329f508708f816933c539cd4e5bbd20f5fbfd94e7c87156fe01b2d523",
+        "res/an.xml": "fee118c37ebdff525f241da402bc9bb9fb8755b111d6d3d54859082d8be22cd3",
+        "res/hc.xml": "aeefc0b9818c2a16392316db0f03d41645c317e89928dc943453da19881697ab",
+        "res/Qu.xml": "ed22d618177225e361b6413e3bfc37f8ccbc294cd381d161d6c14ee5386e0b8f"
+      }
+    }
+  },
+  "native_settings_layout": {
+    "layout": "fragment_setting_player / 0x7f0d008a / res/up.xml",
+    "row": "decode / 0x7f0a00cf",
+    "text_size_sp": 16,
+    "outer_inset_dp": 16,
+    "between_rows_dp": 16,
+    "drawable": "shape_item / res/nN.xml; themed ripple; radius 4dp",
+    "row_padding_dp": [
+      12,
+      8,
+      12,
+      8
+    ],
+    "height": "wrap_content from original XML",
+    "title_value_gap_dp": 16,
+    "selection": "o4.b.f uses original themed Material single-choice row, current checked index and native list minimum height",
+    "input": "dialog_ua / 0x7f0d0075 / res/an.xml: TextInputLayout + TextInputEditText; top16dp, start/end24dp",
+    "first_menu_row": "Original first player row 0x7f0a025d with no top margin; subsequent rows use original decoder row 16dp top margin"
+  }
+}

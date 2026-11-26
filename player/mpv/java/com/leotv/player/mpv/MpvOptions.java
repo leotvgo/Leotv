@@ -16,7 +16,7 @@ public final class MpvOptions {
         "loop", "loop-file", "loop-playlist", "speed", "filename", "path", "url", "ytdl",
         "http-header-fields", "user-agent", "referrer", "cookies", "cookies-file", "http-proxy",
         "tls-verify", "tls-ca-file", "vo", "gpu-api", "gpu-context", "wid", "force-window",
-        "hwdec", "hwdec-codecs", "hwdec-software-fallback", "ao", "audio-spdif",
+        "hwdec", "hwdec-codecs", "hwdec-software-fallback", "vd-lavc-software-fallback", "ao", "audio-spdif",
         "aid", "vid", "sid", "secondary-sid", "sub-file", "sub-files", "audio-file",
         "audio-files", "glsl-shader", "glsl-shaders", "gpu-shader-cache-dir", "sub-fonts-dir",
         "sub-font", "sub-font-size", "sub-scale", "sub-color", "sub-border-color", "sub-border-size",
@@ -62,6 +62,29 @@ public final class MpvOptions {
             result.put(key,val);
         }
         return result;
+    }
+    /** v0.38.0 vd_lavc_conf: fallback is a count (default 3), not a boolean. */
+    static void decoder(Map<String,String> options,int mode) {
+        if(mode<0||mode>2)throw new IllegalArgumentException("MPV 解码模式无效："+mode);
+        options.put("hwdec",mode==2?"no":"mediacodec-copy");
+        options.put("vd-lavc-software-fallback",mode==1?"no":"3");
+    }
+    /** v0.38 parse_color accepts #[AA]RRGGBB; alpha is opacity, as in Android. */
+    static String color(String value) {
+        if(!value.matches("#[a-fA-F0-9]{8}"))throw new IllegalArgumentException("请输入 #AARRGGBB 颜色");
+        return value.toUpperCase(java.util.Locale.ROOT);
+    }
+    static String numeric(String key,String value,double min,double max) {
+        final double number;
+        try{number=Double.parseDouble(value);}catch(NumberFormatException e){throw new IllegalArgumentException(key+" 必须是数字",e);}
+        if(Double.isNaN(number)||Double.isInfinite(number)||number<min||number>max)
+            throw new IllegalArgumentException(key+" 超出范围");
+        // Java accepts hex floats and '1d'; libmpv's decimal parser does not.
+        return Double.toString(number);
+    }
+    static String choice(String key,String value,String...choices) {
+        if(!Arrays.asList(choices).contains(value))throw new IllegalArgumentException(key+" 设置值无效："+value);
+        return value;
     }
     /** mpv string-list syntax: escape commas/backslashes in headers and managed shader paths. */
     public static String list(Iterable<String> values) {

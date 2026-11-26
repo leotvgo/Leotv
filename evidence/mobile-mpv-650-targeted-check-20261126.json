@@ -1,0 +1,214 @@
+{
+  "api": 23,
+  "java": 8,
+  "variants": {
+    "mobile-v7a": {
+      "native_ui": {
+        "native_binding_ids": {
+          "z": "0x7f0a00cf",
+          "A": "0x7f0a00d0",
+          "H": "0x7f0a0282",
+          "I": "0x7f0a0283",
+          "F": "0x7f0a025d",
+          "G": "0x7f0a025e",
+          "B": "0x7f0a0160",
+          "J": "0x7f0a0299"
+        },
+        "native_selectors": {
+          "decode": 3,
+          "render": 4,
+          "flag_preserved": 13,
+          "scale_preserved": 14
+        },
+        "real_fragment_on_resume": "X()V",
+        "real_material_radio_verified": true
+      },
+      "classes": [
+        "LF3/f;",
+        "LH6/l;",
+        "LP3/b;",
+        "LR3/T;",
+        "LS3/v;",
+        "LS3/x;",
+        "LU3/f;",
+        "Lcom/fongmi/android/tv/ui/activity/LiveActivity;",
+        "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+      ],
+      "source_edits": {
+        "smali/F3/f.smali": {
+          "before_sha256": "1088218ad0d752cccbc174e143f72e9cf43be1abb73a8ab6c33adec3fdf87692",
+          "after_sha256": "c3893856a0a211441d4efd17536309bb64d4ed4cc8c48c5125ae3133dfbd101e"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": {
+          "before_sha256": "19420b2396fec4311fc579ca861d935815d2ada3f42b3e06ca0deeaafb567591",
+          "after_sha256": "66668b25f997bf79590f71d488b565c19323636f837618e01f87a6022ad56c91"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": {
+          "before_sha256": "4f5b5aaa68d0885d12bc1fd14c9973b3158cdf93e177a1c9e3303ecaf86259bc",
+          "after_sha256": "617326374d60e9b124b54d497aff03498ba29cadc8f2d0657ce233f67c32df29"
+        },
+        "smali/H6/l.smali": {
+          "before_sha256": "9c305304d3d6f31b7c153e43c5931df3c727c47784b9905747c0b21c86dc0dd9",
+          "after_sha256": "7d9eb2187dc4fca115986147551dfc031fb4c77d13dd018ad0401ee94544ea9c"
+        },
+        "smali/U3/f.smali": {
+          "before_sha256": "f67744da4f91013c0a7f9c2d7fb7fa799bb70c77cc7bd16085226599fe2ecd11",
+          "after_sha256": "7073c41331978524ad5bea031a0b4828e7d2c6d5eca5481f0a4a201f3f310726"
+        },
+        "smali/R3/T.smali": {
+          "before_sha256": "42ebd41810bb30ac97ccc394c993121dfbbdcbc34b1650d11bdff0100760077d",
+          "after_sha256": "9a263ea8eff46818ac7b2454116969ca2d7d773adc82e35569100737542db3bc"
+        },
+        "smali/S3/x.smali": {
+          "before_sha256": "51ebe156966ff0d9e46e2368673084d92fff771a6195a71cf613caadb72d6a5a",
+          "after_sha256": "44012413db8a977867fcae1133e0b77007553862419d21dae08311d7396e2c62"
+        },
+        "smali/S3/v.smali": {
+          "before_sha256": "ec34f218d8ed3ff9816af60dfbfd04347af3f3bc706732748e869aca8e1f7e29",
+          "after_sha256": "7cb43169410201fdcfd9a83105c2695d50447a0c0d3ba9dd7665dfb736d569dc"
+        },
+        "smali/P3/b.smali": {
+          "before_sha256": "134f9db1c44abf999fcea72580d8cb9cbf01e22d40bb2e435e0e51cbf2667445",
+          "after_sha256": "a5051ab4090054b7273160c7049271bac2868beefcdfe8fb9c8c787a278b8751"
+        }
+      },
+      "protected_methods_preserved": true
+    },
+    "mobile-v8a": {
+      "native_ui": {
+        "native_binding_ids": {
+          "z": "0x7f0a00cf",
+          "A": "0x7f0a00d0",
+          "H": "0x7f0a0282",
+          "I": "0x7f0a0283",
+          "F": "0x7f0a025d",
+          "G": "0x7f0a025e",
+          "B": "0x7f0a0160",
+          "J": "0x7f0a0299"
+        },
+        "native_selectors": {
+          "decode": 3,
+          "render": 4,
+          "flag_preserved": 13,
+          "scale_preserved": 14
+        },
+        "real_fragment_on_resume": "X()V",
+        "real_material_radio_verified": true
+      },
+      "classes": [
+        "LF3/f;",
+        "LH6/l;",
+        "LP3/b;",
+        "LR3/T;",
+        "LS3/v;",
+        "LS3/x;",
+        "LU3/f;",
+        "Lcom/fongmi/android/tv/ui/activity/LiveActivity;",
+        "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+      ],
+      "source_edits": {
+        "smali/F3/f.smali": {
+          "before_sha256": "1088218ad0d752cccbc174e143f72e9cf43be1abb73a8ab6c33adec3fdf87692",
+          "after_sha256": "c3893856a0a211441d4efd17536309bb64d4ed4cc8c48c5125ae3133dfbd101e"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": {
+          "before_sha256": "19420b2396fec4311fc579ca861d935815d2ada3f42b3e06ca0deeaafb567591",
+          "after_sha256": "66668b25f997bf79590f71d488b565c19323636f837618e01f87a6022ad56c91"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": {
+          "before_sha256": "4f5b5aaa68d0885d12bc1fd14c9973b3158cdf93e177a1c9e3303ecaf86259bc",
+          "after_sha256": "617326374d60e9b124b54d497aff03498ba29cadc8f2d0657ce233f67c32df29"
+        },
+        "smali/H6/l.smali": {
+          "before_sha256": "9c305304d3d6f31b7c153e43c5931df3c727c47784b9905747c0b21c86dc0dd9",
+          "after_sha256": "7d9eb2187dc4fca115986147551dfc031fb4c77d13dd018ad0401ee94544ea9c"
+        },
+        "smali/U3/f.smali": {
+          "before_sha256": "f67744da4f91013c0a7f9c2d7fb7fa799bb70c77cc7bd16085226599fe2ecd11",
+          "after_sha256": "7073c41331978524ad5bea031a0b4828e7d2c6d5eca5481f0a4a201f3f310726"
+        },
+        "smali/R3/T.smali": {
+          "before_sha256": "42ebd41810bb30ac97ccc394c993121dfbbdcbc34b1650d11bdff0100760077d",
+          "after_sha256": "9a263ea8eff46818ac7b2454116969ca2d7d773adc82e35569100737542db3bc"
+        },
+        "smali/S3/x.smali": {
+          "before_sha256": "51ebe156966ff0d9e46e2368673084d92fff771a6195a71cf613caadb72d6a5a",
+          "after_sha256": "44012413db8a977867fcae1133e0b77007553862419d21dae08311d7396e2c62"
+        },
+        "smali/S3/v.smali": {
+          "before_sha256": "ec34f218d8ed3ff9816af60dfbfd04347af3f3bc706732748e869aca8e1f7e29",
+          "after_sha256": "7cb43169410201fdcfd9a83105c2695d50447a0c0d3ba9dd7665dfb736d569dc"
+        },
+        "smali/P3/b.smali": {
+          "before_sha256": "134f9db1c44abf999fcea72580d8cb9cbf01e22d40bb2e435e0e51cbf2667445",
+          "after_sha256": "a5051ab4090054b7273160c7049271bac2868beefcdfe8fb9c8c787a278b8751"
+        }
+      },
+      "protected_methods_preserved": true
+    }
+  },
+  "fixed_native_options": {
+    "native_commit": "02254b92dd237f03aa0a151c2a68778c4ea848f9",
+    "generated_options_audited": 38,
+    "actual_native_sources_verified": true,
+    "numeric_fallback_default": 3,
+    "color_order": "#AARRGGBB opacity preserved"
+  },
+  "source_sha256": {
+    "player/mpv/java/com/leotv/player/mpv/MobileMpv.java": "f87f781570fb8235de88fc45296e7df60844fef70ac4d3ba16a993f90139f00a",
+    "player/mpv/java/com/leotv/player/mpv/MpvEngine.java": "a30e2edc928a0781f75fbe2933adcaad3b878767a71987ba78eae588a9202821",
+    "player/mpv/java/com/leotv/player/mpv/MpvOptions.java": "d53b956f4bc13d20ff2e4b1a0612b5abbcda21950ce03bd36cdcbf711b6695f3",
+    "player/mpv/java/com/leotv/player/mpv/MpvSettings.java": "8b5750e69050f3f47bbdf23476d864c17f66196f021b54c11d362b9a480fa393",
+    "player/mpv/java/com/leotv/player/mpv/MpvStore.java": "d2a5d0f479f5e680aeeda39ffc54ba7d8e6d6363decf945c3a362e4aa28716e0",
+    "player/mpv/java/is/xyz/mpv/MPVLib.java": "a02327eb9172e11fc41c65e62284e28f7e250b26842f3700879c8edda61c33de"
+  },
+  "existing_649_hooks": {
+    "mobile-v7a": {
+      "existing_649_hook_references_preserved": 65,
+      "overlays": [
+        "native-details",
+        "danmaku",
+        "category-paging",
+        "preload",
+        "effects"
+      ],
+      "source_only_no_apk_build": true
+    },
+    "mobile-v8a": {
+      "existing_649_hook_references_preserved": 65,
+      "overlays": [
+        "native-details",
+        "danmaku",
+        "category-paging",
+        "preload",
+        "effects"
+      ],
+      "source_only_no_apk_build": true
+    }
+  },
+  "java8_api23_compile": true,
+  "synthetic_config_header_shader_font_contracts": true,
+  "production_engine_synthetic_native_event_contracts": true,
+  "native_code_executed": false,
+  "production_settings_synthetic_switch_save_return_recreate": true,
+  "fixed_mpv_038_defaults_and_argb_encoding": true,
+  "targeted_dex_assembly_and_d8_api23": true,
+  "original_player_default_review": {
+    "variants": [
+      "mobile-v7a",
+      "mobile-v8a"
+    ],
+    "H6.l.c0": "v1 remains 2 for absent/invalid preference; upper bound 3 is in separate v2; valid input moves to v1",
+    "F3.f.p0": "v0 remains 2 for move p1,v0 on invalid branch; upper bound 3 is in separate v1",
+    "checked_input_result": {
+      "missing": 2,
+      "-1": 2,
+      "0": 0,
+      "1": 1,
+      "2": 2,
+      "3": 3,
+      "4": 2
+    },
+    "implementation_change_needed": false
+  }
+}

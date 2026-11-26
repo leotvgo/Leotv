@@ -45,7 +45,8 @@
       "w0()V"
     ],
     "smali/S3/x.smali": [
-      "t0()V"
+      "t0()V",
+      "x0()V"
     ],
     "smali/S3/v.smali": [
       "onClick(Landroid/view/View;)V"
@@ -66,5 +67,10 @@
   "integration_patch_base": {
     "tools/build_branded.py": "b85573a8d257c9d946679831346498335baf3858d78984d7bc2df8640a82cca2",
     "branding/proguard-release.pro": "f81393c56c5613c4184a9342ddb31681033d53b4b9ef462562f50c290fdbc555"
+  },
+  "added_host_methods": {
+    "smali/S3/x.smali": [
+      "X()V"
+    ]
   }
 }

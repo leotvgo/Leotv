@@ -117,14 +117,14 @@ public final class MobileMpv {
         try{put(h,"G",sub);s.addSubtitle(sub,true);}catch(Exception e){s.error("MPV 外置字幕失败："+message(e));}return true;}
     static void hostPause(MpvEngine.Listener l){if(l instanceof Session){Session s=(Session)l;Object h=s.host.get();if(h!=null)call(h,"e0");}}
     static void hostResume(MpvEngine.Listener l){if(l instanceof Session){Session s=(Session)l;Object h=s.host.get();if(h!=null)call(h,"f0");}}
-    static void apply(Context context,boolean rebuild){for(Map.Entry<Object,Session> entry:new ArrayList<>(sessions.entrySet())){Object h=entry.getKey();Session s=entry.getValue();if(!active(h)||s.engine==null)continue;
+    static void apply(Context context,boolean rebuild){MpvSettings.refreshAll();for(Map.Entry<Object,Session> entry:new ArrayList<>(sessions.entrySet())){Object h=entry.getKey();Session s=entry.getValue();if(!active(h)||s.engine==null)continue;
         if(s.engine.closed&&!rebuild){s.notice("设置已保存，下次 MPV 播放时生效");continue;}
         try{if(rebuild){long pos=s.engine.position;boolean paused=!s.engine.playRequested;put(h,"H",pos);call(h,"m0");if(paused)pause(h);s.notice("MPV 已提交重建；播放失败会显示原因");}
             else{for(Map.Entry<String,String> option:new MpvStore(context).options().entrySet())if(option.getKey().startsWith("sub-")||option.getKey().equals("audio-delay")||option.getKey().equals("glsl-shaders"))s.engine.set(option.getKey(),option.getValue());s.notice("MPV 设置已提交；失败会显示原因");}}
         catch(Exception e){s.notice("MPV 设置应用失败："+message(e));}}
     }
     public static void settings(Object fragment){MpvSettings.attach(fragment);}
-    public static boolean settingsClick(Object listener,View view){return MpvSettings.nativeDecoder(listener,view);}
+    public static boolean settingsClick(Object fragment,View view){return MpvSettings.nativeDecoder(fragment,view);}
     public static boolean fileResult(Activity a,int request,int result,android.content.Intent data){return MpvSettings.fileResult(a,request,result,data);}
     static long number(Object n){return n instanceof Number?((Number)n).longValue():0;}
     static Object field(Object o,String name){if(o==null)return null;try{return o.getClass().getField(name).get(o);}catch(ReflectiveOperationException e){return null;}}
