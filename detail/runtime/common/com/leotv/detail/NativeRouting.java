@@ -142,6 +142,7 @@ public final class NativeRouting {
             java.util.ArrayList<String> logos = incoming.getStringArrayListExtra(TITLE_LOGOS);
             if (logos != null) intent.putStringArrayListExtra(TITLE_LOGOS, new java.util.ArrayList<>(logos));
             String work=incoming.getStringExtra(DANMAKU_WORK);if(work!=null)intent.putExtra(DANMAKU_WORK,work);
+            String progress=incoming.getStringExtra(DetailProgress.WORK);if(progress!=null)intent.putExtra(DetailProgress.WORK,progress);
         }
         // A resource-list preview may carry collect/search state that closes the native player.
         // A selected episode always gets a fresh fullscreen playback request.

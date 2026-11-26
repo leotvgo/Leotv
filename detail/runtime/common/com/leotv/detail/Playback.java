@@ -116,6 +116,7 @@ public final class Playback {
             if(video!=null)video.setBackground(new android.graphics.drawable.ColorDrawable(android.graphics.Color.BLACK));
         }
         DanmakuPlayback.initialize(activity);
+        DetailProgress.initialize(activity);
         VideoPreload.initialize(activity);
     }
     private static void titleArtwork(Activity activity) {
@@ -227,6 +228,7 @@ public final class Playback {
             oriented.put(activity, media);
     }
     public static void release(Activity activity) {
+        DetailProgress.release(activity);
         VideoPreload.release(activity);
         DanmakuPlayback.release(activity);
         if(NativeRouting.isFullscreenPlayer(activity)&&!activity.isChangingConfigurations())DetailSessionCache.unpin();

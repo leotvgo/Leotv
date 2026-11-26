@@ -46,7 +46,7 @@ final class NativeLibrary {
         type.getMethod("save").invoke(keep);
         return true;
     }
-    private static final class Saved {
+    static final class Saved {
         String key,name,flag,url,title;long position,duration,created,captured;
     }
     private static final Map<String,Saved> recent=new LinkedHashMap<>(16,.75f,true);
@@ -63,6 +63,7 @@ final class NativeLibrary {
     /** Read the same live History used by the JAR before the fullscreen player pauses. No database writes. */
     static void checkpoint(Activity activity){
         if(!NativeRouting.isFullscreenPlayer(activity))return;
+        DetailProgress.checkpoint(activity);
         try{
             Object row=activity.getClass().getField(Device.MOBILE?"b0":"g0").get(activity);if(row==null)return;
             String site=activity.getIntent().getStringExtra("key"),id=activity.getIntent().getStringExtra("id");if(site==null||id==null)return;
@@ -89,6 +90,15 @@ final class NativeLibrary {
         }catch(ReflectiveOperationException|RuntimeException unavailable){return null;}
     }
     private static boolean same(String a,String b){return a!=null&&b!=null&&a.trim().equalsIgnoreCase(b.trim());}
+    /** Seed from the native same-title continuation contract, choosing the newest actual progress. */
+    static Saved legacy(Context context,SourceGateway.Detail detail){
+        Saved newest=null;
+        try{Class<?> type=model(context,"History");Object rows=type.getMethod("findByName",String.class).invoke(null,detail.name);
+            if(rows instanceof List)for(Object row:(List<?>)rows){Saved value=saved(row,"");if(DetailProgress.sameLegacy(context,detail,row)&&value!=null&&value.position>0&&(newest==null||value.created>newest.created))newest=value;}
+            Saved exact=saved(type.getMethod("find",String.class).invoke(null,key(detail,cid(context))),"");if(exact!=null&&exact.position>0&&(newest==null||exact.created>newest.created))newest=exact;
+        }catch(ReflectiveOperationException|RuntimeException absent){}
+        return newest;
+    }
     private static SourceGateway.Episode resolve(SourceGateway.Detail detail,Saved value){
         if(value==null)return null;
         for(SourceGateway.Episode episode:detail.episodes)if(!value.url.isEmpty()&&value.url.equals(episode.url)&&(value.flag.isEmpty()||same(value.flag,episode.flag)))return episode;
@@ -105,6 +115,9 @@ final class NativeLibrary {
         return null;
     }
     static SourceGateway.Episode resume(Context context, SourceGateway.Detail detail, String mark) {
+        DetailProgress.Record shared=DetailProgress.read(context,detail);
+        if(shared!=null){Saved local=read(context,detail);SourceGateway.Episode resolved=DetailProgress.resolve(detail,shared,local==null?"":local.flag);return resolved!=null?resolved:detail.episodes.isEmpty()?null:detail.episodes.get(0);}
+        if(DetailProgress.erased(context,detail))return detail.episodes.isEmpty()?null:detail.episodes.get(0);
         Saved saved=read(context,detail);
         if(mark!=null&&!mark.isEmpty())return preferred(detail.episodes,saved==null?"":saved.flag,mark);
         SourceGateway.Episode selected=resolve(detail,saved);
@@ -131,6 +144,9 @@ final class NativeLibrary {
     }
     static Progress progress(Context context,SourceGateway.Detail detail,SourceGateway.Episode episode){
         if(detail==null||episode==null)return null;
+        DetailProgress.Record shared=DetailProgress.read(context,detail);
+        if(shared!=null){SourceGateway.Episode selected=DetailProgress.resolve(detail,shared,episode.flag);return selected!=null&&selected.url.equals(episode.url)&&selected.flag.equals(episode.flag)&&shared.position>0?new Progress(shared.position,shared.duration):null;}
+        if(DetailProgress.erased(context,detail))return null;
         Saved saved=read(context,detail);SourceGateway.Episode selected=resolve(detail,saved);
         if(saved==null||saved.position<=0||selected==null||!selected.flag.equals(episode.flag)||!selected.url.equals(episode.url))return null;
         return new Progress(saved.position,saved.duration);

@@ -46,7 +46,7 @@ final class LibraryDetailLayout {
         p.tagline.setVisibility(View.GONE);p.crewLine.setVisibility(View.GONE);
         int top=Math.round(height*(p.mobile?.48f:.34f));FrameLayout.LayoutParams info=new FrameLayout.LayoutParams(-1,-2,Gravity.TOP);info.topMargin=top;p.heroFrame.addView(p.info,info);
         p.hero.setLayoutParams(new FrameLayout.LayoutParams(-1,height));p.hero.presentation(false,DetailHero.LIBRARY_DETAIL);p.hero.dots(false);
-        p.controls.setPadding(side,0,side,dp(32));p.controls.setBackgroundColor(Color.TRANSPARENT);p.scroll.setBackground(new android.graphics.drawable.ColorDrawable(0xff06111b));
+        p.controls.setPadding(p.mobile?dp(16):side,0,p.mobile?dp(16):side,dp(32));p.controls.setBackgroundColor(Color.TRANSPARENT);p.scroll.setBackground(new android.graphics.drawable.ColorDrawable(0xff06111b));
         if(p.surface!=null){p.surface.setVisibility(View.GONE);}
         p.actorHeading.setText("主演");p.actorHeading.setTextSize(12);p.actorHeading.setPadding(0,dp(8),0,dp(8));
         View actorScroll=(View)p.actors.getParent();int index=0;for(View v:new View[]{p.actorHeading,p.actorFallback,actorScroll}){detach(v);p.controls.addView(v,index++);}
@@ -60,7 +60,7 @@ final class LibraryDetailLayout {
         p.hero.setLayoutParams(new FrameLayout.LayoutParams(-1,-1));p.hero.dots(true);
         p.playButton.getLayoutParams().height=dp(48);p.playButton.setTextSize(16);p.playButton.setPadding(dp(24),dp(10),dp(24),dp(10));p.heroActions.setPadding(0,0,0,0);
         for(int i=0;i<p.actionRow.getChildCount();i++){View v=p.actionRow.getChildAt(i);v.setMinimumHeight(dp(48));LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(0,dp(52),1);if(i>0)lp.leftMargin=dp(8);v.setLayoutParams(lp);}
-        p.controls.setPadding(dp(p.mobile?20:44),0,dp(p.mobile?20:44),dp(36));p.scroll.setBackground(new android.graphics.drawable.ColorDrawable(DetailHero.FLOOR));
+        p.controls.setPadding(dp(p.mobile?16:44),0,dp(p.mobile?16:44),dp(36));p.scroll.setBackground(new android.graphics.drawable.ColorDrawable(DetailHero.FLOOR));
         if(p.surface!=null)p.surface.setVisibility(View.VISIBLE);p.actorHeading.setText("演员");p.actorHeading.setTextSize(18);p.actorHeading.setPadding(0,dp(20),0,dp(8));
         p.title.setPadding(titlePadding[0],titlePadding[1],titlePadding[2],titlePadding[3]);
         p.synopsis.setTextColor(synopsisColor);p.synopsis.setPadding(0,dp(p.mobile?14:8),0,dp(p.mobile?4:0));

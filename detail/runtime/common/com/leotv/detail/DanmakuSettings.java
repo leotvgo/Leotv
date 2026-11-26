@@ -33,7 +33,7 @@ public final class DanmakuSettings {
         }catch(Exception invalid){/* Invalid API must never fail ordinary subscription loading. */}
     }
     private static Context activeContext;
-    public static void initialize(Context context){activeContext=context.getApplicationContext();}
+    public static void initialize(Context context){activeContext=context.getApplicationContext();DanmakuEffects.initialize(context);}
     static void setApi(Context context,String value){prefs(context).edit().putString("danmaku_api_url",validate(value)).apply();}
     static String validate(String value){
         String text=DanmakuSource.clean(value);if(text.isEmpty())return "";
@@ -41,7 +41,7 @@ public final class DanmakuSettings {
             if(!("http".equalsIgnoreCase(uri.getScheme())||"https".equalsIgnoreCase(uri.getScheme()))||uri.getHost()==null||uri.getRawUserInfo()!=null||text.length()>8192)throw new Exception();
         }catch(Exception invalid){throw new IllegalArgumentException("请填写有效的 HTTP/HTTPS 弹幕 API 地址");}return text;
     }
-    private static SharedPreferences nativePrefs(Context c)throws ReflectiveOperationException{return(SharedPreferences)Class.forName(Device.MOBILE?"R6.g":"r7.g",true,c.getClassLoader()).getMethod(Device.MOBILE?"x":"r").invoke(null);}
+    static SharedPreferences nativePrefs(Context c)throws ReflectiveOperationException{return(SharedPreferences)Class.forName(Device.MOBILE?"R6.g":"r7.g",true,c.getClassLoader()).getMethod(Device.MOBILE?"x":"r").invoke(null);}
     static boolean enabled(Context c){try{return nativePrefs(c).getBoolean("danmu_load",true);}catch(Exception unavailable){return prefs(c).getBoolean("danmaku_load",true);}}
     static boolean automatic(Context c){return prefs(c).getBoolean("danmaku_auto",true);}
     static boolean spiderFirst(Context c){return prefs(c).getBoolean("danmaku_spider_first",true);}

@@ -45,7 +45,7 @@ final class DetailRecommendations {
         if (signature.equals(key.toString())) return;
         signature = key.toString(); items = values; images.clear(); row.removeAllViews();
         for (MobileDetailMetadata.Recommendation value : values) {
-            LinearLayout cell = new LinearLayout(activity); cell.setOrientation(LinearLayout.VERTICAL); cell.setPadding(dp(6),dp(6),dp(6),dp(10));
+            LinearLayout cell = new LinearLayout(activity); cell.setOrientation(LinearLayout.VERTICAL); cell.setPadding(dp(mobile?0:6),dp(6),dp(mobile?0:6),dp(10));
             cell.setFocusable(true); cell.setClickable(true); cell.setContentDescription("搜索：" + value.title);
             StateListDrawable states = new StateListDrawable();
             GradientDrawable focus = new GradientDrawable(); focus.setColor(0x333d536e); focus.setCornerRadius(dp(10)); focus.setStroke(dp(2),0xfff1f4fa);
@@ -63,7 +63,7 @@ final class DetailRecommendations {
             // Held down instead of pressed, the title skips this line and is looked for everywhere the
             // shell can reach; a long press the shell cannot answer falls through to the ordinary press.
             cell.setOnLongClickListener(v -> NativeViews.globalSearch(activity,value.title));
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp(width+12),-2); params.rightMargin = dp(12);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp(width+(mobile?0:12)),-2); params.rightMargin = dp(12);
             row.addView(cell,params); images.add(image);
         }
         root.setVisibility(values.isEmpty() ? View.GONE : View.VISIBLE);

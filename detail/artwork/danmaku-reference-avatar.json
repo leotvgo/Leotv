@@ -1,0 +1,24 @@
+{
+  "source": "user-provided effect reference screenshot",
+  "source_sha256": "8faab1c6eeaff187720f4a2ab340f4f679dfdd6857c271dee42f3dfc09926644",
+  "source_dimensions": [
+    1280,
+    833
+  ],
+  "crop_xyxy": [
+    701,
+    39,
+    731,
+    69
+  ],
+  "dimensions": [
+    32,
+    32
+  ],
+  "alpha": "antialiased circular mask",
+  "asset": "detail/artwork/danmaku-reference-avatar.png",
+  "asset_sha256": "50a27072c86d2020c7385f04de3b306922d85d1a52c44430b336619c2b53c8dd",
+  "runtime_source": "detail/runtime/common/com/leotv/detail/DanmakuAvatar.java",
+  "delivery": "identical PNG bytes embedded in the program; original ZIP assets untouched",
+  "role": "decorative portrait; no sender identity or nickname"
+}

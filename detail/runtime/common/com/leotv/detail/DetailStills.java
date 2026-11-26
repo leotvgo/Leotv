@@ -92,7 +92,7 @@ final class DetailStills {
         for (int index = 0; index < wanted.size(); index++) {
             final int at = index;
             LinearLayout cell = new LinearLayout(activity);
-            cell.setOrientation(LinearLayout.VERTICAL); cell.setPadding(dp(6), dp(6), dp(6), dp(10));
+            cell.setOrientation(LinearLayout.VERTICAL); cell.setPadding(dp(mobile?0:6), dp(6), dp(mobile?0:6), dp(10));
             cell.setFocusable(true); cell.setClickable(true);
             cell.setContentDescription("剧照 " + (index + 1));
             StateListDrawable states = new StateListDrawable();
@@ -106,7 +106,7 @@ final class DetailStills {
             int width = mobile ? 168 : 196;
             cell.addView(image, new LinearLayout.LayoutParams(dp(width), dp(width * 9 / 16)));
             cell.setOnClickListener(v -> open(at));
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp(width + 12), -2);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp(width + (mobile?0:12)), -2);
             params.rightMargin = dp(12);
             row.addView(cell, params); images.add(image);
             cells.add(cell);

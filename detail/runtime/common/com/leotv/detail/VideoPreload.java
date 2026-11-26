@@ -88,7 +88,7 @@ public final class VideoPreload {
             long position=PreloadHost.position(player);
             long buffered=PreloadHost.number(DanmakuPlayback.invoke(PreloadHost.field(player,"u"),"D"));
             if(buffered-position<5000){if(media!=null)media.stop();lastForward=-1;lastOpening=-1;return;}
-            if(next!=null&&lastOpening!=selected.opening){lastOpening=selected.opening;if(PreloadHost.direct(next.result)){nextMediaStarted=SystemClock.elapsedRealtime();loadMedia(next.result,selected.opening,10000);}return;}
+            if(next!=null&&lastOpening!=selected.opening){lastOpening=selected.opening;loadNextMedia(player,next.result,selected.opening);return;}
             if(!PreloadSettings.current(context))return;
             if(lastForward<0||position<lastForward-2000||position-lastForward>=Math.max(10000,PreloadSettings.seconds(context)*500L)){
                 // Give the next episode's initial segment load first use of our one media worker.
@@ -114,10 +114,14 @@ public final class VideoPreload {
                         android.util.Log.i("LeotvPreload","Next episode response ready");
                         Activity activity=owner.get();Object player=activity==null?null:PreloadHost.player(activity);
                         long buffered=PreloadHost.number(DanmakuPlayback.invoke(PreloadHost.field(player,"u"),"D"));
-                        if(snapshot.key.engine==2&&PreloadHost.direct(resolved)&&PreloadHost.playing(player)&&buffered-PreloadHost.position(player)>=5000){lastOpening=snapshot.opening;nextMediaStarted=SystemClock.elapsedRealtime();loadMedia(resolved,snapshot.opening,10000);}
+                        if(snapshot.key.engine==2&&PreloadHost.direct(resolved)&&PreloadHost.playing(player)&&buffered-PreloadHost.position(player)>=5000){lastOpening=snapshot.opening;loadNextMedia(player,resolved,snapshot.opening);}
                     }
                 });
             });}catch(java.util.concurrent.RejectedExecutionException busy){request=null;}
+        }
+        private void loadNextMedia(Object player,Object raw,long opening){
+            try{Object value=PreloadHost.nextMediaResult(context,player,raw);if(value!=null){nextMediaStarted=SystemClock.elapsedRealtime();loadMedia(value,opening,10000);}}
+            catch(ReflectiveOperationException|RuntimeException unavailable){android.util.Log.w("LeotvPreload","Next media URL unavailable");}
         }
         private void loadMedia(Object value,long position,long duration){
             if(media==null)media=new ExoMediaPreload(context);

@@ -1,0 +1,61 @@
+{
+  "status": "reference_effects_code_ready_waiting_for_pro_merge",
+  "at": "2026-11-26T12:25:05.880570+08:00",
+  "pending_version": "5.3.4-preview.3/649",
+  "styles": 9,
+  "added_styles": [
+    "reference_portrait_capsule",
+    "neon_orb_trail",
+    "falling_petals"
+  ],
+  "checks": {
+    "all_four_native_source_variants": "passed",
+    "random_sampling_geometry_and_animation_limit": "passed",
+    "selected_fixture_count": 1435,
+    "fixture_count": 10000,
+    "api23_canvas_nine_styles_static_and_animated": "passed",
+    "portrait_source_embedded_png_equivalence": "passed",
+    "portrait_dimensions": [
+      32,
+      32
+    ],
+    "cache_includes_portrait_and_limit_bytes": 2097152,
+    "max_animations": 1,
+    "max_bitmap_entries": 64,
+    "git_diff_check": "passed",
+    "device_visual_fps": "not_run"
+  },
+  "push": false,
+  "apk_build": false,
+  "app_actions_triggered": false,
+  "unchanged_in_this_addition": {
+    "tools/build_branded.py": true,
+    "detail/runtime/common/com/leotv/detail/Playback.java": true,
+    "detail/runtime/common/com/leotv/detail/VideoPreload.java": true,
+    "tools/apply_video_preload.py": true,
+    "tools/apply_danmaku_effects.py": true
+  },
+  "validation_boundary": "API23 legacy Robolectric Canvas calls with a fictional native measured box; actual device pixels/fps require later signed APK acceptance.",
+  "source_sha256": {
+    "detail/runtime/common/com/leotv/detail/DanmakuEffects.java": "135cf3e070339cef0f7e441c952a875f96aa66e259bdfbe0e1b702fc74156bf6",
+    "detail/runtime/common/com/leotv/detail/DanmakuEffectPolicy.java": "f062a85b9e385188e4da130389f6f5e253ef3eeb819414603319b216963873d2",
+    "detail/runtime/common/com/leotv/detail/DanmakuAvatar.java": "188f5cdc8e468a7c9d37fabf0634e4155b5a05a83a15890c653da404bb68024f",
+    "detail/runtime-sources.json": "911cb4a36bce2d80c2dfd358b3ff311986b3dcd8f51e2c55896d628fedc6f8e8",
+    "detail/artwork/danmaku-reference-avatar.png": "50a27072c86d2020c7385f04de3b306922d85d1a52c44430b336619c2b53c8dd",
+    "detail/artwork/danmaku-reference-avatar.json": "005ff3fd852e57f5564e3f5746bb06aac5966a656269c68c204992785f32c303",
+    "tools/check_danmaku_effects.py": "7f9853a2aeb4ad918de4eedd72c14e1702afcaed004be6fb964fb2f3cb7671bd",
+    "research/check_danmaku_effect_policy.py": "75c43877e61e1a20f4e3d007d0d02669b00a2b037b6de5a45602f2d791bc6577",
+    "research/effects-check/build.gradle": "f7f93fb28f23e05ae9e44e1afe1bc28b118a099132df6591712bb1b6698f91c7",
+    "research/detail-check/src/test/java/com/leotv/detail/DanmakuEffectsTest.java": "fe53154873254f3ae9302b4f1581260d82c26093e139c2182815ece8912774e7",
+    ".github/workflows/ordinary-build.yml": "714e0bff36fb5b529900b3b7fd01a9e13f6845d107925f5caa3b55c8aa263e4b",
+    "README.md": "c2ba98e244d12a6bb1c6ca5d0e965481b8abe6bef6acd95fc23888aa9076e2e0",
+    "docs/LEOTV-5.3.4-PREVIEW-3-PROGRESS-PRELOAD-SPACING-20261126.md": "3357090300746076e08adef535b7f28eb58d6bb0acb512796cecf7ec4c57a5b1"
+  },
+  "test_report": {
+    "path": "research/effects-check/build/test-results/test/TEST-com.leotv.detail.DanmakuEffectsTest.xml",
+    "sha256": "34abd7a737cb59608e0b3283b8a369288bde846f64f9fdf1bf2838713bad6cfe",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0"
+  }
+}

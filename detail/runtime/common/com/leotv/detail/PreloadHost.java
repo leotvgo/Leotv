@@ -113,6 +113,18 @@ final class PreloadHost {
         call(result,"setUrl",url);call(result,"setParse",Integer.valueOf(0));
         @SuppressWarnings("unchecked") Map<String,String> active=(Map<String,String>)field(player,"q");
         call(result,"setHeader",headers(context,active));call(result,"setFormat",field(player,"A"));call(result,"setDrm",field(player,"F"));
+        // D is already the native player's resolved/adblock URL. An omitted adblock is 1.
+        call(result,"setAdblock",Integer.valueOf(0));
+        return result;
+    }
+    /** Copy only media fields after the same pure URL rewrite as foreground playback. */
+    static Object nextMediaResult(Context context,Object player,Object raw)throws ReflectiveOperationException{
+        if(!direct(raw)||special(context,text(call(raw,"getRealUrl"))))return null;
+        Object result=create(context,"com.fongmi.android.tv.bean.Result");
+        String url=text(call(player,Device.MOBILE?"d0":"a0",call(raw,"getAdblock"),text(call(raw,"getRealUrl"))));
+        call(result,"setUrl",url);call(result,"setParse",Integer.valueOf(0));
+        call(result,"setAdblock",Integer.valueOf(0));call(result,"setHeader",call(raw,"getHeader"));
+        call(result,"setFormat",call(raw,"getFormat"));call(result,"setDrm",call(raw,"getDrm"));
         return result;
     }
     static Object request(Context context,Snapshot snapshot)throws ReflectiveOperationException{

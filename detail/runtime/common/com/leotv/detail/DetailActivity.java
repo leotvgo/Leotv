@@ -114,6 +114,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
         if(source==null)return;
         cacheState();DetailSessionCache.pin(this,source);
         Playback.prepareSource(this,source);
+        DetailProgress.prepare(this,source,metadata);
         getIntent().putExtra("leotv.episode.reverseSort",page.reversed).putExtra("leotv.episode.reversePlay",page.reversePlay);
         if(metadata!=null)getIntent().putStringArrayListExtra(NativeRouting.TITLE_LOGOS,new java.util.ArrayList<>(metadata.branding.logos));
         else getIntent().removeExtra(NativeRouting.TITLE_LOGOS);

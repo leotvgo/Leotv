@@ -171,6 +171,26 @@
         "resume(Landroid/app/Activity;)V",
         "error(Landroid/app/Activity;Ljava/lang/Object;)Z"
       ]
+    },
+    "com.leotv.detail.DetailProgress": {
+      "methods": [
+        "beforeRequest(Landroid/app/Activity;)V",
+        "restore(Landroid/app/Activity;)V",
+        "ready(Landroid/app/Activity;)V",
+        "deleted(Ljava/lang/Object;)V",
+        "clearHistory(I)V"
+      ]
+    },
+    "com.leotv.detail.DanmakuSpacing": {
+      "methods": [
+        "pixels()I"
+      ]
+    },
+    "com.leotv.detail.DanmakuEffects": {
+      "methods": [
+        "measure(Ljava/lang/Object;Landroid/graphics/Paint;)V",
+        "draw(Ljava/lang/Object;Ljava/lang/Object;Landroid/graphics/Canvas;FF)Z"
+      ]
     }
   }
 }

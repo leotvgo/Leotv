@@ -117,7 +117,7 @@ final class TvDetailPage implements DetailPage {
         crewLine.setVisibility(View.GONE);info.addView(synopsis);info.addView(facts);info.addView(cast);info.addView(crewLine);cast.setVisibility(View.GONE);
         heroFrame.setFocusable(mobile);heroFrame.setFocusableInTouchMode(mobile);heroFrame.setContentDescription("影片详情");
         controls=new ClippedControls(activity);controls.setOrientation(LinearLayout.VERTICAL);
-        controls.setPadding(dp(mobile?20:44),0,dp(mobile?20:44),dp(36));controls.setBackgroundColor(Color.TRANSPARENT);
+        controls.setPadding(dp(mobile?16:44),0,dp(mobile?16:44),dp(36));controls.setBackgroundColor(Color.TRANSPARENT);
         navigation=new TvDetailNavigation(scroll,page,controls,heroFrame);
         heroActions=new LinearLayout(activity);heroActions.setOrientation(LinearLayout.HORIZONTAL);
         heroActions.setGravity(Gravity.LEFT);heroActions.setClipChildren(false);heroActions.setClipToPadding(false);
@@ -272,6 +272,7 @@ final class TvDetailPage implements DetailPage {
         else if(metadata!=null){metadataSite=detail.site;metadataId=detail.id;
             if(metadata.complete)FollowStore.update(new BackdropIdentity(detail.site,detail.id,detail.name,detail.year,detail.type),metadata);}
         if(pending){preferred=null;playButton.idle("资源仍在加载…");return;}
+        DetailProgress.bind(activity,detail,metadata);
         preferred=NativeLibrary.resume(activity,detail,playbackFocusPending?null:activity.getIntent().getStringExtra("mark"));
         boolean[] order=NativeLibrary.order(activity,detail);reversed=order[0];reversePlay=order[1];
         selectedFlag=preferred==null?"":preferred.flag;showFlags();showEpisodes();refreshActions();
@@ -349,6 +350,13 @@ final class TvDetailPage implements DetailPage {
     @Override public void render(MobileDetailMetadata.Result value){
         MobileDetailMetadata.Result previous=metadata;metadata=value;metadataResolved=true;
         metadataSite=value!=null&&source!=null?source.site:"";metadataId=value!=null&&source!=null?source.id:"";
+        if(value!=null&&source!=null&&!sourcePending){
+            DetailProgress.bind(activity,source,value);DetailProgress.Record shared=DetailProgress.read(activity,source);
+            SourceGateway.Episode resumed=shared==null?null:DetailProgress.resolve(source,shared,selectedFlag);
+            if(resumed!=null&&(preferred==null||!resumed.url.equals(preferred.url)||!resumed.flag.equals(preferred.flag))){
+                preferred=resumed;if(!resumed.flag.equals(selectedFlag)){selectedFlag=resumed.flag;showFlags();}showEpisodes();
+            }else updatePlayButton();
+        }
         if(value!=null&&value.complete&&source!=null&&!sourcePending)FollowStore.update(new BackdropIdentity(source.site,source.id,source.name,source.year,source.type),value);
         if(value==null){hero.finishLoading();actorFallback.setText("暂无演员资料");loadingState();return;}
         if(previous==null||!previous.stills.equals(value.stills)||!previous.backdropPaths.equals(value.backdropPaths))stills.render(value.stills.isEmpty()?value.backdropPaths:value.stills);

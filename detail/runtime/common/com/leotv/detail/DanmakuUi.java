@@ -41,6 +41,8 @@ public final class DanmakuUi {
     public static void settings(Activity activity){refreshApiSummary(activity);settings(activity,null);}
     public static void attach(Activity activity,View root){
         if(activity==null||root==null)return;
+        attachSpacing(activity,root);
+        attachEffects(activity,root);
         if(root.findViewWithTag("leotv_danmaku_api_settings")!=null){refreshApiSummary(activity);return;}
         int id=activity.getResources().getIdentifier("danmuLoad","id",activity.getPackageName());View template=id==0?null:root.findViewById(id);
         if(template==null||!(template.getParent() instanceof LinearLayout))return;
@@ -54,6 +56,32 @@ public final class DanmakuUi {
             for(int i=0;i<parent.getChildCount();i++){ViewGroup.LayoutParams sibling=parent.getChildAt(i).getLayoutParams();if(sibling instanceof LinearLayout.LayoutParams&&((LinearLayout.LayoutParams)sibling).topMargin>0){LinearLayout.LayoutParams original=(LinearLayout.LayoutParams)template.getLayoutParams();original.topMargin=((LinearLayout.LayoutParams)sibling).topMargin;template.setLayoutParams(original);break;}}
         }
         parent.addView(row,Device.MOBILE?parent.indexOfChild(template)+1:0,params);
+    }
+    private static void attachSpacing(Activity activity,View root){
+        if(root.findViewWithTag("leotv_danmaku_spacing")!=null)return;
+        int id=activity.getResources().getIdentifier("danmuLoad","id",activity.getPackageName());View template=id==0?null:root.findViewById(id);
+        if(template==null||!(template.getParent() instanceof LinearLayout))return;
+        LinearLayout parent=(LinearLayout)template.getParent();View row=NativeViews.copy(template,activity);
+        List<TextView> texts=new ArrayList<>();collect(row,texts);if(texts.isEmpty())return;
+        texts.get(0).setText("弹幕行间距");
+        Runnable summary=()->{if(texts.size()>1)texts.get(texts.size()-1).setText(DanmakuSpacing.summary(activity));};summary.run();
+        row.setId(View.generateViewId());row.setTag("leotv_danmaku_spacing");row.setFocusable(!Device.MOBILE);row.setFocusableInTouchMode(!Device.MOBILE);row.setClickable(true);
+        row.setOnClickListener(view->DanmakuSpacing.choose(activity,summary));
+        parent.addView(row,parent.indexOfChild(template)+1,new LinearLayout.LayoutParams((LinearLayout.LayoutParams)template.getLayoutParams()));
+    }
+    private static void attachEffects(Activity activity,View root){
+        if(root.findViewWithTag("leotv_danmaku_effects")!=null)return;
+        int id=activity.getResources().getIdentifier("danmuLoad","id",activity.getPackageName());View template=id==0?null:root.findViewById(id);
+        if(template==null||!(template.getParent() instanceof LinearLayout))return;
+        LinearLayout parent=(LinearLayout)template.getParent();int at=parent.indexOfChild(template)+1;
+        for(int option=0;option<3;option++){
+            int selected=option;View row=NativeViews.copy(template,activity);List<TextView> texts=new ArrayList<>();collect(row,texts);if(texts.isEmpty())continue;
+            texts.get(0).setText(option==0?"特效弹幕":option==1?"特效比例":"特效动画");
+            Runnable summary=()->{if(texts.size()>1)texts.get(texts.size()-1).setText(selected==0?on(DanmakuEffects.enabled(activity)):selected==1?DanmakuEffects.rate(activity)+"%":on(DanmakuEffects.animated(activity)));};summary.run();
+            row.setId(View.generateViewId());row.setTag(option==0?"leotv_danmaku_effects":"leotv_danmaku_effects_"+option);row.setFocusable(!Device.MOBILE);row.setFocusableInTouchMode(!Device.MOBILE);row.setClickable(true);
+            row.setOnClickListener(view->{if(selected==1)DanmakuEffects.chooseRate(activity,summary);else{DanmakuEffects.toggle(activity,selected==2);summary.run();}});
+            parent.addView(row,at++,new LinearLayout.LayoutParams((LinearLayout.LayoutParams)template.getLayoutParams()));
+        }
     }
     public static void focusApi(Activity activity,View original){
         View root=activity.findViewById(android.R.id.content);View api=root==null?null:root.findViewWithTag("leotv_danmaku_api_settings");

@@ -43,6 +43,10 @@
     "smali/androidx/leanback/widget/HorizontalGridView.smali": "2739c20c3ee0536da02b46f90c6c7436491cca2d7e9c22701fa42be3dc844937",
     "smali/androidx/recyclerview/widget/RecyclerView.smali": "853d4293e10b0c479c2ce6eb1f0c63198ba2a37a72d47dd763746b73b97a00e9"
   },
-  "mobile-v7a": {},
-  "mobile-v8a": {}
+  "mobile-v7a": {
+    "smali/com/fongmi/android/tv/bean/History.smali": "3d66c6f67a33a0d041ec59352a057b2ba244e3ac419af00ea070b82a013402e3"
+  },
+  "mobile-v8a": {
+    "smali/com/fongmi/android/tv/bean/History.smali": "3d66c6f67a33a0d041ec59352a057b2ba244e3ac419af00ea070b82a013402e3"
+  }
 }

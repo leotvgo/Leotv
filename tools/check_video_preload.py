@@ -49,6 +49,8 @@ def check(root):
         if text not in host:raise ValueError('Native preload result or extractor contract missing: '+text)
     if 'return usable(result)?result:null' not in request or 'PreloadHost.finish(session.context,result)' not in source:
         raise ValueError('Raw provider responses must be consumed before native source resolution, without refetching playerContent.')
+    for text in ('call(result,"setAdblock",Integer.valueOf(0))','static Object nextMediaResult(','Device.MOBILE?"d0":"a0"'):
+        if text not in host:raise ValueError('Native default-adblock media must use the final native URL without changing the handoff response: '+text)
     finish=host.split('static Object finish(')[1].split('static Object mediaResult(')[0]
     if 'call(extractor,"stop")' not in finish or 'call(source,"e",result)' not in finish:
         raise ValueError('A consumed raw result must preserve the original foreground Source.stop/fetch stages.')
@@ -94,6 +96,8 @@ def check_native(root,variant,project):
         'Lcom/fongmi/android/tv/bean/Result;':['<init>()V','getUrl()Lcom/fongmi/android/tv/bean/Url;','setUrl(Ljava/lang/String;)V','getParse()Ljava/lang/Integer;','getJx()Ljava/lang/Integer;','getPlayUrl()Ljava/lang/String;','setHeader(Ljava/util/Map;)V','setFormat(Ljava/lang/String;)V','setDrm(Lcom/fongmi/android/tv/bean/Drm;)V'],
         'Lcom/fongmi/android/tv/bean/Url;':['v()Ljava/lang/String;','getValues()Ljava/util/List;','set(I)Lcom/fongmi/android/tv/bean/Url;'],
     }
+    required['LF3/f;' if mobile else 'LC3/e;'].append(('d0' if mobile else 'a0')+'(Ljava/lang/Integer;Ljava/lang/String;)Ljava/lang/String;')
+    required['Lcom/fongmi/android/tv/bean/Result;'].extend(['getAdblock()Ljava/lang/Integer;','setAdblock(Ljava/lang/Integer;)V','getFormat()Ljava/lang/String;','getDrm()Lcom/fongmi/android/tv/bean/Drm;'])
     for descriptor,signatures in required.items():
         for signature in signatures:method(native[descriptor],signature)
     video=(project/'smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali').read_text()

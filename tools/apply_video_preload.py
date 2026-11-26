@@ -16,9 +16,11 @@ def apply(project, root, variant):
     track = 'smali/V0/s.smali' if mobile else 'smali/W0/s.smali'
     params = 'smali/q.1/e.smali' if mobile else 'smali/p.1/e.smali'
     changed, changes = set(), {}
-    for name in (video, player, counter, track, params):
+    history = 'smali/com/fongmi/android/tv/bean/History.smali'
+    history_lock = json.loads((root / 'detail/native-history-source-lock.json').read_text())[variant]
+    for name in (video, player, counter, track, params, history):
         original = (root / folder / 'bytecode-project' / name).read_bytes()
-        if hashlib.sha256(original).hexdigest() != locked[name]:
+        if hashlib.sha256(original).hexdigest() != (history_lock[name] if name == history else locked[name]):
             raise ValueError('Preload native source differs from its fixed input: ' + name)
         path = project / name
         before = path.read_text()
@@ -29,13 +31,24 @@ def apply(project, root, variant):
                 native = '    invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->begin(Landroid/app/Activity;)V'
                 if body.count(native) != 1:
                     raise ValueError('Preload must follow the existing foreground episode boundary.')
-                body = body.replace(native, native + '\n\n    invoke-static {p0}, Lcom/leotv/detail/VideoPreload;->begin(Landroid/app/Activity;)V')
+                body = body.replace(native, '    invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->beforeRequest(Landroid/app/Activity;)V\n\n' + native + '\n\n    invoke-static {p0}, Lcom/leotv/detail/VideoPreload;->begin(Landroid/app/Activity;)V')
+                resume_position = '    invoke-virtual {v0}, Lcom/fongmi/android/tv/bean/History;->getEpisode()Lcom/fongmi/android/tv/bean/Episode;'
+                if body.count(resume_position) != 1:
+                    raise ValueError('Expected one native same-episode position decision.')
+                body = body.replace(resume_position, '    invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->restore(Landroid/app/Activity;)V\n\n' + resume_position)
                 dispatch = ('    invoke-virtual {v4, v7, v1, v8}, LE3/r;->c(LE3/q;Landroidx/lifecycle/A;Ljava/util/concurrent/Callable;)V' if mobile else
                             '    invoke-virtual {v4, v7, v1, v8}, LB3/r;->c(LB3/q;Landroidx/lifecycle/A;Ljava/util/concurrent/Callable;)V')
                 if body.count(dispatch) != 1:
                     raise ValueError('Expected one native player-content callable dispatch.')
                 return body.replace(dispatch, '    invoke-static {p0, v8}, Lcom/leotv/detail/VideoPreload;->wrap(Landroid/app/Activity;Ljava/util/concurrent/Callable;)Ljava/util/concurrent/Callable;\n\n    move-result-object v8\n\n' + dispatch)
             text = replace_method(text, 'A0()V', begin)
+            event = 'onPlayerEvent(Lz3/g;)V' if mobile else 'onPlayerEvent(Lw3/g;)V'
+            def ready(body):
+                marker = '    :cond_3\n'
+                if body.count(marker) != 1:
+                    raise ValueError('Expected one native ready event branch.')
+                return body.replace(marker, marker + '    invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->ready(Landroid/app/Activity;)V\n\n')
+            text = replace_method(text, event, ready)
             error = 'onErrorEvent(Lz3/e;)V' if mobile else 'onErrorEvent(Lw3/e;)V'
             def recover(body):
                 marker = re.search(r'(?m)^    \.locals \d+$', body)
@@ -61,6 +74,15 @@ def apply(project, root, variant):
             signature = ('t0' if mobile else 'r0') + '(Lcom/fongmi/android/tv/bean/Result;ZJ)V'
             text = replace_method(text, signature, lambda body: append_call(body,
                 '    invoke-static {p0, p1, p2}, Lcom/leotv/detail/VideoPreload;->result(Ljava/lang/Object;Ljava/lang/Object;Z)V'))
+        elif name == history:
+            def delete_row(body):
+                marker = re.search(r'(?m)^    \.locals \d+$', body)
+                return body[:marker.end()] + '\n\n    invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->deleted(Ljava/lang/Object;)V\n' + body[marker.end():]
+            def delete_all(body):
+                marker = re.search(r'(?m)^    \.locals \d+$', body)
+                return body[:marker.end()] + '\n\n    invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->clearHistory(I)V\n' + body[marker.end():]
+            text = replace_method(text, 'delete()Lcom/fongmi/android/tv/bean/History;', delete_row)
+            text = replace_method(text, 'delete(I)V', delete_all)
         else:
             if name == track:
                 group = 'Ln0/T;' if mobile else 'Lo0/U;'

@@ -1,0 +1,37 @@
+plugins { id 'java' }
+repositories { mavenCentral(); google() }
+sourceSets {
+    main.java.srcDirs = ['src/stub/java']
+    test.java.srcDirs = ['../detail-check/src/test/java']
+    test.java.include '**/DanmakuEffectsTest.java'
+}
+tasks.named('compileJava') {
+    source '../../detail/runtime/common/com/leotv/detail/DanmakuEffects.java', '../../detail/runtime/common/com/leotv/detail/DanmakuEffectPolicy.java', '../../detail/runtime/common/com/leotv/detail/DanmakuAvatar.java'
+}
+dependencies {
+    compileOnly 'org.robolectric:android-all:15-robolectric-12650502'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.robolectric:robolectric:4.14.1'
+    testImplementation 'org.robolectric:android-all:15-robolectric-12650502'
+}
+def aarClasses = layout.buildDirectory.dir('aar-classes')
+tasks.register('extractAars') {
+    inputs.files(configurations.testRuntimeClasspath)
+    outputs.dir(aarClasses)
+    doLast {
+        configurations.testRuntimeClasspath.files.findAll { it.name.endsWith('.aar') }.each { aar ->
+            def destination = aarClasses.get().dir(aar.name)
+            def previous = destination.file('classes.jar').asFile
+            if (previous.exists() && !previous.setWritable(true, true)) throw new GradleException('Cannot update generated AAR classes: ' + previous)
+            copy { from zipTree(aar); include 'classes.jar'; into destination; filePermissions { unix('0644') } }
+        }
+    }
+}
+test {
+    dependsOn 'extractAars'
+    classpath += files(provider { fileTree(aarClasses).matching { include '**/*.jar' } })
+    systemProperty 'robolectric.dependency.repo.url', 'https://repo.maven.apache.org/maven2'
+    maxHeapSize = '1g'
+    maxParallelForks = 1
+    testLogging { events 'passed', 'failed'; exceptionFormat 'full' }
+}

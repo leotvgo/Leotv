@@ -13,7 +13,8 @@ def apply(project, root, variant):
     result = 'smali/O3/t.smali' if mobile else 'smali/com/fongmi/android/tv/ui/activity/M.smali'
     player = 'smali/F3/f.smali' if mobile else 'smali/C3/e.smali'
     config = 'smali/t3.1/i.smali' if mobile else 'smali/q3.1/i.smali'
-    paths = [video, result, player, config]
+    renderer = 'smali/H3/d.smali' if mobile else 'smali/E3/d.smali'
+    paths = [video, result, player, config, renderer]
     if mobile:
         paths += ['smali/S3/x.smali','smali/R3/p.1.smali']
     else:
@@ -147,6 +148,13 @@ def apply(project, root, variant):
 '''
                 return body[:marker.end()]+added+body[marker.end():]
             text = replace_method(text, signature, qr)
+        elif name == renderer:
+            def spacing(body):
+                fixed='    const/16 v4, 0x20'
+                if body.count(fixed)!=1:
+                    raise ValueError('Expected the ordinary fixed 32-pixel Danmaku margin.')
+                return body.replace(fixed,'    invoke-static {}, Lcom/leotv/detail/DanmakuSpacing;->pixels()I\n\n    move-result v4')
+            text=replace_method(text,'e()V',spacing)
         elif name in ['smali/R3/p.1.smali','smali/O3/k.smali']:
             def menu(body):
                 position=body.rfind('    return-void')

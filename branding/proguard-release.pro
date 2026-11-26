@@ -25,6 +25,9 @@
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.MetadataSettings { public <methods>; }
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.CacheMaintenance { public <methods>; }
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.VideoPreload { public <methods>; }
+-keep,includedescriptorclasses,allowoptimization class com.leotv.detail.DetailProgress { public <methods>; }
+-keep,includedescriptorclasses,allowoptimization class com.leotv.detail.DanmakuSpacing { public <methods>; }
+-keep,includedescriptorclasses,allowoptimization class com.leotv.detail.DanmakuEffects { public <methods>; }
 -keep class com.leotv.detail.Device { boolean MOBILE; }
 
 # Serialized contracts must retain annotation semantics if source models are added.

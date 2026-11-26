@@ -1,0 +1,34 @@
+{
+  "tv-v7a": {
+    "smali/H5/a.smali": "47dd9083bf71d7c6b9cb3d238cd1af16dc2e55ed917f1a722d8943f30c8fe06f",
+    "smali/N5/a.smali": "2bdecbb92ac3a6b6d99514e3e3f5d762188482eede0e2c8f08f7470eff41ebb7",
+    "smali/I5/b.smali": "479b941f0739326aba5f5f788c66f66f5b6011fe09bedac5f57d8f20af0f6b54",
+    "smali/I5/a.smali": "f47f0028f1a31ac5865fd07f6e5345b822ac18ce791dbbdd6c8266bf76217662",
+    "smali/I5/d.smali": "4ff9df4924513217981e64b0e9c547a26ab52b39ea531d9b79ea68bd3dfd7e95",
+    "smali/H5/g.smali": "d6a8493bc89ffb5a43e75d92dadd137779d1b3c4cf1c098b0616fbadca77acc9"
+  },
+  "tv-v8a": {
+    "smali/H5/a.smali": "47dd9083bf71d7c6b9cb3d238cd1af16dc2e55ed917f1a722d8943f30c8fe06f",
+    "smali/N5/a.smali": "2bdecbb92ac3a6b6d99514e3e3f5d762188482eede0e2c8f08f7470eff41ebb7",
+    "smali/I5/b.smali": "479b941f0739326aba5f5f788c66f66f5b6011fe09bedac5f57d8f20af0f6b54",
+    "smali/I5/a.smali": "f47f0028f1a31ac5865fd07f6e5345b822ac18ce791dbbdd6c8266bf76217662",
+    "smali/I5/d.smali": "4ff9df4924513217981e64b0e9c547a26ab52b39ea531d9b79ea68bd3dfd7e95",
+    "smali/H5/g.smali": "d6a8493bc89ffb5a43e75d92dadd137779d1b3c4cf1c098b0616fbadca77acc9"
+  },
+  "mobile-v7a": {
+    "smali/Y5/a.smali": "4afa3160cf6c744a535c5d4d88a422343420819872131a002f8f8009251757ca",
+    "smali/e6.1/a.smali": "735f1d1e8da8a2201bb277c1c653e78882de91623a23455f7bdeaa7be84db727",
+    "smali/Z5/b.smali": "d322befb594d91782ddc2746e3c07d77df218bf9eb4ab571658539508ee8ad29",
+    "smali/Z5/a.smali": "a1732500c2ef1d6bd1e1d734e2b0899979732f215b07a0442d52eb1e17143664",
+    "smali/Z5/d.smali": "9f86145ffa8c40ee0ecffc49e3cc821a60fbb9d2b52a0e72752881e3b5f28735",
+    "smali/I1/b.smali": "ce3e7b613ead5f070d7982f8eec611fb6e11dcf4c2872c6ee1a5bdee0b79d05d"
+  },
+  "mobile-v8a": {
+    "smali/Y5/a.smali": "4afa3160cf6c744a535c5d4d88a422343420819872131a002f8f8009251757ca",
+    "smali/e6.1/a.smali": "735f1d1e8da8a2201bb277c1c653e78882de91623a23455f7bdeaa7be84db727",
+    "smali/Z5/b.smali": "d322befb594d91782ddc2746e3c07d77df218bf9eb4ab571658539508ee8ad29",
+    "smali/Z5/a.smali": "a1732500c2ef1d6bd1e1d734e2b0899979732f215b07a0442d52eb1e17143664",
+    "smali/Z5/d.smali": "9f86145ffa8c40ee0ecffc49e3cc821a60fbb9d2b52a0e72752881e3b5f28735",
+    "smali/I1/b.smali": "ce3e7b613ead5f070d7982f8eec611fb6e11dcf4c2872c6ee1a5bdee0b79d05d"
+  }
+}
