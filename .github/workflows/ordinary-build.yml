@@ -180,6 +180,9 @@ jobs:
         run: |
           python3 tools/ci_dependencies.py --output "$RUNNER_TEMP/deps"
           python3 tools/ci_input.py --repo "$GITHUB_REPOSITORY" --variant "$VARIANT" --output "$RUNNER_TEMP/input"
+      - name: Verify mobile MPV engine and inline settings source contracts on API23
+        if: startsWith(matrix.variant, 'mobile')
+        run: python3 -B tools/check_mobile_mpv.py --java --sdk "$ANDROID_SDK_ROOT"
       - name: Stage permanent API23 player input and matching Java/source archives without native compilation
         env:
           GH_TOKEN: ${{ github.token }}

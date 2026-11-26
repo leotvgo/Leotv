@@ -18,7 +18,7 @@ final class MpvEngine implements MPVLib.EventObserver, MPVLib.LogObserver, Audio
     final Map<Long,String> commands=new HashMap<>();
     final AudioManager audio;
     long sequence; boolean created,initialized,closed,loaded,ready,paused=true,buffering,seeking,ended,focusResume,playRequested=true;
-    String pendingUrl;Surface boundSurface;
+    String pendingUrl;Surface boundSurface;int surfaceWidth,surfaceHeight;
     long position,duration=-1; float speed=1,requestedSpeed=1; int width,height; boolean hardRequired;
     ParcelFileDescriptor descriptor;
     final List<File> subtitles=new ArrayList<>();
@@ -73,7 +73,14 @@ final class MpvEngine implements MPVLib.EventObserver, MPVLib.LogObserver, Audio
     void speed(float value){if(value>0&&value<=8){requestedSpeed=value;set("speed",Float.toString(value));}}
     boolean playing(){return ready&&!closed&&!ended&&!paused&&!buffering&&!seeking;}
     void startPending(){if(pendingUrl==null)return;String url=pendingUrl;pendingUrl=null;command("加载媒体","loadfile",url,"replace");if(playRequested)play();}
-    void surface(Surface s){if(!initialized||closed||s==boundSurface)return;try{if(s==null){MPVLib.detachSurface();boundSurface=null;}else if(s.isValid()){if(boundSurface==null)MPVLib.attachSurface(s);else MPVLib.replaceSurface(s);boundSurface=s;startPending();}}catch(RuntimeException|LinkageError e){listener.error("MPV Surface 切换失败："+MobileMpv.message(e));}}
+    void surface(Surface s){if(!initialized||closed||s==boundSurface)return;try{if(s==null){MPVLib.detachSurface();boundSurface=null;surfaceWidth=surfaceHeight=0;}else if(s.isValid()){if(boundSurface==null)MPVLib.attachSurface(s);else MPVLib.replaceSurface(s);boundSurface=s;startPending();}}catch(RuntimeException|LinkageError e){listener.error("MPV Surface 切换失败："+MobileMpv.message(e));}}
+    /** Fixed 0.38 Android GPU control does not detect window resizes; reconfigure once per actual size. */
+    void resized(int width,int height){
+        if(closed||!initialized||boundSurface==null||width<=0||height<=0)return;
+        boolean changed=surfaceWidth>0&&surfaceHeight>0&&(surfaceWidth!=width||surfaceHeight!=height);
+        surfaceWidth=width;surfaceHeight=height;
+        if(changed)try{MPVLib.replaceSurface(boundSurface);}catch(RuntimeException|LinkageError e){listener.error("MPV 画面尺寸更新失败："+MobileMpv.message(e));}
+    }
     void addSubtitle(String url,String title,String language,boolean select) throws Exception {
         if(url.startsWith("content:")){
             File f=File.createTempFile("mobile-mpv-sub-",".sub",context.getCacheDir());

@@ -447,12 +447,12 @@
     },
     "player/mpv/java/com/leotv/player/mpv/MobileMpv.java": {
       "before_sha256": "f87f781570fb8235de88fc45296e7df60844fef70ac4d3ba16a993f90139f00a",
-      "after_sha256": "1a177d5634bbaf8d717d1d3605a908b0e36b645ecd6caba6e581d648f1ed77bc",
+      "after_sha256": "35e012c0d974d44f984dcbca482b4dffb6243bb0c1be56817017319f0ce65fef",
       "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
     },
     "player/mpv/java/com/leotv/player/mpv/MpvEngine.java": {
       "before_sha256": "a30e2edc928a0781f75fbe2933adcaad3b878767a71987ba78eae588a9202821",
-      "after_sha256": "a0110a8dd75f32836c3996ea70a70c8ff3b4fff9a2adacef40226e421549d4c8",
+      "after_sha256": "9d0e1e2477d31609138725512c99ae860ec3135b360bcc53e2779390a216572f",
       "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
     },
     "player/mpv/java/com/leotv/player/mpv/MpvOptions.java": {
@@ -472,7 +472,7 @@
     },
     "player/mpv/test/EngineContract.java": {
       "before_sha256": "2ab64a1fb722fcdc2b8584669680c4e5e5dbe2f26114bf87e293c2b3458dd232",
-      "after_sha256": "1a1937204c6d7c356ceb1b951fc0541b909cc18f48ebff6259ed2f4cfee14ca3",
+      "after_sha256": "0171583a2cc98f9898f9b198de1944ff5cf5877b7346e1c61fc2f48dac2f80b0",
       "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
     },
     "player/mpv/test/fixture/is/xyz/mpv/MPVLib.java": {
@@ -527,7 +527,7 @@
     },
     "docs/LEOTV-5.3.4-PREVIEW-5-651-PLAYER-DANMAKU-20261126.md": {
       "before_sha256": null,
-      "after_sha256": "7b3579f35d1c8f6ae8391c8029bb8589f331dc22e667a41e005a8dc93a60b5e8",
+      "after_sha256": "2fb78679eb5ddbc490131134fa0d607832f7c59d8632de1bda4ca46f266733ff",
       "reason": "651 scope and source-only evidence; device playback and motion clarity remain pending user acceptance"
     },
     "evidence/player-651-fixed-options.json": {
@@ -554,6 +554,11 @@
       "before_sha256": null,
       "after_sha256": "7dc89b93623aca702c4f4ad5194a6c01e68edda94e795bdd4b5d674ea68b58d0",
       "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    ".github/workflows/ordinary-build.yml": {
+      "before_sha256": "c04b4b27b52fd661e9397af821a61340be5d9840a6bdf0ac54cfa3fdc87e3f29",
+      "reason": "Run required production MPV Java8/API23 source contracts in GitHub before each mobile APK; no local APK regression",
+      "after_sha256": "c64c2a61a0650a34168287bcd6e15593b4bc70efa690c146701573efc22d63eb"
     }
   },
   "651_repair_inputs": {
@@ -561,6 +566,7 @@
     "release": "5.3.4-preview.5",
     "version_code": 651,
     "user_feedback": "Low-end mobile MPV stutter vs smooth Exo, native kernel selection, inline MPV configuration/no extra popup, warning flood, TV VLC invalid state, moving Danmaku blur",
-    "native_producer_unchanged": "673ddfa1197f401d536eccec00902cf488d3e25d"
+    "native_producer_unchanged": "673ddfa1197f401d536eccec00902cf488d3e25d",
+    "resize_review": "Pinned MPV context_android.c reconfig handles dimensions, control returns VO_NOTIMPL; rebind only changed real geometry and test unchanged/rotated notifications in GitHub source compile"
   }
 }

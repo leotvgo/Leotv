@@ -49,7 +49,7 @@ public final class MobileMpv {
         @Override public void tracks(){Activity a=activity.get();if(a!=null){if(a.getClass().getName().endsWith("LiveActivity"))call(a,"u0",true);else call(a,"Y0");}}
         @Override public void speedChanged(float value){Activity a=activity.get();if(a==null)return;Object binding=field(a,"M"),caption;if(a.getClass().getName().endsWith("LiveActivity"))caption=field(field(field(binding,"o"),"o"),"x");else caption=field(field(field(binding,"q"),"u"),"y");if(caption instanceof TextView)((TextView)caption).setText(String.format(java.util.Locale.getDefault(),"%.2f",value));}
         @Override public void surfaceCreated(SurfaceHolder h){if(engine!=null)engine.surface(h.getSurface());}
-        @Override public void surfaceChanged(SurfaceHolder h,int format,int w,int height){layout();}
+        @Override public void surfaceChanged(SurfaceHolder h,int format,int w,int height){if(engine!=null)engine.resized(w,height);layout();}
         @Override public void surfaceDestroyed(SurfaceHolder h){if(engine!=null)engine.surface(null);}
         void close(){if(engine!=null){engine.close();engine=null;}externalAdded=false;hide();}
     }

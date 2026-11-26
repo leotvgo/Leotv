@@ -4,7 +4,7 @@
 
 ## 手机 MPV
 
-- Surface 首次就绪只绑定一次；同一 Surface 重复通知不再调用 JNI。尺寸变化只更新实际改变的布局尺寸。固定 JNI 的重新绑定会执行 `vo=null` / `vo=gpu`，旧实现每次 `surfaceChanged` 都走这条重建路径。
+- Surface 首次就绪只绑定一次；同一 Surface 重复通知不再调用 JNI。尺寸变化只更新实际改变的布局尺寸；固定 0.38 的 Android GPU `control` 不自动检测窗口 resize，因此只有真实尺寸变化才重新绑定一次，保留旋转/比例切换。固定 JNI 的重新绑定会执行 `vo=null` / `vo=gpu`，旧实现每次 `surfaceChanged` 都走这条重建路径。
 - 内置固定 MPV 0.38 支持的基础参数：三个 bilinear 缩放器，关闭额外线性/校正缩放、sigmoid、插帧、HDR 实时峰值计算与抖色。保留 HDR 基础色调映射、硬解自动转软解、字幕和音频设置；自定义附加配置与着色器仍按原管理协议应用。不需要上传 mpv.conf。
 - 保留 GPU / OpenGL 输出及字幕、GLSL 能力。当前固定 native 的 `mediacodec-copy` 存在解码帧复制成本，基础参数无法保证所有低端设备流畅播放 4K；不把源码门禁当作真机性能结论。
 - 原生播放内核选择回调先保存 History 的内核和当前进度，再继续原选择、刷新和取链流程，防止异步读取旧 History 重置选择。System/IJK/Exo/MPV 编号仍为 0/1/2/3，默认仍为 Exo。
