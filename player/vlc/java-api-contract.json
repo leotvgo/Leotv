@@ -1,0 +1,76 @@
+{
+  "version": "org.videolan.android:libvlc-all:3.6.0",
+  "matched_java_native_required": true,
+  "required_api": {
+    "org.videolan.libvlc.LibVLC": [
+      "<init>(Landroid/content/Context;Ljava/util/List;)V",
+      "release()V (inherited)"
+    ],
+    "org.videolan.libvlc.Media": [
+      "<init>(Lorg/videolan/libvlc/interfaces/ILibVLC;Landroid/net/Uri;)V",
+      "<init>(Lorg/videolan/libvlc/interfaces/ILibVLC;Landroid/content/res/AssetFileDescriptor;)V",
+      "setHWDecoderEnabled(ZZ)V",
+      "addOption(Ljava/lang/String;)V",
+      "addSlave(Lorg/videolan/libvlc/interfaces/IMedia$Slave;)V",
+      "release()V (inherited)"
+    ],
+    "org.videolan.libvlc.MediaPlayer": [
+      "<init>(Lorg/videolan/libvlc/interfaces/ILibVLC;)V",
+      "setEventListener(Lorg/videolan/libvlc/MediaPlayer$EventListener;)V",
+      "setMedia(Lorg/videolan/libvlc/interfaces/IMedia;)V",
+      "getVLCVout()Lorg/videolan/libvlc/interfaces/IVLCVout;",
+      "play()V",
+      "pause()V",
+      "stop()V",
+      "getTime()J",
+      "getLength()J",
+      "setTime(J)J",
+      "getRate()F",
+      "setRate(F)V",
+      "isPlaying()Z",
+      "isSeekable()Z",
+      "getVideoTracksCount()I",
+      "getAudioTracksCount()I",
+      "getSpuTracksCount()I",
+      "getVideoTracks()[Lorg/videolan/libvlc/MediaPlayer$TrackDescription;",
+      "getAudioTracks()[Lorg/videolan/libvlc/MediaPlayer$TrackDescription;",
+      "getSpuTracks()[Lorg/videolan/libvlc/MediaPlayer$TrackDescription;",
+      "getVideoTrack()I",
+      "getAudioTrack()I",
+      "getSpuTrack()I",
+      "setVideoTrack(I)Z",
+      "setAudioTrack(I)Z",
+      "setSpuTrack(I)Z",
+      "addSlave(ILjava/lang/String;Z)Z",
+      "setVolume(I)I",
+      "release()V (inherited)"
+    ],
+    "org.videolan.libvlc.interfaces.IVLCVout": [
+      "setVideoView(Landroid/view/TextureView;)V",
+      "setSubtitlesView(Landroid/view/TextureView;)V",
+      "attachViews(Lorg/videolan/libvlc/interfaces/IVLCVout$OnNewVideoLayoutListener;)V",
+      "detachViews()V",
+      "setWindowSize(II)V"
+    ],
+    "org.videolan.libvlc.interfaces.IMedia$Slave": [
+      "<init>(IILjava/lang/String;)V"
+    ],
+    "org.videolan.libvlc.MediaPlayer$Event": [
+      "type:I (inherited)",
+      "getBuffering()F",
+      "Opening",
+      "Buffering",
+      "Playing",
+      "Paused",
+      "EndReached",
+      "EncounteredError",
+      "ESAdded",
+      "ESDeleted"
+    ],
+    "org.videolan.libvlc.MediaPlayer$TrackDescription": [
+      "id:I",
+      "name:Ljava/lang/String;"
+    ]
+  },
+  "verification": "Actual API23 javac against exact SHA-locked classes.jar, followed by every injected smali entrypoint resolving to emitted bridge signatures; runtime native loading remains device/CI validation."
+}

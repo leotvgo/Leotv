@@ -1,0 +1,3 @@
+This module is an independent adapter for the ordinary TV host. It does not contain the Pro wrapper, authorization/advertising code, or protection libraries.
+
+The companion runtime is the single official VideoLAN org.videolan.android:libvlc-all:3.6.0 AAR. LibVLC's Java bindings are LGPL-2.1-or-later; native components and their exact licenses/source obligations are retained by task A's fixed native/source package. The matched Java classes.jar, native libraries and AAR assets must be shipped together with those notices and corresponding-source materials. This directory does not vendor or substitute another JNI build.

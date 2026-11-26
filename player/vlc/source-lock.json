@@ -1,0 +1,24 @@
+{
+  "tv-v7a": {
+    "smali/C3/e.smali": "2a09f333230d6ec19042c171482d7ae844b5d058a200b92b6b7431de7f02317f",
+    "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": "c010e5f836f13abc27338149748703d3ce9e87065af581c79e91b9b248790489",
+    "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": "016acfe5e61b0448876b6f9905a39d709f86b8b02997d5ae48fe8e2050e68572",
+    "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": "283e4751da9d7f67ae5d1607016600d58addd4ce82ceddbf3357b38b4994dce0",
+    "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": "c6a660a6fb21fbb3f7563f4b81583656969b5a0a4fae83736b09a133fbf6f8ab",
+    "smali/U1/l.1.smali": "a0229e1f6200b42c0f6e3b1efb55ffb0e8bdb86591d0e6bc67390d86f17a01af",
+    "smali/O3/z.smali": "4a91435d50d07f4c680749c4b83d75ed4153c20e3a690e46d51025ef34bae284",
+    "smali/com/bumptech/glide/f.smali": "81f1df9917da5086b399f2758388e19b2f6e48ac52abcdb74c3c3128d9f4553a",
+    "smali/com/fongmi/android/tv/ui/activity/M.smali": "844060e4e12db3824d5e89dcac50788000fc507c6edc80baa85205983e0e43ed"
+  },
+  "tv-v8a": {
+    "smali/C3/e.smali": "2a09f333230d6ec19042c171482d7ae844b5d058a200b92b6b7431de7f02317f",
+    "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": "c010e5f836f13abc27338149748703d3ce9e87065af581c79e91b9b248790489",
+    "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": "016acfe5e61b0448876b6f9905a39d709f86b8b02997d5ae48fe8e2050e68572",
+    "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": "283e4751da9d7f67ae5d1607016600d58addd4ce82ceddbf3357b38b4994dce0",
+    "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": "c6a660a6fb21fbb3f7563f4b81583656969b5a0a4fae83736b09a133fbf6f8ab",
+    "smali/U1/l.1.smali": "a0229e1f6200b42c0f6e3b1efb55ffb0e8bdb86591d0e6bc67390d86f17a01af",
+    "smali/O3/z.smali": "4a91435d50d07f4c680749c4b83d75ed4153c20e3a690e46d51025ef34bae284",
+    "smali/com/bumptech/glide/f.smali": "81f1df9917da5086b399f2758388e19b2f6e48ac52abcdb74c3c3128d9f4553a",
+    "smali/com/fongmi/android/tv/ui/activity/M.smali": "844060e4e12db3824d5e89dcac50788000fc507c6edc80baa85205983e0e43ed"
+  }
+}

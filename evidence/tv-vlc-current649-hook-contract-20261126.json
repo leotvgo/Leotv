@@ -1,0 +1,420 @@
+{
+  "tv-v7a": {
+    "current649_prior_hooks_preserved": 32,
+    "patch_assembled": true,
+    "main_writes": false,
+    "apk_built": false,
+    "changes": {
+      "smali/C3/e.smali": {
+        "before": "2886b9797c0747058d4a3d8913ef3214df94300089cd289595bfe21def13ff1a",
+        "after": "8398e99bb7a01109849138bd372e70a7cfecd40271549c6637898091dbb6fc7e"
+      },
+      "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": {
+        "before": "ac74a0f33309d412df7a48261a0a8b3948772900d978f9a2d5e9ab92976c1aee",
+        "after": "63c3d141bce249cf70322e8a79458155da90e4f8b061d5f4b7040a72687c81aa"
+      },
+      "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": {
+        "before": "016acfe5e61b0448876b6f9905a39d709f86b8b02997d5ae48fe8e2050e68572",
+        "after": "e2fb0c4050d8842867af21ef8baa5b1f1827fa004e8c1c52f68700f786f4af48"
+      },
+      "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": {
+        "before": "283e4751da9d7f67ae5d1607016600d58addd4ce82ceddbf3357b38b4994dce0",
+        "after": "0e1028306270beda0bdb393193bedb80482beb9f8837c5883c4c81b4b89ae9b9"
+      },
+      "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": {
+        "before": "c6a660a6fb21fbb3f7563f4b81583656969b5a0a4fae83736b09a133fbf6f8ab",
+        "after": "1f52fbaffcb5ff5b0e93c371ee471f02177f0e0f163fe42c6bd11562df9de051"
+      },
+      "smali/U1/l.1.smali": {
+        "before": "a0229e1f6200b42c0f6e3b1efb55ffb0e8bdb86591d0e6bc67390d86f17a01af",
+        "after": "3e47dd034abaa57d98c234c04f80a4485a23c335e00e4f87ff9707f4fa380e4b"
+      },
+      "smali/O3/z.smali": {
+        "before": "4a91435d50d07f4c680749c4b83d75ed4153c20e3a690e46d51025ef34bae284",
+        "after": "11ebcd618f1d413eeec0c32313d5722fdda2be80189a2ce8482bfe88a649b869"
+      },
+      "smali/com/bumptech/glide/f.smali": {
+        "before": "81f1df9917da5086b399f2758388e19b2f6e48ac52abcdb74c3c3128d9f4553a",
+        "after": "627fc0f331230cd4523c2da4b72fa51fa9d90c186af2c2478cb6e3a69aeeaf03"
+      },
+      "smali/com/fongmi/android/tv/ui/activity/M.smali": {
+        "before": "e55b2c8ae5fd9d703c67f660a75d340fe108eae57d91aea62e8785209b7c5e82",
+        "after": "141c86b3a83e309fd25cad92d646b2cb35a6de229ae699ef4883e7ca2565ba94"
+      }
+    },
+    "hook_snapshots": {
+      "smali/C3/e.smali": {
+        "actual649_before_vlc_sha256": "2886b9797c0747058d4a3d8913ef3214df94300089cd289595bfe21def13ff1a",
+        "after_vlc_sha256": "8398e99bb7a01109849138bd372e70a7cfecd40271549c6637898091dbb6fc7e",
+        "preserved_hooks": [
+          {
+            "method": "i0(Lcom/fongmi/android/tv/bean/Danmaku;)V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->nativeSelection(Ljava/lang/Object;)V"
+          },
+          {
+            "method": "r0(Lcom/fongmi/android/tv/bean/Result;ZJ)V",
+            "instruction": "invoke-static {p0, p1, p2}, Lcom/leotv/detail/VideoPreload;->result(Ljava/lang/Object;Ljava/lang/Object;Z)V"
+          }
+        ]
+      },
+      "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": {
+        "actual649_before_vlc_sha256": "ac74a0f33309d412df7a48261a0a8b3948772900d978f9a2d5e9ab92976c1aee",
+        "after_vlc_sha256": "63c3d141bce249cf70322e8a79458155da90e4f8b061d5f4b7040a72687c81aa",
+        "preserved_hooks": [
+          {
+            "method": "c1(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZ)V",
+            "instruction": "invoke-static {p0, v0}, Lcom/leotv/detail/NativeRouting;->openResource(Landroid/app/Activity;Landroid/content/Intent;)V"
+          },
+          {
+            "method": "A0()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->beforeRequest(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "A0()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->begin(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "A0()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/VideoPreload;->begin(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "A0()V",
+            "instruction": "invoke-static {p0, v8}, Lcom/leotv/detail/VideoPreload;->wrap(Landroid/app/Activity;Ljava/util/concurrent/Callable;)Ljava/util/concurrent/Callable;"
+          },
+          {
+            "method": "A0()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->restore(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "K()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->installControls(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "L()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/Playback;->initialize(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "Y0(Landroid/view/View;)V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->installControls(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "Y0(Landroid/view/View;)V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/Playback;->controlsShown(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "onActivityResult(IILandroid/content/Intent;)V",
+            "instruction": "invoke-static {p0, p1, p2, p3}, Lcom/leotv/detail/DanmakuPlayback;->fileResult(Landroid/app/Activity;IILandroid/content/Intent;)Z"
+          },
+          {
+            "method": "onDestroy()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z"
+          },
+          {
+            "method": "onDestroy()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/Playback;->release(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "onErrorEvent(Lw3/e;)V",
+            "instruction": "invoke-static {p0, p1}, Lcom/leotv/detail/VideoPreload;->error(Landroid/app/Activity;Ljava/lang/Object;)Z"
+          },
+          {
+            "method": "onNewIntent(Landroid/content/Intent;)V",
+            "instruction": "invoke-static {p0, p1}, Lcom/leotv/detail/NativeRouting;->redirectNewIntent(Landroid/app/Activity;Landroid/content/Intent;)Z"
+          },
+          {
+            "method": "onPause()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z"
+          },
+          {
+            "method": "onPause()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/Playback;->checkpoint(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "onPlayerEvent(Lw3/g;)V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->ready(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "onPlayerEvent(Lw3/g;)V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapBegin(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "onPlayerEvent(Lw3/g;)V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapAllowed(Landroid/app/Activity;)Z"
+          },
+          {
+            "method": "onPlayerEvent(Lw3/g;)V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapEnd(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "onResume()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z"
+          },
+          {
+            "method": "onResume()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->resume(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "onResume()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/VideoPreload;->resume(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "onStart()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z"
+          },
+          {
+            "method": "onStop()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z"
+          },
+          {
+            "method": "s()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/Playback;->leave(Landroid/app/Activity;)Z"
+          }
+        ]
+      },
+      "smali/com/fongmi/android/tv/ui/activity/M.smali": {
+        "actual649_before_vlc_sha256": "e55b2c8ae5fd9d703c67f660a75d340fe108eae57d91aea62e8785209b7c5e82",
+        "after_vlc_sha256": "141c86b3a83e309fd25cad92d646b2cb35a6de229ae699ef4883e7ca2565ba94",
+        "preserved_hooks": [
+          {
+            "method": "i(Ljava/lang/Object;)V",
+            "instruction": "invoke-static {v1, p1}, Lcom/leotv/detail/DanmakuPlayback;->result(Landroid/app/Activity;Ljava/lang/Object;)V"
+          },
+          {
+            "method": "i(Ljava/lang/Object;)V",
+            "instruction": "invoke-static {v4}, Lcom/leotv/detail/Playback;->applyOrder(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "i(Ljava/lang/Object;)V",
+            "instruction": "invoke-static {v4}, Lcom/leotv/detail/Playback;->select(Landroid/app/Activity;)Z"
+          }
+        ]
+      }
+    },
+    "actual649_producer_sha256": {
+      "tools/build_branded.py": "b85573a8d257c9d946679831346498335baf3858d78984d7bc2df8640a82cca2",
+      "tools/apply_native_details.py": "16946449adb5fe39328deb2c49e8351885ca1d3587a64396120f09b14fe87ba8",
+      "tools/apply_danmaku.py": "ffc12e822a270f08efd5855d108de3bf1e9c1620c7661fbecc449b80f5cf88ae",
+      "tools/apply_category_paging.py": "60bd216bbe6d27f9a71ede441633ce2edcc78f4bb32aedd0dae7626dfbedc086",
+      "tools/apply_video_preload.py": "4934b5894de8e5c64ba4f3f65ea1de3b773c4df2068858b5af1e4ebc1d41cb76",
+      "tools/apply_danmaku_effects.py": "2de96603ceff83c4d7652255d112f460b97abf7a21331f4f0032de4cc1f55577",
+      "detail/runtime-sources.json": "911cb4a36bce2d80c2dfd358b3ff311986b3dcd8f51e2c55896d628fedc6f8e8",
+      "detail/runtime/common/com/leotv/detail/DanmakuPlayback.java": "e9ab7ab6fa4423b813fef53fc3e23182898e61ec72d7023283a29aca6aace57d",
+      "detail/runtime/common/com/leotv/detail/DetailProgress.java": "b6235df3951fb8d1b4f7156c5b3ad241c301cadfa9a9003502b0bc547eaa1a3a",
+      "detail/runtime/common/com/leotv/detail/NativeRouting.java": "bf515446b221b3690eda9614f64cd9768e9398643a581c7cb97950b46bc226d1",
+      "detail/runtime/common/com/leotv/detail/Playback.java": "83b795a100a109397d8cfa711127656552acf9c322d79de15667be40aa81ccfe",
+      "detail/runtime/common/com/leotv/detail/VideoPreload.java": "42f9d1f07b07f3318e34d0bb78f94ec54812cfd4260d2042c1d7e5d2e2b6b69e"
+    },
+    "snapshot_read_only_root": "/Users/leiatai/Downloads/leowork/Leotv",
+    "previous_eight_classes_hook_count": 29,
+    "with_history_site_result_observer_hook_count": 32
+  },
+  "tv-v8a": {
+    "current649_prior_hooks_preserved": 32,
+    "patch_assembled": true,
+    "main_writes": false,
+    "apk_built": false,
+    "changes": {
+      "smali/C3/e.smali": {
+        "before": "2886b9797c0747058d4a3d8913ef3214df94300089cd289595bfe21def13ff1a",
+        "after": "8398e99bb7a01109849138bd372e70a7cfecd40271549c6637898091dbb6fc7e"
+      },
+      "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": {
+        "before": "ac74a0f33309d412df7a48261a0a8b3948772900d978f9a2d5e9ab92976c1aee",
+        "after": "63c3d141bce249cf70322e8a79458155da90e4f8b061d5f4b7040a72687c81aa"
+      },
+      "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": {
+        "before": "016acfe5e61b0448876b6f9905a39d709f86b8b02997d5ae48fe8e2050e68572",
+        "after": "e2fb0c4050d8842867af21ef8baa5b1f1827fa004e8c1c52f68700f786f4af48"
+      },
+      "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": {
+        "before": "283e4751da9d7f67ae5d1607016600d58addd4ce82ceddbf3357b38b4994dce0",
+        "after": "0e1028306270beda0bdb393193bedb80482beb9f8837c5883c4c81b4b89ae9b9"
+      },
+      "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": {
+        "before": "c6a660a6fb21fbb3f7563f4b81583656969b5a0a4fae83736b09a133fbf6f8ab",
+        "after": "1f52fbaffcb5ff5b0e93c371ee471f02177f0e0f163fe42c6bd11562df9de051"
+      },
+      "smali/U1/l.1.smali": {
+        "before": "a0229e1f6200b42c0f6e3b1efb55ffb0e8bdb86591d0e6bc67390d86f17a01af",
+        "after": "3e47dd034abaa57d98c234c04f80a4485a23c335e00e4f87ff9707f4fa380e4b"
+      },
+      "smali/O3/z.smali": {
+        "before": "4a91435d50d07f4c680749c4b83d75ed4153c20e3a690e46d51025ef34bae284",
+        "after": "11ebcd618f1d413eeec0c32313d5722fdda2be80189a2ce8482bfe88a649b869"
+      },
+      "smali/com/bumptech/glide/f.smali": {
+        "before": "81f1df9917da5086b399f2758388e19b2f6e48ac52abcdb74c3c3128d9f4553a",
+        "after": "627fc0f331230cd4523c2da4b72fa51fa9d90c186af2c2478cb6e3a69aeeaf03"
+      },
+      "smali/com/fongmi/android/tv/ui/activity/M.smali": {
+        "before": "e55b2c8ae5fd9d703c67f660a75d340fe108eae57d91aea62e8785209b7c5e82",
+        "after": "141c86b3a83e309fd25cad92d646b2cb35a6de229ae699ef4883e7ca2565ba94"
+      }
+    },
+    "hook_snapshots": {
+      "smali/C3/e.smali": {
+        "actual649_before_vlc_sha256": "2886b9797c0747058d4a3d8913ef3214df94300089cd289595bfe21def13ff1a",
+        "after_vlc_sha256": "8398e99bb7a01109849138bd372e70a7cfecd40271549c6637898091dbb6fc7e",
+        "preserved_hooks": [
+          {
+            "method": "i0(Lcom/fongmi/android/tv/bean/Danmaku;)V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->nativeSelection(Ljava/lang/Object;)V"
+          },
+          {
+            "method": "r0(Lcom/fongmi/android/tv/bean/Result;ZJ)V",
+            "instruction": "invoke-static {p0, p1, p2}, Lcom/leotv/detail/VideoPreload;->result(Ljava/lang/Object;Ljava/lang/Object;Z)V"
+          }
+        ]
+      },
+      "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": {
+        "actual649_before_vlc_sha256": "ac74a0f33309d412df7a48261a0a8b3948772900d978f9a2d5e9ab92976c1aee",
+        "after_vlc_sha256": "63c3d141bce249cf70322e8a79458155da90e4f8b061d5f4b7040a72687c81aa",
+        "preserved_hooks": [
+          {
+            "method": "c1(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZ)V",
+            "instruction": "invoke-static {p0, v0}, Lcom/leotv/detail/NativeRouting;->openResource(Landroid/app/Activity;Landroid/content/Intent;)V"
+          },
+          {
+            "method": "A0()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->beforeRequest(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "A0()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->begin(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "A0()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/VideoPreload;->begin(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "A0()V",
+            "instruction": "invoke-static {p0, v8}, Lcom/leotv/detail/VideoPreload;->wrap(Landroid/app/Activity;Ljava/util/concurrent/Callable;)Ljava/util/concurrent/Callable;"
+          },
+          {
+            "method": "A0()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->restore(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "K()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->installControls(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "L()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/Playback;->initialize(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "Y0(Landroid/view/View;)V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->installControls(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "Y0(Landroid/view/View;)V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/Playback;->controlsShown(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "onActivityResult(IILandroid/content/Intent;)V",
+            "instruction": "invoke-static {p0, p1, p2, p3}, Lcom/leotv/detail/DanmakuPlayback;->fileResult(Landroid/app/Activity;IILandroid/content/Intent;)Z"
+          },
+          {
+            "method": "onDestroy()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z"
+          },
+          {
+            "method": "onDestroy()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/Playback;->release(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "onErrorEvent(Lw3/e;)V",
+            "instruction": "invoke-static {p0, p1}, Lcom/leotv/detail/VideoPreload;->error(Landroid/app/Activity;Ljava/lang/Object;)Z"
+          },
+          {
+            "method": "onNewIntent(Landroid/content/Intent;)V",
+            "instruction": "invoke-static {p0, p1}, Lcom/leotv/detail/NativeRouting;->redirectNewIntent(Landroid/app/Activity;Landroid/content/Intent;)Z"
+          },
+          {
+            "method": "onPause()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z"
+          },
+          {
+            "method": "onPause()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/Playback;->checkpoint(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "onPlayerEvent(Lw3/g;)V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->ready(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "onPlayerEvent(Lw3/g;)V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapBegin(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "onPlayerEvent(Lw3/g;)V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapAllowed(Landroid/app/Activity;)Z"
+          },
+          {
+            "method": "onPlayerEvent(Lw3/g;)V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapEnd(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "onResume()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z"
+          },
+          {
+            "method": "onResume()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->resume(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "onResume()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/VideoPreload;->resume(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "onStart()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z"
+          },
+          {
+            "method": "onStop()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z"
+          },
+          {
+            "method": "s()V",
+            "instruction": "invoke-static {p0}, Lcom/leotv/detail/Playback;->leave(Landroid/app/Activity;)Z"
+          }
+        ]
+      },
+      "smali/com/fongmi/android/tv/ui/activity/M.smali": {
+        "actual649_before_vlc_sha256": "e55b2c8ae5fd9d703c67f660a75d340fe108eae57d91aea62e8785209b7c5e82",
+        "after_vlc_sha256": "141c86b3a83e309fd25cad92d646b2cb35a6de229ae699ef4883e7ca2565ba94",
+        "preserved_hooks": [
+          {
+            "method": "i(Ljava/lang/Object;)V",
+            "instruction": "invoke-static {v1, p1}, Lcom/leotv/detail/DanmakuPlayback;->result(Landroid/app/Activity;Ljava/lang/Object;)V"
+          },
+          {
+            "method": "i(Ljava/lang/Object;)V",
+            "instruction": "invoke-static {v4}, Lcom/leotv/detail/Playback;->applyOrder(Landroid/app/Activity;)V"
+          },
+          {
+            "method": "i(Ljava/lang/Object;)V",
+            "instruction": "invoke-static {v4}, Lcom/leotv/detail/Playback;->select(Landroid/app/Activity;)Z"
+          }
+        ]
+      }
+    },
+    "actual649_producer_sha256": {
+      "tools/build_branded.py": "b85573a8d257c9d946679831346498335baf3858d78984d7bc2df8640a82cca2",
+      "tools/apply_native_details.py": "16946449adb5fe39328deb2c49e8351885ca1d3587a64396120f09b14fe87ba8",
+      "tools/apply_danmaku.py": "ffc12e822a270f08efd5855d108de3bf1e9c1620c7661fbecc449b80f5cf88ae",
+      "tools/apply_category_paging.py": "60bd216bbe6d27f9a71ede441633ce2edcc78f4bb32aedd0dae7626dfbedc086",
+      "tools/apply_video_preload.py": "4934b5894de8e5c64ba4f3f65ea1de3b773c4df2068858b5af1e4ebc1d41cb76",
+      "tools/apply_danmaku_effects.py": "2de96603ceff83c4d7652255d112f460b97abf7a21331f4f0032de4cc1f55577",
+      "detail/runtime-sources.json": "911cb4a36bce2d80c2dfd358b3ff311986b3dcd8f51e2c55896d628fedc6f8e8",
+      "detail/runtime/common/com/leotv/detail/DanmakuPlayback.java": "e9ab7ab6fa4423b813fef53fc3e23182898e61ec72d7023283a29aca6aace57d",
+      "detail/runtime/common/com/leotv/detail/DetailProgress.java": "b6235df3951fb8d1b4f7156c5b3ad241c301cadfa9a9003502b0bc547eaa1a3a",
+      "detail/runtime/common/com/leotv/detail/NativeRouting.java": "bf515446b221b3690eda9614f64cd9768e9398643a581c7cb97950b46bc226d1",
+      "detail/runtime/common/com/leotv/detail/Playback.java": "83b795a100a109397d8cfa711127656552acf9c322d79de15667be40aa81ccfe",
+      "detail/runtime/common/com/leotv/detail/VideoPreload.java": "42f9d1f07b07f3318e34d0bb78f94ec54812cfd4260d2042c1d7e5d2e2b6b69e"
+    },
+    "snapshot_read_only_root": "/Users/leiatai/Downloads/leowork/Leotv",
+    "previous_eight_classes_hook_count": 29,
+    "with_history_site_result_observer_hook_count": 32
+  }
+}

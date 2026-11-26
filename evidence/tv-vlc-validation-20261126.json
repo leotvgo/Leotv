@@ -1,0 +1,243 @@
+{
+  "variants": {
+    "tv-v7a": {
+      "allowed_changed_classes": [
+        "LC3/e;",
+        "LO3/z;",
+        "LU1/l;",
+        "Lcom/bumptech/glide/f;",
+        "Lcom/fongmi/android/tv/ui/activity/CastActivity;",
+        "Lcom/fongmi/android/tv/ui/activity/LiveActivity;",
+        "Lcom/fongmi/android/tv/ui/activity/M;",
+        "Lcom/fongmi/android/tv/ui/activity/SettingPlayerActivity;",
+        "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+      ],
+      "method_changes": {
+        "smali/C3/e.smali": [
+          "G()J",
+          "P()J",
+          "S()F",
+          "Y()Z",
+          "Z()Z",
+          "R()Ljava/lang/String;",
+          "U(I)Z",
+          "n0(I)V",
+          "V(Landroidx/media3/ui/PlayerView;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V",
+          "j0(Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Lcom/fongmi/android/tv/bean/Drm;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)V",
+          "b0()V",
+          "c0()V",
+          "g0(J)V",
+          "h0()V",
+          "o0(F)Ljava/lang/String;",
+          "s0()V",
+          "d0()V",
+          "q0(Ljava/util/List;)V",
+          "p0(Lcom/fongmi/android/tv/bean/Sub;)V"
+        ],
+        "smali/com/bumptech/glide/f.smali": [
+          "D()I"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": [
+          "S0()V",
+          "U0(I)V",
+          "T(Lw3/e;)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": [
+          "s0()V",
+          "v0(I)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": [
+          "c0()V",
+          "d0(I)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/M.smali": [
+          "i(Ljava/lang/Object;)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": [
+          "L()V"
+        ],
+        "smali/U1/l.1.smali": [
+          "<init>(LO3/s;)V"
+        ],
+        "smali/O3/z.smali": [
+          "e0()V"
+        ]
+      },
+      "source_changes": {
+        "smali/C3/e.smali": {
+          "before": "2a09f333230d6ec19042c171482d7ae844b5d058a200b92b6b7431de7f02317f",
+          "after": "dd729f3867bb52771b38027ff3aa984ed3a4eff7616a89ec77139635ae62069a"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": {
+          "before": "c010e5f836f13abc27338149748703d3ce9e87065af581c79e91b9b248790489",
+          "after": "a8f2f813496b4ca8822020c9d6a40fabf8b87c7ab48eda7b68218f06155cbb11"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": {
+          "before": "016acfe5e61b0448876b6f9905a39d709f86b8b02997d5ae48fe8e2050e68572",
+          "after": "e2fb0c4050d8842867af21ef8baa5b1f1827fa004e8c1c52f68700f786f4af48"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": {
+          "before": "283e4751da9d7f67ae5d1607016600d58addd4ce82ceddbf3357b38b4994dce0",
+          "after": "0e1028306270beda0bdb393193bedb80482beb9f8837c5883c4c81b4b89ae9b9"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": {
+          "before": "c6a660a6fb21fbb3f7563f4b81583656969b5a0a4fae83736b09a133fbf6f8ab",
+          "after": "1f52fbaffcb5ff5b0e93c371ee471f02177f0e0f163fe42c6bd11562df9de051"
+        },
+        "smali/U1/l.1.smali": {
+          "before": "a0229e1f6200b42c0f6e3b1efb55ffb0e8bdb86591d0e6bc67390d86f17a01af",
+          "after": "3e47dd034abaa57d98c234c04f80a4485a23c335e00e4f87ff9707f4fa380e4b"
+        },
+        "smali/O3/z.smali": {
+          "before": "4a91435d50d07f4c680749c4b83d75ed4153c20e3a690e46d51025ef34bae284",
+          "after": "11ebcd618f1d413eeec0c32313d5722fdda2be80189a2ce8482bfe88a649b869"
+        },
+        "smali/com/bumptech/glide/f.smali": {
+          "before": "81f1df9917da5086b399f2758388e19b2f6e48ac52abcdb74c3c3128d9f4553a",
+          "after": "627fc0f331230cd4523c2da4b72fa51fa9d90c186af2c2478cb6e3a69aeeaf03"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/M.smali": {
+          "before": "844060e4e12db3824d5e89dcac50788000fc507c6edc80baa85205983e0e43ed",
+          "after": "04179f53a1b0cf21b77d5120a253c92c4bc63929bfd1c48ba6402568f41f6162"
+        }
+      },
+      "native_controls_history_schema_unchanged": true
+    },
+    "tv-v8a": {
+      "allowed_changed_classes": [
+        "LC3/e;",
+        "LO3/z;",
+        "LU1/l;",
+        "Lcom/bumptech/glide/f;",
+        "Lcom/fongmi/android/tv/ui/activity/CastActivity;",
+        "Lcom/fongmi/android/tv/ui/activity/LiveActivity;",
+        "Lcom/fongmi/android/tv/ui/activity/M;",
+        "Lcom/fongmi/android/tv/ui/activity/SettingPlayerActivity;",
+        "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+      ],
+      "method_changes": {
+        "smali/C3/e.smali": [
+          "G()J",
+          "P()J",
+          "S()F",
+          "Y()Z",
+          "Z()Z",
+          "R()Ljava/lang/String;",
+          "U(I)Z",
+          "n0(I)V",
+          "V(Landroidx/media3/ui/PlayerView;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V",
+          "j0(Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Lcom/fongmi/android/tv/bean/Drm;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)V",
+          "b0()V",
+          "c0()V",
+          "g0(J)V",
+          "h0()V",
+          "o0(F)Ljava/lang/String;",
+          "s0()V",
+          "d0()V",
+          "q0(Ljava/util/List;)V",
+          "p0(Lcom/fongmi/android/tv/bean/Sub;)V"
+        ],
+        "smali/com/bumptech/glide/f.smali": [
+          "D()I"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": [
+          "S0()V",
+          "U0(I)V",
+          "T(Lw3/e;)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": [
+          "s0()V",
+          "v0(I)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": [
+          "c0()V",
+          "d0(I)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/M.smali": [
+          "i(Ljava/lang/Object;)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": [
+          "L()V"
+        ],
+        "smali/U1/l.1.smali": [
+          "<init>(LO3/s;)V"
+        ],
+        "smali/O3/z.smali": [
+          "e0()V"
+        ]
+      },
+      "source_changes": {
+        "smali/C3/e.smali": {
+          "before": "2a09f333230d6ec19042c171482d7ae844b5d058a200b92b6b7431de7f02317f",
+          "after": "dd729f3867bb52771b38027ff3aa984ed3a4eff7616a89ec77139635ae62069a"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": {
+          "before": "c010e5f836f13abc27338149748703d3ce9e87065af581c79e91b9b248790489",
+          "after": "a8f2f813496b4ca8822020c9d6a40fabf8b87c7ab48eda7b68218f06155cbb11"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": {
+          "before": "016acfe5e61b0448876b6f9905a39d709f86b8b02997d5ae48fe8e2050e68572",
+          "after": "e2fb0c4050d8842867af21ef8baa5b1f1827fa004e8c1c52f68700f786f4af48"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": {
+          "before": "283e4751da9d7f67ae5d1607016600d58addd4ce82ceddbf3357b38b4994dce0",
+          "after": "0e1028306270beda0bdb393193bedb80482beb9f8837c5883c4c81b4b89ae9b9"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": {
+          "before": "c6a660a6fb21fbb3f7563f4b81583656969b5a0a4fae83736b09a133fbf6f8ab",
+          "after": "1f52fbaffcb5ff5b0e93c371ee471f02177f0e0f163fe42c6bd11562df9de051"
+        },
+        "smali/U1/l.1.smali": {
+          "before": "a0229e1f6200b42c0f6e3b1efb55ffb0e8bdb86591d0e6bc67390d86f17a01af",
+          "after": "3e47dd034abaa57d98c234c04f80a4485a23c335e00e4f87ff9707f4fa380e4b"
+        },
+        "smali/O3/z.smali": {
+          "before": "4a91435d50d07f4c680749c4b83d75ed4153c20e3a690e46d51025ef34bae284",
+          "after": "11ebcd618f1d413eeec0c32313d5722fdda2be80189a2ce8482bfe88a649b869"
+        },
+        "smali/com/bumptech/glide/f.smali": {
+          "before": "81f1df9917da5086b399f2758388e19b2f6e48ac52abcdb74c3c3128d9f4553a",
+          "after": "627fc0f331230cd4523c2da4b72fa51fa9d90c186af2c2478cb6e3a69aeeaf03"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/M.smali": {
+          "before": "844060e4e12db3824d5e89dcac50788000fc507c6edc80baa85205983e0e43ed",
+          "after": "04179f53a1b0cf21b77d5120a253c92c4bc63929bfd1c48ba6402568f41f6162"
+        }
+      },
+      "native_controls_history_schema_unchanged": true
+    }
+  },
+  "java": "org.videolan.android:libvlc-all:3.6.0",
+  "reference_jar_packaged": false,
+  "api23": true,
+  "apk_built": false,
+  "targeted_validation": {
+    "program_class_sha256": {
+      "com/leotv/player/vlc/VlcBridge$Session.class": "1cda850831c4a9e6aa059a8bc51e54dee9363c3c9161e4dd5db9d17990199702",
+      "com/leotv/player/vlc/VlcBridge.class": "de351a00595418c9383fdd22c8fdc7ea847b92baa93e696d57a8597aac5762ff",
+      "com/leotv/player/vlc/VlcEngine$1.class": "4105b83dd67fc9b92dbb6f982c360e09dca53c5253450d408e24eab400d2c117",
+      "com/leotv/player/vlc/VlcEngine$2.class": "fba7bd1ed7202b9da9faa2cdf82b12bfba5a2fa7428b495606517dbd950450cc",
+      "com/leotv/player/vlc/VlcEngine$3.class": "7ea958843fd27a1951c63c21087317162d11f4573934d09ab06418761117fe66",
+      "com/leotv/player/vlc/VlcEngine$4.class": "94fc983563918baa2ba0bdbca0efac15a9402ae7410930db4847ab61fa7c44d3",
+      "com/leotv/player/vlc/VlcEngine.class": "c2d4261b0efbda53bfd15fc9ec964b0630fc2f6b258fa421abe7cd0cbc534da8",
+      "com/leotv/player/vlc/VlcHttpProxy$1.class": "55c8e3e9fee208b9ba55b376b19958e4a4c24b7f123247e4d4f6a7a1913ecca5",
+      "com/leotv/player/vlc/VlcHttpProxy$2.class": "14da09842bd68bd78dc9dd70d71b19db1c6160c8e07247e11db7e4fe699569ca",
+      "com/leotv/player/vlc/VlcHttpProxy$3.class": "e3f78299ffd68c5eeec89fe45384052de51e39161cbbb3f07051ca144d8f5fda",
+      "com/leotv/player/vlc/VlcHttpProxy.class": "de0602abbfb70f92a0da6593e0dd4be342ada1c30a4e72938c1892afbb71dc26",
+      "com/leotv/player/vlc/VlcSurface.class": "222b7714885a2ebb0f2395e4882e2d7310b636f8b2683f367234b3ce5bf0614a"
+    },
+    "source_sha256": {
+      "player/vlc/java/com/leotv/player/vlc/VlcBridge.java": "d7fb7e307a084858f5232a03ab8aae0b053907e49ed3462275b7ee5b95f7ca3a",
+      "player/vlc/java/com/leotv/player/vlc/VlcEngine.java": "4fd5a1266b7f7ef4f478bf397788a043de3f0cbfd07c3bfe1a5fd6847e79d1e4",
+      "player/vlc/java/com/leotv/player/vlc/VlcHttpProxy.java": "4474f6160b619aa2531ac7ad004293dbcc77ce2202058913f52d341efbcf69ff",
+      "player/vlc/java/com/leotv/player/vlc/VlcSurface.java": "3918176ca698a03dc610b6571c386740d33036fbf38017280371b4a9e8e9282b"
+    },
+    "javac_release": 8,
+    "android_api": 23,
+    "both_tv_patch_smali_assembled": true,
+    "bridge_invokes_resolved": true,
+    "http_contract": "VLC HTTP contract: header/redirect/nested HLS/key/Range/DASH/capability/in-flight close passed",
+    "native_executed": false,
+    "apk_built": false
+  }
+}

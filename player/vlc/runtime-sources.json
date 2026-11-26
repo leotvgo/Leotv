@@ -1,0 +1,10 @@
+{
+  "family": "tv",
+  "min_api": 23,
+  "sources": [
+    "player/vlc/java/com/leotv/player/vlc/VlcBridge.java",
+    "player/vlc/java/com/leotv/player/vlc/VlcEngine.java",
+    "player/vlc/java/com/leotv/player/vlc/VlcHttpProxy.java",
+    "player/vlc/java/com/leotv/player/vlc/VlcSurface.java"
+  ]
+}
