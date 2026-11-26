@@ -46,7 +46,7 @@ final class LibraryDetailLayout {
         for(int i=0;i<p.actionRow.getChildCount();i++){View v=p.actionRow.getChildAt(i);v.setMinimumHeight(0);LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(0,dp(40),1);if(i>0)lp.leftMargin=dp(4);v.setLayoutParams(lp);}
         p.synopsis.setGravity(Gravity.LEFT);p.synopsis.setTextSize(14);p.synopsis.setMaxLines(3);p.synopsis.setTextColor(0xb3f0ede8);p.synopsis.setPadding(0,dp(8),0,dp(4));
         p.tagline.setVisibility(View.GONE);p.crewLine.setVisibility(View.GONE);
-        FrameLayout.LayoutParams info=new FrameLayout.LayoutParams(p.mobile?-1:Math.max(dp(300),Math.round(width*.55f)),-2,Gravity.BOTTOM|(p.mobile?Gravity.LEFT:Gravity.RIGHT));info.bottomMargin=dp(p.mobile?24:32);if(!p.mobile)info.rightMargin=side;p.heroFrame.addView(p.info,info);
+        FrameLayout.LayoutParams info=new FrameLayout.LayoutParams(p.mobile?-1:Math.max(dp(300),Math.round(width*.55f)),-2,Gravity.BOTTOM|Gravity.LEFT);info.bottomMargin=dp(p.mobile?24:32);if(!p.mobile)info.leftMargin=side;p.heroFrame.addView(p.info,info);
         p.hero.setLayoutParams(new FrameLayout.LayoutParams(-1,-1));p.hero.presentation(p.portraitArtwork(),DetailHero.LIBRARY_DETAIL);p.hero.dots(false);
         p.controls.setPadding(p.mobile?dp(16):side,0,p.mobile?dp(16):side,dp(32));p.controls.setBackgroundColor(Color.TRANSPARENT);p.scroll.setBackground(new android.graphics.drawable.ColorDrawable(0xff06111b));
         if(p.surface!=null){p.surface.setVisibility(View.GONE);}

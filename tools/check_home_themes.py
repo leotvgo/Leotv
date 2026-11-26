@@ -30,8 +30,10 @@ def check(root):
     page,library=map(read,('TvDetailPage','LibraryDetailLayout'))
     if 'portraitArtwork()?metadata.posterPaths:metadata.backdropPaths' not in page or 'content.getHeight()>=content.getWidth()' not in page or 'p.hero.presentation(p.portraitArtwork(),DetailHero.LIBRARY_DETAIL)' not in library:
         raise ValueError('Portrait mobile library must select and render portrait artwork, including theme/orientation changes.')
-    if 'Gravity.BOTTOM|' not in library or 'Gravity.RIGHT' not in library or 'info.bottomMargin=dp(p.mobile?24:32)' not in library or 'info.width>0?info.width' not in library:
-        raise ValueError('Library metadata and actions must use bottom/right anchoring and their actual measured width.')
+    if 'Gravity.BOTTOM|Gravity.LEFT' not in library or 'Gravity.RIGHT' in library or 'info.bottomMargin=dp(p.mobile?24:32)' not in library or 'info.width>0?info.width' not in library:
+        raise ValueError('Library metadata and actions must use bottom/left anchoring and their actual measured width.')
+    if ':thunder?Math.max(p.dp(360),height):' not in (root/'detail/runtime/tv/com/leotv/detail/ThemeLayout.java').read_text():
+        raise ValueError('TV thunder detail must fill the hero viewport and retain its left metadata column')
     for name in ('DetailRecommendations','DetailStills'):
         if 'DetailCardStyle.apply(cell)' not in read(name):raise ValueError('Added detail card types must share their skin.')
     scroll=read('TvDetailScroll');navigation=read('TvDetailNavigation')
@@ -39,9 +41,11 @@ def check(root):
         if token not in scroll:raise ValueError('TV viewport/retarget/cache bound missing: '+token)
     if any(token in scroll+navigation+page for token in ('pinHero(', 'pinnedHeight', 'updatePinnedHero', 'cacheHero(', 'controls.setClipBounds')):raise ValueError('All detail themes must scroll as one page without a pinned hero or clipped content')
     if 'scroll.targetPosition()' not in navigation or 'page.scroll.animating()' not in library or 'surface=null;' not in page or 'scroll.setClipChildren(true)' not in page:raise ValueError('Single-page remote reveal and viewport clipping must retain the original layout')
-    if 'theme!=0&&theme!=2' not in theme or 'heroHeightChanged(height)' not in home or 'rowParams.height=item==page.heroFrame' not in tv:raise ValueError('The nonclassic TV home themes must fill the viewport and update recycled row height')
-    for token in ('rowParams.width=ViewGroup.LayoutParams.MATCH_PARENT','frame.setLayoutParams(new ViewGroup.LayoutParams(-1,-2))'):
-        if token not in tv:raise ValueError('Native section width must follow the viewport, never the narrower text column')
+    if 'theme!=0&&theme!=2' not in theme or 'heroHeightChanged(height)' not in home or 'int height=item==page.heroFrame?' not in tv:raise ValueError('The nonclassic TV home themes must fill the viewport and update recycled hero height')
+    if 'int width=item==page.heroFrame?heroWidth():ViewGroup.LayoutParams.WRAP_CONTENT;' not in tv or 'rowParams.width=ViewGroup.LayoutParams.MATCH_PARENT' in tv:
+        raise ValueError('Only the carousel may override native WRAP_CONTENT category-section measurement')
+    for token in ('!NativeCspUi.descendant(row.root,list)','card.requestFocus()&&card.hasFocus()', 'if(!list.hasFocus())list.requestFocus()', 'attached.get(shelf)==this', 'NativeHomeRows.this::applyHistoryFocus', 'focus!=page.recent.cards'):
+        if token not in tv:raise ValueError('Pending category focus must survive preattachment/failed focus and stale unbind callbacks: '+token)
     if 'preloadRows=third' not in personal or 'params.topMargin = params.bottomMargin = 0' not in personal:
         raise ValueError('TV cache/preload preferences must share one native pair without duplicating row margins')
     for token in ('new String[]{"沉浸海报","雷霆","影视库"}','selectedId(int index)','selectedIndex(int id)','validId(int id)'):

@@ -20,7 +20,7 @@ final class ThemeLayout {
         boolean cinema=!mobile&&value==1, compact=!mobile&&value==2, thunder=!mobile&&value==DetailTheme.TV_THUNDER;
         boolean left = cinema || thunder;
         int heroHeight=mobile?Math.max(p.dp(240),Math.min((int)(width*1.5f),(int)(height*(value==2?.48f:value==1?.64f:.78f))))
-                :thunder?Math.max(p.dp(360),(int)(height*.78f)):compact?Math.max(p.dp(300),(int)(height*.65f)):Math.max(p.dp(360),height);
+                :thunder?Math.max(p.dp(360),height):compact?Math.max(p.dp(300),(int)(height*.65f)):Math.max(p.dp(360),height);
         p.themedHeroHeight=heroHeight;p.heroFrame.getLayoutParams().height=heroHeight;
         if (p.surface != null) {
             FrameLayout.LayoutParams surfaceParams = (FrameLayout.LayoutParams) p.surface.getLayoutParams();

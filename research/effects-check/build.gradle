@@ -1,11 +1,18 @@
 plugins { id 'java' }
 repositories { mavenCentral(); google() }
 sourceSets {
-    main.java.srcDirs = ['src/stub/java']
-    test.java.srcDirs = ['../detail-check/src/test/java']
-    test.java.include '**/DanmakuEffectsTest.java', '**/TvDetailScrollTest.java'
+    main.java.srcDirs = ['src/stub/java', layout.buildDirectory.dir('generated/home-focus')]
+    test.java.srcDirs = ['../detail-check/src/test/java', 'src/test/java']
+    test.java.include '**/DanmakuEffectsTest.java', '**/TvDetailScrollTest.java', '**/NativeHomeFocusTest.java'
+}
+tasks.register('generateHomeFocusCheck', Exec) {
+    inputs.file '../generate_home_focus_check.py'
+    inputs.file '../../detail/runtime/tv/com/leotv/detail/NativeHomeRows.java'
+    outputs.dir layout.buildDirectory.dir('generated/home-focus')
+    commandLine 'python3', '-B', '../generate_home_focus_check.py', '--output', layout.buildDirectory.dir('generated/home-focus').get().asFile
 }
 tasks.named('compileJava') {
+    dependsOn 'generateHomeFocusCheck'
     source '../../detail/runtime/common/com/leotv/detail/DanmakuEffects.java', '../../detail/runtime/common/com/leotv/detail/DanmakuEffectPolicy.java', '../../detail/runtime/common/com/leotv/detail/DanmakuAvatar.java', '../../detail/runtime/common/com/leotv/detail/TvDetailScroll.java'
 }
 dependencies {

@@ -32,6 +32,7 @@ final class NativeHomeRows implements AutoCloseable {
     final List<Object> contents=new ArrayList<>();
     final ListRowPresenter nativeRows;
     CspHomePage.Shelf pending;int pendingIndex,pendingX;boolean pendingHeader,closed,active=true;
+    boolean pendingHistory,historyHooked;int historyX;
     NativeHomeRows(CspHomePage page){
         this.page=page;
         try{nativeRows=(ListRowPresenter)Class.forName("N3.k",true,page.activity.getClassLoader()).getConstructor(int.class,int.class,int.class).newInstance(16,1,1);}
@@ -45,6 +46,7 @@ final class NativeHomeRows implements AutoCloseable {
     }
     void sections(){
         if(closed)return;
+        if(!historyHooked&&page.recent!=null){historyHooked=true;page.recent.root.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->{if(pendingHistory)page.recent.root.post(this::applyHistoryFocus);});}
         List<Object> next=new ArrayList<>();
         if(page.heroFrame.getVisibility()==View.VISIBLE)next.add(page.heroFrame);
         if(page.recent!=null)next.add(page.recent.root);
@@ -59,8 +61,10 @@ final class NativeHomeRows implements AutoCloseable {
     }
     void heroHeightChanged(int height){
         int index=entries.indexOf(page.heroFrame);if(index<0)return;heights.put(page.heroFrame,height);
-        for(int i=0;i<list.getChildCount();i++){View row=list.getChildAt(i);if(list.getChildAdapterPosition(row)!=index)continue;ViewGroup.LayoutParams params=row.getLayoutParams();if(params!=null&&params.height!=height){params.height=height;row.setLayoutParams(params);}break;}
+        int width=heroWidth();
+        for(int i=0;i<list.getChildCount();i++){View row=list.getChildAt(i);if(list.getChildAdapterPosition(row)!=index)continue;ViewGroup.LayoutParams params=row.getLayoutParams();if(params!=null&&(params.height!=height||params.width!=width)){params.width=width;params.height=height;row.setLayoutParams(params);}break;}
     }
+    private int heroWidth(){return page.getWidth()>0?page.getWidth():page.getResources().getDisplayMetrics().widthPixels;}
     void changed(){if(closed)return;rememberHeights();page.syncHeroBounds();page.backdrop.shader=null;page.invalidate();if(page.viewportChanged!=null)page.viewportChanged.run();}
     void rememberHeights(){for(int i=0;i<list.getChildCount();i++){View child=list.getChildAt(i);int position=list.getChildAdapterPosition(child);if(position>=0&&position<contents.size()&&child.getHeight()>0)heights.put(contents.get(position),child.getHeight());}}
     int scrollY(){
@@ -79,7 +83,7 @@ final class NativeHomeRows implements AutoCloseable {
     void loaded(CspHomePage.Shelf shelf){Row row=attached.get(shelf);if(row!=null)row.bind(shelf);}
     void failed(CspHomePage.Shelf shelf){Row row=attached.get(shelf);if(row!=null)row.note.setText("加载失败，点更多重试");}
     void insets(){list.setPadding(0,page.heroFrame.getVisibility()==View.GONE?page.headerHeight+page.dp(12):0,0,page.dp(32));}
-    void scrollTo(int y){if(y<=0){pending=null;list.setSelectedPosition(0);list.scrollToPosition(0);}}
+    void scrollTo(int y){if(y<=0){pending=null;pendingHistory=false;list.setSelectedPosition(0);list.scrollToPosition(0);}}
     CspHomePage.Shelf shelfOf(View view){for(Map.Entry<CspHomePage.Shelf,Row> entry:attached.entrySet())if(NativeCspUi.descendant(view,entry.getValue().root))return entry.getKey();return null;}
     boolean firstContent(View focus){
         if(page.heroFrame.getVisibility()==View.VISIBLE)return NativeCspUi.descendant(focus,page.heroFrame);
@@ -88,31 +92,45 @@ final class NativeHomeRows implements AutoCloseable {
     }
     boolean leftEdge(View focus){CspHomePage.Shelf shelf=shelfOf(focus);Row row=attached.get(shelf);return row!=null&&NativeCspUi.descendant(focus,row.grid)&&row.grid.getSelectedPosition()==0;}
     boolean focusContent(){
+        pending=null;pendingHistory=false;
         if(page.heroFrame.getVisibility()==View.VISIBLE){list.setSelectedPosition(entries.indexOf(page.heroFrame));list.scrollToPosition(entries.indexOf(page.heroFrame));if(page.heroFrame.isShown())return page.heroFrame.requestFocus();list.requestFocus();return true;}
-        if(page.recent!=null&&page.recent.visible()){list.setSelectedPosition(entries.indexOf(page.recent.root));if(page.recent.focusFirst())return true;list.requestFocus();return true;}
+        if(page.recent!=null&&page.recent.visible()){focusHistory(0);return true;}
         for(CspHomePage.Shelf shelf:page.shelves)if(shelf.items!=null&&!shelf.items.isEmpty())return focus(shelf,0,0,false);
         return false;
     }
     boolean focus(CspHomePage.Shelf shelf,int index,int x,boolean header){
-        pending=shelf;pendingIndex=index;pendingX=x;pendingHeader=header;
+        pendingHistory=false;pending=shelf;pendingIndex=index;pendingX=x;pendingHeader=header;
         int at=entries.indexOf(shelf);if(at<0)return false;list.setSelectedPosition(at);
         Row row=attached.get(shelf);if(row!=null){applyPending(row);return true;}
-        list.requestFocus();return true;
+        if(!list.hasFocus())list.requestFocus();return true;
+    }
+    private void focusHistory(int x){
+        pending=null;pendingHistory=true;historyX=x;list.setSelectedPosition(entries.indexOf(page.recent.root));applyHistoryFocus();if(!list.hasFocus())list.requestFocus();
+    }
+    private void applyHistoryFocus(){
+        if(!pendingHistory||closed||!active||page.recent==null||!page.recent.visible()||!NativeCspUi.descendant(page.recent.root,list)||page.recent.cards==null)return;
+        if(!page.recent.focusAt(historyX))return;
+        View focus=page.activity.getCurrentFocus();if(focus!=page.recent.cards&&NativeCspUi.descendant(focus,page.recent.cards))pendingHistory=false;
     }
     void applyPending(Row row){
         if(pending==null||row.shelf==null||row.data==null||pending!=row.shelf||closed||!active)return;
-        if(pendingHeader){pending=null;row.open.requestFocus();return;}
+        // Binding can precede attachment. Keep the source focus and the pending
+        // target until the real row/card is attached and actually accepts focus.
+        if(!NativeCspUi.descendant(row.root,list)||!row.root.isShown())return;
+        if(pendingHeader){if(row.open.isEnabled()&&row.open.requestFocus()&&row.open.hasFocus())pending=null;return;}
         int selected=Math.max(0,Math.min(row.data.size()-1,pendingIndex));
         if(row.grid.getChildCount()==0||row.grid.getWidth()==0){row.grid.setSelectedPosition(selected);return;}
         if(pendingX!=0){int distance=Integer.MAX_VALUE;int[] window=new int[2];row.grid.getLocationOnScreen(window);int left=window[0]+row.grid.getPaddingLeft(),right=window[0]+row.grid.getWidth()-row.grid.getPaddingRight();for(int i=0;i<row.grid.getChildCount();i++){View card=row.grid.getChildAt(i);int[] point=new int[2];card.getLocationOnScreen(point);int delta=Math.abs(point[0]+card.getWidth()/2-pendingX);if(card.getWidth()>0&&point[0]>=left-page.dp(2)&&point[0]+card.getWidth()<=right+page.dp(2)&&delta<distance){distance=delta;selected=row.grid.getChildAdapterPosition(card);}}}
-        if(selected<0)selected=0;row.shelf.selected=selected;row.grid.setSelectedPosition(selected);row.grid.requestFocus();pending=null;
+        if(selected<0)selected=0;row.grid.setSelectedPosition(selected);
+        View card=row.grid.getLayoutManager().findViewByPosition(selected);
+        if(card!=null&&card.isShown()&&card.isEnabled()&&card.requestFocus()&&card.hasFocus()){row.shelf.selected=selected;pending=null;}
     }
     void moveRow(View focus,boolean down){
-        if(page.inHistory(focus)){page.recent.resetDelete();if(!down){focusContent();return;}if(!page.shelves.isEmpty())focus(page.shelves.get(0),0,screenX(focus),false);return;}
-        CspHomePage.Shelf from=shelfOf(focus);int at=from==null?-1:page.shelves.indexOf(from),next=at+(down?1:-1);
-        if(next<0){if(page.recent!=null&&page.recent.visible()){list.setSelectedPosition(entries.indexOf(page.recent.root));page.recent.focusAt(screenX(focus));}else focusContent();return;}
+        if(page.inHistory(focus)||focus==list&&pendingHistory){page.recent.resetDelete();if(!down){focusContent();return;}if(!page.shelves.isEmpty())focus(page.shelves.get(0),0,screenX(focus),false);return;}
+        CspHomePage.Shelf from=shelfOf(focus);if(from==null&&focus==list&&pending!=null)from=pending;int at=from==null?-1:page.shelves.indexOf(from),next=at+(down?1:-1);
+        if(next<0){if(page.recent!=null&&page.recent.visible())focusHistory(screenX(focus));else focusContent();return;}
         if(next>=page.shelves.size())return;
-        if(from==null&&down&&page.recent!=null&&page.recent.visible()){list.setSelectedPosition(entries.indexOf(page.recent.root));page.recent.focusFirst();return;}
+        if(from==null&&down&&page.recent!=null&&page.recent.visible()){focusHistory(screenX(focus));return;}
         Row row=attached.get(from);boolean header=row!=null&&NativeCspUi.descendant(focus,row.open);
         focus(page.shelves.get(next),from==null?0:from.selected,screenX(focus),header);
     }
@@ -120,22 +138,28 @@ final class NativeHomeRows implements AutoCloseable {
     boolean moveCard(View focus,boolean right){CspHomePage.Shelf shelf=shelfOf(focus);Row row=attached.get(shelf);if(row==null||!NativeCspUi.descendant(focus,row.grid))return false;return focus(shelf,row.grid.getSelectedPosition()+(right?1:-1),0,false);}
     boolean firstInRow(View focus){CspHomePage.Shelf shelf=shelfOf(focus);Row row=attached.get(shelf);return row!=null&&row.grid.getSelectedPosition()>0&&focus(shelf,0,0,false);}
     void sizes(){for(CspHomePage.Shelf shelf:page.shelves){Row row=attached.get(shelf);if(row!=null)row.bind(shelf);}}
-    void active(boolean value){active=value;if(!value){pending=null;for(CspHomePage.Shelf shelf:page.shelves)shelf.selected=0;for(Row row:attached.values())row.grid.setSelectedPosition(0);}}
-    @Override public void close(){if(closed)return;closed=true;pending=null;list.setAdapter(null);entries.clear();attached.clear();contents.clear();heights.clear();}
+    void active(boolean value){active=value;if(!value){pending=null;pendingHistory=false;for(CspHomePage.Shelf shelf:page.shelves)shelf.selected=0;for(Row row:attached.values())row.grid.setSelectedPosition(0);}}
+    @Override public void close(){if(closed)return;closed=true;pending=null;pendingHistory=false;list.setAdapter(null);entries.clear();attached.clear();contents.clear();heights.clear();}
     static final class More {final CspHomePage.Shelf shelf;More(CspHomePage.Shelf shelf){this.shelf=shelf;}}
     final class Section extends Presenter$ViewHolder {
         Object item;Row row;
         Section(View view){super(view);}
     }
     final class Sections extends Presenter {
-        @Override public Presenter$ViewHolder onCreateViewHolder(ViewGroup parent){FrameLayout frame=new FrameLayout(page.activity);frame.setLayoutParams(new ViewGroup.LayoutParams(-1,-2));frame.setClipChildren(false);frame.setClipToPadding(false);return new Section(frame);}
+        @Override public Presenter$ViewHolder onCreateViewHolder(ViewGroup parent){FrameLayout frame=new FrameLayout(page.activity);frame.setClipChildren(false);frame.setClipToPadding(false);return new Section(frame);}
         @Override public void onBindViewHolder(Presenter$ViewHolder holder,Object item){
-            Section section=(Section)holder;section.item=item;FrameLayout frame=(FrameLayout)holder.view;frame.removeAllViews();ViewGroup.LayoutParams rowParams=frame.getLayoutParams();if(rowParams!=null){rowParams.width=ViewGroup.LayoutParams.MATCH_PARENT;rowParams.height=item==page.heroFrame?page.heroFrame.getLayoutParams().height:ViewGroup.LayoutParams.WRAP_CONTENT;frame.setLayoutParams(rowParams);}
+            Section section=(Section)holder;section.item=item;FrameLayout frame=(FrameLayout)holder.view;frame.removeAllViews();ViewGroup.LayoutParams rowParams=frame.getLayoutParams();
+            // Native GridLayoutManager defaults to WRAP_CONTENT in both axes.
+            // Only the independent carousel needs an explicit viewport width.
+            int width=item==page.heroFrame?heroWidth():ViewGroup.LayoutParams.WRAP_CONTENT;
+            int height=item==page.heroFrame?page.heroFrame.getLayoutParams().height:ViewGroup.LayoutParams.WRAP_CONTENT;
+            if(rowParams==null&&item==page.heroFrame)rowParams=new ViewGroup.LayoutParams(width,height);
+            if(rowParams!=null){rowParams.width=width;rowParams.height=height;frame.setLayoutParams(rowParams);}
             if(item instanceof CspHomePage.Shelf){if(section.row==null)section.row=new Row();section.row.bind((CspHomePage.Shelf)item);frame.addView(section.row.root,new FrameLayout.LayoutParams(-1,-2));}
             else {View view=(View)item;if(view.getParent() instanceof ViewGroup)((ViewGroup)view.getParent()).removeView(view);frame.addView(view,new FrameLayout.LayoutParams(-1,item==page.heroFrame?page.heroFrame.getLayoutParams().height:-2));}
         }
         @Override public void onUnbindViewHolder(Presenter$ViewHolder holder){Section section=(Section)holder;if(section.item instanceof CspHomePage.Shelf&&section.row!=null)section.row.release();((FrameLayout)holder.view).removeAllViews();section.item=null;}
-        @Override public void onViewAttachedToWindow(Presenter$ViewHolder holder){Section section=(Section)holder;if(section.item instanceof CspHomePage.Shelf&&section.row!=null){nativeRows.onViewAttachedToWindow(section.row.nativeHolder);section.row.grid.post(()->{if(section.row.shelf==pending)applyPending(section.row);});}}
+        @Override public void onViewAttachedToWindow(Presenter$ViewHolder holder){Section section=(Section)holder;if(section.item instanceof CspHomePage.Shelf&&section.row!=null){nativeRows.onViewAttachedToWindow(section.row.nativeHolder);section.row.grid.post(()->{if(section.row.shelf==pending)applyPending(section.row);});}else if(page.recent!=null&&section.item==page.recent.root)page.recent.root.post(NativeHomeRows.this::applyHistoryFocus);}
         @Override public void onViewDetachedFromWindow(Presenter$ViewHolder holder){Section section=(Section)holder;if(section.item instanceof CspHomePage.Shelf&&section.row!=null)nativeRows.onViewDetachedFromWindow(section.row.nativeHolder);}
     }
     final class Row {
@@ -172,7 +196,7 @@ final class NativeHomeRows implements AutoCloseable {
             nativeRows.onBindViewHolder(nativeHolder,new ListRow(data));nativeRows.setRowViewExpanded(nativeHolder,true);nativeRows.setRowViewSelected(nativeHolder,true);
             grid.setSelectedPosition(Math.min(selected,Math.max(0,data.size()-1)));if(pending==value)grid.post(()->applyPending(this));
         }
-        void release(){if(shelf!=null){attached.remove(shelf);shelf.selected=0;}nativeRows.onUnbindViewHolder(nativeHolder);shelf=null;data=null;binding="";open.setOnClickListener(null);}
+        void release(){if(shelf!=null){if(attached.get(shelf)==this)attached.remove(shelf);shelf.selected=0;}nativeRows.onUnbindViewHolder(nativeHolder);shelf=null;data=null;binding="";open.setOnClickListener(null);}
     }
     final class Cards extends Presenter {
         final Object appearance;final int width;

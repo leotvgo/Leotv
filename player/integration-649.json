@@ -1348,5 +1348,87 @@
     "apk_input_commit": "89960897fbb1f8fa3a4505d93c5573582e7e714a",
     "actual_signed_delivery_verified": true,
     "repository_visibility": "private"
+  },
+  "authorized_656_source_repairs": {
+    "README.md": {
+      "before_sha256": "848eaa780a47e322fb22df149412888a7ff5bcb6409cdcdc2c676ecc8e142ae5",
+      "after_sha256": "a7ee89783e33c0e9b43303647f1980c3fde63cb932eceba1b71d28e4eafb51f7",
+      "reason": "User-authorized656 TV home focus regression repair plus explicitly requested TV thunder full-screen detail hero and library bottom-left metadata/actions; retain phone layout and prior native/player/effect/data gates. Category sections restore native measurement; pending focus waits for actual card acceptance."
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "65b043693587be45cb9b2662f0185a191f0ccaddd51ef4c73a4725117ad2682c",
+      "after_sha256": "e3518468b2e5b6540dd355dd39f3e96b3df71b74150f0b99da1d8835d4153242",
+      "reason": "User-authorized656 TV home focus regression repair plus explicitly requested TV thunder full-screen detail hero and library bottom-left metadata/actions; retain phone layout and prior native/player/effect/data gates. Category sections restore native measurement; pending focus waits for actual card acceptance."
+    },
+    "branding/release.json": {
+      "before_sha256": "59a6316832bb0ad9b10fa1db477250eaf759911305c23511e292a3db8fa5be71",
+      "after_sha256": "3a99ee46b87a07ae9307d15c0602621429ae49cd644c0e378670c778384b148b",
+      "reason": "User-authorized656 TV home focus regression repair plus explicitly requested TV thunder full-screen detail hero and library bottom-left metadata/actions; retain phone layout and prior native/player/effect/data gates. Category sections restore native measurement; pending focus waits for actual card acceptance."
+    },
+    "branding/res/values/strings.xml": {
+      "before_sha256": "f58376d2b9265328ee96a069edd8e325d0614301a8c01c03974652919a4a68cc",
+      "after_sha256": "6a45403d7235419c74a582bf0bb611b9678a40342b47b21ebbfaa00511883b5a",
+      "reason": "User-authorized656 TV home focus regression repair plus explicitly requested TV thunder full-screen detail hero and library bottom-left metadata/actions; retain phone layout and prior native/player/effect/data gates. Category sections restore native measurement; pending focus waits for actual card acceptance."
+    },
+    "detail/runtime/common/com/leotv/detail/LibraryDetailLayout.java": {
+      "before_sha256": "681eb1d42856a792e6074c1d0a0620d34274951599e32a21b4a7fc41984c14e4",
+      "after_sha256": "2554e334e296e2eb62cefc196f1452125651cfeac1c7f31e502bb7e22182011e",
+      "reason": "User-authorized656 TV home focus regression repair plus explicitly requested TV thunder full-screen detail hero and library bottom-left metadata/actions; retain phone layout and prior native/player/effect/data gates. Category sections restore native measurement; pending focus waits for actual card acceptance."
+    },
+    "detail/runtime/tv/com/leotv/detail/NativeHomeRows.java": {
+      "before_sha256": "a21a52bfa9dfb9cdbfc75723a09b87df91f9ecd1dc8bc6fe3ac2b301c9e17a26",
+      "after_sha256": "e74b86f06c81131e57918e0a68b571a2077ad168e2a0cec635db78a0e65c94ab",
+      "reason": "User-authorized656 TV home focus regression repair plus explicitly requested TV thunder full-screen detail hero and library bottom-left metadata/actions; retain phone layout and prior native/player/effect/data gates. Category sections restore native measurement; pending focus waits for actual card acceptance."
+    },
+    "detail/runtime/tv/com/leotv/detail/ThemeLayout.java": {
+      "before_sha256": "f1243178f82cb8c3e8210bf6edc888365411db6b2a3525f50379cc6a159efedb",
+      "after_sha256": "dc55a19922981e7b10e893d2f1af3510f7212384b7e61618ccfe363bfe41e4b2",
+      "reason": "User-authorized656 TV home focus regression repair plus explicitly requested TV thunder full-screen detail hero and library bottom-left metadata/actions; retain phone layout and prior native/player/effect/data gates. Category sections restore native measurement; pending focus waits for actual card acceptance."
+    },
+    "docs/LEOTV-5.3.4-PREVIEW-10-656-TV-HOME-FOCUS-20261126.md": {
+      "before_sha256": null,
+      "after_sha256": "711ee1e04789701eadb980cf4d54c5c00b733e57d304ac0e7581df0c1691693c",
+      "reason": "User-authorized656 TV home focus regression repair plus explicitly requested TV thunder full-screen detail hero and library bottom-left metadata/actions; retain phone layout and prior native/player/effect/data gates. Category sections restore native measurement; pending focus waits for actual card acceptance."
+    },
+    "research/effects-check/build.gradle": {
+      "before_sha256": "e1ae601b468ce8e33e4890d4af7acc265be7d44e2bd4c642b0480d467449a330",
+      "after_sha256": "ad722a3a4ce3faaec93fd4f1a9d66a5e5d60be64b40b9ada3e2b65f08f7c5f06",
+      "reason": "User-authorized656 TV home focus regression repair plus explicitly requested TV thunder full-screen detail hero and library bottom-left metadata/actions; retain phone layout and prior native/player/effect/data gates. Category sections restore native measurement; pending focus waits for actual card acceptance."
+    },
+    "research/effects-check/src/test/java/com/leotv/detail/NativeHomeFocusTest.java": {
+      "before_sha256": null,
+      "after_sha256": "563b044ca5ce1b6146fe091c7931a2d2a852cc43baa339701e2c09c7c900f290",
+      "reason": "User-authorized656 TV home focus regression repair plus explicitly requested TV thunder full-screen detail hero and library bottom-left metadata/actions; retain phone layout and prior native/player/effect/data gates. Category sections restore native measurement; pending focus waits for actual card acceptance."
+    },
+    "research/generate_home_focus_check.py": {
+      "before_sha256": null,
+      "after_sha256": "6dcb46fc4afe5f302b271bca18c2875fc7b13539d27e747d834caa47a4896345",
+      "reason": "User-authorized656 TV home focus regression repair plus explicitly requested TV thunder full-screen detail hero and library bottom-left metadata/actions; retain phone layout and prior native/player/effect/data gates. Category sections restore native measurement; pending focus waits for actual card acceptance."
+    },
+    "tools/check_home_themes.py": {
+      "before_sha256": "8247ea1df95523703081817f0c586bf1862bf0eb13ff501af11d09fa53039cbc",
+      "after_sha256": "d79d05ff55f1489e54409e7eee32cd329a8584d58e4dec5a957688fcc7506539",
+      "reason": "User-authorized656 TV home focus regression repair plus explicitly requested TV thunder full-screen detail hero and library bottom-left metadata/actions; retain phone layout and prior native/player/effect/data gates. Category sections restore native measurement; pending focus waits for actual card acceptance."
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "97374a0f6ec35b5bdb18b54b275cb1247e9c6cc086044434acbfc8c5925803ff",
+      "after_sha256": "e1c77c238a1b2a6228383f6b9e7f575d489e3d02f18630d4b3d515a760ed1a6c",
+      "reason": "User-authorized656 TV home focus regression repair plus explicitly requested TV thunder full-screen detail hero and library bottom-left metadata/actions; retain phone layout and prior native/player/effect/data gates. Category sections restore native measurement; pending focus waits for actual card acceptance."
+    }
+  },
+  "656_delivery_inputs": {
+    "base_commit": "655a2a0461dec983f4ccfdabadcd5d52bccb406d",
+    "release": "5.3.4-preview.10",
+    "version_code": 656,
+    "category_sections_native_wrap_content": true,
+    "carousel_only_explicit_viewport_width": true,
+    "pending_focus_requires_real_card_acceptance": true,
+    "category_feed_binder_order_preserved": true,
+    "native_inputs_unchanged": true,
+    "tv_thunder_detail_full_viewport": true,
+    "tv_library_detail_bottom_left": true,
+    "other_655_runtime_changes_preserved": true,
+    "recent_history_requires_actual_card_focus": true,
+    "api23_focus_scenarios": 6
   }
 }

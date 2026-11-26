@@ -25,8 +25,9 @@ def check(root=ROOT):
     unified=manifest.get('authorized_653_source_repairs',{})
     repaired=manifest.get('authorized_654_source_repairs',{})
     takeover=manifest.get('authorized_655_source_repairs',{})
+    home_focus=manifest.get('authorized_656_source_repairs',{})
     def expected_revision(name,previous,start=651):
-        for revision,changes in ((651,incremental),(652,current),(653,home_ui),(654,unified),(655,repaired),(656,takeover)):
+        for revision,changes in ((651,incremental),(652,current),(653,home_ui),(654,unified),(655,repaired),(656,takeover),(657,home_focus)):
             if revision<start or name not in changes:continue
             repair=changes[name]
             if repair['before_sha256']!=previous or not repair.get('reason'):
@@ -49,8 +50,11 @@ def check(root=ROOT):
         if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=expected_revision(name,repair['after_sha256'],656):
             raise ValueError('654 source differs from its declared successor: '+name)
     for name,repair in takeover.items():
+        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=expected_revision(name,repair['after_sha256'],657):
+            raise ValueError('655 source differs from its declared successor: '+name)
+    for name,repair in home_focus.items():
         if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=repair['after_sha256']:
-            raise ValueError('655 source differs from its declared repair: '+name)
+            raise ValueError('656 source differs from its declared repair: '+name)
     for name, digest in manifest['preserved_649_sources'].items():
         if name in repairs and repairs[name]['before_sha256']!=digest:
             raise ValueError('650 repair changed the recorded 649 baseline: '+name)
