@@ -77,6 +77,10 @@ jobs:
                   raise SystemExit('Signed APK identity verification failed.')
               if audit['package'] != 'com.leotv.app' or not audit['expected_changes_match'] or not audit['baseline_audit']['equal']:
                   raise SystemExit('Leotv identity/source audit verification failed.')
+              if audit['version_code'] >= 650:
+                  registers = audit.get('player_register_types', {})
+                  if registers.get('method_count', 0) <= 0 or registers.get('hook_count', 0) <= 0:
+                      raise SystemExit('The actual patched host register-type audit is required for 650 and later.')
               if audit['version_code'] >= 649:
                   native = audit.get('player_native', {})
                   expected_engine = 'mpv' if variant.startswith('mobile') else 'vlc'

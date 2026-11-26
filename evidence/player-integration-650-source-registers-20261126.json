@@ -1,0 +1,71 @@
+{
+  "release": "5.3.4-preview.4",
+  "version_code": 650,
+  "source_only_no_apk_build": true,
+  "variants": [
+    {
+      "variant": "tv-v7a",
+      "public_abi_members_verified": 237,
+      "private_abi_members_verified": 1,
+      "ordinary_edit_classes_pinned": 11,
+      "native_source_files_declared": 114,
+      "client": "tv",
+      "theme_count": 5,
+      "device_validation": false,
+      "native_tv_key_dispatch_unchanged": true,
+      "native_tv_back_panels_before_exit": true,
+      "exact_git_paths_verified": 111,
+      "register_type_methods": 74,
+      "register_type_hooks": 99,
+      "existing_649_hooks_preserved": 65,
+      "overlay_classes_verified": 37
+    },
+    {
+      "variant": "tv-v8a",
+      "public_abi_members_verified": 237,
+      "private_abi_members_verified": 1,
+      "ordinary_edit_classes_pinned": 11,
+      "native_source_files_declared": 114,
+      "client": "tv",
+      "theme_count": 5,
+      "device_validation": false,
+      "native_tv_key_dispatch_unchanged": true,
+      "native_tv_back_panels_before_exit": true,
+      "exact_git_paths_verified": 111,
+      "register_type_methods": 74,
+      "register_type_hooks": 99,
+      "existing_649_hooks_preserved": 65,
+      "overlay_classes_verified": 37
+    },
+    {
+      "variant": "mobile-v7a",
+      "public_abi_members_verified": 256,
+      "private_abi_members_verified": 1,
+      "ordinary_edit_classes_pinned": 10,
+      "native_source_files_declared": 114,
+      "client": "mobile",
+      "theme_count": 4,
+      "device_validation": false,
+      "exact_git_paths_verified": 93,
+      "register_type_methods": 76,
+      "register_type_hooks": 108,
+      "existing_649_hooks_preserved": 70,
+      "overlay_classes_verified": 38
+    },
+    {
+      "variant": "mobile-v8a",
+      "public_abi_members_verified": 256,
+      "private_abi_members_verified": 1,
+      "ordinary_edit_classes_pinned": 10,
+      "native_source_files_declared": 114,
+      "client": "mobile",
+      "theme_count": 4,
+      "device_validation": false,
+      "exact_git_paths_verified": 93,
+      "register_type_methods": 76,
+      "register_type_hooks": 108,
+      "existing_649_hooks_preserved": 70,
+      "overlay_classes_verified": 38
+    }
+  ]
+}

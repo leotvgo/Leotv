@@ -29,6 +29,7 @@ from player_inputs import vlc_integration, rules as player_rules, owns_vlc_class
 from check_player_program import check as check_player_program
 from player_inputs import corresponding_source as player_corresponding_source
 from apply_danmaku_effects import apply as apply_danmaku_effects
+from check_player_registers import check_project as check_player_registers
 from check_native_details import check_contract as check_detail_contract, source_set as detail_source_set
 from harden_overlays import compile_program, audit_program
 
@@ -453,6 +454,7 @@ def main():
                 raise ValueError('Official release program code must pass R8 protection gates.')
             changed.update(added)
             relocated = keep_mobile_dex_string_indices_bounded(project, args.variant)
+            player_register_report = check_player_registers(project)
             assembled = work / 'assembled.apk'
             run(['java', '-Xmx1536m', '-jar', apktool, 'b', '--frame-path', work / 'framework', '-o', assembled, project], log)
             with zipfile.ZipFile(apk) as original:
@@ -561,6 +563,7 @@ def main():
                 'native_category_paging_commit_guard': True,
                 'mobile_automatic_video_orientation': args.variant.startswith('mobile'),
                 'semantically_unchanged_classes_relocated_between_existing_dex': relocated,
+                'player_register_types': player_register_report,
                 'device_validation': False,
             })
             shutil.copyfile(aligned, args.output)

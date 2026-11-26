@@ -28,6 +28,7 @@ from check_mobile_mpv import check as check_mpv
 from check_tv_vlc import check_contract as check_vlc
 from check_video_preload import check as check_video_preload, check_native as check_native_preload
 from check_detail_progress import check as check_detail_progress, check_native as check_native_progress
+from check_player_registers import check_project as check_player_registers
 from check_danmaku_effects import check as check_danmaku_effects, check_native as check_native_effects
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -35,6 +36,7 @@ LOCKS = ('branding/source-lock.json', 'detail/native-source-lock.json',
          'detail/danmaku-native-source-lock.json', 'detail/category-paging-source-lock.json',
          'detail/home-artwork-source-lock.json', 'detail/native-history-source-lock.json',
          'detail/preload-native-source-lock.json', 'detail/effects-native-source-lock.json',
+         'evidence/danmaku-panel-source-lock-20261126.json',
          'player/mpv/host-lock.json', 'player/vlc/source-lock.json')
 
 
@@ -193,6 +195,7 @@ def check_sources(root=ROOT):
             for path, calls in hooks.items():
                 if calls != re.findall(r'invoke-[^\n]+Lcom/leotv/(?:detail|ui|branding)/[^\n]+', path.read_text()):
                     raise ValueError('Player integration changed existing ordered 649 hooks: ' + str(path.relative_to(project)))
+            register_report=check_player_registers(project)
             check_native_preload(root,variant,project)
             check_native_progress(variant,project)
             check_native_effects(root,variant,project)
@@ -212,6 +215,8 @@ def check_sources(root=ROOT):
                     raise ValueError('Expected one exit overlay after native TV panels: '+variant)
                 report.update({'native_tv_key_dispatch_unchanged':True,'native_tv_back_panels_before_exit':True})
             report.update({'exact_git_paths_verified': len(names),
+                           'register_type_methods': register_report['method_count'],
+                           'register_type_hooks': register_report['hook_count'],
                            'existing_649_hooks_preserved': sum(len(calls) for calls in hooks.values()),
                            'overlay_classes_verified': len(changed)})
         reports.append(report)

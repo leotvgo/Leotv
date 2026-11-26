@@ -296,5 +296,109 @@
         ]
       }
     }
+  },
+  "authorized_650_source_repairs": {
+    "detail/runtime/common/com/leotv/detail/DanmakuEffects.java": {
+      "before_sha256": "135cf3e070339cef0f7e441c952a875f96aa66e259bdfbe0e1b702fc74156bf6",
+      "after_sha256": "6aa118f56e27b89a32c1717ecf7ad6cdd86aa86f3c743911e88be824b5b4b66a",
+      "reason": "User-authorized 650 native Danmaku settings placement, original slider/selection UI, glyph clarity and exact contracts"
+    },
+    "detail/runtime/common/com/leotv/detail/DanmakuPlayback.java": {
+      "before_sha256": "e9ab7ab6fa4423b813fef53fc3e23182898e61ec72d7023283a29aca6aace57d",
+      "after_sha256": "ca3e7be567285020e90028364374a63434fb082979a3c588949e8ec19808e161",
+      "reason": "User-authorized 650 native Danmaku settings placement, original slider/selection UI, glyph clarity and exact contracts"
+    },
+    "detail/runtime/common/com/leotv/detail/DanmakuSpacing.java": {
+      "before_sha256": "8808cb19a16fcf6a343aa5737d007805808062b74b8872c765a0c45f43ba76d6",
+      "after_sha256": "78a4e0f19e162dc6cc8f76f29172fe946f8dec17b9a590098b73588db7c6c1f7",
+      "reason": "User-authorized 650 native Danmaku settings placement, original slider/selection UI, glyph clarity and exact contracts"
+    },
+    "detail/runtime/common/com/leotv/detail/DanmakuUi.java": {
+      "before_sha256": "57f0c2a8d298a55921b2e39d8a538adc44f4cf94577c8884579049f3cf16e770",
+      "after_sha256": "29abf8ca1e23f8b0439b3ba05cce8f4e5558a94ac16b0a8063294682b36550fb",
+      "reason": "User-authorized 650 native Danmaku settings placement, original slider/selection UI, glyph clarity and exact contracts"
+    },
+    "research/check_detail_progress.py": {
+      "before_sha256": "283fa72672493b61693f9a6e54629e6befce835eaad45001b085e6685e4f26e7",
+      "after_sha256": "24afe8208f77ec20ebb7f0e9bbc251aca1111c48088d257143df2e6afd035889",
+      "reason": "User-authorized 650 native Danmaku settings placement, original slider/selection UI, glyph clarity and exact contracts"
+    },
+    "research/detail-check/src/test/java/com/leotv/detail/DanmakuEffectsTest.java": {
+      "before_sha256": "fe53154873254f3ae9302b4f1581260d82c26093e139c2182815ece8912774e7",
+      "after_sha256": "f07c89928081fe7e9717a31f704721de212a158457ed1312db9cca81320a23de",
+      "reason": "User-authorized 650 native Danmaku settings placement, original slider/selection UI, glyph clarity and exact contracts"
+    },
+    "tools/apply_danmaku.py": {
+      "before_sha256": "ffc12e822a270f08efd5855d108de3bf1e9c1620c7661fbecc449b80f5cf88ae",
+      "after_sha256": "de0be1a4010e2fadecbc7a0305a33ca28e5ca8a014ca41626c255d9f5fa5ed53",
+      "reason": "User-authorized 650 native Danmaku settings placement, original slider/selection UI, glyph clarity and exact contracts"
+    },
+    "tools/check_danmaku_effects.py": {
+      "before_sha256": "7f9853a2aeb4ad918de4eedd72c14e1702afcaed004be6fb964fb2f3cb7671bd",
+      "after_sha256": "324cb332eebf093e3a760432f45da9259211caf8cbcedbfa0e4b2c6c34ceb8fd",
+      "reason": "User-authorized 650 native Danmaku settings placement, original slider/selection UI, glyph clarity and exact contracts"
+    },
+    "tools/check_detail_progress.py": {
+      "before_sha256": "2366c84ebf3c4091e665174539a3c03664d243d871f596d671976ffd998b805a",
+      "after_sha256": "f792aaf7ee6aea0cd2edbd6d400a9fb4ce3441f039293e5c39d8b934393d63a6",
+      "reason": "User-authorized 650 native Danmaku settings placement, original slider/selection UI, glyph clarity and exact contracts"
+    },
+    "detail/runtime/common/com/leotv/detail/Personalization.java": {
+      "before_sha256": "3d1e48fe079161799d1cd6f2665cfadbcf3de0a64fcf7a286b5c231dfd31b99f",
+      "after_sha256": "3a97a2ed23286ff026e173554abf4db5919bccda83c306293ba95855cb01cdd2",
+      "reason": "Place the three existing mobile effect controls directly below the sole native personalization API row"
+    },
+    "branding/release.json": {
+      "before_sha256": "776c643f203ca0ec9f5c602eaaf8a4c3ce7f453601bf067af32026795c7ada6b",
+      "after_sha256": "adc64b6edddc3b6bad9de9daa3532772bcc6947b13964926a62e2c1609a05dcf",
+      "reason": "Coordinator-authorized unified preview.4/code650 prerelease, retaining prerelease=true and make_latest=false"
+    },
+    "README.md": {
+      "before_sha256": "c2ba98e244d12a6bb1c6ca5d0e965481b8abe6bef6acd95fc23888aa9076e2e0",
+      "after_sha256": "a1925f30c5d31322225c0f252e29cefe7cc287824354f770c66b97829e5e5b70",
+      "reason": "Document the completed three authorized 650 fixes, correct released 649 status, and explicitly retain pending GitHub signing/device acceptance"
+    }
+  },
+  "authorized_650_stable_abi_additions": {
+    "com.leotv.detail.DanmakuPlayback": {
+      "methods": [
+        "panelCreated(Ljava/lang/Object;)V"
+      ]
+    },
+    "com.leotv.detail.DanmakuSpacing": {
+      "methods": [
+        "nativeSliderChanged(Ljava/lang/Object;FZ)Z"
+      ]
+    }
+  },
+  "650_repair_inputs": {
+    "base_commit": "d6a959481e8a859f3a31ee02fe0529f8f59fb5c7",
+    "release": "5.3.4-preview.4",
+    "version_code": 650,
+    "danmaku_commit": "f2022d7ca265a60af655381651f555966ed24f06",
+    "tv_worker_commit": "3b0d56a18319b7a376c916bb92045cde92ee7c73",
+    "tv_cherry_pick": "2d4c7a1144c9b57929ddd6a71a09826f988c335d",
+    "mobile_worker_commit": "e03115a609c9b6f1ae97ce2fee4be15dbca6be28",
+    "mobile_cherry_pick": "aeaa03a0528d4baf3a25a4b0fe6fe7775ba8a723",
+    "native_producer_unchanged": "673ddfa1197f401d536eccec00902cf488d3e25d"
+  },
+  "650_build_gate_sources": {
+    "tools/build_branded.py": "405af99871d81ad6aef67cab3cd8a532e09e763df2f4eef0c0f8ee3ec20a48bb",
+    "tools/check_build_sources.py": "29405624ae274131327af821679940dd6d2f0f572585ba142a00acd1f43da2ae",
+    "tools/check_player_integration.py": "77df23c9796d10f5c8b8abcac2cb9c08a51c96951bc7ba3f421c0f52fd53acb7",
+    "tools/check_player_registers.py": "fff42317d4736af81541ec042c412180294d17f8a7c61be4ae0fac547fc8d0bd",
+    "tools/public_apk_audit.py": "7446b779d4ca880d8db94f05212af2e1fe72debaaef09263c9092c88d72895ab",
+    "tools/apply_danmaku.py": "de0be1a4010e2fadecbc7a0305a33ca28e5ca8a014ca41626c255d9f5fa5ed53",
+    "tools/apply_tv_vlc.py": "dadc322df2bc270ac98c7bf855a7049734149a7b5ae09158b47e200a25c20a06",
+    "tools/check_tv_vlc.py": "fc206096066cf9ffdfb5e552458d9af1e30dfa2faa79d1019885146d6ca6152e",
+    "tools/apply_mobile_mpv.py": "215c2e156490c44f4c23de9669026a83ea8af23434af94ad82a24367d70b6f69",
+    "tools/check_mobile_mpv.py": "c1d51ef276200044c26a2a1680418fa9325f3b73a3377aa5f7214d43e13ab1d9",
+    "branding/hardening.json": "60dd8d59c191bfdbf39838db72de268e49b3d72a37e71eb1647f79063fc180d4",
+    "player/mpv/abi.json": "97d3dabcc06b784d64582a88be3af7850bb6d5a79418585e83f9fbe7fbd668e0",
+    "player/mpv/allowed-changes.json": "b5efa926692b85076ee99bf1c3fbd13783567bdc7e44471f609e56396d84aab6",
+    "player/vlc/allowed-changes.json": "e543f40f8b6e723712144c78c22610da8ee4d62e6f8fa42d8e6350bb6561149e",
+    ".github/workflows/publish-test-apks.yml": "1f0a2e0ea5803eb8f56d4b138e1c5d001c98e9865cf50a286933cddc41ad97c2",
+    "research/test_apk_publish_workflow.py": "6de7125652ac6878952697a35a3dc57d2250be0948ca67e4594e98eca18b4fb7",
+    "evidence/danmaku-panel-source-lock-20261126.json": "b969244ad71e14da2beab47fa1bf77c55ea1a03b72b9c1d960b64bf86ede6355"
   }
 }

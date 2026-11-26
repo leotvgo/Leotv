@@ -26,6 +26,9 @@ def summarize(source):
         native = data['player_native']
         result['player_native'] = {key: native[key] for key in ('engine','abi','api','lock_sha256','errors','original_libraries_replaced','native_compiled_during_apk_build')}
         result['player_native']['added_native_bytes'] = sum(row['bytes'] for row in native['libraries'])
+    if 'player_register_types' in data:
+        registers=data['player_register_types']
+        result['player_register_types']={key:registers[key] for key in ('method_count','hook_count','scope','art_device_executed')}
     result['audit_scope']='Summary of the verified build; full source and change evidence retained in its private symbol draft.'
     result['full_audit_sha256']=hashlib.sha256(source).hexdigest()
     return result

@@ -1,8 +1,8 @@
 {
   "channel": "prerelease",
-  "version_name": "5.3.4-preview.3",
-  "version_code": 649,
-  "title": "Leotv 5.3.4-preview.3 共享进度与特效弹幕测试版",
+  "version_name": "5.3.4-preview.4",
+  "version_code": 650,
+  "title": "Leotv 5.3.4-preview.4 播放器与弹幕原生设置修复测试版",
   "prerelease": true,
   "make_latest": false
 }

@@ -120,7 +120,8 @@
         "menuCreated(Ljava/lang/Object;)V",
         "bootstrapBegin(Landroid/app/Activity;)V",
         "bootstrapAllowed(Landroid/app/Activity;)Z",
-        "bootstrapEnd(Landroid/app/Activity;)V"
+        "bootstrapEnd(Landroid/app/Activity;)V",
+        "panelCreated(Ljava/lang/Object;)V"
       ]
     },
     "com.leotv.detail.DanmakuSettings": {
@@ -183,7 +184,8 @@
     },
     "com.leotv.detail.DanmakuSpacing": {
       "methods": [
-        "pixels()I"
+        "pixels()I",
+        "nativeSliderChanged(Ljava/lang/Object;FZ)Z"
       ]
     },
     "com.leotv.detail.DanmakuEffects": {

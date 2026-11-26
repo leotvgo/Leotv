@@ -24,11 +24,12 @@ RELEASE_ID = 42
 
 
 class GitHub:
-    def __init__(self, existing=None, invalid=None, conclusion='success', official=False, protection=False, players=False):
+    def __init__(self, existing=None, invalid=None, conclusion='success', official=False, protection=False, players=False, registers=False):
         self.existing, self.invalid, self.conclusion = existing, invalid, conclusion
         self.official = official
         self.protection = protection
         self.players = players
+        self.registers = registers
         self.tag = 'leotv-5.1.8' if official else TAG
         self.mutations, self.files, self.api_requests = [], {}, []
 
@@ -65,7 +66,9 @@ class GitHub:
                      f'leotv-{variant}-unsigned.audit.json': json.dumps(audit).encode()}
             if self.players:
                 mobile = variant.startswith('mobile')
-                audit['version_code'] = 649
+                audit['version_code'] = 650 if self.registers else 649
+                if self.registers and self.invalid != 'missing_registers':
+                    audit['player_register_types']={'method_count':76,'hook_count':0 if self.invalid=='empty_registers' else 108}
                 audit['player_native'] = {'engine': 'mpv' if mobile else 'vlc', 'api': 24 if self.invalid == 'player_api' else 23,
                     'errors': [], 'original_libraries_replaced': False, 'native_compiled_during_apk_build': False}
                 audit['added_player_native_libraries_exact'] = 11 if mobile else 3
@@ -232,6 +235,29 @@ class PublishWorkflowTest(unittest.TestCase):
                 with self.assertRaises(SystemExit):
                     self.execute(github)
                 self.assertEqual(github.mutations, [])
+
+    def test_650_actual_register_audit_is_required_before_publishing(self):
+        github=GitHub(players=True,registers=True)
+        self.execute(github)
+        self.assertTrue(github.mutations)
+        for invalid in ('missing_registers','empty_registers'):
+            github=GitHub(players=True,registers=True,invalid=invalid)
+            with self.assertRaisesRegex(SystemExit,'register-type audit'):
+                self.execute(github)
+            self.assertEqual(github.mutations,[])
+
+    def test_650_public_summary_retains_register_verdict_and_binds_full_audit(self):
+        import importlib.util
+        spec=importlib.util.spec_from_file_location('public_apk_audit',ROOT/'tools/public_apk_audit.py')
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        source=json.dumps({'version_code':650,'baseline_audit':{'equal':True},'overlay_compile':{'hardening':{}},
+            'player_register_types':{'method_count':76,'hook_count':108,'scope':'primitive/reference/wide categories',
+                'art_device_executed':False,'classes':{'internal_private_detail':[]}}}).encode()
+        summary=module.summarize(source)
+        self.assertEqual(summary['player_register_types']['method_count'],76)
+        self.assertEqual(summary['player_register_types']['hook_count'],108)
+        self.assertNotIn('classes',summary['player_register_types'])
+        self.assertEqual(summary['full_audit_sha256'],hashlib.sha256(source).hexdigest())
 
 
 if __name__ == '__main__':

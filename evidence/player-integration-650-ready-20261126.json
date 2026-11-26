@@ -1,0 +1,133 @@
+{
+  "base_commit": "d6a959481e8a859f3a31ee02fe0529f8f59fb5c7",
+  "release": {
+    "channel": "prerelease",
+    "version_name": "5.3.4-preview.4",
+    "version_code": 650,
+    "title": "Leotv 5.3.4-preview.4 播放器与弹幕原生设置修复测试版",
+    "prerelease": true,
+    "make_latest": false
+  },
+  "repair_commits": [
+    "f2022d7ca265a60af655381651f555966ed24f06",
+    "2d4c7a1144c9b57929ddd6a71a09826f988c335d",
+    "aeaa03a0528d4baf3a25a4b0fe6fe7775ba8a723"
+  ],
+  "source_register_preflight": {
+    "tv-v7a": {
+      "methods": 74,
+      "hooks": 99
+    },
+    "tv-v8a": {
+      "methods": 74,
+      "hooks": 99
+    },
+    "mobile-v7a": {
+      "methods": 76,
+      "hooks": 108
+    },
+    "mobile-v8a": {
+      "methods": 76,
+      "hooks": 108
+    }
+  },
+  "integration_preservation_gate": {
+    "preserved_649_sources": 51,
+    "variants": [
+      "mobile-v7a",
+      "mobile-v8a",
+      "tv-v7a",
+      "tv-v8a"
+    ],
+    "unchanged_649_sources": 40,
+    "authorized_650_source_repairs": 12,
+    "native_mode": "fixed-input",
+    "missing_class_suppression": false
+  },
+  "protected_original_paths_changed": [],
+  "critical_unchanged_source_sha256": {
+    "player/native/lock.json": "c9e7d1249504bb18d50050078091956fd5d30324a919345e6b7a1177ab8e8d16",
+    "player/native-sources/sources.lock.json": "f3c295b7681d9f0a28b9cfd96a89d390ab96829029f645e468fc056b435b036c",
+    "tools/stage_player_inputs.py": "dafa845040b43194853c1d13fa6f42934916231ce9de9cf51fb3dc54396ed835",
+    "tools/sign_ci_apk.py": "9fb6a7fb2e98a3bc012b50a8703a63c084698735137b98960be749138aad631b",
+    "player/mpv/proguard.pro": "36a35ab2c70dfece0ed75c2987a85b50b28fae1b2fe57b39d8ead7601d3aa598",
+    "player/vlc/proguard.pro": "60effa8e6aafc840ebe173f9a6afc1be89a4305ad9d20a2c4a04d0e3b4c825eb",
+    "branding/proguard-release.pro": "f81393c56c5613c4184a9342ddb31681033d53b4b9ef462562f50c290fdbc555",
+    ".github/workflows/ordinary-build.yml": "c04b4b27b52fd661e9397af821a61340be5d9840a6bdf0ac54cfa3fdc87e3f29"
+  },
+  "fixed_native_source_gate": {
+    "source_files": 30,
+    "errors": []
+  },
+  "fictional_publish_contracts": {
+    "tests": 17,
+    "passed": true,
+    "includes_650_summary_binding_and_missing_register_rejection": true
+  },
+  "inherited_targeted_checks": [
+    "evidence/danmaku-650-api23-source-20261126.json",
+    "evidence/danmaku-650-hook-contract-20261126.json",
+    "evidence/tv-vlc-register-safety-650-20261126.json",
+    "evidence/mobile-mpv-650-targeted-check-20261126.json"
+  ],
+  "release_tree_audit_passed": true,
+  "source_changes_from_released_base": {
+    ".github/workflows/publish-test-apks.yml": "1f0a2e0ea5803eb8f56d4b138e1c5d001c98e9865cf50a286933cddc41ad97c2",
+    "README.md": "a1925f30c5d31322225c0f252e29cefe7cc287824354f770c66b97829e5e5b70",
+    "branding/hardening.json": "60dd8d59c191bfdbf39838db72de268e49b3d72a37e71eb1647f79063fc180d4",
+    "branding/release.json": "adc64b6edddc3b6bad9de9daa3532772bcc6947b13964926a62e2c1609a05dcf",
+    "detail/runtime/common/com/leotv/detail/DanmakuEffects.java": "6aa118f56e27b89a32c1717ecf7ad6cdd86aa86f3c743911e88be824b5b4b66a",
+    "detail/runtime/common/com/leotv/detail/DanmakuPlayback.java": "ca3e7be567285020e90028364374a63434fb082979a3c588949e8ec19808e161",
+    "detail/runtime/common/com/leotv/detail/DanmakuSpacing.java": "78a4e0f19e162dc6cc8f76f29172fe946f8dec17b9a590098b73588db7c6c1f7",
+    "detail/runtime/common/com/leotv/detail/DanmakuUi.java": "29abf8ca1e23f8b0439b3ba05cce8f4e5558a94ac16b0a8063294682b36550fb",
+    "detail/runtime/common/com/leotv/detail/Personalization.java": "3a97a2ed23286ff026e173554abf4db5919bccda83c306293ba95855cb01cdd2",
+    "docs/DANMAKU-NATIVE-UI-650-20261126.md": "bf60bebff70b3ac316742336bd23cce528cb53521ac24c057e934f89e43b256c",
+    "docs/PLAYER-DANMAKU-650-INTEGRATION-20261126.md": "bf41a4ea7c0ac5a4c74c8f5de44d3a1093e443befa70cb5db91f54dce2e614cb",
+    "docs/TV-VLC-VERIFYERROR-650-20261126.md": "bd0a2b59624f0c83df839afe96beb65397c1ff976a579e0f40fc612124eeafbd",
+    "docs/mobile-mpv-650-fix-20261126.md": "bdb034c2c6aefc09c473d28a73d82c39543753658615d8138ab4e9c4b226c7a0",
+    "evidence/danmaku-650-api23-source-20261126.json": "7612324edc4fe25e56ae8df0f168ffbea62279a56bd1593a8d60cec414497a9e",
+    "evidence/danmaku-650-hook-contract-20261126.json": "d9bf21480931e089069e5830fded4d6a7bc8ea1fcaccab2d80b6b83f14777094",
+    "evidence/danmaku-native-ui-resources-20261126.json": "89c1ce72ec218c50249df18a1f6de8876adeb960378ab5e2c1effd70416b6d16",
+    "evidence/danmaku-panel-ci-link-20261126.patch": "0cde284edcf625614ac1c305c6626ed1e7b748afe9d32ee16a7d7c526a84c764",
+    "evidence/danmaku-panel-source-lock-20261126.json": "b969244ad71e14da2beab47fa1bf77c55ea1a03b72b9c1d960b64bf86ede6355",
+    "evidence/mobile-mpv-650-option-ui-contract-20261126.json": "a980fb791913b2bce26c4ec0427e620d0f1c6b695f06aa22c8c197addf220810",
+    "evidence/mobile-mpv-650-targeted-check-20261126.json": "097604b7ade00e62c93c29851de8fca103e26167f8cb7202c643e67d744a596a",
+    "evidence/player-integration-650-source-registers-20261126.json": "d2caf80cc07abb65ffb736becc3e2af83db378a808602278f51e5d2ef1ecbbcd",
+    "evidence/tv-vlc-register-safety-650-20261126.json": "8ffe0a904d7ceb45c2c8a5e08079802fb0b52d15a2d4b0deef2e9e87f3118ef8",
+    "evidence/tv-vlc-released-649-delta-650-20261126.json": "ac45b845fe85eb32b294a3317a7607f2c398733aa7612a7f7ab5454fc2c595d9",
+    "player/integration-649.json": "819dbb8281875d370cc15c9d2f2c013e9e6d0cb898b3dd9fcf9b3232ecce2079",
+    "player/mpv/abi.json": "97d3dabcc06b784d64582a88be3af7850bb6d5a79418585e83f9fbe7fbd668e0",
+    "player/mpv/allowed-changes.json": "b5efa926692b85076ee99bf1c3fbd13783567bdc7e44471f609e56396d84aab6",
+    "player/mpv/java/com/leotv/player/mpv/MobileMpv.java": "f87f781570fb8235de88fc45296e7df60844fef70ac4d3ba16a993f90139f00a",
+    "player/mpv/java/com/leotv/player/mpv/MpvOptions.java": "d53b956f4bc13d20ff2e4b1a0612b5abbcda21950ce03bd36cdcbf711b6695f3",
+    "player/mpv/java/com/leotv/player/mpv/MpvSettings.java": "8b5750e69050f3f47bbdf23476d864c17f66196f021b54c11d362b9a480fa393",
+    "player/mpv/java/com/leotv/player/mpv/MpvStore.java": "d2a5d0f479f5e680aeeda39ffc54ba7d8e6d6363decf945c3a362e4aa28716e0",
+    "player/vlc/allowed-changes.json": "e543f40f8b6e723712144c78c22610da8ee4d62e6f8fa42d8e6350bb6561149e",
+    "research/check_detail_progress.py": "24afe8208f77ec20ebb7f0e9bbc251aca1111c48088d257143df2e6afd035889",
+    "research/detail-check/src/test/java/com/leotv/detail/DanmakuEffectsTest.java": "f07c89928081fe7e9717a31f704721de212a158457ed1312db9cca81320a23de",
+    "research/test_apk_publish_workflow.py": "6de7125652ac6878952697a35a3dc57d2250be0948ca67e4594e98eca18b4fb7",
+    "tools/apply_danmaku.py": "de0be1a4010e2fadecbc7a0305a33ca28e5ca8a014ca41626c255d9f5fa5ed53",
+    "tools/apply_mobile_mpv.py": "215c2e156490c44f4c23de9669026a83ea8af23434af94ad82a24367d70b6f69",
+    "tools/apply_tv_vlc.py": "dadc322df2bc270ac98c7bf855a7049734149a7b5ae09158b47e200a25c20a06",
+    "tools/build_branded.py": "405af99871d81ad6aef67cab3cd8a532e09e763df2f4eef0c0f8ee3ec20a48bb",
+    "tools/check_build_sources.py": "29405624ae274131327af821679940dd6d2f0f572585ba142a00acd1f43da2ae",
+    "tools/check_danmaku_effects.py": "324cb332eebf093e3a760432f45da9259211caf8cbcedbfa0e4b2c6c34ceb8fd",
+    "tools/check_detail_progress.py": "f792aaf7ee6aea0cd2edbd6d400a9fb4ce3441f039293e5c39d8b934393d63a6",
+    "tools/check_mobile_mpv.py": "c1d51ef276200044c26a2a1680418fa9325f3b73a3377aa5f7214d43e13ab1d9",
+    "tools/check_player_integration.py": "77df23c9796d10f5c8b8abcac2cb9c08a51c96951bc7ba3f421c0f52fd53acb7",
+    "tools/check_player_registers.py": "fff42317d4736af81541ec042c412180294d17f8a7c61be4ae0fac547fc8d0bd",
+    "tools/check_tv_vlc.py": "fc206096066cf9ffdfb5e552458d9af1e30dfa2faa79d1019885146d6ca6152e",
+    "tools/public_apk_audit.py": "7446b779d4ca880d8db94f05212af2e1fe72debaaef09263c9092c88d72895ab"
+  },
+  "execution_boundaries": {
+    "main_workspace_written": false,
+    "native_recompiled": false,
+    "local_full_apk_built": false,
+    "github_pushed_or_triggered": false,
+    "visibility_changed": false,
+    "fixed_signing_material_accessed": false,
+    "integrated_r8_compiled_locally": false,
+    "device_executed": false
+  },
+  "remaining": "Coordinator review/push/PUBLIC-confirmed GitHub API23/R8/build audit/fixed signing/four-APK publication/PRIVATE restoration, followed by user device acceptance"
+}
