@@ -1,0 +1,24 @@
+{
+  "mobile-v7a": {
+    "smali/F3/f.smali": "1088218ad0d752cccbc174e143f72e9cf43be1abb73a8ab6c33adec3fdf87692",
+    "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": "19420b2396fec4311fc579ca861d935815d2ada3f42b3e06ca0deeaafb567591",
+    "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": "4f5b5aaa68d0885d12bc1fd14c9973b3158cdf93e177a1c9e3303ecaf86259bc",
+    "smali/H6/l.smali": "9c305304d3d6f31b7c153e43c5931df3c727c47784b9905747c0b21c86dc0dd9",
+    "smali/U3/f.smali": "f67744da4f91013c0a7f9c2d7fb7fa799bb70c77cc7bd16085226599fe2ecd11",
+    "smali/R3/T.smali": "42ebd41810bb30ac97ccc394c993121dfbbdcbc34b1650d11bdff0100760077d",
+    "smali/S3/x.smali": "51ebe156966ff0d9e46e2368673084d92fff771a6195a71cf613caadb72d6a5a",
+    "smali/S3/v.smali": "ec34f218d8ed3ff9816af60dfbfd04347af3f3bc706732748e869aca8e1f7e29",
+    "smali/P3/b.smali": "134f9db1c44abf999fcea72580d8cb9cbf01e22d40bb2e435e0e51cbf2667445"
+  },
+  "mobile-v8a": {
+    "smali/F3/f.smali": "1088218ad0d752cccbc174e143f72e9cf43be1abb73a8ab6c33adec3fdf87692",
+    "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": "19420b2396fec4311fc579ca861d935815d2ada3f42b3e06ca0deeaafb567591",
+    "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": "4f5b5aaa68d0885d12bc1fd14c9973b3158cdf93e177a1c9e3303ecaf86259bc",
+    "smali/H6/l.smali": "9c305304d3d6f31b7c153e43c5931df3c727c47784b9905747c0b21c86dc0dd9",
+    "smali/U3/f.smali": "f67744da4f91013c0a7f9c2d7fb7fa799bb70c77cc7bd16085226599fe2ecd11",
+    "smali/R3/T.smali": "42ebd41810bb30ac97ccc394c993121dfbbdcbc34b1650d11bdff0100760077d",
+    "smali/S3/x.smali": "51ebe156966ff0d9e46e2368673084d92fff771a6195a71cf613caadb72d6a5a",
+    "smali/S3/v.smali": "ec34f218d8ed3ff9816af60dfbfd04347af3f3bc706732748e869aca8e1f7e29",
+    "smali/P3/b.smali": "134f9db1c44abf999fcea72580d8cb9cbf01e22d40bb2e435e0e51cbf2667445"
+  }
+}

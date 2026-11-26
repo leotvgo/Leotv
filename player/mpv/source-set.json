@@ -1,0 +1,12 @@
+{
+  "min_api": 23,
+  "java_release": 8,
+  "sources": [
+    "player/mpv/java/com/leotv/player/mpv/MobileMpv.java",
+    "player/mpv/java/com/leotv/player/mpv/MpvEngine.java",
+    "player/mpv/java/com/leotv/player/mpv/MpvOptions.java",
+    "player/mpv/java/com/leotv/player/mpv/MpvSettings.java",
+    "player/mpv/java/com/leotv/player/mpv/MpvStore.java",
+    "player/mpv/java/is/xyz/mpv/MPVLib.java"
+  ]
+}

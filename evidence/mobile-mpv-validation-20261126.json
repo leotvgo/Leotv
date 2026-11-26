@@ -1,0 +1,123 @@
+{
+  "api": 23,
+  "java": 8,
+  "variants": {
+    "mobile-v7a": {
+      "classes": [
+        "LF3/f;",
+        "LH6/l;",
+        "LP3/b;",
+        "LR3/T;",
+        "LS3/v;",
+        "LS3/x;",
+        "LU3/f;",
+        "Lcom/fongmi/android/tv/ui/activity/LiveActivity;",
+        "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+      ],
+      "source_edits": {
+        "smali/F3/f.smali": {
+          "before_sha256": "1088218ad0d752cccbc174e143f72e9cf43be1abb73a8ab6c33adec3fdf87692",
+          "after_sha256": "c3893856a0a211441d4efd17536309bb64d4ed4cc8c48c5125ae3133dfbd101e"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": {
+          "before_sha256": "19420b2396fec4311fc579ca861d935815d2ada3f42b3e06ca0deeaafb567591",
+          "after_sha256": "66668b25f997bf79590f71d488b565c19323636f837618e01f87a6022ad56c91"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": {
+          "before_sha256": "4f5b5aaa68d0885d12bc1fd14c9973b3158cdf93e177a1c9e3303ecaf86259bc",
+          "after_sha256": "617326374d60e9b124b54d497aff03498ba29cadc8f2d0657ce233f67c32df29"
+        },
+        "smali/H6/l.smali": {
+          "before_sha256": "9c305304d3d6f31b7c153e43c5931df3c727c47784b9905747c0b21c86dc0dd9",
+          "after_sha256": "7d9eb2187dc4fca115986147551dfc031fb4c77d13dd018ad0401ee94544ea9c"
+        },
+        "smali/U3/f.smali": {
+          "before_sha256": "f67744da4f91013c0a7f9c2d7fb7fa799bb70c77cc7bd16085226599fe2ecd11",
+          "after_sha256": "7073c41331978524ad5bea031a0b4828e7d2c6d5eca5481f0a4a201f3f310726"
+        },
+        "smali/R3/T.smali": {
+          "before_sha256": "42ebd41810bb30ac97ccc394c993121dfbbdcbc34b1650d11bdff0100760077d",
+          "after_sha256": "9a263ea8eff46818ac7b2454116969ca2d7d773adc82e35569100737542db3bc"
+        },
+        "smali/S3/x.smali": {
+          "before_sha256": "51ebe156966ff0d9e46e2368673084d92fff771a6195a71cf613caadb72d6a5a",
+          "after_sha256": "acb4c97916ae58ed9f5dd556e6b7435e062bf2caf48b63953c87fc559404f782"
+        },
+        "smali/S3/v.smali": {
+          "before_sha256": "ec34f218d8ed3ff9816af60dfbfd04347af3f3bc706732748e869aca8e1f7e29",
+          "after_sha256": "0d168a0222e4b8cb5511800595650149e2e57d8b836f2a4096dbf7de73ec2245"
+        },
+        "smali/P3/b.smali": {
+          "before_sha256": "134f9db1c44abf999fcea72580d8cb9cbf01e22d40bb2e435e0e51cbf2667445",
+          "after_sha256": "a5051ab4090054b7273160c7049271bac2868beefcdfe8fb9c8c787a278b8751"
+        }
+      },
+      "protected_methods_preserved": true
+    },
+    "mobile-v8a": {
+      "classes": [
+        "LF3/f;",
+        "LH6/l;",
+        "LP3/b;",
+        "LR3/T;",
+        "LS3/v;",
+        "LS3/x;",
+        "LU3/f;",
+        "Lcom/fongmi/android/tv/ui/activity/LiveActivity;",
+        "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+      ],
+      "source_edits": {
+        "smali/F3/f.smali": {
+          "before_sha256": "1088218ad0d752cccbc174e143f72e9cf43be1abb73a8ab6c33adec3fdf87692",
+          "after_sha256": "c3893856a0a211441d4efd17536309bb64d4ed4cc8c48c5125ae3133dfbd101e"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": {
+          "before_sha256": "19420b2396fec4311fc579ca861d935815d2ada3f42b3e06ca0deeaafb567591",
+          "after_sha256": "66668b25f997bf79590f71d488b565c19323636f837618e01f87a6022ad56c91"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": {
+          "before_sha256": "4f5b5aaa68d0885d12bc1fd14c9973b3158cdf93e177a1c9e3303ecaf86259bc",
+          "after_sha256": "617326374d60e9b124b54d497aff03498ba29cadc8f2d0657ce233f67c32df29"
+        },
+        "smali/H6/l.smali": {
+          "before_sha256": "9c305304d3d6f31b7c153e43c5931df3c727c47784b9905747c0b21c86dc0dd9",
+          "after_sha256": "7d9eb2187dc4fca115986147551dfc031fb4c77d13dd018ad0401ee94544ea9c"
+        },
+        "smali/U3/f.smali": {
+          "before_sha256": "f67744da4f91013c0a7f9c2d7fb7fa799bb70c77cc7bd16085226599fe2ecd11",
+          "after_sha256": "7073c41331978524ad5bea031a0b4828e7d2c6d5eca5481f0a4a201f3f310726"
+        },
+        "smali/R3/T.smali": {
+          "before_sha256": "42ebd41810bb30ac97ccc394c993121dfbbdcbc34b1650d11bdff0100760077d",
+          "after_sha256": "9a263ea8eff46818ac7b2454116969ca2d7d773adc82e35569100737542db3bc"
+        },
+        "smali/S3/x.smali": {
+          "before_sha256": "51ebe156966ff0d9e46e2368673084d92fff771a6195a71cf613caadb72d6a5a",
+          "after_sha256": "acb4c97916ae58ed9f5dd556e6b7435e062bf2caf48b63953c87fc559404f782"
+        },
+        "smali/S3/v.smali": {
+          "before_sha256": "ec34f218d8ed3ff9816af60dfbfd04347af3f3bc706732748e869aca8e1f7e29",
+          "after_sha256": "0d168a0222e4b8cb5511800595650149e2e57d8b836f2a4096dbf7de73ec2245"
+        },
+        "smali/P3/b.smali": {
+          "before_sha256": "134f9db1c44abf999fcea72580d8cb9cbf01e22d40bb2e435e0e51cbf2667445",
+          "after_sha256": "a5051ab4090054b7273160c7049271bac2868beefcdfe8fb9c8c787a278b8751"
+        }
+      },
+      "protected_methods_preserved": true
+    }
+  },
+  "source_sha256": {
+    "player/mpv/java/com/leotv/player/mpv/MobileMpv.java": "963ecb9795b08bb40b1f6430afa119c523c2b362aa5e553ebf3d1e2be2fd41d7",
+    "player/mpv/java/com/leotv/player/mpv/MpvEngine.java": "a30e2edc928a0781f75fbe2933adcaad3b878767a71987ba78eae588a9202821",
+    "player/mpv/java/com/leotv/player/mpv/MpvOptions.java": "5f5504bf27ce0a4f826aaf6f7c433106f3236e690ce15229a11d1cf6ee1fb046",
+    "player/mpv/java/com/leotv/player/mpv/MpvSettings.java": "8cb4d4f8ff342e30a662565a4d1616a44a09025d82c64838d3336b22c1f7a943",
+    "player/mpv/java/com/leotv/player/mpv/MpvStore.java": "8ed0653d02a4eb3853d6bf342896ea79c4cf7394dd27087e9539daf5d3c0f6c6",
+    "player/mpv/java/is/xyz/mpv/MPVLib.java": "a02327eb9172e11fc41c65e62284e28f7e250b26842f3700879c8edda61c33de"
+  },
+  "java8_api23_compile": true,
+  "synthetic_config_header_shader_font_contracts": true,
+  "production_engine_synthetic_native_event_contracts": true,
+  "native_code_executed": false,
+  "targeted_dex_assembly_and_d8_api23": true
+}

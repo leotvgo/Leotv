@@ -1,0 +1,70 @@
+{
+  "variants": [
+    "mobile-v7a",
+    "mobile-v8a"
+  ],
+  "original_zip_assets_modified": [],
+  "original_fields_annotations_interfaces_modified": [],
+  "original_methods": {
+    "smali/F3/f.smali": [
+      "H()J",
+      "N()J",
+      "R()F",
+      "S()I",
+      "T()I",
+      "U(I)Z",
+      "V(Landroidx/media3/ui/PlayerView;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V",
+      "W()Z",
+      "a0()Z",
+      "e0()V",
+      "f0()V",
+      "g0()V",
+      "i0(J)V",
+      "l0(Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Lcom/fongmi/android/tv/bean/Drm;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)V",
+      "p0(I)V",
+      "q0(F)Ljava/lang/String;",
+      "r0(Ljava/util/List;)V",
+      "u0()V"
+    ],
+    "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": [
+      "Q0()V",
+      "U0(I)V",
+      "onActivityResult(IILandroid/content/Intent;)V"
+    ],
+    "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": [
+      "q0()V",
+      "t0(I)V"
+    ],
+    "smali/H6/l.smali": [
+      "c0()I"
+    ],
+    "smali/U3/f.smali": [
+      "o(I)[Ljava/lang/String;"
+    ],
+    "smali/R3/T.smali": [
+      "w0()V"
+    ],
+    "smali/S3/x.smali": [
+      "t0()V"
+    ],
+    "smali/S3/v.smali": [
+      "onClick(Landroid/view/View;)V"
+    ],
+    "smali/P3/b.smali": [
+      "onActivityResult(IILandroid/content/Intent;)V"
+    ]
+  },
+  "new_program_roots": [
+    "com.leotv.player.mpv.MobileMpv",
+    "com.leotv.player.mpv.MpvEngine",
+    "com.leotv.player.mpv.MpvStore",
+    "com.leotv.player.mpv.MpvOptions",
+    "com.leotv.player.mpv.MpvSettings",
+    "is.xyz.mpv.MPVLib"
+  ],
+  "new_native_inputs_owner": "Task A; engine mpv subset in player/native/lock.json",
+  "integration_patch_base": {
+    "tools/build_branded.py": "b85573a8d257c9d946679831346498335baf3858d78984d7bc2df8640a82cca2",
+    "branding/proguard-release.pro": "f81393c56c5613c4184a9342ddb31681033d53b4b9ef462562f50c290fdbc555"
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "base_head": "71d432eba15f9a071bd208e6bc7870c788950482",
+  "date": "2026-11-26",
+  "fongmi_media_commit": "3c2cbe8ac742c2fe15eff52f03eeb3b1b648848d",
+  "fongmi_tv_commit": "d3a0b84b24cf6628d72a4dbc2be453875b005536",
+  "native_contract": "14 generated JNI declarations exactly match task A; 9 named static callbacks; no OSD stubs",
+  "native_generation_or_execution_in_this_task": false,
+  "apk_build_publish_in_this_task": false,
+  "main_workspace_read_only": true,
+  "sources": {
+    "fongmi_mpv_lib": {
+      "path": "/Users/leiatai/Downloads/leowork/Leotv/.work/mpv-fongmi-review-20261126/media/libraries/mpvplayer/src/main/java/is/xyz/mpv/MPVLib.java",
+      "sha256": "e425ac94fcd9214255af6bcc3bbc5945b349c0a030ff24872825c1e032a23a2d"
+    },
+    "fongmi_util": {
+      "path": "/Users/leiatai/Downloads/leowork/Leotv/.work/mpv-fongmi-review-20261126/repo/app/src/main/java/com/fongmi/android/tv/player/mpv/MpvUtil.java",
+      "sha256": "0751ef2178f5c0ff0dfdb2cb1f139318679916a3cb63c68ccdac5f8be6262ca7"
+    },
+    "fongmi_options": {
+      "path": "/Users/leiatai/Downloads/leowork/Leotv/.work/mpv-fongmi-review-20261126/media/libraries/mpvplayer/src/main/java/androidx/media3/mpvplayer/options/MpvPlayerOptionDefaults.java",
+      "sha256": "2b08f6a5f0567c1b0c9a761c16644b6a0dc1257ea22479df4bd5fa26b948e3e9"
+    },
+    "ordinary_recovery_rules": {
+      "path": "/Users/leiatai/Downloads/leowork/Leotv/docs/OKTV-NORMAL-RECOVERY-20261118.md",
+      "sha256": "526377bfc90f6908c044cc05fa79752293c15a0a165eaa9e4bb1bc5185f4bf6e"
+    },
+    "pro_evidence": {
+      "path": "/Users/leiatai/Downloads/leowork/Leotv/evidence/leotv-okpro-mpv-vlc-feasibility-20261126.json",
+      "sha256": "66867307b6e47d5653cb3802eca20734addc40664e53a4a3d178b03a704644b5"
+    },
+    "fongmi_evidence": {
+      "path": "/Users/leiatai/Downloads/leowork/Leotv/evidence/leotv-mpv-yaozhi-fongmi-feasibility-20261126.json",
+      "sha256": "16c0ff53ca49e7e92e730b617104a3eec0f105421fc97763c5c830af7e7862a5"
+    },
+    "native_task_a_jni_header": {
+      "path": "/Users/leiatai/orca/workspaces/Leotv/leotv-player-native-api23/player/native-sources/mpv/is_xyz_mpv_MPVLib.h",
+      "sha256": "25a8ebda1420e9e63ae242da7855578701c9c6cf3e6ede2fb835c4cead7b694c"
+    },
+    "mpv038_gpu_options": {
+      "path": "/Users/leiatai/orca/workspaces/Leotv/leotv-mobile-mpv-settings/.work/mobile-mpv-check/mpv-video.c",
+      "sha256": "e64b3c6a974e66358543d5d9f1e0f357d16a5341aca29f8a9de5c111c5501aa0"
+    },
+    "mpv038_option_parser": {
+      "path": "/Users/leiatai/orca/workspaces/Leotv/leotv-mobile-mpv-settings/.work/mobile-mpv-check/mpv-option.c",
+      "sha256": "7de6f1aa16a0d0badf39ecf7b308fcc0fe878c43ce52455a9e5330d456ed13d4"
+    }
+  },
+  "mpv038_shader_list_evidence": {
+    "url": "https://raw.githubusercontent.com/mpv-player/mpv/v0.38.0/video/out/gpu/video.c",
+    "line": 459,
+    "declaration": "{\"glsl-shaders\", OPT_PATHLIST(user_shaders), .flags = M_OPT_FILE}"
+  },
+  "unsupported_new_fongmi_features_not_exposed": [
+    "Vulkan",
+    "AImageReader",
+    "independent OSD Surface",
+    "motion interpolation",
+    "Dolby Vision enhanced output",
+    "image-subs-brightness"
+  ],
+  "original_zip_assets_modified": [],
+  "native_methods": [
+    "attachSurface(Landroid/view/Surface;)V",
+    "create(Landroid/content/Context;)V",
+    "destroy()I",
+    "detachSurface()V",
+    "enqueueCommand(J[Ljava/lang/String;)I",
+    "getPropertyBoolean(Ljava/lang/String;)Ljava/lang/Boolean;",
+    "getPropertyByteArray(Ljava/lang/String;)[B",
+    "getPropertyDouble(Ljava/lang/String;)Ljava/lang/Double;",
+    "getPropertyInt(Ljava/lang/String;)Ljava/lang/Integer;",
+    "getPropertyString(Ljava/lang/String;)Ljava/lang/String;",
+    "init()V",
+    "observeProperty(Ljava/lang/String;I)I",
+    "replaceSurface(Landroid/view/Surface;)V",
+    "setOptionString(Ljava/lang/String;Ljava/lang/String;)I"
+  ],
+  "native_static_callbacks": [
+    "event(I)V",
+    "eventCommandReply(JI)V",
+    "eventEndFile(IILjava/lang/String;)V",
+    "eventProperty(Ljava/lang/String;)V",
+    "eventProperty(Ljava/lang/String;D)V",
+    "eventProperty(Ljava/lang/String;J)V",
+    "eventProperty(Ljava/lang/String;Ljava/lang/String;)V",
+    "eventProperty(Ljava/lang/String;Z)V",
+    "logMessage(Ljava/lang/String;ILjava/lang/String;)V"
+  ],
+  "smali_entrypoints": [
+    "active(Ljava/lang/Object;)Z",
+    "forcedExo(Ljava/lang/Object;)Z",
+    "position(Ljava/lang/Object;)J",
+    "duration(Ljava/lang/Object;)J",
+    "speed(Ljava/lang/Object;)F",
+    "width(Ljava/lang/Object;)I",
+    "height(Ljava/lang/Object;)I",
+    "playing(Ljava/lang/Object;)Z",
+    "finished(Ljava/lang/Object;)Z",
+    "hasTrack(Ljava/lang/Object;I)Z",
+    "pause(Ljava/lang/Object;)V",
+    "play(Ljava/lang/Object;)V",
+    "seek(Ljava/lang/Object;J)V",
+    "setSpeed(Ljava/lang/Object;F)V",
+    "stop(Ljava/lang/Object;)V",
+    "release(Ljava/lang/Object;)V",
+    "attach(Ljava/lang/Object;Landroid/view/View;Landroid/view/View;)V",
+    "update(Ljava/lang/Object;)V",
+    "updateActivity(Landroid/app/Activity;)V",
+    "playerNames(I[Ljava/lang/String;)[Ljava/lang/String;",
+    "tracks(Ljava/lang/Object;ILjava/util/List;)V",
+    "selectTracks(Ljava/lang/Object;Ljava/util/List;)V",
+    "settings(Ljava/lang/Object;)V",
+    "settingsClick(Ljava/lang/Object;Landroid/view/View;)Z",
+    "fileResult(Landroid/app/Activity;IILandroid/content/Intent;)Z",
+    "load(Ljava/lang/Object;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)Z"
+  ],
+  "native_successful_build_run_reported_by_coordinator": "45758740047"
+}

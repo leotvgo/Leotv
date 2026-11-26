@@ -1,0 +1,82 @@
+--- a/tools/build_branded.py
++++ b/tools/build_branded.py
+@@ -21,6 +21,8 @@
+ from apply_danmaku import apply as apply_danmaku
+ from apply_category_paging import apply as apply_category_paging
+ from apply_video_preload import apply as apply_video_preload
++from apply_mobile_mpv import apply as apply_mobile_mpv, source_set as mobile_mpv_source_set, owns_program_class as mobile_mpv_program_class
++from check_mobile_mpv import check as check_mobile_mpv, check_compiled as check_compiled_mobile_mpv
+ from apply_danmaku_effects import apply as apply_danmaku_effects
+ from check_native_details import check_contract as check_detail_contract, source_set as detail_source_set
+ from harden_overlays import compile_program, audit_program
+@@ -204,6 +206,7 @@
+     sources = [BRANDING / profile['java_source']] + sorted((ROOT / spec['ui_source_root']).glob('*.java'))
+     native_sources = detail_source_set(ROOT, family)
+     sources += native_sources
++    sources += mobile_mpv_source_set(ROOT, family)
+     native_class_roots = {source.stem for source in native_sources}
+     run(['javac', '--release', '8', '-encoding', 'UTF-8', '-cp', str(android) + os.pathsep + str(reference),
+          '-d', classes, *sources], log)
+@@ -224,6 +227,8 @@
+         target_dex = min(dex_files, key=lambda name: struct.unpack_from('<I', original.read(name), 88)[0])
+     decoded = work / 'logo-smali'
+     run(['java', '-jar', apktool, 'd', '-r', '--frame-path', work / 'framework', '-o', decoded, wrapper], log)
++    if family == 'mobile':
++        check_compiled_mobile_mpv(decoded)
+     if hardening is not None:
+         checked, added = audit_program(classes, decoded, mapping, settings, family == 'mobile')
+         hardening.update(checked)
+@@ -235,12 +240,14 @@
+                 'java_release': 8, 'd8_min_api': 23, 'program_classes': len(added),
+                 'reference_jar_packaged': False, 'hardening': hardening}, added, {dex_name: data}, mapping
+     emitted = list(decoded.glob('smali*/com/leotv/**/*.smali'))
++    if family == 'mobile':
++        emitted += list(decoded.glob('smali*/is/xyz/mpv/*.smali'))
+     added = set()
+     for source in emitted:
+         descriptor = re.search(r'(?m)^\.class[^\n]* (L[^;]+;)$', source.read_text()).group(1)
+         if descriptor != LOGO_CLASS and not re.fullmatch(r'Lcom/leotv/ui/(?:GlobalChrome(?:\$[A-Za-z0-9_$]+)?|ProgressiveBlur|NativeViewport(?:\$[A-Za-z0-9_$]+)?|TvCategoryChrome(?:\$[A-Za-z0-9_$]+)?|NativePhoneInsets(?:\$[A-Za-z0-9_$]+)?);', descriptor) \
+                 and not any(re.fullmatch(r'Lcom/leotv/detail/' + re.escape(name) + r'(?:\$[A-Za-z0-9_$]+)?(?:\$-(?:CC|EL))?;', descriptor)
+-                            for name in native_class_roots):
++                            for name in native_class_roots) and not (family == 'mobile' and mobile_mpv_program_class(descriptor)):
+             raise ValueError('Overlay compilation emitted an undeclared program class: ' + descriptor)
+         target = project / ('smali' if target_dex == 'classes.dex' else 'smali_' + target_dex[:-4]) / (descriptor[1:-1] + '.smali')
+         if target.exists():
+@@ -383,6 +390,7 @@
+     provenance = verify_assets()
+     lock = json.loads((BRANDING / 'source-lock.json').read_text())[args.variant]
+     detail_contract = check_detail_contract(ROOT, args.variant, source)
++    mobile_mpv_contract = check_mobile_mpv(ROOT) if args.variant.startswith('mobile') else None
+     args.output = args.output or ROOT / 'artifacts' / f'leotv-{values["version_name"]}-{args.variant}-unsigned.apk'
+     args.output.parent.mkdir(parents=True, exist_ok=True)
+     with tempfile.TemporaryDirectory(prefix='leotv-brand-build-') as temporary:
+@@ -413,6 +421,8 @@
+             changed.update(preload_changed); changed_sources.update(preload_sources)
+             effects_changed, effects_sources = apply_danmaku_effects(project, ROOT, args.variant)
+             changed.update(effects_changed); changed_sources.update(effects_sources)
++            mpv_changed, mpv_sources = apply_mobile_mpv(project, ROOT, args.variant)
++            changed.update(mpv_changed); changed_sources.update(mpv_sources)
+             print(f'{args.variant}: compiling Leotv branding and native chrome against API 23...', flush=True)
+             compile_report, added, protected_dex, mapping = compile_overlays(project, profile, spec, apk, args.sdk, apktool, work, log, args.r8)
+             if release['channel'] == 'stable' and not compile_report.get('hardening'):
+@@ -502,6 +512,7 @@
+                 'unsigned': True, 'native_zip_alignment_kib': 16,
+                 'baseline_audit': baseline_audit, 'allowed_changed_classes': sorted(changed),
+                 'source_edits': changed_sources, 'manifest_edits': manifest_report,
++                'mobile_mpv_contract': mobile_mpv_contract,
+                 'resource_edits': resource_report, 'overlay_compile': compile_report,
+                 'layout_edits': layout_report,
+                 'qr_web_input_edits': web_report,
+--- a/branding/proguard-release.pro
++++ b/branding/proguard-release.pro
+@@ -35,3 +35,9 @@
+-
++
+ # Preserve decoder calls without exposing their implementation names or folding decrypted values.
+ -keep,allowobfuscation class com.leotv.detail.RuntimeStrings { public static java.lang.String decode(java.lang.String,long,long); }
++
++# These names are called by preserved smali and JNI. The host stays outside R8 program input.
++-keep,includedescriptorclasses,allowoptimization class com.leotv.player.mpv.MobileMpv { public <methods>; public <fields>; }
++-keep class is.xyz.mpv.MPVLib { *; }
++-keep interface is.xyz.mpv.MPVLib$EventObserver { *; }
++-keep interface is.xyz.mpv.MPVLib$LogObserver { *; }

@@ -1,0 +1,63 @@
+{
+  "mobile-v7a": {
+    "649_overlays": [
+      [
+        "apply_native_details",
+        10
+      ],
+      [
+        "apply_danmaku",
+        7
+      ],
+      [
+        "apply_category_paging",
+        3
+      ],
+      [
+        "apply_video_preload",
+        6
+      ],
+      [
+        "apply_danmaku_effects",
+        2
+      ]
+    ],
+    "prior_overlay_invocations_preserved": true,
+    "protected_methods_fields_annotations_preserved": true,
+    "other_source_files_unchanged": 60
+  },
+  "mobile-v8a": {
+    "649_overlays": [
+      [
+        "apply_native_details",
+        10
+      ],
+      [
+        "apply_danmaku",
+        7
+      ],
+      [
+        "apply_category_paging",
+        3
+      ],
+      [
+        "apply_video_preload",
+        6
+      ],
+      [
+        "apply_danmaku_effects",
+        2
+      ]
+    ],
+    "prior_overlay_invocations_preserved": true,
+    "protected_methods_fields_annotations_preserved": true,
+    "other_source_files_unchanged": 60
+  },
+  "reference_tools_sha256": {
+    "apply_native_details": "16946449adb5fe39328deb2c49e8351885ca1d3587a64396120f09b14fe87ba8",
+    "apply_danmaku": "ffc12e822a270f08efd5855d108de3bf1e9c1620c7661fbecc449b80f5cf88ae",
+    "apply_category_paging": "60bd216bbe6d27f9a71ede441633ce2edcc78f4bb32aedd0dae7626dfbedc086",
+    "apply_video_preload": "4934b5894de8e5c64ba4f3f65ea1de3b773c4df2068858b5af1e4ebc1d41cb76",
+    "apply_danmaku_effects": "2de96603ceff83c4d7652255d112f460b97abf7a21331f4f0032de4cc1f55577"
+  }
+}
