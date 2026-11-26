@@ -27,3 +27,16 @@ Exo 的原 getter 在每帧读取当前时间。手机 MPV 原适配器却直接
 允许变化仅为既有 MPV/VLC 适配器和设置、新增无 JNI 的 VlcClock、头像与边框绘制/缓存、相应源码门禁以及版本/文档。固定 native、原 ZIP、数据库/schema、站点协议、JNI、Android 6回移层、TV/手机与双 ABI区别保持。`player/integration-649.json` 保留649/650/651记录，新增以实际651源码为前值的652增量账本。
 
 手机生产引擎/设置的虚构事件源码契约与四套宿主门禁通过。GitHub 执行必要的 VLC 缓存时间/暂停/跳转/倍速契约、八种头像和原九类效果/API23检查、原样/允许变化、R8/JNI、对应源码与固定签名；关闭额外回归套件，不做本地 APK 打包。发布后恢复 PRIVATE，实际表现由用户真机验收。
+
+
+## 固定签名实际交付
+
+[四套 APK 发布页](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4-preview.6-build-45808437120)，APK 输入代码 `84ddeec3adf38d2812e0b6146d758e94bda5a5d3`；[构建45808437120](https://github.com/leotvgo/Leotv/actions/runs/45808437120)与[发布45809447774](https://github.com/leotvgo/Leotv/actions/runs/45809447774)成功。构建前确认 PUBLIC，发布后恢复并独立核对为 PRIVATE。正式 Latest 仍为5.3.3 / 646。
+
+初轮45806954719源码/效果通过，TV Java编译发现 Event getter 应为固定3.6.0的 `getTimeChanged()`，不是 MediaPlayer 的 `getTime()`。已对照同版本对应源码修正并加早期门禁；同时过滤播放期间小于500ms的旧时间样本，显式跳转仍重新定位。初轮失败后恢复 PRIVATE，未发布不完整的 APK；最终重新确认 PUBLIC 后完成四套统一构建与发布，没有私有构建重试或本地 APK 回归。
+
+下载核对全部14个发布资产和四份内部完整审计，bytes、SHA256与发布digest一致；公开摘要 SHA256与完整内部审计绑定。四个实际 APK独立通过 `apksigner verify --min-sdk-version 23` 的v1及固定证书 `ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a`，`zipalign -P 16 -c 4`通过。binary Manifest均为 `com.leotv.app` / preview.6 / code652 / API23。
+
+直接逐字核对原 ZIP：TV32/64保护项1700/1689、原native32/21；手机32/64保护项1667/1656、原native34/23全部保持。追加VLC三库或MPV十一库，各库精确匹配原固定native lock，未混入另一ABI。R8 8.8.34 release/full实际marker、JNI名称与签名、原样/允许变化语义门禁通过。TV对应源码档逐成员核对并与APK输入代码一致；MPV永久对应源码标识与原锁一致，native未重编。
+
+GitHub的生产MPV虚构事件/暂停/缓冲/倍速/跳转与八组原生列表契约、VLC缓存时间/旧样本/状态边界契约、八种头像和九类效果/API23及缓存清理检查通过。没有新增上下跳动、改动历史/数据库或替换弹幕容器。实际下载包、源码和完整审计保存在忽略目录 `.work/fix652/delivery/`；[结构化交付核对](../evidence/player-652-signed-delivery-20261126.json)记录实际hash及PRIVATE收据。新增内核滚动效果与低端设备性能由用户真机验收。

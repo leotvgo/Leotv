@@ -586,7 +586,7 @@
     },
     "README.md": {
       "before_sha256": "3e0a4e1cfb7e424acc5d29543f07d287fbe65e5ab067880a1373120d227b1c89",
-      "after_sha256": "7bfbb093cda50ba5db70552da64daa4770aa357e47a97ba0b48a6a7e56ed5f15",
+      "after_sha256": "dfe99d6b975866b4478d5d473aaf1576565bb4b48751002a3db84ef36ae780bf",
       "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
     },
     "branding/AndroidManifest.xml": {
@@ -686,7 +686,7 @@
     },
     "docs/LEOTV-5.3.4-PREVIEW-6-652-MPV-CLOCK-STICKERS-20261126.md": {
       "before_sha256": null,
-      "after_sha256": "983317cbc824241cf35da37085dd3ced1a12eb3913c4c8e2d013f6d27198a750",
+      "after_sha256": "61596c0cb9d56d81f2c7968f8c8571f61a2a012ead0b3741975e93b5f898e7ef",
       "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
     },
     "evidence/player-652-pro-settings-comparison.json": {
@@ -723,6 +723,11 @@
       "before_sha256": null,
       "after_sha256": "5097c06c85ee6a487465780d568219578055099201425ded54dd8b0254985345",
       "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "evidence/player-652-signed-delivery-20261126.json": {
+      "before_sha256": null,
+      "reason": "Document verified 652 signed APK/source delivery and PRIVATE restoration, without APK input changes",
+      "after_sha256": "f616584c195757b8617c7169c8a02cf3989ec1b2f0c7e52fbaedcf347575c366"
     }
   },
   "652_repair_inputs": {
@@ -738,6 +743,10 @@
       "run_id": 45806954719,
       "reason": "Fixed LibVLC 3.6.0 Event.getTimeChanged, not MediaPlayer.getTime; exact companion source inspected, early guard added",
       "queued_stale_time_samples_ignored_below_ms": 500
-    }
+    },
+    "build_run_id": 45808437120,
+    "publish_run_id": 45809447774,
+    "apk_input_commit": "84ddeec3adf38d2812e0b6146d758e94bda5a5d3",
+    "actual_signed_delivery_verified": true
   }
 }

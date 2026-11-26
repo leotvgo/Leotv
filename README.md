@@ -1,6 +1,6 @@
 # Leotv — 5.3.4-preview.6 / 652 MPV 列表、弹幕时间与贴纸
 
-正在交付 **5.3.4-preview.6 / 652**：用户确认651手机 MPV / TV VLC可播放，按授权精简MPV为八组设置；两套新增内核在真实时间样本之间连续推进弹幕时间，暂停/缓冲/跳转时冻结。增加八种头像和炫彩边框，限制缓存及每帧分配；不加入上下跳动，原容器/九类样式和装饰动画保持。历史问题已确认是误开原生无痕模式，不改数据库或历史行为。[652范围与验收边界](docs/LEOTV-5.3.4-PREVIEW-6-652-MPV-CLOCK-STICKERS-20261126.md)。
+已发布 **5.3.4-preview.6 / 652**：[四套固定签名 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4-preview.6-build-45808437120)。用户确认651手机 MPV / TV VLC可播放，按授权精简MPV为八组设置；两套新增内核在真实时间样本之间连续推进弹幕时间，暂停/缓冲/跳转时冻结。增加八种头像和炫彩边框，限制缓存及每帧分配；不加入上下跳动，原容器/九类样式和装饰动画保持。历史问题已确认是误开原生无痕模式，不改数据库或历史行为。实际签名/原样/变化/native与源码核对通过，仓库已恢复 PRIVATE，新增内核滚动观感待真机验收。[652范围与验收边界](docs/LEOTV-5.3.4-PREVIEW-6-652-MPV-CLOCK-STICKERS-20261126.md)。
 
 已发布 **5.3.4-preview.5 / 651**：[四套固定签名 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4-preview.5-build-45796033391)。手机 MPV 去除重复 Surface 输出重建，内置低开销参数，原播放设置页直接显示 MPV 完整列表，取消额外按钮及整页弹窗；原生内核选择先保存进度与选择，native 警告停止逐条弹提示。TV VLC 改用等待真实就绪的双 SurfaceView，修复 `invalid state`；普通/特效滚动文字对齐物理像素并关闭额外位图过滤。API23、TV/手机、双 ABI、原样/变化与固定 native/签名核对通过，仓库已恢复 PRIVATE，真机待验收。[651 范围与边界](docs/LEOTV-5.3.4-PREVIEW-5-651-PLAYER-DANMAKU-20261126.md)。
 
