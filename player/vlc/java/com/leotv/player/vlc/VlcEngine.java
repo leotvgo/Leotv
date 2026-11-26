@@ -114,8 +114,8 @@ final class VlcEngine {
                 else { owner.l(3); owner.m0(3); }
                 break;
             case MediaPlayer.Event.TimeChanged:
-                if(seekPending){clock.reanchor(event.getTime(),SystemClock.uptimeMillis());seekPending=false;}
-                else clock.sample(event.getTime(),SystemClock.uptimeMillis());
+                if(seekPending){clock.reanchor(event.getTimeChanged(),SystemClock.uptimeMillis());seekPending=false;}
+                else clock.sample(event.getTimeChanged(),SystemClock.uptimeMillis());
                 syncClock();break;
             case MediaPlayer.Event.Paused: nativePlaying=false;syncClock();owner.m0(2); owner.onInfo(null, 701, 0); break;
             case MediaPlayer.Event.EndReached:

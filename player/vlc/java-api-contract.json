@@ -67,7 +67,7 @@
       "ESAdded",
       "ESDeleted",
       "TimeChanged",
-      "getTime()J"
+      "getTimeChanged()J"
     ],
     "org.videolan.libvlc.MediaPlayer$TrackDescription": [
       "id:I",

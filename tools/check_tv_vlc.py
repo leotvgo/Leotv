@@ -261,6 +261,7 @@ def check_contract(root, host_root=None, work=None):
             'player.setEventListener(null)', 'player.release()', 'lib.release()', 'proxy.close()', 'audio.abandonAudioFocus(']:
         require(contract in engine, 'Missing real VLC control/lifecycle contract: ' + contract)
     require('new w3.e(key, 1, 0, -1, message)' in engine, 'VLC error must not silently use IJK retry or fake success')
+    require('event.getTimeChanged()' in engine and 'event.getTime()' not in engine, 'Fixed LibVLC 3.6.0 Event requires getTimeChanged(), while MediaPlayer has getTime()')
     surface = (root / 'player/vlc/java/com/leotv/player/vlc/VlcSurface.java').read_text()
     require('setSubtitlesView(subtitles)' in surface and 'value.attachViews(this)' in surface and 'output.detachViews()' in surface, 'VLC Surface attachment/release incomplete')
     require('setFocusable(false)' in surface and 'PixelFormat.TRANSLUCENT' in surface and 'setZOrderMediaOverlay(true)' in surface, 'VLC must preserve original focus and subtitle compositing')

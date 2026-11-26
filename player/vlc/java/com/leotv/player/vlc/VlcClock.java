@@ -6,7 +6,7 @@ final class VlcClock {
     private float speed=1;
     private boolean running;
     void sample(long value,long now){
-        if(value<0||value==nativeTime)return;
+        if(value<0||value==nativeTime||running&&value<nativeTime&&nativeTime-value<500)return;
         reanchor(value,now);
     }
     void reanchor(long value,long now){if(value>=0){nativeTime=value;position=value;sampledAt=now;}}

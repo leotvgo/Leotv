@@ -5,6 +5,7 @@ public final class VlcClockContract {
     public static void main(String[] args){
         VlcClock clock=new VlcClock();clock.sample(10000,1000);clock.running(true,1000);
         require(clock.position(1016,-1)==10016,"frames must advance between native samples");
+        clock.sample(10010,1010);clock.sample(10000,1015);require(clock.position(1020,-1)==10020,"queued stale callbacks cannot rewind a fresher JNI time sample");
         clock.sample(10000,1020);clock.running(true,1030);require(clock.position(1040,-1)==10040,"repeated JNI cached time must not reset interpolation");
         clock.running(false,1050);require(clock.position(1250,-1)==10050,"pause/cache stops must freeze the real clock");
         clock.running(true,1250);clock.speed(2,1250);require(clock.position(1266,-1)==10082,"resume and rate change must retain continuous progress");

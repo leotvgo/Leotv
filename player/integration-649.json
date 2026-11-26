@@ -641,12 +641,12 @@
     },
     "player/vlc/java-api-contract.json": {
       "before_sha256": "a6c94542d3aed4e874173b5ed86a36fd5f0c8d3484dfb9cdf611ab972559fab4",
-      "after_sha256": "42aca5c31b6c9af1acef9694f0aea64138d20f2741105162134569ea73f2c1a7",
+      "after_sha256": "eee84a0e305292922a1e0523787dfd5294ebcf9fd356749ccacd8f7ca0cc79f0",
       "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
     },
     "player/vlc/java/com/leotv/player/vlc/VlcEngine.java": {
       "before_sha256": "4fd5a1266b7f7ef4f478bf397788a043de3f0cbfd07c3bfe1a5fd6847e79d1e4",
-      "after_sha256": "e5ba0bc8e2811343fe8e46dbd2817b64f2d8da11cdf479548f23caa55c6010d5",
+      "after_sha256": "a316437b06f8984bf0092a5e21954c5335e7bb75f034f66abf4909372fd66f4f",
       "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
     },
     "player/vlc/runtime-sources.json": {
@@ -676,7 +676,7 @@
     },
     "tools/check_tv_vlc.py": {
       "before_sha256": "23cd89959cad6e36d7cb2f7cf985d4cff6c27cfcf3fbbd0ccfa7ab8bafe08f7e",
-      "after_sha256": "a60b6c16ac10251289d34b0eeb237cd3de78d063be9002ba236b0c6f33d602ae",
+      "after_sha256": "91f2a8b0df3541336a5a4cc8e4269cdefa613973c7f17ff675a61b743b381ef2",
       "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
     },
     "tools/player_inputs.py": {
@@ -711,12 +711,12 @@
     },
     "player/vlc/java/com/leotv/player/vlc/VlcClock.java": {
       "before_sha256": null,
-      "after_sha256": "581b06d22a028b5d324ccd5e6569aea7f9214468620acb1239fd1766e77ca7ef",
+      "after_sha256": "ce74a8d659f3eb6f887f40aa98f38de1012c2d96c6d586e380a4c72f5edd0b67",
       "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
     },
     "player/vlc/tests/VlcClockContract.java": {
       "before_sha256": null,
-      "after_sha256": "db514c959181e918d009205fc3c0885a5c60a5ef03d9d841ccb8c5141800ecca",
+      "after_sha256": "1821cc8336c22ff50019ee8709a8c8a857af30e1fb8bfec1437d59371c016f4f",
       "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
     },
     "research/check_player_clocks.py": {
@@ -733,6 +733,11 @@
     "history_cause_confirmed_by_user": "Accidentally enabled original incognito preference",
     "user_cancelled_vertical_bounce": true,
     "avatar_variants": 8,
-    "native_frame_clock_interpolation_bound_ms": 500
+    "native_frame_clock_interpolation_bound_ms": 500,
+    "first_ci_compile_repair": {
+      "run_id": 45806954719,
+      "reason": "Fixed LibVLC 3.6.0 Event.getTimeChanged, not MediaPlayer.getTime; exact companion source inspected, early guard added",
+      "queued_stale_time_samples_ignored_below_ms": 500
+    }
   }
 }
