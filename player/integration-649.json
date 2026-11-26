@@ -1453,7 +1453,7 @@
   "authorized_657_source_repairs": {
     "README.md": {
       "before_sha256": "d30d06ad464cf06b39ea84d25943e21c32483ef1639b1adfaf5624b51550c324",
-      "after_sha256": "5b4e983e742a5bb0dad90de935112d97de482dce3d4dc71f866ac35a209d3acd",
+      "after_sha256": "e531a6ef93a0d5edee44243c6d48337aebfa35c9c6e16ef991540df6da43ffee",
       "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
     },
     "branding/AndroidManifest.xml": {
@@ -1508,7 +1508,7 @@
     },
     "docs/LEOTV-5.3.4-PREVIEW-11-657-HOME-ACTORS-ROLLBACK-20261127.md": {
       "before_sha256": null,
-      "after_sha256": "c919f207cb6dd8435650644c6d8fb36b63d804e95ecac59de37259615b3159b5",
+      "after_sha256": "9396f89230574f2617a3183dd87e96ec105ca99a7bca88fab46cd027d5de5007",
       "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
     },
     "research/effects-check/build.gradle": {
@@ -1535,6 +1535,11 @@
       "before_sha256": "e1c77c238a1b2a6228383f6b9e7f575d489e3d02f18630d4b3d515a760ed1a6c",
       "after_sha256": "1502b2fc051d8c3fac5b9fdc4b8d1be0840f9e079ce1885176f5c77d330f3dfb",
       "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    },
+    "evidence/player-657-signed-delivery-20261127.json": {
+      "before_sha256": null,
+      "reason": "Verified657 actual fixed-signature APK/source delivery, archived-source rollback equality and PRIVATE restoration; documentation only",
+      "after_sha256": "0bc6be508ed1c46ce5c7f1da14321320209ba8776b4d8a0f69dc8e778bdb7717"
     }
   },
   "657_delivery_inputs": {
@@ -1550,6 +1555,12 @@
     "actor_creation_restored_exact": true,
     "tv_thunder_library_hero_requests_preserved": true,
     "player_native_and_danmaku_changes_preserved": true,
-    "native_inputs_unchanged": true
+    "native_inputs_unchanged": true,
+    "build_run_id": 45861005306,
+    "publish_run_id": 45862077921,
+    "apk_input_commit": "e12703f280b3672038c282fb0a9e5c3504d53657",
+    "actual_signed_delivery_verified": true,
+    "repository_visibility": "private",
+    "restored_blocks_match_archived_source": true
   }
 }

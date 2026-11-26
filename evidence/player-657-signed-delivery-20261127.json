@@ -1,0 +1,245 @@
+{
+  "build_run_id": 45861005306,
+  "commit": "e12703f280b3672038c282fb0a9e5c3504d53657",
+  "release_url": "https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4-preview.11-build-45861005306",
+  "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+  "device_executed": false,
+  "native_recompiled": false,
+  "local_apk_built": false,
+  "variants": {
+    "tv-v7a": {
+      "apk_sha256": "81754e0d33331838cb22da0727ad7594dc13ca5f06f7fd8eb85af3cd23c6c4e4",
+      "apk_bytes": 129218474,
+      "abi": "armeabi-v7a",
+      "engine": "vlc",
+      "fixed_certificate_verified_on_actual_apk": true,
+      "android6_v1_verified": true,
+      "native_zip_alignment_kib": 16,
+      "protected_original_zip_entries_exact": 1700,
+      "original_native_libraries_exact": 32,
+      "additive_native_libraries": 3,
+      "fixed_native_hashes_match": true,
+      "source_archive": {
+        "name": "leotv-tv-v7a-player-source.tar.gz",
+        "sha256": "cfc2e17c3b787e0bffd24a42e98e8f6fc2eb556e084d3cf84838c512b3d00efd",
+        "bytes": 32972736,
+        "delivery": "Attached exact upstream and adapter source archive",
+        "source_members_verified": 31,
+        "source_commit": "e12703f280b3672038c282fb0a9e5c3504d53657"
+      },
+      "actual_host_register_methods": 75,
+      "actual_host_register_hooks": 101,
+      "public_full_audit_sha256": "057afbc8384d014cfb91c7722fc38a9b8b8ead488a65b022ddaf7e5c477e3b4b",
+      "original_dex_semantics_and_allowed_changes_match": true,
+      "url": "https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.4-preview.11-build-45861005306/leotv-tv-v7a.apk"
+    },
+    "tv-v8a": {
+      "apk_sha256": "81915ded34f7f16433f3654e89264158b14c6aa721dbae98b8c8d5df92cd28b7",
+      "apk_bytes": 131781703,
+      "abi": "arm64-v8a",
+      "engine": "vlc",
+      "fixed_certificate_verified_on_actual_apk": true,
+      "android6_v1_verified": true,
+      "native_zip_alignment_kib": 16,
+      "protected_original_zip_entries_exact": 1689,
+      "original_native_libraries_exact": 21,
+      "additive_native_libraries": 3,
+      "fixed_native_hashes_match": true,
+      "source_archive": {
+        "name": "leotv-tv-v8a-player-source.tar.gz",
+        "sha256": "cfc2e17c3b787e0bffd24a42e98e8f6fc2eb556e084d3cf84838c512b3d00efd",
+        "bytes": 32972736,
+        "delivery": "Attached exact upstream and adapter source archive",
+        "source_members_verified": 31,
+        "source_commit": "e12703f280b3672038c282fb0a9e5c3504d53657"
+      },
+      "actual_host_register_methods": 75,
+      "actual_host_register_hooks": 101,
+      "public_full_audit_sha256": "114dda57c126ec300fa4286439eb1105c71f1998b0629469496e2f3054b466fe",
+      "original_dex_semantics_and_allowed_changes_match": true,
+      "url": "https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.4-preview.11-build-45861005306/leotv-tv-v8a.apk"
+    },
+    "mobile-v7a": {
+      "apk_sha256": "40ca8f721950692a8db64f99605b2080ca89ca39868355aa6d6a92356249891a",
+      "apk_bytes": 108418320,
+      "abi": "armeabi-v7a",
+      "engine": "mpv",
+      "fixed_certificate_verified_on_actual_apk": true,
+      "android6_v1_verified": true,
+      "native_zip_alignment_kib": 16,
+      "protected_original_zip_entries_exact": 1667,
+      "original_native_libraries_exact": 34,
+      "additive_native_libraries": 11,
+      "fixed_native_hashes_match": true,
+      "source_archive": {
+        "name": "leotv-player-mpv-source-api23-673ddfa1.tar.gz",
+        "sha256": "dec3bc01bcf093c0d7cccf6a5292d6f23403c30d23d6fa5e6d107ee12ea3a1e0",
+        "bytes": 72815586,
+        "url": "https://github.com/leotvgo/Leotv/releases/download/leotv-player-native-api23-20261126-673ddfa1/leotv-player-mpv-source-api23-673ddfa1.tar.gz",
+        "delivery": "Permanent fixed release with both ABI configurations and exact producer source"
+      },
+      "actual_host_register_methods": 77,
+      "actual_host_register_hooks": 109,
+      "public_full_audit_sha256": "b3597137d3fe5731f6cf2041e6b9b64bbbbb4e1e8fe11c13b8fcab83c1c0bc9e",
+      "original_dex_semantics_and_allowed_changes_match": true,
+      "url": "https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.4-preview.11-build-45861005306/leotv-mobile-v7a.apk"
+    },
+    "mobile-v8a": {
+      "apk_sha256": "1c4af63a022406b7ec7f7fa4cc86ad10463dd30e73e64f977d454e944e788424",
+      "apk_bytes": 110580121,
+      "abi": "arm64-v8a",
+      "engine": "mpv",
+      "fixed_certificate_verified_on_actual_apk": true,
+      "android6_v1_verified": true,
+      "native_zip_alignment_kib": 16,
+      "protected_original_zip_entries_exact": 1656,
+      "original_native_libraries_exact": 23,
+      "additive_native_libraries": 11,
+      "fixed_native_hashes_match": true,
+      "source_archive": {
+        "name": "leotv-player-mpv-source-api23-673ddfa1.tar.gz",
+        "sha256": "dec3bc01bcf093c0d7cccf6a5292d6f23403c30d23d6fa5e6d107ee12ea3a1e0",
+        "bytes": 72815586,
+        "url": "https://github.com/leotvgo/Leotv/releases/download/leotv-player-native-api23-20261126-673ddfa1/leotv-player-mpv-source-api23-673ddfa1.tar.gz",
+        "delivery": "Permanent fixed release with both ABI configurations and exact producer source"
+      },
+      "actual_host_register_methods": 77,
+      "actual_host_register_hooks": 109,
+      "public_full_audit_sha256": "32b71d94c4b0346a43eec4465ee1441f46f0cda3aa36a2334ec4772ee20b72a9",
+      "original_dex_semantics_and_allowed_changes_match": true,
+      "url": "https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.4-preview.11-build-45861005306/leotv-mobile-v8a.apk"
+    }
+  },
+  "all_14_assets_verified": true,
+  "private_audit_binding_verified": true,
+  "repository_visibility": "private",
+  "publish_run_id": 45862077921,
+  "version_name": "5.3.4-preview.11",
+  "version_code": 657,
+  "home_layout_rollback": {
+    "base_commit": "2bdca91e16b9a768d4e585354a8a4c37968e80d5",
+    "base_version_code": 652,
+    "reason": "User explicitly requested full restoration of home categories and other-theme actor layout; only carousel/detail thunder/library hero presentation retained.",
+    "restored_blocks": [
+      {
+        "path": "detail/runtime/common/com/leotv/detail/NewHome.java",
+        "whole_file_sha256": "64c7225ef0c23fd229b58f7d17297016e1168383b17ccc75df8d4e9c6f8689c8"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/NativeCspUi.java",
+        "whole_file_sha256": "c6c177cd1fbdff422ee14a0df4b4ccac2046709cf094755cd060aaf18096bb8e"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    final class Shelf {",
+        "sha256": "bdd367bd950f94dfb9831792e7079b467800adb23a47b6c33aba33d126fb6fc8"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    final class TvHomeScroll ",
+        "sha256": "67e4c57f1de14d611f0746be8c14d9c8f288d37bd8621819784193d2c12463c8"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    final class TvShelfScroll ",
+        "sha256": "1be7a1160f5ea2a73b603fe72c6d7c382a7b8d0992e9e4a4f0b95e0d06140b75"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    void categories(",
+        "sha256": "2bd959090a1fc9446dc2c65128844bd6af0e958fe891760985948d70a33994aa"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    void updateInsets(",
+        "sha256": "785a6273512bf2b4b9fa7bd55c5197d08322940b8cd9cd023f4c26d6fc0f2020"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    void moveRow(",
+        "sha256": "e996a64ea490419f70c596ecb464c9c6a6264e90043cc7fd5b0855f67f351549"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    void resetOffscreenRows(",
+        "sha256": "5c2e1806b2f9373656cfe3562f01211aa13476f2726f33751d835eac78aec943"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    void refreshSizes(",
+        "sha256": "06045d42e8889d415bd13c7fab765ac1cf1fae0c31c571af3175d07152bddbc9"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    boolean focusHome(",
+        "sha256": "5ab91896a22399e6a8d3c9bb08e00afaf55b4cc9029a3c2ee977f70d86778b40"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    boolean focusContent(",
+        "sha256": "ef0988c563da5fc20ed5f4aba9f9711e773a26d06dc058cca020f7d31e0ee182"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    boolean focusFirstInRow(",
+        "sha256": "e1f09bbd0279577bf2208e14bf02c575cb5f2f2b350496a01dc8e9a3fc410029"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    boolean moveCard(",
+        "sha256": "1f9783e3f67148fb689c146dc3264cd5a2364a561bf6fa2b9d704410790a47d4"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/TvDetailPage.java",
+        "start": "        for(MobileDetailMetadata.Actor actor:value.actors)",
+        "end": "\n        actorTheme();",
+        "sha256": "5f50f6127f9dcd32003bc649260b033a0881a3997a1081877881d82016444374"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    View alignedCard(",
+        "sha256": "ff61ac82dfdb2dd282d1dbec4e1742db6e96f9277de8cb8277583de178ae828a"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    boolean firstContent(",
+        "sha256": "40c285f31423895f3d932a229677eeb7df0a3875520c692f4b2c9f7dc824ec44"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    boolean leftContentEdge(",
+        "sha256": "a47c4bd0fa28f891fa0a9ad77becf700fd0c5e3baf2fe3c33a1098f92badbe7e"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    Shelf shelfOf(",
+        "sha256": "366c984ecef56fa94144cf2c8484af380df55a775cc02cc8041c33d5aeec033f"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    int cardIndex(",
+        "sha256": "19b90af87157f299a12cd2a03581fefdd2b6262dfa180360ce8ab0d51cf5910d"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "marker": "    void historyChanged(",
+        "sha256": "efb91674b72b22ef1a31f923b32cb070afbc9c3191ee4a197b8d8c6543de194c"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "start": "        scroll=phone?",
+        "end": "        heroFrame=new FrameLayout",
+        "sha256": "009806afd3c4e9bffdfc5d36e795a5b700dc0533d1d45284c257b0f24e90f87a"
+      },
+      {
+        "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+        "start": "        recent=phone?null:",
+        "end": "    void syncThemeHeight()",
+        "baseline_end": "    void syncHeroBounds()",
+        "sha256": "69a2347aa8ee806645ec3d94337b5a96eb3034a285d7c48dd81331fe81462d7c"
+      }
+    ]
+  },
+  "ci_source_and_api23_draw_gates_passed": true,
+  "new_home_recycler_used": false
+}
