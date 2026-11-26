@@ -35,7 +35,7 @@ public class DanmakuEffectsTest {
         Context context=RuntimeEnvironment.getApplication();DanmakuSettings.prefs(context).edit().putBoolean("effects",true).putBoolean("effect_animation",true).putInt("effect_rate",15).putLong("effect_seed",1234567).commit();
         DanmakuEffects.initialize(context);DanmakuEffects.clear();
         Displayer displayer=new Displayer();displayer.a.c.setTextSize(24);
-        Bitmap frame=Bitmap.createBitmap(1000,300,Bitmap.Config.ARGB_8888);Canvas canvas=new Canvas(frame);int saves=canvas.getSaveCount();
+        Bitmap frame=Bitmap.createBitmap(1000,300,Bitmap.Config.ARGB_8888);frame.setDensity(240);Canvas canvas=new Canvas(frame);int saves=canvas.getSaveCount();
         try{
             for(int style=0;style<DanmakuEffectPolicy.STYLES;style++){
                 SystemClock.sleep(300); // Advance Robolectric's clock so each animation path acquires ownership.
@@ -44,7 +44,9 @@ public class DanmakuEffectsTest {
                 assertTrue("Style "+style+" did not draw on the API23 Canvas; width="+item.h+", height="+item.i+", size="+item.g,DanmakuEffects.draw(item,displayer,canvas,51,80));
                 assertEquals(saves,canvas.getSaveCount());assertEquals(timestamp,item.a);assertEquals("虚构炫彩弹幕",item.c);assertEquals(24,displayer.a.c.getTextSize(),0);
             }
-            assertEquals(9,cache().size());assertNotNull(portrait());assertEquals(32,portrait().getWidth());assertEquals(32,portrait().getHeight());Field field=DanmakuEffects.class.getDeclaredField("BITMAP_PAINT");field.setAccessible(true);assertEquals(160,((Paint)field.get(null)).getAlpha());
+            assertEquals(9,cache().size());
+            for(Object tile:cache().values()){Field bitmapField=tile.getClass().getDeclaredField("bitmap");bitmapField.setAccessible(true);assertEquals("Pixel-measured glyph tiles must not rescale to the destination canvas density",Bitmap.DENSITY_NONE,((Bitmap)bitmapField.get(tile)).getDensity());}
+            assertNotNull(portrait());assertEquals(32,portrait().getWidth());assertEquals(32,portrait().getHeight());Field field=DanmakuEffects.class.getDeclaredField("BITMAP_PAINT");field.setAccessible(true);assertEquals(160,((Paint)field.get(null)).getAlpha());
             DanmakuSettings.prefs(context).edit().putBoolean("effect_animation",false).commit();DanmakuEffects.initialize(context);
             for(int style=6;style<9;style++){Comment item=comment(displayer.a.c,style,"关闭动画仍显示贴纸和装饰");DanmakuEffects.measure(item,displayer.a.c);assertTrue(DanmakuEffects.draw(item,displayer,canvas,0,0));assertEquals(saves,canvas.getSaveCount());}
             DanmakuSettings.prefs(context).edit().putBoolean("effect_animation",true).commit();DanmakuEffects.initialize(context);

@@ -8,6 +8,8 @@ from apply_native_details import method, replace_method, append_call
 def apply(project, root, variant):
     mobile = variant.startswith('mobile')
     locked = json.loads((root / 'detail/danmaku-native-source-lock.json').read_text())[variant]
+    if mobile:
+        locked.update(json.loads((root / 'evidence/danmaku-panel-source-lock-20261126.json').read_text())[variant])
     changes, descriptors = {}, set()
     video = 'smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali'
     result = 'smali/O3/t.smali' if mobile else 'smali/com/fongmi/android/tv/ui/activity/M.smali'
@@ -16,7 +18,7 @@ def apply(project, root, variant):
     renderer = 'smali/H3/d.smali' if mobile else 'smali/E3/d.smali'
     paths = [video, result, player, config, renderer]
     if mobile:
-        paths += ['smali/S3/x.smali','smali/R3/p.1.smali']
+        paths += ['smali/S3/x.smali','smali/R3/p.1.smali','smali/R3/r.smali','smali/R3/q.1.smali']
     else:
         paths += ['smali/L3/f.smali', 'smali/com/fongmi/android/tv/ui/activity/SettingDanmuActivity.smali','smali/O3/k.smali']
     for name in paths:
@@ -155,6 +157,27 @@ def apply(project, root, variant):
                     raise ValueError('Expected the ordinary fixed 32-pixel Danmaku margin.')
                 return body.replace(fixed,'    invoke-static {}, Lcom/leotv/detail/DanmakuSpacing;->pixels()I\n\n    move-result v4')
             text=replace_method(text,'e()V',spacing)
+        elif name == 'smali/R3/r.smali':
+            text=replace_method(text,'w0()V',lambda body: append_call(body,
+                '    invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->panelCreated(Ljava/lang/Object;)V'))
+        elif name == 'smali/R3/q.1.smali':
+            def native_slider(body):
+                marker=re.search(r'(?m)^    \.locals 1$',body)
+                if marker is None:raise ValueError('Native Danmaku slider bridge register contract changed.')
+                added='''
+
+    invoke-static {p1, p2, p3}, Lcom/leotv/detail/DanmakuSpacing;->nativeSliderChanged(Ljava/lang/Object;FZ)Z
+
+    move-result v0
+
+    if-eqz v0, :leotv_danmaku_slider_original
+
+    return-void
+
+    :leotv_danmaku_slider_original
+'''
+                return body[:marker.end()]+added+body[marker.end():]
+            text=replace_method(text,'a(Lcom/google/android/material/slider/f;FZ)V',native_slider)
         elif name in ['smali/R3/p.1.smali','smali/O3/k.smali']:
             def menu(body):
                 position=body.rfind('    return-void')

@@ -1,0 +1,864 @@
+{
+  "scope": "Read-only exact ordinary binary XML; no decoding/recompilation of APK assets",
+  "mobile": {
+    "layout/dialog_danmu": {
+      "resource_id": "0x7f0d005f",
+      "zip_path": "res/9a.xml",
+      "sha256": "a7e795d734a070c7c1533f791f0b4058018a469cc1deb0b6873f3e255ea9de6f",
+      "nodes": [
+        {
+          "tag": "androidx.core.widget.NestedScrollView",
+          "attributes": {
+            "layout_width": 4294967295,
+            "layout_height": 4294967294
+          }
+        },
+        {
+          "tag": "LinearLayout",
+          "attributes": {
+            "orientation": 1,
+            "layout_width": 4294967295,
+            "layout_height": 4294967294
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4098,
+              "unit": 2,
+              "value": 16
+            },
+            "textColor": 16842806,
+            "layout_width": 4294967294,
+            "layout_height": 4294967294,
+            "layout_marginTop": {
+              "complex": 4097,
+              "unit": 1,
+              "value": 16
+            },
+            "text": "string/danmaku",
+            "layout_marginStart": {
+              "complex": 4097,
+              "unit": 1,
+              "value": 16
+            }
+          }
+        },
+        {
+          "tag": "LinearLayout",
+          "attributes": {
+            "orientation": 1,
+            "id": "id/list",
+            "paddingTop": {
+              "complex": 2049,
+              "unit": 1,
+              "value": 8
+            },
+            "paddingBottom": {
+              "complex": 2049,
+              "unit": 1,
+              "value": 8
+            },
+            "visibility": 2,
+            "layout_width": 4294967295,
+            "layout_height": 4294967294,
+            "paddingStart": {
+              "complex": 4097,
+              "unit": 1,
+              "value": 16
+            },
+            "paddingEnd": {
+              "complex": 4097,
+              "unit": 1,
+              "value": 16
+            }
+          }
+        },
+        {
+          "tag": "LinearLayout",
+          "attributes": {
+            "orientation": 0,
+            "layout_width": 4294967295,
+            "layout_height": 4294967294
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4098,
+              "unit": 2,
+              "value": 16
+            },
+            "textColor": 16842806,
+            "gravity": 19,
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967295,
+            "text": "string/player_danmu_time",
+            "layout_weight": 1.0
+          }
+        },
+        {
+          "tag": "com.google.android.material.slider.Slider",
+          "attributes": {
+            "gravity": 17,
+            "id": "id/time",
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967294,
+            "stepSize": 1.0,
+            "layout_weight": 3.0,
+            "valueFrom": 4294967176,
+            "valueTo": 120,
+            "tickColor": "color/accent",
+            "tickVisible": 0,
+            "trackColorInactive": "color/blue_50"
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4098,
+              "unit": 2,
+              "value": 16
+            },
+            "textColor": 16842806,
+            "gravity": 17,
+            "id": "id/timeText",
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967295,
+            "layout_weight": 1.0
+          }
+        },
+        {
+          "tag": "LinearLayout",
+          "attributes": {
+            "orientation": 0,
+            "layout_width": 4294967295,
+            "layout_height": 4294967294
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4098,
+              "unit": 2,
+              "value": 16
+            },
+            "textColor": 16842806,
+            "gravity": 19,
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967295,
+            "text": "string/player_danmu_speed",
+            "layout_weight": 1.0
+          }
+        },
+        {
+          "tag": "com.google.android.material.slider.Slider",
+          "attributes": {
+            "gravity": 17,
+            "id": "id/speed",
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967294,
+            "stepSize": 1.0,
+            "layout_weight": 3.0,
+            "valueFrom": 0,
+            "valueTo": 3,
+            "tickColor": "color/accent",
+            "tickVisible": 0,
+            "trackColorInactive": "color/blue_50"
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4098,
+              "unit": 2,
+              "value": 16
+            },
+            "textColor": 16842806,
+            "gravity": 17,
+            "id": "id/speedText",
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967295,
+            "layout_weight": 1.0
+          }
+        },
+        {
+          "tag": "LinearLayout",
+          "attributes": {
+            "orientation": 0,
+            "layout_width": 4294967295,
+            "layout_height": 4294967294
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4098,
+              "unit": 2,
+              "value": 16
+            },
+            "textColor": 16842806,
+            "gravity": 19,
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967295,
+            "text": "string/player_danmu_size",
+            "layout_weight": 1.0
+          }
+        },
+        {
+          "tag": "com.google.android.material.slider.Slider",
+          "attributes": {
+            "gravity": 17,
+            "id": "id/size",
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967294,
+            "stepSize": 0.10000000149011612,
+            "layout_weight": 3.0,
+            "valueFrom": 0.6000000238418579,
+            "valueTo": 2,
+            "tickColor": "color/accent",
+            "tickVisible": 0,
+            "trackColorInactive": "color/blue_50"
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4098,
+              "unit": 2,
+              "value": 16
+            },
+            "textColor": 16842806,
+            "gravity": 17,
+            "id": "id/sizeText",
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967295,
+            "text": "string/times",
+            "layout_weight": 1.0
+          }
+        },
+        {
+          "tag": "LinearLayout",
+          "attributes": {
+            "orientation": 0,
+            "layout_width": 4294967295,
+            "layout_height": 4294967294
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4098,
+              "unit": 2,
+              "value": 16
+            },
+            "textColor": 16842806,
+            "gravity": 19,
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967295,
+            "text": "string/player_danmu_line",
+            "layout_weight": 1.0
+          }
+        },
+        {
+          "tag": "com.google.android.material.slider.Slider",
+          "attributes": {
+            "gravity": 17,
+            "id": "id/line",
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967294,
+            "stepSize": 1.0,
+            "layout_weight": 3.0,
+            "valueFrom": 1,
+            "valueTo": 15,
+            "tickColor": "color/accent",
+            "tickVisible": 0,
+            "trackColorInactive": "color/blue_50"
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4098,
+              "unit": 2,
+              "value": 16
+            },
+            "textColor": 16842806,
+            "gravity": 17,
+            "id": "id/lineText",
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967295,
+            "text": "string/lines",
+            "layout_weight": 1.0
+          }
+        },
+        {
+          "tag": "LinearLayout",
+          "attributes": {
+            "orientation": 0,
+            "layout_width": 4294967295,
+            "layout_height": 4294967294
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4098,
+              "unit": 2,
+              "value": 16
+            },
+            "textColor": 16842806,
+            "gravity": 19,
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967295,
+            "text": "string/player_danmu_alpha",
+            "layout_weight": 1.0
+          }
+        },
+        {
+          "tag": "com.google.android.material.slider.Slider",
+          "attributes": {
+            "gravity": 17,
+            "id": "id/alpha",
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967294,
+            "stepSize": 5.0,
+            "layout_weight": 3.0,
+            "valueFrom": 10,
+            "valueTo": 100,
+            "tickColor": "color/accent",
+            "tickVisible": 0,
+            "trackColorInactive": "color/blue_50"
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4098,
+              "unit": 2,
+              "value": 16
+            },
+            "textColor": 16842806,
+            "gravity": 17,
+            "id": "id/alphaText",
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967295,
+            "text": "%",
+            "layout_weight": 1.0
+          }
+        }
+      ]
+    }
+  },
+  "tv": {
+    "layout/activity_setting_danmu": {
+      "resource_id": "0x7f0e0029",
+      "zip_path": "res/lS.xml",
+      "sha256": "8a5668a0bee471ac6a8f2cb0b68baec421fdabb97fd7d8e898ee70faa9c6def6",
+      "nodes": [
+        {
+          "tag": "androidx.core.widget.NestedScrollView",
+          "attributes": {
+            "layout_width": 4294967295,
+            "layout_height": 4294967295,
+            "fillViewport": 4294967295,
+            "keepScreenOn": 4294967295
+          }
+        },
+        {
+          "tag": "LinearLayout",
+          "attributes": {
+            "orientation": 1,
+            "padding": {
+              "complex": 6145,
+              "unit": 1,
+              "value": 24
+            },
+            "layout_width": 4294967295,
+            "layout_height": 4294967295
+          }
+        },
+        {
+          "tag": "LinearLayout",
+          "attributes": {
+            "orientation": 0,
+            "id": "id/danmuLoad",
+            "background": "drawable/selector_item",
+            "focusable": 4294967295,
+            "focusableInTouchMode": 4294967295,
+            "layout_width": 4294967295,
+            "layout_height": 4294967294
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4610,
+              "unit": 2,
+              "value": 18
+            },
+            "textColor": "color/white",
+            "layout_width": 4294967294,
+            "layout_height": 4294967294,
+            "text": "string/player_danmu_load",
+            "layout_marginEnd": {
+              "complex": 4097,
+              "unit": 1,
+              "value": 16
+            }
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4610,
+              "unit": 2,
+              "value": 18
+            },
+            "textColor": "color/white",
+            "gravity": 8388613,
+            "id": "id/danmuLoadText",
+            "layout_width": 4294967295,
+            "layout_height": 4294967294
+          }
+        },
+        {
+          "tag": "LinearLayout",
+          "attributes": {
+            "orientation": 0,
+            "id": "id/danmuSpeed",
+            "background": "drawable/selector_item",
+            "focusable": 4294967295,
+            "focusableInTouchMode": 4294967295,
+            "layout_width": 4294967295,
+            "layout_height": 4294967294,
+            "layout_marginTop": {
+              "complex": 4097,
+              "unit": 1,
+              "value": 16
+            }
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4610,
+              "unit": 2,
+              "value": 18
+            },
+            "textColor": "color/white",
+            "layout_width": 4294967294,
+            "layout_height": 4294967294,
+            "text": "string/player_danmu_speed",
+            "layout_marginEnd": {
+              "complex": 4097,
+              "unit": 1,
+              "value": 16
+            }
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4610,
+              "unit": 2,
+              "value": 18
+            },
+            "textColor": "color/white",
+            "gravity": 8388613,
+            "id": "id/danmuSpeedText",
+            "layout_width": 4294967295,
+            "layout_height": 4294967294
+          }
+        },
+        {
+          "tag": "LinearLayout",
+          "attributes": {
+            "orientation": 0,
+            "id": "id/danmuSize",
+            "background": "drawable/selector_item",
+            "focusable": 4294967295,
+            "focusableInTouchMode": 4294967295,
+            "layout_width": 4294967295,
+            "layout_height": 4294967294,
+            "layout_marginTop": {
+              "complex": 4097,
+              "unit": 1,
+              "value": 16
+            }
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4610,
+              "unit": 2,
+              "value": 18
+            },
+            "textColor": "color/white",
+            "layout_width": 4294967294,
+            "layout_height": 4294967294,
+            "text": "string/player_danmu_size",
+            "layout_marginEnd": {
+              "complex": 4097,
+              "unit": 1,
+              "value": 16
+            }
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4610,
+              "unit": 2,
+              "value": 18
+            },
+            "textColor": "color/white",
+            "gravity": 8388613,
+            "id": "id/danmuSizeText",
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967294,
+            "layout_weight": 1.0
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4610,
+              "unit": 2,
+              "value": 18
+            },
+            "textColor": "color/white",
+            "layout_width": 4294967294,
+            "layout_height": 4294967294,
+            "text": "string/times",
+            "layout_marginStart": {
+              "complex": 1025,
+              "unit": 1,
+              "value": 4
+            }
+          }
+        },
+        {
+          "tag": "LinearLayout",
+          "attributes": {
+            "orientation": 0,
+            "id": "id/danmuLine",
+            "background": "drawable/selector_item",
+            "focusable": 4294967295,
+            "focusableInTouchMode": 4294967295,
+            "layout_width": 4294967295,
+            "layout_height": 4294967294,
+            "layout_marginTop": {
+              "complex": 4097,
+              "unit": 1,
+              "value": 16
+            }
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4610,
+              "unit": 2,
+              "value": 18
+            },
+            "textColor": "color/white",
+            "layout_width": 4294967294,
+            "layout_height": 4294967294,
+            "text": "string/player_danmu_line",
+            "layout_marginEnd": {
+              "complex": 4097,
+              "unit": 1,
+              "value": 16
+            }
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4610,
+              "unit": 2,
+              "value": 18
+            },
+            "textColor": "color/white",
+            "gravity": 8388613,
+            "id": "id/danmuLineText",
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967294,
+            "layout_weight": 1.0
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4610,
+              "unit": 2,
+              "value": 18
+            },
+            "textColor": "color/white",
+            "layout_width": 4294967294,
+            "layout_height": 4294967294,
+            "text": "string/lines",
+            "layout_marginStart": {
+              "complex": 1025,
+              "unit": 1,
+              "value": 4
+            }
+          }
+        },
+        {
+          "tag": "LinearLayout",
+          "attributes": {
+            "orientation": 0,
+            "id": "id/danmuAlpha",
+            "background": "drawable/selector_item",
+            "focusable": 4294967295,
+            "focusableInTouchMode": 4294967295,
+            "layout_width": 4294967295,
+            "layout_height": 4294967294,
+            "layout_marginTop": {
+              "complex": 4097,
+              "unit": 1,
+              "value": 16
+            }
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4610,
+              "unit": 2,
+              "value": 18
+            },
+            "textColor": "color/white",
+            "layout_width": 4294967294,
+            "layout_height": 4294967294,
+            "text": "string/player_danmu_alpha",
+            "layout_marginEnd": {
+              "complex": 4097,
+              "unit": 1,
+              "value": 16
+            }
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4610,
+              "unit": 2,
+              "value": 18
+            },
+            "textColor": "color/white",
+            "gravity": 8388613,
+            "id": "id/danmuAlphaText",
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967294,
+            "layout_weight": 1.0
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4610,
+              "unit": 2,
+              "value": 18
+            },
+            "textColor": "color/white",
+            "layout_width": 4294967294,
+            "layout_height": 4294967294,
+            "text": "%",
+            "layout_marginStart": {
+              "complex": 1025,
+              "unit": 1,
+              "value": 4
+            }
+          }
+        },
+        {
+          "tag": "LinearLayout",
+          "attributes": {
+            "orientation": 0,
+            "id": "id/danmuControl",
+            "background": "drawable/selector_item",
+            "focusable": 4294967295,
+            "focusableInTouchMode": 4294967295,
+            "layout_width": 4294967295,
+            "layout_height": 4294967294,
+            "layout_marginTop": {
+              "complex": 4097,
+              "unit": 1,
+              "value": 16
+            }
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4610,
+              "unit": 2,
+              "value": 18
+            },
+            "textColor": "color/white",
+            "layout_width": 4294967294,
+            "layout_height": 4294967294,
+            "text": "string/player_danmu_control",
+            "layout_marginEnd": {
+              "complex": 4097,
+              "unit": 1,
+              "value": 16
+            }
+          }
+        },
+        {
+          "tag": "TextView",
+          "attributes": {
+            "textSize": {
+              "complex": 4610,
+              "unit": 2,
+              "value": 18
+            },
+            "textColor": "color/white",
+            "gravity": 8388613,
+            "id": "id/danmuControlText",
+            "layout_width": {
+              "complex": 1,
+              "unit": 1,
+              "value": 0
+            },
+            "layout_height": 4294967294,
+            "layout_weight": 1.0
+          }
+        }
+      ]
+    },
+    "layout/select_dialog_singlechoice_material": {
+      "resource_id": "0x7f0e0136",
+      "zip_path": "res/hP.xml",
+      "sha256": "23c401e719bb1ba5ad0d03e8d6cf606cc279d332913f7bce95e8201f9d3dee70",
+      "nodes": [
+        {
+          "tag": "CheckedTextView",
+          "attributes": {
+            "textAppearance": 16842817,
+            "textColor": 2130970222,
+            "ellipsize": 4,
+            "gravity": 16,
+            "id": "0x1020014",
+            "paddingLeft": "dimen/abc_select_dialog_padding_start_material",
+            "paddingRight": 2130969049,
+            "layout_width": 4294967295,
+            "layout_height": 4294967294,
+            "minHeight": 2130969576,
+            "drawableLeft": 16843289,
+            "drawablePadding": {
+              "complex": 5121,
+              "unit": 1,
+              "value": 20
+            },
+            "drawableStart": 16843289,
+            "paddingStart": "dimen/abc_select_dialog_padding_start_material",
+            "paddingEnd": 2130969049
+          }
+        }
+      ]
+    }
+  }
+}

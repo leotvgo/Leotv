@@ -1,0 +1,10 @@
+{
+  "mobile-v7a": {
+    "smali/R3/r.smali": "fbdd03e4ac69b484c00aed4d2ae81c29f9317312d2bd4b9ba4ae29dd49cb1982",
+    "smali/R3/q.1.smali": "deb0225e633bd543b04bec061084d01eeedb3a6c6bc69ef7b7f66b2d53aeffd1"
+  },
+  "mobile-v8a": {
+    "smali/R3/r.smali": "fbdd03e4ac69b484c00aed4d2ae81c29f9317312d2bd4b9ba4ae29dd49cb1982",
+    "smali/R3/q.1.smali": "deb0225e633bd543b04bec061084d01eeedb3a6c6bc69ef7b7f66b2d53aeffd1"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "mobile-v7a": {
+    "new_hook_paths": [
+      "smali/R3/q.1.smali",
+      "smali/R3/r.smali"
+    ],
+    "existing_hooks_and_unrelated_files_identical": true,
+    "new_hooks_restore_to_exact_original": true,
+    "api23_targeted_smali_assembly": true
+  },
+  "mobile-v8a": {
+    "new_hook_paths": [
+      "smali/R3/q.1.smali",
+      "smali/R3/r.smali"
+    ],
+    "existing_hooks_and_unrelated_files_identical": true,
+    "new_hooks_restore_to_exact_original": true,
+    "api23_targeted_smali_assembly": true
+  },
+  "tv-v7a": {
+    "new_hook_paths": [],
+    "existing_hooks_and_unrelated_files_identical": true,
+    "new_hooks_restore_to_exact_original": true,
+    "api23_targeted_smali_assembly": false
+  },
+  "tv-v8a": {
+    "new_hook_paths": [],
+    "existing_hooks_and_unrelated_files_identical": true,
+    "new_hooks_restore_to_exact_original": true,
+    "api23_targeted_smali_assembly": false
+  }
+}

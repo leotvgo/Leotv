@@ -40,17 +40,18 @@ public final class DanmakuUi {
     }
     public static void settings(Activity activity){refreshApiSummary(activity);settings(activity,null);}
     public static void attach(Activity activity,View root){
-        if(activity==null||root==null)return;
+        // Mobile S3/x is the global playback settings, not the sidebar's R3/r dialog.
+        if(activity==null||root==null||Device.MOBILE)return;
         attachSpacing(activity,root);
         attachEffects(activity,root);
         if(root.findViewWithTag("leotv_danmaku_api_settings")!=null){refreshApiSummary(activity);return;}
         int id=activity.getResources().getIdentifier("danmuLoad","id",activity.getPackageName());View template=id==0?null:root.findViewById(id);
         if(template==null||!(template.getParent() instanceof LinearLayout))return;
-        LinearLayout parent=(LinearLayout)template.getParent();View row=NativeViews.copy(template,activity);
+        LinearLayout parent=(LinearLayout)template.getParent();View row=NativeViews.copy(nativeRow(activity,root),activity);
         java.util.List<TextView> texts=new ArrayList<>();collect(row,texts);if(texts.isEmpty())return;
         texts.get(0).setText("弹幕API");if(texts.size()>1)texts.get(texts.size()-1).setText(DanmakuSettings.api(activity).isEmpty()?"未配置":"已配置");
         row.setTag("leotv_danmaku_api_settings");row.setFocusable(!Device.MOBILE);row.setFocusableInTouchMode(!Device.MOBILE);row.setClickable(true);row.setOnClickListener(view->settings(activity));
-        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams((LinearLayout.LayoutParams)template.getLayoutParams());
+        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams((LinearLayout.LayoutParams)nativeRow(activity,root).getLayoutParams());
         if(!Device.MOBILE){
             params.topMargin=0;
             for(int i=0;i<parent.getChildCount();i++){ViewGroup.LayoutParams sibling=parent.getChildAt(i).getLayoutParams();if(sibling instanceof LinearLayout.LayoutParams&&((LinearLayout.LayoutParams)sibling).topMargin>0){LinearLayout.LayoutParams original=(LinearLayout.LayoutParams)template.getLayoutParams();original.topMargin=((LinearLayout.LayoutParams)sibling).topMargin;template.setLayoutParams(original);break;}}
@@ -61,28 +62,64 @@ public final class DanmakuUi {
         if(root.findViewWithTag("leotv_danmaku_spacing")!=null)return;
         int id=activity.getResources().getIdentifier("danmuLoad","id",activity.getPackageName());View template=id==0?null:root.findViewById(id);
         if(template==null||!(template.getParent() instanceof LinearLayout))return;
-        LinearLayout parent=(LinearLayout)template.getParent();View row=NativeViews.copy(template,activity);
+        LinearLayout parent=(LinearLayout)template.getParent();View original=nativeRow(activity,root);View row=NativeViews.copy(original,activity);
         List<TextView> texts=new ArrayList<>();collect(row,texts);if(texts.isEmpty())return;
         texts.get(0).setText("弹幕行间距");
         Runnable summary=()->{if(texts.size()>1)texts.get(texts.size()-1).setText(DanmakuSpacing.summary(activity));};summary.run();
         row.setId(View.generateViewId());row.setTag("leotv_danmaku_spacing");row.setFocusable(!Device.MOBILE);row.setFocusableInTouchMode(!Device.MOBILE);row.setClickable(true);
         row.setOnClickListener(view->DanmakuSpacing.choose(activity,summary));
-        parent.addView(row,parent.indexOfChild(template)+1,new LinearLayout.LayoutParams((LinearLayout.LayoutParams)template.getLayoutParams()));
+        parent.addView(row,parent.indexOfChild(template)+1,new LinearLayout.LayoutParams((LinearLayout.LayoutParams)original.getLayoutParams()));
     }
     private static void attachEffects(Activity activity,View root){
         if(root.findViewWithTag("leotv_danmaku_effects")!=null)return;
         int id=activity.getResources().getIdentifier("danmuLoad","id",activity.getPackageName());View template=id==0?null:root.findViewById(id);
         if(template==null||!(template.getParent() instanceof LinearLayout))return;
-        LinearLayout parent=(LinearLayout)template.getParent();int at=parent.indexOfChild(template)+1;
+        LinearLayout parent=(LinearLayout)template.getParent();View original=nativeRow(activity,root);int at=parent.indexOfChild(template)+1;
         for(int option=0;option<3;option++){
-            int selected=option;View row=NativeViews.copy(template,activity);List<TextView> texts=new ArrayList<>();collect(row,texts);if(texts.isEmpty())continue;
+            int selected=option;View row=NativeViews.copy(original,activity);List<TextView> texts=new ArrayList<>();collect(row,texts);if(texts.isEmpty())continue;
             texts.get(0).setText(option==0?"特效弹幕":option==1?"特效比例":"特效动画");
             Runnable summary=()->{if(texts.size()>1)texts.get(texts.size()-1).setText(selected==0?on(DanmakuEffects.enabled(activity)):selected==1?DanmakuEffects.rate(activity)+"%":on(DanmakuEffects.animated(activity)));};summary.run();
             row.setId(View.generateViewId());row.setTag(option==0?"leotv_danmaku_effects":"leotv_danmaku_effects_"+option);row.setFocusable(!Device.MOBILE);row.setFocusableInTouchMode(!Device.MOBILE);row.setClickable(true);
             row.setOnClickListener(view->{if(selected==1)DanmakuEffects.chooseRate(activity,summary);else{DanmakuEffects.toggle(activity,selected==2);summary.run();}});
-            parent.addView(row,at++,new LinearLayout.LayoutParams((LinearLayout.LayoutParams)template.getLayoutParams()));
+            parent.addView(row,at++,new LinearLayout.LayoutParams((LinearLayout.LayoutParams)original.getLayoutParams()));
         }
     }
+    /** The first danmuLoad row lacks the margin used by every following native row. */
+    private static View nativeRow(Activity activity,View root){
+        View row=find(activity,root,"danmuSpeed");
+        if(row==null)throw new IllegalStateException("Native Danmaku speed row unavailable");
+        return row;
+    }
+    /** Inflate the same four-step native slider row used by R3/r, preserving its theme and 1:3:1 columns. */
+    public static void attachPlayerSpacing(Activity activity,View root,Object owner){
+        if(!Device.MOBILE||root==null||root.findViewWithTag("leotv_danmaku_spacing")!=null)return;
+        View line=find(activity,root,"line"),speed=find(activity,root,"speed");
+        if(line==null||speed==null||!(line.getParent() instanceof LinearLayout)||!(speed.getParent() instanceof LinearLayout))
+            throw new IllegalStateException("Native sidebar Danmaku sliders unavailable");
+        LinearLayout anchor=(LinearLayout)line.getParent();
+        if(!(anchor.getParent() instanceof LinearLayout))throw new IllegalStateException("Native sidebar Danmaku column unavailable");
+        LinearLayout parent=(LinearLayout)anchor.getParent();
+        View fresh=NativeViews.layout(root.getContext(),"dialog_danmu"),slider=find(activity,fresh,"speed");
+        if(slider==null||!(slider.getParent() instanceof LinearLayout))throw new IllegalStateException("Native Danmaku four-step row unavailable");
+        LinearLayout row=(LinearLayout)slider.getParent();((ViewGroup)row.getParent()).removeView(row);
+        List<TextView> texts=new ArrayList<>();collect(row,texts);
+        if(texts.size()!=2)throw new IllegalStateException("Native Danmaku slider labels changed");
+        freshIds(row);row.setTag("leotv_danmaku_spacing");texts.get(0).setText("弹幕行间距");
+        TextView value=texts.get(1);slider.setTag(new DanmakuSpacing.SliderState(activity,value));
+        Runnable summary=()->DanmakuSpacing.refreshSlider(slider,activity,value);summary.run();
+        texts.get(0).setOnClickListener(v->DanmakuSpacing.choose(activity,summary));
+        value.setOnClickListener(v->DanmakuSpacing.choose(activity,summary));
+        try{
+            Class<?> callback=Class.forName("R3.q",true,activity.getClassLoader()),dialog=Class.forName("R3.b",true,activity.getClassLoader());
+            Object listener=callback.getConstructor(dialog,int.class).newInstance(owner,1);
+            slider.getClass().getMethod("a",callback).invoke(slider,listener);
+        }catch(ReflectiveOperationException unavailable){throw new IllegalStateException("Native Danmaku slider callback unavailable",unavailable);}
+        parent.addView(row,parent.indexOfChild(anchor)+1,NativeViews.copyLayout((View)speed.getParent()));
+    }
+    private static View find(Activity activity,View root,String name){
+        if(root==null)return null;int id=activity.getResources().getIdentifier(name,"id",activity.getPackageName());return id==0?null:root.findViewById(id);
+    }
+    private static void freshIds(View root){root.setId(View.generateViewId());if(root instanceof ViewGroup)for(int i=0;i<((ViewGroup)root).getChildCount();i++)freshIds(((ViewGroup)root).getChildAt(i));}
     public static void focusApi(Activity activity,View original){
         View root=activity.findViewById(android.R.id.content);View api=root==null?null:root.findViewWithTag("leotv_danmaku_api_settings");
         if(api!=null&&api.requestFocus())return;if(original!=null)original.requestFocus();

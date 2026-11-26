@@ -1,0 +1,9 @@
+diff --git a/tools/check_build_sources.py b/tools/check_build_sources.py
+--- a/tools/check_build_sources.py
++++ b/tools/check_build_sources.py
+@@ -35,4 +35,5 @@ LOCKS = ('branding/source-lock.json', 'detail/native-source-lock.json',
+          'detail/danmaku-native-source-lock.json', 'detail/category-paging-source-lock.json',
+          'detail/home-artwork-source-lock.json', 'detail/native-history-source-lock.json',
+          'detail/preload-native-source-lock.json', 'detail/effects-native-source-lock.json',
++         'evidence/danmaku-panel-source-lock-20261126.json',
+          'player/mpv/host-lock.json', 'player/vlc/source-lock.json')

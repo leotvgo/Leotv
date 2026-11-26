@@ -49,6 +49,11 @@ public final class DanmakuPlayback {
         Session session=ensure((Activity)value);if(session==null)return;
         Object root=invoke(field(owner,"A0"),"getRoot");if(root instanceof View)DanmakuControls.menu(session,(View)root);
     }
+    /** R3/r is opened by the sidebar's native danmuSetting listener, after its original slider initialization. */
+    public static void panelCreated(Object owner){
+        Object activity=invoke(owner,"y"),root=invoke(field(owner,"z0"),"getRoot");
+        if(activity instanceof Activity&&root instanceof View)DanmakuUi.attachPlayerSpacing((Activity)activity,(View)root,owner);
+    }
     /** A0 starts every new episode, refresh and engine switch. Cancel the old API first. */
     public static void begin(Activity activity){DanmakuEffects.clear();Session session=ensure(activity);if(session!=null)session.begin();}
     /** After the native Result has been applied, site sources retain their original priority. */

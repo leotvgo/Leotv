@@ -55,6 +55,11 @@ public final class Personalization {
         add(activity,preloadRows,template,summary,"视频预加载",()->PreloadSettings.show(activity,()->refresh(activity,rows)));
         if(Device.MOBILE)add(activity, rows, template, summary, "弹幕 API",
                 () -> DanmakuUi.settings(activity));
+        if(Device.MOBILE){
+            add(activity,rows,template,summary,"特效弹幕",()->{DanmakuEffects.toggle(activity,false);refresh(activity,rows);});
+            add(activity,rows,template,summary,"特效比例",()->DanmakuEffects.chooseRate(activity,()->refresh(activity,rows)));
+            add(activity,rows,template,summary,"特效动画",()->{DanmakuEffects.toggle(activity,true);refresh(activity,rows);});
+        }
         View anchor = template;
         while (anchor != null && anchor.getParent() != target && anchor.getParent() instanceof View)
             anchor = (View) anchor.getParent();
@@ -76,6 +81,11 @@ public final class Personalization {
         summary(rows.findViewWithTag(CACHE),MetadataSettings.homeCacheMb(activity)+" MB");
         summary(rows.findViewWithTag("视频预加载"),PreloadSettings.enabled(activity)?"开启":"关闭");
         summary(rows.findViewWithTag("弹幕 API"),DanmakuSettings.api(activity).isEmpty()?"未配置":"已配置");
+        if(Device.MOBILE){
+            summary(rows.findViewWithTag("特效弹幕"),DanmakuEffects.enabled(activity)?"开启":"关闭");
+            summary(rows.findViewWithTag("特效比例"),DanmakuEffects.rate(activity)+"%");
+            summary(rows.findViewWithTag("特效动画"),DanmakuEffects.animated(activity)?"开启":"关闭");
+        }
     }
     private static void cacheLimit(Activity activity,View rows){
         NativeDialogs.edit(activity,CACHE,String.valueOf(MetadataSettings.homeCacheMb(activity)),"MB",false,value->{

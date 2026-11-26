@@ -42,8 +42,17 @@ def check(root):
     playback=(folder/'DanmakuPlayback.java').read_text();ui=(folder/'DanmakuUi.java').read_text()
     if playback.count('DanmakuEffects.clear();')<2 or 'DanmakuEffects.invalidate(field(session.player(),"v"))' not in playback:
         raise ValueError('Seek/episode/release and changed settings must release artwork and invalidate native geometry.')
-    if 'attachEffects(activity,root)' not in ui or any(text not in ui for text in ('"特效弹幕"','"特效比例"','"特效动画"')):
-        raise ValueError('Effect switches must use the original phone/TV Danmaku settings roots.')
+    personal=(folder/'Personalization.java').read_text()
+    if 'attachEffects(activity,root)' not in ui or 'root==null||Device.MOBILE)return' not in ui:
+        raise ValueError('The global mobile playback settings must not duplicate Danmaku controls.')
+    for text in ('"特效弹幕"','"特效比例"','"特效动画"'):
+        if text not in ui or 'add(activity,rows,template,summary,'+text not in personal:
+            raise ValueError('Native TV/mobile personalization effect control missing: '+text)
+    api=personal.index('if(Device.MOBILE)add(activity, rows, template, summary, "弹幕 API"')
+    if not api<personal.index('"特效弹幕"')<personal.index('"特效比例"')<personal.index('"特效动画"'):
+        raise ValueError('Mobile effects must follow the sole existing personalization API row.')
+    if 'bitmap.setDensity(Bitmap.DENSITY_NONE)' not in effects or 'letters.setShadowLayer' in effects:
+        raise ValueError('Effect glyphs must not acquire density rescaling or the added neon blur.')
     return {'styles':9,'reference_styles':['portrait_capsule','neon_orb_trail','falling_petals'],
             'portrait_sha256':record['asset_sha256'],'default_fraction':15,'default_animation':True,'native_timeline_and_coordinates':True,
             'max_simultaneous_animations':1,'max_bitmap_bytes':2*1024*1024,'max_bitmap_entries':64,

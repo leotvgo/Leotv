@@ -131,7 +131,9 @@ public final class DanmakuEffects {
         final RectF mouth=new RectF();
         Tile(String text,Paint typography,int width,int height,int style){
             this.style=style;this.width=width;this.height=height;size=typography.getTextSize();
-            bitmap=Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);Canvas canvas=new Canvas(bitmap);
+            bitmap=Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
+            // Native geometry is already in pixels: never rescale a text tile through bitmap density.
+            bitmap.setDensity(Bitmap.DENSITY_NONE);Canvas canvas=new Canvas(bitmap);
             halo=style==DanmakuEffectPolicy.NEON_TRAIL?new RadialGradient(size*2.45f,height*.5f,size*.7f,new int[]{0xffe3ffff,0xe067fff0,0x804bdfdc,0x003fbbcd},new float[]{0,.24f,.5f,1},Shader.TileMode.CLAMP):null;
             trail=style==DanmakuEffectPolicy.NEON_TRAIL?new LinearGradient(size*.15f,0,size*2.45f,0,new int[]{0x005761cc,0x826d46d8,0xbe53d7ed,0xff78fff0},null,Shader.TileMode.CLAMP):null;
             petalColour=style==DanmakuEffectPolicy.PETALS?new LinearGradient(0,-size*.15f,0,size*.15f,0xffffd9eb,0xffe47cae,Shader.TileMode.CLAMP):null;
@@ -154,7 +156,7 @@ public final class DanmakuEffects {
             float x=size*(style==DanmakuEffectPolicy.NEON_TRAIL?3.25f:style==DanmakuEffectPolicy.AVATAR?1.7f:style==DanmakuEffectPolicy.PETALS?.72f:style>=3?1.35f:.72f),y=(height-letters.ascent()-letters.descent())*.5f;
             canvas.drawText(text,x,y,letters);letters.setStyle(Paint.Style.FILL);
             if(style==1||style==4||style==DanmakuEffectPolicy.AVATAR){letters.setColor(Color.WHITE);}else letters.setShader(new LinearGradient(x,0,width,0,colors,null,Shader.TileMode.CLAMP));
-            if(style==DanmakuEffectPolicy.NEON_TRAIL)letters.setShadowLayer(size*.14f,0,0,0xd050fbe7);
+            // Keep the neon orb/trail glow on decorations; glyphs retain a sharp fill and outline.
             canvas.drawText(text,x,y,letters);
             float r=size*.34f;
             for(int i=0;i<10;i++){double angle=-Math.PI/2+i*Math.PI/5;float length=i%2==0?r:r*.45f;float sx=(float)Math.cos(angle)*length,sy=(float)Math.sin(angle)*length;if(i==0)star.moveTo(sx,sy);else star.lineTo(sx,sy);}star.close();

@@ -1,0 +1,16 @@
+{
+  "mobile": {
+    "compile_platform": "android-23",
+    "java_release": 8,
+    "real_declared_sources": 119,
+    "class_count": 302,
+    "reference_jar_not_packaged": true
+  },
+  "tv": {
+    "compile_platform": "android-23",
+    "java_release": 8,
+    "real_declared_sources": 119,
+    "class_count": 304,
+    "reference_jar_not_packaged": true
+  }
+}
