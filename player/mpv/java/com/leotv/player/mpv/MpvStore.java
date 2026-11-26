@@ -87,7 +87,7 @@ final class MpvStore {
         }
     }
     LinkedHashMap<String,String> options() throws Exception {
-        LinkedHashMap<String,String> o=MpvOptions.parse(readConfig());
+        LinkedHashMap<String,String> o=MpvOptions.parse(MpvOptions.DEFAULT_CONFIG);o.putAll(MpvOptions.parse(readConfig()));
         String selectedFont=prefs.getString("font","");if(!selectedFont.isEmpty()){boolean found=false;for(Item i:items())if(i.id.equals(selectedFont)&&i.kind.equals("font")&&file(i).isFile())found=true;if(!found)throw new IOException("所选字体副本已丢失，请重新选择字体");}
         MpvOptions.decoder(o,prefs.getInt("decode",0));
         o.put("ao",MpvOptions.choice("ao",prefs.getString("ao","audiotrack,opensles"),"audiotrack,opensles","audiotrack","opensles"));

@@ -46,8 +46,8 @@
       "release()V (inherited)"
     ],
     "org.videolan.libvlc.interfaces.IVLCVout": [
-      "setVideoView(Landroid/view/TextureView;)V",
-      "setSubtitlesView(Landroid/view/TextureView;)V",
+      "setVideoView(Landroid/view/SurfaceView;)V",
+      "setSubtitlesView(Landroid/view/SurfaceView;)V",
       "attachViews(Lorg/videolan/libvlc/interfaces/IVLCVout$OnNewVideoLayoutListener;)V",
       "detachViews()V",
       "setWindowSize(II)V"

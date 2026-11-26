@@ -13,7 +13,7 @@ final class MpvSettings {
     private static final int SHADER=0x6d50,CONFIG=0x6d51,FONT=0x6d52;
     private static final String TAG="leotv.mobile.mpv.settings";
     private static final WeakHashMap<Object,Boolean> fragments=new WeakHashMap<>();
-    private static final WeakHashMap<Dialog,List<Row>> menus=new WeakHashMap<>();
+    private static final WeakHashMap<Object,java.lang.ref.WeakReference<List<Row>>> menus=new WeakHashMap<>();
     private MpvSettings(){}
     static void attach(Object fragment){
         Object binding=MobileMpv.field(fragment,"l0");if(binding==null)return;
@@ -25,18 +25,28 @@ final class MpvSettings {
             MpvStore store=new MpvStore(a);
             caption(binding,"A",mpv?"MPV："+decodeLabel(store):originalChoice(fragment,"p0",MobileMpv.originalDecoder(MobileMpv.preferenceInt(null,"player",2))));
             caption(binding,"I",mpv?"Surface / OpenGL（MPV）":originalChoice(fragment,"q0",((Number)Class.forName("H6.l").getMethod("e0").invoke(null)).intValue()));
-            if(mpv){decoder.setVisibility(View.VISIBLE);Object renderer=MobileMpv.field(binding,"H");if(renderer instanceof View)((View)renderer).setVisibility(View.VISIBLE);}
+            Object renderer=MobileMpv.field(binding,"H");
+            decoder.setVisibility(mpv?View.GONE:View.VISIBLE);
+            if(renderer instanceof View)((View)renderer).setVisibility(mpv?View.GONE:View.VISIBLE);
+            Object captions=MobileMpv.field(binding,"v");if(mpv&&captions instanceof View)((View)captions).setVisibility(View.GONE);
             if(!(decoder.getParent() instanceof LinearLayout))throw new IllegalStateException("原生解码设置父容器变化");
             LinearLayout column=(LinearLayout)decoder.getParent();
             View entry=column.findViewWithTag(TAG);
-            if(entry==null){entry=nativeRow(a,column,"MPV 设置","配置、着色器、字幕、音频",()->show(a));entry.setTag(TAG);column.addView(entry,column.indexOfChild(decoder)+1);}
+            if(entry==null&&mpv){
+                LinearLayout list=new LinearLayout(column.getContext());list.setOrientation(LinearLayout.VERTICAL);list.setTag(TAG);
+                Object selector=MobileMpv.field(binding,"F");int index=selector instanceof View?column.indexOfChild((View)selector)+1:column.indexOfChild(decoder);
+                column.addView(list,Math.max(0,index));entry=list;
+                List<Row> rows=new ArrayList<>();populate(a,store,list,rows);list.setTag(0x7f0a00cf,rows);menus.put(list,new java.lang.ref.WeakReference<>(rows));
+            }
+            if(entry!=null)entry.setVisibility(mpv?View.VISIBLE:View.GONE);
+            for(java.lang.ref.WeakReference<List<Row>> reference:new ArrayList<>(menus.values())){List<Row> rows=reference.get();if(rows!=null)for(Row row:rows)row.refresh();}
         }catch(Exception e){error(a,e);}
     }
     private static String originalChoice(Object fragment,String field,int index){Object values=MobileMpv.field(fragment,field);return values instanceof String[]&&index>=0&&index<((String[])values).length?((String[])values)[index]:null;}
     private static void caption(Object binding,String field,String value){Object view=MobileMpv.field(binding,field);if(view instanceof TextView&&value!=null)((TextView)view).setText(value);}
     static void refreshAll(){
         for(Object fragment:new ArrayList<>(fragments.keySet()))attach(fragment);
-        for(List<Row> rows:new ArrayList<>(menus.values()))for(Row row:rows)row.refresh();
+        for(java.lang.ref.WeakReference<List<Row>> reference:new ArrayList<>(menus.values())){List<Row> rows=reference.get();if(rows!=null)for(Row row:rows)row.refresh();}
     }
     /** Smali passes the actual S3.x owner, before the native listener overwrites p1. */
     static boolean nativeDecoder(Object fragment,View view){
@@ -46,22 +56,17 @@ final class MpvSettings {
         if(!decoder&&!renderer)return false;
         Activity a=MobileMpv.activity(view.getContext());if(a==null)return false;
         try{
-            if(renderer)new NativeDialog(a).setTitle("MPV 渲染").setMessage("Surface / OpenGL（MPV）").setPositiveButton("确定",null).show();
+            if(renderer)return true;
             else choose(a,new MpvStore(a),"decode",new String[]{"自动（硬解失败转软解）","硬解（失败明确报错）","软解"},new String[]{"0","1","2"},true);
         }catch(Exception e){error(a,e);}
         attach(fragment);return true;
     }
     private static String decodeLabel(MpvStore s){int mode=s.prefs.getInt("decode",0);return mode==0?"自动":mode==1?"硬解":mode==2?"软解":"无效（"+mode+"）";}
     private static String selected(MpvStore s,String key,String[] values,String[] labels){String value=s.prefs.getString(key,values[0]);int at=Arrays.asList(values).indexOf(value);return at<0?"无效（"+value+"）":labels[at];}
-    static void show(Activity a){
-        try{
-            MpvStore store=new MpvStore(a);NativeDialog builder=new NativeDialog(a);LinearLayout column=new LinearLayout(builder.context);column.setOrientation(LinearLayout.VERTICAL);
-            // The settings container has the same 16dp outer inset as the original XML.
-            int inset=Math.round(16*a.getResources().getDisplayMetrics().density);column.setPadding(inset,inset,inset,inset);
-            List<Row> rows=new ArrayList<>();
-            row(a,column,rows,"渲染",()->"Surface / OpenGL（MPV）",()->new NativeDialog(a).setTitle("MPV 渲染").setMessage("Surface / OpenGL（MPV）").setPositiveButton("确定",null).show());
+    private static void populate(Activity a,MpvStore store,LinearLayout column,List<Row> rows){
+            row(a,column,rows,"渲染",()->"Surface / OpenGL（MPV）",()->{});
             row(a,column,rows,"解码模式",()->decodeLabel(store),()->choose(a,store,"decode",new String[]{"自动（硬解失败转软解）","硬解（失败明确报错）","软解"},new String[]{"0","1","2"},true));
-            row(a,column,rows,"MPV 配置",()->store.readConfig().trim().isEmpty()?"默认":"已保存附加选项",()->config(a,store));
+            row(a,column,rows,"MPV 配置",()->store.readConfig().trim().isEmpty()?"内置兼容参数":"内置参数 + 自定义选项",()->config(a,store));
             row(a,column,rows,"着色器",()->importsSummary(store,"shader"),()->shaders(a,store));
             row(a,column,rows,"字幕字体",()->store.prefs.getString("sub-font","sans-serif"),()->fonts(a,store));
             row(a,column,rows,"字号 / 缩放 / 位置",()->store.prefs.getString("sub-font-size","40")+" / "+store.prefs.getString("sub-scale","1")+" / "+store.prefs.getString("sub-pos","100"),()->fields(a,store,new String[][]{{"sub-font-size","字号（720p参考）","40","1","200"},{"sub-scale","缩放","1","0.1","5"},{"sub-pos","位置（0顶端～100底部）","100","0","100"}},false));
@@ -71,10 +76,6 @@ final class MpvSettings {
             row(a,column,rows,"音频输出",()->selected(store,"ao",new String[]{"audiotrack,opensles","audiotrack","opensles"},new String[]{"自动","AudioTrack","OpenSL ES"}),()->choose(a,store,"ao",new String[]{"自动（AudioTrack / OpenSL ES）","AudioTrack","OpenSL ES"},new String[]{"audiotrack,opensles","audiotrack","opensles"},true));
             row(a,column,rows,"音画同步",()->selected(store,"video-sync",new String[]{"audio","display-resample"},new String[]{"以音频为时钟","显示时钟 / 重采样"}),()->choose(a,store,"video-sync",new String[]{"以音频为时钟","显示时钟 / 重采样"},new String[]{"audio","display-resample"},true));
             row(a,column,rows,"应用设置",()->"重建并续播",()->MobileMpv.apply(a,true));
-            ScrollView scroll=new ScrollView(builder.context);scroll.addView(column);
-            Dialog dialog=builder.setTitle("MPV 设置").setView(scroll).setNegativeButton("关闭",null).create();
-            menus.put(dialog,rows);dialog.setOnDismissListener(d->menus.remove(dialog));dialog.show();
-        }catch(Exception e){error(a,e);}
     }
     private static String importsSummary(MpvStore store,String kind){try{int total=0,enabled=0;for(MpvStore.Item item:store.items())if(item.kind.equals(kind)){total++;if(item.enabled)enabled++;}return total==0?"尚未导入":"已启用 "+enabled+" / "+total;}catch(Exception e){return "列表读取失败";}}
     private static final class Row {

@@ -18,7 +18,7 @@ public final class MobileMpv {
         final WeakReference<Object> host;final WeakReference<Activity> activity;
         final ViewGroup container;final View exo;final SurfaceView view;
         final Map<View,Integer> hidden=new IdentityHashMap<>();
-        MpvEngine engine;boolean fallback;List<?> external=Collections.emptyList();boolean externalAdded;float desiredSpeed=1;TextView settingsButton;
+        MpvEngine engine;boolean fallback;List<?> external=Collections.emptyList();boolean externalAdded;float desiredSpeed=1;String lastNotice;long lastNoticeTime;
         Session(Object h,Activity a,View x,ViewGroup c){host=new WeakReference<>(h);activity=new WeakReference<>(a);container=c;exo=x;view=new SurfaceView(a);view.setClickable(false);view.getHolder().addCallback(this);}
         void show(){if(view.getParent()==null)container.addView(view,new android.widget.FrameLayout.LayoutParams(-1,-1,android.view.Gravity.CENTER));
             for(int i=0;i<container.getChildCount();i++){View v=container.getChildAt(i);if(v!=view){if(!hidden.containsKey(v))hidden.put(v,v.getVisibility());v.setVisibility(View.GONE);}}
@@ -31,7 +31,7 @@ public final class MobileMpv {
             if(owner!=null&&owner.getClass().getName().endsWith("VideoActivity"))try{scale=((Number)invoke(owner,"l0")).intValue();}catch(Exception e){notice("MPV 比例设置读取失败："+message(e));}
             double aspect=(double)engine.width/engine.height;if(scale==1)aspect=16.0/9;if(scale==2)aspect=4.0/3;
             if(scale!=3){double f=scale==4?Math.max(w/(double)engine.width,h/(double)engine.height):Math.min(w/(double)engine.width,h/(double)engine.height);if(scale==5)f=Math.min(1,f);if(scale==1||scale==2){if(w/(double)h>aspect)w=(int)(h*aspect);else h=(int)(w/aspect);}else{w=(int)(engine.width*f);h=(int)(engine.height*f);}}
-            view.setLayoutParams(new android.widget.FrameLayout.LayoutParams(w,h,Gravity.CENTER));}
+            ViewGroup.LayoutParams params=view.getLayoutParams();if(params==null||params.width!=w||params.height!=h)view.setLayoutParams(new android.widget.FrameLayout.LayoutParams(w,h,Gravity.CENTER));}
         @Override public void state(int state){Object h=host.get();if(h==null)return;
             if(state==5){call(h,"o0",2);return;}
             if(state==3&&engine!=null&&engine.loaded&&!externalAdded){externalAdded=true;Object explicit=field(h,"G");boolean defaultChosen=false;for(Object sub:external)try{
@@ -42,20 +42,19 @@ public final class MobileMpv {
         }
         void addSubtitle(Object sub,boolean select)throws Exception {if(sub==null||engine==null)return;String url=String.valueOf(invoke(sub,"getUrl"));if(url.isEmpty())return;engine.addSubtitle(normalize(url),String.valueOf(invoke(sub,"getName")),String.valueOf(invoke(sub,"getLang")),select);}
         @Override public void error(String text){notice(text);Object h=host.get();if(h!=null){if(engine!=null)engine.ready=false;call(h,"onError",null,-1,-1);}}
-        @Override public void notice(String text){Activity a=activity.get();if(a!=null&&!a.isFinishing())Toast.makeText(a,text,Toast.LENGTH_LONG).show();}
+        @Override public void notice(String text){Activity a=activity.get();if(a!=null&&!a.isFinishing()){long now=android.os.SystemClock.elapsedRealtime();if(text.equals(lastNotice)&&now-lastNoticeTime<5000)return;lastNotice=text;lastNoticeTime=now;Toast.makeText(a,text,Toast.LENGTH_LONG).show();}}
         @Override public void size(int w,int h){layout();Object p=host.get();if(p==null)return;
             // Existing Playback owner map performs rotation; no renderer or clock replacement.
             try{Class<?> c=Class.forName("com.leotv.detail.Playback");c.getMethod("videoSizeChanged",Object.class,int.class,int.class).invoke(null,p,w,h);}catch(ReflectiveOperationException e){notice("MPV 画面尺寸回调失败："+message(e));}}
         @Override public void tracks(){Activity a=activity.get();if(a!=null){if(a.getClass().getName().endsWith("LiveActivity"))call(a,"u0",true);else call(a,"Y0");}}
         @Override public void speedChanged(float value){Activity a=activity.get();if(a==null)return;Object binding=field(a,"M"),caption;if(a.getClass().getName().endsWith("LiveActivity"))caption=field(field(field(binding,"o"),"o"),"x");else caption=field(field(field(binding,"q"),"u"),"y");if(caption instanceof TextView)((TextView)caption).setText(String.format(java.util.Locale.getDefault(),"%.2f",value));}
         @Override public void surfaceCreated(SurfaceHolder h){if(engine!=null)engine.surface(h.getSurface());}
-        @Override public void surfaceChanged(SurfaceHolder h,int format,int w,int height){if(engine!=null)engine.surface(h.getSurface());layout();}
+        @Override public void surfaceChanged(SurfaceHolder h,int format,int w,int height){layout();}
         @Override public void surfaceDestroyed(SurfaceHolder h){if(engine!=null)engine.surface(null);}
         void close(){if(engine!=null){engine.close();engine=null;}externalAdded=false;hide();}
     }
     public static void attach(Object host,View exo,View ijk){if(!(ijk instanceof ViewGroup))throw new IllegalArgumentException("MPV requires the preserved IJK FrameLayout");
         Activity a=activity(ijk.getContext());if(a==null)throw new IllegalArgumentException("MPV requires an Activity context");Session previous=sessions.remove(host);if(previous!=null)previous.close();
-        if(previous!=null&&previous.settingsButton!=null&&previous.settingsButton.getParent() instanceof ViewGroup)((ViewGroup)previous.settingsButton.getParent()).removeView(previous.settingsButton);
         // V() still constructs the dormant original Exo renderer. A new default MPV must
         // not replace Exo's own decoder preference when that renderer is needed for DRM.
         if(number(field(host,"K"))==PLAYER)try{put(host,"I",originalDecoder(2));}catch(Exception e){throw new IllegalStateException("原 Exo 解码设置读取失败",e);}
@@ -93,18 +92,21 @@ public final class MobileMpv {
     public static void seek(Object h,long ms){Session s=sessions.get(h);if(active(h)&&s.engine!=null)s.engine.seek(ms);}
     public static void setSpeed(Object h,float value){Session s=sessions.get(h);if(active(h)){s.desiredSpeed=value;if(s.engine!=null)s.engine.speed(value);}}
     public static void stop(Object h){Session s=sessions.get(h);if(s!=null)s.close();}
-    public static void release(Object h){Session s=sessions.remove(h);if(s!=null){s.close();if(s.settingsButton!=null&&s.settingsButton.getParent() instanceof ViewGroup)((ViewGroup)s.settingsButton.getParent()).removeView(s.settingsButton);}}
+    public static void release(Object h){Session s=sessions.remove(h);if(s!=null)s.close();}
     public static void update(Object h){Session s=sessions.get(h);if(s==null)return;if(active(h))s.show();else{s.hide();if(forcedExo(h)){s.exo.setVisibility(View.VISIBLE);s.container.setVisibility(View.GONE);}}}
     public static void updateActivity(Activity a){boolean live=a.getClass().getName().endsWith("LiveActivity");Object h=field(a,live?"V":"c0");if(h!=null)update(h);Session s=sessions.get(h);if(s==null)return;
         Object binding=field(a,"M"),caption=live?field(field(field(binding,"o"),"o"),"v"):field(field(field(binding,"q"),"u"),"v");
-        if(number(field(h,"K"))!=PLAYER){if(s.settingsButton!=null)s.settingsButton.setVisibility(View.GONE);return;}
-        if(!(caption instanceof TextView))return;TextView label=(TextView)caption;label.setText(forcedExo(h)?"MPV（DRM：Exo）":"MPV");
-        // Add a settings entry alongside the native controls; their click/long-click handlers
-        // and the episode/title views remain untouched.
-        View anchor=label;while(anchor.getParent() instanceof ViewGroup&&!(anchor.getParent() instanceof LinearLayout))anchor=(View)anchor.getParent();
-        if(!(anchor.getParent() instanceof LinearLayout))return;LinearLayout parent=(LinearLayout)anchor.getParent();
-        if(s.settingsButton==null){TextView button=new TextView(a);button.setText("MPV 设置");button.setTextSize(0,label.getTextSize());button.setTypeface(label.getTypeface());button.setTextColor(label.getTextColors());button.setGravity(label.getGravity());button.setPadding(label.getPaddingLeft(),label.getPaddingTop(),label.getPaddingRight(),label.getPaddingBottom());button.setMinHeight(label.getMinimumHeight());button.setClickable(true);button.setFocusable(true);if(label.getBackground()!=null&&label.getBackground().getConstantState()!=null)button.setBackground(label.getBackground().getConstantState().newDrawable());button.setOnClickListener(v->MpvSettings.show(a));parent.addView(button,parent.indexOfChild(anchor)+1,new LinearLayout.LayoutParams(-2,anchor.getLayoutParams().height));s.settingsButton=button;}
-        s.settingsButton.setVisibility(View.VISIBLE);
+        if(number(field(h,"K"))!=PLAYER)return;
+        if(caption instanceof TextView)((TextView)caption).setText(forcedExo(h)?"MPV（DRM：Exo）":"MPV");
+    }
+    /** Commit the native chooser result before asynchronous source loading can read History again. */
+    public static void prepareSelection(Activity a,Integer player){
+        if(player==null||player<0||player>PLAYER)return;
+        Object h=field(a,"c0"),history=field(a,"b0");
+        if(h==null||history==null)return;
+        try{long position=active(h)?position(h):number(invoke(h,"N"));
+            invoke(history,"setPlayer",player.intValue());if(position>0)invoke(history,"setPosition",position);
+        }catch(Exception e){android.util.Log.e("LeotvMPV","播放内核选择保存失败",e);}
     }
     public static String[] playerNames(int resource,String[] names){if(resource!=0x7f030017)return names;if(names.length!=3)throw new IllegalStateException("原播放器编号表变化");return new String[]{names[0],names[1],names[2],"MPV"};}
     public static void tracks(Object h,int type,List<Object> output){Session s=sessions.get(h);if(!active(h)||s.engine==null)return;
@@ -119,8 +121,8 @@ public final class MobileMpv {
     static void hostResume(MpvEngine.Listener l){if(l instanceof Session){Session s=(Session)l;Object h=s.host.get();if(h!=null)call(h,"f0");}}
     static void apply(Context context,boolean rebuild){MpvSettings.refreshAll();for(Map.Entry<Object,Session> entry:new ArrayList<>(sessions.entrySet())){Object h=entry.getKey();Session s=entry.getValue();if(!active(h)||s.engine==null)continue;
         if(s.engine.closed&&!rebuild){s.notice("设置已保存，下次 MPV 播放时生效");continue;}
-        try{if(rebuild){long pos=s.engine.position;boolean paused=!s.engine.playRequested;put(h,"H",pos);call(h,"m0");if(paused)pause(h);s.notice("MPV 已提交重建；播放失败会显示原因");}
-            else{for(Map.Entry<String,String> option:new MpvStore(context).options().entrySet())if(option.getKey().startsWith("sub-")||option.getKey().equals("audio-delay")||option.getKey().equals("glsl-shaders"))s.engine.set(option.getKey(),option.getValue());s.notice("MPV 设置已提交；失败会显示原因");}}
+        try{if(rebuild){long pos=s.engine.position;boolean paused=!s.engine.playRequested;put(h,"H",pos);call(h,"m0");if(paused)pause(h);}
+            else{for(Map.Entry<String,String> option:new MpvStore(context).options().entrySet())if(option.getKey().startsWith("sub-")||option.getKey().equals("audio-delay")||option.getKey().equals("glsl-shaders"))s.engine.set(option.getKey(),option.getValue());}}
         catch(Exception e){s.notice("MPV 设置应用失败："+message(e));}}
     }
     public static void settings(Object fragment){MpvSettings.attach(fragment);}

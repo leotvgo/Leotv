@@ -15,7 +15,7 @@ def check(root):
                   'type==1||type==4||type==5||type==6'):
         if token not in policy:raise ValueError('Stable native effect/animation bound missing: '+token)
     for token in ('options=new Options(', 'getBoolean("effects",true)', 'getBoolean("effect_animation",true)', 'getInt("effect_rate",15)',
-                  'CacheMaintenance.track(CLIENT)', 'tile.bitmap.recycle()', 'canvas.translate(left,top)', 'canvas.clipRect(0,0,width,height)',
+                  'CacheMaintenance.track(CLIENT)', 'tile.bitmap.recycle()', 'canvas.translate(Math.round(left),Math.round(top))', 'canvas.clipRect(0,0,width,height)',
                   'ANIMATION.acquire(token,now)', 'PreloadHost.field(timer,"a")', 'new Paint(typography)', 'canvas.restoreToCount(save)',
                   'owner.getField("a")', 'owner.getField("h")', 'owner.getField("i")', 'owner.getField("r")', 'OutOfMemoryError',
                   'canvas.drawBitmap(tile.bitmap', 'iterator.remove()', 'painter.opacity.getInt(nativeStyle)'):
@@ -53,6 +53,8 @@ def check(root):
         raise ValueError('Mobile effects must follow the sole existing personalization API row.')
     if 'bitmap.setDensity(Bitmap.DENSITY_NONE)' not in effects or 'letters.setShadowLayer' in effects:
         raise ValueError('Effect glyphs must not acquire density rescaling or the added neon blur.')
+    if 'Paint.FILTER_BITMAP_FLAG' in effects or 'letters.setSubpixelText(false)' not in effects:
+        raise ValueError('Moving glyph tiles must use pixel-aligned sampling without extra subpixel filtering.')
     return {'styles':9,'reference_styles':['portrait_capsule','neon_orb_trail','falling_petals'],
             'portrait_sha256':record['asset_sha256'],'default_fraction':15,'default_animation':True,'native_timeline_and_coordinates':True,
             'max_simultaneous_animations':1,'max_bitmap_bytes':2*1024*1024,'max_bitmap_entries':64,
@@ -70,6 +72,8 @@ def check_native(root,variant,project):
     hook=body.index('DanmakuEffects;->draw')
     if body.count('DanmakuEffects;->draw')!=1 or hook<body.index('->k()Z') or hook<body.index('->f()F') or hook>body.index('Canvas;->drawBitmap'):
         raise ValueError('Effect draw must follow native filtering/retention/position and precede the cached frame.')
+    if body[:hook].count('Ljava/lang/Math;->round(F)I')!=2:
+        raise ValueError('Ordinary and effect cached glyph coordinates must align to physical pixels.')
     if 'goto/16 :goto_9' not in body[hook:hook+350]:
         raise ValueError('Rendered effect must return to original accounting without a duplicate native comment.')
     # Cache the per-class type only for classes whose native g() is a fixed type code.

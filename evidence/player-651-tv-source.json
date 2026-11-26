@@ -1,0 +1,5030 @@
+{
+  "variants": {
+    "tv-v7a": {
+      "allowed_changed_classes": [
+        "LC3/e;",
+        "LO3/z;",
+        "LU1/l;",
+        "Lcom/bumptech/glide/f;",
+        "Lcom/fongmi/android/tv/ui/activity/CastActivity;",
+        "Lcom/fongmi/android/tv/ui/activity/LiveActivity;",
+        "Lcom/fongmi/android/tv/ui/activity/M;",
+        "Lcom/fongmi/android/tv/ui/activity/SettingPlayerActivity;",
+        "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+      ],
+      "method_changes": {
+        "smali/C3/e.smali": [
+          "G()J",
+          "P()J",
+          "S()F",
+          "Y()Z",
+          "Z()Z",
+          "R()Ljava/lang/String;",
+          "U(I)Z",
+          "n0(I)V",
+          "V(Landroidx/media3/ui/PlayerView;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V",
+          "j0(Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Lcom/fongmi/android/tv/bean/Drm;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)V",
+          "b0()V",
+          "c0()V",
+          "g0(J)V",
+          "h0()V",
+          "o0(F)Ljava/lang/String;",
+          "s0()V",
+          "d0()V",
+          "q0(Ljava/util/List;)V",
+          "p0(Lcom/fongmi/android/tv/bean/Sub;)V"
+        ],
+        "smali/com/bumptech/glide/f.smali": [
+          "D()I"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": [
+          "S0()V",
+          "U0(I)V",
+          "T(Lw3/e;)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": [
+          "s0()V",
+          "v0(I)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": [
+          "c0()V",
+          "d0(I)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/M.smali": [
+          "i(Ljava/lang/Object;)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": [
+          "L()V"
+        ],
+        "smali/U1/l.1.smali": [
+          "<init>(LO3/s;)V"
+        ],
+        "smali/O3/z.smali": [
+          "e0()V"
+        ]
+      },
+      "source_changes": {
+        "smali/C3/e.smali": {
+          "before": "2a09f333230d6ec19042c171482d7ae844b5d058a200b92b6b7431de7f02317f",
+          "after": "44bac3f849ef60d74f2911a89553d4b6880eb162161418dedf05c137fc331ae6"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": {
+          "before": "c010e5f836f13abc27338149748703d3ce9e87065af581c79e91b9b248790489",
+          "after": "62288ce5ca4b3f5e5937429ca7e6348cb305237d84c42fffdf07776a832615f7"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": {
+          "before": "016acfe5e61b0448876b6f9905a39d709f86b8b02997d5ae48fe8e2050e68572",
+          "after": "c4abab55b3e64c1116bab818891836c24103d3705b5934012d9eed27c4198ef2"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": {
+          "before": "283e4751da9d7f67ae5d1607016600d58addd4ce82ceddbf3357b38b4994dce0",
+          "after": "871cc9b3d716ab7666a2d4f7cd681a02e0e7690a675a5d63fcc0866dabe08f3f"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": {
+          "before": "c6a660a6fb21fbb3f7563f4b81583656969b5a0a4fae83736b09a133fbf6f8ab",
+          "after": "1f52fbaffcb5ff5b0e93c371ee471f02177f0e0f163fe42c6bd11562df9de051"
+        },
+        "smali/U1/l.1.smali": {
+          "before": "a0229e1f6200b42c0f6e3b1efb55ffb0e8bdb86591d0e6bc67390d86f17a01af",
+          "after": "3e47dd034abaa57d98c234c04f80a4485a23c335e00e4f87ff9707f4fa380e4b"
+        },
+        "smali/O3/z.smali": {
+          "before": "4a91435d50d07f4c680749c4b83d75ed4153c20e3a690e46d51025ef34bae284",
+          "after": "11ebcd618f1d413eeec0c32313d5722fdda2be80189a2ce8482bfe88a649b869"
+        },
+        "smali/com/bumptech/glide/f.smali": {
+          "before": "81f1df9917da5086b399f2758388e19b2f6e48ac52abcdb74c3c3128d9f4553a",
+          "after": "627fc0f331230cd4523c2da4b72fa51fa9d90c186af2c2478cb6e3a69aeeaf03"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/M.smali": {
+          "before": "844060e4e12db3824d5e89dcac50788000fc507c6edc80baa85205983e0e43ed",
+          "after": "04179f53a1b0cf21b77d5120a253c92c4bc63929bfd1c48ba6402568f41f6162"
+        }
+      },
+      "native_controls_history_schema_unchanged": true,
+      "register_types": {
+        "classes": {
+          "smali/C3/e.smali": [
+            {
+              "method": "G()J",
+              "locals": 2,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 7,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->duration(LC3/e;)J",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "P()J",
+              "locals": 2,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 7,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->position(LC3/e;)J",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "R()Ljava/lang/String;",
+              "locals": 2,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 7,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->dimensions(LC3/e;)Ljava/lang/String;",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "S()F",
+              "locals": 2,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 7,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->rate(LC3/e;)F",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "U(I)Z",
+              "locals": 5,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 7,
+                  "invoke": "invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->hasTrack(LC3/e;I)Z",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "I"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "V(Landroidx/media3/ui/PlayerView;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V",
+              "locals": 11,
+              "parameter_words": 3,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0, p1, p2}, Lcom/leotv/player/vlc/VlcBridge;->bind(LC3/e;Landroid/view/View;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "Landroidx/media3/ui/PlayerView;"
+                    ],
+                    [
+                      "Ltv/danmaku/ijk/media/player/ui/IjkVideoView;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "Y()Z",
+              "locals": 3,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 7,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->playing(LC3/e;)Z",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "Z()Z",
+              "locals": 7,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 7,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->seekable(LC3/e;)Z",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "b0()V",
+              "locals": 3,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->pause(LC3/e;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "c0()V",
+              "locals": 3,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 100,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->ended(LC3/e;)Z",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                },
+                {
+                  "line": 152,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->play(LC3/e;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "d0()V",
+              "locals": 6,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->release(LC3/e;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "g0(J)V",
+              "locals": 3,
+              "parameter_words": 3,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0, p1, p2}, Lcom/leotv/player/vlc/VlcBridge;->seek(LC3/e;J)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "J"
+                    ],
+                    [
+                      "J:hi"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "h0()V",
+              "locals": 5,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->liveEdge(LC3/e;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "j0(Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Lcom/fongmi/android/tv/bean/Drm;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)V",
+              "locals": 21,
+              "parameter_words": 10,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static/range {p0 .. p9}, Lcom/leotv/player/vlc/VlcBridge;->load(LC3/e;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Lcom/fongmi/android/tv/bean/Drm;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "Ljava/util/Map;"
+                    ],
+                    [
+                      "Ljava/lang/String;"
+                    ],
+                    [
+                      "Ljava/lang/String;"
+                    ],
+                    [
+                      "Lcom/fongmi/android/tv/bean/Drm;"
+                    ],
+                    [
+                      "Ljava/util/List;"
+                    ],
+                    [
+                      "Ljava/util/List;"
+                    ],
+                    [
+                      "Ljava/lang/String;"
+                    ],
+                    [
+                      "J"
+                    ],
+                    [
+                      "J:hi"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "o0(F)Ljava/lang/String;",
+              "locals": 3,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->rate(LC3/e;F)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "F"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "p0(Lcom/fongmi/android/tv/bean/Sub;)V",
+              "locals": 2,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->subtitle(LC3/e;Lcom/fongmi/android/tv/bean/Sub;)Z",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "Lcom/fongmi/android/tv/bean/Sub;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "q0(Ljava/util/List;)V",
+              "locals": 8,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->applyTracks(LC3/e;Ljava/util/List;)Z",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "Ljava/util/List;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "s0()V",
+              "locals": 6,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->stop(LC3/e;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "smali/O3/z.smali": [
+            {
+              "method": "e0()V",
+              "locals": 20,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 1377,
+                  "invoke": "invoke-static {v2, v4}, Lcom/leotv/player/vlc/VlcBridge;->tracks(LC3/e;I)Ljava/util/List;",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "I"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "smali/U1/l.1.smali": [
+            {
+              "method": "<init>(LO3/s;)V",
+              "locals": 2,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 21,
+                  "invoke": "invoke-static {p1}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                  "argument_types": [
+                    [
+                      "[Ljava/lang/String;"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": [
+            {
+              "method": "c0()V",
+              "locals": 4,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 108,
+                  "invoke": "invoke-static {v2}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                  "argument_types": [
+                    [
+                      "[Ljava/lang/String;"
+                    ]
+                  ]
+                },
+                {
+                  "line": 267,
+                  "invoke": "invoke-static {v0}, Lcom/leotv/player/vlc/VlcBridge;->visible(LC3/e;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "d0(I)V",
+              "locals": 2,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 5,
+                  "invoke": "invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "I"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": [
+            {
+              "method": "s0()V",
+              "locals": 4,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 100,
+                  "invoke": "invoke-static {v2}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                  "argument_types": [
+                    [
+                      "[Ljava/lang/String;"
+                    ]
+                  ]
+                },
+                {
+                  "line": 207,
+                  "invoke": "invoke-static {v0}, Lcom/leotv/player/vlc/VlcBridge;->visible(LC3/e;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "v0(I)V",
+              "locals": 2,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 5,
+                  "invoke": "invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "I"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/M.smali": [
+            {
+              "method": "i(Ljava/lang/Object;)V",
+              "locals": 12,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 1388,
+                  "invoke": "invoke-static {v6}, Lcom/leotv/player/vlc/VlcBridge;->sitePlayerType(Lcom/fongmi/android/tv/bean/Site;)I",
+                  "argument_types": [
+                    [
+                      "Lcom/fongmi/android/tv/bean/Site;"
+                    ]
+                  ]
+                },
+                {
+                  "line": 1408,
+                  "invoke": "invoke-static {v6}, Lcom/leotv/player/vlc/VlcBridge;->sitePlayerType(Lcom/fongmi/android/tv/bean/Site;)I",
+                  "argument_types": [
+                    [
+                      "Lcom/fongmi/android/tv/bean/Site;"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": [
+            {
+              "method": "L()V",
+              "locals": 4,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 352,
+                  "invoke": "invoke-static {v1}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                  "argument_types": [
+                    [
+                      "[Ljava/lang/String;"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": [
+            {
+              "method": "S0()V",
+              "locals": 4,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 59,
+                  "invoke": "invoke-static {v2}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                  "argument_types": [
+                    [
+                      "[Ljava/lang/String;"
+                    ]
+                  ]
+                },
+                {
+                  "line": 199,
+                  "invoke": "invoke-static {v0}, Lcom/leotv/player/vlc/VlcBridge;->visible(LC3/e;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "T(Lw3/e;)V",
+              "locals": 6,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 16,
+                  "invoke": "invoke-static {v1}, Lcom/leotv/player/vlc/VlcBridge;->sitePlayerType(Lcom/fongmi/android/tv/bean/Site;)I",
+                  "argument_types": [
+                    [
+                      "Lcom/fongmi/android/tv/bean/Site;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "U0(I)V",
+              "locals": 2,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 5,
+                  "invoke": "invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "I"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "method_count": 29,
+        "hook_count": 34,
+        "scope": "primitive/reference/wide categories, parameter aliases, CFG and catch joins; reference inheritance/access/initialization not verified",
+        "art_device_executed": false,
+        "apk_built": false,
+        "changed_methods_checked": {
+          "smali/C3/e.smali": [
+            "G()J",
+            "P()J",
+            "S()F",
+            "Y()Z",
+            "Z()Z",
+            "R()Ljava/lang/String;",
+            "U(I)Z",
+            "n0(I)V",
+            "V(Landroidx/media3/ui/PlayerView;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V",
+            "j0(Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Lcom/fongmi/android/tv/bean/Drm;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)V",
+            "b0()V",
+            "c0()V",
+            "g0(J)V",
+            "h0()V",
+            "o0(F)Ljava/lang/String;",
+            "s0()V",
+            "d0()V",
+            "q0(Ljava/util/List;)V",
+            "p0(Lcom/fongmi/android/tv/bean/Sub;)V"
+          ],
+          "smali/com/bumptech/glide/f.smali": [
+            "D()I"
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": [
+            "S0()V",
+            "U0(I)V",
+            "T(Lw3/e;)V"
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": [
+            "s0()V",
+            "v0(I)V"
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": [
+            "c0()V",
+            "d0(I)V"
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/M.smali": [
+            "i(Ljava/lang/Object;)V"
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": [
+            "L()V"
+          ],
+          "smali/U1/l.1.smali": [
+            "<init>(LO3/s;)V"
+          ],
+          "smali/O3/z.smali": [
+            "e0()V"
+          ]
+        },
+        "negative_real_host_and_join_cases": {
+          "649:smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali:U0(I)V": "649:smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali:U0(I)V:U0(I)V:line 66: p1 (v3) has Ljava/lang/String;, expected I [invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V]",
+          "649:smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali:v0(I)V": "649:smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali:v0(I)V:v0(I)V:line 78: p1 (v3) has Ljava/lang/String;, expected I [invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V]",
+          "649:smali/com/fongmi/android/tv/ui/activity/CastActivity.smali:d0(I)V": "649:smali/com/fongmi/android/tv/ui/activity/CastActivity.smali:d0(I)V:d0(I)V:line 82: p1 (v3) has Ljava/lang/String;, expected I [invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V]",
+          "reused_float_parameter": "reused_float_parameter:o0(F)Ljava/lang/String;:line 83: p1 (v4) has Ljava/lang/String;, expected F [invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->rate(LC3/e;F)V]",
+          "overwritten_wide_high_word": "overwritten_wide_high_word:g0(J)V:line 5: p1 (v4) has undefined, expected J [invoke-static {p0, p1, p2}, Lcom/leotv/player/vlc/VlcBridge;->seek(LC3/e;J)V]",
+          "physical_parameter_alias": "physical_parameter_alias:g0(J)V:line 5: p1 (v4) has Ljava/lang/String;, expected J [invoke-static {p0, p1, p2}, Lcom/leotv/player/vlc/VlcBridge;->seek(LC3/e;J)V]",
+          "reference_parameter_replaced_by_int": "reference_parameter_replaced_by_int:V(Landroidx/media3/ui/PlayerView;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V:line 5: p1 (v12) has bits32, expected Landroid/view/View; [invoke-static {p0, p1, p2}, Lcom/leotv/player/vlc/VlcBridge;->bind(LC3/e;Landroid/view/View;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V]",
+          "primitive_reference_branch_join": "primitive_reference_branch_join:regression(I)V:line 7: p1 (v2) has I/Ljava/lang/String;, expected I [invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V]"
+        },
+        "engine_ids": {
+          "System": 0,
+          "IJK": 1,
+          "Exo": 2,
+          "VLC": 3,
+          "invalid_fallback": 2
+        },
+        "real_selection_prefix_cases": {
+          "-2147483648": 2,
+          "-1": 2,
+          "0": 0,
+          "1": 1,
+          "2": 2,
+          "3": 3,
+          "4": 2,
+          "2147483647": 2
+        },
+        "resize_entry_uses_original_int_and_dead_v0": true
+      }
+    },
+    "tv-v8a": {
+      "allowed_changed_classes": [
+        "LC3/e;",
+        "LO3/z;",
+        "LU1/l;",
+        "Lcom/bumptech/glide/f;",
+        "Lcom/fongmi/android/tv/ui/activity/CastActivity;",
+        "Lcom/fongmi/android/tv/ui/activity/LiveActivity;",
+        "Lcom/fongmi/android/tv/ui/activity/M;",
+        "Lcom/fongmi/android/tv/ui/activity/SettingPlayerActivity;",
+        "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+      ],
+      "method_changes": {
+        "smali/C3/e.smali": [
+          "G()J",
+          "P()J",
+          "S()F",
+          "Y()Z",
+          "Z()Z",
+          "R()Ljava/lang/String;",
+          "U(I)Z",
+          "n0(I)V",
+          "V(Landroidx/media3/ui/PlayerView;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V",
+          "j0(Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Lcom/fongmi/android/tv/bean/Drm;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)V",
+          "b0()V",
+          "c0()V",
+          "g0(J)V",
+          "h0()V",
+          "o0(F)Ljava/lang/String;",
+          "s0()V",
+          "d0()V",
+          "q0(Ljava/util/List;)V",
+          "p0(Lcom/fongmi/android/tv/bean/Sub;)V"
+        ],
+        "smali/com/bumptech/glide/f.smali": [
+          "D()I"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": [
+          "S0()V",
+          "U0(I)V",
+          "T(Lw3/e;)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": [
+          "s0()V",
+          "v0(I)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": [
+          "c0()V",
+          "d0(I)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/M.smali": [
+          "i(Ljava/lang/Object;)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": [
+          "L()V"
+        ],
+        "smali/U1/l.1.smali": [
+          "<init>(LO3/s;)V"
+        ],
+        "smali/O3/z.smali": [
+          "e0()V"
+        ]
+      },
+      "source_changes": {
+        "smali/C3/e.smali": {
+          "before": "2a09f333230d6ec19042c171482d7ae844b5d058a200b92b6b7431de7f02317f",
+          "after": "44bac3f849ef60d74f2911a89553d4b6880eb162161418dedf05c137fc331ae6"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": {
+          "before": "c010e5f836f13abc27338149748703d3ce9e87065af581c79e91b9b248790489",
+          "after": "62288ce5ca4b3f5e5937429ca7e6348cb305237d84c42fffdf07776a832615f7"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": {
+          "before": "016acfe5e61b0448876b6f9905a39d709f86b8b02997d5ae48fe8e2050e68572",
+          "after": "c4abab55b3e64c1116bab818891836c24103d3705b5934012d9eed27c4198ef2"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": {
+          "before": "283e4751da9d7f67ae5d1607016600d58addd4ce82ceddbf3357b38b4994dce0",
+          "after": "871cc9b3d716ab7666a2d4f7cd681a02e0e7690a675a5d63fcc0866dabe08f3f"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": {
+          "before": "c6a660a6fb21fbb3f7563f4b81583656969b5a0a4fae83736b09a133fbf6f8ab",
+          "after": "1f52fbaffcb5ff5b0e93c371ee471f02177f0e0f163fe42c6bd11562df9de051"
+        },
+        "smali/U1/l.1.smali": {
+          "before": "a0229e1f6200b42c0f6e3b1efb55ffb0e8bdb86591d0e6bc67390d86f17a01af",
+          "after": "3e47dd034abaa57d98c234c04f80a4485a23c335e00e4f87ff9707f4fa380e4b"
+        },
+        "smali/O3/z.smali": {
+          "before": "4a91435d50d07f4c680749c4b83d75ed4153c20e3a690e46d51025ef34bae284",
+          "after": "11ebcd618f1d413eeec0c32313d5722fdda2be80189a2ce8482bfe88a649b869"
+        },
+        "smali/com/bumptech/glide/f.smali": {
+          "before": "81f1df9917da5086b399f2758388e19b2f6e48ac52abcdb74c3c3128d9f4553a",
+          "after": "627fc0f331230cd4523c2da4b72fa51fa9d90c186af2c2478cb6e3a69aeeaf03"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/M.smali": {
+          "before": "844060e4e12db3824d5e89dcac50788000fc507c6edc80baa85205983e0e43ed",
+          "after": "04179f53a1b0cf21b77d5120a253c92c4bc63929bfd1c48ba6402568f41f6162"
+        }
+      },
+      "native_controls_history_schema_unchanged": true,
+      "register_types": {
+        "classes": {
+          "smali/C3/e.smali": [
+            {
+              "method": "G()J",
+              "locals": 2,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 7,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->duration(LC3/e;)J",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "P()J",
+              "locals": 2,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 7,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->position(LC3/e;)J",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "R()Ljava/lang/String;",
+              "locals": 2,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 7,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->dimensions(LC3/e;)Ljava/lang/String;",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "S()F",
+              "locals": 2,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 7,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->rate(LC3/e;)F",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "U(I)Z",
+              "locals": 5,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 7,
+                  "invoke": "invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->hasTrack(LC3/e;I)Z",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "I"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "V(Landroidx/media3/ui/PlayerView;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V",
+              "locals": 11,
+              "parameter_words": 3,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0, p1, p2}, Lcom/leotv/player/vlc/VlcBridge;->bind(LC3/e;Landroid/view/View;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "Landroidx/media3/ui/PlayerView;"
+                    ],
+                    [
+                      "Ltv/danmaku/ijk/media/player/ui/IjkVideoView;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "Y()Z",
+              "locals": 3,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 7,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->playing(LC3/e;)Z",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "Z()Z",
+              "locals": 7,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 7,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->seekable(LC3/e;)Z",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "b0()V",
+              "locals": 3,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->pause(LC3/e;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "c0()V",
+              "locals": 3,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 100,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->ended(LC3/e;)Z",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                },
+                {
+                  "line": 152,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->play(LC3/e;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "d0()V",
+              "locals": 6,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->release(LC3/e;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "g0(J)V",
+              "locals": 3,
+              "parameter_words": 3,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0, p1, p2}, Lcom/leotv/player/vlc/VlcBridge;->seek(LC3/e;J)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "J"
+                    ],
+                    [
+                      "J:hi"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "h0()V",
+              "locals": 5,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->liveEdge(LC3/e;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "j0(Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Lcom/fongmi/android/tv/bean/Drm;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)V",
+              "locals": 21,
+              "parameter_words": 10,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static/range {p0 .. p9}, Lcom/leotv/player/vlc/VlcBridge;->load(LC3/e;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Lcom/fongmi/android/tv/bean/Drm;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "Ljava/util/Map;"
+                    ],
+                    [
+                      "Ljava/lang/String;"
+                    ],
+                    [
+                      "Ljava/lang/String;"
+                    ],
+                    [
+                      "Lcom/fongmi/android/tv/bean/Drm;"
+                    ],
+                    [
+                      "Ljava/util/List;"
+                    ],
+                    [
+                      "Ljava/util/List;"
+                    ],
+                    [
+                      "Ljava/lang/String;"
+                    ],
+                    [
+                      "J"
+                    ],
+                    [
+                      "J:hi"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "o0(F)Ljava/lang/String;",
+              "locals": 3,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->rate(LC3/e;F)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "F"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "p0(Lcom/fongmi/android/tv/bean/Sub;)V",
+              "locals": 2,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->subtitle(LC3/e;Lcom/fongmi/android/tv/bean/Sub;)Z",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "Lcom/fongmi/android/tv/bean/Sub;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "q0(Ljava/util/List;)V",
+              "locals": 8,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->applyTracks(LC3/e;Ljava/util/List;)Z",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "Ljava/util/List;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "s0()V",
+              "locals": 6,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 4,
+                  "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->stop(LC3/e;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "smali/O3/z.smali": [
+            {
+              "method": "e0()V",
+              "locals": 20,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 1377,
+                  "invoke": "invoke-static {v2, v4}, Lcom/leotv/player/vlc/VlcBridge;->tracks(LC3/e;I)Ljava/util/List;",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "I"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "smali/U1/l.1.smali": [
+            {
+              "method": "<init>(LO3/s;)V",
+              "locals": 2,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 21,
+                  "invoke": "invoke-static {p1}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                  "argument_types": [
+                    [
+                      "[Ljava/lang/String;"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": [
+            {
+              "method": "c0()V",
+              "locals": 4,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 108,
+                  "invoke": "invoke-static {v2}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                  "argument_types": [
+                    [
+                      "[Ljava/lang/String;"
+                    ]
+                  ]
+                },
+                {
+                  "line": 267,
+                  "invoke": "invoke-static {v0}, Lcom/leotv/player/vlc/VlcBridge;->visible(LC3/e;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "d0(I)V",
+              "locals": 2,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 5,
+                  "invoke": "invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "I"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": [
+            {
+              "method": "s0()V",
+              "locals": 4,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 100,
+                  "invoke": "invoke-static {v2}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                  "argument_types": [
+                    [
+                      "[Ljava/lang/String;"
+                    ]
+                  ]
+                },
+                {
+                  "line": 207,
+                  "invoke": "invoke-static {v0}, Lcom/leotv/player/vlc/VlcBridge;->visible(LC3/e;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "v0(I)V",
+              "locals": 2,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 5,
+                  "invoke": "invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "I"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/M.smali": [
+            {
+              "method": "i(Ljava/lang/Object;)V",
+              "locals": 12,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 1388,
+                  "invoke": "invoke-static {v6}, Lcom/leotv/player/vlc/VlcBridge;->sitePlayerType(Lcom/fongmi/android/tv/bean/Site;)I",
+                  "argument_types": [
+                    [
+                      "Lcom/fongmi/android/tv/bean/Site;"
+                    ]
+                  ]
+                },
+                {
+                  "line": 1408,
+                  "invoke": "invoke-static {v6}, Lcom/leotv/player/vlc/VlcBridge;->sitePlayerType(Lcom/fongmi/android/tv/bean/Site;)I",
+                  "argument_types": [
+                    [
+                      "Lcom/fongmi/android/tv/bean/Site;"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": [
+            {
+              "method": "L()V",
+              "locals": 4,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 352,
+                  "invoke": "invoke-static {v1}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                  "argument_types": [
+                    [
+                      "[Ljava/lang/String;"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": [
+            {
+              "method": "S0()V",
+              "locals": 4,
+              "parameter_words": 1,
+              "hooks": [
+                {
+                  "line": 59,
+                  "invoke": "invoke-static {v2}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                  "argument_types": [
+                    [
+                      "[Ljava/lang/String;"
+                    ]
+                  ]
+                },
+                {
+                  "line": 199,
+                  "invoke": "invoke-static {v0}, Lcom/leotv/player/vlc/VlcBridge;->visible(LC3/e;)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "T(Lw3/e;)V",
+              "locals": 6,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 16,
+                  "invoke": "invoke-static {v1}, Lcom/leotv/player/vlc/VlcBridge;->sitePlayerType(Lcom/fongmi/android/tv/bean/Site;)I",
+                  "argument_types": [
+                    [
+                      "Lcom/fongmi/android/tv/bean/Site;"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "method": "U0(I)V",
+              "locals": 2,
+              "parameter_words": 2,
+              "hooks": [
+                {
+                  "line": 5,
+                  "invoke": "invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V",
+                  "argument_types": [
+                    [
+                      "LC3/e;"
+                    ],
+                    [
+                      "I"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "method_count": 29,
+        "hook_count": 34,
+        "scope": "primitive/reference/wide categories, parameter aliases, CFG and catch joins; reference inheritance/access/initialization not verified",
+        "art_device_executed": false,
+        "apk_built": false,
+        "changed_methods_checked": {
+          "smali/C3/e.smali": [
+            "G()J",
+            "P()J",
+            "S()F",
+            "Y()Z",
+            "Z()Z",
+            "R()Ljava/lang/String;",
+            "U(I)Z",
+            "n0(I)V",
+            "V(Landroidx/media3/ui/PlayerView;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V",
+            "j0(Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Lcom/fongmi/android/tv/bean/Drm;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)V",
+            "b0()V",
+            "c0()V",
+            "g0(J)V",
+            "h0()V",
+            "o0(F)Ljava/lang/String;",
+            "s0()V",
+            "d0()V",
+            "q0(Ljava/util/List;)V",
+            "p0(Lcom/fongmi/android/tv/bean/Sub;)V"
+          ],
+          "smali/com/bumptech/glide/f.smali": [
+            "D()I"
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": [
+            "S0()V",
+            "U0(I)V",
+            "T(Lw3/e;)V"
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": [
+            "s0()V",
+            "v0(I)V"
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": [
+            "c0()V",
+            "d0(I)V"
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/M.smali": [
+            "i(Ljava/lang/Object;)V"
+          ],
+          "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": [
+            "L()V"
+          ],
+          "smali/U1/l.1.smali": [
+            "<init>(LO3/s;)V"
+          ],
+          "smali/O3/z.smali": [
+            "e0()V"
+          ]
+        },
+        "negative_real_host_and_join_cases": {
+          "649:smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali:U0(I)V": "649:smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali:U0(I)V:U0(I)V:line 66: p1 (v3) has Ljava/lang/String;, expected I [invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V]",
+          "649:smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali:v0(I)V": "649:smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali:v0(I)V:v0(I)V:line 78: p1 (v3) has Ljava/lang/String;, expected I [invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V]",
+          "649:smali/com/fongmi/android/tv/ui/activity/CastActivity.smali:d0(I)V": "649:smali/com/fongmi/android/tv/ui/activity/CastActivity.smali:d0(I)V:d0(I)V:line 82: p1 (v3) has Ljava/lang/String;, expected I [invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V]",
+          "reused_float_parameter": "reused_float_parameter:o0(F)Ljava/lang/String;:line 83: p1 (v4) has Ljava/lang/String;, expected F [invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->rate(LC3/e;F)V]",
+          "overwritten_wide_high_word": "overwritten_wide_high_word:g0(J)V:line 5: p1 (v4) has undefined, expected J [invoke-static {p0, p1, p2}, Lcom/leotv/player/vlc/VlcBridge;->seek(LC3/e;J)V]",
+          "physical_parameter_alias": "physical_parameter_alias:g0(J)V:line 5: p1 (v4) has Ljava/lang/String;, expected J [invoke-static {p0, p1, p2}, Lcom/leotv/player/vlc/VlcBridge;->seek(LC3/e;J)V]",
+          "reference_parameter_replaced_by_int": "reference_parameter_replaced_by_int:V(Landroidx/media3/ui/PlayerView;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V:line 5: p1 (v12) has bits32, expected Landroid/view/View; [invoke-static {p0, p1, p2}, Lcom/leotv/player/vlc/VlcBridge;->bind(LC3/e;Landroid/view/View;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V]",
+          "primitive_reference_branch_join": "primitive_reference_branch_join:regression(I)V:line 7: p1 (v2) has I/Ljava/lang/String;, expected I [invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V]"
+        },
+        "engine_ids": {
+          "System": 0,
+          "IJK": 1,
+          "Exo": 2,
+          "VLC": 3,
+          "invalid_fallback": 2
+        },
+        "real_selection_prefix_cases": {
+          "-2147483648": 2,
+          "-1": 2,
+          "0": 0,
+          "1": 1,
+          "2": 2,
+          "3": 3,
+          "4": 2,
+          "2147483647": 2
+        },
+        "resize_entry_uses_original_int_and_dead_v0": true
+      }
+    }
+  },
+  "java": "org.videolan.android:libvlc-all:3.6.0",
+  "reference_jar_packaged": false,
+  "api23": true,
+  "apk_built": false,
+  "all_patched_host_hooks": {
+    "tv-v7a": {
+      "classes": {
+        "smali/A0/a.smali": [
+          {
+            "method": "b(Lcom/fongmi/android/tv/bean/Episode;)V",
+            "locals": 2,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 6,
+                "invoke": "invoke-static {v0, p1}, Lcom/leotv/detail/NativeEpisodeUi;->selectNative(Ljava/lang/Object;Ljava/lang/Object;)Z",
+                "argument_types": [
+                  [
+                    "Ljava/lang/Object;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Episode;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "i(Ljava/lang/Object;)V",
+            "locals": 7,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 24,
+                "invoke": "invoke-static {v0, p1}, Lcom/leotv/detail/NativeCategoryPaging;->accept(Ljava/lang/Object;Ljava/lang/Object;)Z",
+                "argument_types": [
+                  [
+                    "LP3/f;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Result;"
+                  ]
+                ]
+              },
+              {
+                "line": 137,
+                "invoke": "invoke-static {v0, p1}, Lcom/leotv/detail/NativeCategoryPaging;->hold(Ljava/lang/Object;Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "LP3/f;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Result;"
+                  ]
+                ]
+              },
+              {
+                "line": 379,
+                "invoke": "invoke-static {v0}, Lcom/leotv/detail/NativeCategoryPaging;->complete(Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "LP3/f;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/B3/j.smali": [
+          {
+            "method": "call()Ljava/lang/Object;",
+            "locals": 10,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 389,
+                "invoke": "invoke-static {p0, v0}, Lcom/leotv/detail/NativeCategoryPaging;->result(Ljava/lang/Object;Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "LB3/j;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Result;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/B3/n.smali": [
+          {
+            "method": "call()Ljava/lang/Object;",
+            "locals": 7,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 12,
+                "invoke": "invoke-static {v0, v1}, Lcom/leotv/detail/Playback;->consumeNativeDetail(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;",
+                "argument_types": [
+                  [
+                    "Ljava/lang/String;"
+                  ],
+                  [
+                    "Ljava/lang/String;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/C3/e.smali": [
+          {
+            "method": "G()J",
+            "locals": 2,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->duration(LC3/e;)J",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "P()J",
+            "locals": 2,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->position(LC3/e;)J",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "R()Ljava/lang/String;",
+            "locals": 2,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->dimensions(LC3/e;)Ljava/lang/String;",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "S()F",
+            "locals": 2,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->rate(LC3/e;)F",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "U(I)Z",
+            "locals": 5,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->hasTrack(LC3/e;I)Z",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "I"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "V(Landroidx/media3/ui/PlayerView;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V",
+            "locals": 11,
+            "parameter_words": 3,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0, p1, p2}, Lcom/leotv/player/vlc/VlcBridge;->bind(LC3/e;Landroid/view/View;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "Landroidx/media3/ui/PlayerView;"
+                  ],
+                  [
+                    "Ltv/danmaku/ijk/media/player/ui/IjkVideoView;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "Y()Z",
+            "locals": 3,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->playing(LC3/e;)Z",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "Z()Z",
+            "locals": 7,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->seekable(LC3/e;)Z",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "b0()V",
+            "locals": 3,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->pause(LC3/e;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "c0()V",
+            "locals": 3,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 100,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->ended(LC3/e;)Z",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              },
+              {
+                "line": 152,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->play(LC3/e;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "d0()V",
+            "locals": 6,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->release(LC3/e;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "g0(J)V",
+            "locals": 3,
+            "parameter_words": 3,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0, p1, p2}, Lcom/leotv/player/vlc/VlcBridge;->seek(LC3/e;J)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "J"
+                  ],
+                  [
+                    "J:hi"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "h0()V",
+            "locals": 5,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->liveEdge(LC3/e;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "i0(Lcom/fongmi/android/tv/bean/Danmaku;)V",
+            "locals": 4,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->nativeSelection(Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "j0(Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Lcom/fongmi/android/tv/bean/Drm;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)V",
+            "locals": 21,
+            "parameter_words": 10,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static/range {p0 .. p9}, Lcom/leotv/player/vlc/VlcBridge;->load(LC3/e;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Lcom/fongmi/android/tv/bean/Drm;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "Ljava/util/Map;"
+                  ],
+                  [
+                    "Ljava/lang/String;"
+                  ],
+                  [
+                    "Ljava/lang/String;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Drm;"
+                  ],
+                  [
+                    "Ljava/util/List;"
+                  ],
+                  [
+                    "Ljava/util/List;"
+                  ],
+                  [
+                    "Ljava/lang/String;"
+                  ],
+                  [
+                    "J"
+                  ],
+                  [
+                    "J:hi"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "o0(F)Ljava/lang/String;",
+            "locals": 3,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->rate(LC3/e;F)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "F"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "p0(Lcom/fongmi/android/tv/bean/Sub;)V",
+            "locals": 2,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->subtitle(LC3/e;Lcom/fongmi/android/tv/bean/Sub;)Z",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Sub;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "q0(Ljava/util/List;)V",
+            "locals": 8,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->applyTracks(LC3/e;Ljava/util/List;)Z",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "Ljava/util/List;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "r0(Lcom/fongmi/android/tv/bean/Result;ZJ)V",
+            "locals": 10,
+            "parameter_words": 5,
+            "hooks": [
+              {
+                "line": 1039,
+                "invoke": "invoke-static {p0, p1, p2}, Lcom/leotv/detail/VideoPreload;->result(Ljava/lang/Object;Ljava/lang/Object;Z)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Result;"
+                  ],
+                  [
+                    "I"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "s0()V",
+            "locals": 6,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->stop(LC3/e;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/E3/d.smali": [
+          {
+            "method": "e()V",
+            "locals": 13,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 564,
+                "invoke": "invoke-static {}, Lcom/leotv/detail/DanmakuSpacing;->pixels()I",
+                "argument_types": []
+              }
+            ]
+          }
+        ],
+        "smali/H5/a.smali": [
+          {
+            "method": "n(LI5/b;Z)V",
+            "locals": 9,
+            "parameter_words": 3,
+            "hooks": [
+              {
+                "line": 362,
+                "invoke": "invoke-static {p0, p2}, Lcom/leotv/detail/DanmakuEffects;->measure(Ljava/lang/Object;Landroid/graphics/Paint;)V",
+                "argument_types": [
+                  [
+                    "LH5/a;"
+                  ],
+                  [
+                    "Landroid/text/TextPaint;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/L3/f.smali": [
+          {
+            "method": "b(Lfi/iki/elonen/NanoHTTPD$IHTTPSession;Ljava/lang/String;Ljava/util/HashMap;)Lfi/iki/elonen/NanoHTTPD$Response;",
+            "locals": 16,
+            "parameter_words": 4,
+            "hooks": [
+              {
+                "line": 43,
+                "invoke": "invoke-static {v6, v5}, Lcom/leotv/detail/NativeQrInput;->webAction(Ljava/lang/String;Ljava/util/Map;)Ljava/lang/String;",
+                "argument_types": [
+                  [
+                    "Ljava/lang/String;"
+                  ],
+                  [
+                    "Ljava/util/Map;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/M3/b.smali": [
+          {
+            "method": "Q()V",
+            "locals": 4,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->isFullscreenPlayer(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "LM3/b;"
+                  ]
+                ]
+              },
+              {
+                "line": 10,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/Playback;->prepareWindow(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "LM3/b;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onCreate(Landroid/os/Bundle;)V",
+            "locals": 1,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirect(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "LM3/b;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onDestroy()V",
+            "locals": 1,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "LM3/b;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/N3/m.smali": [
+          {
+            "method": "onScrollStateChanged(Landroidx/recyclerview/widget/RecyclerView;I)V",
+            "locals": 1,
+            "parameter_words": 3,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0, p1}, Lcom/leotv/detail/NativeCategoryPaging;->canScrollPage(Ljava/lang/Object;Landroid/view/View;)Z",
+                "argument_types": [
+                  [
+                    "LN3/m;"
+                  ],
+                  [
+                    "Landroidx/recyclerview/widget/RecyclerView;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/N5/a.smali": [
+          {
+            "method": "a(LH5/a;)I",
+            "locals": 16,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 617,
+                "invoke": "invoke-static/range {v11 .. v15}, Lcom/leotv/detail/DanmakuEffects;->draw(Ljava/lang/Object;Ljava/lang/Object;Landroid/graphics/Canvas;FF)Z",
+                "argument_types": [
+                  [
+                    "LH5/a;"
+                  ],
+                  [
+                    "LI5/b;"
+                  ],
+                  [
+                    "Landroid/graphics/Canvas;"
+                  ],
+                  [
+                    "F"
+                  ],
+                  [
+                    "F"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/O3/k.smali": [
+          {
+            "method": "e0()V",
+            "locals": 5,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 215,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->menuCreated(Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "LO3/k;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/O3/l.smali": [
+          {
+            "method": "onKey(Landroid/content/DialogInterface;ILandroid/view/KeyEvent;)Z",
+            "locals": 1,
+            "parameter_words": 4,
+            "hooks": [
+              {
+                "line": 6,
+                "invoke": "invoke-static {v0}, Lcom/leotv/detail/NativeEpisodeUi;->owned(Ljava/lang/Object;)Z",
+                "argument_types": [
+                  [
+                    "LO3/o;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/O3/z.smali": [
+          {
+            "method": "e0()V",
+            "locals": 20,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 1377,
+                "invoke": "invoke-static {v2, v4}, Lcom/leotv/player/vlc/VlcBridge;->tracks(LC3/e;I)Ljava/util/List;",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "I"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/P3/e.smali": [
+          {
+            "method": "a(Lcom/fongmi/android/tv/bean/Vod;)V",
+            "locals": 7,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 129,
+                "invoke": "invoke-static {v0, p1, v1}, Lcom/leotv/detail/NativeRouting;->openIndexResource(Landroid/app/Activity;Ljava/lang/Object;Landroid/os/Bundle;)V",
+                "argument_types": [
+                  [
+                    "Landroidx/appcompat/app/j;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Vod;"
+                  ],
+                  [
+                    "zero"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/P3/f.smali": [
+          {
+            "method": "a(Lcom/fongmi/android/tv/bean/Vod;)V",
+            "locals": 8,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 540,
+                "invoke": "invoke-static {v0, p1, v1}, Lcom/leotv/detail/NativeRouting;->openIndexResource(Landroid/app/Activity;Ljava/lang/Object;Landroid/os/Bundle;)V",
+                "argument_types": [
+                  [
+                    "Landroidx/appcompat/app/j;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Vod;"
+                  ],
+                  [
+                    "Landroid/os/Bundle;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "b0()V",
+            "locals": 4,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeCategoryPaging;->refresh(Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "LP3/f;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "c0(Ljava/lang/String;Ljava/lang/String;)V",
+            "locals": 5,
+            "parameter_words": 3,
+            "hooks": [
+              {
+                "line": 44,
+                "invoke": "invoke-static {p0, v4, p2}, Lcom/leotv/detail/NativeCategoryPaging;->track(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;)V",
+                "argument_types": [
+                  [
+                    "LP3/f;"
+                  ],
+                  [
+                    "LB3/j;"
+                  ],
+                  [
+                    "Ljava/lang/String;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/S3/d.smali": [
+          {
+            "method": "run()V",
+            "locals": 10,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 758,
+                "invoke": "invoke-static {}, Lcom/leotv/detail/CacheMaintenance;->beforeClear()V",
+                "argument_types": []
+              },
+              {
+                "line": 762,
+                "invoke": "invoke-static {}, Lcom/leotv/detail/CacheMaintenance;->afterClear()V",
+                "argument_types": []
+              },
+              {
+                "line": 768,
+                "invoke": "invoke-static {}, Lcom/leotv/detail/CacheMaintenance;->afterClear()V",
+                "argument_types": []
+              }
+            ]
+          }
+        ],
+        "smali/U1/l.1.smali": [
+          {
+            "method": "<init>(LO3/s;)V",
+            "locals": 2,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 21,
+                "invoke": "invoke-static {p1}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                "argument_types": [
+                  [
+                    "[Ljava/lang/String;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/App.smali": [
+          {
+            "method": "onCreate()V",
+            "locals": 8,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 18,
+                "invoke": "invoke-static {p0}, Lcom/leotv/ui/GlobalChrome;->install(Landroid/app/Application;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/App;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/bean/History.smali": [
+          {
+            "method": "delete(I)V",
+            "locals": 3,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->clearHistory(I)V",
+                "argument_types": [
+                  [
+                    "I"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "delete()Lcom/fongmi/android/tv/bean/History;",
+            "locals": 6,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->deleted(Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/bean/History;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": [
+          {
+            "method": "c0()V",
+            "locals": 4,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 108,
+                "invoke": "invoke-static {v2}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                "argument_types": [
+                  [
+                    "[Ljava/lang/String;"
+                  ]
+                ]
+              },
+              {
+                "line": 267,
+                "invoke": "invoke-static {v0}, Lcom/leotv/player/vlc/VlcBridge;->visible(LC3/e;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "d0(I)V",
+            "locals": 2,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 5,
+                "invoke": "invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "I"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/HomeActivity.smali": [
+          {
+            "method": "onConfigEvent(Lw3/d;)V",
+            "locals": 2,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 79,
+                "invoke": "invoke-static {p1, v0}, Lcom/leotv/branding/LogoLoader;->load(Landroid/widget/ImageView;Ljava/lang/String;)V",
+                "argument_types": [
+                  [
+                    "Landroid/widget/ImageView;"
+                  ],
+                  [
+                    "Ljava/lang/String;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "loadLeotvLogo()V",
+            "locals": 2,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 23,
+                "invoke": "invoke-static {v0, v1}, Lcom/leotv/branding/LogoLoader;->load(Landroid/widget/ImageView;Ljava/lang/String;)V",
+                "argument_types": [
+                  [
+                    "Landroid/widget/ImageView;"
+                  ],
+                  [
+                    "Ljava/lang/String;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": [
+          {
+            "method": "s0()V",
+            "locals": 4,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 100,
+                "invoke": "invoke-static {v2}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                "argument_types": [
+                  [
+                    "[Ljava/lang/String;"
+                  ]
+                ]
+              },
+              {
+                "line": 207,
+                "invoke": "invoke-static {v0}, Lcom/leotv/player/vlc/VlcBridge;->visible(LC3/e;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "v0(I)V",
+            "locals": 2,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 5,
+                "invoke": "invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "I"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/M.smali": [
+          {
+            "method": "i(Ljava/lang/Object;)V",
+            "locals": 12,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 596,
+                "invoke": "invoke-static {v1, p1}, Lcom/leotv/detail/DanmakuPlayback;->result(Landroid/app/Activity;Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Result;"
+                  ]
+                ]
+              },
+              {
+                "line": 1390,
+                "invoke": "invoke-static {v6}, Lcom/leotv/player/vlc/VlcBridge;->sitePlayerType(Lcom/fongmi/android/tv/bean/Site;)I",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/bean/Site;"
+                  ]
+                ]
+              },
+              {
+                "line": 1410,
+                "invoke": "invoke-static {v6}, Lcom/leotv/player/vlc/VlcBridge;->sitePlayerType(Lcom/fongmi/android/tv/bean/Site;)I",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/bean/Site;"
+                  ]
+                ]
+              },
+              {
+                "line": 1597,
+                "invoke": "invoke-static {v4}, Lcom/leotv/detail/Playback;->applyOrder(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 1629,
+                "invoke": "invoke-static {v4}, Lcom/leotv/detail/Playback;->select(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/SettingCustomActivity.smali": [
+          {
+            "method": "K()V",
+            "locals": 3,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 547,
+                "invoke": "invoke-static {p0, v0}, Lcom/leotv/detail/Personalization;->attach(Landroid/app/Activity;Landroid/view/View;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/SettingCustomActivity;"
+                  ],
+                  [
+                    "Landroid/view/View;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/SettingDanmuActivity.smali": [
+          {
+            "method": "K()V",
+            "locals": 3,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 177,
+                "invoke": "invoke-static {p0, v0}, Lcom/leotv/detail/DanmakuUi;->attach(Landroid/app/Activity;Landroid/view/View;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/SettingDanmuActivity;"
+                  ],
+                  [
+                    "Landroid/view/View;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "L()V",
+            "locals": 4,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 17,
+                "invoke": "invoke-static {p0, v0}, Lcom/leotv/detail/DanmakuUi;->focusApi(Landroid/app/Activity;Landroid/view/View;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/SettingDanmuActivity;"
+                  ],
+                  [
+                    "Landroid/widget/LinearLayout;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": [
+          {
+            "method": "L()V",
+            "locals": 4,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 352,
+                "invoke": "invoke-static {v1}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                "argument_types": [
+                  [
+                    "[Ljava/lang/String;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": [
+          {
+            "method": "c1(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZ)V",
+            "locals": 2,
+            "parameter_words": 8,
+            "hooks": [
+              {
+                "line": 93,
+                "invoke": "invoke-static {p0, v0}, Lcom/leotv/detail/NativeRouting;->openResource(Landroid/app/Activity;Landroid/content/Intent;)V",
+                "argument_types": [
+                  [
+                    "Landroid/app/Activity;"
+                  ],
+                  [
+                    "Landroid/content/Intent;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "A0()V",
+            "locals": 9,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->beforeRequest(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 6,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->begin(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 8,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/VideoPreload;->begin(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 268,
+                "invoke": "invoke-static {p0, v8}, Lcom/leotv/detail/VideoPreload;->wrap(Landroid/app/Activity;Ljava/util/concurrent/Callable;)Ljava/util/concurrent/Callable;",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ],
+                  [
+                    "LB3/m;"
+                  ]
+                ]
+              },
+              {
+                "line": 319,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->restore(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "K()V",
+            "locals": 3,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 1181,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->installControls(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "L()V",
+            "locals": 12,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 1575,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/Playback;->initialize(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "S0()V",
+            "locals": 4,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 59,
+                "invoke": "invoke-static {v2}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                "argument_types": [
+                  [
+                    "[Ljava/lang/String;"
+                  ]
+                ]
+              },
+              {
+                "line": 199,
+                "invoke": "invoke-static {v0}, Lcom/leotv/player/vlc/VlcBridge;->visible(LC3/e;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "T(Lw3/e;)V",
+            "locals": 6,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 16,
+                "invoke": "invoke-static {v1}, Lcom/leotv/player/vlc/VlcBridge;->sitePlayerType(Lcom/fongmi/android/tv/bean/Site;)I",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/bean/Site;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "U0(I)V",
+            "locals": 2,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 5,
+                "invoke": "invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "I"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "Y0(Landroid/view/View;)V",
+            "locals": 4,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 122,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->installControls(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 124,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/Playback;->controlsShown(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onActivityResult(IILandroid/content/Intent;)V",
+            "locals": 2,
+            "parameter_words": 4,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0, p1, p2, p3}, Lcom/leotv/detail/DanmakuPlayback;->fileResult(Landroid/app/Activity;IILandroid/content/Intent;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ],
+                  [
+                    "I"
+                  ],
+                  [
+                    "I"
+                  ],
+                  [
+                    "Landroid/content/Intent;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onDestroy()V",
+            "locals": 6,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 200,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/Playback;->release(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onErrorEvent(Lw3/e;)V",
+            "locals": 3,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0, p1}, Lcom/leotv/detail/VideoPreload;->error(Landroid/app/Activity;Ljava/lang/Object;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ],
+                  [
+                    "Lw3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onNewIntent(Landroid/content/Intent;)V",
+            "locals": 3,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0, p1}, Lcom/leotv/detail/NativeRouting;->redirectNewIntent(Landroid/app/Activity;Landroid/content/Intent;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ],
+                  [
+                    "Landroid/content/Intent;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onPause()V",
+            "locals": 1,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 16,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/Playback;->checkpoint(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onPlayerEvent(Lw3/g;)V",
+            "locals": 4,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 151,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->ready(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 353,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapBegin(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 355,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapAllowed(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 370,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapEnd(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onResume()V",
+            "locals": 1,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 30,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->resume(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 32,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/VideoPreload;->resume(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onStart()V",
+            "locals": 1,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onStop()V",
+            "locals": 1,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "s()V",
+            "locals": 6,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 81,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/Playback;->leave(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/q3.1/i.smali": [
+          {
+            "method": "f(Lcom/fongmi/android/tv/bean/Config;)V",
+            "locals": 9,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 58,
+                "invoke": "invoke-static {p1, v3}, Lcom/leotv/detail/DanmakuSettings;->subscription(Ljava/lang/Object;Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/bean/Config;"
+                  ],
+                  [
+                    "Lcom/google/gson/JsonObject;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "method_count": 74,
+      "hook_count": 99,
+      "scope": "primitive/reference/wide categories, parameter aliases, CFG and catch joins; reference inheritance/access/initialization not verified",
+      "art_device_executed": false,
+      "apk_built": false,
+      "locked_host_inputs": {
+        "smali/com/fongmi/android/tv/App.smali": "570c5ca68470dbba42c2b4642b73e8f3b8d3071e9d5e784251e1b48f3f278cf4",
+        "smali/com/fongmi/android/tv/ui/activity/A.smali": "b15fecc99e70e2807ce6112394943b5973b7889df9c32d519167761bee5822f2",
+        "smali/com/fongmi/android/tv/ui/activity/C.smali": "bb8e820a64fd992dea2b1c1fac824ad2b66e29792e0a19674aaf2ab87934961b",
+        "smali/com/fongmi/android/tv/ui/activity/HomeActivity.smali": "39217602cbbb3c4e300165ea8590c57a7af139c5f701056d92df36abb9ea6e70",
+        "smali/com/fongmi/android/tv/ui/activity/SettingActivity.smali": "d78c4be122b9c13dc48512614dec0102928d8095d1a5ba4d738debbcc497f815",
+        "smali/w3.1/a.smali": "87e00acf8294c0a10f87d5c5483990441e9c7ba37ecb4eda2610933a4f64ba6c",
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": "c010e5f836f13abc27338149748703d3ce9e87065af581c79e91b9b248790489",
+        "smali/M3/b.smali": "cd4b36883fcf0d143f757e38335645cf094b17a8a90db873b617d1ad8a45ff90",
+        "smali/com/fongmi/android/tv/ui/activity/SettingCustomActivity.smali": "68b8fa3d80f27ccfa38fad894ab8d6eef857c0cacad8e25846f4d99997eb0ac9",
+        "smali/com/fongmi/android/tv/ui/activity/M.smali": "844060e4e12db3824d5e89dcac50788000fc507c6edc80baa85205983e0e43ed",
+        "smali/B3/n.smali": "de1cf1d258744786cfdde4c545d3dc6007820c20fc62d13f323e4c57d8ce38b7",
+        "smali/A0/a.smali": "03891c7083e826c6dad73ff0f0066b527516152f83e4a003b11a3638400eb72f",
+        "smali/O3/l.smali": "4cf36f5e92e6439dcdf31ef3740bf5350c4abec78ef8cd6741be31e004c35945",
+        "smali/P3/e.smali": "69d9f909bd4f4acf34b15ee90a51333dba2611fcd2a0922c1cb171d8de1c40b2",
+        "smali/P3/f.smali": "a633c62d805ebc4d4af757e6ece2a3cdd1ebb012c92dc4a88731984f5f9ce2f0",
+        "smali/B3/p.smali": "0bd479ccaa48498d9c69d873fe9a93fbe46d63be12d514a59dd465208db871fa",
+        "smali/S3/d.smali": "79e35b4e4ad2ae62dd92f718e2ed374eb852fa13e417b22718e45e123ef5986c",
+        "smali/C3/e.smali": "2a09f333230d6ec19042c171482d7ae844b5d058a200b92b6b7431de7f02317f",
+        "smali/q3.1/i.smali": "d760a8f29d0519430fdba76a0c4efe053c6b19bd6ae78df01d81f6b88dfd07c6",
+        "smali/L3/f.smali": "9977a74da2972fab711af9f005a2f2c86ef14a3fcee019abd20d8eb12e98d5a3",
+        "smali/com/fongmi/android/tv/ui/activity/SettingDanmuActivity.smali": "0d2a2b843aee36934cfe69cb8a31399f84c3764e1c40c0e48716b127119053c5",
+        "smali/O3/k.smali": "501d520013dc04703f657eb3d041bf22f2aa5b445db1efce1630965775b3d88e",
+        "smali/E3/d.smali": "3061c2179f5d3918d821ffb8b833eebe2a52e24e04ac5837e9bd7062716b54bc",
+        "smali/N3/m.smali": "7c39100d10cf3cfdbf6eebc1d0ba62c6d91d6ec0dc991714b06c6ea0071c1226",
+        "smali/B3/j.smali": "e5a094dc1d0401f5cdff0225dd9d6131009031a87e4464f395a4165a47e9ef86",
+        "smali/B0/h.1.smali": "e01daa58298a089dbbef16bc8706482a7c2767c4f86cd17603284e73dbf3afc4",
+        "smali/W0/s.smali": "f41785041abaa77d9eab0b8b425fd2efafcfe6ad7bfcb7f27c41374eac24b4ed",
+        "smali/p.1/e.smali": "729c0da5e0f6cd0e62a18daaaf21ec0fe0c761fe8c3cd04afbffb3c7ca48096f",
+        "smali/W0/c.smali": "ab93465c6838236cd4b209e93c3a16b8a0703d5643b16c00a30d593bba72a76b",
+        "smali/B0/i.1.smali": "55d46d0e678ba2de7fca181dfdc70aff07b4c8642c3fdb30bcdeb8dc9d8af895",
+        "smali/X0/d.smali": "9d5e99d768a521fe361547cf06eb02282c9c5304a967ee8bd4e40ac6de637b51",
+        "smali/P5/c.smali": "8e3f5c447d520eb5725d3b73d7e2799b01240e7586d6c3882ab8afe7f743105f",
+        "smali/B0/Z.smali": "f148b156c6b20d74f8e38ae2b5d003198b168e1912c9b46e112f689393c179c0",
+        "smali/B0/a0.1.smali": "a5dc145130eb1dbfc2ede37a79cfb0e6fccd53e5d303395a01665bc582fd3651",
+        "smali/F3/e.smali": "d87fecf27b25893241122f7e731d5f6fa8084ded469ff6aff91670e6de0398d5",
+        "smali/S0/t.1.smali": "ce55ff36dccf42cd5776b6eab8c71f78df86977091fc0ca13ca6aec8d4531f57",
+        "smali/S0/a.1.smali": "e87d2398aa419f5eb59dcd5feabefa26841697af5212bcf898199f5c74ad34b8",
+        "smali/S0/F.smali": "390123b5016b6be880273264874ed1048bdcf41368174dbe0abfa79d0d2fceaf",
+        "smali/S0/G.smali": "62ec375c253fd2946c344111cd13c0f63fcd487040f15bb68a0ec203565f6b5c",
+        "smali/S0/C.smali": "7481e000f056c3b814efc5c999c713a28dab3a838367c7ade6d6e696b83aafa7",
+        "smali/S0/D.smali": "e8a2faf4b0182cbacc4419bf0220a0a41e4b5cedd963d959172277089260c7b6",
+        "smali/S0/g0.smali": "bfbdc604c55f1e0db3c5e4ac3469386fd1467c0436950aac88de1ff943f822d9",
+        "smali/S0/e0.smali": "4a4f5b43293cadf3cdc82dbb3befb8b9c8b9a31ce70afabafb9ba59b46bf6a02",
+        "smali/S0/q0.smali": "507e59cb79b0d36a7560fc14e7e612491e15e902f540f4e5d5872c715e8cbbc4",
+        "smali/o0.1/T.smali": "cf037531c6bd6d2e09b7192b000d17a01eaabc0f9f61255999a6a51e96f58ec3",
+        "smali/o0.1/S.smali": "11900c02fb6f945943253d4975373f16deac93fa0da03b8fce3fa0e228b15478",
+        "smali/o0.1/U.smali": "e3e39f431e283c7ca0d79206fae19f8c08c14b070e4b21053f12e7800294bcf2",
+        "smali/o0.1/z.1.smali": "8916fa25482efee6352024cdb62dbd0f0a864314b03d67e40e7dbc6036882c75",
+        "smali/o0.1/q.1.smali": "c9b784074c50fcafb95fb510b32daf9b0fa27e4ae78fdc5d0868bcf2d15382c8",
+        "smali/v0.1/t.smali": "d736d7ec9c3168084dbe7f3a14d85927edc0b5ed4c2172d017be9cfe0ef37876",
+        "smali/v0.1/k.smali": "0e1fd2d66efab88e2cc9a92f1a5af704a48a1cf6aad5aba627a62972aeb70d6c",
+        "smali/v0.1/i.smali": "0e459aabd307f563bed04bb030d5159fc8c842bc9633209a1235883bf8cde4ba",
+        "smali/B2/c.smali": "17445c1191264db78af3a21a53d9ab7402ccf4765fc33001127bea3a1a5fa35c",
+        "smali/C3/g.smali": "155cae22dc4b02269ceff7c70522ae9fd0e13152edd07de9edcc24f59373847b",
+        "smali/C3/h.smali": "d4210ab47515d2ba15742c1d5950e0362a68bc3920cbe86dba7ec04e631b748b",
+        "smali/C0/C.smali": "a795f92eb26555649b2ac088aaaad44f7e72d82b035f3f772b24f08cf743da12",
+        "smali/B0/K.smali": "15aab25cd0796e76428d021ac2ac4f612179b7dc76398195299d97185cfa5522",
+        "smali/S3/q.smali": "031868414408b31294c955f708cb65f330bf6f0f713be6a4482bfba62ce1bdd4",
+        "smali_classes3/t7/a.smali": "930006bab91a7651be13af0087e6b76c9e02e1955b02510f9c98be4ab9c67675",
+        "smali/w0.1/a.smali": "50eabd28dc0b02ce01e07d421523fa0c42d74b734b320564f11e2fca9f8f1d85",
+        "smali/u0.1/x.smali": "2f2002476719b643c0d7b0113963aeab03726cb534916419d75ac90fe4a30c4d",
+        "smali/m6/w.smali": "82bb78881279747a2318e509b34c080db720e17f84d14881359befa28d46ea42",
+        "smali/com/fongmi/android/tv/bean/Site.smali": "41663dc37337730ed7095aa8fcaf080e7e7da7540d8d94bad3ed6083feeeefea",
+        "smali/com/fongmi/android/tv/bean/Result.smali": "8ec712d5c8dfebed39541dada87f8f358b9a8400a7f2bff46f87b34625027863",
+        "smali/com/fongmi/android/tv/bean/Url.smali": "5d20e3166fa9860056564bb660c09a7b334e1b04fd02851be520a54118281cb8",
+        "smali/com/fongmi/android/tv/bean/Config.smali": "cb67d52fe37e75ef66a5e94f730a8d9410840d153329e7c1a7e5d912c7bb4e1e",
+        "smali/R3/E.smali": "52f84ae80d1ab872035e9475cd9a1099a03f1bd1e68852391adf22b74b25551b",
+        "smali/R3/D.smali": "f5ebc0f38427275137fe43788b178df9a51e75c73683dbc6b14265174b0b08b0",
+        "smali/R3/B.smali": "9462f91ac909931682417b3a1c47fb4eb1459a120841b4f4a8f9916ee57827d5",
+        "smali/N3/k.smali": "46d500709dc74de9b45e0de73959879d8d4c300cee6cdadbefee11fc734be595",
+        "smali/N3/o.smali": "0c729a16f803ae3b9207550b2b8999ad35030df2fe7c06b570b78fb3b913610c",
+        "smali/com/fongmi/android/tv/bean/History.smali": "6ea96a664bf673ccb3de393aac5a714d33e7baab3d5b05d26dcee818718c0acf",
+        "smali/androidx/leanback/widget/ObjectAdapter.smali": "e06cca0a5aaa14733b88268d010281ff2aaf046396f4f90ec7eb55db87353cdb",
+        "smali/androidx/leanback/widget/ArrayObjectAdapter.smali": "4f91c10cc217aaf8c0d4c1597d1eca9aeda4cb5fccd01f0653955fedd29a45d5",
+        "smali/androidx/leanback/widget/Presenter.smali": "dbecabcec67998cc91a937f8ebeb89c03a378e2ec9596d3f0bdd19bf961c205c",
+        "smali/androidx/leanback/widget/Presenter$ViewHolder.smali": "65192a3eaca50179037ea879833a5e9ba498b00ba278064e50e4a8f7d04107c5",
+        "smali/androidx/leanback/widget/RowPresenter.smali": "3287da4a3c0b63d00f9759773e13d70980b6b86a2d5a3408b5d47a5dbd5f9d92",
+        "smali/androidx/leanback/widget/ListRow.smali": "99b5003abf64c8ebefc2c595f66cc1b839c56db83ca41e9030b2c1304bbc01f5",
+        "smali/androidx/leanback/widget/ListRowPresenter.smali": "4d61795844f4dbbd3cae8bc5482cb9cb29c1eaddc7a2ca852caa799c477caaea",
+        "smali/androidx/leanback/widget/ListRowPresenter$ViewHolder.smali": "3820010e600b48b55174061b70fe586f27e7b5778dee74259795db52482e9ebc",
+        "smali/androidx/leanback/widget/ItemBridgeAdapter.smali": "dcc743b0cb2564a26993c2c62dd9441503f4cba334ad0511763b5bf1e58707a9",
+        "smali/androidx/leanback/widget/BaseGridView.smali": "69b2fba5fb01af8d6aafbad1c37271448fc94d77c23c375f35e66b623ceb2c78",
+        "smali/androidx/leanback/widget/HorizontalGridView.smali": "2739c20c3ee0536da02b46f90c6c7436491cca2d7e9c22701fa42be3dc844937",
+        "smali/androidx/recyclerview/widget/RecyclerView.smali": "853d4293e10b0c479c2ce6eb1f0c63198ba2a37a72d47dd763746b73b97a00e9",
+        "smali/H5/a.smali": "47dd9083bf71d7c6b9cb3d238cd1af16dc2e55ed917f1a722d8943f30c8fe06f",
+        "smali/N5/a.smali": "2bdecbb92ac3a6b6d99514e3e3f5d762188482eede0e2c8f08f7470eff41ebb7",
+        "smali/I5/b.smali": "479b941f0739326aba5f5f788c66f66f5b6011fe09bedac5f57d8f20af0f6b54",
+        "smali/I5/a.smali": "f47f0028f1a31ac5865fd07f6e5345b822ac18ce791dbbdd6c8266bf76217662",
+        "smali/I5/d.smali": "4ff9df4924513217981e64b0e9c547a26ab52b39ea531d9b79ea68bd3dfd7e95",
+        "smali/H5/g.smali": "d6a8493bc89ffb5a43e75d92dadd137779d1b3c4cf1c098b0616fbadca77acc9",
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": "016acfe5e61b0448876b6f9905a39d709f86b8b02997d5ae48fe8e2050e68572",
+        "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": "283e4751da9d7f67ae5d1607016600d58addd4ce82ceddbf3357b38b4994dce0",
+        "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": "c6a660a6fb21fbb3f7563f4b81583656969b5a0a4fae83736b09a133fbf6f8ab",
+        "smali/U1/l.1.smali": "a0229e1f6200b42c0f6e3b1efb55ffb0e8bdb86591d0e6bc67390d86f17a01af",
+        "smali/O3/z.smali": "4a91435d50d07f4c680749c4b83d75ed4153c20e3a690e46d51025ef34bae284",
+        "smali/com/bumptech/glide/f.smali": "81f1df9917da5086b399f2758388e19b2f6e48ac52abcdb74c3c3128d9f4553a"
+      },
+      "patch_order": [
+        "branding",
+        "details",
+        "danmaku",
+        "category_paging",
+        "video_preload",
+        "danmaku_effects",
+        "mobile_mpv_noop",
+        "tv_vlc"
+      ]
+    },
+    "tv-v8a": {
+      "classes": {
+        "smali/A0/a.smali": [
+          {
+            "method": "b(Lcom/fongmi/android/tv/bean/Episode;)V",
+            "locals": 2,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 6,
+                "invoke": "invoke-static {v0, p1}, Lcom/leotv/detail/NativeEpisodeUi;->selectNative(Ljava/lang/Object;Ljava/lang/Object;)Z",
+                "argument_types": [
+                  [
+                    "Ljava/lang/Object;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Episode;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "i(Ljava/lang/Object;)V",
+            "locals": 7,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 24,
+                "invoke": "invoke-static {v0, p1}, Lcom/leotv/detail/NativeCategoryPaging;->accept(Ljava/lang/Object;Ljava/lang/Object;)Z",
+                "argument_types": [
+                  [
+                    "LP3/f;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Result;"
+                  ]
+                ]
+              },
+              {
+                "line": 137,
+                "invoke": "invoke-static {v0, p1}, Lcom/leotv/detail/NativeCategoryPaging;->hold(Ljava/lang/Object;Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "LP3/f;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Result;"
+                  ]
+                ]
+              },
+              {
+                "line": 379,
+                "invoke": "invoke-static {v0}, Lcom/leotv/detail/NativeCategoryPaging;->complete(Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "LP3/f;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/B3/j.smali": [
+          {
+            "method": "call()Ljava/lang/Object;",
+            "locals": 10,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 389,
+                "invoke": "invoke-static {p0, v0}, Lcom/leotv/detail/NativeCategoryPaging;->result(Ljava/lang/Object;Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "LB3/j;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Result;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/B3/n.smali": [
+          {
+            "method": "call()Ljava/lang/Object;",
+            "locals": 7,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 12,
+                "invoke": "invoke-static {v0, v1}, Lcom/leotv/detail/Playback;->consumeNativeDetail(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;",
+                "argument_types": [
+                  [
+                    "Ljava/lang/String;"
+                  ],
+                  [
+                    "Ljava/lang/String;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/C3/e.smali": [
+          {
+            "method": "G()J",
+            "locals": 2,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->duration(LC3/e;)J",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "P()J",
+            "locals": 2,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->position(LC3/e;)J",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "R()Ljava/lang/String;",
+            "locals": 2,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->dimensions(LC3/e;)Ljava/lang/String;",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "S()F",
+            "locals": 2,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->rate(LC3/e;)F",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "U(I)Z",
+            "locals": 5,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->hasTrack(LC3/e;I)Z",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "I"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "V(Landroidx/media3/ui/PlayerView;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V",
+            "locals": 11,
+            "parameter_words": 3,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0, p1, p2}, Lcom/leotv/player/vlc/VlcBridge;->bind(LC3/e;Landroid/view/View;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "Landroidx/media3/ui/PlayerView;"
+                  ],
+                  [
+                    "Ltv/danmaku/ijk/media/player/ui/IjkVideoView;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "Y()Z",
+            "locals": 3,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->playing(LC3/e;)Z",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "Z()Z",
+            "locals": 7,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->seekable(LC3/e;)Z",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "b0()V",
+            "locals": 3,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->pause(LC3/e;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "c0()V",
+            "locals": 3,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 100,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->ended(LC3/e;)Z",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              },
+              {
+                "line": 152,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->play(LC3/e;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "d0()V",
+            "locals": 6,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->release(LC3/e;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "g0(J)V",
+            "locals": 3,
+            "parameter_words": 3,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0, p1, p2}, Lcom/leotv/player/vlc/VlcBridge;->seek(LC3/e;J)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "J"
+                  ],
+                  [
+                    "J:hi"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "h0()V",
+            "locals": 5,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->liveEdge(LC3/e;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "i0(Lcom/fongmi/android/tv/bean/Danmaku;)V",
+            "locals": 4,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->nativeSelection(Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "j0(Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Lcom/fongmi/android/tv/bean/Drm;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)V",
+            "locals": 21,
+            "parameter_words": 10,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static/range {p0 .. p9}, Lcom/leotv/player/vlc/VlcBridge;->load(LC3/e;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Lcom/fongmi/android/tv/bean/Drm;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "Ljava/util/Map;"
+                  ],
+                  [
+                    "Ljava/lang/String;"
+                  ],
+                  [
+                    "Ljava/lang/String;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Drm;"
+                  ],
+                  [
+                    "Ljava/util/List;"
+                  ],
+                  [
+                    "Ljava/util/List;"
+                  ],
+                  [
+                    "Ljava/lang/String;"
+                  ],
+                  [
+                    "J"
+                  ],
+                  [
+                    "J:hi"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "o0(F)Ljava/lang/String;",
+            "locals": 3,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->rate(LC3/e;F)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "F"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "p0(Lcom/fongmi/android/tv/bean/Sub;)V",
+            "locals": 2,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->subtitle(LC3/e;Lcom/fongmi/android/tv/bean/Sub;)Z",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Sub;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "q0(Ljava/util/List;)V",
+            "locals": 8,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->applyTracks(LC3/e;Ljava/util/List;)Z",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "Ljava/util/List;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "r0(Lcom/fongmi/android/tv/bean/Result;ZJ)V",
+            "locals": 10,
+            "parameter_words": 5,
+            "hooks": [
+              {
+                "line": 1039,
+                "invoke": "invoke-static {p0, p1, p2}, Lcom/leotv/detail/VideoPreload;->result(Ljava/lang/Object;Ljava/lang/Object;Z)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Result;"
+                  ],
+                  [
+                    "I"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "s0()V",
+            "locals": 6,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/player/vlc/VlcBridge;->stop(LC3/e;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/E3/d.smali": [
+          {
+            "method": "e()V",
+            "locals": 13,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 564,
+                "invoke": "invoke-static {}, Lcom/leotv/detail/DanmakuSpacing;->pixels()I",
+                "argument_types": []
+              }
+            ]
+          }
+        ],
+        "smali/H5/a.smali": [
+          {
+            "method": "n(LI5/b;Z)V",
+            "locals": 9,
+            "parameter_words": 3,
+            "hooks": [
+              {
+                "line": 362,
+                "invoke": "invoke-static {p0, p2}, Lcom/leotv/detail/DanmakuEffects;->measure(Ljava/lang/Object;Landroid/graphics/Paint;)V",
+                "argument_types": [
+                  [
+                    "LH5/a;"
+                  ],
+                  [
+                    "Landroid/text/TextPaint;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/L3/f.smali": [
+          {
+            "method": "b(Lfi/iki/elonen/NanoHTTPD$IHTTPSession;Ljava/lang/String;Ljava/util/HashMap;)Lfi/iki/elonen/NanoHTTPD$Response;",
+            "locals": 16,
+            "parameter_words": 4,
+            "hooks": [
+              {
+                "line": 43,
+                "invoke": "invoke-static {v6, v5}, Lcom/leotv/detail/NativeQrInput;->webAction(Ljava/lang/String;Ljava/util/Map;)Ljava/lang/String;",
+                "argument_types": [
+                  [
+                    "Ljava/lang/String;"
+                  ],
+                  [
+                    "Ljava/util/Map;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/M3/b.smali": [
+          {
+            "method": "Q()V",
+            "locals": 4,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->isFullscreenPlayer(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "LM3/b;"
+                  ]
+                ]
+              },
+              {
+                "line": 10,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/Playback;->prepareWindow(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "LM3/b;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onCreate(Landroid/os/Bundle;)V",
+            "locals": 1,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirect(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "LM3/b;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onDestroy()V",
+            "locals": 1,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "LM3/b;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/N3/m.smali": [
+          {
+            "method": "onScrollStateChanged(Landroidx/recyclerview/widget/RecyclerView;I)V",
+            "locals": 1,
+            "parameter_words": 3,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0, p1}, Lcom/leotv/detail/NativeCategoryPaging;->canScrollPage(Ljava/lang/Object;Landroid/view/View;)Z",
+                "argument_types": [
+                  [
+                    "LN3/m;"
+                  ],
+                  [
+                    "Landroidx/recyclerview/widget/RecyclerView;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/N5/a.smali": [
+          {
+            "method": "a(LH5/a;)I",
+            "locals": 16,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 617,
+                "invoke": "invoke-static/range {v11 .. v15}, Lcom/leotv/detail/DanmakuEffects;->draw(Ljava/lang/Object;Ljava/lang/Object;Landroid/graphics/Canvas;FF)Z",
+                "argument_types": [
+                  [
+                    "LH5/a;"
+                  ],
+                  [
+                    "LI5/b;"
+                  ],
+                  [
+                    "Landroid/graphics/Canvas;"
+                  ],
+                  [
+                    "F"
+                  ],
+                  [
+                    "F"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/O3/k.smali": [
+          {
+            "method": "e0()V",
+            "locals": 5,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 215,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->menuCreated(Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "LO3/k;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/O3/l.smali": [
+          {
+            "method": "onKey(Landroid/content/DialogInterface;ILandroid/view/KeyEvent;)Z",
+            "locals": 1,
+            "parameter_words": 4,
+            "hooks": [
+              {
+                "line": 6,
+                "invoke": "invoke-static {v0}, Lcom/leotv/detail/NativeEpisodeUi;->owned(Ljava/lang/Object;)Z",
+                "argument_types": [
+                  [
+                    "LO3/o;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/O3/z.smali": [
+          {
+            "method": "e0()V",
+            "locals": 20,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 1377,
+                "invoke": "invoke-static {v2, v4}, Lcom/leotv/player/vlc/VlcBridge;->tracks(LC3/e;I)Ljava/util/List;",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "I"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/P3/e.smali": [
+          {
+            "method": "a(Lcom/fongmi/android/tv/bean/Vod;)V",
+            "locals": 7,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 129,
+                "invoke": "invoke-static {v0, p1, v1}, Lcom/leotv/detail/NativeRouting;->openIndexResource(Landroid/app/Activity;Ljava/lang/Object;Landroid/os/Bundle;)V",
+                "argument_types": [
+                  [
+                    "Landroidx/appcompat/app/j;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Vod;"
+                  ],
+                  [
+                    "zero"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/P3/f.smali": [
+          {
+            "method": "a(Lcom/fongmi/android/tv/bean/Vod;)V",
+            "locals": 8,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 540,
+                "invoke": "invoke-static {v0, p1, v1}, Lcom/leotv/detail/NativeRouting;->openIndexResource(Landroid/app/Activity;Ljava/lang/Object;Landroid/os/Bundle;)V",
+                "argument_types": [
+                  [
+                    "Landroidx/appcompat/app/j;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Vod;"
+                  ],
+                  [
+                    "Landroid/os/Bundle;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "b0()V",
+            "locals": 4,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeCategoryPaging;->refresh(Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "LP3/f;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "c0(Ljava/lang/String;Ljava/lang/String;)V",
+            "locals": 5,
+            "parameter_words": 3,
+            "hooks": [
+              {
+                "line": 44,
+                "invoke": "invoke-static {p0, v4, p2}, Lcom/leotv/detail/NativeCategoryPaging;->track(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;)V",
+                "argument_types": [
+                  [
+                    "LP3/f;"
+                  ],
+                  [
+                    "LB3/j;"
+                  ],
+                  [
+                    "Ljava/lang/String;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/S3/d.smali": [
+          {
+            "method": "run()V",
+            "locals": 10,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 758,
+                "invoke": "invoke-static {}, Lcom/leotv/detail/CacheMaintenance;->beforeClear()V",
+                "argument_types": []
+              },
+              {
+                "line": 762,
+                "invoke": "invoke-static {}, Lcom/leotv/detail/CacheMaintenance;->afterClear()V",
+                "argument_types": []
+              },
+              {
+                "line": 768,
+                "invoke": "invoke-static {}, Lcom/leotv/detail/CacheMaintenance;->afterClear()V",
+                "argument_types": []
+              }
+            ]
+          }
+        ],
+        "smali/U1/l.1.smali": [
+          {
+            "method": "<init>(LO3/s;)V",
+            "locals": 2,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 21,
+                "invoke": "invoke-static {p1}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                "argument_types": [
+                  [
+                    "[Ljava/lang/String;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/App.smali": [
+          {
+            "method": "onCreate()V",
+            "locals": 8,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 18,
+                "invoke": "invoke-static {p0}, Lcom/leotv/ui/GlobalChrome;->install(Landroid/app/Application;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/App;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/bean/History.smali": [
+          {
+            "method": "delete(I)V",
+            "locals": 3,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->clearHistory(I)V",
+                "argument_types": [
+                  [
+                    "I"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "delete()Lcom/fongmi/android/tv/bean/History;",
+            "locals": 6,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->deleted(Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/bean/History;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": [
+          {
+            "method": "c0()V",
+            "locals": 4,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 108,
+                "invoke": "invoke-static {v2}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                "argument_types": [
+                  [
+                    "[Ljava/lang/String;"
+                  ]
+                ]
+              },
+              {
+                "line": 267,
+                "invoke": "invoke-static {v0}, Lcom/leotv/player/vlc/VlcBridge;->visible(LC3/e;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "d0(I)V",
+            "locals": 2,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 5,
+                "invoke": "invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "I"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/HomeActivity.smali": [
+          {
+            "method": "onConfigEvent(Lw3/d;)V",
+            "locals": 2,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 79,
+                "invoke": "invoke-static {p1, v0}, Lcom/leotv/branding/LogoLoader;->load(Landroid/widget/ImageView;Ljava/lang/String;)V",
+                "argument_types": [
+                  [
+                    "Landroid/widget/ImageView;"
+                  ],
+                  [
+                    "Ljava/lang/String;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "loadLeotvLogo()V",
+            "locals": 2,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 23,
+                "invoke": "invoke-static {v0, v1}, Lcom/leotv/branding/LogoLoader;->load(Landroid/widget/ImageView;Ljava/lang/String;)V",
+                "argument_types": [
+                  [
+                    "Landroid/widget/ImageView;"
+                  ],
+                  [
+                    "Ljava/lang/String;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": [
+          {
+            "method": "s0()V",
+            "locals": 4,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 100,
+                "invoke": "invoke-static {v2}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                "argument_types": [
+                  [
+                    "[Ljava/lang/String;"
+                  ]
+                ]
+              },
+              {
+                "line": 207,
+                "invoke": "invoke-static {v0}, Lcom/leotv/player/vlc/VlcBridge;->visible(LC3/e;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "v0(I)V",
+            "locals": 2,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 5,
+                "invoke": "invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "I"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/M.smali": [
+          {
+            "method": "i(Ljava/lang/Object;)V",
+            "locals": 12,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 596,
+                "invoke": "invoke-static {v1, p1}, Lcom/leotv/detail/DanmakuPlayback;->result(Landroid/app/Activity;Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ],
+                  [
+                    "Lcom/fongmi/android/tv/bean/Result;"
+                  ]
+                ]
+              },
+              {
+                "line": 1390,
+                "invoke": "invoke-static {v6}, Lcom/leotv/player/vlc/VlcBridge;->sitePlayerType(Lcom/fongmi/android/tv/bean/Site;)I",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/bean/Site;"
+                  ]
+                ]
+              },
+              {
+                "line": 1410,
+                "invoke": "invoke-static {v6}, Lcom/leotv/player/vlc/VlcBridge;->sitePlayerType(Lcom/fongmi/android/tv/bean/Site;)I",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/bean/Site;"
+                  ]
+                ]
+              },
+              {
+                "line": 1597,
+                "invoke": "invoke-static {v4}, Lcom/leotv/detail/Playback;->applyOrder(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 1629,
+                "invoke": "invoke-static {v4}, Lcom/leotv/detail/Playback;->select(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/SettingCustomActivity.smali": [
+          {
+            "method": "K()V",
+            "locals": 3,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 547,
+                "invoke": "invoke-static {p0, v0}, Lcom/leotv/detail/Personalization;->attach(Landroid/app/Activity;Landroid/view/View;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/SettingCustomActivity;"
+                  ],
+                  [
+                    "Landroid/view/View;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/SettingDanmuActivity.smali": [
+          {
+            "method": "K()V",
+            "locals": 3,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 177,
+                "invoke": "invoke-static {p0, v0}, Lcom/leotv/detail/DanmakuUi;->attach(Landroid/app/Activity;Landroid/view/View;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/SettingDanmuActivity;"
+                  ],
+                  [
+                    "Landroid/view/View;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "L()V",
+            "locals": 4,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 17,
+                "invoke": "invoke-static {p0, v0}, Lcom/leotv/detail/DanmakuUi;->focusApi(Landroid/app/Activity;Landroid/view/View;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/SettingDanmuActivity;"
+                  ],
+                  [
+                    "Landroid/widget/LinearLayout;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": [
+          {
+            "method": "L()V",
+            "locals": 4,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 352,
+                "invoke": "invoke-static {v1}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                "argument_types": [
+                  [
+                    "[Ljava/lang/String;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": [
+          {
+            "method": "c1(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZ)V",
+            "locals": 2,
+            "parameter_words": 8,
+            "hooks": [
+              {
+                "line": 93,
+                "invoke": "invoke-static {p0, v0}, Lcom/leotv/detail/NativeRouting;->openResource(Landroid/app/Activity;Landroid/content/Intent;)V",
+                "argument_types": [
+                  [
+                    "Landroid/app/Activity;"
+                  ],
+                  [
+                    "Landroid/content/Intent;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "A0()V",
+            "locals": 9,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->beforeRequest(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 6,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->begin(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 8,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/VideoPreload;->begin(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 268,
+                "invoke": "invoke-static {p0, v8}, Lcom/leotv/detail/VideoPreload;->wrap(Landroid/app/Activity;Ljava/util/concurrent/Callable;)Ljava/util/concurrent/Callable;",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ],
+                  [
+                    "LB3/m;"
+                  ]
+                ]
+              },
+              {
+                "line": 319,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->restore(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "K()V",
+            "locals": 3,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 1181,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->installControls(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "L()V",
+            "locals": 12,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 1575,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/Playback;->initialize(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "S0()V",
+            "locals": 4,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 59,
+                "invoke": "invoke-static {v2}, Lcom/leotv/player/vlc/VlcBridge;->names([Ljava/lang/String;)[Ljava/lang/String;",
+                "argument_types": [
+                  [
+                    "[Ljava/lang/String;"
+                  ]
+                ]
+              },
+              {
+                "line": 199,
+                "invoke": "invoke-static {v0}, Lcom/leotv/player/vlc/VlcBridge;->visible(LC3/e;)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "T(Lw3/e;)V",
+            "locals": 6,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 16,
+                "invoke": "invoke-static {v1}, Lcom/leotv/player/vlc/VlcBridge;->sitePlayerType(Lcom/fongmi/android/tv/bean/Site;)I",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/bean/Site;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "U0(I)V",
+            "locals": 2,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 5,
+                "invoke": "invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V",
+                "argument_types": [
+                  [
+                    "LC3/e;"
+                  ],
+                  [
+                    "I"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "Y0(Landroid/view/View;)V",
+            "locals": 4,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 122,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->installControls(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 124,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/Playback;->controlsShown(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onActivityResult(IILandroid/content/Intent;)V",
+            "locals": 2,
+            "parameter_words": 4,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0, p1, p2, p3}, Lcom/leotv/detail/DanmakuPlayback;->fileResult(Landroid/app/Activity;IILandroid/content/Intent;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ],
+                  [
+                    "I"
+                  ],
+                  [
+                    "I"
+                  ],
+                  [
+                    "Landroid/content/Intent;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onDestroy()V",
+            "locals": 6,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 200,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/Playback;->release(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onErrorEvent(Lw3/e;)V",
+            "locals": 3,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0, p1}, Lcom/leotv/detail/VideoPreload;->error(Landroid/app/Activity;Ljava/lang/Object;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ],
+                  [
+                    "Lw3/e;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onNewIntent(Landroid/content/Intent;)V",
+            "locals": 3,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 7,
+                "invoke": "invoke-static {p0, p1}, Lcom/leotv/detail/NativeRouting;->redirectNewIntent(Landroid/app/Activity;Landroid/content/Intent;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ],
+                  [
+                    "Landroid/content/Intent;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onPause()V",
+            "locals": 1,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 16,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/Playback;->checkpoint(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onPlayerEvent(Lw3/g;)V",
+            "locals": 4,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 151,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DetailProgress;->ready(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 353,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapBegin(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 355,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapAllowed(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 370,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->bootstrapEnd(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onResume()V",
+            "locals": 1,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 30,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/DanmakuPlayback;->resume(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              },
+              {
+                "line": 32,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/VideoPreload;->resume(Landroid/app/Activity;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onStart()V",
+            "locals": 1,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "onStop()V",
+            "locals": 1,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 4,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/NativeRouting;->redirected(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "method": "s()V",
+            "locals": 6,
+            "parameter_words": 1,
+            "hooks": [
+              {
+                "line": 81,
+                "invoke": "invoke-static {p0}, Lcom/leotv/detail/Playback;->leave(Landroid/app/Activity;)Z",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/ui/activity/VideoActivity;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "smali/q3.1/i.smali": [
+          {
+            "method": "f(Lcom/fongmi/android/tv/bean/Config;)V",
+            "locals": 9,
+            "parameter_words": 2,
+            "hooks": [
+              {
+                "line": 58,
+                "invoke": "invoke-static {p1, v3}, Lcom/leotv/detail/DanmakuSettings;->subscription(Ljava/lang/Object;Ljava/lang/Object;)V",
+                "argument_types": [
+                  [
+                    "Lcom/fongmi/android/tv/bean/Config;"
+                  ],
+                  [
+                    "Lcom/google/gson/JsonObject;"
+                  ]
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "method_count": 74,
+      "hook_count": 99,
+      "scope": "primitive/reference/wide categories, parameter aliases, CFG and catch joins; reference inheritance/access/initialization not verified",
+      "art_device_executed": false,
+      "apk_built": false,
+      "locked_host_inputs": {
+        "smali/com/fongmi/android/tv/App.smali": "570c5ca68470dbba42c2b4642b73e8f3b8d3071e9d5e784251e1b48f3f278cf4",
+        "smali/com/fongmi/android/tv/ui/activity/A.smali": "b15fecc99e70e2807ce6112394943b5973b7889df9c32d519167761bee5822f2",
+        "smali/com/fongmi/android/tv/ui/activity/C.smali": "615340a3bdaf9f881242da1f7747fee20798cb5f2546db4302aa493601b6c962",
+        "smali/com/fongmi/android/tv/ui/activity/HomeActivity.smali": "39217602cbbb3c4e300165ea8590c57a7af139c5f701056d92df36abb9ea6e70",
+        "smali/com/fongmi/android/tv/ui/activity/SettingActivity.smali": "5132ea32732ed1b4b21f634f703ce3aa69a95df2943c3a15295c730103ec2e85",
+        "smali/w3.1/a.smali": "87e00acf8294c0a10f87d5c5483990441e9c7ba37ecb4eda2610933a4f64ba6c",
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": "c010e5f836f13abc27338149748703d3ce9e87065af581c79e91b9b248790489",
+        "smali/M3/b.smali": "cd4b36883fcf0d143f757e38335645cf094b17a8a90db873b617d1ad8a45ff90",
+        "smali/com/fongmi/android/tv/ui/activity/SettingCustomActivity.smali": "68b8fa3d80f27ccfa38fad894ab8d6eef857c0cacad8e25846f4d99997eb0ac9",
+        "smali/com/fongmi/android/tv/ui/activity/M.smali": "844060e4e12db3824d5e89dcac50788000fc507c6edc80baa85205983e0e43ed",
+        "smali/B3/n.smali": "de1cf1d258744786cfdde4c545d3dc6007820c20fc62d13f323e4c57d8ce38b7",
+        "smali/A0/a.smali": "03891c7083e826c6dad73ff0f0066b527516152f83e4a003b11a3638400eb72f",
+        "smali/O3/l.smali": "4cf36f5e92e6439dcdf31ef3740bf5350c4abec78ef8cd6741be31e004c35945",
+        "smali/P3/e.smali": "69d9f909bd4f4acf34b15ee90a51333dba2611fcd2a0922c1cb171d8de1c40b2",
+        "smali/P3/f.smali": "a633c62d805ebc4d4af757e6ece2a3cdd1ebb012c92dc4a88731984f5f9ce2f0",
+        "smali/B3/p.smali": "0bd479ccaa48498d9c69d873fe9a93fbe46d63be12d514a59dd465208db871fa",
+        "smali/S3/d.smali": "79e35b4e4ad2ae62dd92f718e2ed374eb852fa13e417b22718e45e123ef5986c",
+        "smali/C3/e.smali": "2a09f333230d6ec19042c171482d7ae844b5d058a200b92b6b7431de7f02317f",
+        "smali/q3.1/i.smali": "d760a8f29d0519430fdba76a0c4efe053c6b19bd6ae78df01d81f6b88dfd07c6",
+        "smali/L3/f.smali": "9977a74da2972fab711af9f005a2f2c86ef14a3fcee019abd20d8eb12e98d5a3",
+        "smali/com/fongmi/android/tv/ui/activity/SettingDanmuActivity.smali": "0d2a2b843aee36934cfe69cb8a31399f84c3764e1c40c0e48716b127119053c5",
+        "smali/O3/k.smali": "501d520013dc04703f657eb3d041bf22f2aa5b445db1efce1630965775b3d88e",
+        "smali/E3/d.smali": "3061c2179f5d3918d821ffb8b833eebe2a52e24e04ac5837e9bd7062716b54bc",
+        "smali/N3/m.smali": "7c39100d10cf3cfdbf6eebc1d0ba62c6d91d6ec0dc991714b06c6ea0071c1226",
+        "smali/B3/j.smali": "e5a094dc1d0401f5cdff0225dd9d6131009031a87e4464f395a4165a47e9ef86",
+        "smali/B0/h.1.smali": "e01daa58298a089dbbef16bc8706482a7c2767c4f86cd17603284e73dbf3afc4",
+        "smali/W0/s.smali": "f41785041abaa77d9eab0b8b425fd2efafcfe6ad7bfcb7f27c41374eac24b4ed",
+        "smali/p.1/e.smali": "729c0da5e0f6cd0e62a18daaaf21ec0fe0c761fe8c3cd04afbffb3c7ca48096f",
+        "smali/W0/c.smali": "ab93465c6838236cd4b209e93c3a16b8a0703d5643b16c00a30d593bba72a76b",
+        "smali/B0/i.1.smali": "55d46d0e678ba2de7fca181dfdc70aff07b4c8642c3fdb30bcdeb8dc9d8af895",
+        "smali/X0/d.smali": "9d5e99d768a521fe361547cf06eb02282c9c5304a967ee8bd4e40ac6de637b51",
+        "smali/P5/c.smali": "8e3f5c447d520eb5725d3b73d7e2799b01240e7586d6c3882ab8afe7f743105f",
+        "smali/B0/Z.smali": "f148b156c6b20d74f8e38ae2b5d003198b168e1912c9b46e112f689393c179c0",
+        "smali/B0/a0.1.smali": "a5dc145130eb1dbfc2ede37a79cfb0e6fccd53e5d303395a01665bc582fd3651",
+        "smali/F3/e.smali": "d87fecf27b25893241122f7e731d5f6fa8084ded469ff6aff91670e6de0398d5",
+        "smali/S0/t.1.smali": "ce55ff36dccf42cd5776b6eab8c71f78df86977091fc0ca13ca6aec8d4531f57",
+        "smali/S0/a.1.smali": "e87d2398aa419f5eb59dcd5feabefa26841697af5212bcf898199f5c74ad34b8",
+        "smali/S0/F.smali": "390123b5016b6be880273264874ed1048bdcf41368174dbe0abfa79d0d2fceaf",
+        "smali/S0/G.smali": "62ec375c253fd2946c344111cd13c0f63fcd487040f15bb68a0ec203565f6b5c",
+        "smali/S0/C.smali": "7481e000f056c3b814efc5c999c713a28dab3a838367c7ade6d6e696b83aafa7",
+        "smali/S0/D.smali": "e8a2faf4b0182cbacc4419bf0220a0a41e4b5cedd963d959172277089260c7b6",
+        "smali/S0/g0.smali": "bfbdc604c55f1e0db3c5e4ac3469386fd1467c0436950aac88de1ff943f822d9",
+        "smali/S0/e0.smali": "4a4f5b43293cadf3cdc82dbb3befb8b9c8b9a31ce70afabafb9ba59b46bf6a02",
+        "smali/S0/q0.smali": "507e59cb79b0d36a7560fc14e7e612491e15e902f540f4e5d5872c715e8cbbc4",
+        "smali/o0.1/T.smali": "cf037531c6bd6d2e09b7192b000d17a01eaabc0f9f61255999a6a51e96f58ec3",
+        "smali/o0.1/S.smali": "11900c02fb6f945943253d4975373f16deac93fa0da03b8fce3fa0e228b15478",
+        "smali/o0.1/U.smali": "e3e39f431e283c7ca0d79206fae19f8c08c14b070e4b21053f12e7800294bcf2",
+        "smali/o0.1/z.1.smali": "8916fa25482efee6352024cdb62dbd0f0a864314b03d67e40e7dbc6036882c75",
+        "smali/o0.1/q.1.smali": "c9b784074c50fcafb95fb510b32daf9b0fa27e4ae78fdc5d0868bcf2d15382c8",
+        "smali/v0.1/t.smali": "d736d7ec9c3168084dbe7f3a14d85927edc0b5ed4c2172d017be9cfe0ef37876",
+        "smali/v0.1/k.smali": "0e1fd2d66efab88e2cc9a92f1a5af704a48a1cf6aad5aba627a62972aeb70d6c",
+        "smali/v0.1/i.smali": "0e459aabd307f563bed04bb030d5159fc8c842bc9633209a1235883bf8cde4ba",
+        "smali/B2/c.smali": "17445c1191264db78af3a21a53d9ab7402ccf4765fc33001127bea3a1a5fa35c",
+        "smali/C3/g.smali": "155cae22dc4b02269ceff7c70522ae9fd0e13152edd07de9edcc24f59373847b",
+        "smali/C3/h.smali": "d4210ab47515d2ba15742c1d5950e0362a68bc3920cbe86dba7ec04e631b748b",
+        "smali/C0/C.smali": "a795f92eb26555649b2ac088aaaad44f7e72d82b035f3f772b24f08cf743da12",
+        "smali/B0/K.smali": "15aab25cd0796e76428d021ac2ac4f612179b7dc76398195299d97185cfa5522",
+        "smali/S3/q.smali": "031868414408b31294c955f708cb65f330bf6f0f713be6a4482bfba62ce1bdd4",
+        "smali_classes3/t7/a.smali": "930006bab91a7651be13af0087e6b76c9e02e1955b02510f9c98be4ab9c67675",
+        "smali/w0.1/a.smali": "50eabd28dc0b02ce01e07d421523fa0c42d74b734b320564f11e2fca9f8f1d85",
+        "smali/u0.1/x.smali": "2f2002476719b643c0d7b0113963aeab03726cb534916419d75ac90fe4a30c4d",
+        "smali/m6/w.smali": "82bb78881279747a2318e509b34c080db720e17f84d14881359befa28d46ea42",
+        "smali/com/fongmi/android/tv/bean/Site.smali": "41663dc37337730ed7095aa8fcaf080e7e7da7540d8d94bad3ed6083feeeefea",
+        "smali/com/fongmi/android/tv/bean/Result.smali": "8ec712d5c8dfebed39541dada87f8f358b9a8400a7f2bff46f87b34625027863",
+        "smali/com/fongmi/android/tv/bean/Url.smali": "5d20e3166fa9860056564bb660c09a7b334e1b04fd02851be520a54118281cb8",
+        "smali/com/fongmi/android/tv/bean/Config.smali": "cb67d52fe37e75ef66a5e94f730a8d9410840d153329e7c1a7e5d912c7bb4e1e",
+        "smali/R3/E.smali": "52f84ae80d1ab872035e9475cd9a1099a03f1bd1e68852391adf22b74b25551b",
+        "smali/R3/D.smali": "f5ebc0f38427275137fe43788b178df9a51e75c73683dbc6b14265174b0b08b0",
+        "smali/R3/B.smali": "9462f91ac909931682417b3a1c47fb4eb1459a120841b4f4a8f9916ee57827d5",
+        "smali/N3/k.smali": "46d500709dc74de9b45e0de73959879d8d4c300cee6cdadbefee11fc734be595",
+        "smali/N3/o.smali": "0c729a16f803ae3b9207550b2b8999ad35030df2fe7c06b570b78fb3b913610c",
+        "smali/com/fongmi/android/tv/bean/History.smali": "6ea96a664bf673ccb3de393aac5a714d33e7baab3d5b05d26dcee818718c0acf",
+        "smali/androidx/leanback/widget/ObjectAdapter.smali": "e06cca0a5aaa14733b88268d010281ff2aaf046396f4f90ec7eb55db87353cdb",
+        "smali/androidx/leanback/widget/ArrayObjectAdapter.smali": "4f91c10cc217aaf8c0d4c1597d1eca9aeda4cb5fccd01f0653955fedd29a45d5",
+        "smali/androidx/leanback/widget/Presenter.smali": "dbecabcec67998cc91a937f8ebeb89c03a378e2ec9596d3f0bdd19bf961c205c",
+        "smali/androidx/leanback/widget/Presenter$ViewHolder.smali": "65192a3eaca50179037ea879833a5e9ba498b00ba278064e50e4a8f7d04107c5",
+        "smali/androidx/leanback/widget/RowPresenter.smali": "3287da4a3c0b63d00f9759773e13d70980b6b86a2d5a3408b5d47a5dbd5f9d92",
+        "smali/androidx/leanback/widget/ListRow.smali": "99b5003abf64c8ebefc2c595f66cc1b839c56db83ca41e9030b2c1304bbc01f5",
+        "smali/androidx/leanback/widget/ListRowPresenter.smali": "4d61795844f4dbbd3cae8bc5482cb9cb29c1eaddc7a2ca852caa799c477caaea",
+        "smali/androidx/leanback/widget/ListRowPresenter$ViewHolder.smali": "3820010e600b48b55174061b70fe586f27e7b5778dee74259795db52482e9ebc",
+        "smali/androidx/leanback/widget/ItemBridgeAdapter.smali": "dcc743b0cb2564a26993c2c62dd9441503f4cba334ad0511763b5bf1e58707a9",
+        "smali/androidx/leanback/widget/BaseGridView.smali": "69b2fba5fb01af8d6aafbad1c37271448fc94d77c23c375f35e66b623ceb2c78",
+        "smali/androidx/leanback/widget/HorizontalGridView.smali": "2739c20c3ee0536da02b46f90c6c7436491cca2d7e9c22701fa42be3dc844937",
+        "smali/androidx/recyclerview/widget/RecyclerView.smali": "853d4293e10b0c479c2ce6eb1f0c63198ba2a37a72d47dd763746b73b97a00e9",
+        "smali/H5/a.smali": "47dd9083bf71d7c6b9cb3d238cd1af16dc2e55ed917f1a722d8943f30c8fe06f",
+        "smali/N5/a.smali": "2bdecbb92ac3a6b6d99514e3e3f5d762188482eede0e2c8f08f7470eff41ebb7",
+        "smali/I5/b.smali": "479b941f0739326aba5f5f788c66f66f5b6011fe09bedac5f57d8f20af0f6b54",
+        "smali/I5/a.smali": "f47f0028f1a31ac5865fd07f6e5345b822ac18ce791dbbdd6c8266bf76217662",
+        "smali/I5/d.smali": "4ff9df4924513217981e64b0e9c547a26ab52b39ea531d9b79ea68bd3dfd7e95",
+        "smali/H5/g.smali": "d6a8493bc89ffb5a43e75d92dadd137779d1b3c4cf1c098b0616fbadca77acc9",
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": "016acfe5e61b0448876b6f9905a39d709f86b8b02997d5ae48fe8e2050e68572",
+        "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": "283e4751da9d7f67ae5d1607016600d58addd4ce82ceddbf3357b38b4994dce0",
+        "smali/com/fongmi/android/tv/ui/activity/SettingPlayerActivity.smali": "c6a660a6fb21fbb3f7563f4b81583656969b5a0a4fae83736b09a133fbf6f8ab",
+        "smali/U1/l.1.smali": "a0229e1f6200b42c0f6e3b1efb55ffb0e8bdb86591d0e6bc67390d86f17a01af",
+        "smali/O3/z.smali": "4a91435d50d07f4c680749c4b83d75ed4153c20e3a690e46d51025ef34bae284",
+        "smali/com/bumptech/glide/f.smali": "81f1df9917da5086b399f2758388e19b2f6e48ac52abcdb74c3c3128d9f4553a"
+      },
+      "patch_order": [
+        "branding",
+        "details",
+        "danmaku",
+        "category_paging",
+        "video_preload",
+        "danmaku_effects",
+        "mobile_mpv_noop",
+        "tv_vlc"
+      ]
+    }
+  }
+}

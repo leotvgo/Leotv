@@ -24,7 +24,7 @@ public final class DanmakuEffects {
     private static final Map<Class<?>,Painter> PAINTERS=new WeakHashMap<>();
     private static final LinkedHashMap<String,Tile> CACHE=new LinkedHashMap<>(16,.75f,true);
     private static final DanmakuEffectPolicy.Animation ANIMATION=new DanmakuEffectPolicy.Animation();
-    private static final Paint BITMAP_PAINT=new Paint(Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);
+    private static final Paint BITMAP_PAINT=new Paint(Paint.ANTI_ALIAS_FLAG);
     private static final CacheMaintenance.Client CLIENT=DanmakuEffects::clear;
     private static Context application;
     private static volatile Options options=new Options(true,true,15,0);
@@ -94,7 +94,7 @@ public final class DanmakuEffects {
             Object timer=access.timer.get(item);long playback=PreloadHost.number(PreloadHost.field(timer,"a"));
             float phase=moving?(playback%2000)/2000f:0;
             int save=canvas.save();
-            try{canvas.translate(left,top);canvas.clipRect(0,0,width,height);BITMAP_PAINT.setAlpha(Math.max(0,Math.min(255,alpha)));
+            try{canvas.translate(Math.round(left),Math.round(top));canvas.clipRect(0,0,width,height);BITMAP_PAINT.setAlpha(Math.max(0,Math.min(255,alpha)));
                 if(style==DanmakuEffectPolicy.PETALS)tile.decorate(canvas,phase,moving,alpha);
                 canvas.drawBitmap(tile.bitmap,0,0,BITMAP_PAINT);
                 if(style!=DanmakuEffectPolicy.PETALS)tile.decorate(canvas,phase,moving,alpha);}
@@ -152,7 +152,7 @@ public final class DanmakuEffects {
                 ink.setColor(Color.WHITE);ink.setFilterBitmap(true);canvas.drawBitmap(portrait(),null,bounds,ink);
                 ink.setColor(0xffffd47a);ink.setStyle(Paint.Style.STROKE);ink.setStrokeWidth(Math.max(1,size*.035f));canvas.drawOval(bounds,ink);ink.setStyle(Paint.Style.FILL);
             }else if(style==DanmakuEffectPolicy.NEON_TRAIL)neon(canvas,0,false,255);
-            Paint letters=new Paint(typography);letters.clearShadowLayer();letters.setAlpha(255);letters.setStyle(Paint.Style.STROKE);letters.setStrokeWidth(Math.max(1,size*.07f));letters.setColor(0xff101320);
+            Paint letters=new Paint(typography);letters.setSubpixelText(false);letters.setLinearText(false);letters.setFilterBitmap(false);letters.clearShadowLayer();letters.setAlpha(255);letters.setStyle(Paint.Style.STROKE);letters.setStrokeWidth(Math.max(1,size*.07f));letters.setColor(0xff101320);
             float x=size*(style==DanmakuEffectPolicy.NEON_TRAIL?3.25f:style==DanmakuEffectPolicy.AVATAR?1.7f:style==DanmakuEffectPolicy.PETALS?.72f:style>=3?1.35f:.72f),y=(height-letters.ascent()-letters.descent())*.5f;
             canvas.drawText(text,x,y,letters);letters.setStyle(Paint.Style.FILL);
             if(style==1||style==4||style==DanmakuEffectPolicy.AVATAR){letters.setColor(Color.WHITE);}else letters.setShader(new LinearGradient(x,0,width,0,colors,null,Shader.TileMode.CLAMP));

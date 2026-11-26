@@ -1,0 +1,68 @@
+{
+  "mpv_source": {
+    "repository": "mpv-player/mpv",
+    "version": "v0.38.0",
+    "commit": "02254b92dd237f03aa0a151c2a68778c4ea848f9",
+    "url": "https://codeload.github.com/mpv-player/mpv/tar.gz/02254b92dd237f03aa0a151c2a68778c4ea848f9",
+    "sha256": "dad9517224f0cbf257f1476f8609743b73edcf0a8d5333dd7ab81166e306ad9f",
+    "license": "GPL-2.0-or-later"
+  },
+  "source_sha256": "e64b3c6a974e66358543d5d9f1e0f357d16a5341aca29f8a9de5c111c5501aa0",
+  "definitions": {
+    "scale": {
+      "source": "video/out/gpu/video.c",
+      "definition": "SCALER_OPTS(\"scale\",  SCALER_SCALE),"
+    },
+    "dscale": {
+      "source": "video/out/gpu/video.c",
+      "definition": "SCALER_OPTS(\"dscale\", SCALER_DSCALE),"
+    },
+    "cscale": {
+      "source": "video/out/gpu/video.c",
+      "definition": "SCALER_OPTS(\"cscale\", SCALER_CSCALE),"
+    },
+    "correct-downscaling": {
+      "source": "video/out/gpu/video.c",
+      "definition": "{\"correct-downscaling\", OPT_BOOL(correct_downscaling)},"
+    },
+    "linear-downscaling": {
+      "source": "video/out/gpu/video.c",
+      "definition": "{\"linear-downscaling\", OPT_BOOL(linear_downscaling)},"
+    },
+    "linear-upscaling": {
+      "source": "video/out/gpu/video.c",
+      "definition": "{\"linear-upscaling\", OPT_BOOL(linear_upscaling)},"
+    },
+    "sigmoid-upscaling": {
+      "source": "video/out/gpu/video.c",
+      "definition": "{\"sigmoid-upscaling\", OPT_BOOL(sigmoid_upscaling)},"
+    },
+    "interpolation": {
+      "source": "video/out/gpu/video.c",
+      "definition": "{\"interpolation\", OPT_BOOL(interpolation)},"
+    },
+    "hdr-compute-peak": {
+      "source": "video/out/gpu/video.c",
+      "definition": "{\"hdr-compute-peak\", OPT_CHOICE(tone_map.compute_peak,\n            {\"auto\", 0},"
+    },
+    "dither-depth": {
+      "source": "video/out/gpu/video.c",
+      "definition": "{\"dither-depth\", OPT_CHOICE(dither_depth, {\"no\", -1},"
+    }
+  },
+  "default_values": {
+    "scale": "bilinear",
+    "dscale": "bilinear",
+    "cscale": "bilinear",
+    "correct-downscaling": "no",
+    "linear-downscaling": "no",
+    "linear-upscaling": "no",
+    "sigmoid-upscaling": "no",
+    "interpolation": "no",
+    "hdr-compute-peak": "no",
+    "dither-depth": "no"
+  },
+  "user_config_precedence": "built-in defaults, saved additions, app-managed settings",
+  "native_inputs_unchanged": true,
+  "device_acceptance": false
+}

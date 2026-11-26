@@ -7,20 +7,25 @@ import org.videolan.libvlc.interfaces.IVLCVout;
 
 /** Sibling of the original player views; it owns no keys, focus or controller. */
 final class VlcSurface extends FrameLayout implements IVLCVout.OnNewVideoLayoutListener {
-    final TextureView video, subtitles;
+    final SurfaceView video, subtitles;
     private int videoWidth, videoHeight, visibleWidth, visibleHeight, sarNum = 1, sarDen = 1, mode;
     private IVLCVout output;
 
     VlcSurface(Context context) {
         super(context); setFocusable(false); setFocusableInTouchMode(false); setClickable(false); setClipChildren(true);
-        video = new TextureView(context); subtitles = new TextureView(context);
+        video = new SurfaceView(context); subtitles = new SurfaceView(context);
         video.setFocusable(false); subtitles.setFocusable(false);
-        subtitles.setOpaque(false);
+        // AWindow 3.6 marks TextureView helpers ready before their surfaces exist.
+        // Two textures therefore enter READY twice and throw "invalid state".
+        // SurfaceView helpers wait for each real surface, including the subtitle plane.
+        subtitles.setZOrderMediaOverlay(true);
+        subtitles.getHolder().setFormat(android.graphics.PixelFormat.TRANSLUCENT);
         addView(video, new FrameLayout.LayoutParams(-1, -1, Gravity.CENTER));
         addView(subtitles, new FrameLayout.LayoutParams(-1, -1, Gravity.CENTER));
     }
 
     void attach(IVLCVout value) {
+        detach();
         output = value; value.setVideoView(video); value.setSubtitlesView(subtitles);
         value.setWindowSize(Math.max(1, getWidth()), Math.max(1, getHeight())); value.attachViews(this);
     }

@@ -4,12 +4,12 @@ import java.util.*;
 public final class MPVLib {
     public static final Map<String,Object> properties=new HashMap<>();
     public static final List<String[]> commands=new ArrayList<>();
-    public static int detached,destroyed,replaced;
+    public static int detached,destroyed,replaced,attached;
     public static void addObserver(EventObserver l){}public static void removeObserver(EventObserver l){}
     public static void addLogObserver(LogObserver l){}public static void removeLogObserver(LogObserver l){}
     public static void create(android.content.Context c){}public static void init(){}
     public static int destroy(){destroyed++;return 0;}
-    public static void attachSurface(android.view.Surface s){}public static void replaceSurface(android.view.Surface s){replaced++;}public static void detachSurface(){detached++;}
+    public static void attachSurface(android.view.Surface s){attached++;}public static void replaceSurface(android.view.Surface s){replaced++;}public static void detachSurface(){detached++;}
     public static int setOptionString(String k,String v){return 0;}public static int observeProperty(String p,int f){return 0;}
     public static int enqueueCommand(long id,String[] args){commands.add(args);return 0;}
     public static Integer getPropertyInt(String p){return (Integer)properties.get(p);}

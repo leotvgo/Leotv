@@ -29,7 +29,8 @@
     "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": [
       "Q0()V",
       "U0(I)V",
-      "onActivityResult(IILandroid/content/Intent;)V"
+      "onActivityResult(IILandroid/content/Intent;)V",
+      "j(Ljava/lang/Integer;)V"
     ],
     "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": [
       "q0()V",

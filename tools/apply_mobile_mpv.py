@@ -178,6 +178,7 @@ def apply(project, root, variant):
             scale='U0(I)V' if name==VIDEO else 't0(I)V'
             text=replace(text,scale,lambda b:tail(b,f'    invoke-static {{p0}}, {BRIDGE}->updateActivity(Landroid/app/Activity;)V'))
             if name == VIDEO:
+                text=replace(text,'j(Ljava/lang/Integer;)V',lambda b:prepend(b,f'    invoke-static {{p0, p1}}, {BRIDGE}->prepareSelection(Landroid/app/Activity;Ljava/lang/Integer;)V'))
                 # The ordinary callback accepts external-player result extras. MPV document
                 # results must be consumed before those extras can alter playback position.
                 text=replace(text,'onActivityResult(IILandroid/content/Intent;)V',lambda b:prepend(b,f'''    invoke-static {{p0, p1, p2, p3}}, {BRIDGE}->fileResult(Landroid/app/Activity;IILandroid/content/Intent;)Z

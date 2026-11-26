@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-/** A deliberately bounded mpv.conf parser. Unknown options reach libmpv and fail visibly. */
+/** Bounded mpv.conf parser; built-in mobile defaults are independent of imported options. */
 public final class MpvOptions {
     private static final Set<String> OWNED = new HashSet<>(Arrays.asList(
         "config", "config-dir", "include", "profile", "script", "scripts", "script-opts",
@@ -24,6 +24,7 @@ public final class MpvOptions {
         "demuxer-cache-dir", "cache-on-disk", "screenshot-directory", "screenshot-template",
         "stream-lavf-o", "demuxer-lavf-o", "vd-lavc-o", "ad-lavc-o", "reset-on-next-file", "resume-playback",
         "sub-ass-styles", "icc-profile", "lut", "stream-open-filename"));
+    static final String DEFAULT_CONFIG="scale=bilinear\ndscale=bilinear\ncscale=bilinear\ncorrect-downscaling=no\nlinear-downscaling=no\nlinear-upscaling=no\nsigmoid-upscaling=no\ninterpolation=no\nhdr-compute-peak=no\ndither-depth=no\n";
     private MpvOptions() {}
     public static LinkedHashMap<String,String> parse(String content) {
         LinkedHashMap<String,String> result = new LinkedHashMap<>();

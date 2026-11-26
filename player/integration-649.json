@@ -413,5 +413,154 @@
     "branding/AndroidManifest.xml": "42f501deca30d10f7d68f7fc78a2459bac71b892a937d5bbead6912def70380f",
     "research/test_ci_release_store.py": "e3ef8c604eb164afd14f455c5dbc34b97e237a8d10681424b24e3b60ee05dc52",
     "branding/res/values/strings.xml": "2c900a1cc9a08a9f980c32c08abc0b9f7d96ef17698e0e35348869fe70d66337"
+  },
+  "authorized_651_source_repairs": {
+    "README.md": {
+      "before_sha256": "63915ad6cacc095f492eda54de3a308a645b6619cd5cfef48466af3175db63ee",
+      "after_sha256": "c60005056e69624dde6ba4d5f231805f7b70e46023e2028577d9ead358be8053",
+      "reason": "651 scope and source-only evidence; device playback and motion clarity remain pending user acceptance"
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "42f501deca30d10f7d68f7fc78a2459bac71b892a937d5bbead6912def70380f",
+      "after_sha256": "44e50f7f535ea111439542fc20326c5abda67e31c65a404a470b74700ee8e2b1",
+      "reason": "Unified preview.5 / code651 fixed-signature prerelease identity for authorized fixes; latest remains unchanged"
+    },
+    "branding/release.json": {
+      "before_sha256": "adc64b6edddc3b6bad9de9daa3532772bcc6947b13964926a62e2c1609a05dcf",
+      "after_sha256": "ec15b7f1ddc7bad2803b0493f9722953fac78df1dfb4b4085d321903720369b8",
+      "reason": "Unified preview.5 / code651 fixed-signature prerelease identity for authorized fixes; latest remains unchanged"
+    },
+    "branding/res/values/strings.xml": {
+      "before_sha256": "2c900a1cc9a08a9f980c32c08abc0b9f7d96ef17698e0e35348869fe70d66337",
+      "after_sha256": "2e8cc525f8b072f9db537b222fd2c3ead3411a75a0bc9b971bd67170aede0ef4",
+      "reason": "Unified preview.5 / code651 fixed-signature prerelease identity for authorized fixes; latest remains unchanged"
+    },
+    "detail/runtime/common/com/leotv/detail/DanmakuEffects.java": {
+      "before_sha256": "6aa118f56e27b89a32c1717ecf7ad6cdd86aa86f3c743911e88be824b5b4b66a",
+      "after_sha256": "7426b7ff56bb50b581954ac43720fefe670b56b6ddc9b6c8ca8e8446c7be44f7",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "player/mpv/allowed-changes.json": {
+      "before_sha256": "b5efa926692b85076ee99bf1c3fbd13783567bdc7e44471f609e56396d84aab6",
+      "after_sha256": "93985aa204392caa7e0e255f7d11026f61796c5f21cd4bb1dab193bd9503bbd9",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "player/mpv/java/com/leotv/player/mpv/MobileMpv.java": {
+      "before_sha256": "f87f781570fb8235de88fc45296e7df60844fef70ac4d3ba16a993f90139f00a",
+      "after_sha256": "1a177d5634bbaf8d717d1d3605a908b0e36b645ecd6caba6e581d648f1ed77bc",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "player/mpv/java/com/leotv/player/mpv/MpvEngine.java": {
+      "before_sha256": "a30e2edc928a0781f75fbe2933adcaad3b878767a71987ba78eae588a9202821",
+      "after_sha256": "a0110a8dd75f32836c3996ea70a70c8ff3b4fff9a2adacef40226e421549d4c8",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "player/mpv/java/com/leotv/player/mpv/MpvOptions.java": {
+      "before_sha256": "d53b956f4bc13d20ff2e4b1a0612b5abbcda21950ce03bd36cdcbf711b6695f3",
+      "after_sha256": "17b0a8847ec39f2f811e1535d9ce6c497d729809b70982352b0defe5fd0c3091",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "player/mpv/java/com/leotv/player/mpv/MpvSettings.java": {
+      "before_sha256": "8b5750e69050f3f47bbdf23476d864c17f66196f021b54c11d362b9a480fa393",
+      "after_sha256": "1d3742b179faf5e085f41919ccdcc49d501a970081a5f6e591ea558c598be7f0",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "player/mpv/java/com/leotv/player/mpv/MpvStore.java": {
+      "before_sha256": "d2a5d0f479f5e680aeeda39ffc54ba7d8e6d6363decf945c3a362e4aa28716e0",
+      "after_sha256": "fb7711d498a5a9fb9f5ae61df7d64e77a92ac0e575f800916bc13f99ef125039",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "player/mpv/test/EngineContract.java": {
+      "before_sha256": "2ab64a1fb722fcdc2b8584669680c4e5e5dbe2f26114bf87e293c2b3458dd232",
+      "after_sha256": "1a1937204c6d7c356ceb1b951fc0541b909cc18f48ebff6259ed2f4cfee14ca3",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "player/mpv/test/fixture/is/xyz/mpv/MPVLib.java": {
+      "before_sha256": "df5b18c9e7bc114779c8aa9ff80843b45f5b42b8349828fba627ee6df73101c6",
+      "after_sha256": "98da465176b442a217f8837ef44b5f541b29efa180f6f1c123fc61f07cdef836",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "player/vlc/java-api-contract.json": {
+      "before_sha256": "4c469f5dd3f77014397be92d070901070fe4665b8d82af8a9a29805294970dc1",
+      "after_sha256": "a6c94542d3aed4e874173b5ed86a36fd5f0c8d3484dfb9cdf611ab972559fab4",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "player/vlc/java/com/leotv/player/vlc/VlcSurface.java": {
+      "before_sha256": "3918176ca698a03dc610b6571c386740d33036fbf38017280371b4a9e8e9282b",
+      "after_sha256": "c49cc1510d779ba6a82f72f10d6020a7ba794ad8984d3b16cdfb31331487dc2a",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "research/detail-check/src/test/java/com/leotv/detail/DanmakuEffectsTest.java": {
+      "before_sha256": "f07c89928081fe7e9717a31f704721de212a158457ed1312db9cca81320a23de",
+      "after_sha256": "bb764484a99587f485eb6cfd851f958dc22bf356814d6181c0f44de38029e4c2",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "tools/apply_danmaku_effects.py": {
+      "before_sha256": "2de96603ceff83c4d7652255d112f460b97abf7a21331f4f0032de4cc1f55577",
+      "after_sha256": "6c76c6ce0a97567752671e370d1d492b89a35996652f83a869c0c59b690ac12a",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "tools/apply_mobile_mpv.py": {
+      "before_sha256": "215c2e156490c44f4c23de9669026a83ea8af23434af94ad82a24367d70b6f69",
+      "after_sha256": "bb222b1f035d739d62bc235dec8f359b6d1f7aec8705254f6769568b59027cf0",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "tools/check_danmaku_effects.py": {
+      "before_sha256": "324cb332eebf093e3a760432f45da9259211caf8cbcedbfa0e4b2c6c34ceb8fd",
+      "after_sha256": "e56f48c5d4fc5143d067429e9903d4846a49da9ec6277658a31221ceaf46703c",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "tools/check_mobile_mpv.py": {
+      "before_sha256": "c1d51ef276200044c26a2a1680418fa9325f3b73a3377aa5f7214d43e13ab1d9",
+      "after_sha256": "786328934dbc505bced48ea8c4e487914a51526f1e9f825bb851959646513ce4",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "af07ad5d170034f62c880e38159e35cc160de5b9206f2e654a1ef29425e130e0",
+      "after_sha256": "9ba195173f9892392afc641d5be298b3fdfe409b3015fe8550e7941c9ce92c17",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "tools/check_tv_vlc.py": {
+      "before_sha256": "fc206096066cf9ffdfb5e552458d9af1e30dfa2faa79d1019885146d6ca6152e",
+      "after_sha256": "23cd89959cad6e36d7cb2f7cf985d4cff6c27cfcf3fbbd0ccfa7ab8bafe08f7e",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    },
+    "docs/LEOTV-5.3.4-PREVIEW-5-651-PLAYER-DANMAKU-20261126.md": {
+      "before_sha256": null,
+      "after_sha256": "7b3579f35d1c8f6ae8391c8029bb8589f331dc22e667a41e005a8dc93a60b5e8",
+      "reason": "651 scope and source-only evidence; device playback and motion clarity remain pending user acceptance"
+    },
+    "evidence/player-651-fixed-options.json": {
+      "before_sha256": null,
+      "after_sha256": "253127140d6422de3ac33888c7d5d7b941ab6889575989c77bd5c386dfac0d6b",
+      "reason": "651 scope and source-only evidence; device playback and motion clarity remain pending user acceptance"
+    },
+    "evidence/player-651-mobile-source.json": {
+      "before_sha256": null,
+      "after_sha256": "7be1759e0caf62174caf6395b505495a023d6a1985562d26463064a7918cd976",
+      "reason": "651 scope and source-only evidence; device playback and motion clarity remain pending user acceptance"
+    },
+    "evidence/player-651-mpv-fixed-source.json": {
+      "before_sha256": null,
+      "after_sha256": "c4da111ad92349e524e538e6ca12c9d02c818879f4b427808b204ba8430c6d99",
+      "reason": "651 scope and source-only evidence; device playback and motion clarity remain pending user acceptance"
+    },
+    "evidence/player-651-tv-source.json": {
+      "before_sha256": null,
+      "after_sha256": "9184d27b1d73c6fe2a75dff836286f6f89b7cc8c0646a2d1cfb07284df453adc",
+      "reason": "651 scope and source-only evidence; device playback and motion clarity remain pending user acceptance"
+    },
+    "player/mpv/test/fixture/android/util/Log.java": {
+      "before_sha256": null,
+      "after_sha256": "7dc89b93623aca702c4f4ad5194a6c01e68edda94e795bdd4b5d674ea68b58d0",
+      "reason": "User-authorized 651 MPV Surface/performance/native chooser/inline settings, VLC Surface readiness and pixel-aligned Danmaku repair; preserve native inputs, API23 and all previous feature contracts"
+    }
+  },
+  "651_repair_inputs": {
+    "base_commit": "8b2b182c2e20ac954b40052401dc0d6a01756200",
+    "release": "5.3.4-preview.5",
+    "version_code": 651,
+    "user_feedback": "Low-end mobile MPV stutter vs smooth Exo, native kernel selection, inline MPV configuration/no extra popup, warning flood, TV VLC invalid state, moving Danmaku blur",
+    "native_producer_unchanged": "673ddfa1197f401d536eccec00902cf488d3e25d"
   }
 }

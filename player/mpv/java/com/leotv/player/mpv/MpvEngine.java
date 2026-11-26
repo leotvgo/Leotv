@@ -18,7 +18,7 @@ final class MpvEngine implements MPVLib.EventObserver, MPVLib.LogObserver, Audio
     final Map<Long,String> commands=new HashMap<>();
     final AudioManager audio;
     long sequence; boolean created,initialized,closed,loaded,ready,paused=true,buffering,seeking,ended,focusResume,playRequested=true;
-    String pendingUrl;
+    String pendingUrl;Surface boundSurface;
     long position,duration=-1; float speed=1,requestedSpeed=1; int width,height; boolean hardRequired;
     ParcelFileDescriptor descriptor;
     final List<File> subtitles=new ArrayList<>();
@@ -49,7 +49,7 @@ final class MpvEngine implements MPVLib.EventObserver, MPVLib.LogObserver, Audio
         pendingUrl=url;listener.state(2);
         // SurfaceView creation occurs after the current main-thread callback. Loading earlier
         // can initialize gpu without an Android window and incorrectly fail video output.
-        if(surface!=null&&surface.isValid()){MPVLib.attachSurface(surface);startPending();}
+        if(surface!=null&&surface.isValid()){surface(surface);}
     }
     private File caFile() throws Exception {
         File f=new File(context.getNoBackupFilesDir(),"mobile-mpv/ca.pem");if(!f.getParentFile().isDirectory()&&!f.getParentFile().mkdirs())throw new IOException("无法创建 TLS 证书目录");
@@ -73,7 +73,7 @@ final class MpvEngine implements MPVLib.EventObserver, MPVLib.LogObserver, Audio
     void speed(float value){if(value>0&&value<=8){requestedSpeed=value;set("speed",Float.toString(value));}}
     boolean playing(){return ready&&!closed&&!ended&&!paused&&!buffering&&!seeking;}
     void startPending(){if(pendingUrl==null)return;String url=pendingUrl;pendingUrl=null;command("加载媒体","loadfile",url,"replace");if(playRequested)play();}
-    void surface(Surface s){if(!initialized||closed)return;try{if(s==null)MPVLib.detachSurface();else if(s.isValid()){MPVLib.replaceSurface(s);startPending();}}catch(RuntimeException|LinkageError e){listener.error("MPV Surface 切换失败："+MobileMpv.message(e));}}
+    void surface(Surface s){if(!initialized||closed||s==boundSurface)return;try{if(s==null){MPVLib.detachSurface();boundSurface=null;}else if(s.isValid()){if(boundSurface==null)MPVLib.attachSurface(s);else MPVLib.replaceSurface(s);boundSurface=s;startPending();}}catch(RuntimeException|LinkageError e){listener.error("MPV Surface 切换失败："+MobileMpv.message(e));}}
     void addSubtitle(String url,String title,String language,boolean select) throws Exception {
         if(url.startsWith("content:")){
             File f=File.createTempFile("mobile-mpv-sub-",".sub",context.getCacheDir());
@@ -94,7 +94,7 @@ final class MpvEngine implements MPVLib.EventObserver, MPVLib.LogObserver, Audio
     static final class Track {final int id,type;final String name;final boolean selected;Track(int i,int t,String n,boolean s){id=i;type=t;name=n;selected=s;}}
     void select(int type,int id,boolean enabled){set(type==1?"aid":type==2?"vid":"sid",enabled?Integer.toString(id):"no");}
     void close(){if(closed)return;closed=true;ready=false;main.removeCallbacksAndMessages(null);MPVLib.removeObserver(this);MPVLib.removeLogObserver(this);commands.clear();
-        try{if(created){try{MPVLib.detachSurface();}catch(RuntimeException|LinkageError e){listener.notice("MPV Surface 释放失败："+MobileMpv.message(e));}try{int r=MPVLib.destroy();if(r<0)listener.notice("MPV 释放失败（"+r+"）");}catch(RuntimeException|LinkageError e){listener.notice("MPV 内核释放失败："+MobileMpv.message(e));}}}finally{created=false;initialized=false;pendingUrl=null;if(audio!=null)audio.abandonAudioFocus(this);if(descriptor!=null)try{descriptor.close();}catch(IOException e){listener.notice("媒体 URI 释放失败");}for(File f:subtitles)f.delete();subtitles.clear();}}
+        try{if(created){try{MPVLib.detachSurface();}catch(RuntimeException|LinkageError e){listener.notice("MPV Surface 释放失败："+MobileMpv.message(e));}try{int r=MPVLib.destroy();if(r<0)listener.notice("MPV 释放失败（"+r+"）");}catch(RuntimeException|LinkageError e){listener.notice("MPV 内核释放失败："+MobileMpv.message(e));}}}finally{created=false;initialized=false;pendingUrl=null;boundSurface=null;if(audio!=null)audio.abandonAudioFocus(this);if(descriptor!=null)try{descriptor.close();}catch(IOException e){listener.notice("媒体 URI 释放失败");}for(File f:subtitles)f.delete();subtitles.clear();}}
     void dispatch(Runnable action){main.post(()->{if(!closed)action.run();});}
     void refreshSize(){Integer w=MPVLib.getPropertyInt("dwidth"),h=MPVLib.getPropertyInt("dheight");width=w==null?0:w;height=h==null?0:h;listener.size(width,height);}
     void actualTime(){Double p=MPVLib.getPropertyDouble("time-pos"),d=MPVLib.getPropertyDouble("duration"),s=MPVLib.getPropertyDouble("speed");if(p!=null)position=milliseconds(p);if(d!=null)duration=milliseconds(d);if(s!=null){speed=s.floatValue();listener.speedChanged(speed);}}
@@ -114,7 +114,7 @@ final class MpvEngine implements MPVLib.EventObserver, MPVLib.LogObserver, Audio
     });}
     @Override public void eventEndFile(int reason,int error,String text){dispatch(()->{if(reason==0){actualTime();ended=true;ready=false;listener.state(4);}else if(reason==4||error<0){ready=false;listener.error("MPV 播放失败："+(text==null?Integer.toString(error):text));}else if(reason==2||reason==3){ready=false;loaded=false;ended=true;}});}
     @Override public void eventCommandReply(long id,int error){dispatch(()->{String action=commands.remove(id);if(error<0&&action!=null)failure(action,error);});}
-    @Override public void logMessage(String prefix,int level,String text){if(level<=30)dispatch(()->listener.notice("MPV "+prefix+"："+text.trim()));}
+    @Override public void logMessage(String prefix,int level,String text){if(level<=30)android.util.Log.w("LeotvMPV",prefix+": "+text.trim());}
     @Override public void onAudioFocusChange(int change){dispatch(()->{if(change==AudioManager.AUDIOFOCUS_LOSS){focusResume=false;MobileMpv.hostPause(listener);}
         else if(change==AudioManager.AUDIOFOCUS_LOSS_TRANSIENT){boolean resume=playing();MobileMpv.hostPause(listener);focusResume=resume;}
         else if(change==AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK)set("volume","20");

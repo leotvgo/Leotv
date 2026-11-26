@@ -46,7 +46,7 @@ public class DanmakuEffectsTest {
             }
             assertEquals(9,cache().size());
             for(Object tile:cache().values()){Field bitmapField=tile.getClass().getDeclaredField("bitmap");bitmapField.setAccessible(true);assertEquals("Pixel-measured glyph tiles must not rescale to the destination canvas density",Bitmap.DENSITY_NONE,((Bitmap)bitmapField.get(tile)).getDensity());}
-            assertNotNull(portrait());assertEquals(32,portrait().getWidth());assertEquals(32,portrait().getHeight());Field field=DanmakuEffects.class.getDeclaredField("BITMAP_PAINT");field.setAccessible(true);assertEquals(160,((Paint)field.get(null)).getAlpha());
+            assertNotNull(portrait());assertEquals(32,portrait().getWidth());assertEquals(32,portrait().getHeight());Field field=DanmakuEffects.class.getDeclaredField("BITMAP_PAINT");field.setAccessible(true);assertEquals(160,((Paint)field.get(null)).getAlpha());assertFalse("Moving cached glyphs must not blend neighboring pixel samples",((Paint)field.get(null)).isFilterBitmap());
             DanmakuSettings.prefs(context).edit().putBoolean("effect_animation",false).commit();DanmakuEffects.initialize(context);
             for(int style=6;style<9;style++){Comment item=comment(displayer.a.c,style,"关闭动画仍显示贴纸和装饰");DanmakuEffects.measure(item,displayer.a.c);assertTrue(DanmakuEffects.draw(item,displayer,canvas,0,0));assertEquals(saves,canvas.getSaveCount());}
             DanmakuSettings.prefs(context).edit().putBoolean("effect_animation",true).commit();DanmakuEffects.initialize(context);

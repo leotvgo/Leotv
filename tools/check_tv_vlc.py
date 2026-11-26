@@ -263,7 +263,7 @@ def check_contract(root, host_root=None, work=None):
     require('new w3.e(key, 1, 0, -1, message)' in engine, 'VLC error must not silently use IJK retry or fake success')
     surface = (root / 'player/vlc/java/com/leotv/player/vlc/VlcSurface.java').read_text()
     require('setSubtitlesView(subtitles)' in surface and 'value.attachViews(this)' in surface and 'output.detachViews()' in surface, 'VLC Surface attachment/release incomplete')
-    require('setFocusable(false)' in surface and 'setOpaque(false)' in surface, 'VLC must preserve original focus and subtitle compositing')
+    require('setFocusable(false)' in surface and 'PixelFormat.TRANSLUCENT' in surface and 'setZOrderMediaOverlay(true)' in surface, 'VLC must preserve original focus and subtitle compositing')
     require('DanmakuRenderer' not in engine + surface and 'DanmakuTimer' not in engine + surface, 'VLC replaced existing danmaku renderer/timer')
     return result
 

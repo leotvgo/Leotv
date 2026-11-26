@@ -30,7 +30,14 @@ def apply(project, root, variant):
                 prefix=body[:body.index(marker)]
                 if '->k()Z' not in prefix or '->n(' not in prefix or '->f()F' not in prefix or '->c()F' not in prefix:
                     raise ValueError('Effects must follow native filtering, measure, retention and actual coordinates.')
-                added='''    move-object v11, v0
+                added='''    # Align cached glyphs to physical pixels; fractional filtering blends moving outlines.
+    invoke-static {v5}, Ljava/lang/Math;->round(F)I
+    move-result v11
+    int-to-float v5, v11
+    invoke-static {v7}, Ljava/lang/Math;->round(F)I
+    move-result v11
+    int-to-float v7, v11
+    move-object v11, v0
     move-object v12, v2
     move-object v13, v4
     move v14, v5
