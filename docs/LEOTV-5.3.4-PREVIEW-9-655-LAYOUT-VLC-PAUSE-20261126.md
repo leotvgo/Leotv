@@ -15,3 +15,13 @@
 本次不更换解码库、网络代理、播放器输出 Surface、弹幕风格/比例、数据库及历史记录，不更换 APK 固定签名。四套源及原代码语义/允许变化、固定原 ZIP/native、API23/R8/JNI 和实际签名核对仍必需。源变更通过 integration-649 的 authorized_655_source_repairs 顺序追加 SHA 记录，不改旧版本基准。
 
 GitHub 必需门禁增加暂停/晚到缓冲/恢复时仍缓冲/冻结时钟的虚构 VLC 状态场景，保留异步释放和切核场景；主页门禁覆盖两端选项 id 和 TV 全宽 section。运行布局、遥控和播放效果以用户真机验收为准，不以虚构 native 对象宣称播放验证通过。
+
+## 已交付
+
+- APK 输入提交：89960897fbb1f8fa3a4505d93c5573582e7e714a。
+- GitHub 构建 45848753566，自动发布 45849943638，均成功；额外模型回归关闭，必需源码/时钟/生命周期/绘制门禁及原样/允许变化完整审计保留。
+- [5.3.4-preview.9 / 655 四套 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4-preview.9-build-45848753566)。正式 Latest 继续保持 5.3.3 / 646。
+- 四个 APK、14 个公开资产及四个内部完整审计已下载并核对大小/散列；实际 apksigner API23 v1 固定证书、16KiB native 对齐、原 ZIP/native 字节、JNI/R8 8.8.34 release/full 与对应源码绑定核对通过。
+- 固定证书 SHA-256：ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a。
+- 仓库先核对 PUBLIC 再触发，发布后恢复并独立核对 PRIVATE。未运行本地 APK 打包或真机测试。
+- [实际产物核对记录](../evidence/player-655-signed-delivery-20261126.json)。真机请验收 TV 左侧文案主题是否整屏、设置行对齐、详情上下导航和布局，手机主题保留及文案位置，VLC 播放中暂停是否立即收起加载圆圈/网速、恢复/切核是否正常。

@@ -1214,7 +1214,7 @@
   "authorized_655_source_repairs": {
     "README.md": {
       "before_sha256": "ed3bea9e940561d4a226c33fd7e7fa99cb6ac175f0519477c161bcd6a0a7e6ff",
-      "after_sha256": "c6bbfecc4807913aaa964166f9053c8e03aff4bde6cebf2e134881534e75bfc9",
+      "after_sha256": "848eaa780a47e322fb22df149412888a7ff5bcb6409cdcdc2c676ecc8e142ae5",
       "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
     },
     "branding/AndroidManifest.xml": {
@@ -1289,7 +1289,7 @@
     },
     "docs/LEOTV-5.3.4-PREVIEW-9-655-LAYOUT-VLC-PAUSE-20261126.md": {
       "before_sha256": null,
-      "after_sha256": "65473dd93cd6222e6d4276623be0b7188737ea9b9f50dfa747fb1294ec9171e2",
+      "after_sha256": "8e666527a1374cd49c3e352554ed6be2f92939115508747be6704c7df7358948",
       "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
     },
     "player/vlc/java/com/leotv/player/vlc/VlcEngine.java": {
@@ -1321,6 +1321,11 @@
       "before_sha256": "f4ebae09ac27b4ae0365bd73698926b946b50720f8378bc423bb02727bdc4b49",
       "after_sha256": "56c5f980b538310a49e9731bed16b67564df2e0e8d7bfeb047937a5e1aa58e7a",
       "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "evidence/player-655-signed-delivery-20261126.json": {
+      "before_sha256": null,
+      "reason": "Verified655 actual fixed-signature APK/source delivery, takeover completion and PRIVATE restoration; documentation only",
+      "after_sha256": "fa8307e2f8d30d51e8e24bb0939121d955419d33a745f55b8664dd05be2c8651"
     }
   },
   "655_delivery_inputs": {
@@ -1337,6 +1342,11 @@
     ],
     "single_page_detail_preserved": true,
     "vlc_pause_uses_native_overlay_cleanup_only": true,
-    "native_inputs_unchanged": true
+    "native_inputs_unchanged": true,
+    "build_run_id": 45848753566,
+    "publish_run_id": 45849943638,
+    "apk_input_commit": "89960897fbb1f8fa3a4505d93c5573582e7e714a",
+    "actual_signed_delivery_verified": true,
+    "repository_visibility": "private"
   }
 }
