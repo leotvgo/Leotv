@@ -69,7 +69,8 @@
     "Lcom/leotv/player/vlc/VlcBridge;",
     "Lcom/leotv/player/vlc/VlcEngine;",
     "Lcom/leotv/player/vlc/VlcHttpProxy;",
-    "Lcom/leotv/player/vlc/VlcSurface;"
+    "Lcom/leotv/player/vlc/VlcSurface;",
+    "Lcom/leotv/player/vlc/VlcClock;"
   ],
   "libvlc_program_classes": [
     "Lorg/videolan/BuildConfig;",

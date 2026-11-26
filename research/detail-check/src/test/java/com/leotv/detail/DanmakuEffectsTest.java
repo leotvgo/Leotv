@@ -29,7 +29,7 @@ public class DanmakuEffectsTest {
     private Comment comment(Paint paint,int style,String text){Comment item=new Comment();item.c=text;item.a=time(text,style);item.h=paint.measureText(text);item.i=Math.max(paint.getTextSize()*1.2f,paint.descent()-paint.ascent());return item;}
     @SuppressWarnings("unchecked") private Map<String,Object> cache()throws Exception{Field field=DanmakuEffects.class.getDeclaredField("CACHE");field.setAccessible(true);return (Map<String,Object>)field.get(null);}
     private Bitmap portrait()throws Exception{Field field=DanmakuEffects.class.getDeclaredField("portrait");field.setAccessible(true);return (Bitmap)field.get(null);}
-    private int bytes()throws Exception{int bytes=portrait()==null?0:portrait().getByteCount();for(Object tile:cache().values()){Field f=tile.getClass().getDeclaredField("bitmap");f.setAccessible(true);Bitmap bitmap=(Bitmap)f.get(tile);assertFalse(bitmap.isRecycled());bytes+=bitmap.getByteCount();}return bytes;}
+    private int bytes()throws Exception{java.lang.reflect.Method count=DanmakuEffects.class.getDeclaredMethod("portraitBytes");count.setAccessible(true);int bytes=((Number)count.invoke(null)).intValue();for(Object tile:cache().values()){Field f=tile.getClass().getDeclaredField("bitmap");f.setAccessible(true);Bitmap bitmap=(Bitmap)f.get(tile);assertFalse(bitmap.isRecycled());bytes+=bitmap.getByteCount();}return bytes;}
 
     @Test public void nineStylesUseNativeCoordinatesFontOpacityAndBoundedCacheOnApi23()throws Exception{
         Context context=RuntimeEnvironment.getApplication();DanmakuSettings.prefs(context).edit().putBoolean("effects",true).putBoolean("effect_animation",true).putInt("effect_rate",15).putLong("effect_seed",1234567).commit();
@@ -46,6 +46,12 @@ public class DanmakuEffectsTest {
             }
             assertEquals(9,cache().size());
             for(Object tile:cache().values()){Field bitmapField=tile.getClass().getDeclaredField("bitmap");bitmapField.setAccessible(true);assertEquals("Pixel-measured glyph tiles must not rescale to the destination canvas density",Bitmap.DENSITY_NONE,((Bitmap)bitmapField.get(tile)).getDensity());}
+            for(int variant=0;variant<8;variant++){
+                String text="新增虚构头像贴纸 "+variant;Comment item=comment(displayer.a.c,DanmakuEffectPolicy.AVATAR,text);boolean matched=false;
+                for(long timestamp=0;timestamp<100000;timestamp++){long token=DanmakuEffectPolicy.token(1234567,timestamp,text);if(DanmakuEffectPolicy.style(token,15)==DanmakuEffectPolicy.AVATAR&&((token>>>16)&7)==variant){item.a=timestamp;matched=true;break;}}
+                assertTrue("Avatar variant unreachable: "+variant,matched);DanmakuEffects.measure(item,displayer.a.c);assertTrue(DanmakuEffects.draw(item,displayer,canvas,0,0));
+            }
+            Field alternatives=DanmakuEffects.class.getDeclaredField("portraits");alternatives.setAccessible(true);Bitmap[] images=(Bitmap[])alternatives.get(null);assertEquals(7,images.length);for(Bitmap bitmap:images){assertNotNull(bitmap);assertEquals(32,bitmap.getWidth());assertEquals(32,bitmap.getHeight());}
             assertNotNull(portrait());assertEquals(32,portrait().getWidth());assertEquals(32,portrait().getHeight());Field field=DanmakuEffects.class.getDeclaredField("BITMAP_PAINT");field.setAccessible(true);assertEquals(160,((Paint)field.get(null)).getAlpha());assertFalse("Moving cached glyphs must not blend neighboring pixel samples",((Paint)field.get(null)).isFilterBitmap());
             DanmakuSettings.prefs(context).edit().putBoolean("effect_animation",false).commit();DanmakuEffects.initialize(context);
             for(int style=6;style<9;style++){Comment item=comment(displayer.a.c,style,"关闭动画仍显示贴纸和装饰");DanmakuEffects.measure(item,displayer.a.c);assertTrue(DanmakuEffects.draw(item,displayer,canvas,0,0));assertEquals(saves,canvas.getSaveCount());}
@@ -57,7 +63,7 @@ public class DanmakuEffectsTest {
             displayer.a.u=false;
             for(int i=0;i<160;i++){Comment item=comment(displayer.a.c,0,"虚构缓存边界弹幕 "+i);DanmakuEffects.measure(item,displayer.a.c);assertTrue(DanmakuEffects.draw(item,displayer,canvas,0,0));}
             assertTrue(cache().size()<=64);assertTrue(bytes()<=2*1024*1024);assertEquals(saves,canvas.getSaveCount());
-            Bitmap portrait=portrait();DanmakuEffects.clear();assertTrue(cache().isEmpty());assertNull(portrait());assertTrue(portrait.isRecycled());
+            Bitmap portrait=portrait();Bitmap[] released=images.clone();DanmakuEffects.clear();for(Bitmap image:released)assertTrue(image.isRecycled());assertTrue(cache().isEmpty());assertNull(portrait());assertTrue(portrait.isRecycled());
             DanmakuSettings.prefs(context).edit().putBoolean("effects",false).commit();DanmakuEffects.initialize(context);
             Comment disabled=comment(displayer.a.c,0,"关闭特效后的虚构弹幕");width=disabled.h;DanmakuEffects.measure(disabled,displayer.a.c);assertEquals(width,disabled.h,0);assertFalse(DanmakuEffects.draw(disabled,displayer,canvas,0,0));
         }finally{DanmakuEffects.clear();frame.recycle();}

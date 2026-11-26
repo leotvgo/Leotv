@@ -1,8 +1,8 @@
 {
   "channel": "prerelease",
-  "version_name": "5.3.4-preview.5",
-  "version_code": 651,
-  "title": "Leotv 5.3.4-preview.5 手机 MPV、TV VLC 与滚动弹幕修复测试版",
+  "version_name": "5.3.4-preview.6",
+  "version_code": 652,
+  "title": "Leotv 5.3.4-preview.6 MPV 设置精简、弹幕时钟与炫彩贴纸测试版",
   "prerelease": true,
   "make_latest": false
 }

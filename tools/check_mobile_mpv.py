@@ -212,6 +212,8 @@ def check(root):
         raise ValueError('MPV settings must use native rows and Material menus')
     if 'MobileMpv.field(listener,' in settings or 'field(binding,"z")' not in settings or 'field(binding,"H")' not in settings:
         raise ValueError('MPV settings click must use the actual fragment and physical decoder/renderer rows')
+    for removed in ('渲染','音频输出','音画同步','应用设置'):
+        if 'row(a,column,rows,"'+removed+'"' in settings:raise ValueError('The user-authorized redundant MPV setting row returned: '+removed)
     if 'static void show(Activity' in settings or 'populate(a,store,list,rows)' not in settings:
         raise ValueError('MPV groups must replace the engine-specific rows inline without a separate full settings dialog')
     engine=(root/'player/mpv/java/com/leotv/player/mpv/MpvEngine.java').read_text()
@@ -379,10 +381,10 @@ public class b {public static b last;public final Params a=new Params();private 
  public void f(CharSequence[] names,int current,DialogInterface.OnClickListener l){a.n=names;a.s=current;a.p=l;a.r=true;}public Dialog create(){return new Dialog();}
 }
 ''',
-    'com/leotv/player/mpv/Settings651Contract.java': r'''
+    'com/leotv/player/mpv/Settings652Contract.java': r'''
 package com.leotv.player.mpv;
 import android.app.*;import android.content.*;import android.view.*;import android.widget.*;import java.util.*;
-public final class Settings651Contract {
+public final class Settings652Contract {
  public static final class Binding {public LinearLayout z,H,B,J,F;public TextView A,I;}
  public static final class Fragment {public Binding l0;public String[] p0={"Original auto","Original hard","Original soft"},q0={"Original surface","Original texture"};}
  static Fragment fragment(Activity a){Fragment f=new Fragment();f.l0=new Binding();Binding b=f.l0;LinearLayout column=new LinearLayout(a);column.setOrientation(1);b.z=new LinearLayout(a);b.H=new LinearLayout(a);b.B=new LinearLayout(a);b.J=new LinearLayout(a);b.F=new LinearLayout(a);b.A=new TextView(a);b.I=new TextView(a);column.addView(b.z);column.addView(b.H);column.addView(b.B);column.addView(b.J);column.addView(b.F);return f;}
@@ -400,9 +402,9 @@ public final class Settings651Contract {
   require(new MpvStore(a).prefs.getInt("decode",-1)==1&&text(b.A).equals("MPV：硬解"),"decoder save immediately refreshes native caption without active playback");
   R6.g.player=2;MpvSettings.attach(f);require(parent.findViewWithTag("leotv.mobile.mpv.settings").getVisibility()==View.GONE&&b.z.getVisibility()==View.VISIBLE,"return to Exo restores old rows and hides MPV list");require(text(b.A).equals("Original auto")&&text(b.I).equals("Original texture"),"MPV to Exo restores its own decoder and renderer");require(!MobileMpv.settingsClick(f,b.z),"original decoder handler resumes");
   R6.g.player=1;MpvSettings.attach(f);require(text(b.A).equals("Original hard"),"IJK decoder preference kept separate");R6.g.player=3;MpvSettings.attach(f);require(text(b.A).equals("MPV：硬解"),"return to MPV retains preference");
-  LinearLayout menu=(LinearLayout)parent.findViewWithTag("leotv.mobile.mpv.settings");require(menu.getChildCount()==12,"all MPV setting groups are inline after player selector");require(((LinearLayout.LayoutParams)menu.getChildAt(0).getLayoutParams()).topMargin==0&&((LinearLayout.LayoutParams)menu.getChildAt(1).getLayoutParams()).topMargin==16,"original first-row and subsequent-row margins");
-  require(text((TextView)((LinearLayout)menu.getChildAt(1)).getChildAt(1)).equals("硬解"),"inline list shows saved decoder");
-  Context.PREFS.edit().putInt("decode",2).commit();MobileMpv.apply(a,false);require(text(b.A).equals("MPV：软解")&&text((TextView)((LinearLayout)menu.getChildAt(1)).getChildAt(1)).equals("软解"),"modified value refreshes inline settings");
+  LinearLayout menu=(LinearLayout)parent.findViewWithTag("leotv.mobile.mpv.settings");require(menu.getChildCount()==8,"all MPV setting groups are inline after player selector");require(((LinearLayout.LayoutParams)menu.getChildAt(0).getLayoutParams()).topMargin==0&&((LinearLayout.LayoutParams)menu.getChildAt(1).getLayoutParams()).topMargin==16,"original first-row and subsequent-row margins");
+  require(text((TextView)((LinearLayout)menu.getChildAt(0)).getChildAt(1)).equals("硬解"),"inline list shows saved decoder");
+  Context.PREFS.edit().putInt("decode",2).commit();MobileMpv.apply(a,false);require(text(b.A).equals("MPV：软解")&&text((TextView)((LinearLayout)menu.getChildAt(0)).getChildAt(1)).equals("软解"),"modified value refreshes inline settings");
   Fragment rebuilt=fragment(a);MpvSettings.attach(rebuilt);require(text(rebuilt.l0.A).equals("MPV：软解"),"recreated view reads persisted state");
   MpvStore store=new MpvStore(a);Map<String,String> options=store.options();require(options.get("hwdec").equals("no")&&options.get("vd-lavc-software-fallback").equals("3")&&!options.containsKey("hwdec-software-fallback"),"actual soft decoder canonical native options");
   Context.PREFS.edit().putInt("decode",0).commit();options=store.options();require(options.get("scale").equals("bilinear")&&options.get("dscale").equals("bilinear")&&options.get("interpolation").equals("no"),"built-in low-overhead defaults require no imported config");require(options.get("hwdec").equals("mediacodec-copy")&&options.get("vd-lavc-software-fallback").equals("3"),"automatic mode keeps native three-error fallback");
@@ -410,7 +412,7 @@ public final class Settings651Contract {
   Context.PREFS.edit().putInt("decode",9).commit();try{store.options();throw new AssertionError("invalid decoder swallowed");}catch(IllegalArgumentException expected){}
   Context.PREFS.edit().putInt("decode",0).putString("sub-scale","NaN").commit();try{store.options();throw new AssertionError("invalid float swallowed");}catch(IllegalArgumentException expected){}
   for(String config:new String[]{"hwdec-software-fallback=yes","vd-lavc-software-fallback=1"})try{MpvOptions.parse(config);throw new AssertionError("managed fallback override");}catch(IllegalArgumentException expected){}
-  System.out.println("MPV 651 production settings synthetic switch/save/return/recreate and native option defaults passed");
+  System.out.println("MPV 652 production settings synthetic switch/save/return/recreate and native option defaults passed");
  }
 }
 ''',
@@ -422,7 +424,7 @@ def settings_java_check(work,classes,android):
     for name,text in UI_FIXTURES.items():
         path=source/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text(text)
     subprocess.run(["javac","--release","8","-encoding","UTF-8","-cp",str(classes)+":"+str(android),"-d",str(output),*map(str,sorted(source.rglob("*.java")))],check=True)
-    subprocess.run(["java","-Dmpv.fixture.dir="+str(work/"managed"),"-cp",str(output)+":"+str(classes)+":"+str(android),"com.leotv.player.mpv.Settings651Contract"],check=True)
+    subprocess.run(["java","-Dmpv.fixture.dir="+str(work/"managed"),"-cp",str(output)+":"+str(classes)+":"+str(android),"com.leotv.player.mpv.Settings652Contract"],check=True)
 
 
 def java_check(root,sdk,apktool=None):

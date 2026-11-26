@@ -39,6 +39,8 @@ jobs:
         run: python3 -B research/check_video_preload_handoff.py
       - name: Verify shared TMDB progress, native episode boundaries, history deletion and Pro spacing
         run: python3 -B research/check_detail_progress.py
+      - name: Verify VLC cached timestamp interpolation and native pause, seek and rate boundaries
+        run: python3 -B research/check_player_clocks.py
       - name: Verify stable effect sampling, nine styles and one animation using fictional comments
         run: python3 -B research/check_danmaku_effect_policy.py
 

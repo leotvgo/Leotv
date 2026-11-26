@@ -26,7 +26,7 @@ def owns_vlc_class(root, descriptor):
     for dependency in json.loads((root / 'player/vlc/java-dependencies.lock.json').read_text())['dependencies']:
         inventory += list(dependency['program_classes'])
     return descriptor in {'L' + name[:-6] + ';' for name in inventory} or bool(
-        re.fullmatch(r'Lcom/leotv/player/vlc/(?:VlcBridge|VlcEngine|VlcHttpProxy|VlcSurface)(?:\$[A-Za-z0-9_$]+)?;', descriptor))
+        re.fullmatch(r'Lcom/leotv/player/vlc/(?:VlcBridge|VlcEngine|VlcHttpProxy|VlcSurface|VlcClock)(?:\$[A-Za-z0-9_$]+)?;', descriptor))
 
 
 def payload(root, variant, directory, ndk):

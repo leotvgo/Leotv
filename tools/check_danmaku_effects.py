@@ -16,11 +16,11 @@ def check(root):
         if token not in policy:raise ValueError('Stable native effect/animation bound missing: '+token)
     for token in ('options=new Options(', 'getBoolean("effects",true)', 'getBoolean("effect_animation",true)', 'getInt("effect_rate",15)',
                   'CacheMaintenance.track(CLIENT)', 'tile.bitmap.recycle()', 'canvas.translate(Math.round(left),Math.round(top))', 'canvas.clipRect(0,0,width,height)',
-                  'ANIMATION.acquire(token,now)', 'PreloadHost.field(timer,"a")', 'new Paint(typography)', 'canvas.restoreToCount(save)',
+                  'ANIMATION.acquire(token,now)', 'access.frameTime.getLong(timer)', 'new Paint(typography)', 'canvas.restoreToCount(save)',
                   'owner.getField("a")', 'owner.getField("h")', 'owner.getField("i")', 'owner.getField("r")', 'OutOfMemoryError',
                   'canvas.drawBitmap(tile.bitmap', 'iterator.remove()', 'painter.opacity.getInt(nativeStyle)'):
         if token not in effects:raise ValueError('Effect lifecycle/native layout/cache/clock/opacity guard missing: '+token)
-    for token in ('portrait.getByteCount()', 'portrait.recycle()', 'canvas.drawBitmap(portrait(),null,bounds,ink)',
+    for token in ('portrait.getByteCount()', 'portrait.recycle()', 'canvas.drawBitmap(portrait(variant),null,bounds,ink)',
                   'new RadialGradient(', 'new LinearGradient(', 'private void neon(', 'private void petals(',
                   'if(style==DanmakuEffectPolicy.PETALS)tile.decorate', 'evict(width*height*4+', 'DanmakuEffectPolicy.extraWidth(style,size)'):
         if token not in effects:raise ValueError('Reference portrait/neon/petal geometry or bitmap budget guard missing: '+token)
@@ -55,7 +55,10 @@ def check(root):
         raise ValueError('Effect glyphs must not acquire density rescaling or the added neon blur.')
     if 'Paint.FILTER_BITMAP_FLAG' in effects or 'letters.setSubpixelText(false)' not in effects:
         raise ValueError('Moving glyph tiles must use pixel-aligned sampling without extra subpixel filtering.')
-    return {'styles':9,'reference_styles':['portrait_capsule','neon_orb_trail','falling_petals'],
+    for token in ('DanmakuAvatar.decode(variant)','KEYS.size()>64','KEYS.clear()','DISPLAYER_STYLE.get','portraitBytes()','BORDER_PALETTES[variant]'):
+        if token not in effects:raise ValueError('Bounded avatar/border/cache hot-path contract missing: '+token)
+    if 'VARIANTS=8' not in avatar:raise ValueError('The eight authorized avatar variants are required')
+    return {'avatar_variants':8,'border_palettes':8,'styles':9,'reference_styles':['portrait_capsule','neon_orb_trail','falling_petals'],
             'portrait_sha256':record['asset_sha256'],'default_fraction':15,'default_animation':True,'native_timeline_and_coordinates':True,
             'max_simultaneous_animations':1,'max_bitmap_bytes':2*1024*1024,'max_bitmap_entries':64,
             'native_opacity_and_font_size':True,'no_extra_frame_loop':True}

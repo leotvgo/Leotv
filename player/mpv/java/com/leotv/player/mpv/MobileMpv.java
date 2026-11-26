@@ -69,7 +69,7 @@ public final class MobileMpv {
         Activity owner=s.activity.get();if(owner!=null)call(owner,owner.getClass().getName().endsWith("LiveActivity")?"q0":"Q0");
         if(s.fallback){s.notice("此来源需要 DRM，MPV 不支持；本次使用原 Exo 播放路径");update(host);return false;}
         try{
-            Session previous=nativeOwner.get();if(previous!=null&&previous!=s&&previous.engine!=null){Object previousHost=previous.host.get();if(previousHost!=null){put(previousHost,"H",previous.engine.position);call(previousHost,"e0");}previous.close();}nativeOwner=new WeakReference<>(s);
+            Session previous=nativeOwner.get();if(previous!=null&&previous!=s&&previous.engine!=null){Object previousHost=previous.host.get();if(previousHost!=null){put(previousHost,"H",previous.engine.positionNow());call(previousHost,"e0");}previous.close();}nativeOwner=new WeakReference<>(s);
             @SuppressWarnings("unchecked") Map<String,String> normalized=(Map<String,String>)host.getClass().getMethod("s",Map.class).invoke(null,headers==null?new HashMap<String,String>():new HashMap<>(headers));
             put(host,"q",normalized);put(host,"D",url);put(host,"A",format);put(host,"F",drm);put(host,"y",subs==null?new ArrayList<>():new ArrayList<>(subs));
             ArrayList<Object> external=new ArrayList<>();Object selected=field(host,"G");if(subs!=null)external.addAll(subs);if(selected!=null){external.remove(selected);external.add(selected);}s.external=external;
@@ -79,7 +79,7 @@ public final class MobileMpv {
         return true;
     }
     static String normalize(String url)throws Exception {Class<?> c=Class.forName("U3.f");return String.valueOf(c.getMethod("z",String.class).invoke(null,url));}
-    public static long position(Object h){Session s=sessions.get(h);return s==null||s.engine==null?0:s.engine.position;}
+    public static long position(Object h){Session s=sessions.get(h);return s==null||s.engine==null?0:s.engine.positionNow();}
     public static long duration(Object h){Session s=sessions.get(h);return s==null||s.engine==null?-1:s.engine.duration;}
     public static float speed(Object h){Session s=sessions.get(h);return s==null||s.engine==null?1:s.engine.speed;}
     public static int width(Object h){Session s=sessions.get(h);return s==null||s.engine==null?0:s.engine.width;}
@@ -121,7 +121,7 @@ public final class MobileMpv {
     static void hostResume(MpvEngine.Listener l){if(l instanceof Session){Session s=(Session)l;Object h=s.host.get();if(h!=null)call(h,"f0");}}
     static void apply(Context context,boolean rebuild){MpvSettings.refreshAll();for(Map.Entry<Object,Session> entry:new ArrayList<>(sessions.entrySet())){Object h=entry.getKey();Session s=entry.getValue();if(!active(h)||s.engine==null)continue;
         if(s.engine.closed&&!rebuild){s.notice("设置已保存，下次 MPV 播放时生效");continue;}
-        try{if(rebuild){long pos=s.engine.position;boolean paused=!s.engine.playRequested;put(h,"H",pos);call(h,"m0");if(paused)pause(h);}
+        try{if(rebuild){long pos=s.engine.positionNow();boolean paused=!s.engine.playRequested;put(h,"H",pos);call(h,"m0");if(paused)pause(h);}
             else{for(Map.Entry<String,String> option:new MpvStore(context).options().entrySet())if(option.getKey().startsWith("sub-")||option.getKey().equals("audio-delay")||option.getKey().equals("glsl-shaders"))s.engine.set(option.getKey(),option.getValue());}}
         catch(Exception e){s.notice("MPV 设置应用失败："+message(e));}}
     }

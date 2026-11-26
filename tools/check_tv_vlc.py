@@ -255,7 +255,7 @@ def check_contract(root, host_root=None, work=None):
         require(apply(base / 'no-mobile-project', root, 'mobile-v7a') == (set(),{}), 'VLC patch touched mobile')
         require(apply(base / 'no-mobile-project', root, 'mobile-v8a') == (set(),{}), 'VLC patch touched mobile')
     engine = (root / sources[1]).read_text() if sources[1].endswith('VlcEngine.java') else (root / 'player/vlc/java/com/leotv/player/vlc/VlcEngine.java').read_text()
-    for contract in ['player.getTime()', 'player.getLength()', 'player.getRate()', 'player.setTime(', 'player.setRate(', 'media.setHWDecoderEnabled(',
+    for contract in ['player.getTime()', 'clock.position(now,cachedDuration)', 'case MediaPlayer.Event.TimeChanged:', 'seekPending=true', 'syncClock()', 'player.getLength()', 'player.getRate()', 'player.setTime(', 'player.setRate(', 'media.setHWDecoderEnabled(',
             'player.getAudioTracks()', 'player.getSpuTracks()', 'player.setAudioTrack(', 'player.setSpuTrack(', 'player.addSlave(',
             'owner.onPrepared(null)', 'owner.onCompletion(null)', 'ready && event.getBuffering()', 'ticket != generation',
             'player.setEventListener(null)', 'player.release()', 'lib.release()', 'proxy.close()', 'audio.abandonAudioFocus(']:
@@ -319,6 +319,8 @@ def check_compile(root, android, reference, libvlc, apktool, work):
     for variant in ('tv-v7a','tv-v8a'):
         run(['java','-cp',str(work)+':'+str(apktool),'TvVlcSmaliAssemble',work / variant / 'smali',work / variant / 'contract.dex'])
         require((work / variant / 'contract.dex').read_bytes().startswith(b'dex\n035\0'), 'TV VLC target smali DEX must remain API23 compatible')
+    run(['javac','--release','8','-d',work / 'clock',root / 'player/vlc/java/com/leotv/player/vlc/VlcClock.java',root / 'player/vlc/tests/VlcClockContract.java'])
+    run(['java','-cp',work / 'clock','com.leotv.player.vlc.VlcClockContract'])
     run(['javac','--release','8','-d',work / 'proxy',root / 'player/vlc/java/com/leotv/player/vlc/VlcHttpProxy.java',root / 'player/vlc/tests/VlcHttpProxyContract.java'])
     proxy = run(['java','-cp',work / 'proxy','com.leotv.player.vlc.VlcHttpProxyContract']).strip()
     inventory = {str(path.relative_to(classes)): hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(classes.rglob('*.class'))}

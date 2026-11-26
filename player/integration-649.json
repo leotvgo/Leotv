@@ -577,5 +577,162 @@
     "publish_run_id": 45797051343,
     "apk_input_commit": "b1deeebe1e1a38a0984c7ee80e68775abeec1853",
     "actual_signed_delivery_verified": true
+  },
+  "authorized_652_source_repairs": {
+    ".github/workflows/ordinary-build.yml": {
+      "before_sha256": "c64c2a61a0650a34168287bcd6e15593b4bc70efa690c146701573efc22d63eb",
+      "after_sha256": "09354e5195f722f9d928279691c495771bd248385d1d00292eb2e8a9dd108189",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "README.md": {
+      "before_sha256": "3e0a4e1cfb7e424acc5d29543f07d287fbe65e5ab067880a1373120d227b1c89",
+      "after_sha256": "7bfbb093cda50ba5db70552da64daa4770aa357e47a97ba0b48a6a7e56ed5f15",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "44e50f7f535ea111439542fc20326c5abda67e31c65a404a470b74700ee8e2b1",
+      "after_sha256": "18ea14c08b3b3f2c777d4478a73831d8f7fac4808be8902c20a1c17538d1268b",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "branding/release.json": {
+      "before_sha256": "ec15b7f1ddc7bad2803b0493f9722953fac78df1dfb4b4085d321903720369b8",
+      "after_sha256": "05cf3bdbd870871827fff04447b98f8d8a48ddad65ebd07925a46a2e60a2b049",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "branding/res/values/strings.xml": {
+      "before_sha256": "2e8cc525f8b072f9db537b222fd2c3ead3411a75a0bc9b971bd67170aede0ef4",
+      "after_sha256": "3e7a3fb86876af7dc16ac57b6ab860659351b79ddd066d04bbdeece04a1fb9b5",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "detail/runtime/common/com/leotv/detail/DanmakuAvatar.java": {
+      "before_sha256": "188f5cdc8e468a7c9d37fabf0634e4155b5a05a83a15890c653da404bb68024f",
+      "after_sha256": "07c2494e67b6af6d1c8656dcac98f60d5f0357d7d1c4806dc587a44ef65075b4",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "detail/runtime/common/com/leotv/detail/DanmakuEffects.java": {
+      "before_sha256": "7426b7ff56bb50b581954ac43720fefe670b56b6ddc9b6c8ca8e8446c7be44f7",
+      "after_sha256": "ceef05b3746c45e181c8decab63c85dee8965d4db76fb584887c8e8df63edd5b",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "player/mpv/java/com/leotv/player/mpv/MobileMpv.java": {
+      "before_sha256": "35e012c0d974d44f984dcbca482b4dffb6243bb0c1be56817017319f0ce65fef",
+      "after_sha256": "86209b4dec23c29cac4653598b9588ad4e18d5d585e271b6c89b230275b898d1",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "player/mpv/java/com/leotv/player/mpv/MpvEngine.java": {
+      "before_sha256": "9d0e1e2477d31609138725512c99ae860ec3135b360bcc53e2779390a216572f",
+      "after_sha256": "10d54b2d292abf2b10a2d384048440e28f9f9033ec7d28bb299da82702a1caee",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "player/mpv/java/com/leotv/player/mpv/MpvSettings.java": {
+      "before_sha256": "1d3742b179faf5e085f41919ccdcc49d501a970081a5f6e591ea558c598be7f0",
+      "after_sha256": "72371a71cc050f6d292ca0dc13bff8416ed3cda3b461c22fdae556081d1e154b",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "player/mpv/test/EngineContract.java": {
+      "before_sha256": "0171583a2cc98f9898f9b198de1944ff5cf5877b7346e1c61fc2f48dac2f80b0",
+      "after_sha256": "114c050118a67b5c3750a11224828f3d4f9052f0e48130555aa58d2af695afa3",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "player/vlc/allowed-changes.json": {
+      "before_sha256": "e543f40f8b6e723712144c78c22610da8ee4d62e6f8fa42d8e6350bb6561149e",
+      "after_sha256": "0cd74c1f64767c7970cc4ab74135f2e189d998ddbb39b1ebc89d61bc345ded20",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "player/vlc/java-api-contract.json": {
+      "before_sha256": "a6c94542d3aed4e874173b5ed86a36fd5f0c8d3484dfb9cdf611ab972559fab4",
+      "after_sha256": "42aca5c31b6c9af1acef9694f0aea64138d20f2741105162134569ea73f2c1a7",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "player/vlc/java/com/leotv/player/vlc/VlcEngine.java": {
+      "before_sha256": "4fd5a1266b7f7ef4f478bf397788a043de3f0cbfd07c3bfe1a5fd6847e79d1e4",
+      "after_sha256": "e5ba0bc8e2811343fe8e46dbd2817b64f2d8da11cdf479548f23caa55c6010d5",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "player/vlc/runtime-sources.json": {
+      "before_sha256": "faf10b422163745cef593809385b5984b12c58a5c5654bd52a76b18485a718f3",
+      "after_sha256": "56369693ca9d7ce981f4b1c975970b043c23367949e814c5d7c58a76a4e6dda8",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "research/detail-check/src/test/java/com/leotv/detail/DanmakuEffectsTest.java": {
+      "before_sha256": "bb764484a99587f485eb6cfd851f958dc22bf356814d6181c0f44de38029e4c2",
+      "after_sha256": "1b411f582c1f028b952dd1004694701dfac8c11777125b95f100e6afe572aadb",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "tools/check_danmaku_effects.py": {
+      "before_sha256": "e56f48c5d4fc5143d067429e9903d4846a49da9ec6277658a31221ceaf46703c",
+      "after_sha256": "f558030090248cfe09903aad607b02ff8716ee8af963a176dd5ef4447da840c0",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "tools/check_mobile_mpv.py": {
+      "before_sha256": "786328934dbc505bced48ea8c4e487914a51526f1e9f825bb851959646513ce4",
+      "after_sha256": "3fbb9f43e66a51eda715aa82a9b5842ec43b868f2794091f4ccac3fff0766819",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "9ba195173f9892392afc641d5be298b3fdfe409b3015fe8550e7941c9ce92c17",
+      "after_sha256": "ee5888eae81c087bc0cad70fa1c9d7c1003bf6ccf1b33577712babf7cfd09b39",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "tools/check_tv_vlc.py": {
+      "before_sha256": "23cd89959cad6e36d7cb2f7cf985d4cff6c27cfcf3fbbd0ccfa7ab8bafe08f7e",
+      "after_sha256": "a60b6c16ac10251289d34b0eeb237cd3de78d063be9002ba236b0c6f33d602ae",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "tools/player_inputs.py": {
+      "before_sha256": "ee6e69b64bcc7ac69d5ed17d1865b21cf44e82804a768f14a679e7f5b2ce18bf",
+      "after_sha256": "c08bb28a16138fd84dff23113c7c23d621206a753ee0d6c5f4b1197135548ef0",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "docs/LEOTV-5.3.4-PREVIEW-6-652-MPV-CLOCK-STICKERS-20261126.md": {
+      "before_sha256": null,
+      "after_sha256": "983317cbc824241cf35da37085dd3ced1a12eb3913c4c8e2d013f6d27198a750",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "evidence/player-652-pro-settings-comparison.json": {
+      "before_sha256": null,
+      "after_sha256": "df2c7ee45c94c8df087de31b87f746b9497aa1e76c0cafb0c23e413f7c2bfa86",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "evidence/player-652-mobile-source.json": {
+      "before_sha256": null,
+      "after_sha256": "7117729f675e28cdf43771fb11654a3ab716aed7dcc6dff4e0757eeb67e347a9",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "evidence/player-652-tv-source.json": {
+      "before_sha256": null,
+      "after_sha256": "9184d27b1d73c6fe2a75dff836286f6f89b7cc8c0646a2d1cfb07284df453adc",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "player/mpv/test/fixture/android/os/SystemClock.java": {
+      "before_sha256": null,
+      "after_sha256": "995ef5fe23fa52f8a907c2ef6e33580407b150dc9f70ffd02061be139a627bf4",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "player/vlc/java/com/leotv/player/vlc/VlcClock.java": {
+      "before_sha256": null,
+      "after_sha256": "581b06d22a028b5d324ccd5e6569aea7f9214468620acb1239fd1766e77ca7ef",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "player/vlc/tests/VlcClockContract.java": {
+      "before_sha256": null,
+      "after_sha256": "db514c959181e918d009205fc3c0885a5c60a5ef03d9d841ccb8c5141800ecca",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    },
+    "research/check_player_clocks.py": {
+      "before_sha256": null,
+      "after_sha256": "5097c06c85ee6a487465780d568219578055099201425ded54dd8b0254985345",
+      "reason": "User-authorized 652 MPV four-row removal preserving shaders/subtitles, real native sample interpolation for MPV/VLC and bounded eight-avatar/colorful-border variants; preserve original containers, no new vertical bounce, no History/incognito/schema changes"
+    }
+  },
+  "652_repair_inputs": {
+    "base_commit": "a51d0cac87ec383ed1414d61126e2741b734c782",
+    "release": "5.3.4-preview.6",
+    "version_code": 652,
+    "native_producer_unchanged": "673ddfa1197f401d536eccec00902cf488d3e25d",
+    "history_cause_confirmed_by_user": "Accidentally enabled original incognito preference",
+    "user_cancelled_vertical_bounce": true,
+    "avatar_variants": 8,
+    "native_frame_clock_interpolation_bound_ms": 500
   }
 }

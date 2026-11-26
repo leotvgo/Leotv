@@ -1,0 +1,51 @@
+{
+  "pro_apk_sha256": "43bb688c90515d79c321366c200976c3727a4290fab9be0c930e1b4e5bd2b406",
+  "pro_layout": "res/up.xml",
+  "pro_fragment_sha256": "e792e182d833372b0254b5be87e98d4e9b13c136ef85c0b50dd190de484f2d85",
+  "pro_declared_player_rows": [
+    "播放核心",
+    "解码方式",
+    "gpu-next",
+    "Mpv conf",
+    "渲染方式",
+    "缩放比例",
+    "字幕样式",
+    "弹幕加载",
+    "同时播放",
+    "后台播放",
+    "线路播放",
+    "隧道模式",
+    "音频软解",
+    "视频软解",
+    "AAC优先",
+    "缓冲时间",
+    "User-Agent"
+  ],
+  "pro_mpv_specific_layout_ids": [
+    "decode",
+    "gpuNext",
+    "mpvConf"
+  ],
+  "leotv_retained_mpv_rows": [
+    "解码模式",
+    "MPV 配置",
+    "着色器",
+    "字幕字体",
+    "字号 / 缩放 / 位置",
+    "颜色 / 描边 / 阴影",
+    "ASS 字幕样式",
+    "字幕 / 音频延迟"
+  ],
+  "user_authorized_removed_rows": [
+    "渲染说明",
+    "音频输出",
+    "音画同步",
+    "应用设置"
+  ],
+  "shared_native_rows_retained": true,
+  "pro_binaries_or_code_transplanted": false,
+  "native_inputs_unchanged": true,
+  "gpu_next_not_a_supported_output_in_the_fixed_adapter": true,
+  "user_confirmed_history_cause": "Accidentally enabled the original incognito preference; no History/schema/incognito behavior changes",
+  "vertical_bounce_cancelled_by_user": true
+}

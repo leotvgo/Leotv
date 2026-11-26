@@ -20,15 +20,21 @@ def check(root=ROOT):
     manifest = json.loads((root / 'player/integration-649.json').read_text())
     repairs=manifest.get('authorized_650_source_repairs',{})
     incremental=manifest.get('authorized_651_source_repairs',{})
-    def expected_revision(name,previous):
-        if name not in incremental:return previous
-        repair=incremental[name]
-        if repair['before_sha256']!=previous or not repair.get('reason'):
-            raise ValueError('651 repair does not extend the recorded previous source: '+name)
-        return repair['after_sha256']
+    current=manifest.get('authorized_652_source_repairs',{})
+    def expected_revision(name,previous,start=651):
+        for revision,changes in ((651,incremental),(652,current)):
+            if revision<start or name not in changes:continue
+            repair=changes[name]
+            if repair['before_sha256']!=previous or not repair.get('reason'):
+                raise ValueError(str(revision)+' repair does not extend the recorded previous source: '+name)
+            previous=repair['after_sha256']
+        return previous
     for name,repair in incremental.items():
+        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=expected_revision(name,repair['after_sha256'],652):
+            raise ValueError('651 source or its declared 652 successor differs: '+name)
+    for name,repair in current.items():
         if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=repair['after_sha256']:
-            raise ValueError('651 source differs from its declared repair: '+name)
+            raise ValueError('652 source differs from its declared repair: '+name)
     for name, digest in manifest['preserved_649_sources'].items():
         if name in repairs and repairs[name]['before_sha256']!=digest:
             raise ValueError('650 repair changed the recorded 649 baseline: '+name)
@@ -96,7 +102,7 @@ def check(root=ROOT):
     print('Player variant/API23/JNI/input/source delivery and 649 baseline / authorized 650 repair gates passed')
     return {'preserved_649_sources': len(manifest['preserved_649_sources']), 'variants': list(native['variants']),
             'unchanged_649_sources':len(set(manifest['preserved_649_sources'])-set(repairs)),
-            'authorized_650_source_repairs':len(repairs), 'authorized_651_source_repairs':len(incremental),
+            'authorized_650_source_repairs':len(repairs), 'authorized_651_source_repairs':len(incremental), 'authorized_652_source_repairs':len(current),
             'native_mode': 'fixed-input', 'missing_class_suppression': False}
 
 

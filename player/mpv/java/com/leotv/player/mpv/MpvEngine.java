@@ -19,6 +19,7 @@ final class MpvEngine implements MPVLib.EventObserver, MPVLib.LogObserver, Audio
     final AudioManager audio;
     long sequence; boolean created,initialized,closed,loaded,ready,paused=true,buffering,seeking,ended,focusResume,playRequested=true;
     String pendingUrl;Surface boundSurface;int surfaceWidth,surfaceHeight;
+    long positionTime;
     long position,duration=-1; float speed=1,requestedSpeed=1; int width,height; boolean hardRequired;
     ParcelFileDescriptor descriptor;
     final List<File> subtitles=new ArrayList<>();
@@ -68,10 +69,19 @@ final class MpvEngine implements MPVLib.EventObserver, MPVLib.LogObserver, Audio
     void set(String key,String value){command("设置 "+key,"set",key,value);}
     void play(){playRequested=true;if(closed||ended||!initialized)return;boolean others=MobileMpv.preferenceBoolean(context,"play_with_others",false);
         if(!others&&audio!=null&&audio.requestAudioFocus(this,AudioManager.STREAM_MUSIC,AudioManager.AUDIOFOCUS_GAIN)!=AudioManager.AUDIOFOCUS_REQUEST_GRANTED){listener.notice("MPV 未获得音频焦点，已暂停");return;}set("pause","no");}
-    void pause(){focusResume=false;playRequested=false;set("pause","yes");}
-    void seek(long ms){if(!closed&&!ended)command("跳转","seek",Double.toString(Math.max(0,ms)/1000.0),"absolute+exact");}
+    void pause(){freezeClock();paused=true;focusResume=false;playRequested=false;set("pause","yes");}
+    void seek(long ms){if(!closed&&!ended){freezeClock();seeking=true;command("跳转","seek",Double.toString(Math.max(0,ms)/1000.0),"absolute+exact");}}
     void speed(float value){if(value>0&&value<=8){requestedSpeed=value;set("speed",Float.toString(value));}}
     boolean playing(){return ready&&!closed&&!ended&&!paused&&!buffering&&!seeking;}
+    /** Interpolate only while native playback is active, bounded by the next real MPV time sample. */
+    long positionNow(){
+        if(!playing()||positionTime==0)return position;
+        long elapsed=Math.min(500,Math.max(0,android.os.SystemClock.elapsedRealtime()-positionTime));
+        long current=position+(long)(elapsed*speed);return duration>0?Math.min(duration,current):current;
+    }
+    void anchor(long value,long time){position=value;positionTime=time;}
+    void freezeClock(){anchor(positionNow(),android.os.SystemClock.elapsedRealtime());}
+
     void startPending(){if(pendingUrl==null)return;String url=pendingUrl;pendingUrl=null;command("加载媒体","loadfile",url,"replace");if(playRequested)play();}
     void surface(Surface s){if(!initialized||closed||s==boundSurface)return;try{if(s==null){MPVLib.detachSurface();boundSurface=null;surfaceWidth=surfaceHeight=0;}else if(s.isValid()){if(boundSurface==null)MPVLib.attachSurface(s);else MPVLib.replaceSurface(s);boundSurface=s;startPending();}}catch(RuntimeException|LinkageError e){listener.error("MPV Surface 切换失败："+MobileMpv.message(e));}}
     /** Fixed 0.38 Android GPU control does not detect window resizes; reconfigure once per actual size. */
@@ -100,21 +110,21 @@ final class MpvEngine implements MPVLib.EventObserver, MPVLib.LogObserver, Audio
     }
     static final class Track {final int id,type;final String name;final boolean selected;Track(int i,int t,String n,boolean s){id=i;type=t;name=n;selected=s;}}
     void select(int type,int id,boolean enabled){set(type==1?"aid":type==2?"vid":"sid",enabled?Integer.toString(id):"no");}
-    void close(){if(closed)return;closed=true;ready=false;main.removeCallbacksAndMessages(null);MPVLib.removeObserver(this);MPVLib.removeLogObserver(this);commands.clear();
+    void close(){if(closed)return;freezeClock();closed=true;ready=false;main.removeCallbacksAndMessages(null);MPVLib.removeObserver(this);MPVLib.removeLogObserver(this);commands.clear();
         try{if(created){try{MPVLib.detachSurface();}catch(RuntimeException|LinkageError e){listener.notice("MPV Surface 释放失败："+MobileMpv.message(e));}try{int r=MPVLib.destroy();if(r<0)listener.notice("MPV 释放失败（"+r+"）");}catch(RuntimeException|LinkageError e){listener.notice("MPV 内核释放失败："+MobileMpv.message(e));}}}finally{created=false;initialized=false;pendingUrl=null;boundSurface=null;if(audio!=null)audio.abandonAudioFocus(this);if(descriptor!=null)try{descriptor.close();}catch(IOException e){listener.notice("媒体 URI 释放失败");}for(File f:subtitles)f.delete();subtitles.clear();}}
     void dispatch(Runnable action){main.post(()->{if(!closed)action.run();});}
     void refreshSize(){Integer w=MPVLib.getPropertyInt("dwidth"),h=MPVLib.getPropertyInt("dheight");width=w==null?0:w;height=h==null?0:h;listener.size(width,height);}
-    void actualTime(){Double p=MPVLib.getPropertyDouble("time-pos"),d=MPVLib.getPropertyDouble("duration"),s=MPVLib.getPropertyDouble("speed");if(p!=null)position=milliseconds(p);if(d!=null)duration=milliseconds(d);if(s!=null){speed=s.floatValue();listener.speedChanged(speed);}}
+    void actualTime(){Double p=MPVLib.getPropertyDouble("time-pos"),d=MPVLib.getPropertyDouble("duration"),s=MPVLib.getPropertyDouble("speed");if(p!=null)anchor(milliseconds(p),android.os.SystemClock.elapsedRealtime());if(d!=null)duration=milliseconds(d);if(s!=null){speed=s.floatValue();listener.speedChanged(speed);}}
     boolean hardDecoderValid(){if(!hardRequired)return true;boolean video=width>0||height>0;for(Track t:trackList())if(t.type==2&&t.selected)video=true;if(!video)return true;String active=MPVLib.getPropertyString("hwdec-current");if(active!=null&&!active.isEmpty()&&!active.equals("no"))return true;ready=false;set("pause","yes");listener.error("MPV 硬解不可用；请选择自动或软解模式");return false;}
     static long milliseconds(double seconds){return Double.isNaN(seconds)||Double.isInfinite(seconds)?0:Math.max(0,(long)(seconds*1000));}
     @Override public void eventProperty(String p){dispatch(()->{if(p.equals("track-list"))listener.tracks();if(p.equals("video-params"))refreshSize();});}
     @Override public void eventProperty(String p,long v){eventProperty(p,(double)v);}
-    @Override public void eventProperty(String p,double v){dispatch(()->{if(p.equals("time-pos"))position=milliseconds(v);if(p.equals("duration"))duration=milliseconds(v);if(p.equals("speed")){speed=(float)v;listener.speedChanged(speed);}});}
+    @Override public void eventProperty(String p,double v){long sampled=android.os.SystemClock.elapsedRealtime();dispatch(()->{if(p.equals("time-pos"))anchor(milliseconds(v),sampled);if(p.equals("duration"))duration=milliseconds(v);if(p.equals("speed")){freezeClock();speed=(float)v;listener.speedChanged(speed);}});}
     @Override public void eventProperty(String p,String v){eventProperty(p);}
-    @Override public void eventProperty(String p,boolean v){dispatch(()->{if(p.equals("pause")){paused=v;if(ready)listener.state(v?5:3);}if(p.equals("paused-for-cache")){buffering=v;if(ready)listener.state(v?2:3);}if(p.equals("seeking"))seeking=v;});}
+    @Override public void eventProperty(String p,boolean v){dispatch(()->{freezeClock();if(p.equals("pause")){paused=v;if(ready)listener.state(v?5:3);}if(p.equals("paused-for-cache")){buffering=v;if(ready)listener.state(v?2:3);}if(p.equals("seeking"))seeking=v;});}
     @Override public void event(int id){dispatch(()->{
         if(id==8){loaded=true;actualTime();refreshSize();listener.tracks();}
-        if(id==20){seeking=true;if(ready)listener.state(2);}
+        if(id==20){freezeClock();seeking=true;if(ready)listener.state(2);}
         if(id==21&&loaded&&!ended){actualTime();seeking=false;buffering=false;if(!hardDecoderValid())return;ready=true;listener.state(3);}
         if(id==17)refreshSize();
         if(id==1){ready=false;loaded=false;listener.error("MPV 内核已停止");}

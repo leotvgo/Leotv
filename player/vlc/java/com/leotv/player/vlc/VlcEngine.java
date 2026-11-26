@@ -39,6 +39,9 @@ final class VlcEngine {
     private int generation;
     private String activeKey;
     private boolean ready, ended, failed, playingIntent = true;
+    private final VlcClock clock=new VlcClock();
+    private boolean nativePlaying,buffering,seekPending;
+    private long cachedDuration=-1;
     private long initialPosition;
     private float requestedRate = 1f;
 
@@ -99,20 +102,26 @@ final class VlcEngine {
     private void event(MediaPlayer.Event event, final int ticket) {
         if (ended) return;
         switch (event.type) {
-            case MediaPlayer.Event.Opening: owner.l(2); break;
+            case MediaPlayer.Event.Opening: clock.running(false,SystemClock.uptimeMillis());owner.l(2); break;
             case MediaPlayer.Event.Buffering:
+                buffering=event.getBuffering()<100f;syncClock();
                 owner.onInfo(null, ready && event.getBuffering() >= 100f ? 702 : 701, 0);
                 owner.onBufferingUpdate(null, (int) event.getBuffering()); break;
             case MediaPlayer.Event.Playing:
+                nativePlaying=true;clock.speed(player.getRate(),SystemClock.uptimeMillis());syncClock();
                 if (!playingIntent) { player.pause(); break; }
                 if (!ready) confirmInitialSeek(ticket, SystemClock.uptimeMillis() + 8000);
                 else { owner.l(3); owner.m0(3); }
                 break;
-            case MediaPlayer.Event.Paused: owner.m0(2); owner.onInfo(null, 701, 0); break;
+            case MediaPlayer.Event.TimeChanged:
+                if(seekPending){clock.reanchor(event.getTime(),SystemClock.uptimeMillis());seekPending=false;}
+                else clock.sample(event.getTime(),SystemClock.uptimeMillis());
+                syncClock();break;
+            case MediaPlayer.Event.Paused: nativePlaying=false;syncClock();owner.m0(2); owner.onInfo(null, 701, 0); break;
             case MediaPlayer.Event.EndReached:
                 if (ended) break;
                 if (!ready) { fail("VLC 媒体在准备完成前结束"); break; }
-                ended = true; owner.m0(1); owner.onCompletion(null); break;
+                clock.sample(player.getTime(),SystemClock.uptimeMillis());clock.running(false,SystemClock.uptimeMillis());ended = true; owner.m0(1); owner.onCompletion(null); break;
             case MediaPlayer.Event.EncounteredError: fail("VLC 播放失败，请检查地址或切换内核"); break;
             case MediaPlayer.Event.ESAdded:
             case MediaPlayer.Event.ESDeleted:
@@ -124,7 +133,7 @@ final class VlcEngine {
     private void confirmInitialSeek(final int ticket, final long deadline) {
         if (ticket != generation || !current() || ready || !playingIntent) return;
         if (initialPosition <= 0 || Math.abs(player.getTime() - initialPosition) <= 1500) {
-            ready = true; owner.m0(3); owner.onPrepared(null); return;
+            clock.reanchor(Math.max(0,player.getTime()),SystemClock.uptimeMillis());cachedDuration=player.getLength();ready = true;syncClock();owner.m0(3); owner.onPrepared(null); return;
         }
         if (SystemClock.uptimeMillis() >= deadline) { fail("VLC 无法恢复此播放位置，请从头播放或切换内核"); return; }
         if (player.isSeekable()) player.setTime(initialPosition);
@@ -147,24 +156,26 @@ final class VlcEngine {
     }
 
     private boolean current() { return player != null && !failed && owner.K == VlcBridge.PLAYER && java.util.Objects.equals(activeKey, owner.B); }
-    long position() { return !current() ? 0 : Math.max(0, player.getTime()); }
-    long duration() { return !current() ? -1 : player.getLength(); }
+    private void syncClock(){clock.running(ready&&nativePlaying&&playingIntent&&!buffering&&!seekPending,SystemClock.uptimeMillis());}
+    long position() {if(!current())return 0;long now=SystemClock.uptimeMillis();if(!seekPending)clock.sample(player.getTime(),now);return clock.position(now,cachedDuration);}
+    long duration() {if(!current())return -1;cachedDuration=player.getLength();return cachedDuration;}
     float rate() { return player == null ? requestedRate : player.getRate(); }
     boolean playing() { return current() && player.isPlaying(); }
     boolean seekable() { return current() && ready && player.isSeekable(); }
     boolean ended() { return ended; }
-    void pause() { resumeAfterFocusLoss = false; playingIntent = false; if (player != null && player.isPlaying()) player.pause(); }
+    void pause() { resumeAfterFocusLoss = false; playingIntent = false;syncClock(); if (player != null && player.isPlaying()) player.pause(); }
     void play() {
         resumeAfterFocusLoss = false; playingIntent = true;
         if (current() && !ended) try { acquireFocus(); player.play(); } catch (IOException problem) { fail(problem.getMessage()); }
     }
     void seek(long value) {
         if (!current() || !player.isSeekable()) { fail("VLC 当前媒体不支持跳转"); return; }
+        seekPending=true;syncClock();
         if (player.setTime(Math.max(0, value)) < 0) fail("VLC 跳转失败");
     }
     void rate(float value) {
         if (Float.isNaN(value) || Float.isInfinite(value) || value < .25f || value > 5f) throw new IllegalArgumentException("Invalid VLC rate");
-        requestedRate = value; if (player != null && !failed) player.setRate(value);
+        requestedRate = value; if (player != null && !failed) {player.setRate(value);clock.speed(player.getRate(),SystemClock.uptimeMillis());}
     }
     boolean hasTrack(int type) {
         if (!current()) return false;
@@ -208,7 +219,7 @@ final class VlcEngine {
     }
     void stop() {
         resumeAfterFocusLoss = false; if (audio != null) audio.abandonAudioFocus(focus); ownsFocus = false;
-        generation++; main.removeCallbacksAndMessages(null); ready = false; ended = false;
+        generation++; main.removeCallbacksAndMessages(null); ready = false; ended = false;nativePlaying=buffering=seekPending=false;cachedDuration=-1;clock.reset();
         if (player != null) {
             player.setEventListener(null); surface.detach(); player.stop(); player.release(); player = null;
         }

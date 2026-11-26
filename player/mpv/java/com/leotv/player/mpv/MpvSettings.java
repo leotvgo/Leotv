@@ -64,7 +64,6 @@ final class MpvSettings {
     private static String decodeLabel(MpvStore s){int mode=s.prefs.getInt("decode",0);return mode==0?"自动":mode==1?"硬解":mode==2?"软解":"无效（"+mode+"）";}
     private static String selected(MpvStore s,String key,String[] values,String[] labels){String value=s.prefs.getString(key,values[0]);int at=Arrays.asList(values).indexOf(value);return at<0?"无效（"+value+"）":labels[at];}
     private static void populate(Activity a,MpvStore store,LinearLayout column,List<Row> rows){
-            row(a,column,rows,"渲染",()->"Surface / OpenGL（MPV）",()->{});
             row(a,column,rows,"解码模式",()->decodeLabel(store),()->choose(a,store,"decode",new String[]{"自动（硬解失败转软解）","硬解（失败明确报错）","软解"},new String[]{"0","1","2"},true));
             row(a,column,rows,"MPV 配置",()->store.readConfig().trim().isEmpty()?"内置兼容参数":"内置参数 + 自定义选项",()->config(a,store));
             row(a,column,rows,"着色器",()->importsSummary(store,"shader"),()->shaders(a,store));
@@ -73,9 +72,6 @@ final class MpvSettings {
             row(a,column,rows,"颜色 / 描边 / 阴影",()->store.prefs.getString("sub-color","#FFFFFFFF")+" / "+store.prefs.getString("sub-border-color","#FF000000")+" / "+store.prefs.getString("sub-border-size","3")+" / "+store.prefs.getString("sub-shadow-offset","0"),()->fields(a,store,new String[][]{{"sub-color","文字颜色（#AARRGGBB）","#FFFFFFFF","color",""},{"sub-border-color","描边颜色（#AARRGGBB）","#FF000000","color",""},{"sub-border-size","描边宽度","3","0","10"},{"sub-shadow-offset","阴影偏移","0","0","10"}},false));
             row(a,column,rows,"ASS 字幕样式",()->selected(store,"sub-ass-override",new String[]{"no","force"},new String[]{"保留字幕原样式","使用所选字幕样式"}),()->choose(a,store,"sub-ass-override",new String[]{"保留字幕原样式","使用所选字幕样式"},new String[]{"no","force"},false));
             row(a,column,rows,"字幕 / 音频延迟",()->store.prefs.getString("sub-delay","0")+"秒 / "+store.prefs.getString("audio-delay","0")+"秒",()->fields(a,store,new String[][]{{"sub-delay","字幕延迟（秒，可负数）","0","-600","600"},{"audio-delay","音频延迟（秒，可负数）","0","-30","30"}},false));
-            row(a,column,rows,"音频输出",()->selected(store,"ao",new String[]{"audiotrack,opensles","audiotrack","opensles"},new String[]{"自动","AudioTrack","OpenSL ES"}),()->choose(a,store,"ao",new String[]{"自动（AudioTrack / OpenSL ES）","AudioTrack","OpenSL ES"},new String[]{"audiotrack,opensles","audiotrack","opensles"},true));
-            row(a,column,rows,"音画同步",()->selected(store,"video-sync",new String[]{"audio","display-resample"},new String[]{"以音频为时钟","显示时钟 / 重采样"}),()->choose(a,store,"video-sync",new String[]{"以音频为时钟","显示时钟 / 重采样"},new String[]{"audio","display-resample"},true));
-            row(a,column,rows,"应用设置",()->"重建并续播",()->MobileMpv.apply(a,true));
     }
     private static String importsSummary(MpvStore store,String kind){try{int total=0,enabled=0;for(MpvStore.Item item:store.items())if(item.kind.equals(kind)){total++;if(item.enabled)enabled++;}return total==0?"尚未导入":"已启用 "+enabled+" / "+total;}catch(Exception e){return "列表读取失败";}}
     private static final class Row {

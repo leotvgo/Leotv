@@ -65,7 +65,9 @@
       "EndReached",
       "EncounteredError",
       "ESAdded",
-      "ESDeleted"
+      "ESDeleted",
+      "TimeChanged",
+      "getTime()J"
     ],
     "org.videolan.libvlc.MediaPlayer$TrackDescription": [
       "id:I",
