@@ -122,7 +122,7 @@ public final class MobileMpv {
     static void apply(Context context,boolean rebuild){MpvSettings.refreshAll();for(Map.Entry<Object,Session> entry:new ArrayList<>(sessions.entrySet())){Object h=entry.getKey();Session s=entry.getValue();if(!active(h)||s.engine==null)continue;
         if(s.engine.closed&&!rebuild){s.notice("设置已保存，下次 MPV 播放时生效");continue;}
         try{if(rebuild){long pos=s.engine.positionNow();boolean paused=!s.engine.playRequested;put(h,"H",pos);call(h,"m0");if(paused)pause(h);}
-            else{for(Map.Entry<String,String> option:new MpvStore(context).options().entrySet())if(option.getKey().startsWith("sub-")||option.getKey().equals("audio-delay")||option.getKey().equals("glsl-shaders"))s.engine.set(option.getKey(),option.getValue());}}
+            else{s.engine.set("glsl-shaders",new MpvStore(context).shaderList());}}
         catch(Exception e){s.notice("MPV 设置应用失败："+message(e));}}
     }
     public static void settings(Object fragment){MpvSettings.attach(fragment);}

@@ -748,5 +748,303 @@
     "publish_run_id": 45809447774,
     "apk_input_commit": "84ddeec3adf38d2812e0b6146d758e94bda5a5d3",
     "actual_signed_delivery_verified": true
+  },
+  "authorized_home_ui_source_repairs": {
+    "detail/runtime-sources.json": {
+      "before_sha256": "911cb4a36bce2d80c2dfd358b3ff311986b3dcd8f51e2c55896d628fedc6f8e8",
+      "after_sha256": "19c28f002071a4a2aff88fe9b345db2de7e8a6dc833dd49fff16fe2a2718762f",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "detail/runtime/common/com/leotv/detail/CspHomePage.java": {
+      "before_sha256": "4bdcb26f09b17ac4fec6995107531d6c0642910cc1c4e4e28a66d9bab545db61",
+      "after_sha256": "c44dde1e32a8d40ec834735b58a47c34db043b6e69d3209cce157e380d55a53b",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "detail/runtime/common/com/leotv/detail/DetailCardStyle.java": {
+      "before_sha256": null,
+      "after_sha256": "ca150c2ec1816b4ec47cddede4adc43f10832babbbdcf766d542f102406e830b",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "detail/runtime/common/com/leotv/detail/DetailHero.java": {
+      "before_sha256": "3e223bb2ea8db6da4b296319ee89984a684ddba7f3eda3296056313f0127d910",
+      "after_sha256": "9650a10795178b07dc692e6e8e16f60df108c150c91d79cc89137b0a60b6b168",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "detail/runtime/common/com/leotv/detail/DetailImageView.java": {
+      "before_sha256": "8d3f6bc5c5e7874b571df6a0b7d26705abf60db61f9367a2ce2d184c7d6e56c6",
+      "after_sha256": "30990c3c4e2a6a46f6ddd4ba6b09a10f574617ad3633708a8e273a2987fdb7dd",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "detail/runtime/common/com/leotv/detail/DetailRecommendations.java": {
+      "before_sha256": "b0f17170b8c7d572254d1502b445bbe49e7d747355625255b59eb8e9cf870e17",
+      "after_sha256": "97385109cc1becaeb3b05fd3cae12113319ef093cd37d244b313a7b65cc8919a",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "detail/runtime/common/com/leotv/detail/DetailStills.java": {
+      "before_sha256": "8c2008510361f24519173263c930f0e248feab50498e8efc634dd9c37e3aaba2",
+      "after_sha256": "a95625184f4a43fff45f5a2256618ddd1e5e1dadf175093d7f7d9cb65cb4f6c0",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "detail/runtime/common/com/leotv/detail/HomeTheme.java": {
+      "before_sha256": null,
+      "after_sha256": "2cd7d5d3848aa0c0ce48cabe49e8a8c8b0e4988f9f5deb852792994354ec0526",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "detail/runtime/common/com/leotv/detail/LibraryDetailLayout.java": {
+      "before_sha256": "5f2384c15c1b3c48fdee80cc49a41686bbf85d410897552ad065bc20cb533fff",
+      "after_sha256": "eef5e34adfcd9d6fbf6c18e49cb533400a1487103acec5b8b2f7b3fd742bb81e",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "detail/runtime/common/com/leotv/detail/MetadataSettings.java": {
+      "before_sha256": "39428ab84d50e00d2bc8e47248cf2f0fae299abb7dab6fc6257bdc9875c58dc2",
+      "after_sha256": "08b4ed88898c53f3c485e41e15dfa7fd23f7455f6052e9b3a33cbf5b28234126",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "detail/runtime/common/com/leotv/detail/NativeCspUi.java": {
+      "before_sha256": "c6c177cd1fbdff422ee14a0df4b4ccac2046709cf094755cd060aaf18096bb8e",
+      "after_sha256": "7bd023be5a7b6f1dc237e446ccdcb49041b8ee1a765aa85a7541f70514346eb4",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "detail/runtime/common/com/leotv/detail/NewHome.java": {
+      "before_sha256": "64c7225ef0c23fd229b58f7d17297016e1168383b17ccc75df8d4e9c6f8689c8",
+      "after_sha256": "56f708b717b18ae722107f4369dfec575070176fb2a89bc27b195dfe127027c8",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "detail/runtime/common/com/leotv/detail/Personalization.java": {
+      "before_sha256": "3a97a2ed23286ff026e173554abf4db5919bccda83c306293ba95855cb01cdd2",
+      "after_sha256": "3b43f8f5c1591365b72f2b5be0de3f92941c3b8d8368375e3dd29a7ef9e709cd",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "detail/runtime/common/com/leotv/detail/TvDetailPage.java": {
+      "before_sha256": "c4a99c0421cb00d2d7a238b286e907a6fc79ea0a1181b52404ef3c2eed0602f5",
+      "after_sha256": "c46e011406db2289121bc2f39cb205e3376f883d6675e1aabc6f55451cb37ad4",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "detail/runtime/mobile/com/leotv/detail/NativeHomeRows.java": {
+      "before_sha256": null,
+      "after_sha256": "a8148fde3f1a47200b23fcd9747dda7d7eb473fafa6aa8648b36deaf7d04b79e",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "detail/runtime/tv/com/leotv/detail/NativeHomeRows.java": {
+      "before_sha256": null,
+      "after_sha256": "3003271e1a598aa6de2897309a00be7a924504dc6e70c4a402ecf4f3a38f165a",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "tools/check_build_sources.py": {
+      "before_sha256": "29405624ae274131327af821679940dd6d2f0f572585ba142a00acd1f43da2ae",
+      "after_sha256": "5ebe8632cf0dcf9e605dfca5eac245e68ca76d60758272ca1df832e4642d3e1c",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "tools/check_home_themes.py": {
+      "before_sha256": null,
+      "after_sha256": "044658cd3dda25dd5867dea6bda02e0eb7bd42042a2bda5eed0bc71ba7fc3088",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    },
+    "tools/check_native_details.py": {
+      "before_sha256": "87da8c0d7b02653dc32c3dae9558e6939a9ced4f7124624e29dffdab58b25da7",
+      "after_sha256": "af6b19003630996e7ba57f257eeba51151890308dd9471a0ac89cfe915709b93",
+      "reason": "2026-11-26 user authorized independent home themes for both clients, native setting spacing, mobile library portrait/landscape overlay, consistent detail cards and native TV home recycling; source only, preserve existing player/data and operation order."
+    }
+  },
+  "authorized_653_source_repairs": {
+    ".github/workflows/ordinary-build.yml": {
+      "before_sha256": "09354e5195f722f9d928279691c495771bd248385d1d00292eb2e8a9dd108189",
+      "after_sha256": "b546e886096912898a340ba005523a9df0af7f509d7952b8966c60f99e9e8dca",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "README.md": {
+      "before_sha256": "dfe99d6b975866b4478d5d473aaf1576565bb4b48751002a3db84ef36ae780bf",
+      "after_sha256": "5b24eaa30f10ddaf5e4fbc466469b4244000e8cdcc7f48442d4c8b8498a978be",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "18ea14c08b3b3f2c777d4478a73831d8f7fac4808be8902c20a1c17538d1268b",
+      "after_sha256": "da14ec0b6cd1c27abc8d40f4a764582fd0f1d261810d76913c1c4ae99d3404b9",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "branding/release.json": {
+      "before_sha256": "05cf3bdbd870871827fff04447b98f8d8a48ddad65ebd07925a46a2e60a2b049",
+      "after_sha256": "dbe67e66d9f7cd86dafb200c2569a728508fb89c6c19c67d923d326ba1ffb9c3",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "branding/res/values/strings.xml": {
+      "before_sha256": "3e7a3fb86876af7dc16ac57b6ab860659351b79ddd066d04bbdeece04a1fb9b5",
+      "after_sha256": "465f811a9ac26fc7cdfebbf296206ad3c28ceced816c5f0f756d6d392853c6ee",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "detail/runtime/common/com/leotv/detail/DanmakuEffectPolicy.java": {
+      "before_sha256": "f062a85b9e385188e4da130389f6f5e253ef3eeb819414603319b216963873d2",
+      "after_sha256": "89331b1ac0f03740cc90fddcef7b7b9b931443c0a5d940aca55d42d4afdf6c8a",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "detail/runtime/common/com/leotv/detail/DanmakuEffects.java": {
+      "before_sha256": "ceef05b3746c45e181c8decab63c85dee8965d4db76fb584887c8e8df63edd5b",
+      "after_sha256": "77a829891d54ff18a1523a53a44e37c8a7ffd228ea82e034a9d68e812b5e2a26",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "detail/runtime/common/com/leotv/detail/LibraryDetailLayout.java": {
+      "before_sha256": "eef5e34adfcd9d6fbf6c18e49cb533400a1487103acec5b8b2f7b3fd742bb81e",
+      "after_sha256": "fdc32b0cfc07da3cc33d9409f3f2cfe189a1bf54268b478a6f91e424e7ba9f41",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "detail/runtime/common/com/leotv/detail/TvDetailNavigation.java": {
+      "before_sha256": "53468232ea23e3da55fb5b6814f02f04f96488ac7ed1e689f771c94960b51580",
+      "after_sha256": "457e87b6f27b4040c37ee70740261280b5b22d7794dc6546bbf86dce170ff000",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "detail/runtime/common/com/leotv/detail/TvDetailPage.java": {
+      "before_sha256": "c46e011406db2289121bc2f39cb205e3376f883d6675e1aabc6f55451cb37ad4",
+      "after_sha256": "1f79084807007ee4e933e30b04811ebd7911335635b17e1a0cb69a85fd156da1",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "detail/runtime/common/com/leotv/detail/TvDetailScroll.java": {
+      "before_sha256": "c3cb826c5332a8cdc01d8022442d17e1e95e8451ffc64d13044b1b3df6f5b76e",
+      "after_sha256": "5cd8d354eb010f56bb4b6cff9e36e8309b6aecb862a60d448961b0bb838ae1cf",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "docs/LEOTV-5.3.4-PREVIEW-7-653-NATIVE-PLAYBACK-UI-EFFECTS-20261126.md": {
+      "before_sha256": null,
+      "after_sha256": "11d632cee5be31f89e583e412ff434c9bfc92cd9ff9ef6fb01e96571934a210f",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "docs/LEOTV-HOME-THEMES-LIBRARY-RECYCLING-20261126.md": {
+      "before_sha256": null,
+      "after_sha256": "d1170957acaf8bc69908e790c63ee1c81f5e6f15952a40f116bfa7f5b8c908c3",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "evidence/player-653-coordination.json": {
+      "before_sha256": null,
+      "after_sha256": "aeaa1b7d70ba4c7971c5148075321cccbb4cd76e21f106d66d8e8635ff5b7841",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "evidence/player-653-mpv-source.json": {
+      "before_sha256": null,
+      "after_sha256": "81f5bb25ef51c7d77023e235dc020d8fa5c023010a35f816175e38c928f7e209",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "evidence/player-653-vlc-source.json": {
+      "before_sha256": null,
+      "after_sha256": "88893ca3336dacc1702c59bf31a716cfad14265e96d9d661eee4a3539de37927",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "player/mpv/java/com/leotv/player/mpv/MobileMpv.java": {
+      "before_sha256": "86209b4dec23c29cac4653598b9588ad4e18d5d585e271b6c89b230275b898d1",
+      "after_sha256": "52d8fc588fdbb5b0cb3baf5476b23219b17fa1df12afa96a16bbae66786d920b",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "player/mpv/java/com/leotv/player/mpv/MpvOptions.java": {
+      "before_sha256": "17b0a8847ec39f2f811e1535d9ce6c497d729809b70982352b0defe5fd0c3091",
+      "after_sha256": "ba052eeeefb854004f1b49bf8ba116ff9644e30b369df41e6c7a08bba1d5542b",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "player/mpv/java/com/leotv/player/mpv/MpvSettings.java": {
+      "before_sha256": "72371a71cc050f6d292ca0dc13bff8416ed3cda3b461c22fdae556081d1e154b",
+      "after_sha256": "62cde52372e9ce83f11d36d02b632c29eaa74911d68d63a4f6237e7767ddbfc1",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "player/mpv/java/com/leotv/player/mpv/MpvStore.java": {
+      "before_sha256": "fb7711d498a5a9fb9f5ae61df7d64e77a92ac0e575f800916bc13f99ef125039",
+      "after_sha256": "73d2c5cec2af093b03973fff0a9ebe75bf6f06ba0ed06231bd73dfab96eade65",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "player/vlc/allowed-changes.json": {
+      "before_sha256": "0cd74c1f64767c7970cc4ab74135f2e189d998ddbb39b1ebc89d61bc345ded20",
+      "after_sha256": "b2799ed8d00ef86edc86eb4904d510f2de153d3f64be0262b5d9ab2ff1be9be0",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "player/vlc/java/com/leotv/player/vlc/VlcBridge.java": {
+      "before_sha256": "d7fb7e307a084858f5232a03ab8aae0b053907e49ed3462275b7ee5b95f7ca3a",
+      "after_sha256": "1a9e38df8f68d98080689f7581db8e4ec96df91d0b544d4761d1747f5c060b8a",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "player/vlc/java/com/leotv/player/vlc/VlcEngine.java": {
+      "before_sha256": "a316437b06f8984bf0092a5e21954c5335e7bb75f034f66abf4909372fd66f4f",
+      "after_sha256": "8b8b779e9f980a0e7cfe20cc8bfeb7700d7fb7b466b61a7b67445babc77694d5",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "player/vlc/java/com/leotv/player/vlc/VlcHttpProxy.java": {
+      "before_sha256": "4474f6160b619aa2531ac7ad004293dbcc77ce2202058913f52d341efbcf69ff",
+      "after_sha256": "74f5eb6f801052ce6baf1cf5895e60485fe27b87f4f949110f557506668508cf",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "research/check_danmaku_effect_policy.py": {
+      "before_sha256": "75c43877e61e1a20f4e3d007d0d02669b00a2b037b6de5a45602f2d791bc6577",
+      "after_sha256": "6b39f9a94c920849001cdbdcfaee9a399a543cc8ce4dab477e264a1497853d7e",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "research/check_vlc_lifecycle.py": {
+      "before_sha256": null,
+      "after_sha256": "2199ddad1449757f0de046200d6acc816849bd3be30d7a2b4d501ddf5aec839d",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "research/detail-check/src/test/java/com/leotv/detail/DanmakuEffectsTest.java": {
+      "before_sha256": "1b411f582c1f028b952dd1004694701dfac8c11777125b95f100e6afe572aadb",
+      "after_sha256": "888fb05e6192cf854718f5f08fe60b69d6c3650aaab70cdbb0ca565a24f402ce",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "research/detail-check/src/test/java/com/leotv/detail/TvDetailScrollTest.java": {
+      "before_sha256": null,
+      "after_sha256": "852cd67fb9adfb5d913a9cdffe39e64c1186fae6a1fb090aa4dd254d767d8102",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "research/effects-check/build.gradle": {
+      "before_sha256": "f7f93fb28f23e05ae9e44e1afe1bc28b118a099132df6591712bb1b6698f91c7",
+      "after_sha256": "e1ae601b468ce8e33e4890d4af7acc265be7d44e2bd4c642b0480d467449a330",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "research/effects-check/src/stub/java/com/leotv/detail/Device.java": {
+      "before_sha256": null,
+      "after_sha256": "5e44cad5592c97f05805eb0f382d282d0d7341c882c3545985b0bb81582e13c1",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "tools/apply_tv_vlc.py": {
+      "before_sha256": "dadc322df2bc270ac98c7bf855a7049734149a7b5ae09158b47e200a25c20a06",
+      "after_sha256": "6fc408d0acaf81e148630bdbf685ef67694b61ad2da2476bc836a20a74379290",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "tools/check_danmaku_effects.py": {
+      "before_sha256": "f558030090248cfe09903aad607b02ff8716ee8af963a176dd5ef4447da840c0",
+      "after_sha256": "f14818f8436089a9feaadd28af85c7ad580a83864802854790212e8e52b9261f",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "tools/check_home_themes.py": {
+      "before_sha256": "044658cd3dda25dd5867dea6bda02e0eb7bd42042a2bda5eed0bc71ba7fc3088",
+      "after_sha256": "838a509efa0198ff70b289263590e277bed6d21e31aa2de2ef1ea8172d95c9d5",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "tools/check_mobile_mpv.py": {
+      "before_sha256": "3fbb9f43e66a51eda715aa82a9b5842ec43b868f2794091f4ccac3fff0766819",
+      "after_sha256": "10c377ab8e766e88a66b02ca84bbf2d3e41f652ff5e120ac2a0a9d992eb93a29",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "ee5888eae81c087bc0cad70fa1c9d7c1003bf6ccf1b33577712babf7cfd09b39",
+      "after_sha256": "117b20b033e02e526f2d4755eb78f60fb6e530e4460fa46703e453087ef1d01e",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "tools/check_tv_vlc.py": {
+      "before_sha256": "91f2a8b0df3541336a5a4cc8e4269cdefa613973c7f17ff675a61b743b381ef2",
+      "after_sha256": "f4ebae09ac27b4ae0365bd73698926b946b50720f8378bc423bb02727bdc4b49",
+      "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    }
+  },
+  "653_unified_delivery": {
+    "base_commit": "2bdca91e16b9a768d4e585354a8a4c37968e80d5",
+    "release": "5.3.4-preview.7",
+    "version_code": 653,
+    "source_parent": "652 plus authorized_home_ui_source_repairs, then this unified successor",
+    "native_producer_unchanged": "673ddfa1197f401d536eccec00902cf488d3e25d",
+    "common_danmu_load_retained": true,
+    "mpv_specific_rows": 3,
+    "board_shapes": 5,
+    "orbit_palette_variants": 10,
+    "orbit_petal_weights": [
+      3,
+      3,
+      13
+    ],
+    "petal_overlay_fraction_of_other_effects": 0.25,
+    "global_effect_rate_unchanged": true,
+    "vertical_bounce_added": false
   }
 }

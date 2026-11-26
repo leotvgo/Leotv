@@ -32,6 +32,9 @@ final class VlcEngine {
         }
     };
     private final Handler main = new Handler(Looper.getMainLooper());
+    private static final java.util.concurrent.ExecutorService RELEASES=java.util.concurrent.Executors.newSingleThreadExecutor(task->{Thread thread=new Thread(task,"leotv-vlc-release");thread.setDaemon(true);return thread;});
+    private static final java.util.concurrent.ExecutorService TRANSPORTS=java.util.concurrent.Executors.newFixedThreadPool(2,task->{Thread thread=new Thread(task,"leotv-vlc-transport-close");thread.setDaemon(true);return thread;});
+    private java.util.concurrent.Future<?> cleanup;
     private LibVLC lib;
     private MediaPlayer player;
     private VlcHttpProxy proxy;
@@ -217,17 +220,32 @@ final class VlcEngine {
             throw new IOException("VLC 无法获得音频焦点");
         ownsFocus = true;
     }
-    void stop() {
-        resumeAfterFocusLoss = false; if (audio != null) audio.abandonAudioFocus(focus); ownsFocus = false;
-        generation++; main.removeCallbacksAndMessages(null); ready = false; ended = false;nativePlaying=buffering=seekPending=false;cachedDuration=-1;clock.reset();
-        if (player != null) {
-            player.setEventListener(null); surface.detach(); player.stop(); player.release(); player = null;
-        }
-        stopTransport();
+    boolean hasNativePlayer(){return player!=null;}
+    boolean cleanupPending(){return cleanup!=null&&!cleanup.isDone();}
+    void afterCleanup(Runnable action){
+        java.util.concurrent.Future<?> wait=cleanup;if(wait==null||wait.isDone()){action.run();return;}
+        RELEASES.execute(()->{try{wait.get();}catch(Exception error){android.util.Log.e("LeotvVLC","VLC 清理等待失败",error);}main.post(action);});
     }
-    private void stopTransport() {
-        if (proxy != null) { proxy.close(); proxy = null; }
-        if (descriptor != null) { try { descriptor.close(); } catch (IOException ignored) { } descriptor = null; }
+    void stop(){detach(false);}
+    void release(){detach(true);}
+    private void detach(boolean releaseLibrary){
+        resumeAfterFocusLoss=false;if(audio!=null)audio.abandonAudioFocus(focus);ownsFocus=false;
+        generation++;main.removeCallbacksAndMessages(null);ready=ended=nativePlaying=buffering=seekPending=false;cachedDuration=-1;clock.reset();
+        final MediaPlayer oldPlayer=player;final VlcHttpProxy oldProxy=proxy;final android.content.res.AssetFileDescriptor oldDescriptor=descriptor;final LibVLC oldLibrary=releaseLibrary?lib:null;
+        player=null;proxy=null;descriptor=null;if(releaseLibrary)lib=null;
+        if(oldPlayer!=null)oldPlayer.setEventListener(null);
+        // Wake native loopback reads before detaching the window; never disconnect a remote read on MAIN.
+        if(oldProxy!=null)oldProxy.interrupt();
+        surface.detach();
+        if(oldPlayer==null&&oldProxy==null&&oldDescriptor==null&&oldLibrary==null)return;
+        cleanup=RELEASES.submit(()->{
+            try{if(oldPlayer!=null)try{oldPlayer.stop();}finally{oldPlayer.release();}}
+            catch(RuntimeException|LinkageError error){android.util.Log.e("LeotvVLC","VLC 播放器清理失败",error);}
+            finally{
+                try{if(oldLibrary!=null)oldLibrary.release();}catch(RuntimeException|LinkageError error){android.util.Log.e("LeotvVLC","VLC 内核清理失败",error);}
+                if(oldProxy!=null)TRANSPORTS.execute(oldProxy::close);
+                if(oldDescriptor!=null)try{oldDescriptor.close();}catch(IOException error){android.util.Log.w("LeotvVLC","VLC 媒体描述符清理失败",error);}
+            }
+        });
     }
-    void release() { stop(); if (lib != null) { lib.release(); lib = null; } }
 }

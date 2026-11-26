@@ -187,7 +187,7 @@ final class TvDetailPage implements DetailPage {
         libraryLayout=new LibraryDetailLayout(this);
         originalCallback=activity.getWindow().getCallback();
         callback=(Window.Callback)java.lang.reflect.Proxy.newProxyInstance(Window.Callback.class.getClassLoader(),new Class<?>[]{Window.Callback.class},(proxy,method,args)->{
-            if(!mobile&&method.getName().equals("dispatchTouchEvent")&&((MotionEvent)args[0]).getActionMasked()==MotionEvent.ACTION_DOWN){initialPlayFocus=false;playbackFocusPending=false;restoredPlaybackView=null;}
+            if(!mobile&&method.getName().equals("dispatchTouchEvent")&&((MotionEvent)args[0]).getActionMasked()==MotionEvent.ACTION_DOWN){initialPlayFocus=false;scroll.finishInitialViewport();playbackFocusPending=false;restoredPlaybackView=null;}
             if(method.getName().equals("dispatchKeyEvent")&&key((KeyEvent)args[0]))return true;
             try{return method.invoke(originalCallback,args);}catch(java.lang.reflect.InvocationTargetException failure){throw failure.getCause();}
         });
@@ -198,7 +198,7 @@ final class TvDetailPage implements DetailPage {
             activity.runOnUiThread(() -> {
                 if (!mounted) return;
                 theme = -1; content.requestLayout(); content.invalidate();
-                ThemeLayout.apply(this);
+                ThemeLayout.apply(this);refresh(BackdropSettings.read(activity).proxy);
             });
         };
         MetadataSettings.preferences(activity).registerOnSharedPreferenceChangeListener(themeChanges);
@@ -267,7 +267,7 @@ final class TvDetailPage implements DetailPage {
         }
         if(!keepArtwork||wasPending||title.getText().length()==0){sourceArtwork=detail.picture;title.setText(detail.name);synopsis.setText(android.text.Html.fromHtml(detail.overview).toString());
             facts.setText((detail.year+"  ·  "+detail.type).trim());
-            List<String> artwork=metadata==null?Collections.emptyList():mobile&&!DetailTheme.library(activity,mobile)?metadata.posterPaths:metadata.backdropPaths;
+            List<String> artwork=metadata==null?Collections.emptyList():portraitArtwork()?metadata.posterPaths:metadata.backdropPaths;
             if(!keepArtwork||wasPending&&DetailHero.accept(artwork,5).isEmpty())hero.loadSource(detail.picture,BackdropSettings.read(activity).proxy);}
         else if(metadata!=null){metadataSite=detail.site;metadataId=detail.id;
             if(metadata.complete)FollowStore.update(new BackdropIdentity(detail.site,detail.id,detail.name,detail.year,detail.type),metadata);}
@@ -310,7 +310,7 @@ final class TvDetailPage implements DetailPage {
         else playButton.idle(preferred==null?"暂无可播放剧集":"播放");
     }
     void suspend(){playbackFocusPending=false;restoredPlaybackView=null;hero.setActive(false);nativeEpisodes.dismiss();if(mobileSources!=null)mobileSources.dismiss();sitePicker.dismiss();if(personPopup!=null)personPopup.close();personPopup=null;if(matchPopup!=null)matchPopup.dismiss();matchPopup=null;}
-    void requestPlaybackFocus(){if(!mobile){initialPlayFocus=false;playbackFocusPending=true;restoredPlaybackView=null;}}
+    void requestPlaybackFocus(){if(!mobile){initialPlayFocus=false;scroll.finishInitialViewport();playbackFocusPending=true;restoredPlaybackView=null;}}
     private boolean restorePlaybackFocus(){
         if(!playbackFocusPending||mobile||!mounted||source==null||preferred==null||!content.hasWindowFocus()||episodes.isLayoutRequested())return false;
         for(int i=0;i<episodes.getChildCount();i++){View row=episodes.getChildAt(i);if(!row.isActivated())continue;
@@ -322,13 +322,15 @@ final class TvDetailPage implements DetailPage {
         }
         return false;
     }
-    private boolean beforeDraw(){if(!mounted)return true;if(content.getWidth()!=themeWidth||content.getHeight()!=themeHeight)ThemeLayout.apply(this);libraryLayout.sync();loadingState();
+    private boolean beforeDraw(){if(!mounted)return true;if(content.getWidth()!=themeWidth||content.getHeight()!=themeHeight){ThemeLayout.apply(this);refresh(BackdropSettings.read(activity).proxy);}loadingState();libraryLayout.sync();
+        if(initialPlayFocus)scroll.enforceInitialViewport();
         if(playbackFocusPending)restorePlaybackFocus();
         if(initialPlayFocus&&playButton.isShown()&&playButton.getWidth()>0&&playButton.getHeight()>0&&(!playButton.isFocused()||scroll.getScrollY()!=0))navigation.focusPrimary();
-        return true;}
+        return mobile||!initialPlayFocus||!heroFrame.isLayoutRequested();}
+    private boolean navigationKey(int code){return code==KeyEvent.KEYCODE_DPAD_UP||code==KeyEvent.KEYCODE_DPAD_DOWN||code==KeyEvent.KEYCODE_DPAD_LEFT||code==KeyEvent.KEYCODE_DPAD_RIGHT||code==KeyEvent.KEYCODE_DPAD_CENTER||code==KeyEvent.KEYCODE_ENTER||code==KeyEvent.KEYCODE_BACK;}
     private boolean key(KeyEvent event){
         if(!mobile&&playbackFocusPending&&event.getAction()==KeyEvent.ACTION_DOWN){restorePlaybackFocus();playbackFocusPending=false;restoredPlaybackView=null;}
-        if(!mobile&&initialPlayFocus&&event.getAction()==KeyEvent.ACTION_DOWN){if(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_CENTER||event.getKeyCode()==KeyEvent.KEYCODE_ENTER)navigation.focusPrimary();initialPlayFocus=false;}
+        if(!mobile&&initialPlayFocus&&event.getAction()==KeyEvent.ACTION_DOWN&&navigationKey(event.getKeyCode())){if(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_CENTER||event.getKeyCode()==KeyEvent.KEYCODE_ENTER)navigation.focusPrimary();initialPlayFocus=false;scroll.finishInitialViewport();}
         if(nativeEpisodes.active()&&event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)nativeEpisodes.dismiss();return true;}
         if(episodeGroups!=null&&episodeGroups.key(event))return true;
         if(event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP&&!event.isCanceled()){if(sitePicker.showing()){if(mobile||!sitePicker.back())sitePicker.dismiss();}else if(personPopup!=null&&personPopup.showing())personPopup.handleBack();else if(!mobile&&(scroll.getScrollY()>0||!playButton.isFocused()))navigation.focusPrimary();else activity.finish();}return true;}
@@ -369,17 +371,18 @@ final class TvDetailPage implements DetailPage {
         actorFallback.setVisibility(value.actors.isEmpty()?View.VISIBLE:View.GONE);actorFallback.setText(value.cast.isEmpty()?(value.complete?"暂无演员资料":"演员资料加载中…"):value.cast);
         if(previous==null||previous.actors!=value.actors){portraits.clear();actors.removeAllViews();
         for(MobileDetailMetadata.Actor actor:value.actors){LinearLayout cell=column();cell.setPadding(dp(6),dp(8),dp(6),dp(8));
-            cell.setFocusable(true);cell.setBackground(focusBackground(activity));
+            cell.setFocusable(true);DetailCardStyle.apply(cell);
             String role=actor.role.isEmpty()?"":"导演".equals(actor.role)?"，"+actor.role:"，饰 "+actor.role;
             cell.setContentDescription(actor.name+role+"，查看相关作品");cell.setOnClickListener(view->openPerson(actor));
             ImageView image=new DetailImageView(activity);image.setContentDescription(actor.name);cell.addView(image,new LinearLayout.LayoutParams(dp(64),dp(68)));
-            TextView name=label(actor.name,12);name.setMaxLines(1);cell.addView(name);
+            TextView name=label(actor.name,12);DetailCardStyle.text(name);name.setMaxLines(1);cell.addView(name);
             if(!actor.role.isEmpty()){TextView character=label(actor.role,10);character.setMaxLines(1);cell.addView(character);}
             actors.addView(cell,new LinearLayout.LayoutParams(dp(80),-2));portraits.add(new Portrait(image,actor.image));}}
         actorTheme();renderBranding();refreshActions();refresh(BackdropSettings.read(activity).proxy);
     }
+    boolean portraitArtwork(){return mobile&&(!DetailTheme.library(activity,mobile)||content.getHeight()>=content.getWidth());}
     @Override public void refresh(String proxy){
-        if(!mounted)return;List<String> artwork=metadata==null?Collections.emptyList():mobile&&!DetailTheme.library(activity,mobile)?metadata.posterPaths:metadata.backdropPaths;
+        if(!mounted)return;List<String> artwork=metadata==null?Collections.emptyList():portraitArtwork()?metadata.posterPaths:metadata.backdropPaths;
         if(!DetailHero.accept(artwork,5).isEmpty())hero.load(artwork,proxy);else if(source!=null)hero.loadSource(sourceArtwork,proxy);
         if(metadata!=null)titleArt.load(metadata.branding.logos,proxy);
         if(images==null)images=new DetailThumbnails(activity,proxy,!mobile);images.begin();

@@ -515,6 +515,7 @@ class DetailHero extends View implements CacheMaintenance.Client {
         paint.setShader(null);paint.setColorFilter(null);paint.setAlpha(255);int photoHeight=Math.max(1,getHeight());
         gradients(w,photoHeight);paint.setShader(tailGradient);tintTail();
         int save=canvas.save();canvas.translate(0,top);float start=Math.max(0,top+photoHeight*(portrait?.48f:.30f));canvas.drawRect(0,start-top,w,height-top,paint);canvas.restoreToCount(save);
+        paint.setColorFilter(null);if(!portrait&&(presentation==1||presentation==DetailTheme.TV_THUNDER||presentation==LIBRARY_HOME)){paint.setShader(sideGradient);canvas.drawRect(0,Math.max(0,top),w,Math.min(height,top+photoHeight),paint);}
         paint.setColorFilter(null);paint.setShader(darkness);if(darkness!=null)canvas.drawRect(0,Math.max(0,top+heroHeight),w,height,paint);paint.setShader(null);
     }
     private void tintTail(){if(seamlessTail){int floor=surface(colour);if(tailTint==null||tailTintColour!=floor){tailTintColour=floor;tailTint=new android.graphics.PorterDuffColorFilter(floor,android.graphics.PorterDuff.Mode.SRC_IN);}paint.setColorFilter(tailTint);}}

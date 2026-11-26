@@ -11,7 +11,7 @@ import java.util.List;
 /** Uses the existing native preference rows and dialogs for Leotv's own settings. */
 public final class Personalization {
     private static final String TAG = "leotv_detail_settings";
-    private static final String THEME = "详情页主题", ENDPOINT = "TMDB配置", SEARCH = "全局搜索", HOME = "新主页", RECENT = "新主页最近观看", CACHE="首页缓存上限";
+    private static final String THEME = "详情页主题", ENDPOINT = "TMDB配置", SEARCH = "全局搜索", HOME = "新主页", HOME_THEME="新主页主题", RECENT = "新主页最近观看", CACHE="首页缓存上限";
     private Personalization() {}
 
     public static void attach(Activity activity, View root) {
@@ -44,9 +44,12 @@ public final class Personalization {
                 () -> {MetadataSettings.setResourceGlobalSearch(activity,!MetadataSettings.resourceGlobalSearch(activity));refresh(activity,rows);});
         add(activity, second, template, summary, HOME,
                 () -> {MetadataSettings.setNewHome(activity,!MetadataSettings.newHome(activity));refresh(activity,rows);});
+        LinearLayout homeThemes=rows;
+        if(!Device.MOBILE){homeThemes=new LinearLayout(activity);homeThemes.setOrientation(LinearLayout.HORIZONTAL);LinearLayout.LayoutParams line=new LinearLayout.LayoutParams(-1,-2);line.topMargin=rowSpacing(target);rows.addView(homeThemes,line);}
+        add(activity,homeThemes,template,summary,HOME_THEME,()->NativeDialogs.choose(activity,HOME_THEME,HomeTheme.NAMES,MetadataSettings.homeTheme(activity),index->{MetadataSettings.setHomeTheme(activity,index);refresh(activity,rows);}));
         if(!Device.MOBILE){
+            add(activity,homeThemes,template,summary,RECENT,()->{MetadataSettings.setNewHomeRecent(activity,!MetadataSettings.newHomeRecent(activity));refresh(activity,rows);});
             LinearLayout third=new LinearLayout(activity);third.setOrientation(LinearLayout.HORIZONTAL);LinearLayout.LayoutParams line=new LinearLayout.LayoutParams(-1,-2);line.topMargin=rowSpacing(target);rows.addView(third,line);
-            add(activity,third,template,summary,RECENT,()->{MetadataSettings.setNewHomeRecent(activity,!MetadataSettings.newHomeRecent(activity));refresh(activity,rows);});
             add(activity,third,template,summary,CACHE,()->cacheLimit(activity,rows));
         }
         if(Device.MOBILE)add(activity,rows,template,summary,CACHE,()->cacheLimit(activity,rows));
@@ -77,6 +80,7 @@ public final class Personalization {
         summary(endpoint,custom?"自定义":"默认内置");
         summary(rows.findViewWithTag(SEARCH), MetadataSettings.resourceGlobalSearch(activity)?"开启":"关闭");
         summary(rows.findViewWithTag(HOME), MetadataSettings.newHome(activity)?"开启":"关闭");
+        summary(rows.findViewWithTag(HOME_THEME),HomeTheme.NAMES[MetadataSettings.homeTheme(activity)]);
         summary(rows.findViewWithTag(RECENT),MetadataSettings.newHomeRecent(activity)?"开启":"关闭");
         summary(rows.findViewWithTag(CACHE),MetadataSettings.homeCacheMb(activity)+" MB");
         summary(rows.findViewWithTag("视频预加载"),PreloadSettings.enabled(activity)?"开启":"关闭");

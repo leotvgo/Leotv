@@ -11,9 +11,12 @@ final class DanmakuEffectPolicy {
         value=(value^(value>>>27))*0x94d049bb133111ebL;
         return value^(value>>>31);
     }
+    private static final int[] ORDINARY_STYLES={0,1,3,4,5,AVATAR,NEON_TRAIL};
     static int style(long token,int percent){
         int rate=Math.max(0,Math.min(100,percent));
-        return (token&Long.MAX_VALUE)%100>=rate?-1:(int)((token>>>8)%STYLES);
+        if((token&Long.MAX_VALUE)%100>=rate)return -1;
+        int weighted=(int)((token>>>8)%13);if(weighted<3)return 2;if(weighted<6)return PETALS;
+        return ORDINARY_STYLES[weighted-6];
     }
     static boolean eligible(String text,int type){return text!=null&&text.length()>=2&&text.length()<=80
             &&text.indexOf('\n')<0&&text.indexOf('\r')<0&&(type==1||type==4||type==5||type==6);}

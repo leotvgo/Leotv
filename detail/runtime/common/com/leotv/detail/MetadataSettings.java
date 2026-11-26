@@ -60,6 +60,8 @@ public final class MetadataSettings {
     public static void setResourceGlobalSearch(Context context, boolean enabled) { prefs(context).edit().putBoolean("resource_global_search", enabled).apply(); }
     public static boolean newHome(Context context) { return prefs(context).getBoolean("new_home", true); }
     public static void setNewHome(Context context, boolean enabled) { prefs(context).edit().putBoolean("new_home", enabled).apply(); }
+    public static int homeTheme(Context context){int value=prefs(context).getInt("new_home_theme",0);return value>=0&&value<HomeTheme.NAMES.length?value:0;}
+    public static void setHomeTheme(Context context,int value){if(value<0||value>=HomeTheme.NAMES.length)throw new IllegalArgumentException("新主页主题无效");prefs(context).edit().putInt("new_home_theme",value).apply();}
     public static boolean newHomeRecent(Context context){return prefs(context).getBoolean("new_home_recent",true);}
     public static void setNewHomeRecent(Context context,boolean enabled){prefs(context).edit().putBoolean("new_home_recent",enabled).apply();}
     public static int homeCacheMb(Context context){return Math.max(100,Math.min(2000,prefs(context).getInt("home_cache_mb",500)));}

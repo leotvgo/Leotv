@@ -269,6 +269,11 @@ def check_contract(root, variant, project=None):
         contracts['androidx/leanback/widget/ArrayObjectAdapter'] = (['size()I', 'get(I)Ljava/lang/Object;',
             '<init>(Landroidx/leanback/widget/Presenter;)V',
             'setItems(Ljava/util/List;Landroidx/leanback/widget/DiffCallback;)V','notifyArrayItemRangeChanged(II)V'], [])
+    if not mobile:
+        contracts['androidx/leanback/widget/ClassPresenterSelector']=(['<init>()V','addClassPresenter(Ljava/lang/Class;Landroidx/leanback/widget/Presenter;)Landroidx/leanback/widget/ClassPresenterSelector;'],[])
+        contracts['androidx/leanback/widget/VerticalGridView']=(['<init>(Landroid/content/Context;)V','setNumColumns(I)V','setColumnWidth(I)V'],[])
+        contracts['androidx/leanback/widget/BaseGridView'][0].extend(['setExtraLayoutSpace(I)V','setFocusScrollStrategy(I)V','setOnChildSelectedListener(Landroidx/leanback/widget/OnChildSelectedListener;)V'])
+        contracts['androidx/leanback/widget/ArrayObjectAdapter'][0].extend(['<init>(Landroidx/leanback/widget/PresenterSelector;)V','indexOf(Ljava/lang/Object;)I','addAll(ILjava/util/Collection;)V','clear()V'])
     checked = 0
     paging_lock = json.loads((root / 'detail/category-paging-source-lock.json').read_text())[variant]
     for name, digest in paging_lock.items():

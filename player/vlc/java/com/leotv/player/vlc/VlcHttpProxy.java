@@ -236,11 +236,15 @@ public final class VlcHttpProxy implements Closeable {
         } catch (IllegalArgumentException e) { throw new IOException("Invalid VLC manifest URI", e); }
     }
 
-    public void close() {
+    public void interrupt() {
         if (closed) return; closed = true;
         try { server.close(); } catch (IOException ignored) { }
         workers.shutdownNow();
         synchronized (sockets) { for (Socket socket : sockets) try { socket.close(); } catch (IOException ignored) { } sockets.clear(); }
-        synchronized (connections) { for (HttpURLConnection connection : connections) connection.disconnect(); connections.clear(); }
+    }
+    public void close() {
+        interrupt();
+        List<HttpURLConnection> remote; synchronized(connections){remote=new ArrayList<HttpURLConnection>(connections);connections.clear();}
+        for(HttpURLConnection connection:remote)connection.disconnect();
     }
 }

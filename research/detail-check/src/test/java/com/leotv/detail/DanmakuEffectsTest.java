@@ -45,6 +45,13 @@ public class DanmakuEffectsTest {
                 assertEquals(saves,canvas.getSaveCount());assertEquals(timestamp,item.a);assertEquals("虚构炫彩弹幕",item.c);assertEquals(24,displayer.a.c.getTextSize(),0);
             }
             assertEquals(9,cache().size());
+            for(int board=0;board<5;board++){
+                String text="虚构底板组合 "+board;Comment item=comment(displayer.a.c,2,text);boolean found=false;
+                for(long time=0;time<100000;time++){long token=DanmakuEffectPolicy.token(1234567,time,text);if(DanmakuEffectPolicy.style(token,15)==2&&(token>>>40)%5==board&&((token>>>32)&3)==0){item.a=time;found=true;break;}}
+                assertTrue("Composed board/petal/orbit variant unavailable",found);DanmakuEffects.measure(item,displayer.a.c);assertTrue(DanmakuEffects.draw(item,displayer,canvas,0,0));
+                boolean composed=false;for(Object tile:cache().values()){Field field=tile.getClass().getDeclaredField("plateVariant");field.setAccessible(true);Field flowers=tile.getClass().getDeclaredField("petalOverlay");flowers.setAccessible(true);if(field.getInt(tile)==board&&flowers.getBoolean(tile))composed=true;}assertTrue("The actual cached tile must retain its board and petal overlay",composed);
+            }
+
             for(Object tile:cache().values()){Field bitmapField=tile.getClass().getDeclaredField("bitmap");bitmapField.setAccessible(true);assertEquals("Pixel-measured glyph tiles must not rescale to the destination canvas density",Bitmap.DENSITY_NONE,((Bitmap)bitmapField.get(tile)).getDensity());}
             for(int variant=0;variant<8;variant++){
                 String text="新增虚构头像贴纸 "+variant;Comment item=comment(displayer.a.c,DanmakuEffectPolicy.AVATAR,text);boolean matched=false;

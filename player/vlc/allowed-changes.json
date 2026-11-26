@@ -31,7 +31,8 @@
     "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": [
       "S0()V",
       "U0(I)V",
-      "T(Lw3/e;)V"
+      "T(Lw3/e;)V",
+      "i(Ljava/lang/Integer;)V"
     ],
     "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": [
       "s0()V",

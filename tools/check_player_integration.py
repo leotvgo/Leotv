@@ -21,8 +21,10 @@ def check(root=ROOT):
     repairs=manifest.get('authorized_650_source_repairs',{})
     incremental=manifest.get('authorized_651_source_repairs',{})
     current=manifest.get('authorized_652_source_repairs',{})
+    home_ui=manifest.get('authorized_home_ui_source_repairs',{})
+    unified=manifest.get('authorized_653_source_repairs',{})
     def expected_revision(name,previous,start=651):
-        for revision,changes in ((651,incremental),(652,current)):
+        for revision,changes in ((651,incremental),(652,current),(653,home_ui),(654,unified)):
             if revision<start or name not in changes:continue
             repair=changes[name]
             if repair['before_sha256']!=previous or not repair.get('reason'):
@@ -33,8 +35,14 @@ def check(root=ROOT):
         if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=expected_revision(name,repair['after_sha256'],652):
             raise ValueError('651 source or its declared 652 successor differs: '+name)
     for name,repair in current.items():
-        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=repair['after_sha256']:
+        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=expected_revision(name,repair['after_sha256'],653):
             raise ValueError('652 source differs from its declared repair: '+name)
+    for name,repair in home_ui.items():
+        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=expected_revision(name,repair['after_sha256'],654):
+            raise ValueError('Authorized home/UI source differs from its recorded scope: '+name)
+    for name,repair in unified.items():
+        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=repair['after_sha256']:
+            raise ValueError('Unified 653 source differs from its declared successor: '+name)
     for name, digest in manifest['preserved_649_sources'].items():
         if name in repairs and repairs[name]['before_sha256']!=digest:
             raise ValueError('650 repair changed the recorded 649 baseline: '+name)
@@ -102,8 +110,8 @@ def check(root=ROOT):
     print('Player variant/API23/JNI/input/source delivery and 649 baseline / authorized 650 repair gates passed')
     return {'preserved_649_sources': len(manifest['preserved_649_sources']), 'variants': list(native['variants']),
             'unchanged_649_sources':len(set(manifest['preserved_649_sources'])-set(repairs)),
-            'authorized_650_source_repairs':len(repairs), 'authorized_651_source_repairs':len(incremental), 'authorized_652_source_repairs':len(current),
-            'native_mode': 'fixed-input', 'missing_class_suppression': False}
+            'authorized_650_source_repairs':len(repairs), 'authorized_651_source_repairs':len(incremental), 'authorized_652_source_repairs':len(current), 'authorized_home_ui_source_repairs':len(home_ui),
+            'authorized_653_source_repairs':len(unified), 'native_mode': 'fixed-input', 'missing_class_suppression': False}
 
 
 if __name__ == '__main__':

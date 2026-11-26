@@ -86,19 +86,37 @@ final class MpvStore {
             if(result==null)throw new IOException("字体没有可用 Unicode 字体族名");return result;
         }
     }
+    private File presetFonts()throws IOException {
+        File preset=new File(directory,"preset-fonts");if(!preset.isDirectory()&&!preset.mkdirs())throw new IOException("无法创建原生字幕字体目录");
+        // libass's fixed build has no required system font provider; load one native Latin/CJK fallback,
+        // rather than importing user-selected typography or every system font on a low-memory phone.
+        for(String[] candidates:new String[][]{{"NotoSans-Regular.ttf","Roboto-Regular.ttf","DroidSans.ttf"},{"NotoSansCJK-Regular.ttc","NotoSansSC-Regular.otf","DroidSansFallback.ttf"}}){
+            for(String name:candidates){File source=new File("/system/fonts",name);if(!source.isFile()||source.length()>24*1024*1024)continue;File target=new File(preset,name);
+                if(!target.isFile()||target.length()!=source.length())try(InputStream in=new FileInputStream(source);OutputStream out=new FileOutputStream(target)){copy(in,out,24*1024*1024);}
+                break;
+            }
+        }
+        return preset;
+    }
+    private void nativeCaption(Map<String,String> options){
+        if(!MobileMpv.preferenceBoolean(context,"caption",false))return;
+        android.view.accessibility.CaptioningManager manager=(android.view.accessibility.CaptioningManager)context.getSystemService(Context.CAPTIONING_SERVICE);if(manager==null)return;
+        android.view.accessibility.CaptioningManager.CaptionStyle style=manager.getUserStyle();
+        options.put("sub-scale",Float.toString(manager.getFontScale()));
+        if(style.hasForegroundColor())options.put("sub-color",String.format(Locale.ROOT,"#%08X",style.foregroundColor));
+        if(style.hasEdgeColor())options.put("sub-border-color",String.format(Locale.ROOT,"#%08X",style.edgeColor));
+        options.put("sub-border-size",style.edgeType==android.view.accessibility.CaptioningManager.CaptionStyle.EDGE_TYPE_OUTLINE?"3":"0");
+        options.put("sub-shadow-offset",style.edgeType==android.view.accessibility.CaptioningManager.CaptionStyle.EDGE_TYPE_DROP_SHADOW?"2":"0");
+    }
     LinkedHashMap<String,String> options() throws Exception {
         LinkedHashMap<String,String> o=MpvOptions.parse(MpvOptions.DEFAULT_CONFIG);o.putAll(MpvOptions.parse(readConfig()));
-        String selectedFont=prefs.getString("font","");if(!selectedFont.isEmpty()){boolean found=false;for(Item i:items())if(i.id.equals(selectedFont)&&i.kind.equals("font")&&file(i).isFile())found=true;if(!found)throw new IOException("所选字体副本已丢失，请重新选择字体");}
         MpvOptions.decoder(o,prefs.getInt("decode",0));
         o.put("ao",MpvOptions.choice("ao",prefs.getString("ao","audiotrack,opensles"),"audiotrack,opensles","audiotrack","opensles"));
         o.put("video-sync",MpvOptions.choice("video-sync",prefs.getString("video-sync","audio"),"audio","display-resample"));
-        // Keep 649 UI defaults/ranges, all inside the fixed native float option ranges.
-        for(String[] entry:new String[][]{{"audio-delay","0","-30","30"},{"sub-delay","0","-600","600"},{"sub-font-size","40","1","200"},{"sub-scale","1","0.1","5"},{"sub-border-size","3","0","10"},{"sub-shadow-offset","0","0","10"},{"sub-pos","100","0","100"}})
-            o.put(entry[0],MpvOptions.numeric(entry[0],prefs.getString(entry[0],entry[1]),Double.parseDouble(entry[2]),Double.parseDouble(entry[3])));
-        o.put("sub-color",MpvOptions.color(prefs.getString("sub-color","#FFFFFFFF")));
-        o.put("sub-border-color",MpvOptions.color(prefs.getString("sub-border-color","#FF000000")));
-        o.put("sub-ass-override",MpvOptions.choice("sub-ass-override",prefs.getString("sub-ass-override","no"),"no","force"));
-        o.put("sub-fonts-dir",fontsDirectory.getAbsolutePath());o.put("sub-font",prefs.getString("sub-font","sans-serif"));
+        // Preserve styled/animated ASS and embedded fonts. Removed custom form values never override a file.
+        o.put("sub-ass-override","no");o.put("embeddedfonts","yes");
+        o.put("sub-fonts-dir",presetFonts().getAbsolutePath());
+        nativeCaption(o);
         o.put("glsl-shaders",shaderList());return o;
     }
 }

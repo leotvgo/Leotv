@@ -41,6 +41,8 @@ jobs:
         run: python3 -B research/check_detail_progress.py
       - name: Verify VLC cached timestamp interpolation and native pause, seek and rate boundaries
         run: python3 -B research/check_player_clocks.py
+      - name: Verify VLC decoder teardown, inherited barriers, native handoff and exit cancellation
+        run: python3 -B research/check_vlc_lifecycle.py
       - name: Verify stable effect sampling, nine styles and one animation using fictional comments
         run: python3 -B research/check_danmaku_effect_policy.py
 

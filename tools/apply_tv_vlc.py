@@ -101,7 +101,13 @@ def apply(project, root, variant):
             text = replace_method(text, 'n0(I)V', select)
             text = replace_method(text, 'V(Landroidx/media3/ui/PlayerView;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V',
                 lambda body: prepend(body, call('bind', 'LC3/e;Landroid/view/View;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V', 'p0, p1, p2')))
-            text = replace_method(text, LOAD, lambda body: prepend(body, call('load', 'LC3/e;' + LOAD[3:], 'p0 .. p9', True)))
+            text = replace_method(text, LOAD, lambda body: prepend(body,
+                call('deferLoad','LC3/e;'+LOAD[3:-1]+'Z','p0 .. p9',True)+'''
+    move-result v0
+    if-eqz v0, :leotv_vlc_ready_for_media
+    return-void
+    :leotv_vlc_ready_for_media
+'''+call('load','LC3/e;'+LOAD[3:],'p0 .. p9',True)))
             # Preserve the original danmaku/MediaSession control tails.
             for signature, method, args in [('b0()V', 'pause', 'p0'), ('c0()V', 'play', 'p0'), ('g0(J)V', 'seek', 'p0, p1, p2'),
                     ('o0(F)Ljava/lang/String;', 'rate', 'p0, p1'), ('s0()V', 'stop', 'p0'), ('d0()V', 'release', 'p0'), ('h0()V', 'liveEdge', 'p0')]:
@@ -167,6 +173,7 @@ def apply(project, root, variant):
         else:
             text = extend_names(text)
             if name == VIDEO:
+                text=replace_method(text,'i(Ljava/lang/Integer;)V',lambda body:prepend(body,call('prepareSelection','Landroid/app/Activity;Ljava/lang/Integer;)V','p0, p1')))
                 native = '    invoke-virtual {v1}, Lcom/fongmi/android/tv/bean/Site;->getPlayerType()I'
                 if text.count(native) != 1:
                     raise ValueError('Original TV Site retry selection changed')

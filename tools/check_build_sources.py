@@ -16,6 +16,7 @@ from build_preserved import VARIANTS
 from check_native_details import check_contract
 from apply_qr_web import check_contract as check_qr_web_contract
 from check_tmdb_loading import check as check_tmdb_loading
+from check_home_themes import check as check_home_themes
 from check_cache_maintenance import check as check_cache_maintenance, check_native as check_native_cache
 from check_detail_search import check as check_detail_search
 from check_tmdb_optimization import check as check_tmdb_optimization
@@ -42,6 +43,7 @@ LOCKS = ('branding/source-lock.json', 'detail/native-source-lock.json',
 
 def check_sources(root=ROOT):
     check_tmdb_loading(root)
+    check_home_themes(root)
     check_cache_maintenance(root)
     check_detail_search(root)
     check_tmdb_optimization(root)
@@ -112,7 +114,7 @@ def check_sources(root=ROOT):
         raise ValueError('Native recent history must retain the original outer list side padding.')
     if 'hero.externalTail(true)' not in home or 'hero.drawHomeFade(canvas' not in home or 'if(externalTail)' not in hero or 'setWillNotDraw(false)' not in hero or 'hero.onFrame(' not in home:
         raise ValueError('TV artwork must draw in its own View with a continuous parent fade before list content.')
-    if 'else addView(hero,0,' not in home or 'child==scroll){backdrop.setBounds(0,0,getWidth(),getHeight());backdrop.draw(canvas)' not in home or 'if(!phone)hero.setVisibility(visible?VISIBLE:GONE)' not in home or 'hero.setTranslationY(top)' not in home:
+    if 'else addView(hero,0,' not in home or 'child==viewport()){backdrop.setBounds(0,0,getWidth(),getHeight());backdrop.draw(canvas)' not in home or 'if(!phone)hero.setVisibility(visible?VISIBLE:GONE)' not in home or 'hero.setTranslationY(top)' not in home:
         raise ValueError('TV hero must draw behind the scrolling content and follow its layout and visibility.')
     if 'canvas.drawRect(0,start-top,w,height-top,paint)' not in hero or 'clipHeight>h&&imageBounds.bottom<clipHeight' not in hero:
         raise ValueError('Home tail must continue below the hero layout edge without exposing the image clip.')

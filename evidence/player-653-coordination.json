@@ -1,0 +1,12 @@
+{
+  "other_orca_session": "1e6cf4f5-cffd-4c5b-896f-35fb1b2365b1",
+  "source_state": "Home/UI principal changes staged; TV viewport edits unfinished and unstaged; session show reports done/idle",
+  "user_authorized_unified_completion": true,
+  "messages_sent": [
+    "msg_0c29475a82b7",
+    "msg_626a1b472d1f",
+    "msg_094a537d581d"
+  ],
+  "ownership": "Original staged source preserved and merged; this session completes viewport and player fixes. No worker restarted or user data modified.",
+  "pending_device_acceptance": true
+}

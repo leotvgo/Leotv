@@ -55,10 +55,14 @@ def check(root):
         raise ValueError('Effect glyphs must not acquire density rescaling or the added neon blur.')
     if 'Paint.FILTER_BITMAP_FLAG' in effects or 'letters.setSubpixelText(false)' not in effects:
         raise ValueError('Moving glyph tiles must use pixel-aligned sampling without extra subpixel filtering.')
-    for token in ('DanmakuAvatar.decode(variant)','KEYS.size()>64','KEYS.clear()','DISPLAYER_STYLE.get','portraitBytes()','BORDER_PALETTES[variant]'):
+    for token in ('DanmakuAvatar.decode(variant)','KEYS.size()>64','KEYS.clear()','DISPLAYER_STYLE.get','portraitBytes()','BORDER_PALETTES[palette]'):
         if token not in effects:raise ValueError('Bounded avatar/border/cache hot-path contract missing: '+token)
+    for token in ('%13','weighted<3','weighted<6','ORDINARY_STYLES[weighted-6]'):
+        if token not in policy:raise ValueError('Requested orbit/petal weighted sampling contract missing: '+token)
+    for token in ('new PathMeasure(track,true)','orbit.getPosTan','orbitLight(canvas,phase,firstLight','tint(colors[0],alpha,shade)','panel(board,inset,radius)','Path.FillType.EVEN_ODD','tile.petalOverlay','((token>>>32)&3)==0'):
+        if token not in effects:raise ValueError('Orbit colors or varied cached backgrounds missing: '+token)
     if 'VARIANTS=8' not in avatar:raise ValueError('The eight authorized avatar variants are required')
-    return {'avatar_variants':8,'border_palettes':8,'styles':9,'reference_styles':['portrait_capsule','neon_orb_trail','falling_petals'],
+    return {'backplate_shapes':5,'composed_petal_overlays':True,'avatar_variants':8,'border_palettes':10,'styles':9,'reference_styles':['portrait_capsule','neon_orb_trail','falling_petals'],
             'portrait_sha256':record['asset_sha256'],'default_fraction':15,'default_animation':True,'native_timeline_and_coordinates':True,
             'max_simultaneous_animations':1,'max_bitmap_bytes':2*1024*1024,'max_bitmap_entries':64,
             'native_opacity_and_font_size':True,'no_extra_frame_loop':True}

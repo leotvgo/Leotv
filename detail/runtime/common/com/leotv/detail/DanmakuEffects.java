@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.graphics.RectF;
 import android.graphics.RadialGradient;
 import android.graphics.Shader;
@@ -37,7 +38,7 @@ public final class DanmakuEffects {
         {0xffffd479,0xffffb95c,0xffffe5ab},{0xffff69b7,0xffa68bff,0xff67edff},
         {0xff56ffd2,0xff5cbbff,0xffd599ff},{0xffffa55d,0xffff69bb,0xffc190ff},
         {0xff87e6ff,0xffd1aaff,0xffffa0dc},{0xffffe98b,0xff91f4cd,0xff7ecbff},
-        {0xffefb6ff,0xffa78bff,0xff84f3ee},{0xffffbddb,0xffffe0a1,0xffb3f3ff}};
+        {0xffefb6ff,0xffa78bff,0xff84f3ee},{0xffffbddb,0xffffe0a1,0xffb3f3ff},{0xffff6478,0xffac88ff,0xff5cbfff},{0xff82ffbd,0xffdfff8a,0xffffd966}};
 
     private static final class Options {
         final boolean enabled,animation;final int rate;final long seed;
@@ -68,9 +69,9 @@ public final class DanmakuEffects {
     }
     private static int portraitBytes(){int bytes=portrait==null?0:portrait.getByteCount();for(Bitmap image:portraits)if(image!=null)bytes+=image.getByteCount();return bytes;}
     private static final class RenderKey {
-        final int style,width,height,bits,variant;final Object font;final String text,key;
-        RenderKey(int style,int width,int height,float size,Object font,String text,int variant){this.style=style;this.width=width;this.height=height;bits=Float.floatToIntBits(size);this.font=font;this.text=text;this.variant=variant;key=style+":"+width+":"+height+":"+bits+":"+font+":"+variant+":"+text;}
-        boolean matches(int s,int w,int h,float size,Object face,String value,int v){return style==s&&width==w&&height==h&&bits==Float.floatToIntBits(size)&&font==face&&text.equals(value)&&variant==v;}
+        final int style,width,height,bits,variant,palette,plate;final boolean petals;final Object font;final String text,key;
+        RenderKey(int style,int width,int height,float size,Object font,String text,int variant,int palette,boolean petals,int plate){this.plate=plate;this.petals=petals;this.palette=palette;this.style=style;this.width=width;this.height=height;bits=Float.floatToIntBits(size);this.font=font;this.text=text;this.variant=variant;key=style+":"+width+":"+height+":"+bits+":"+font+":"+variant+":"+palette+":"+petals+":"+plate+":"+text;}
+        boolean matches(int s,int w,int h,float size,Object face,String value,int v,int p,boolean flower,int board){return plate==board&&petals==flower&&palette==p&& style==s&&width==w&&height==h&&bits==Float.floatToIntBits(size)&&font==face&&text.equals(value)&&variant==v;}
     }
     static void invalidate(Object renderer){
         try{Object context=PreloadHost.field(renderer,"a"),flags=PreloadHost.field(context,"u");
@@ -102,18 +103,18 @@ public final class DanmakuEffects {
             // Oversized or unmeasured comments stay on the ordinary renderer.
             if(size<=0||height<size)return false;
             int alpha=painter.opacity.getInt(nativeStyle);
-            long token=DanmakuEffectPolicy.token(options.seed,access.time.getLong(item),text);int variant=(int)((token>>>16)&7);
-            RenderKey cached=KEYS.get(item);if(cached==null||!cached.matches(style,width,height,size,nativePaint.getTypeface(),text,variant)){cached=new RenderKey(style,width,height,size,nativePaint.getTypeface(),text,variant);KEYS.put(item,cached);if(KEYS.size()>64)KEYS.remove(KEYS.keySet().iterator().next());}String key=cached.key;
+            long token=DanmakuEffectPolicy.token(options.seed,access.time.getLong(item),text);int variant=(int)((token>>>16)&7),palette=style==2?(int)((token>>>20)%BORDER_PALETTES.length):variant;boolean petals=style!=DanmakuEffectPolicy.PETALS&&((token>>>32)&3)==0;int plate=(int)((token>>>40)%5);
+            RenderKey cached=KEYS.get(item);if(cached==null||!cached.matches(style,width,height,size,nativePaint.getTypeface(),text,variant,palette,petals,plate)){cached=new RenderKey(style,width,height,size,nativePaint.getTypeface(),text,variant,palette,petals,plate);KEYS.put(item,cached);if(KEYS.size()>64)KEYS.remove(KEYS.keySet().iterator().next());}String key=cached.key;
             Tile tile=CACHE.get(key);
             if(tile==null){Paint typography=new Paint(nativePaint);typography.setTextSize(size);if(width<typography.measureText(text)+DanmakuEffectPolicy.extraWidth(style,size)-size*.4f)return false;
-                evict(width*height*4+(style==DanmakuEffectPolicy.AVATAR&&!hasPortrait(variant)?DanmakuAvatar.PIXEL_BYTES:0));tile=new Tile(text,typography,width,height,style,variant);CACHE.put(key,tile);}
+                evict(width*height*4+(style==DanmakuEffectPolicy.AVATAR&&!hasPortrait(variant)?DanmakuAvatar.PIXEL_BYTES:0));tile=new Tile(text,typography,width,height,style,variant,palette,petals,plate);CACHE.put(key,tile);}
             long now=SystemClock.elapsedRealtime();
-            boolean moving=options.animation&&DanmakuEffectPolicy.animated(style)&&ANIMATION.acquire(token,now);
+            boolean moving=options.animation&&(DanmakuEffectPolicy.animated(style)||tile.petalOverlay)&&ANIMATION.acquire(token,now);
             Object timer=access.timer.get(item);if(access.frameTime==null)access.frameTime=timer.getClass().getField("a");long playback=access.frameTime.getLong(timer);
             float phase=moving?(playback%2000)/2000f:0;
             int save=canvas.save();
             try{canvas.translate(Math.round(left),Math.round(top));canvas.clipRect(0,0,width,height);BITMAP_PAINT.setAlpha(Math.max(0,Math.min(255,alpha)));
-                if(style==DanmakuEffectPolicy.PETALS)tile.decorate(canvas,phase,moving,alpha);
+                if(style==DanmakuEffectPolicy.PETALS)tile.decorate(canvas,phase,moving,alpha);else if(tile.petalOverlay)tile.petals(canvas,phase,moving,alpha);
                 canvas.drawBitmap(tile.bitmap,0,0,BITMAP_PAINT);
                 if(style!=DanmakuEffectPolicy.PETALS)tile.decorate(canvas,phase,moving,alpha);}
             finally{canvas.restoreToCount(save);}
@@ -142,28 +143,35 @@ public final class DanmakuEffects {
         while(iterator.hasNext()&&(bytes+incoming>DanmakuEffectPolicy.CACHE_BYTES||CACHE.size()>=DanmakuEffectPolicy.CACHE_ENTRIES)){Tile oldest=iterator.next();bytes-=oldest.bitmap.getByteCount();oldest.bitmap.recycle();iterator.remove();}
     }
     private static final class Tile {
-        final Bitmap bitmap;final int style,width,height;final float size;
+        final Bitmap bitmap;final int style,width,height;final float size;final boolean petalOverlay;final int plateVariant;
         final Paint ink=new Paint(Paint.ANTI_ALIAS_FLAG),light=new Paint(Paint.ANTI_ALIAS_FLAG);
-        final Path star=new Path(),rocket=new Path(),petal=new Path();
+        final Path star=new Path(),rocket=new Path(),petal=new Path(),plate=new Path();
+        final PathMeasure orbit;final float[] lightPosition=new float[2];final int firstLight,secondLight;
         final Shader halo,trail,petalColour;final float[] petalOffsets,petalAngles;
         final RectF mouth=new RectF();
-        Tile(String text,Paint typography,int width,int height,int style,int variant){
-            this.style=style;this.width=width;this.height=height;size=typography.getTextSize();
+        Tile(String text,Paint typography,int width,int height,int style,int variant,int palette,boolean petals,int board){
+            plateVariant=board;this.style=style;this.width=width;this.height=height;petalOverlay=petals;size=typography.getTextSize();
             bitmap=Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
             // Native geometry is already in pixels: never rescale a text tile through bitmap density.
             bitmap.setDensity(Bitmap.DENSITY_NONE);Canvas canvas=new Canvas(bitmap);
             halo=style==DanmakuEffectPolicy.NEON_TRAIL?new RadialGradient(size*2.45f,height*.5f,size*.7f,new int[]{0xffe3ffff,0xe067fff0,0x804bdfdc,0x003fbbcd},new float[]{0,.24f,.5f,1},Shader.TileMode.CLAMP):null;
             trail=style==DanmakuEffectPolicy.NEON_TRAIL?new LinearGradient(size*.15f,0,size*2.45f,0,new int[]{0x005761cc,0x826d46d8,0xbe53d7ed,0xff78fff0},null,Shader.TileMode.CLAMP):null;
-            petalColour=style==DanmakuEffectPolicy.PETALS?new LinearGradient(0,-size*.15f,0,size*.15f,0xffffd9eb,0xffe47cae,Shader.TileMode.CLAMP):null;
-            petalOffsets=style==DanmakuEffectPolicy.PETALS?new float[6]:null;petalAngles=style==DanmakuEffectPolicy.PETALS?new float[6]:null;
+            petalColour=(style==DanmakuEffectPolicy.PETALS||petalOverlay)?new LinearGradient(0,-size*.15f,0,size*.15f,0xffffd9eb,0xffe47cae,Shader.TileMode.CLAMP):null;
+            petalOffsets=(style==DanmakuEffectPolicy.PETALS||petalOverlay)?new float[6]:null;petalAngles=(style==DanmakuEffectPolicy.PETALS||petalOverlay)?new float[6]:null;
             if(petalOffsets!=null){java.util.Random random=new java.util.Random(text.hashCode());for(int i=0;i<petalOffsets.length;i++){petalOffsets[i]=random.nextFloat();petalAngles[i]=random.nextInt(180);}}
             int[][] palettes={{0xff34ecff,0xffff4bd8,0xffaf8dff},{0xffffd36b,0xffff75d2,0xff64e9ff},{0xff65ffc6,0xff7e9bff,0xffff70cf},{0xffffed8d,0xffffa33d,0xffff72b7},{0xffffc96d,0xffff8cad,0xff92bfff},{0xff7ff1ff,0xff6e91ff,0xfff881ff},
                     {0xffffd479,0xffffb95c,0xffffe5ab},{0xffccfff7,0xff7ffff0,0xffd6fbff},{0xffffc5dc,0xffffb3d6,0xfff6d5ed}};
-            int[] colors=style<DanmakuEffectPolicy.NEON_TRAIL&&variant>0?BORDER_PALETTES[variant]:palettes[style];float inset=Math.max(1,size*.06f),radius=height*.42f;
+            int[] colors=style<DanmakuEffectPolicy.NEON_TRAIL&&palette>0?BORDER_PALETTES[palette]:palettes[style];float inset=Math.max(1,size*.06f),radius=height*.42f;
+            firstLight=colors[0];secondLight=colors[2];
+            if(style<DanmakuEffectPolicy.NEON_TRAIL)panel(board,inset,radius);
+            if(style==2){Path track=new Path(plate);float margin=Math.max(2,size*.12f);RectF bounds=new RectF();track.computeBounds(bounds,true);android.graphics.Matrix fit=new android.graphics.Matrix();fit.setRectToRect(bounds,new RectF(margin,margin,width-margin,height-margin),android.graphics.Matrix.ScaleToFit.FILL);track.transform(fit);orbit=new PathMeasure(track,true);}else orbit=null;
             if(style<DanmakuEffectPolicy.NEON_TRAIL){
-                ink.setColor(style==0?0x5821193f:style==DanmakuEffectPolicy.AVATAR?0xd0191814:0xc01a1b34);canvas.drawRoundRect(inset,inset,width-inset,height-inset,radius,radius,ink);
+                if(palette==0)ink.setColor(style==0?0x5821193f:style==DanmakuEffectPolicy.AVATAR?0xd0191814:0xc01a1b34);
+                else{int alpha=palette%3==2?88:palette%3==1?148:120;float shade=palette%3==1?.68f:.5f;
+                    ink.setShader(new LinearGradient(0,0,width,palette%3==0?height:0,new int[]{tint(colors[0],alpha,shade),tint(colors[1],Math.max(36,alpha-32),.42f),tint(colors[2],Math.max(48,alpha-12),shade)},null,Shader.TileMode.CLAMP));}
+                canvas.drawPath(plate,ink);ink.setShader(null);
                 ink.setStyle(Paint.Style.STROKE);ink.setStrokeWidth(Math.max(1.5f,size*.065f));ink.setShader(new LinearGradient(0,0,width,height,colors,null,Shader.TileMode.CLAMP));
-                canvas.drawRoundRect(inset,inset,width-inset,height-inset,radius,radius,ink);if(variant==2||variant==6){ink.setStrokeWidth(Math.max(1,size*.035f));float inner=inset+size*.1f;canvas.drawRoundRect(inner,inner,width-inner,height-inner,radius,radius,ink);}ink.setShader(null);ink.setStyle(Paint.Style.FILL);
+                canvas.drawPath(plate,ink);if(board<=1&&(variant==2||variant==6)){ink.setStrokeWidth(Math.max(1,size*.035f));float inner=inset+size*.1f;canvas.drawRoundRect(inner,inner,width-inner,height-inner,radius,radius,ink);}ink.setShader(null);ink.setStyle(Paint.Style.FILL);
             }
             if(style==DanmakuEffectPolicy.AVATAR){
                 float diameter=height*.72f,left=size*.25f,top=(height-diameter)*.5f;RectF bounds=new RectF(left,top,left+diameter,top+diameter);
@@ -186,7 +194,7 @@ public final class DanmakuEffects {
             ink.setAlpha(Math.max(0,Math.min(255,opacity)));float sine=(float)Math.sin(phase*Math.PI*2),cx=size*.68f,cy=height*.5f,r=size*.34f;
             if(style==DanmakuEffectPolicy.PETALS){petals(canvas,phase,moving,opacity);}
             else if(style==2&&moving){
-                float x=size*.2f+(width-size*.4f)*phase;ink.setColor(0xffe4f9ff);ink.setAlpha(opacity);canvas.drawCircle(x,size*.11f,Math.max(1.5f,size*.07f),ink);canvas.drawCircle(width-x,height-size*.11f,Math.max(1.5f,size*.07f),ink);
+                orbitLight(canvas,phase,firstLight,opacity);orbitLight(canvas,(phase+.5f)%1,secondLight,opacity);
             }else if(style==3){
                 int save=canvas.save();canvas.translate(cx,cy);if(moving)canvas.rotate(sine*12);ink.setColor(0xffffdd73);ink.setAlpha(opacity);canvas.drawPath(star,ink);canvas.restoreToCount(save);
                 ink.setColor(0xfff7f4cc);ink.setAlpha(opacity);float pulse=moving?.6f+.4f*(sine+1)*.5f:1;canvas.drawCircle(size*.24f,height*.22f,size*.065f*pulse,ink);canvas.drawCircle(size*1.08f,height*.76f,size*.06f*pulse,ink);
@@ -203,6 +211,23 @@ public final class DanmakuEffects {
                 float radius=height*.36f,centre=size*.25f+radius;double angle=phase*Math.PI*2;ink.setColor(0xfffff2bf);ink.setAlpha(opacity);
                 canvas.drawCircle(centre+(float)Math.cos(angle)*radius,cy+(float)Math.sin(angle)*radius,size*.065f,ink);
             }else if(style==DanmakuEffectPolicy.NEON_TRAIL&&moving){neon(canvas,phase,true,opacity);}
+        }
+        /** All shapes fit the native measured box; no extra per-frame geometry or glyph movement. */
+        private void panel(int kind,float inset,float radius){
+            float left=inset,top=inset,right=width-inset,bottom=height-inset;
+            if(kind==0){plate.addRoundRect(new RectF(left,top,right,bottom),radius,radius,Path.Direction.CW);}
+            else if(kind==1){plate.addRoundRect(new RectF(left,top,right,bottom),size*.18f,size*.18f,Path.Direction.CW);}
+            else if(kind==2){float tail=size*.15f,round=size*.22f,body=bottom-tail;
+                plate.moveTo(left+round,top);plate.lineTo(right-round,top);plate.quadTo(right,top,right,top+round);plate.lineTo(right,body-round);plate.quadTo(right,body,right-round,body);
+                plate.lineTo(right-size*.52f,body);plate.lineTo(right-size*.68f,bottom);plate.lineTo(right-size*.8f,body);plate.lineTo(left+round,body);plate.quadTo(left,body,left,body-round);plate.lineTo(left,top+round);plate.quadTo(left,top,left+round,top);plate.close();
+            }else if(kind==3){plate.setFillType(Path.FillType.EVEN_ODD);plate.addRoundRect(new RectF(left,top,right,bottom),size*.15f,size*.15f,Path.Direction.CW);float r=size*.13f,y=height*.5f;plate.addOval(new RectF(left-r,y-r,left+r,y+r),Path.Direction.CW);plate.addOval(new RectF(right-r,y-r,right+r,y+r),Path.Direction.CW);}
+            else{float cut=size*.24f;plate.moveTo(left+cut,top);plate.lineTo(right,top);plate.lineTo(right,bottom-cut);plate.lineTo(right-cut,bottom);plate.lineTo(left,bottom);plate.lineTo(left,top+cut);plate.close();}
+        }
+        private static int tint(int color,int alpha,float shade){return (alpha<<24)|(Math.round(((color>>>16)&255)*shade)<<16)|(Math.round(((color>>>8)&255)*shade)<<8)|Math.round((color&255)*shade);}
+        private void orbitLight(Canvas canvas,float phase,int color,int opacity){
+            float length=orbit==null?0:orbit.getLength();if(length>0)orbit.getPosTan(phase*length,lightPosition,null);else{lightPosition[0]=size*.2f+(width-size*.4f)*phase;lightPosition[1]=phase<.5f?size*.12f:height-size*.12f;}
+            float radius=Math.max(1.5f,size*.065f);ink.setColor(color);ink.setAlpha(Math.round(opacity*.3f));canvas.drawCircle(lightPosition[0],lightPosition[1],radius*1.55f,ink);
+            ink.setAlpha(opacity);canvas.drawCircle(lightPosition[0],lightPosition[1],radius,ink);ink.setColor(Color.WHITE);ink.setAlpha(opacity);canvas.drawCircle(lightPosition[0],lightPosition[1],radius*.42f,ink);
         }
         private void neon(Canvas canvas,float phase,boolean moving,int opacity){
             float cx=size*2.45f,cy=height*.5f,pulse=moving?(float)Math.sin(phase*Math.PI*2):0;

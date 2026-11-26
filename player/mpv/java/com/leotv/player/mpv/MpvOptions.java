@@ -23,7 +23,7 @@ public final class MpvOptions {
         "sub-shadow-offset", "sub-pos", "sub-delay", "audio-delay", "video-sync", "sub-ass-override",
         "demuxer-cache-dir", "cache-on-disk", "screenshot-directory", "screenshot-template",
         "stream-lavf-o", "demuxer-lavf-o", "vd-lavc-o", "ad-lavc-o", "reset-on-next-file", "resume-playback",
-        "sub-ass-styles", "icc-profile", "lut", "stream-open-filename"));
+        "embeddedfonts", "sub-ass-styles", "icc-profile", "lut", "stream-open-filename"));
     static final String DEFAULT_CONFIG="scale=bilinear\ndscale=bilinear\ncscale=bilinear\ncorrect-downscaling=no\nlinear-downscaling=no\nlinear-upscaling=no\nsigmoid-upscaling=no\ninterpolation=no\nhdr-compute-peak=no\ndither-depth=no\n";
     private MpvOptions() {}
     public static LinkedHashMap<String,String> parse(String content) {
@@ -59,7 +59,7 @@ public final class MpvOptions {
                 key.startsWith("sub-font") || key.contains("-file") || key.contains("-dir") ||
                 key.startsWith("watch-later") || key.startsWith("save-position") || key.startsWith("write-") ||
                 key.equals("vf") || key.equals("af") || key.equals("lavfi-complex"))
-                throw new IllegalArgumentException("第 " + line + " 行：" + key + " 由播放器管理，请使用对应设置");
+                throw new IllegalArgumentException("第 " + line + " 行：" + key + " 由播放器管理，字幕采用原生预设和文件样式");
             result.put(key,val);
         }
         return result;

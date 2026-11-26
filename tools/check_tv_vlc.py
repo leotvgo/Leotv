@@ -19,7 +19,7 @@ METHODS = {
              'V(Landroidx/media3/ui/PlayerView;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V', LOAD,
              'b0()V','c0()V','g0(J)V','h0()V','o0(F)Ljava/lang/String;','s0()V','d0()V',
              'q0(Ljava/util/List;)V','p0(Lcom/fongmi/android/tv/bean/Sub;)V'],
-    PREFS: ['D()I'], VIDEO: ['S0()V','U0(I)V','T(Lw3/e;)V'], LIVE: ['s0()V','v0(I)V'], CAST: ['c0()V','d0(I)V'],
+    PREFS: ['D()I'], VIDEO: ['S0()V','U0(I)V','T(Lw3/e;)V','i(Ljava/lang/Integer;)V'], LIVE: ['s0()V','v0(I)V'], CAST: ['c0()V','d0(I)V'],
     RESULT: ['i(Ljava/lang/Object;)V'], SETTINGS: ['L()V'], SELECTOR: ['<init>(LO3/s;)V'], TRACKS: ['e0()V'],
 }
 RESIZE = {VIDEO: ('U0(I)V', 'h0'), LIVE: ('v0(I)V', 'W'), CAST: ('d0(I)V', 'S')}
@@ -242,7 +242,10 @@ def check_contract(root, host_root=None, work=None):
                 require(old_fields == new_fields, 'VLC changed original fields or schema')
             player = (project / PLAYER).read_text()
             require(methods(before[PLAYER])['W()Z'] == methods(player)['W()Z'] and methods(before[PLAYER])['X()Z'] == methods(player)['X()Z'], 'Original Exo/IJK predicates changed')
-            require(methods(before[VIDEO])['i(Ljava/lang/Integer;)V'] == methods((project / VIDEO).read_text())['i(Ljava/lang/Integer;)V'], 'Original History/Site selection callback changed')
+            selection=methods((project/VIDEO).read_text())['i(Ljava/lang/Integer;)V']
+            prepare='    invoke-static {p0, p1}, Lcom/leotv/player/vlc/VlcBridge;->prepareSelection(Landroid/app/Activity;Ljava/lang/Integer;)V'
+            normalize=lambda body:[line.strip() for line in body.splitlines() if line.strip() and not line.strip().startswith('.line')]
+            require(selection.count(prepare)==1 and normalize(selection.replace(prepare,'',1))==normalize(methods(before[VIDEO])['i(Ljava/lang/Integer;)V']), 'Native selection callback must retain every original instruction after committing the chosen player')
             require(methods(before[LIVE])['i(Ljava/lang/Integer;)V'] == methods((project / LIVE).read_text())['i(Ljava/lang/Integer;)V'], 'Original live preference callback changed')
             for name in (VIDEO,LIVE,CAST):
                 for signature, body in methods(before[name]).items():
@@ -258,8 +261,10 @@ def check_contract(root, host_root=None, work=None):
     for contract in ['player.getTime()', 'clock.position(now,cachedDuration)', 'case MediaPlayer.Event.TimeChanged:', 'seekPending=true', 'syncClock()', 'player.getLength()', 'player.getRate()', 'player.setTime(', 'player.setRate(', 'media.setHWDecoderEnabled(',
             'player.getAudioTracks()', 'player.getSpuTracks()', 'player.setAudioTrack(', 'player.setSpuTrack(', 'player.addSlave(',
             'owner.onPrepared(null)', 'owner.onCompletion(null)', 'ready && event.getBuffering()', 'ticket != generation',
-            'player.setEventListener(null)', 'player.release()', 'lib.release()', 'proxy.close()', 'audio.abandonAudioFocus(']:
+            'oldPlayer.setEventListener(null)', 'oldPlayer.release()', 'oldLibrary.release()', 'oldProxy::close', 'audio.abandonAudioFocus(']:
         require(contract in engine, 'Missing real VLC control/lifecycle contract: ' + contract)
+    require(engine.index('oldProxy.interrupt()')<engine.index('surface.detach()')<engine.index('RELEASES.submit'), 'VLC reads and window callbacks must detach before asynchronous decoder release')
+    require('session.pending()' in (root/'player/vlc/java/com/leotv/player/vlc/VlcBridge.java').read_text(), 'Native handoff must wait for the old VLC decoder')
     require('new w3.e(key, 1, 0, -1, message)' in engine, 'VLC error must not silently use IJK retry or fake success')
     require('event.getTimeChanged()' in engine and 'event.getTime()' not in engine, 'Fixed LibVLC 3.6.0 Event requires getTimeChanged(), while MediaPlayer has getTime()')
     surface = (root / 'player/vlc/java/com/leotv/player/vlc/VlcSurface.java').read_text()

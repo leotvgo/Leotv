@@ -16,7 +16,7 @@ final class DetailImageView extends ImageView {
 
     DetailImageView(Context context) {
         super(context);
-        radius = 6 * getResources().getDisplayMetrics().density;
+        radius = 8 * getResources().getDisplayMetrics().density;
         setScaleType(ScaleType.CENTER_CROP);
     }
 

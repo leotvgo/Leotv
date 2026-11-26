@@ -52,12 +52,12 @@ final class NativeCspUi {
         toolbarParent.removeView(toolbar);toolbar.setTranslationY(0);toolbar.setVisibility(View.VISIBLE);toolbar.setClipBounds(null);
         if(phone)phoneHeader();
         else {addTvActions();borrowTvSite();}
-        FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(-1,-2,Gravity.TOP);page.addView(toolbar,params);borrowed=true;lastScroll=page.scroll.getScrollY();layoutToolbar(page);
+        FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(-1,-2,Gravity.TOP);page.addView(toolbar,params);borrowed=true;lastScroll=page.scrollY();layoutToolbar(page);
     }
     void layoutToolbar(CspHomePage page){
         if(!borrowed)return;if(phone)phoneHeader();FrameLayout.LayoutParams params=(FrameLayout.LayoutParams)toolbar.getLayoutParams();int above=0;
         if(phone){android.view.WindowInsets insets=page.getRootWindowInsets();int[] origin=new int[2];page.getLocationOnScreen(origin);boolean fullscreen=(activity.getWindow().getAttributes().flags&android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN)!=0||(activity.getWindow().getDecorView().getSystemUiVisibility()&View.SYSTEM_UI_FLAG_FULLSCREEN)!=0;above=fullscreen?0:Math.max(0,(insets==null?0:insets.getSystemWindowInsetTop())-origin[1]);}
-        if(params.topMargin!=above){params.topMargin=above;toolbar.requestLayout();}int height=above+Math.max(toolbar.getHeight(),page.dp(phone?52:56));if(phone||page.headerHeight!=height){page.headerHeight=height;page.updateInsets();}scrolled(page.scroll.getScrollY());
+        if(params.topMargin!=above){params.topMargin=above;toolbar.requestLayout();}int height=above+Math.max(toolbar.getHeight(),page.dp(phone?52:56));if(phone||page.headerHeight!=height){page.headerHeight=height;page.updateInsets();}scrolled(page.scrollY());
     }
     void scrolled(int y){if(!borrowed)return;int delta=y-lastScroll;lastScroll=y;int inset=((FrameLayout.LayoutParams)toolbar.getLayoutParams()).topMargin;int limit=Math.max(toolbar.getHeight(),dp(52))+inset;folded=y<=0?0:Math.max(0,Math.min(limit,folded+delta));if(!phone&&toolbar.hasFocus())folded=0;float translation=-folded;if(toolbar.getTranslationY()!=translation)toolbar.setTranslationY(translation);float alpha=folded>=limit?0:toolbarAlpha;if(toolbar.getAlpha()!=alpha)toolbar.setAlpha(alpha);}
     void restoreToolbar(){if(!borrowed)return;restoreTvSite();remove(toolbar);if(tvActions!=null){remove(tvActions);tvActions=null;if(tvClock!=null){tvClock.setOrientation(clockOrientation);tvClock.setGravity(clockGravity);tvClock=null;}}for(java.util.Map.Entry<View,ViewGroup.LayoutParams> entry:tvLayouts.entrySet())entry.getKey().setLayoutParams(entry.getValue());tvLayouts.clear();for(java.util.Map.Entry<View,Integer> entry:visibility.entrySet())entry.getKey().setVisibility(entry.getValue());visibility.clear();toolbar.setClipBounds(toolbarClip);toolbar.setAlpha(toolbarAlpha);toolbar.setTranslationY(toolbarTranslation);toolbar.setVisibility(toolbarVisibility);toolbarParent.addView(toolbar,Math.min(toolbarIndex,toolbarParent.getChildCount()),toolbarParams);borrowed=false;actionSource=null;}
@@ -72,7 +72,7 @@ final class NativeCspUi {
     void refreshTvText(){if(tvSite instanceof TextView)try{int mode=((Number)Class.forName("com.bumptech.glide.f",true,activity.getClassLoader()).getMethod("z").invoke(null)).intValue();((TextView)tvSite).setTextSize(mode==0?24:20);}catch(ReflectiveOperationException unavailable){} }
     void restoreTvSite(){if(tvSite==null)return;tvSite.setBackground(tvSiteBackground);tvSite.setPadding(siteLeft,siteTop,siteRight,siteBottom);if(tvSite instanceof TextView)((TextView)tvSite).setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX,siteTextSize);tvSite.setFocusableInTouchMode(tvSiteTouchFocusable);tvSite.setFocusable(tvSiteFocusable);tvSite=null;tvSiteBackground=null;}
     boolean siteFocused(){return tvSite!=null&&tvSite.hasFocus();}
-    boolean focusSite(){if(!borrowed||tvSite==null||owner.page==null)return false;owner.page.scroll.scrollTo(0,0);folded=0;scrolled(0);toolbar.setAlpha(toolbarAlpha);toolbar.setTranslationY(0);return tvSite.requestFocus();}
+    boolean focusSite(){if(!borrowed||tvSite==null||owner.page==null)return false;owner.page.scrollHomeTo(0);folded=0;scrolled(0);toolbar.setAlpha(toolbarAlpha);toolbar.setTranslationY(0);return tvSite.requestFocus();}
     boolean moveTv(int code){
         if(!borrowed||tvSite==null||owner.page==null)return false;
         View focus=activity.getCurrentFocus();CspHomePage page=owner.page;
@@ -92,7 +92,7 @@ final class NativeCspUi {
             if(code==android.view.KeyEvent.KEYCODE_DPAD_RIGHT&&index==tvActions.getChildCount()-1)return true;
             return false;
         }
-        if((code==android.view.KeyEvent.KEYCODE_DPAD_UP||code==android.view.KeyEvent.KEYCODE_DPAD_DOWN)&&descendant(focus,page.scroll)){
+        if((code==android.view.KeyEvent.KEYCODE_DPAD_UP||code==android.view.KeyEvent.KEYCODE_DPAD_DOWN)&&descendant(focus,page.viewport())){
             boolean down=code==android.view.KeyEvent.KEYCODE_DPAD_DOWN;
             if(!down&&page.firstContent(focus)){focusSite();return true;}
             page.moveRow(focus,down);return true;

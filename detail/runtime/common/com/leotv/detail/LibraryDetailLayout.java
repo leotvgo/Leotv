@@ -16,15 +16,20 @@ final class LibraryDetailLayout {
     private int[] titlePadding;
     LibraryDetailLayout(TvDetailPage page){this.page=page;}
     void sync(){
-        if(!applied)return;
+        if(!applied||page.scroll.animating())return;
         int width=page.heroFrame.getWidth();if(width<=0)return;
-        int top=((FrameLayout.LayoutParams)page.info.getLayoutParams()).topMargin;
-        if(width==measuredWidth&&page.info.getHeight()==measuredHeight&&top==measuredTop)return;
-        measuredWidth=width;measuredTop=top;
+        if(width==measuredWidth&&page.info.getHeight()==measuredHeight&&!page.info.isLayoutRequested()&&((FrameLayout.LayoutParams)page.info.getLayoutParams()).topMargin==measuredTop)return;
         page.info.measure(View.MeasureSpec.makeMeasureSpec(width,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED));
-        int height=((FrameLayout.LayoutParams)page.info.getLayoutParams()).topMargin+page.info.getMeasuredHeight();
-        measuredHeight=page.info.getMeasuredHeight();
+        int measured=page.info.getMeasuredHeight(),screen=Math.max(1,page.themeHeight);
+        FrameLayout.LayoutParams info=(FrameLayout.LayoutParams)page.info.getLayoutParams();
+        boolean landscape=!page.portraitArtwork();
+        // Keep the complete information and original action group inside the full-screen artwork.
+        int preferred=Math.round(screen*(landscape?.18f:.48f));
+        int top=landscape?Math.max(dp(24),Math.min(preferred,screen-measured-dp(36))):preferred;
+        int height=Math.max(screen,top+measured+dp(landscape?36:16));
+        if(info.topMargin!=top){info.topMargin=top;page.info.setLayoutParams(info);}
         ViewGroup.LayoutParams lp=page.heroFrame.getLayoutParams();if(lp.height!=height){lp.height=height;page.heroFrame.setLayoutParams(lp);}
+        measuredWidth=width;measuredHeight=measured;measuredTop=top;
     }
     private int dp(float value){return LibraryStyle.dp(page.activity,value);}
     private static void detach(View v){if(v.getParent() instanceof ViewGroup)((ViewGroup)v.getParent()).removeView(v);}
@@ -35,7 +40,9 @@ final class LibraryDetailLayout {
         int side=p.mobile?dp(14):Math.max(dp(18),Math.min(dp(38),Math.round(width*.026f)));
         p.info.setPadding(side,0,side,dp(6));p.info.setGravity(Gravity.LEFT);p.info.setBackgroundColor(Color.TRANSPARENT);
         for(View v:new View[]{p.title,p.brandingHeader,p.titleArt,p.heroActions,p.badges,p.facts,p.synopsis,p.tagline,p.cast,p.crewLine}){detach(v);p.info.addView(v,new LinearLayout.LayoutParams(-1,-2));}
+        boolean landscape=!p.portraitArtwork();
         int logoHeight=p.mobile?Math.max(dp(82),Math.min(dp(162),Math.round(width*.16f))):Math.max(dp(107),Math.min(dp(211),Math.round(width*.21f)));
+        if(landscape)logoHeight=Math.min(logoHeight,Math.max(dp(48),Math.round(height*.18f)));
         p.titleArt.setLayoutParams(new LinearLayout.LayoutParams(Math.min(width-side*2,dp(p.mobile?380:494)),logoHeight));p.titleArt.setScaleType(ImageView.ScaleType.FIT_START);
         p.title.setTextSize(p.mobile?28:46);p.title.setGravity(Gravity.LEFT|Gravity.BOTTOM);p.title.setPadding(0,0,0,dp(8));
         p.heroActions.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);p.heroActions.setPadding(0,dp(10),0,dp(4));
@@ -44,13 +51,13 @@ final class LibraryDetailLayout {
         for(int i=0;i<p.actionRow.getChildCount();i++){View v=p.actionRow.getChildAt(i);v.setMinimumHeight(0);LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(0,dp(40),1);if(i>0)lp.leftMargin=dp(4);v.setLayoutParams(lp);}
         p.synopsis.setGravity(Gravity.LEFT);p.synopsis.setTextSize(14);p.synopsis.setMaxLines(3);p.synopsis.setTextColor(0xb3f0ede8);p.synopsis.setPadding(0,dp(8),0,dp(4));
         p.tagline.setVisibility(View.GONE);p.crewLine.setVisibility(View.GONE);
-        int top=Math.round(height*(p.mobile?.48f:.34f));FrameLayout.LayoutParams info=new FrameLayout.LayoutParams(-1,-2,Gravity.TOP);info.topMargin=top;p.heroFrame.addView(p.info,info);
-        p.hero.setLayoutParams(new FrameLayout.LayoutParams(-1,height));p.hero.presentation(false,DetailHero.LIBRARY_DETAIL);p.hero.dots(false);
+        int top=Math.round(height*(landscape?.18f:.48f));FrameLayout.LayoutParams info=new FrameLayout.LayoutParams(-1,-2,Gravity.TOP);info.topMargin=top;p.heroFrame.addView(p.info,info);
+        p.hero.setLayoutParams(new FrameLayout.LayoutParams(-1,height));p.hero.presentation(p.portraitArtwork(),DetailHero.LIBRARY_DETAIL);p.hero.dots(false);
         p.controls.setPadding(p.mobile?dp(16):side,0,p.mobile?dp(16):side,dp(32));p.controls.setBackgroundColor(Color.TRANSPARENT);p.scroll.setBackground(new android.graphics.drawable.ColorDrawable(0xff06111b));
         if(p.surface!=null){p.surface.setVisibility(View.GONE);}
         p.actorHeading.setText("主演");p.actorHeading.setTextSize(12);p.actorHeading.setPadding(0,dp(8),0,dp(8));
         View actorScroll=(View)p.actors.getParent();int index=0;for(View v:new View[]{p.actorHeading,p.actorFallback,actorScroll}){detach(v);p.controls.addView(v,index++);}
-        p.info.requestLayout();
+        p.info.requestLayout();sync();
     }
     void restore(){
         if(!applied)return;applied=false;TvDetailPage p=page;detach(p.actionRow);p.info.removeAllViews();p.controls.removeAllViews();

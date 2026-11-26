@@ -95,13 +95,7 @@ final class DetailStills {
             cell.setOrientation(LinearLayout.VERTICAL); cell.setPadding(dp(mobile?0:6), dp(6), dp(mobile?0:6), dp(10));
             cell.setFocusable(true); cell.setClickable(true);
             cell.setContentDescription("剧照 " + (index + 1));
-            StateListDrawable states = new StateListDrawable();
-            GradientDrawable focus = new GradientDrawable(); focus.setColor(0x333d536e);
-            focus.setCornerRadius(dp(10)); focus.setStroke(dp(2), 0xfff1f4fa);
-            states.addState(new int[]{android.R.attr.state_focused}, focus);
-            states.addState(new int[]{android.R.attr.state_pressed}, focus);
-            GradientDrawable normal = new GradientDrawable(); normal.setColor(0x182c394d); normal.setCornerRadius(dp(10));
-            states.addState(new int[]{}, normal); cell.setBackground(states);
+            DetailCardStyle.apply(cell);
             ImageView image = new DetailImageView(activity); image.setContentDescription("剧照 " + (index + 1));
             int width = mobile ? 168 : 196;
             cell.addView(image, new LinearLayout.LayoutParams(dp(width), dp(width * 9 / 16)));

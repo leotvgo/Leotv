@@ -3,10 +3,10 @@ repositories { mavenCentral(); google() }
 sourceSets {
     main.java.srcDirs = ['src/stub/java']
     test.java.srcDirs = ['../detail-check/src/test/java']
-    test.java.include '**/DanmakuEffectsTest.java'
+    test.java.include '**/DanmakuEffectsTest.java', '**/TvDetailScrollTest.java'
 }
 tasks.named('compileJava') {
-    source '../../detail/runtime/common/com/leotv/detail/DanmakuEffects.java', '../../detail/runtime/common/com/leotv/detail/DanmakuEffectPolicy.java', '../../detail/runtime/common/com/leotv/detail/DanmakuAvatar.java'
+    source '../../detail/runtime/common/com/leotv/detail/DanmakuEffects.java', '../../detail/runtime/common/com/leotv/detail/DanmakuEffectPolicy.java', '../../detail/runtime/common/com/leotv/detail/DanmakuAvatar.java', '../../detail/runtime/common/com/leotv/detail/TvDetailScroll.java'
 }
 dependencies {
     compileOnly 'org.robolectric:android-all:15-robolectric-12650502'

@@ -212,7 +212,7 @@ def check(root):
         raise ValueError('MPV settings must use native rows and Material menus')
     if 'MobileMpv.field(listener,' in settings or 'field(binding,"z")' not in settings or 'field(binding,"H")' not in settings:
         raise ValueError('MPV settings click must use the actual fragment and physical decoder/renderer rows')
-    for removed in ('渲染','音频输出','音画同步','应用设置'):
+    for removed in ('渲染','音频输出','音画同步','应用设置','字幕字体','字号 / 缩放 / 位置','颜色 / 描边 / 阴影','ASS 字幕样式','字幕 / 音频延迟'):
         if 'row(a,column,rows,"'+removed+'"' in settings:raise ValueError('The user-authorized redundant MPV setting row returned: '+removed)
     if 'static void show(Activity' in settings or 'populate(a,store,list,rows)' not in settings:
         raise ValueError('MPV groups must replace the engine-specific rows inline without a separate full settings dialog')
@@ -263,7 +263,7 @@ UI_FIXTURES = {
 package android.content;
 import java.io.File;
 public class Context {
- public static final String AUDIO_SERVICE="audio";
+ public static final String AUDIO_SERVICE="audio",CAPTIONING_SERVICE="captioning";
  public static final SharedPreferences PREFS=new fixture.MemoryPrefs();
  public Context getApplicationContext(){return this;}
  public SharedPreferences getSharedPreferences(String name,int mode){return PREFS;}
@@ -381,13 +381,13 @@ public class b {public static b last;public final Params a=new Params();private 
  public void f(CharSequence[] names,int current,DialogInterface.OnClickListener l){a.n=names;a.s=current;a.p=l;a.r=true;}public Dialog create(){return new Dialog();}
 }
 ''',
-    'com/leotv/player/mpv/Settings652Contract.java': r'''
+    'com/leotv/player/mpv/Settings653Contract.java': r'''
 package com.leotv.player.mpv;
 import android.app.*;import android.content.*;import android.view.*;import android.widget.*;import java.util.*;
-public final class Settings652Contract {
- public static final class Binding {public LinearLayout z,H,B,J,F;public TextView A,I;}
+public final class Settings653Contract {
+ public static final class Binding {public LinearLayout z,H,B,J,F,x,r,v;public TextView A,I;}
  public static final class Fragment {public Binding l0;public String[] p0={"Original auto","Original hard","Original soft"},q0={"Original surface","Original texture"};}
- static Fragment fragment(Activity a){Fragment f=new Fragment();f.l0=new Binding();Binding b=f.l0;LinearLayout column=new LinearLayout(a);column.setOrientation(1);b.z=new LinearLayout(a);b.H=new LinearLayout(a);b.B=new LinearLayout(a);b.J=new LinearLayout(a);b.F=new LinearLayout(a);b.A=new TextView(a);b.I=new TextView(a);column.addView(b.z);column.addView(b.H);column.addView(b.B);column.addView(b.J);column.addView(b.F);return f;}
+ static Fragment fragment(Activity a){Fragment f=new Fragment();f.l0=new Binding();Binding b=f.l0;LinearLayout column=new LinearLayout(a);column.setOrientation(1);b.z=new LinearLayout(a);b.H=new LinearLayout(a);b.B=new LinearLayout(a);b.J=new LinearLayout(a);b.F=new LinearLayout(a);b.x=new LinearLayout(a);b.r=new LinearLayout(a);b.v=new LinearLayout(a);b.A=new TextView(a);b.I=new TextView(a);column.addView(b.z);column.addView(b.H);column.addView(b.B);column.addView(b.J);column.addView(b.F);return f;}
  public static final class NativeHost {public long N(){return 38200;}}
  public static final class History {public int player=-1;public long position;public void setPlayer(int value){player=value;}public void setPosition(long value){position=value;}}
  public static final class PlaybackActivity extends Activity {public NativeHost c0=new NativeHost();public History b0=new History();}
@@ -397,22 +397,22 @@ public final class Settings652Contract {
   PlaybackActivity selection=new PlaybackActivity();MobileMpv.prepareSelection(selection,3);require(selection.b0.player==3&&selection.b0.position==38200,"native selection is committed before async reload");MobileMpv.prepareSelection(selection,2);require(selection.b0.player==2,"switching away from MPV preserves native chosen id");
   Activity a=new Activity();Fragment f=fragment(a);Binding b=f.l0;LinearLayout parent=(LinearLayout)b.z.getParent();R6.g.player=3;
   MpvSettings.attach(f);MpvSettings.attach(f);require(parent.getChildCount()==6,"one inline MPV list after repeated refresh");require(b.z.getVisibility()==View.GONE&&b.H.getVisibility()==View.GONE,"old engine decoder and render rows hide for MPV");require(text(b.A).equals("MPV：自动")&&text(b.I).equals("Surface / OpenGL（MPV）"),"initial MPV saved display");
-  require(!MobileMpv.settingsClick(f,b.B)&&!MobileMpv.settingsClick(f,b.J),"flag and scale must retain native clicks");require(MobileMpv.settingsClick(f,b.H)&&H6.l.render==1,"fixed render intercept preserves original preference");
+  require(b.B.getVisibility()==View.GONE&&b.x.getVisibility()==View.VISIBLE&&b.r.getVisibility()==View.GONE&&b.v.getVisibility()==View.VISIBLE,"MPV hides only requested shared rows and keeps the native caption preset");require(!MobileMpv.settingsClick(f,b.J),"scale retains native clicks");require(MobileMpv.settingsClick(f,b.H)&&H6.l.render==1,"fixed render intercept preserves original preference");
   require(MobileMpv.settingsClick(f,b.z)&&o4.b.last.a.r&&o4.b.last.a.s==0,"real decoder radio and persisted initial selection");o4.b chooser=o4.b.last;chooser.a.p.onClick(new Dialog(),1);
   require(new MpvStore(a).prefs.getInt("decode",-1)==1&&text(b.A).equals("MPV：硬解"),"decoder save immediately refreshes native caption without active playback");
   R6.g.player=2;MpvSettings.attach(f);require(parent.findViewWithTag("leotv.mobile.mpv.settings").getVisibility()==View.GONE&&b.z.getVisibility()==View.VISIBLE,"return to Exo restores old rows and hides MPV list");require(text(b.A).equals("Original auto")&&text(b.I).equals("Original texture"),"MPV to Exo restores its own decoder and renderer");require(!MobileMpv.settingsClick(f,b.z),"original decoder handler resumes");
   R6.g.player=1;MpvSettings.attach(f);require(text(b.A).equals("Original hard"),"IJK decoder preference kept separate");R6.g.player=3;MpvSettings.attach(f);require(text(b.A).equals("MPV：硬解"),"return to MPV retains preference");
-  LinearLayout menu=(LinearLayout)parent.findViewWithTag("leotv.mobile.mpv.settings");require(menu.getChildCount()==8,"all MPV setting groups are inline after player selector");require(((LinearLayout.LayoutParams)menu.getChildAt(0).getLayoutParams()).topMargin==0&&((LinearLayout.LayoutParams)menu.getChildAt(1).getLayoutParams()).topMargin==16,"original first-row and subsequent-row margins");
+  LinearLayout menu=(LinearLayout)parent.findViewWithTag("leotv.mobile.mpv.settings");require(menu.getChildCount()==3,"all MPV setting groups are inline after player selector");require(((LinearLayout.LayoutParams)menu.getChildAt(0).getLayoutParams()).topMargin==16&&((LinearLayout.LayoutParams)menu.getChildAt(1).getLayoutParams()).topMargin==16,"original first-row and subsequent-row margins");
   require(text((TextView)((LinearLayout)menu.getChildAt(0)).getChildAt(1)).equals("硬解"),"inline list shows saved decoder");
   Context.PREFS.edit().putInt("decode",2).commit();MobileMpv.apply(a,false);require(text(b.A).equals("MPV：软解")&&text((TextView)((LinearLayout)menu.getChildAt(0)).getChildAt(1)).equals("软解"),"modified value refreshes inline settings");
   Fragment rebuilt=fragment(a);MpvSettings.attach(rebuilt);require(text(rebuilt.l0.A).equals("MPV：软解"),"recreated view reads persisted state");
   MpvStore store=new MpvStore(a);Map<String,String> options=store.options();require(options.get("hwdec").equals("no")&&options.get("vd-lavc-software-fallback").equals("3")&&!options.containsKey("hwdec-software-fallback"),"actual soft decoder canonical native options");
   Context.PREFS.edit().putInt("decode",0).commit();options=store.options();require(options.get("scale").equals("bilinear")&&options.get("dscale").equals("bilinear")&&options.get("interpolation").equals("no"),"built-in low-overhead defaults require no imported config");require(options.get("hwdec").equals("mediacodec-copy")&&options.get("vd-lavc-software-fallback").equals("3"),"automatic mode keeps native three-error fallback");
-  Context.PREFS.edit().putInt("decode",1).putString("sub-color","#80ff0000").putString("sub-border-color","#400000ff").putString("sub-scale","0x1.0p0").commit();options=store.options();require(options.get("vd-lavc-software-fallback").equals("no")&&options.get("sub-color").equals("#80FF0000")&&options.get("sub-border-color").equals("#400000FF")&&options.get("sub-scale").equals("1.0"),"hard mode, distinct ARGB opacity/channels and native decimal encoding");
+  Context.PREFS.edit().putInt("decode",1).putString("sub-color","#80ff0000").putString("sub-border-color","#400000ff").putString("sub-scale","0x1.0p0").commit();options=store.options();require(options.get("vd-lavc-software-fallback").equals("no")&&!options.containsKey("sub-color")&&!options.containsKey("sub-border-color")&&!options.containsKey("sub-scale")&&options.get("sub-ass-override").equals("no")&&options.get("embeddedfonts").equals("yes"),"hard mode, distinct ARGB opacity/channels and native decimal encoding");
   Context.PREFS.edit().putInt("decode",9).commit();try{store.options();throw new AssertionError("invalid decoder swallowed");}catch(IllegalArgumentException expected){}
-  Context.PREFS.edit().putInt("decode",0).putString("sub-scale","NaN").commit();try{store.options();throw new AssertionError("invalid float swallowed");}catch(IllegalArgumentException expected){}
+  Context.PREFS.edit().putInt("decode",0).putString("sub-scale","NaN").commit();require(!store.options().containsKey("sub-scale"),"removed custom subtitle scale cannot override native presets or ASS");
   for(String config:new String[]{"hwdec-software-fallback=yes","vd-lavc-software-fallback=1"})try{MpvOptions.parse(config);throw new AssertionError("managed fallback override");}catch(IllegalArgumentException expected){}
-  System.out.println("MPV 652 production settings synthetic switch/save/return/recreate and native option defaults passed");
+  System.out.println("MPV 653 production settings synthetic switch/save/return/recreate and native option defaults passed");
  }
 }
 ''',
@@ -424,7 +424,7 @@ def settings_java_check(work,classes,android):
     for name,text in UI_FIXTURES.items():
         path=source/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text(text)
     subprocess.run(["javac","--release","8","-encoding","UTF-8","-cp",str(classes)+":"+str(android),"-d",str(output),*map(str,sorted(source.rglob("*.java")))],check=True)
-    subprocess.run(["java","-Dmpv.fixture.dir="+str(work/"managed"),"-cp",str(output)+":"+str(classes)+":"+str(android),"com.leotv.player.mpv.Settings652Contract"],check=True)
+    subprocess.run(["java","-Dmpv.fixture.dir="+str(work/"managed"),"-cp",str(output)+":"+str(classes)+":"+str(android),"com.leotv.player.mpv.Settings653Contract"],check=True)
 
 
 def java_check(root,sdk,apktool=None):

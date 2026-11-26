@@ -47,12 +47,7 @@ final class DetailRecommendations {
         for (MobileDetailMetadata.Recommendation value : values) {
             LinearLayout cell = new LinearLayout(activity); cell.setOrientation(LinearLayout.VERTICAL); cell.setPadding(dp(mobile?0:6),dp(6),dp(mobile?0:6),dp(10));
             cell.setFocusable(true); cell.setClickable(true); cell.setContentDescription("搜索：" + value.title);
-            StateListDrawable states = new StateListDrawable();
-            GradientDrawable focus = new GradientDrawable(); focus.setColor(0x333d536e); focus.setCornerRadius(dp(10)); focus.setStroke(dp(2),0xfff1f4fa);
-            states.addState(new int[]{android.R.attr.state_focused}, focus);
-            states.addState(new int[]{android.R.attr.state_pressed}, focus);
-            GradientDrawable normal = new GradientDrawable(); normal.setColor(0x182c394d); normal.setCornerRadius(dp(10));
-            states.addState(new int[]{}, normal); cell.setBackground(states);
+            DetailCardStyle.apply(cell);
             ImageView image = new DetailImageView(activity); image.setContentDescription(value.title);
             int width = value.nativeItem!=null ? (mobile?180:208) : mobile ? 106 : 112;
             cell.addView(image, new LinearLayout.LayoutParams(dp(width),dp(value.nativeItem!=null?width*9/16:width*3/2)));
@@ -88,6 +83,6 @@ final class DetailRecommendations {
         }
     }
     void detach() { for(ImageView image:images)image.setImageDrawable(null); }
-    private TextView label(String text,int size){TextView v=new TextView(activity);v.setText(text);v.setTextSize(size);v.setTextColor(0xfff3f5fa);return v;}
+    private TextView label(String text,int size){TextView v=new TextView(activity);v.setText(text);v.setTextSize(size);v.setTextColor(0xfff3f5fa);DetailCardStyle.text(v);return v;}
     private int dp(int value){return Math.round(value*activity.getResources().getDisplayMetrics().density);}
 }

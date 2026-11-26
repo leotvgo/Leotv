@@ -56,6 +56,7 @@
       "detail/runtime/common/com/leotv/detail/DetailActionButton.java",
       "detail/runtime/common/com/leotv/detail/DetailActivity.java",
       "detail/runtime/common/com/leotv/detail/DetailBadges.java",
+      "detail/runtime/common/com/leotv/detail/DetailCardStyle.java",
       "detail/runtime/common/com/leotv/detail/DetailEpisodeCards.java",
       "detail/runtime/common/com/leotv/detail/DetailHero.java",
       "detail/runtime/common/com/leotv/detail/DetailImageView.java",
@@ -87,6 +88,7 @@
       "detail/runtime/common/com/leotv/detail/FollowingActivity.java",
       "detail/runtime/common/com/leotv/detail/Guard.java",
       "detail/runtime/common/com/leotv/detail/HomeFeed.java",
+      "detail/runtime/common/com/leotv/detail/HomeTheme.java",
       "detail/runtime/common/com/leotv/detail/ImageBudget.java",
       "detail/runtime/common/com/leotv/detail/JarEpisodeNormalizer.java",
       "detail/runtime/common/com/leotv/detail/JarIntegration.java",
@@ -138,12 +140,14 @@
     "mobile": [
       "detail/runtime/mobile/com/leotv/detail/Device.java",
       "detail/runtime/mobile/com/leotv/detail/NativeCspCategory.java",
+      "detail/runtime/mobile/com/leotv/detail/NativeHomeRows.java",
       "detail/runtime/mobile/com/leotv/detail/NativeRecentHistory.java",
       "detail/runtime/mobile/com/leotv/detail/ThemeLayout.java"
     ],
     "tv": [
       "detail/runtime/tv/com/leotv/detail/Device.java",
       "detail/runtime/tv/com/leotv/detail/NativeCspCategory.java",
+      "detail/runtime/tv/com/leotv/detail/NativeHomeRows.java",
       "detail/runtime/tv/com/leotv/detail/NativeRecentHistory.java",
       "detail/runtime/tv/com/leotv/detail/ThemeLayout.java"
     ]

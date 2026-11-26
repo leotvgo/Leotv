@@ -28,7 +28,8 @@ final class MpvSettings {
             Object renderer=MobileMpv.field(binding,"H");
             decoder.setVisibility(mpv?View.GONE:View.VISIBLE);
             if(renderer instanceof View)((View)renderer).setVisibility(mpv?View.GONE:View.VISIBLE);
-            Object captions=MobileMpv.field(binding,"v");if(mpv&&captions instanceof View)((View)captions).setVisibility(View.GONE);
+            // Native caption preset/System selection remains shared; MPV has no separate subtitle editor.
+            for(String field:new String[]{"r","B"}){Object shared=MobileMpv.field(binding,field);if(shared instanceof View)((View)shared).setVisibility(mpv?View.GONE:View.VISIBLE);}
             if(!(decoder.getParent() instanceof LinearLayout))throw new IllegalStateException("原生解码设置父容器变化");
             LinearLayout column=(LinearLayout)decoder.getParent();
             View entry=column.findViewWithTag(TAG);
@@ -52,6 +53,7 @@ final class MpvSettings {
     static boolean nativeDecoder(Object fragment,View view){
         Object binding=MobileMpv.field(fragment,"l0");
         if(binding==null||MobileMpv.preferenceInt(null,"player",2)!=MobileMpv.PLAYER)return false;
+        if(view==MobileMpv.field(binding,"v")){new android.os.Handler(android.os.Looper.getMainLooper()).post(()->MobileMpv.apply(view.getContext(),true));return false;}
         boolean decoder=view==MobileMpv.field(binding,"z"),renderer=view==MobileMpv.field(binding,"H");
         if(!decoder&&!renderer)return false;
         Activity a=MobileMpv.activity(view.getContext());if(a==null)return false;
@@ -62,16 +64,10 @@ final class MpvSettings {
         attach(fragment);return true;
     }
     private static String decodeLabel(MpvStore s){int mode=s.prefs.getInt("decode",0);return mode==0?"自动":mode==1?"硬解":mode==2?"软解":"无效（"+mode+"）";}
-    private static String selected(MpvStore s,String key,String[] values,String[] labels){String value=s.prefs.getString(key,values[0]);int at=Arrays.asList(values).indexOf(value);return at<0?"无效（"+value+"）":labels[at];}
     private static void populate(Activity a,MpvStore store,LinearLayout column,List<Row> rows){
             row(a,column,rows,"解码模式",()->decodeLabel(store),()->choose(a,store,"decode",new String[]{"自动（硬解失败转软解）","硬解（失败明确报错）","软解"},new String[]{"0","1","2"},true));
             row(a,column,rows,"MPV 配置",()->store.readConfig().trim().isEmpty()?"内置兼容参数":"内置参数 + 自定义选项",()->config(a,store));
             row(a,column,rows,"着色器",()->importsSummary(store,"shader"),()->shaders(a,store));
-            row(a,column,rows,"字幕字体",()->store.prefs.getString("sub-font","sans-serif"),()->fonts(a,store));
-            row(a,column,rows,"字号 / 缩放 / 位置",()->store.prefs.getString("sub-font-size","40")+" / "+store.prefs.getString("sub-scale","1")+" / "+store.prefs.getString("sub-pos","100"),()->fields(a,store,new String[][]{{"sub-font-size","字号（720p参考）","40","1","200"},{"sub-scale","缩放","1","0.1","5"},{"sub-pos","位置（0顶端～100底部）","100","0","100"}},false));
-            row(a,column,rows,"颜色 / 描边 / 阴影",()->store.prefs.getString("sub-color","#FFFFFFFF")+" / "+store.prefs.getString("sub-border-color","#FF000000")+" / "+store.prefs.getString("sub-border-size","3")+" / "+store.prefs.getString("sub-shadow-offset","0"),()->fields(a,store,new String[][]{{"sub-color","文字颜色（#AARRGGBB）","#FFFFFFFF","color",""},{"sub-border-color","描边颜色（#AARRGGBB）","#FF000000","color",""},{"sub-border-size","描边宽度","3","0","10"},{"sub-shadow-offset","阴影偏移","0","0","10"}},false));
-            row(a,column,rows,"ASS 字幕样式",()->selected(store,"sub-ass-override",new String[]{"no","force"},new String[]{"保留字幕原样式","使用所选字幕样式"}),()->choose(a,store,"sub-ass-override",new String[]{"保留字幕原样式","使用所选字幕样式"},new String[]{"no","force"},false));
-            row(a,column,rows,"字幕 / 音频延迟",()->store.prefs.getString("sub-delay","0")+"秒 / "+store.prefs.getString("audio-delay","0")+"秒",()->fields(a,store,new String[][]{{"sub-delay","字幕延迟（秒，可负数）","0","-600","600"},{"audio-delay","音频延迟（秒，可负数）","0","-30","30"}},false));
     }
     private static String importsSummary(MpvStore store,String kind){try{int total=0,enabled=0;for(MpvStore.Item item:store.items())if(item.kind.equals(kind)){total++;if(item.enabled)enabled++;}return total==0?"尚未导入":"已启用 "+enabled+" / "+total;}catch(Exception e){return "列表读取失败";}}
     private static final class Row {
@@ -82,7 +78,7 @@ final class MpvSettings {
     /** Inflate the actual ordinary setting row: native background, padding, text and margins. */
     private static View nativeRow(Context context,LinearLayout parent,String title,String value,Runnable action){
         View template=LayoutInflater.from(context).inflate(0x7f0d008a,parent,false);
-        LinearLayout row=(LinearLayout)template.findViewById(parent.getChildCount()==0?0x7f0a025d:0x7f0a00cf);
+        LinearLayout row=(LinearLayout)template.findViewById(0x7f0a00cf);
         if(row==null||row.getChildCount()!=2)throw new IllegalStateException("原生解码设置行模板变化");
         ((ViewGroup)row.getParent()).removeView(row);
         clearIds(row);((TextView)row.getChildAt(0)).setText(title);((TextView)row.getChildAt(1)).setText(value);
@@ -102,17 +98,6 @@ final class MpvSettings {
             if(!editor.commit())throw new IOException("保存设置失败");d.dismiss();MobileMpv.apply(a,rebuild);
         }catch(Exception e){error(a,e);}}).setNegativeButton("取消",null).show();
     }
-    private static void fields(Activity a,MpvStore s,String[][] definitions,boolean rebuild){
-        NativeDialog builder=new NativeDialog(a);LinearLayout column=new LinearLayout(builder.context);column.setOrientation(LinearLayout.VERTICAL);List<EditText> fields=new ArrayList<>();
-        for(String[] item:definitions){EditText input=nativeInput(builder.context,column,item[1],s.prefs.getString(item[0],item[2]));input.setSingleLine();fields.add(input);}
-        Dialog d=builder.setTitle("MPV 字幕 / 音频").setView(column).setPositiveButton("保存并应用",null).setNegativeButton("取消",null).create();
-        d.setOnShowListener(x->((Button)d.findViewById(android.R.id.button1)).setOnClickListener(v->{try{
-            SharedPreferences.Editor editor=s.prefs.edit();
-            for(int i=0;i<definitions.length;i++){String value=fields.get(i).getText().toString().trim();String[] def=definitions[i];
-                value=def[3].equals("color")?MpvOptions.color(value):MpvOptions.numeric(def[0],value,Double.parseDouble(def[3]),Double.parseDouble(def[4]));editor.putString(def[0],value);}
-            if(!editor.commit())throw new IOException("保存设置失败");d.dismiss();MobileMpv.apply(a,rebuild);
-        }catch(Exception failure){error(a,failure);}}));d.show();
-    }
     private static void config(Activity a,MpvStore s){
         NativeDialog builder=new NativeDialog(a);LinearLayout column=new LinearLayout(builder.context);column.setOrientation(LinearLayout.VERTICAL);
         EditText edit=nativeInput(builder.context,column,"每行 option=value；支持注释与引号。播放器管理项不能覆盖。",s.readConfig());edit.setSingleLine(false);edit.setMinLines(8);
@@ -129,19 +114,11 @@ final class MpvSettings {
         if(which==0)all.get(at).enabled=!all.get(at).enabled;else{int next=at+(which==1?-1:1);while(next>=0&&next<all.size()&&!all.get(next).kind.equals("shader"))next+=(which==1?-1:1);if(next>=0&&next<all.size())Collections.swap(all,at,next);}
         s.save(all);MobileMpv.apply(a,false);shaders(a,s);
         }catch(Exception e){error(a,e);}}).show();}
-    private static void fonts(Activity a,MpvStore s){try{List<MpvStore.Item> items=new ArrayList<>();for(MpvStore.Item i:s.items())if(i.kind.equals("font"))items.add(i);
-        String[] names=new String[items.size()+1];names[0]="系统 sans-serif";for(int i=0;i<items.size();i++)names[i+1]=items.get(i).name;
-        String font=s.prefs.getString("font","");int current=font.isEmpty()?0:-1;for(int i=0;i<items.size();i++)if(items.get(i).id.equals(font))current=i+1;
-        new NativeDialog(a).setTitle("选择字幕字体").setSingleChoiceItems(names,current,(d,index)->{try{d.dismiss();if(index==0){if(!s.prefs.edit().remove("font").putString("sub-font","sans-serif").commit())throw new IOException("保存字体设置失败");MobileMpv.apply(a,true);}else{
-            MpvStore.Item item=items.get(index-1);new NativeDialog(a).setTitle(item.name).setItems(new String[]{"使用此字体","删除导入副本"},(dialog,choice)->{if(choice==1){try{s.delete(item);MobileMpv.apply(a,true);}catch(Exception e){error(a,e);}return;}
-                try{String family=MpvStore.family(s.file(item));if(!s.prefs.edit().putString("font",item.id).putString("sub-font",family).commit())throw new IOException("保存字体设置失败");MobileMpv.apply(a,true);Toast.makeText(a,"字幕字体："+family,Toast.LENGTH_LONG).show();}catch(Exception e){error(a,e);}
-            }).show();}}catch(Exception e){error(a,e);}}).setPositiveButton("导入字体",(d,w)->pick(a,FONT,"*/*")).setNegativeButton("关闭",null).show();
-        }catch(Exception e){error(a,e);}}
     static void pick(Activity a,int request,String mime){Intent i=new Intent(Intent.ACTION_OPEN_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType(mime).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);try{a.startActivityForResult(i,request);}catch(ActivityNotFoundException e){error(a,new IOException("系统没有可用的文件选择器"));}}
-    static boolean fileResult(Activity a,int request,int result,Intent data){if(request!=SHADER&&request!=CONFIG&&request!=FONT)return false;if(result!=Activity.RESULT_OK||data==null)return true;
+    static boolean fileResult(Activity a,int request,int result,Intent data){if(request==FONT)return true;if(request!=SHADER&&request!=CONFIG)return false;if(result!=Activity.RESULT_OK||data==null)return true;
         Uri uri=data.getData();new Thread(()->{try{MpvStore s=new MpvStore(a);if(request==CONFIG){if(uri==null||!"content".equals(uri.getScheme()))throw new IOException("请选择系统文件提供器");try(InputStream in=a.getContentResolver().openInputStream(uri)){if(in==null)throw new IOException("文件内容不可读");ByteArrayOutputStream out=new ByteArrayOutputStream();MpvStore.copy(in,out,256*1024);s.config(new String(out.toByteArray(),"UTF-8"));}}
             else{s.importFile(uri,request==SHADER?"shader":"font");}
-            a.runOnUiThread(()->{refreshAll();Toast.makeText(a,request==SHADER?"着色器已导入，请选择启用":"文件已导入",Toast.LENGTH_LONG).show();if(request==SHADER)shaders(a,s);else if(request==FONT)fonts(a,s);else MobileMpv.apply(a,true);});
+            a.runOnUiThread(()->{refreshAll();Toast.makeText(a,request==SHADER?"着色器已导入，请选择启用":"文件已导入",Toast.LENGTH_LONG).show();if(request==SHADER)shaders(a,s);else MobileMpv.apply(a,true);});
         }catch(Exception e){a.runOnUiThread(()->error(a,e));}},"mobile-mpv-import").start();return true;}
     static void error(Activity a,Exception e){if(a.isFinishing())return;try{new NativeDialog(a).setTitle("MPV 设置失败").setMessage(MobileMpv.message(e)).setPositiveButton("确定",null).show();}catch(RuntimeException unavailable){android.util.Log.e("LeotvMPV","设置错误窗口不可用",unavailable);Toast.makeText(a,"MPV 设置失败："+MobileMpv.message(e),Toast.LENGTH_LONG).show();}}
     /** Original o4.b Material builder. Its radio menu is f(), not framework AlertDialog. */
