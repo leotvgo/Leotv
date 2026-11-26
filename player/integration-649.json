@@ -1352,7 +1352,7 @@
   "authorized_656_source_repairs": {
     "README.md": {
       "before_sha256": "848eaa780a47e322fb22df149412888a7ff5bcb6409cdcdc2c676ecc8e142ae5",
-      "after_sha256": "a7ee89783e33c0e9b43303647f1980c3fde63cb932eceba1b71d28e4eafb51f7",
+      "after_sha256": "d30d06ad464cf06b39ea84d25943e21c32483ef1639b1adfaf5624b51550c324",
       "reason": "User-authorized656 TV home focus regression repair plus explicitly requested TV thunder full-screen detail hero and library bottom-left metadata/actions; retain phone layout and prior native/player/effect/data gates. Category sections restore native measurement; pending focus waits for actual card acceptance."
     },
     "branding/AndroidManifest.xml": {
@@ -1387,7 +1387,7 @@
     },
     "docs/LEOTV-5.3.4-PREVIEW-10-656-TV-HOME-FOCUS-20261126.md": {
       "before_sha256": null,
-      "after_sha256": "711ee1e04789701eadb980cf4d54c5c00b733e57d304ac0e7581df0c1691693c",
+      "after_sha256": "28b1e144ac77ec51752e8ea1c5fe660ffcca7a8b56627c0ccb5376f3692b2018",
       "reason": "User-authorized656 TV home focus regression repair plus explicitly requested TV thunder full-screen detail hero and library bottom-left metadata/actions; retain phone layout and prior native/player/effect/data gates. Category sections restore native measurement; pending focus waits for actual card acceptance."
     },
     "research/effects-check/build.gradle": {
@@ -1414,6 +1414,11 @@
       "before_sha256": "97374a0f6ec35b5bdb18b54b275cb1247e9c6cc086044434acbfc8c5925803ff",
       "after_sha256": "e1c77c238a1b2a6228383f6b9e7f575d489e3d02f18630d4b3d515a760ed1a6c",
       "reason": "User-authorized656 TV home focus regression repair plus explicitly requested TV thunder full-screen detail hero and library bottom-left metadata/actions; retain phone layout and prior native/player/effect/data gates. Category sections restore native measurement; pending focus waits for actual card acceptance."
+    },
+    "evidence/player-656-signed-delivery-20261127.json": {
+      "before_sha256": null,
+      "reason": "Verified656 actual fixed-signature APK/source delivery, six API23 focus checks and PRIVATE restoration; documentation only",
+      "after_sha256": "699c0f2eb7651fc7e41ed4ea34c3577b709fa5f558e0d48122ebb4417590489d"
     }
   },
   "656_delivery_inputs": {
@@ -1437,6 +1442,12 @@
         "failure": "Test window did not expose live View-tree focus through Activity.getCurrentFocus; fixture Host now forwards to content.findFocus. Production source unchanged.",
         "repository_restored_private": true
       }
-    ]
+    ],
+    "build_run_id": 45855354022,
+    "publish_run_id": 45856490180,
+    "apk_input_commit": "2899816ff307f8ddbf5af8e93e9da4451ccded70",
+    "actual_signed_delivery_verified": true,
+    "repository_visibility": "private",
+    "six_api23_focus_checks_passed": true
   }
 }

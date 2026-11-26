@@ -16,3 +16,14 @@
 GitHub 复用已有 Android 6 绘制门禁，新增六个聚焦场景：未挂载分类、空卡片行、指定卡片还未到位/拒绝焦点、更多入口拒绝焦点、尚未绑定的离屏目标、最近观看必须交接到实际历史卡片。测试从当前生产源码抽取原样 focus/applyPending 和历史焦点交接方法，使用实际 API23 Views 检查焦点接受及 pending 保留；行位置 fixture 只提供挂载时序，不证明真实 Leanback 滚动或真机效果。保留源码、原样/允许变化、固定 native/签名和源码对应关系核对。没有本地 APK 构建或重复设备回归。
 
 允许变化通过 integration-649 的 authorized_656_source_repairs 顺序追加，旧代码 SHA 基准不改。四套 TV/手机、两个 ARM ABI、API23 及原 APK 固定签名交付区别不变。用户真机应重点验收五个 TV 新主页主题从轮播/最近观看向下逐行、左右选卡、返回上行及顶部，确认焦点一直可见且整屏海报能滚出视口。
+
+## 2026-11-27 已交付
+
+- APK 输入提交：2899816ff307f8ddbf5af8e93e9da4451ccded70。
+- GitHub 构建 45855354022，自动发布 45856490180，均成功。额外模型回归关闭，必需源码、焦点/绘制、原样/允许变化、原 native 和固定签名审计保留。
+- 首次 45854740242 被焦点测试门禁拦住，未开始 APK job。测试 Activity 未把 getCurrentFocus 接到其真实内容树，造成视图已有焦点而宿主返回空焦点；只修正 fixture Host 的焦点读取，并保留全部断言。源码修复没有在这次重试中改变。两次流程结束后均恢复并核对 PRIVATE。
+- 六项 API23 焦点检查均通过：未挂载分类、空卡片行、指定卡片晚到/拒绝焦点、更多入口拒绝焦点、未绑定的离屏目标、最近观看必须交接到实际历史卡片。生产方法体原样抽取，使用实际 View requestFocus/hasFocus/findFocus；不将 fixture 结果宣称为真实 Leanback 滚动或设备验收。
+- [5.3.4-preview.10 / 656 四套 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4-preview.10-build-45855354022)。正式 Latest 保持 5.3.3 / 646。
+- 四个 APK、14 个发布资产及四个内部完整审计已下载并核对大小/散列；实际 apksigner API23 v1 固定证书、16KiB native 对齐、原 ZIP/native 字节、JNI/R8 8.8.34 release/full 与对应源码绑定通过。
+- 固定证书 SHA-256：ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a。
+- [实际产物核对记录](../evidence/player-656-signed-delivery-20261127.json)。未执行本地 APK 构建或真机测试。用户需验收五个 TV 新主页主题的上下分类/最近观看/左右选卡，轮播滚出视口，以及 TV 雷霆和影视库详情的信息组左下位置。
