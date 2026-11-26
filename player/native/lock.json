@@ -17,9 +17,12 @@
         "libavdevice.so",
         "libswscale.so",
         "libswresample.so",
-        "libc++_shared.so"
+        "libc++_shared.so",
+        "libpostproc.so"
       ],
-      "abis": {}
+      "abis": {},
+      "ndk_runtime_lock": "player/native-sources/ndk-runtime.lock.json",
+      "alignment_policy": "Compiled MPV/FFmpeg/JNI >=16384; only exact official NDK27 armeabi-v7a libc++_shared.so has locked [4096,4096,4096,4096]. Preserve original runtime bytes."
     },
     "vlc": {
       "version": "org.videolan.android:libvlc-all:3.6.0",

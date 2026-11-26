@@ -1,7 +1,7 @@
 # API23 手机 MPV 与 TV VLC 固定原生输入
 
 任务A在独立分支实现原生模块，未编辑主工作区649、普通APK构建、版本、签名或仓库可见性。
-本记录目前是首次native-only CI的可审查输入；**MPV尚未获得成功的双ABI ELF，任务未完成**。
+首次native-only CI `45756633457` 已完成：MPV64与VLC两个ABI成功，MPV32编译成功但官方C++运行库4KiB对齐被过严门禁拒绝；**MPV32可下载制品尚未取得，任务未完成**。
 VLC双ABI官方输入已实际取得并通过静态API23核对，设备效果仍由最终APK真机验收。
 
 ## 构建与来源
@@ -35,7 +35,7 @@ python3 tools/build_player_native.py --engine mpv --abi arm64-v8a --ndk /path/to
 
 `player/native-sources/mpv/contract/is/xyz/mpv/MPVLib.java` 是无Media3依赖的Java8契约；
 `player/native-sources/mpv/is_xyz_mpv_MPVLib.h` 由API23 Java契约生成，C++直接包含以检查参数/返回值一致。
-Java加载 `c++_shared`、`mpv`、`player`；FFmpeg采用匹配的单独libav*/libsw*，不存在聚合 `libffmpeg.so`。
+Java加载 `c++_shared`、`mpv`、`player`；FFmpeg采用匹配的单独libav*/libsw*/libpostproc.so，实际完整输入为11个库，不存在聚合 `libffmpeg.so`。
 
 - `create(Context)`、`init()`失败抛Java异常；先create，再设置选项/Surface，最后init。
 - `enqueueCommand(long,String[])`返回队列接收错误，异步完成另由 `eventCommandReply(long,int)`报告；两者都必须检查。
@@ -88,11 +88,15 @@ MPV预期库名、VLC确切库名/全部新增AAR资产已列锁，最终构建�
 本任务不修改原DEX、ZIP资产、库、数据库、Site.playerType或History.player；最终连接任务需保留既有原样/允许变化审计。
 
 `check_player_native.py` 检查库hash/字节/SONAME/ABI、Android note、所有DT_NEEDED是否存在于完整配套组/API23平台、强符号名是否满足、nonfree标记与PT_LOAD对齐。
-MPV须16KiB ELF对齐，现成VLC原样4KiB对齐（已记录，不伪称16KiB）；APK ZIP对齐由最终应用构建执行。
+MPV/FFmpeg/JNI新编译库必须至少16KiB ELF对齐。唯一例外为固定NDK27.0.12077973的armeabi-v7a libc++_shared.so：原厂四个PT_LOAD均4KiB，SHA256必须为0ce8906c20a019f56d2cefbadeac35cca102234971d2c8a1e09c69ee099f957a，字节1301936、API note21、SONAME/依赖及四个对齐值全部匹配player/native-sources/ndk-runtime.lock.json，不能泛化到其他库/ABI。NDK运行库原样复制，不执行strip；收据记录strip_applied=false和strip阶段前后相同的实测hash。arm64官方运行库仍须16KiB。现成VLC原样4KiB对齐（不伪称16KiB）；APK ZIP仍由最终构建16KiB对齐。
 弱引用、dlsym、系统JNI探测和GPU运行行为不能由静态检查替代，API23与双ABI结论仍需最终设备验收。
 
 ## 本次实际验证与未完成
 
 已完成：全来源/依赖锁、可审查native-only workflow、JNI真实实现、Java8/API23契约生成、两个API23编译器语法核对；VLC双ABI提取/强导入/SONAME/对齐/hash核对。
-未完成：MPV首次双ABI成功编译、实际ELF/API23/对齐审计及收据锁回填；最终native artifact固定发布输入和APK合并/签名/设备验收。
+首次CI实测：MPV64共27,137,560字节、11库、API23全组强符号/SONAME/nonfree/16KiB门禁通过；MPV32在门禁前共24,259,488字节，唯一失败为官方C++运行库4KiB对齐，未上传artifact。VLC两套CI成功产物已下载，hash完全匹配固定AAR输入。
+
+本次修复用Google官方NDK ZIP的精确byte range/成员CRC获取两套运行库，SHA256/字节/Android note/PT_LOAD锁定；官方完整archive SHA1来自SDK仓库XML，不声称已下载或独立核对整个NDK ZIP。官方NDK NOTICE与clang_source_info的LLVM基底/Android补丁完整commit也已保存并锁hash，随对应源artifact保留。原始运行库不替换版本、不改ABI、不strip；五个针对性契约核对确认正确32位例外放行、hash/对齐改变拒绝、其他MPV库不降门禁、64位仍16KiB。
+
+未完成：重跑取得MPV32成功artifact，并核对两个ABI新产物/运行库原样收据及锁回填；最终native artifact固定发布输入和APK合并/签名/设备验收。
 只有脚本和语法核对不算MPV交付完成，待协调者触发native-only CI后继续处理实际失败并取得两个ABI制品。

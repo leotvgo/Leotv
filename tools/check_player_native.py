@@ -48,7 +48,22 @@ def elf(path):
                 soname=soname, needed=needed, exports=sorted(exports), strong=sorted(strong), weak=sorted(weak),
                 load_alignment=[p[-1] for p in ph if p[0] == 1])
 
-def audit(directory, abi, ndk, min_alignment=4096):
+def alignment_policy(row, abi, engine, min_alignment):
+    errors=[]
+    required=max(min_alignment,16384) if engine=='mpv' else min_alignment
+    if engine=='mpv' and row['name']=='libc++_shared.so':
+        root=Path(__file__).resolve().parents[1]
+        runtime_lock=json.loads((root/'player/native-sources/ndk-runtime.lock.json').read_text())
+        expected=runtime_lock['runtime_libraries'][abi]
+        for key in ['sha256','bytes','android_api_note','needed','soname','load_alignment']:
+            if row[key]!=expected[key]:errors.append(f'{row["name"]}: official NDK {runtime_lock["ndk_revision"]} {abi} {key} mismatch')
+        exception=runtime_lock['alignment_exception']
+        if abi==exception['abi'] and row['name']==exception['library']:
+            required=exception['required_load_alignment']
+    if any(a < required for a in row['load_alignment']):errors.append(f'{row["name"]}: alignment < {required}')
+    return required,errors
+
+def audit(directory, abi, ndk, min_alignment=4096, engine=None):
     triple, machine, klass = ABIS[abi]
     prebuilt = next((ndk/'toolchains/llvm/prebuilt').iterdir())
     platform = prebuilt/'sysroot/usr/lib'/triple/'23'
@@ -66,13 +81,15 @@ def audit(directory, abi, ndk, min_alignment=4096):
         if row['machine'] != machine or row['elf_class'] != klass: errors.append(f'{row["name"]}: wrong ABI')
         if row['android_api_note'] is None or row['android_api_note'] > 23: errors.append(f'{row["name"]}: missing or >23 Android note')
         if row['soname'] != row['name']: errors.append(f'{row["name"]}: unexpected SONAME {row["soname"]}')
-        if any(a < min_alignment for a in row['load_alignment']): errors.append(f'{row["name"]}: alignment < {min_alignment}')
+        required,alignment_errors=alignment_policy(row,abi,engine,min_alignment)
+        errors.extend(alignment_errors)
+        row['required_load_alignment']=required
         unresolved = sorted(set(row['strong']) - available)
         if unresolved: errors.append(f'{row["name"]}: unresolved strong API23 imports {unresolved}')
         raw = (directory/row['name']).read_bytes()
         if b'--enable-nonfree' in raw or b'nonfree and unredistributable' in raw: errors.append(f'{row["name"]}: nonfree input forbidden')
         rows.append({k:v for k,v in row.items() if k not in ('exports','strong','weak')} | {'api23_unresolved_strong':unresolved})
-    return dict(abi=abi, api=23, minimum_load_alignment=min_alignment, libraries=rows, errors=errors,
+    return dict(abi=abi, api=23, minimum_load_alignment=max(min_alignment,16384) if engine=='mpv' else min_alignment, libraries=rows, errors=errors,
                 boundary='Static ELF names against API23 NDK stubs and the exact companion set; weak imports/dlopen/device behavior require device acceptance.')
 
 def check_sources():
@@ -94,7 +111,7 @@ def main():
     p=argparse.ArgumentParser(); p.add_argument('--engine', choices=['mpv','vlc'], required=True);p.add_argument('--abi',choices=ABIS,required=True)
     p.add_argument('--directory', type=Path, required=True);p.add_argument('--ndk',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--lock',type=Path);p.add_argument('--min-alignment',type=int,default=4096)
-    a=p.parse_args(); report=audit(a.directory,a.abi,a.ndk,a.min_alignment);report['engine']=a.engine
+    a=p.parse_args(); report=audit(a.directory,a.abi,a.ndk,a.min_alignment,a.engine);report['engine']=a.engine
     if a.lock:
         lock=json.loads(a.lock.read_text()); expected=lock['engines'][a.engine]['abis'][a.abi]['libraries']
         actual={x['name']:x for x in report['libraries']}

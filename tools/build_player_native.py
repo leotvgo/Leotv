@@ -102,8 +102,19 @@ def build_mpv(args):
     prebuilt=ndk_prebuilt(args.ndk); triple=ABIS[args.abi][1];compiler=ABIS[args.abi][2]+'23-clang++'
     run([prebuilt/'bin'/compiler,'-std=c++14','-O2','-fPIC','-shared','-fvisibility=hidden','-Wl,--no-undefined','-Wl,-z,max-page-size=16384','-Wl,-soname,libplayer.so',
          '-I'+str(prefix/'include'),ROOT/'player/native-sources/mpv/player.cpp','-L'+str(destination),'-lmpv','-lavcodec','-llog','-landroid','-o',destination/'libplayer.so'])
-    shutil.copy2(prebuilt/'sysroot/usr/lib'/triple/'libc++_shared.so',destination/'libc++_shared.so')
-    for path in destination.glob('*.so'):run([prebuilt/'bin/llvm-strip','--strip-unneeded',path])
+    runtime_lock=json.loads((ROOT/'player/native-sources/ndk-runtime.lock.json').read_text())
+    if runtime_lock['ndk_revision']!=source_lock['ndk']:raise ValueError('NDK build/runtime revision lock mismatch')
+    runtime_source=prebuilt/'sysroot/usr/lib'/triple/'libc++_shared.so'
+    runtime_expected=runtime_lock['runtime_libraries'][args.abi]
+    before_strip_sha256=sha(runtime_source)
+    if before_strip_sha256!=runtime_expected['sha256']:raise ValueError('NDK C++ runtime source identity mismatch')
+    shutil.copy2(runtime_source,destination/'libc++_shared.so')
+    for path in destination.glob('*.so'):
+        if path.name!='libc++_shared.so':run([prebuilt/'bin/llvm-strip','--strip-unneeded',path])
+    after_strip_sha256=sha(destination/'libc++_shared.so')
+    if after_strip_sha256!=before_strip_sha256:raise ValueError('Vendor C++ runtime was modified')
+    expected_names=set(json.loads((ROOT/'player/native/lock.json').read_text())['engines']['mpv']['expected_libraries'])
+    if {path.name for path in destination.glob('*.so')}!=expected_names:raise ValueError('MPV native output allowlist mismatch')
     report=output/f'mpv-{args.abi}-audit.json'
     run([sys.executable,ROOT/'tools/check_player_native.py','--engine','mpv','--abi',args.abi,'--directory',destination,'--ndk',args.ndk,'--min-alignment','16384','--output',report])
     # Preserve exact original archives, local build changes, generated configuration,
@@ -120,7 +131,7 @@ def build_mpv(args):
             path=build/rel
             if path.exists():shutil.copy2(path,configs/(name+'-'+Path(rel).name))
     receipt=dict(schema_version=1,engine='mpv',abi=args.abi,api=23,ndk=source_lock['ndk'],source_lock_sha256=sha(ROOT/'player/native-sources/sources.lock.json'),
-                 libraries=json.loads(report.read_text())['libraries'])
+                 libraries=json.loads(report.read_text())['libraries'],ndk_runtime=dict(ndk_revision=runtime_lock['ndk_revision'],before_strip_sha256=before_strip_sha256,after_strip_sha256=after_strip_sha256,strip_applied=False,official_archive=runtime_lock['official_archive']))
     (output/f'mpv-{args.abi}-receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
 
 def main():

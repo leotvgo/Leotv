@@ -1,0 +1,117 @@
+{
+  "run_id": 45756633457,
+  "commit": "68c95e4987f15e887ebfe820fe6e6046e669925e",
+  "conclusion": "failure",
+  "jobs": {
+    "mpv-arm64-v8a": {
+      "id": 139696672339,
+      "conclusion": "success",
+      "native_bytes": 27137560,
+      "libraries": 11,
+      "api23_errors": []
+    },
+    "mpv-armeabi-v7a": {
+      "id": 139696672736,
+      "conclusion": "failure",
+      "compilation_completed": true,
+      "native_bytes_before_failed_gate": 24259488,
+      "api23_strong_import_errors": [],
+      "audit_errors": [
+        "libc++_shared.so: alignment < 16384"
+      ],
+      "artifact_uploaded": false
+    },
+    "vlc-armeabi-v7a": {
+      "id": 139696672670,
+      "conclusion": "success",
+      "native_bytes": 40564316
+    },
+    "vlc-arm64-v8a": {
+      "id": 139696672720,
+      "conclusion": "success",
+      "native_bytes": 44235352
+    }
+  },
+  "fix": "Lock official NDK runtime member hashes and preserve vendor bytes. ARM32 exact four 4KiB PT_LOAD segments are the sole exception; other new MPV/FFmpeg/JNI libraries stay >=16KiB. Add actual libpostproc.so to expected output allowlist.",
+  "runtime_reference": {
+    "schema_version": 1,
+    "ndk_revision": "27.0.12077973",
+    "official_archive": {
+      "url": "https://dl.google.com/android/repository/android-ndk-r27-linux.zip",
+      "bytes": 663957918,
+      "sha1": "5e5cd517bdb98d7e0faf2c494a3041291e71bdcc",
+      "metadata_url": "https://dl.google.com/android/repository/repository2-1.xml"
+    },
+    "runtime_libraries": {
+      "armeabi-v7a": {
+        "name": "libc++_shared.so",
+        "sha256": "0ce8906c20a019f56d2cefbadeac35cca102234971d2c8a1e09c69ee099f957a",
+        "bytes": 1301936,
+        "android_api_note": 21,
+        "needed": [
+          "libc.so",
+          "libm.so",
+          "libdl.so"
+        ],
+        "soname": "libc++_shared.so",
+        "load_alignment": [
+          4096,
+          4096,
+          4096,
+          4096
+        ],
+        "archive_path": "android-ndk-r27/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so",
+        "before_strip_sha256": "0ce8906c20a019f56d2cefbadeac35cca102234971d2c8a1e09c69ee099f957a",
+        "after_strip_sha256": "0ce8906c20a019f56d2cefbadeac35cca102234971d2c8a1e09c69ee099f957a",
+        "strip_applied": false
+      },
+      "arm64-v8a": {
+        "name": "libc++_shared.so",
+        "sha256": "46b51d661454b9cfaf42c1dc90893b5ad601b7a7ffc2e09d44bb3cc9d20e7ae2",
+        "bytes": 1794776,
+        "android_api_note": 21,
+        "needed": [
+          "libc.so",
+          "libm.so",
+          "libdl.so"
+        ],
+        "soname": "libc++_shared.so",
+        "load_alignment": [
+          16384,
+          16384,
+          16384,
+          16384
+        ],
+        "archive_path": "android-ndk-r27/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so",
+        "before_strip_sha256": "46b51d661454b9cfaf42c1dc90893b5ad601b7a7ffc2e09d44bb3cc9d20e7ae2",
+        "after_strip_sha256": "46b51d661454b9cfaf42c1dc90893b5ad601b7a7ffc2e09d44bb3cc9d20e7ae2",
+        "strip_applied": false
+      }
+    },
+    "alignment_exception": {
+      "engine": "mpv",
+      "abi": "armeabi-v7a",
+      "library": "libc++_shared.so",
+      "required_load_alignment": 4096,
+      "reason": "Exact official NDK r27 ARM32 runtime; preserve vendor bytes. All compiled MPV/FFmpeg/JNI libraries still require >=16384."
+    },
+    "strip_policy": "Do not strip the NDK C++ runtime. Record source and staged SHA256; both must equal the locked official member.",
+    "license": "Apache-2.0 WITH LLVM-exception",
+    "source_provenance": {
+      "llvm_base_commit": "3c92011b600bdf70424e2547594dd461fe411a41",
+      "android_patch_repository_commit": "5ab132bd1afa945695853fa093dfcc839e45f97c",
+      "source_info": "player/native-sources/ndk-r27-clang-source-info.md",
+      "source_info_sha256": "a0a8579710627e72a55861ab50e106903ff4bfc40b96f1f038ae871a2c8f3f6f",
+      "notice": "player/native-sources/licenses/NDK-r27-NOTICE.txt",
+      "notice_sha256": "4d5224d1c0b54ffa88b0dc0088191638fdbb7227835095dfb98f7f66b416a323"
+    }
+  },
+  "device_test": false,
+  "verified_contracts": [
+    "Official ARM32 runtime exact hash/bytes/note/SONAME/needed/four 4096 PT_LOAD accepted",
+    "Modified runtime hash rejected",
+    "Other MPV library four 4096 PT_LOAD rejected even with --min-alignment 4096",
+    "Changed runtime PT_LOAD sequence rejected",
+    "Official ARM64 runtime exact identity remains >=16384 even with --min-alignment 4096"
+  ]
+}
