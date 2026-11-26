@@ -1,0 +1,75 @@
+{
+  "base_revision": "d6a959481e8a859f3a31ee02fe0529f8f59fb5c7",
+  "released_649_apply_source_sha256": "a1d95c7d1cfdb8f963262381df197bea2f9b7b039c26a52a900d3a76fb0b97b6",
+  "variants": {
+    "tv-v7a": {
+      "changed_from_released_649": {
+        "smali/C3/e.smali": [
+          "n0(I)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": [
+          "U0(I)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": [
+          "v0(I)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": [
+          "d0(I)V"
+        ]
+      },
+      "released_649_resize_rejected": {
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": {
+          "failure": "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali:U0(I)V:line 66: p1 (v3) has Ljava/lang/String;, expected I [invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V]",
+          "released_649_method_sha256": "adc9969d76be3c9dea6c4ba8121ca902a3f9a5de9cf2d154f1244e334e7d6a91",
+          "fixed_650_method_sha256": "349cff6f2b4bce70db406048b654e4643f48353edc81dbd3b9135a375f93b291"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": {
+          "failure": "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali:v0(I)V:line 78: p1 (v3) has Ljava/lang/String;, expected I [invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V]",
+          "released_649_method_sha256": "eab29427f4a357ce9e17f21ef260f18784683418f129709e8538733daf0094a5",
+          "fixed_650_method_sha256": "fbae61a1f4f6c29ee393d3738a2bd8d5b9e73a46064af7def5b27d70948b941f"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": {
+          "failure": "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali:d0(I)V:line 82: p1 (v3) has Ljava/lang/String;, expected I [invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V]",
+          "released_649_method_sha256": "ed02a5889cea73fcaf651f245b9652f612de6bf985ac632d87522e59ef14047c",
+          "fixed_650_method_sha256": "2738234e2803b577ac38bd900ae13e1c3c4b97bba3c76db67b785188383c7155"
+        }
+      }
+    },
+    "tv-v8a": {
+      "changed_from_released_649": {
+        "smali/C3/e.smali": [
+          "n0(I)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": [
+          "U0(I)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": [
+          "v0(I)V"
+        ],
+        "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": [
+          "d0(I)V"
+        ]
+      },
+      "released_649_resize_rejected": {
+        "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": {
+          "failure": "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali:U0(I)V:line 66: p1 (v3) has Ljava/lang/String;, expected I [invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V]",
+          "released_649_method_sha256": "adc9969d76be3c9dea6c4ba8121ca902a3f9a5de9cf2d154f1244e334e7d6a91",
+          "fixed_650_method_sha256": "349cff6f2b4bce70db406048b654e4643f48353edc81dbd3b9135a375f93b291"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": {
+          "failure": "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali:v0(I)V:line 78: p1 (v3) has Ljava/lang/String;, expected I [invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V]",
+          "released_649_method_sha256": "eab29427f4a357ce9e17f21ef260f18784683418f129709e8538733daf0094a5",
+          "fixed_650_method_sha256": "fbae61a1f4f6c29ee393d3738a2bd8d5b9e73a46064af7def5b27d70948b941f"
+        },
+        "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": {
+          "failure": "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali:d0(I)V:line 82: p1 (v3) has Ljava/lang/String;, expected I [invoke-static {v0, p1}, Lcom/leotv/player/vlc/VlcBridge;->resize(LC3/e;I)V]",
+          "released_649_method_sha256": "ed02a5889cea73fcaf651f245b9652f612de6bf985ac632d87522e59ef14047c",
+          "fixed_650_method_sha256": "2738234e2803b577ac38bd900ae13e1c3c4b97bba3c76db67b785188383c7155"
+        }
+      }
+    }
+  },
+  "apk_built": false,
+  "native_executed": false,
+  "art_device_executed": false
+}

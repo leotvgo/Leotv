@@ -244,5 +244,21 @@
     "Landroidx/collection/LongSparseArray;"
   ],
   "additional_dependency_lock": "player/vlc/java-dependencies.lock.json",
-  "jni_cache_contract": "player/vlc/jni-abi.json"
+  "jni_cache_contract": "player/vlc/jni-abi.json",
+  "register_safety": {
+    "gate": "tools/check_player_registers.py",
+    "resize_entry_methods": {
+      "smali/com/fongmi/android/tv/ui/activity/VideoActivity.smali": "U0(I)V",
+      "smali/com/fongmi/android/tv/ui/activity/LiveActivity.smali": "v0(I)V",
+      "smali/com/fongmi/android/tv/ui/activity/CastActivity.smali": "d0(I)V"
+    },
+    "resize_register_frame_unchanged": true,
+    "invalid_player_fallback": 2,
+    "changes_from_649": [
+      "Move the three VLC resize calls to entry before p1 changes from int to String; dead v0 is overwritten by the original first iget.",
+      "Keep n0 accepted ids 0/1/2/3 while restoring the native invalid-id fallback 2."
+    ],
+    "ci_check_stage": "Actual host smali after all source patches, before assembly; retain source/allowed-change/signature audits.",
+    "validation_boundary": "Primitive/reference/wide and CFG/catch type flow, not reference inheritance/access/constructor verification or actual ART device acceptance."
+  }
 }

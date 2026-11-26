@@ -91,9 +91,13 @@ def apply(project, root, variant):
             text = replace_method(text, 'U(I)Z', lambda body: getter(body, 'hasTrack', 'Z', 'p0, p1', 'LC3/e;I'))
             def select(body):
                 marker = '    const/4 v0, 0x2'
-                if body.count(marker) != 1:
+                fallback = '    :cond_0\n    move p1, v0'
+                if body.count(marker) != 1 or body.count(fallback) != 1:
                     raise ValueError('Original TV player id bound changed')
-                return body.replace(marker, '    const/4 v0, 0x3', 1)
+                # Extend only the accepted upper bound; invalid ids still use
+                # the native Exo fallback 2 rather than silently selecting VLC.
+                return body.replace(marker, '    const/4 v0, 0x3', 1).replace(
+                    fallback, '    :cond_0\n    const/4 v0, 0x2\n    move p1, v0', 1)
             text = replace_method(text, 'n0(I)V', select)
             text = replace_method(text, 'V(Landroidx/media3/ui/PlayerView;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V',
                 lambda body: prepend(body, call('bind', 'LC3/e;Landroid/view/View;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V', 'p0, p1, p2')))
@@ -173,7 +177,11 @@ def apply(project, root, variant):
                 descriptor = 'Lcom/fongmi/android/tv/ui/activity/' + Path(name).stem + ';'
                 obtain = f'    iget-object v0, p0, {descriptor}->{field}:LC3/e;\n'
                 text = replace_method(text, signature, lambda body: append(body, obtain + call('visible', 'LC3/e;)V', 'v0')))
-                text = replace_method(text, resize, lambda body: append(body, obtain + call('resize', 'LC3/e;I)V', 'v0, p1')))
+                # All three native resize methods consume p1 as the array index,
+                # then reuse it for the String displayed by TextView.setText.
+                # At entry p1 is still I and v0 is dead (the original first iget
+                # overwrites it); an appended invoke makes ART reject the class.
+                text = replace_method(text, resize, lambda body: prepend(body, obtain + call('resize', 'LC3/e;I)V', 'v0, p1')))
         for existing in re.findall(r'(?m)^.*Lcom/leotv/(?:detail|ui)/.*$', before):
             if text.count(existing) < before.count(existing):
                 raise ValueError('VLC dropped an existing detail/progress/danmaku hook: ' + name)
