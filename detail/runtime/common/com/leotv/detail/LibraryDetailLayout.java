@@ -12,24 +12,19 @@ final class LibraryDetailLayout {
     private final List<View> originalControls=new ArrayList<>();
     private final Map<View,ViewGroup.LayoutParams> params=new IdentityHashMap<>();
     private boolean applied;
-    private int measuredWidth,measuredHeight,measuredTop,synopsisColor;
+    private int measuredWidth,measuredHeight,measuredBottom,synopsisColor;
     private int[] titlePadding;
     LibraryDetailLayout(TvDetailPage page){this.page=page;}
     void sync(){
         if(!applied||page.scroll.animating())return;
-        int width=page.heroFrame.getWidth();if(width<=0)return;
-        if(width==measuredWidth&&page.info.getHeight()==measuredHeight&&!page.info.isLayoutRequested()&&((FrameLayout.LayoutParams)page.info.getLayoutParams()).topMargin==measuredTop)return;
+        FrameLayout.LayoutParams info=(FrameLayout.LayoutParams)page.info.getLayoutParams();int width=info.width>0?info.width:page.heroFrame.getWidth();if(width<=0)return;
+        int bottom=dp(page.mobile?24:32);
+        if(width==measuredWidth&&page.info.getHeight()==measuredHeight&&!page.info.isLayoutRequested()&&info.bottomMargin==measuredBottom)return;
         page.info.measure(View.MeasureSpec.makeMeasureSpec(width,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED));
-        int measured=page.info.getMeasuredHeight(),screen=Math.max(1,page.themeHeight);
-        FrameLayout.LayoutParams info=(FrameLayout.LayoutParams)page.info.getLayoutParams();
-        boolean landscape=!page.portraitArtwork();
-        // Keep the complete information and original action group inside the full-screen artwork.
-        int preferred=Math.round(screen*(landscape?.18f:.48f));
-        int top=landscape?Math.max(dp(24),Math.min(preferred,screen-measured-dp(36))):preferred;
-        int height=Math.max(screen,top+measured+dp(landscape?36:16));
-        if(info.topMargin!=top){info.topMargin=top;page.info.setLayoutParams(info);}
+        int measured=page.info.getMeasuredHeight(),screen=Math.max(1,page.themeHeight),height=Math.max(screen,measured+bottom+dp(24));
+        if(info.topMargin!=0||info.bottomMargin!=bottom){info.topMargin=0;info.bottomMargin=bottom;page.info.setLayoutParams(info);}
         ViewGroup.LayoutParams lp=page.heroFrame.getLayoutParams();if(lp.height!=height){lp.height=height;page.heroFrame.setLayoutParams(lp);}
-        measuredWidth=width;measuredHeight=measured;measuredTop=top;
+        measuredWidth=width;measuredHeight=measured;measuredBottom=bottom;
     }
     private int dp(float value){return LibraryStyle.dp(page.activity,value);}
     private static void detach(View v){if(v.getParent() instanceof ViewGroup)((ViewGroup)v.getParent()).removeView(v);}
@@ -51,8 +46,8 @@ final class LibraryDetailLayout {
         for(int i=0;i<p.actionRow.getChildCount();i++){View v=p.actionRow.getChildAt(i);v.setMinimumHeight(0);LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(0,dp(40),1);if(i>0)lp.leftMargin=dp(4);v.setLayoutParams(lp);}
         p.synopsis.setGravity(Gravity.LEFT);p.synopsis.setTextSize(14);p.synopsis.setMaxLines(3);p.synopsis.setTextColor(0xb3f0ede8);p.synopsis.setPadding(0,dp(8),0,dp(4));
         p.tagline.setVisibility(View.GONE);p.crewLine.setVisibility(View.GONE);
-        int top=Math.round(height*(landscape?.18f:.48f));FrameLayout.LayoutParams info=new FrameLayout.LayoutParams(-1,-2,Gravity.TOP);info.topMargin=top;p.heroFrame.addView(p.info,info);
-        p.hero.setLayoutParams(new FrameLayout.LayoutParams(-1,height));p.hero.presentation(p.portraitArtwork(),DetailHero.LIBRARY_DETAIL);p.hero.dots(false);
+        FrameLayout.LayoutParams info=new FrameLayout.LayoutParams(p.mobile?-1:Math.max(dp(300),Math.round(width*.55f)),-2,Gravity.BOTTOM|(p.mobile?Gravity.LEFT:Gravity.RIGHT));info.bottomMargin=dp(p.mobile?24:32);if(!p.mobile)info.rightMargin=side;p.heroFrame.addView(p.info,info);
+        p.hero.setLayoutParams(new FrameLayout.LayoutParams(-1,-1));p.hero.presentation(p.portraitArtwork(),DetailHero.LIBRARY_DETAIL);p.hero.dots(false);
         p.controls.setPadding(p.mobile?dp(16):side,0,p.mobile?dp(16):side,dp(32));p.controls.setBackgroundColor(Color.TRANSPARENT);p.scroll.setBackground(new android.graphics.drawable.ColorDrawable(0xff06111b));
         if(p.surface!=null){p.surface.setVisibility(View.GONE);}
         p.actorHeading.setText("主演");p.actorHeading.setTextSize(12);p.actorHeading.setPadding(0,dp(8),0,dp(8));

@@ -30,14 +30,16 @@ def check(root):
     page,library=map(read,('TvDetailPage','LibraryDetailLayout'))
     if 'portraitArtwork()?metadata.posterPaths:metadata.backdropPaths' not in page or 'content.getHeight()>=content.getWidth()' not in page or 'p.hero.presentation(p.portraitArtwork(),DetailHero.LIBRARY_DETAIL)' not in library:
         raise ValueError('Portrait mobile library must select and render portrait artwork, including theme/orientation changes.')
-    if 'screen*(landscape?.18f:.48f)' not in library or 'screen-measured-dp(36)' not in library:
-        raise ValueError('Landscape library metadata and original action group must move inside the full-screen artwork.')
+    if 'Gravity.BOTTOM|' not in library or 'Gravity.RIGHT' not in library or 'info.bottomMargin=dp(p.mobile?24:32)' not in library or 'info.width>0?info.width' not in library:
+        raise ValueError('Library metadata and actions must use bottom/right anchoring and their actual measured width.')
     for name in ('DetailRecommendations','DetailStills'):
         if 'DetailCardStyle.apply(cell)' not in read(name):raise ValueError('Added detail card types must share their skin.')
     scroll=read('TvDetailScroll');navigation=read('TvDetailNavigation')
-    for token in ('destination==target','targetPosition()','pinnedHeightAt(int y)','hero.isHardwareAccelerated()','<=2*1024*1024','cancelAnimation(false)','enforceInitialViewport()'):
+    for token in ('destination==target','targetPosition()','cancelAnimation()','enforceInitialViewport()'):
         if token not in scroll:raise ValueError('TV viewport/retarget/cache bound missing: '+token)
-    if 'scroll.targetPosition()' not in navigation or 'pinnedHeightAt(destination)' not in navigation or 'page.scroll.animating()' not in library:raise ValueError('Native remote reveal must use its planned viewport and defer metadata geometry during scrolling')
+    if any(token in scroll+navigation+page for token in ('pinHero(', 'pinnedHeight', 'updatePinnedHero', 'cacheHero(', 'controls.setClipBounds')):raise ValueError('All detail themes must scroll as one page without a pinned hero or clipped content')
+    if 'scroll.targetPosition()' not in navigation or 'page.scroll.animating()' not in library or 'surface=null;' not in page or 'scroll.setClipChildren(true)' not in page:raise ValueError('Single-page remote reveal and viewport clipping must retain the original layout')
+    if 'theme!=0&&theme!=2' not in theme or 'heroHeightChanged(height)' not in home or 'rowParams.height=item==page.heroFrame' not in tv:raise ValueError('The nonclassic TV home themes must fill the viewport and update recycled row height')
     declaration=json.loads((root/'detail/runtime-sources.json').read_text())
     for group in ('common','tv','mobile'):
         actual=sorted(str(p.relative_to(root)) for p in (root/'detail/runtime'/group).rglob('*.java'))

@@ -490,7 +490,7 @@ class DetailHero extends View implements CacheMaintenance.Client {
         paint.setAlpha(255);
         gradients(w,h);paint.setShader(tailGradient);tintTail();
         canvas.drawRect(0,0,w,h,paint);paint.setColorFilter(null);paint.setShader(null);
-        if(!portrait&&(presentation==1 || presentation==DetailTheme.TV_THUNDER)) {
+        if(!externalTail&&!portrait&&(presentation==1 || presentation==DetailTheme.TV_THUNDER)) {
             boolean thunder = presentation == DetailTheme.TV_THUNDER;
             paint.setShader(sideGradient);
             canvas.drawRect(0,0,w,h,paint);paint.setShader(null);
@@ -515,7 +515,7 @@ class DetailHero extends View implements CacheMaintenance.Client {
         paint.setShader(null);paint.setColorFilter(null);paint.setAlpha(255);int photoHeight=Math.max(1,getHeight());
         gradients(w,photoHeight);paint.setShader(tailGradient);tintTail();
         int save=canvas.save();canvas.translate(0,top);float start=Math.max(0,top+photoHeight*(portrait?.48f:.30f));canvas.drawRect(0,start-top,w,height-top,paint);canvas.restoreToCount(save);
-        paint.setColorFilter(null);if(!portrait&&(presentation==1||presentation==DetailTheme.TV_THUNDER||presentation==LIBRARY_HOME)){paint.setShader(sideGradient);canvas.drawRect(0,Math.max(0,top),w,Math.min(height,top+photoHeight),paint);}
+        paint.setColorFilter(null);if(!portrait&&(presentation==1||presentation==DetailTheme.TV_THUNDER||presentation==LIBRARY_HOME)){paint.setShader(sideGradient);paint.setAlpha(150);canvas.drawRect(0,Math.max(0,top),w,Math.min(height,top+photoHeight),paint);paint.setAlpha(255);}
         paint.setColorFilter(null);paint.setShader(darkness);if(darkness!=null)canvas.drawRect(0,Math.max(0,top+heroHeight),w,height,paint);paint.setShader(null);
     }
     private void tintTail(){if(seamlessTail){int floor=surface(colour);if(tailTint==null||tailTintColour!=floor){tailTintColour=floor;tailTint=new android.graphics.PorterDuffColorFilter(floor,android.graphics.PorterDuff.Mode.SRC_IN);}paint.setColorFilter(tailTint);}}
@@ -549,7 +549,7 @@ class DetailHero extends View implements CacheMaintenance.Client {
         if (image == null || image.isRecycled()) return;
         cover(imageBounds, w, h, image.getWidth(), image.getHeight(), portrait, x, zoom);
         if(clipHeight>h&&imageBounds.bottom<clipHeight)cover(imageBounds,w,clipHeight,image.getWidth(),image.getHeight(),portrait,x,zoom);
-        if(presentation==LIBRARY_HOME)imageBounds.offset(0,(h-imageBounds.height())*.2f-imageBounds.top);
+        if(!externalTail&&presentation==LIBRARY_HOME)imageBounds.offset(0,(h-imageBounds.height())*.2f-imageBounds.top);
         else if(presentation==LIBRARY_DETAIL)imageBounds.offset(0,-imageBounds.top);
         paint.setShader(null); paint.setAlpha(Math.round(255*alpha));
         paint.setFilterBitmap(canvas.isHardwareAccelerated()||android.os.Build.VERSION.SDK_INT>23);

@@ -153,16 +153,15 @@ final class TvDetailNavigation {
         View focused = page.findFocus();
         View target = descendant(focused, module.view) ? focused : module.container;
         if (!descendant(target, page)) return;
-        if(descendant(target,hero)){scroll.position(0,true);return;}
         bounds.set(0, 0, target.getWidth(), target.getHeight());
         page.offsetDescendantRectToMyCoords(target, bounds);
         int inset = Math.round(28 * page.getResources().getDisplayMetrics().density);
-        int destination=scroll.targetPosition(),pinned=scroll.pinnedHeightAt(destination);
-        int top=destination+pinned+inset;
+        int destination=scroll.targetPosition();
+        int top=destination+inset;
         int bottom=destination+scroll.getHeight()-inset;
         int y=destination;
         if (bounds.bottom > bottom) y += bounds.bottom - bottom;
-        if (bounds.top < top) y = Math.max(0, bounds.top - pinned - inset);
+        if (bounds.top < top) y = Math.max(0, bounds.top - inset);
         if(y!=destination)scroll.position(y,true);
     }
     private static int selectedPosition(View root, View focus) {

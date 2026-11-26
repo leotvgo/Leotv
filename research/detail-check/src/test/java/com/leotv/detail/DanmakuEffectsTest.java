@@ -16,6 +16,13 @@ import static org.junit.Assert.*;
 @RunWith(org.robolectric.RobolectricTestRunner.class)
 @Config(sdk=23,manifest=Config.NONE)
 public class DanmakuEffectsTest {
+    static final class RecordedCanvas extends Canvas {
+        final java.util.List<String> draws=new java.util.ArrayList<>();int dots;
+        RecordedCanvas(Bitmap frame){super(frame);}
+        @Override public void drawCircle(float x,float y,float radius,Paint paint){dots++;draws.add("dot");super.drawCircle(x,y,radius,paint);}
+        @Override public void drawPath(android.graphics.Path path,Paint paint){draws.add("petal");super.drawPath(path,paint);}
+        @Override public void drawBitmap(Bitmap bitmap,float x,float y,Paint paint){draws.add("bitmap");super.drawBitmap(bitmap,x,y,paint);}
+    }
     public static final class Timer {public long a=900;}
     public static final class Comment {
         public long a;public String c="虚构炫彩弹幕";public String[] d;
@@ -29,7 +36,7 @@ public class DanmakuEffectsTest {
     private Comment comment(Paint paint,int style,String text){Comment item=new Comment();item.c=text;item.a=time(text,style);item.h=paint.measureText(text);item.i=Math.max(paint.getTextSize()*1.2f,paint.descent()-paint.ascent());return item;}
     @SuppressWarnings("unchecked") private Map<String,Object> cache()throws Exception{Field field=DanmakuEffects.class.getDeclaredField("CACHE");field.setAccessible(true);return (Map<String,Object>)field.get(null);}
     private Bitmap portrait()throws Exception{Field field=DanmakuEffects.class.getDeclaredField("portrait");field.setAccessible(true);return (Bitmap)field.get(null);}
-    private int bytes()throws Exception{java.lang.reflect.Method count=DanmakuEffects.class.getDeclaredMethod("portraitBytes");count.setAccessible(true);int bytes=((Number)count.invoke(null)).intValue();for(Object tile:cache().values()){Field f=tile.getClass().getDeclaredField("bitmap");f.setAccessible(true);Bitmap bitmap=(Bitmap)f.get(tile);assertFalse(bitmap.isRecycled());bytes+=bitmap.getByteCount();}return bytes;}
+    private int bytes()throws Exception{java.lang.reflect.Method count=DanmakuEffects.class.getDeclaredMethod("portraitBytes");count.setAccessible(true);int bytes=((Number)count.invoke(null)).intValue();for(Object tile:cache().values()){Field f=tile.getClass().getDeclaredField("bitmap");f.setAccessible(true);Bitmap bitmap=(Bitmap)f.get(tile);if(bitmap!=null){assertFalse(bitmap.isRecycled());bytes+=bitmap.getByteCount();}}return bytes;}
 
     @Test public void nineStylesUseNativeCoordinatesFontOpacityAndBoundedCacheOnApi23()throws Exception{
         Context context=RuntimeEnvironment.getApplication();DanmakuSettings.prefs(context).edit().putBoolean("effects",true).putBoolean("effect_animation",true).putInt("effect_rate",15).putLong("effect_seed",1234567).commit();
@@ -41,18 +48,20 @@ public class DanmakuEffectsTest {
                 SystemClock.sleep(300); // Advance Robolectric's clock so each animation path acquires ownership.
                 Comment item=comment(displayer.a.c,style,"虚构炫彩弹幕");float width=item.h,height=item.i;long timestamp=item.a;
                 DanmakuEffects.measure(item,displayer.a.c);assertTrue(item.h>width);assertTrue(item.i>height);
-                assertTrue("Style "+style+" did not draw on the API23 Canvas; width="+item.h+", height="+item.i+", size="+item.g,DanmakuEffects.draw(item,displayer,canvas,51,80));
+                assertTrue("Style "+style+" did not draw on the API23 Canvas; width="+item.h+", height="+item.i+", size="+item.g,style==DanmakuEffectPolicy.PETALS?!DanmakuEffects.draw(item,displayer,canvas,51,80):DanmakuEffects.draw(item,displayer,canvas,51,80));
                 assertEquals(saves,canvas.getSaveCount());assertEquals(timestamp,item.a);assertEquals("虚构炫彩弹幕",item.c);assertEquals(24,displayer.a.c.getTextSize(),0);
             }
             assertEquals(9,cache().size());
+            boolean nativePetals=false;for(Object tile:cache().values()){Field styleField=tile.getClass().getDeclaredField("style");styleField.setAccessible(true);if(styleField.getInt(tile)==DanmakuEffectPolicy.PETALS){Field bitmapField=tile.getClass().getDeclaredField("bitmap");bitmapField.setAccessible(true);assertNull("No-board petals must retain the native glyph renderer",bitmapField.get(tile));nativePetals=true;}}assertTrue(nativePetals);
+
             for(int board=0;board<5;board++){
                 String text="虚构底板组合 "+board;Comment item=comment(displayer.a.c,2,text);boolean found=false;
                 for(long time=0;time<100000;time++){long token=DanmakuEffectPolicy.token(1234567,time,text);if(DanmakuEffectPolicy.style(token,15)==2&&(token>>>40)%5==board&&((token>>>32)&3)==0){item.a=time;found=true;break;}}
-                assertTrue("Composed board/petal/orbit variant unavailable",found);DanmakuEffects.measure(item,displayer.a.c);assertTrue(DanmakuEffects.draw(item,displayer,canvas,0,0));
+                assertTrue("Composed board/petal/orbit variant unavailable",found);DanmakuEffects.measure(item,displayer.a.c);RecordedCanvas recorded=new RecordedCanvas(frame);assertTrue(DanmakuEffects.draw(item,displayer,recorded,0,0));assertTrue("Petals must be painted above the cached panel",recorded.draws.indexOf("petal")>recorded.draws.indexOf("bitmap"));
                 boolean composed=false;for(Object tile:cache().values()){Field field=tile.getClass().getDeclaredField("plateVariant");field.setAccessible(true);Field flowers=tile.getClass().getDeclaredField("petalOverlay");flowers.setAccessible(true);if(field.getInt(tile)==board&&flowers.getBoolean(tile))composed=true;}assertTrue("The actual cached tile must retain its board and petal overlay",composed);
             }
 
-            for(Object tile:cache().values()){Field bitmapField=tile.getClass().getDeclaredField("bitmap");bitmapField.setAccessible(true);assertEquals("Pixel-measured glyph tiles must not rescale to the destination canvas density",Bitmap.DENSITY_NONE,((Bitmap)bitmapField.get(tile)).getDensity());}
+            for(Object tile:cache().values()){Field bitmapField=tile.getClass().getDeclaredField("bitmap");bitmapField.setAccessible(true);Bitmap glyph=(Bitmap)bitmapField.get(tile);if(glyph!=null)assertEquals("Pixel-measured glyph tiles must not rescale to the destination canvas density",Bitmap.DENSITY_NONE,glyph.getDensity());}
             for(int variant=0;variant<8;variant++){
                 String text="新增虚构头像贴纸 "+variant;Comment item=comment(displayer.a.c,DanmakuEffectPolicy.AVATAR,text);boolean matched=false;
                 for(long timestamp=0;timestamp<100000;timestamp++){long token=DanmakuEffectPolicy.token(1234567,timestamp,text);if(DanmakuEffectPolicy.style(token,15)==DanmakuEffectPolicy.AVATAR&&((token>>>16)&7)==variant){item.a=timestamp;matched=true;break;}}
@@ -61,7 +70,9 @@ public class DanmakuEffectsTest {
             Field alternatives=DanmakuEffects.class.getDeclaredField("portraits");alternatives.setAccessible(true);Bitmap[] images=(Bitmap[])alternatives.get(null);assertEquals(7,images.length);for(Bitmap bitmap:images){assertNotNull(bitmap);assertEquals(32,bitmap.getWidth());assertEquals(32,bitmap.getHeight());}
             assertNotNull(portrait());assertEquals(32,portrait().getWidth());assertEquals(32,portrait().getHeight());Field field=DanmakuEffects.class.getDeclaredField("BITMAP_PAINT");field.setAccessible(true);assertEquals(160,((Paint)field.get(null)).getAlpha());assertFalse("Moving cached glyphs must not blend neighboring pixel samples",((Paint)field.get(null)).isFilterBitmap());
             DanmakuSettings.prefs(context).edit().putBoolean("effect_animation",false).commit();DanmakuEffects.initialize(context);
-            for(int style=6;style<9;style++){Comment item=comment(displayer.a.c,style,"关闭动画仍显示贴纸和装饰");DanmakuEffects.measure(item,displayer.a.c);assertTrue(DanmakuEffects.draw(item,displayer,canvas,0,0));assertEquals(saves,canvas.getSaveCount());}
+            Comment visibleOrbit=comment(displayer.a.c,2,"关闭动画也能看见双光点");DanmakuEffects.measure(visibleOrbit,displayer.a.c);RecordedCanvas staticOrbit=new RecordedCanvas(frame);assertTrue(DanmakuEffects.draw(visibleOrbit,displayer,staticOrbit,0,0));assertTrue("The dual dots cannot vanish when animation is disabled or its slot is busy",staticOrbit.dots>=6);
+
+            for(int style=6;style<9;style++){Comment item=comment(displayer.a.c,style,"关闭动画仍显示贴纸和装饰");DanmakuEffects.measure(item,displayer.a.c);assertEquals(style!=DanmakuEffectPolicy.PETALS,DanmakuEffects.draw(item,displayer,canvas,0,0));assertEquals(saves,canvas.getSaveCount());}
             DanmakuSettings.prefs(context).edit().putBoolean("effect_animation",true).commit();DanmakuEffects.initialize(context);
             Comment ordinary=comment(displayer.a.c,-1,"未选中的虚构弹幕");float width=ordinary.h,height=ordinary.i;DanmakuEffects.measure(ordinary,displayer.a.c);
             assertEquals(width,ordinary.h,0);assertEquals(height,ordinary.i,0);assertFalse(DanmakuEffects.draw(ordinary,displayer,canvas,0,0));

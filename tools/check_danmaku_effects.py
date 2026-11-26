@@ -11,18 +11,18 @@ from apply_native_details import method
 def check(root):
     folder=root/'detail/runtime/common/com/leotv/detail'
     effects=(folder/'DanmakuEffects.java').read_text();policy=(folder/'DanmakuEffectPolicy.java').read_text()
-    for token in ('STYLES=9','AVATAR=6','NEON_TRAIL=7','PETALS=8','extraWidth(','extraHeight(','CACHE_ENTRIES=64','CACHE_BYTES=2*1024*1024','now-lastFrame>250','owner!=token',
+    for token in ('STYLES=9','AVATAR=6','NEON_TRAIL=7','PETALS=8','extraWidth(','extraHeight(','CACHE_ENTRIES=64','CACHE_BYTES=2*1024*1024','now-lastFrame[family]>250','owner[family]!=token',
                   'type==1||type==4||type==5||type==6'):
         if token not in policy:raise ValueError('Stable native effect/animation bound missing: '+token)
     for token in ('options=new Options(', 'getBoolean("effects",true)', 'getBoolean("effect_animation",true)', 'getInt("effect_rate",15)',
                   'CacheMaintenance.track(CLIENT)', 'tile.bitmap.recycle()', 'canvas.translate(Math.round(left),Math.round(top))', 'canvas.clipRect(0,0,width,height)',
-                  'ANIMATION.acquire(token,now)', 'access.frameTime.getLong(timer)', 'new Paint(typography)', 'canvas.restoreToCount(save)',
+                  'ANIMATION.acquire(token,now,DanmakuEffectPolicy.animationFamily(style,tile.petalOverlay))', 'access.frameTime.getLong(timer)', 'new Paint(typography)', 'canvas.restoreToCount(save)',
                   'owner.getField("a")', 'owner.getField("h")', 'owner.getField("i")', 'owner.getField("r")', 'OutOfMemoryError',
                   'canvas.drawBitmap(tile.bitmap', 'iterator.remove()', 'painter.opacity.getInt(nativeStyle)'):
         if token not in effects:raise ValueError('Effect lifecycle/native layout/cache/clock/opacity guard missing: '+token)
     for token in ('portrait.getByteCount()', 'portrait.recycle()', 'canvas.drawBitmap(portrait(variant),null,bounds,ink)',
                   'new RadialGradient(', 'new LinearGradient(', 'private void neon(', 'private void petals(',
-                  'if(style==DanmakuEffectPolicy.PETALS)tile.decorate', 'evict(width*height*4+', 'DanmakuEffectPolicy.extraWidth(style,size)'):
+                  'if(style==DanmakuEffectPolicy.PETALS){tile.petals', 'evict((style==DanmakuEffectPolicy.PETALS?0:width*height*4)+', 'DanmakuEffectPolicy.extraWidth(style,size)'):
         if token not in effects:raise ValueError('Reference portrait/neon/petal geometry or bitmap budget guard missing: '+token)
     asset=root/'detail/artwork/danmaku-reference-avatar.png'
     record=json.loads((root/'detail/artwork/danmaku-reference-avatar.json').read_text())
@@ -59,12 +59,12 @@ def check(root):
         if token not in effects:raise ValueError('Bounded avatar/border/cache hot-path contract missing: '+token)
     for token in ('%13','weighted<3','weighted<6','ORDINARY_STYLES[weighted-6]'):
         if token not in policy:raise ValueError('Requested orbit/petal weighted sampling contract missing: '+token)
-    for token in ('new PathMeasure(track,true)','orbit.getPosTan','orbitLight(canvas,phase,firstLight','tint(colors[0],alpha,shade)','panel(board,inset,radius)','Path.FillType.EVEN_ODD','tile.petalOverlay','((token>>>32)&3)==0'):
-        if token not in effects:raise ValueError('Orbit colors or varied cached backgrounds missing: '+token)
+    for token in ('new PathMeasure(track,true)','orbit.getPosTan','orbitLight(canvas,phase,firstLight','tint(colors[0],alpha,shade)','panel(board,inset,radius)','Path.FillType.EVEN_ODD','tile.petalOverlay','((token>>>32)&3)==0','tile.foregroundPetals','else if(style==2){','ANIMATION_FAMILIES=3'):
+        if token not in effects+policy:raise ValueError('Orbit colors or varied cached backgrounds missing: '+token)
     if 'VARIANTS=8' not in avatar:raise ValueError('The eight authorized avatar variants are required')
     return {'backplate_shapes':5,'composed_petal_overlays':True,'avatar_variants':8,'border_palettes':10,'styles':9,'reference_styles':['portrait_capsule','neon_orb_trail','falling_petals'],
             'portrait_sha256':record['asset_sha256'],'default_fraction':15,'default_animation':True,'native_timeline_and_coordinates':True,
-            'max_simultaneous_animations':1,'max_bitmap_bytes':2*1024*1024,'max_bitmap_entries':64,
+            'max_simultaneous_animations':3,'max_bitmap_bytes':2*1024*1024,'max_bitmap_entries':64,
             'native_opacity_and_font_size':True,'no_extra_frame_loop':True}
 
 

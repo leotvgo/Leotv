@@ -21,13 +21,18 @@ final class DanmakuEffectPolicy {
     static boolean eligible(String text,int type){return text!=null&&text.length()>=2&&text.length()<=80
             &&text.indexOf('\n')<0&&text.indexOf('\r')<0&&(type==1||type==4||type==5||type==6);}
     static boolean animated(int style){return style>=2&&style<STYLES;}
+    static final int ANIMATION_FAMILIES=3;
+    static int animationFamily(int style,boolean flowers){return style==2?0:style==PETALS||flowers?1:2;}
     static final class Animation {
-        private long owner,lastFrame;private boolean occupied;
-        boolean acquire(long token,long now){
-            if(!occupied||now<lastFrame||now-lastFrame>250){owner=token;occupied=true;}
-            if(owner!=token)return false;lastFrame=now;return true;
+        private final long[] owner=new long[ANIMATION_FAMILIES],lastFrame=new long[ANIMATION_FAMILIES];
+        private final boolean[] occupied=new boolean[ANIMATION_FAMILIES];
+        boolean acquire(long token,long now){return acquire(token,now,2);}
+        boolean acquire(long token,long now,int family){
+            if(family<0||family>=ANIMATION_FAMILIES)return false;
+            if(!occupied[family]||now<lastFrame[family]||now-lastFrame[family]>250){owner[family]=token;occupied[family]=true;}
+            if(owner[family]!=token)return false;lastFrame[family]=now;return true;
         }
-        void clear(){occupied=false;}
+        void clear(){java.util.Arrays.fill(occupied,false);}
     }
     private DanmakuEffectPolicy(){}
 }

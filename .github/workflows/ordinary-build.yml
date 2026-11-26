@@ -43,7 +43,9 @@ jobs:
         run: python3 -B research/check_player_clocks.py
       - name: Verify VLC decoder teardown, inherited barriers, native handoff and exit cancellation
         run: python3 -B research/check_vlc_lifecycle.py
-      - name: Verify stable effect sampling, nine styles and one animation using fictional comments
+      - name: Verify all TV home theme extents and preserved phone geometry
+        run: python3 -B research/check_home_geometry.py
+      - name: Verify stable effect sampling, nine styles and bounded effect-family animations using fictional comments
         run: python3 -B research/check_danmaku_effect_policy.py
 
   effects:

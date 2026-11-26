@@ -22,7 +22,7 @@ final class HomeTheme {
         boolean below=p.phone&&(value==1||value==2);
         if(p.heroInfo.getParent()!=p.heroFrame&&p.heroInfo.getParent() instanceof android.view.ViewGroup)((android.view.ViewGroup)p.heroInfo.getParent()).removeView(p.heroInfo);
         if(p.heroInfo.getParent()==null)p.heroFrame.addView(p.heroInfo);
-        int artwork=Math.max(p.dp(220),Math.round(p.phone?Math.min(width*1.55f,height*(value==2?.48f:below?.58f:.74f)):Math.min(width*.5625f,height*(value==2?.56f:.68f))));
+        int artwork=artworkHeight(p.phone,value,width,height,p.dp(220));
         p.homeArtworkHeight=artwork;
         FrameLayout.LayoutParams info=new FrameLayout.LayoutParams(left&&!p.phone?Math.round(width*(value==THUNDER?.68f:.62f)):-1,-2,below?Gravity.TOP:Gravity.BOTTOM);
         if(below)info.topMargin=artwork;
@@ -42,6 +42,11 @@ final class HomeTheme {
         p.heroFrame.getLayoutParams().height=artwork;
         p.heroFrame.requestLayout();p.syncThemeHeight();p.syncHeroBounds();
         p.updateHeroBadges();
+    }
+    static int artworkHeight(boolean phone,int theme,int width,int height,int minimum){
+        if(!phone&&theme!=0&&theme!=2)return Math.max(minimum,height);
+        float wanted=phone?Math.min(width*1.55f,height*(theme==2?.48f:theme==1?.58f:.74f)):Math.min(width*.5625f,height*(theme==2?.56f:.68f));
+        return Math.max(minimum,Math.round(wanted));
     }
     static void badges(CspHomePage p,MobileDetailMetadata.Result result,String facts){
         boolean decorated=p.homeTheme==THUNDER||p.homeTheme==LIBRARY;

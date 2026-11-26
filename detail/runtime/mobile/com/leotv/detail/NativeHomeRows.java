@@ -6,6 +6,7 @@ import android.widget.FrameLayout;
 /** The phone retains its existing touch scroll layout and CSP cards. */
 final class NativeHomeRows implements AutoCloseable {
     final FrameLayout list;NativeHomeRows(CspHomePage page){list=new FrameLayout(page.activity);}
+    void heroHeightChanged(int height){}
     void sections(){}void changed(){}void loaded(CspHomePage.Shelf shelf){}void failed(CspHomePage.Shelf shelf){}void insets(){}void scrollTo(int y){}void sizes(){}void active(boolean value){}
     int scrollY(){return 0;}int heroTop(){return 0;}boolean wants(int index){return false;}
     CspHomePage.Shelf shelfOf(View view){return null;}

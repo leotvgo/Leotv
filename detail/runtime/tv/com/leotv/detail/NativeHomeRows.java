@@ -57,6 +57,10 @@ final class NativeHomeRows implements AutoCloseable {
         int index=next.indexOf(current);if(index>=0)list.setSelectedPosition(index);
         list.post(()->{if(!closed){page.restoreInitialFocus();changed();}});
     }
+    void heroHeightChanged(int height){
+        int index=entries.indexOf(page.heroFrame);if(index<0)return;heights.put(page.heroFrame,height);
+        for(int i=0;i<list.getChildCount();i++){View row=list.getChildAt(i);if(list.getChildAdapterPosition(row)!=index)continue;ViewGroup.LayoutParams params=row.getLayoutParams();if(params!=null&&params.height!=height){params.height=height;row.setLayoutParams(params);}break;}
+    }
     void changed(){if(closed)return;rememberHeights();page.syncHeroBounds();page.backdrop.shader=null;page.invalidate();if(page.viewportChanged!=null)page.viewportChanged.run();}
     void rememberHeights(){for(int i=0;i<list.getChildCount();i++){View child=list.getChildAt(i);int position=list.getChildAdapterPosition(child);if(position>=0&&position<contents.size()&&child.getHeight()>0)heights.put(contents.get(position),child.getHeight());}}
     int scrollY(){
@@ -126,7 +130,7 @@ final class NativeHomeRows implements AutoCloseable {
     final class Sections extends Presenter {
         @Override public Presenter$ViewHolder onCreateViewHolder(ViewGroup parent){FrameLayout frame=new FrameLayout(page.activity);frame.setClipChildren(false);frame.setClipToPadding(false);return new Section(frame);}
         @Override public void onBindViewHolder(Presenter$ViewHolder holder,Object item){
-            Section section=(Section)holder;section.item=item;FrameLayout frame=(FrameLayout)holder.view;frame.removeAllViews();
+            Section section=(Section)holder;section.item=item;FrameLayout frame=(FrameLayout)holder.view;frame.removeAllViews();ViewGroup.LayoutParams rowParams=frame.getLayoutParams();if(rowParams!=null){rowParams.height=item==page.heroFrame?page.heroFrame.getLayoutParams().height:ViewGroup.LayoutParams.WRAP_CONTENT;frame.setLayoutParams(rowParams);}
             if(item instanceof CspHomePage.Shelf){if(section.row==null)section.row=new Row();section.row.bind((CspHomePage.Shelf)item);frame.addView(section.row.root,new FrameLayout.LayoutParams(-1,-2));}
             else {View view=(View)item;if(view.getParent() instanceof ViewGroup)((ViewGroup)view.getParent()).removeView(view);frame.addView(view,new FrameLayout.LayoutParams(-1,item==page.heroFrame?page.heroFrame.getLayoutParams().height:-2));}
         }

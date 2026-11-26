@@ -60,7 +60,7 @@ public final class DanmakuEffects {
         NativeDialogs.choose(activity,"特效弹幕比例",names,selected,index->{if(index<0||index>=RATES.length)return;DanmakuSettings.prefs(activity).edit().putInt("effect_rate",RATES[index]).apply();changed(activity);updated.run();});
     }
     private static void changed(Context context){initialize(context);clear();DanmakuPlayback.effectsChanged();}
-    static synchronized void clear(){for(Tile tile:CACHE.values())tile.bitmap.recycle();CACHE.clear();KEYS.clear();for(int i=0;i<portraits.length;i++){if(portraits[i]!=null){portraits[i].recycle();portraits[i]=null;}}if(portrait!=null){portrait.recycle();portrait=null;}ANIMATION.clear();}
+    static synchronized void clear(){for(Tile tile:CACHE.values())if(tile.bitmap!=null)tile.bitmap.recycle();CACHE.clear();KEYS.clear();for(int i=0;i<portraits.length;i++){if(portraits[i]!=null){portraits[i].recycle();portraits[i]=null;}}if(portrait!=null){portrait.recycle();portrait=null;}ANIMATION.clear();}
     private static boolean hasPortrait(int variant){return variant==0?portrait!=null:portraits[variant-1]!=null;}
     private static Bitmap portrait(int variant){
         Bitmap image=variant==0?portrait:portraits[variant-1];
@@ -107,16 +107,17 @@ public final class DanmakuEffects {
             RenderKey cached=KEYS.get(item);if(cached==null||!cached.matches(style,width,height,size,nativePaint.getTypeface(),text,variant,palette,petals,plate)){cached=new RenderKey(style,width,height,size,nativePaint.getTypeface(),text,variant,palette,petals,plate);KEYS.put(item,cached);if(KEYS.size()>64)KEYS.remove(KEYS.keySet().iterator().next());}String key=cached.key;
             Tile tile=CACHE.get(key);
             if(tile==null){Paint typography=new Paint(nativePaint);typography.setTextSize(size);if(width<typography.measureText(text)+DanmakuEffectPolicy.extraWidth(style,size)-size*.4f)return false;
-                evict(width*height*4+(style==DanmakuEffectPolicy.AVATAR&&!hasPortrait(variant)?DanmakuAvatar.PIXEL_BYTES:0));tile=new Tile(text,typography,width,height,style,variant,palette,petals,plate);CACHE.put(key,tile);}
+                evict((style==DanmakuEffectPolicy.PETALS?0:width*height*4)+(style==DanmakuEffectPolicy.AVATAR&&!hasPortrait(variant)?DanmakuAvatar.PIXEL_BYTES:0));tile=new Tile(text,typography,width,height,style,variant,palette,petals,plate);CACHE.put(key,tile);}
             long now=SystemClock.elapsedRealtime();
-            boolean moving=options.animation&&(DanmakuEffectPolicy.animated(style)||tile.petalOverlay)&&ANIMATION.acquire(token,now);
+            boolean moving=options.animation&&(DanmakuEffectPolicy.animated(style)||tile.petalOverlay)&&ANIMATION.acquire(token,now,DanmakuEffectPolicy.animationFamily(style,tile.petalOverlay));
             Object timer=access.timer.get(item);if(access.frameTime==null)access.frameTime=timer.getClass().getField("a");long playback=access.frameTime.getLong(timer);
             float phase=moving?(playback%2000)/2000f:0;
             int save=canvas.save();
             try{canvas.translate(Math.round(left),Math.round(top));canvas.clipRect(0,0,width,height);BITMAP_PAINT.setAlpha(Math.max(0,Math.min(255,alpha)));
-                if(style==DanmakuEffectPolicy.PETALS)tile.decorate(canvas,phase,moving,alpha);else if(tile.petalOverlay)tile.petals(canvas,phase,moving,alpha);
+                if(style==DanmakuEffectPolicy.PETALS){tile.petals(canvas,phase,moving,alpha);return false;}
                 canvas.drawBitmap(tile.bitmap,0,0,BITMAP_PAINT);
-                if(style!=DanmakuEffectPolicy.PETALS)tile.decorate(canvas,phase,moving,alpha);}
+                if(tile.petalOverlay)tile.foregroundPetals(canvas,phase,moving,alpha);
+                tile.decorate(canvas,phase,moving,alpha);}
             finally{canvas.restoreToCount(save);}
             return true;
         }catch(ReflectiveOperationException|RuntimeException|OutOfMemoryError unavailable){
@@ -138,12 +139,12 @@ public final class DanmakuEffects {
         Painter(Class<?> owner)throws ReflectiveOperationException{paint=owner.getField("c");scaled=owner.getField("u");scale=owner.getField("t");opacity=owner.getField("s");}
     }
     private static void evict(int incoming){
-        int bytes=portraitBytes();for(Tile tile:CACHE.values())bytes+=tile.bitmap.getByteCount();
+        int bytes=portraitBytes();for(Tile tile:CACHE.values())if(tile.bitmap!=null)bytes+=tile.bitmap.getByteCount();
         java.util.Iterator<Tile> iterator=CACHE.values().iterator();
-        while(iterator.hasNext()&&(bytes+incoming>DanmakuEffectPolicy.CACHE_BYTES||CACHE.size()>=DanmakuEffectPolicy.CACHE_ENTRIES)){Tile oldest=iterator.next();bytes-=oldest.bitmap.getByteCount();oldest.bitmap.recycle();iterator.remove();}
+        while(iterator.hasNext()&&(bytes+incoming>DanmakuEffectPolicy.CACHE_BYTES||CACHE.size()>=DanmakuEffectPolicy.CACHE_ENTRIES)){Tile oldest=iterator.next();if(oldest.bitmap!=null){bytes-=oldest.bitmap.getByteCount();oldest.bitmap.recycle();}iterator.remove();}
     }
     private static final class Tile {
-        final Bitmap bitmap;final int style,width,height;final float size;final boolean petalOverlay;final int plateVariant;
+        final Bitmap bitmap;final int style,width,height;final float size;final RectF glyphBounds=new RectF();final boolean petalOverlay;final int plateVariant;
         final Paint ink=new Paint(Paint.ANTI_ALIAS_FLAG),light=new Paint(Paint.ANTI_ALIAS_FLAG);
         final Path star=new Path(),rocket=new Path(),petal=new Path(),plate=new Path();
         final PathMeasure orbit;final float[] lightPosition=new float[2];final int firstLight,secondLight;
@@ -151,9 +152,9 @@ public final class DanmakuEffects {
         final RectF mouth=new RectF();
         Tile(String text,Paint typography,int width,int height,int style,int variant,int palette,boolean petals,int board){
             plateVariant=board;this.style=style;this.width=width;this.height=height;petalOverlay=petals;size=typography.getTextSize();
-            bitmap=Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
+            bitmap=style==DanmakuEffectPolicy.PETALS?null:Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
             // Native geometry is already in pixels: never rescale a text tile through bitmap density.
-            bitmap.setDensity(Bitmap.DENSITY_NONE);Canvas canvas=new Canvas(bitmap);
+            if(bitmap!=null)bitmap.setDensity(Bitmap.DENSITY_NONE);Canvas canvas=bitmap==null?null:new Canvas(bitmap);
             halo=style==DanmakuEffectPolicy.NEON_TRAIL?new RadialGradient(size*2.45f,height*.5f,size*.7f,new int[]{0xffe3ffff,0xe067fff0,0x804bdfdc,0x003fbbcd},new float[]{0,.24f,.5f,1},Shader.TileMode.CLAMP):null;
             trail=style==DanmakuEffectPolicy.NEON_TRAIL?new LinearGradient(size*.15f,0,size*2.45f,0,new int[]{0x005761cc,0x826d46d8,0xbe53d7ed,0xff78fff0},null,Shader.TileMode.CLAMP):null;
             petalColour=(style==DanmakuEffectPolicy.PETALS||petalOverlay)?new LinearGradient(0,-size*.15f,0,size*.15f,0xffffd9eb,0xffe47cae,Shader.TileMode.CLAMP):null;
@@ -165,6 +166,8 @@ public final class DanmakuEffects {
             firstLight=colors[0];secondLight=colors[2];
             if(style<DanmakuEffectPolicy.NEON_TRAIL)panel(board,inset,radius);
             if(style==2){Path track=new Path(plate);float margin=Math.max(2,size*.12f);RectF bounds=new RectF();track.computeBounds(bounds,true);android.graphics.Matrix fit=new android.graphics.Matrix();fit.setRectToRect(bounds,new RectF(margin,margin,width-margin,height-margin),android.graphics.Matrix.ScaleToFit.FILL);track.transform(fit);orbit=new PathMeasure(track,true);}else orbit=null;
+            float petalSize=size*.105f;petal.moveTo(0,-petalSize);petal.cubicTo(-petalSize*1.25f,-petalSize*.7f,-petalSize*1.3f,petalSize*.8f,0,petalSize*1.45f);petal.cubicTo(petalSize*1.3f,petalSize*.7f,petalSize*.8f,-petalSize*.6f,0,-petalSize);petal.close();
+            if(style==DanmakuEffectPolicy.PETALS)return;
             if(style<DanmakuEffectPolicy.NEON_TRAIL){
                 if(palette==0)ink.setColor(style==0?0x5821193f:style==DanmakuEffectPolicy.AVATAR?0xd0191814:0xc01a1b34);
                 else{int alpha=palette%3==2?88:palette%3==1?148:120;float shade=palette%3==1?.68f:.5f;
@@ -180,6 +183,7 @@ public final class DanmakuEffects {
             }else if(style==DanmakuEffectPolicy.NEON_TRAIL)neon(canvas,0,false,255);
             Paint letters=new Paint(typography);letters.setSubpixelText(false);letters.setLinearText(false);letters.setFilterBitmap(false);letters.clearShadowLayer();letters.setAlpha(255);letters.setStyle(Paint.Style.STROKE);letters.setStrokeWidth(Math.max(1,size*.07f));letters.setColor(0xff101320);
             float x=size*(style==DanmakuEffectPolicy.NEON_TRAIL?3.25f:style==DanmakuEffectPolicy.AVATAR?1.7f:style==DanmakuEffectPolicy.PETALS?.72f:style>=3?1.35f:.72f),y=(height-letters.ascent()-letters.descent())*.5f;
+            glyphBounds.set(x-size*.06f,y+letters.ascent()-size*.06f,x+letters.measureText(text)+size*.06f,y+letters.descent()+size*.06f);
             canvas.drawText(text,x,y,letters);letters.setStyle(Paint.Style.FILL);
             if(style==1||style==4||style==DanmakuEffectPolicy.AVATAR){letters.setColor(Color.WHITE);}else letters.setShader(new LinearGradient(x,0,width,0,colors,null,Shader.TileMode.CLAMP));
             // Keep the neon orb/trail glow on decorations; glyphs retain a sharp fill and outline.
@@ -188,12 +192,12 @@ public final class DanmakuEffects {
             for(int i=0;i<10;i++){double angle=-Math.PI/2+i*Math.PI/5;float length=i%2==0?r:r*.45f;float sx=(float)Math.cos(angle)*length,sy=(float)Math.sin(angle)*length;if(i==0)star.moveTo(sx,sy);else star.lineTo(sx,sy);}star.close();
             rocket.moveTo(0,-r);rocket.cubicTo(r*.55f,-r*.6f,r*.55f,r*.6f,0,r);rocket.cubicTo(-r*.55f,r*.6f,-r*.55f,-r*.6f,0,-r);rocket.close();
             mouth.set(-r*.48f,-r*.1f,r*.48f,r*.6f);
-            float p=size*.105f;petal.moveTo(0,-p);petal.cubicTo(-p*1.25f,-p*.7f,-p*1.3f,p*.8f,0,p*1.45f);petal.cubicTo(p*1.3f,p*.7f,p*.8f,-p*.6f,0,-p);petal.close();
+
         }
         void decorate(Canvas canvas,float phase,boolean moving,int opacity){
             ink.setAlpha(Math.max(0,Math.min(255,opacity)));float sine=(float)Math.sin(phase*Math.PI*2),cx=size*.68f,cy=height*.5f,r=size*.34f;
             if(style==DanmakuEffectPolicy.PETALS){petals(canvas,phase,moving,opacity);}
-            else if(style==2&&moving){
+            else if(style==2){
                 orbitLight(canvas,phase,firstLight,opacity);orbitLight(canvas,(phase+.5f)%1,secondLight,opacity);
             }else if(style==3){
                 int save=canvas.save();canvas.translate(cx,cy);if(moving)canvas.rotate(sine*12);ink.setColor(0xffffdd73);ink.setAlpha(opacity);canvas.drawPath(star,ink);canvas.restoreToCount(save);
@@ -244,12 +248,15 @@ public final class DanmakuEffects {
                 light.setAlpha(Math.round(opacity*(.3f+.2f*(pulse+1)*.5f)));canvas.drawCircle(cx,cy,size*(.17f+pulse*.025f),light);
             }
         }
+        private void foregroundPetals(Canvas canvas,float phase,boolean moving,int opacity){
+            int saved=canvas.save();try{canvas.clipRect(glyphBounds,android.graphics.Region.Op.DIFFERENCE);petals(canvas,phase,moving,opacity);}finally{canvas.restoreToCount(saved);}
+        }
         private void petals(Canvas canvas,float phase,boolean moving,int opacity){
             ink.setShader(petalColour);ink.setStyle(Paint.Style.FILL);
             for(int i=0;i<petalOffsets.length;i++){
                 float progress=moving?(phase+petalOffsets[i])%1:petalOffsets[i];
                 float x=width*(.06f+i*.176f)+(moving?(float)Math.sin(progress*Math.PI*2+i)*size*.08f:0);
-                float y=size*.17f+progress*(height-size*.37f);int save=canvas.save();
+                float y=petalOverlay?(i%2==0?size*.16f:height-size*.18f)+(moving?(float)Math.sin(progress*Math.PI*2+i)*size*.035f:0):size*.17f+progress*(height-size*.37f);int save=canvas.save();
                 try{canvas.translate(x,y);canvas.rotate(petalAngles[i]+(moving?progress*150:0));
                     ink.setAlpha(Math.round(opacity*(moving?.25f+.65f*(float)Math.sin(progress*Math.PI):.85f)));canvas.drawPath(petal,ink);
                 }finally{canvas.restoreToCount(save);}

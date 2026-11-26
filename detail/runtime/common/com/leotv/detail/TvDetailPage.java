@@ -83,14 +83,14 @@ final class TvDetailPage implements DetailPage {
         if(loadingBackdrop!=null)activity.getWindow().setBackgroundDrawable(loadingBackdrop.getConstantState()==null?loadingBackdrop:
                 loadingBackdrop.getConstantState().newDrawable(activity.getResources()).mutate());
         scroll=new TvDetailScroll(activity);scroll.setTag("leotv_jar_detail_page");scroll.setFillViewport(true);
-        scroll.setClipChildren(false);scroll.setVerticalScrollBarEnabled(false);scroll.setFocusable(false);
+        scroll.setClipChildren(true);scroll.setVerticalScrollBarEnabled(false);scroll.setFocusable(false);
         page=column();page.setClipChildren(false);scroll.addView(page,new ScrollView.LayoutParams(-1,-2));
         if (loadingBackdrop != null) scroll.setBackground(loadingBackdrop); else scroll.setBackground(new android.graphics.drawable.ColorDrawable(DetailHero.FLOOR));
         content.addView(scroll,new ViewGroup.LayoutParams(-1,-1));
         heroFrame=new FrameLayout(activity);heroFrame.setClipChildren(false);
         hero=new DetailHero(activity,this::surfaceColour);hero.setAlpha(loadingBackdrop == null ? 1f : 0f);
         heroFrame.addView(hero,new FrameLayout.LayoutParams(-1,-1));
-        surface=mobile?null:new DetailSurface(activity);
+        surface=null;
         if(surface!=null)heroFrame.addView(surface,new FrameLayout.LayoutParams(-1,dp(360)));
         int height=content.getHeight()>0?content.getHeight():activity.getResources().getDisplayMetrics().heightPixels;
         page.addView(heroFrame,new LinearLayout.LayoutParams(-1,Math.max(dp(360),height)));
@@ -181,7 +181,7 @@ final class TvDetailPage implements DetailPage {
         if(mobile){info.removeView(synopsis);controls.addView(synopsis,0);synopsis.setPadding(0,dp(14),0,dp(4));
             controls.removeView(actorHeading);controls.removeView(actorFallback);controls.removeView(actorScroll);
             controls.addView(actorHeading);controls.addView(actorFallback);controls.addView(actorScroll);
-        }else scroll.pinHero(heroFrame,controls);
+        }
         controls.addView(stills.root);navigation.add(stills.row,stills.root);controls.addView(collection.root);navigation.add(collection.row,collection.root);
         controls.addView(recommendations.root);navigation.add(recommendations.row,recommendations.root);controls.addView(reviews.root);navigation.add(reviews.list,reviews.root);
         libraryLayout=new LibraryDetailLayout(this);
@@ -392,7 +392,7 @@ final class TvDetailPage implements DetailPage {
     void surfaceColour(int colour){
         if (loadingBackdrop != null && !artworkRevealed) { surfaceColour = colour; content.invalidate(); return; }
         surfaceColour=colour;if(DetailTheme.library(activity,mobile)){controls.setBackgroundColor(Color.TRANSPARENT);return;}
-        int tint=DetailHero.surface(colour);controls.setBackground(mobile?new android.graphics.drawable.GradientDrawable(android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM,new int[]{tint,DetailHero.FLOOR}):null);
+        int tint=DetailHero.surface(colour);controls.setBackground(new android.graphics.drawable.GradientDrawable(android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM,new int[]{tint,DetailHero.FLOOR}));
         if(surface!=null)surface.colour(colour);if(mobileSources!=null)mobileSources.surfaceColour(colour);sitePicker.colour(tint);
         info.setBackgroundColor(info.getParent()==page?tint:Color.TRANSPARENT);
     }

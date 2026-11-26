@@ -76,7 +76,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     void syncThemeHeight(){
         if(homeTheme<0||closed)return;boolean below=phone&&(homeTheme==1||homeTheme==2);
         int height=homeArtworkHeight;if(below&&getWidth()>0){heroInfo.measure(View.MeasureSpec.makeMeasureSpec(getWidth(),View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED));height+=heroInfo.getMeasuredHeight();}
-        if(heroFrame.getLayoutParams().height!=height){heroFrame.getLayoutParams().height=height;heroFrame.requestLayout();}
+        if(heroFrame.getLayoutParams().height!=height){heroFrame.getLayoutParams().height=height;heroFrame.requestLayout();}if(nativeRows!=null)nativeRows.heroHeightChanged(height);
     }
     void updateHeroBadges(){if(heroItems.isEmpty()){badges.setVisibility(GONE);facts.setVisibility(VISIBLE);return;}int index=Math.max(0,Math.min(heroIndex,heroItems.size()-1));HomeTheme.badges(this,heroMetadata.get(index),facts.getText().toString());syncThemeHeight();}
     void syncHeroBounds(){

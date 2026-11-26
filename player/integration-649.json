@@ -1066,5 +1066,140 @@
     "publish_run_id": 45829398021,
     "apk_input_commit": "89163ff640c2d01a65a397484c7f9081b04bdaf0",
     "actual_signed_delivery_verified": true
+  },
+  "authorized_654_source_repairs": {
+    ".github/workflows/ordinary-build.yml": {
+      "before_sha256": "b546e886096912898a340ba005523a9df0af7f509d7952b8966c60f99e9e8dca",
+      "after_sha256": "8eb95f3de66205c47d78da82a07b0b25fdc1b185490144a6e156771960fa10f8",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "README.md": {
+      "before_sha256": "0a02ce7261dd4ae40f746f08956f081786c2b1108136748d781b0b81aac953ab",
+      "after_sha256": "ca730b3a7ff6d5a91a5446196af8814ea51fcba6176e6e9d9b82c879ce96f373",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "da14ec0b6cd1c27abc8d40f4a764582fd0f1d261810d76913c1c4ae99d3404b9",
+      "after_sha256": "c1fc7fde59075c72854a90a1109f03c855d5f9e494039d66c126916d504f382d",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "branding/release.json": {
+      "before_sha256": "dbe67e66d9f7cd86dafb200c2569a728508fb89c6c19c67d923d326ba1ffb9c3",
+      "after_sha256": "be6d3fead89de220b3abd4642b4a51624c46462b6b32012d6edbae957a89f093",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "branding/res/values/strings.xml": {
+      "before_sha256": "465f811a9ac26fc7cdfebbf296206ad3c28ceced816c5f0f756d6d392853c6ee",
+      "after_sha256": "331b18f3bf270ca9d9a3b30148f8803635b16f7beffc8958c65876abc1d04102",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "detail/runtime/common/com/leotv/detail/CspHomePage.java": {
+      "before_sha256": "c44dde1e32a8d40ec834735b58a47c34db043b6e69d3209cce157e380d55a53b",
+      "after_sha256": "18f9c5cd5c91c1f05b90c4d63eac9fcceed6e23dced626fb29dcce5b299b6904",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "detail/runtime/common/com/leotv/detail/DanmakuEffectPolicy.java": {
+      "before_sha256": "89331b1ac0f03740cc90fddcef7b7b9b931443c0a5d940aca55d42d4afdf6c8a",
+      "after_sha256": "300f86f113fe16c3ddd7ebe526a164eb7708ec22b1d56932dbfada12fac42c8c",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "detail/runtime/common/com/leotv/detail/DanmakuEffects.java": {
+      "before_sha256": "77a829891d54ff18a1523a53a44e37c8a7ffd228ea82e034a9d68e812b5e2a26",
+      "after_sha256": "6bb2334aae11a00c8a30bea42b2fa54e1f4fa58e51fa78bb7126d7232270f7ba",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "detail/runtime/common/com/leotv/detail/DetailHero.java": {
+      "before_sha256": "9650a10795178b07dc692e6e8e16f60df108c150c91d79cc89137b0a60b6b168",
+      "after_sha256": "e3e0855bbda2e115b4ed2fd4f000f25d65a6f3c65deab4b524b6f1abddea6fe6",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "detail/runtime/common/com/leotv/detail/HomeTheme.java": {
+      "before_sha256": "2cd7d5d3848aa0c0ce48cabe49e8a8c8b0e4988f9f5deb852792994354ec0526",
+      "after_sha256": "40bb5c35d728cb777d9ba97c355b3f41cc7d35a803cf581973cd218e0ef254ad",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "detail/runtime/common/com/leotv/detail/LibraryDetailLayout.java": {
+      "before_sha256": "fdc32b0cfc07da3cc33d9409f3f2cfe189a1bf54268b478a6f91e424e7ba9f41",
+      "after_sha256": "46c990d4366478fc3d3660d6a400e64aca519dbc55ad98157b284da6698b58b9",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "detail/runtime/common/com/leotv/detail/TvDetailNavigation.java": {
+      "before_sha256": "457e87b6f27b4040c37ee70740261280b5b22d7794dc6546bbf86dce170ff000",
+      "after_sha256": "26fdd43972488d188208f1a6ffbde31b47148ba717098d5242f1a7f1361693b9",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "detail/runtime/common/com/leotv/detail/TvDetailPage.java": {
+      "before_sha256": "1f79084807007ee4e933e30b04811ebd7911335635b17e1a0cb69a85fd156da1",
+      "after_sha256": "18f70be48b77e0c75ab7d365d5aa29af09a4b99795b51afc54e38bb52158638c",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "detail/runtime/common/com/leotv/detail/TvDetailScroll.java": {
+      "before_sha256": "5cd8d354eb010f56bb4b6cff9e36e8309b6aecb862a60d448961b0bb838ae1cf",
+      "after_sha256": "d3bed625a8aea3c1cc14dfd63e7a45bfe1eed11314abfbdf6c5cdd929370caa2",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "detail/runtime/mobile/com/leotv/detail/NativeHomeRows.java": {
+      "before_sha256": "a8148fde3f1a47200b23fcd9747dda7d7eb473fafa6aa8648b36deaf7d04b79e",
+      "after_sha256": "75ca31d886554011ed7d4878a5752049e8e536ec2687a26936f4eea36218eb5b",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "detail/runtime/tv/com/leotv/detail/NativeHomeRows.java": {
+      "before_sha256": "3003271e1a598aa6de2897309a00be7a924504dc6e70c4a402ecf4f3a38f165a",
+      "after_sha256": "4d5354461fbb109b95c9ca0b23be5d89bb75fd12c4333fcb629514768ae9a774",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "research/check_danmaku_effect_policy.py": {
+      "before_sha256": "6b39f9a94c920849001cdbdcfaee9a399a543cc8ce4dab477e264a1497853d7e",
+      "after_sha256": "92884f380199fb055f89e0ff72788e93fe02cf5413df886ac1d6e2902ccbecde",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "research/detail-check/src/test/java/com/leotv/detail/DanmakuEffectsTest.java": {
+      "before_sha256": "888fb05e6192cf854718f5f08fe60b69d6c3650aaab70cdbb0ca565a24f402ce",
+      "after_sha256": "cd185c1afaf7550551a10348a522182b9bdb30e0797b32a743a64e78877b46eb",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "research/detail-check/src/test/java/com/leotv/detail/TvDetailScrollTest.java": {
+      "before_sha256": "852cd67fb9adfb5d913a9cdffe39e64c1186fae6a1fb090aa4dd254d767d8102",
+      "after_sha256": "4872928dd5dcac1fd4cc312a7c847531da283964cf69e4ca593b446d04a73278",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "tools/check_danmaku_effects.py": {
+      "before_sha256": "f14818f8436089a9feaadd28af85c7ad580a83864802854790212e8e52b9261f",
+      "after_sha256": "41d4f412ffaed1a414237827c24e269a2207ac4aa0616d63305744eea29003b6",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "tools/check_home_themes.py": {
+      "before_sha256": "838a509efa0198ff70b289263590e277bed6d21e31aa2de2ef1ea8172d95c9d5",
+      "after_sha256": "8b1203d52bb56f9d30011d685b06aca84bc0eb55926c2046f3159318408dd2bd",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "117b20b033e02e526f2d4755eb78f60fb6e530e4460fa46703e453087ef1d01e",
+      "after_sha256": "08612f524c71d05b075f6f8885b9de650b816f02cb97184475bcb09c859b99b8",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "docs/LEOTV-5.3.4-PREVIEW-8-654-SINGLE-PAGE-DETAIL-EFFECTS-20261126.md": {
+      "before_sha256": null,
+      "after_sha256": "33ecf3a0ffc2869ef2965e23f9e66682662dc0a407bf93a81d77db9318ee3ab0",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "research/check_home_geometry.py": {
+      "before_sha256": null,
+      "after_sha256": "f7d5cf54c0e2f0e2b5f4b6aec23ce98135e7e1668caeeeb7b47a298139778e16",
+      "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    }
+  },
+  "654_delivery_inputs": {
+    "base_commit": "17bb3cb8186fa6db59941eb6369eb812b951499f",
+    "release": "5.3.4-preview.8",
+    "version_code": 654,
+    "all_detail_themes_single_scroll_page": true,
+    "library_info_bottom_anchored": true,
+    "nonclassic_home_themes_fill_viewport": true,
+    "native_glyphs_with_petals": true,
+    "max_animated_comments": 3,
+    "max_comments_per_animation_family": 1,
+    "global_fraction_unchanged": true,
+    "native_inputs_unchanged": true
   }
 }
