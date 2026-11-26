@@ -355,8 +355,8 @@
     },
     "README.md": {
       "before_sha256": "c2ba98e244d12a6bb1c6ca5d0e965481b8abe6bef6acd95fc23888aa9076e2e0",
-      "after_sha256": "a1925f30c5d31322225c0f252e29cefe7cc287824354f770c66b97829e5e5b70",
-      "reason": "Document the completed three authorized 650 fixes, correct released 649 status, and explicitly retain pending GitHub signing/device acceptance"
+      "after_sha256": "63915ad6cacc095f492eda54de3a308a645b6619cd5cfef48466af3175db63ee",
+      "reason": "Documentation-only 650 delivery checkpoint: record verified fixed-signature APK/source release and PRIVATE restoration; retain pending user device acceptance, with no APK input changes."
     },
     "branding/AndroidManifest.xml": {
       "before_sha256": "2db87838619f76c1425c2b9df46881397583b10712855a00e8fc832fac1c0405",
