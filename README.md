@@ -85,6 +85,8 @@ GitHub：[leotvgo/Leotv](https://github.com/leotvgo/Leotv)。
 
 ## GitHub 编译与测试
 
+用户于 2026-11-26 授权：截至 **2026-12-01（含当日，Asia/Shanghai）**，构建、编译和发布直接临时公开本仓库，确认 PUBLIC 后触发，不先做一次私有尝试；完成必要发布与产物核对后恢复 PRIVATE 并核对，停止/中断时同样恢复私有。该窗口不重复询问公开授权，签名私钥、用户数据与内部草稿保护保持，详见 [AGENTS.md](AGENTS.md)。
+
 独立私有仓库为 `leotvgo/Leotv`。Git 记录四个变体的完整 smali、恢复中的 Java、
 构建/检查工具与取证；原 APK 作为 `apk-inputs-5.1.6-20261118` 私有 release 输入，按 SHA-256 验证。
 GitHub 从已提交的 smali 和新 Java 模块编译 DEX，原 APK 提供保留的资源与 native 资产；
