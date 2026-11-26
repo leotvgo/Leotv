@@ -187,6 +187,20 @@ class ReleaseStoreTest(unittest.TestCase):
         self.assertRegex(workflow, r'(?m)^  apk:\n    needs: prepare\n')
         self.assertNotIn("'create'", (root / 'tools/stage_ci_apk.py').read_text())
 
+    def test_stale_649_source_manifest_is_rejected_by_source_gate_before_drafts(self):
+        from check_player_integration import check
+        with tempfile.TemporaryDirectory(prefix='leotv-ci-identity-fixture-') as temporary:
+            root=Path(temporary);(root/'branding').mkdir()
+            (root/'branding/release.json').write_text(json.dumps({'version_name':'5.3.4-preview.4','version_code':650}))
+            (root/'branding/AndroidManifest.xml').write_text('<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="5.3.4-preview.3" android:versionCode="649"/>')
+            with self.assertRaisesRegex(ValueError,'source manifest before CI draft preparation'):
+                check(root)
+            (root/'branding/AndroidManifest.xml').write_text('<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="5.3.4-preview.4" android:versionCode="650"/>')
+            (root/'branding/res/values').mkdir(parents=True)
+            (root/'branding/res/values/strings.xml').write_text('<resources><string name="app_version">5.3.4-preview.3</string></resources>')
+            with self.assertRaisesRegex(ValueError,'app_version string before CI draft preparation'):
+                check(root)
+
 
 if __name__ == '__main__':
     unittest.main()

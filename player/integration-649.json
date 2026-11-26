@@ -357,6 +357,16 @@
       "before_sha256": "c2ba98e244d12a6bb1c6ca5d0e965481b8abe6bef6acd95fc23888aa9076e2e0",
       "after_sha256": "a1925f30c5d31322225c0f252e29cefe7cc287824354f770c66b97829e5e5b70",
       "reason": "Document the completed three authorized 650 fixes, correct released 649 status, and explicitly retain pending GitHub signing/device acceptance"
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "2db87838619f76c1425c2b9df46881397583b10712855a00e8fc832fac1c0405",
+      "after_sha256": "42f501deca30d10f7d68f7fc78a2459bac71b892a937d5bbead6912def70380f",
+      "reason": "650 CI 45783062721 rejected stale source Manifest identity; synchronize only versionName/versionCode with already approved preview.4/code650 release metadata"
+    },
+    "branding/res/values/strings.xml": {
+      "before_sha256": "ab611a89b7d2451df1f8f6a03af60aacea4cbc4f40b6b5e4dcc17a1a956b9598",
+      "after_sha256": "2c900a1cc9a08a9f980c32c08abc0b9f7d96ef17698e0e35348869fe70d66337",
+      "reason": "build_branded.identity also requires app_version=Manifest.versionName; synchronize only this version string with approved preview.4/code650 metadata"
     }
   },
   "authorized_650_stable_abi_additions": {
@@ -385,7 +395,7 @@
   "650_build_gate_sources": {
     "tools/build_branded.py": "405af99871d81ad6aef67cab3cd8a532e09e763df2f4eef0c0f8ee3ec20a48bb",
     "tools/check_build_sources.py": "29405624ae274131327af821679940dd6d2f0f572585ba142a00acd1f43da2ae",
-    "tools/check_player_integration.py": "77df23c9796d10f5c8b8abcac2cb9c08a51c96951bc7ba3f421c0f52fd53acb7",
+    "tools/check_player_integration.py": "af07ad5d170034f62c880e38159e35cc160de5b9206f2e654a1ef29425e130e0",
     "tools/check_player_registers.py": "fff42317d4736af81541ec042c412180294d17f8a7c61be4ae0fac547fc8d0bd",
     "tools/public_apk_audit.py": "7446b779d4ca880d8db94f05212af2e1fe72debaaef09263c9092c88d72895ab",
     "tools/apply_danmaku.py": "de0be1a4010e2fadecbc7a0305a33ca28e5ca8a014ca41626c255d9f5fa5ed53",
@@ -399,6 +409,9 @@
     "player/vlc/allowed-changes.json": "e543f40f8b6e723712144c78c22610da8ee4d62e6f8fa42d8e6350bb6561149e",
     ".github/workflows/publish-test-apks.yml": "1f0a2e0ea5803eb8f56d4b138e1c5d001c98e9865cf50a286933cddc41ad97c2",
     "research/test_apk_publish_workflow.py": "6de7125652ac6878952697a35a3dc57d2250be0948ca67e4594e98eca18b4fb7",
-    "evidence/danmaku-panel-source-lock-20261126.json": "b969244ad71e14da2beab47fa1bf77c55ea1a03b72b9c1d960b64bf86ede6355"
+    "evidence/danmaku-panel-source-lock-20261126.json": "b969244ad71e14da2beab47fa1bf77c55ea1a03b72b9c1d960b64bf86ede6355",
+    "branding/AndroidManifest.xml": "42f501deca30d10f7d68f7fc78a2459bac71b892a937d5bbead6912def70380f",
+    "research/test_ci_release_store.py": "e3ef8c604eb164afd14f455c5dbc34b97e237a8d10681424b24e3b60ee05dc52",
+    "branding/res/values/strings.xml": "2c900a1cc9a08a9f980c32c08abc0b9f7d96ef17698e0e35348869fe70d66337"
   }
 }

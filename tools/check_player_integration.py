@@ -3,11 +3,20 @@
 import hashlib
 import json
 from pathlib import Path
+import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def check(root=ROOT):
+    release=json.loads((root/'branding/release.json').read_text())
+    identity=ET.parse(root/'branding/AndroidManifest.xml').getroot()
+    android='{http://schemas.android.com/apk/res/android}'
+    if identity.attrib[android+'versionName']!=release['version_name'] or int(identity.attrib[android+'versionCode'])!=release['version_code']:
+        raise ValueError('Release identity differs from its source manifest before CI draft preparation')
+    strings={item.attrib['name']:item.text for item in ET.parse(root/'branding/res/values/strings.xml').getroot()}
+    if strings.get('app_version')!=release['version_name']:
+        raise ValueError('Release identity differs from its app_version string before CI draft preparation')
     manifest = json.loads((root / 'player/integration-649.json').read_text())
     repairs=manifest.get('authorized_650_source_repairs',{})
     for name, digest in manifest['preserved_649_sources'].items():

@@ -1,0 +1,27 @@
+{
+  "build_run_id": 45783062721,
+  "commit": "48e08c9d1466050da8dd8b0484ae720983b405be",
+  "build_result": "failure",
+  "sources": "success",
+  "effects": "success",
+  "prepare": "failure",
+  "apk_started": false,
+  "error": "Release identity differs from its source manifest.",
+  "fix": "Synchronize only Manifest versionName/Code and branding app_version; source gate checks the full version chain before draft preparation",
+  "manifest_before_sha256": "2db87838619f76c1425c2b9df46881397583b10712855a00e8fc832fac1c0405",
+  "manifest_after_sha256": "42f501deca30d10f7d68f7fc78a2459bac71b892a937d5bbead6912def70380f",
+  "visibility_restored": "PRIVATE",
+  "visibility_receipt": "root .work/player-engines-implementation-20261126/apk-ci-48e08c9d.json",
+  "github_visibility_read": "PRIVATE",
+  "native_recompiled": false,
+  "local_apk_built": false,
+  "signed_apks_produced": false,
+  "targeted_checks": {
+    "release_source_identity_and_exact_gate_hashes": "passed",
+    "draft_recovery_and_stale_manifest_or_version_string_source_gate": "15 tests passed",
+    "only_two_manifest_attributes_changed": true,
+    "only_app_version_resource_changed": true,
+    "build_branded_identity_matches_release": true,
+    "prepare_ci_release_gate_unchanged": true
+  }
+}
