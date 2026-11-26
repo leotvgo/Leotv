@@ -20,6 +20,12 @@ public final class OptionsContract {
             require(MpvStore.family(font).equals("Fixture Sans"),"read actual font family rather than filename");
             try(RandomAccessFile out=new RandomAccessFile(font,"rw")){out.setLength(29);}try{MpvStore.family(font);throw new AssertionError("truncated font accepted");}catch(IOException expected){}
         }finally{require(font.delete(),"fixture cleanup");}
+        File collection=File.createTempFile("mobile-mpv-native-family-",".ttc",new File(args[0]));Locale previous=Locale.getDefault();
+        try{String[] families={"Fixture JP","Fixture KR","Fixture SC"};int faceLength=46+families[0].getBytes(StandardCharsets.UTF_16BE).length;
+            try(DataOutputStream out=new DataOutputStream(new FileOutputStream(collection))){out.writeInt(0x74746366);out.writeInt(0x00010000);out.writeInt(3);for(int i=0;i<3;i++)out.writeInt(24+i*faceLength);
+                for(int i=0;i<3;i++){byte[] name=families[i].getBytes(StandardCharsets.UTF_16BE);out.writeInt(0x00010000);out.writeShort(1);out.write(new byte[6]);out.writeInt(0x6e616d65);out.writeInt(0);out.writeInt(24+i*faceLength+28);out.writeInt(18+name.length);out.writeShort(0);out.writeShort(1);out.writeShort(18);out.writeShort(3);out.writeShort(1);out.writeShort(0x0409);out.writeShort(16);out.writeShort(name.length);out.writeShort(0);out.write(name);}}
+            Locale.setDefault(Locale.SIMPLIFIED_CHINESE);require(MpvStore.family(collection).equals("Fixture SC"),"native TTC Chinese family uses the real collection face");Locale.setDefault(Locale.US);require(MpvStore.family(collection).equals("Fixture JP"),"native TTC default face metadata resolves");
+        }finally{Locale.setDefault(previous);require(collection.delete(),"native family fixture cleanup");}
         System.out.println("mobile MPV config/header/shader/font contracts passed");
     }
 }

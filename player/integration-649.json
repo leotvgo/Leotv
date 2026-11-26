@@ -1026,6 +1026,11 @@
       "before_sha256": "91f2a8b0df3541336a5a4cc8e4269cdefa613973c7f17ff675a61b743b381ef2",
       "after_sha256": "f4ebae09ac27b4ae0365bd73698926b946b50720f8378bc423bb02727bdc4b49",
       "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
+    },
+    "player/mpv/test/OptionsContract.java": {
+      "before_sha256": "62aa9263b300be6c674ca2b771f693f1554fa803d521e1f0a64eac62eff7e956",
+      "after_sha256": "0c632f8a4f491ef68b137afe6d8f2a27c165be92c69fdc192e19cea9271ab67b",
+      "reason": "Verify real native TTC face/family metadata against fictional Unicode fonts, avoiding a system-default family mismatch"
     }
   },
   "653_unified_delivery": {
