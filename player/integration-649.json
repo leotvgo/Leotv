@@ -1210,5 +1210,133 @@
     "publish_run_id": 45840420717,
     "apk_input_commit": "2dc504e4cc6a7568971fec86e8d708034d53418f",
     "actual_signed_delivery_verified": true
+  },
+  "authorized_655_source_repairs": {
+    "README.md": {
+      "before_sha256": "ed3bea9e940561d4a226c33fd7e7fa99cb6ac175f0519477c161bcd6a0a7e6ff",
+      "after_sha256": "c6bbfecc4807913aaa964166f9053c8e03aff4bde6cebf2e134881534e75bfc9",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "c1fc7fde59075c72854a90a1109f03c855d5f9e494039d66c126916d504f382d",
+      "after_sha256": "65b043693587be45cb9b2662f0185a191f0ccaddd51ef4c73a4725117ad2682c",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "branding/release.json": {
+      "before_sha256": "be6d3fead89de220b3abd4642b4a51624c46462b6b32012d6edbae957a89f093",
+      "after_sha256": "59a6316832bb0ad9b10fa1db477250eaf759911305c23511e292a3db8fa5be71",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "branding/res/values/strings.xml": {
+      "before_sha256": "331b18f3bf270ca9d9a3b30148f8803635b16f7beffc8958c65876abc1d04102",
+      "after_sha256": "f58376d2b9265328ee96a069edd8e325d0614301a8c01c03974652919a4a68cc",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "detail/runtime/common/com/leotv/detail/CspHomePage.java": {
+      "before_sha256": "18f9c5cd5c91c1f05b90c4d63eac9fcceed6e23dced626fb29dcce5b299b6904",
+      "after_sha256": "6281bb502cc96e0617a234e8a6b975aca6bc3c7a1ae8fda0151dcfab89898df7",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "detail/runtime/common/com/leotv/detail/DetailBadges.java": {
+      "before_sha256": "694e5f96422cc6d5cdfb7f76be41e826f2b043490ad551aef45c2b10073fd938",
+      "after_sha256": "887434099ae7ec5c2897f1e205b259cdc62d3747f8e6d82e8fc335d1d5e13c28",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "detail/runtime/common/com/leotv/detail/HomeTheme.java": {
+      "before_sha256": "40bb5c35d728cb777d9ba97c355b3f41cc7d35a803cf581973cd218e0ef254ad",
+      "after_sha256": "035a6e7df87b215be1177dffa4f193736f030baa56498a55a3d5c0275e3b830b",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "detail/runtime/common/com/leotv/detail/LibraryDetailLayout.java": {
+      "before_sha256": "46c990d4366478fc3d3660d6a400e64aca519dbc55ad98157b284da6698b58b9",
+      "after_sha256": "681eb1d42856a792e6074c1d0a0620d34274951599e32a21b4a7fc41984c14e4",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "detail/runtime/common/com/leotv/detail/MetadataSettings.java": {
+      "before_sha256": "08b4ed88898c53f3c485e41e15dfa7fd23f7455f6052e9b3a33cbf5b28234126",
+      "after_sha256": "8c4035e0ed7551817531337a3de65a70c94e46eae7b9036ebfe5c62ce40849ec",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "detail/runtime/common/com/leotv/detail/Personalization.java": {
+      "before_sha256": "3b43f8f5c1591365b72f2b5be0de3f92941c3b8d8368375e3dd29a7ef9e709cd",
+      "after_sha256": "7dcc41eb700d350d0e3563d8a2b31933e70ee9e2be55dc854a5bb0b11f5e6bc9",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "detail/runtime/common/com/leotv/detail/TvDetailNavigation.java": {
+      "before_sha256": "26fdd43972488d188208f1a6ffbde31b47148ba717098d5242f1a7f1361693b9",
+      "after_sha256": "02373837d4bea7603329c8fc2f6123747f7677488d0fa30bd4e5e9f61da56444",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "detail/runtime/common/com/leotv/detail/TvDetailPage.java": {
+      "before_sha256": "18f70be48b77e0c75ab7d365d5aa29af09a4b99795b51afc54e38bb52158638c",
+      "after_sha256": "9773a4449849dfd0a256e6639427744f5b94b4876d1fe626ee1eaa14638755c6",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "detail/runtime/mobile/com/leotv/detail/ThemeLayout.java": {
+      "before_sha256": "e7cb703864f65de7c9ba2738fc24766917e882d9b5c42216112e2ad055815b17",
+      "after_sha256": "3ba5a5012cae0664b5bd6747181c264d6027ac19f47980b8641f9c4d1b287e9b",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "detail/runtime/tv/com/leotv/detail/NativeHomeRows.java": {
+      "before_sha256": "4d5354461fbb109b95c9ca0b23be5d89bb75fd12c4333fcb629514768ae9a774",
+      "after_sha256": "a21a52bfa9dfb9cdbfc75723a09b87df91f9ecd1dc8bc6fe3ac2b301c9e17a26",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "detail/runtime/tv/com/leotv/detail/ThemeLayout.java": {
+      "before_sha256": "f0363b00d5ec992a7523c53e6052daa499eb1d7a5c7066cfc4d8e48f977b0086",
+      "after_sha256": "f1243178f82cb8c3e8210bf6edc888365411db6b2a3525f50379cc6a159efedb",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "docs/LEOTV-5.3.4-PREVIEW-9-655-LAYOUT-VLC-PAUSE-20261126.md": {
+      "before_sha256": null,
+      "after_sha256": "65473dd93cd6222e6d4276623be0b7188737ea9b9f50dfa747fb1294ec9171e2",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "player/vlc/java/com/leotv/player/vlc/VlcEngine.java": {
+      "before_sha256": "8b8b779e9f980a0e7cfe20cc8bfeb7700d7fb7b466b61a7b67445babc77694d5",
+      "after_sha256": "7fb8e5bcb3158ecb759c2cfa8e922c59b6fe61a40857a8cca7f5868e28de443e",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "research/check_home_geometry.py": {
+      "before_sha256": "f7d5cf54c0e2f0e2b5f4b6aec23ce98135e7e1668caeeeb7b47a298139778e16",
+      "after_sha256": "e2bbaf7d31f1db1a4184fe08a6838339cc4bde3aa14bb0a23ea8faaf027002b5",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "research/check_vlc_lifecycle.py": {
+      "before_sha256": "2199ddad1449757f0de046200d6acc816849bd3be30d7a2b4d501ddf5aec839d",
+      "after_sha256": "7dde8fb2263fe3fd934ad19eaedb342a96e80f8291f366a49b3f327ced2fcb68",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "tools/check_home_themes.py": {
+      "before_sha256": "8b1203d52bb56f9d30011d685b06aca84bc0eb55926c2046f3159318408dd2bd",
+      "after_sha256": "8247ea1df95523703081817f0c586bf1862bf0eb13ff501af11d09fa53039cbc",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "08612f524c71d05b075f6f8885b9de650b816f02cb97184475bcb09c859b99b8",
+      "after_sha256": "97374a0f6ec35b5bdb18b54b275cb1247e9c6cc086044434acbfc8c5925803ff",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    },
+    "tools/check_tv_vlc.py": {
+      "before_sha256": "f4ebae09ac27b4ae0365bd73698926b946b50720f8378bc423bb02727bdc4b49",
+      "after_sha256": "56c5f980b538310a49e9731bed16b67564df2e0e8d7bfeb047937a5e1aa58e7a",
+      "reason": "User-authorized655 takeover: restore natural single-page detail layout and focus, full-width TV recycled home, paired native cache/preload rows, remove phone magazine/compact home choices with stable saved ids and center remaining mobile hero metadata; suppress VLC paused loading using only native overlay cleanup. Preserve API23, native libraries, data, source and fixed-signature gates."
+    }
+  },
+  "655_delivery_inputs": {
+    "base_commit": "2caf3c7e116ac944a926be990e6d79876ddcf280",
+    "release": "5.3.4-preview.9",
+    "version_code": 655,
+    "other_window_session": "032f7c50-c57c-4d46-b402-c72db2cf4e34",
+    "tv_home_sections_match_parent": true,
+    "tv_cache_preload_share_pair": true,
+    "phone_home_stable_ids": [
+      0,
+      3,
+      4
+    ],
+    "single_page_detail_preserved": true,
+    "vlc_pause_uses_native_overlay_cleanup_only": true,
+    "native_inputs_unchanged": true
   }
 }

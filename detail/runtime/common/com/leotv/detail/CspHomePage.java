@@ -80,7 +80,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     }
     void updateHeroBadges(){if(heroItems.isEmpty()){badges.setVisibility(GONE);facts.setVisibility(VISIBLE);return;}int index=Math.max(0,Math.min(heroIndex,heroItems.size()-1));HomeTheme.badges(this,heroMetadata.get(index),facts.getText().toString());syncThemeHeight();}
     void syncHeroBounds(){
-        int w=heroFrame.getWidth()-heroFrame.getPaddingLeft()-heroFrame.getPaddingRight(),h=heroFrame.getHeight()-heroFrame.getPaddingTop()-heroFrame.getPaddingBottom();if(w<=0||h<=0)return;
+        int w=phone?heroFrame.getWidth()-heroFrame.getPaddingLeft()-heroFrame.getPaddingRight():getWidth(),h=heroFrame.getHeight()-heroFrame.getPaddingTop()-heroFrame.getPaddingBottom();if(w<=0||h<=0)return;
         int art=homeArtworkHeight>0?homeArtworkHeight:h;int height=phone?(homeTheme==1||homeTheme==2?art:h):art+Math.max(dp(48),Math.round(art*.16f));
         if(phone){ViewGroup.LayoutParams params=hero.getLayoutParams();if(params.height!=height){params.height=height;hero.setLayoutParams(params);}}
         if(!phone){hero.artworkHeight(art);ViewGroup.LayoutParams params=hero.getLayoutParams();if(params.width!=w||params.height!=height){params.width=w;params.height=height;hero.setLayoutParams(params);}float top=nativeRows==null?scroll.getTop()+rows.getTop()+heroFrame.getTop()+heroFrame.getPaddingTop()-scroll.getScrollY():nativeRows.heroTop();if(hero.getTranslationY()!=top)hero.setTranslationY(top);}

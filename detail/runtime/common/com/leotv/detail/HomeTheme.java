@@ -10,15 +10,19 @@ import java.util.Arrays;
 /** Home presentation is independent of detail preferences and never changes the CSP feed. */
 final class HomeTheme {
     static final String[] NAMES=Device.MOBILE
-            ?new String[]{"沉浸海报","杂志","轻简","雷霆","影视库"}
+            ?new String[]{"沉浸海报","雷霆","影视库"}
             :new String[]{"经典","光影 · Infuse 风格","极简","雷霆","影视库"};
     static final int THUNDER=3,LIBRARY=4;
+    // Keep persisted ids 3/4 stable when the phone selector removes ids 1/2.
+    static int selectedId(int index){return Device.MOBILE?(index==1?THUNDER:index==2?LIBRARY:0):index;}
+    static int selectedIndex(int id){return Device.MOBILE?(id==THUNDER?1:id==LIBRARY?2:0):id;}
+    static int validId(int id){return id==0||id==THUNDER||id==LIBRARY||!Device.MOBILE&&(id==1||id==2)?id:0;}
     static void apply(CspHomePage p){
         int value=MetadataSettings.homeTheme(p.activity),width=p.getWidth(),height=p.getHeight();
         if(width<=0||height<=0)return;
         if(p.homeTheme==value&&p.homeWidth==width&&p.homeHeight==height)return;
         p.homeTheme=value;p.homeWidth=width;p.homeHeight=height;
-        boolean left=!p.phone&&(value==1||value==THUNDER||value==LIBRARY)||p.phone&&value!=0;
+        boolean left=!p.phone&&(value==1||value==THUNDER||value==LIBRARY);
         boolean below=p.phone&&(value==1||value==2);
         if(p.heroInfo.getParent()!=p.heroFrame&&p.heroInfo.getParent() instanceof android.view.ViewGroup)((android.view.ViewGroup)p.heroInfo.getParent()).removeView(p.heroInfo);
         if(p.heroInfo.getParent()==null)p.heroFrame.addView(p.heroInfo);
@@ -30,7 +34,7 @@ final class HomeTheme {
         int side=p.phone?22:left?44:22;
         p.heroInfo.setPadding(p.dp(side),p.dp(below?12:0),p.dp(side),p.dp(value==0?25:p.phone?25:24));
         int gravity=left?Gravity.LEFT:Gravity.CENTER;
-        p.title.setGravity(gravity);p.title.setTextSize(p.phone?28:left?36:30);
+        p.badges.centered(!left);p.title.setGravity(gravity);p.title.setTextSize(p.phone?28:left?36:30);
         p.facts.setGravity(gravity);p.overview.setGravity(gravity);p.overview.setMaxLines(value==0||value==2?2:3);
         p.titleArt.setScaleType(left?ImageView.ScaleType.FIT_START:ImageView.ScaleType.FIT_CENTER);
         p.titleArt.setLayoutParams(new LinearLayout.LayoutParams(-1,p.dp(p.phone?value==0?56:value==2?48:64:left?88:64)));

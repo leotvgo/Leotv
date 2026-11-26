@@ -15,8 +15,10 @@ import java.util.List;
 final class DetailBadges extends ViewGroup {
     private List<String> values = Collections.emptyList();
     private final List<Rect> positions = new ArrayList<>();
+    private boolean centered;
 
     DetailBadges(Context context) { super(context); setPadding(0, dp(8), 0, 0); }
+    void centered(boolean value){if(centered!=value){centered=value;requestLayout();}}
 
     void values(List<String> tags) {
         List<String> valid = new ArrayList<>();
@@ -61,7 +63,12 @@ final class DetailBadges extends ViewGroup {
 
     @Override protected void onLayout(boolean changed, int l, int t, int r, int b) {
         for (int i = 0; i < getChildCount(); i++) {
-            Rect p = positions.get(i); getChildAt(i).layout(p.left, p.top, p.right, p.bottom);
+            Rect p = positions.get(i);int offset=0;
+            if(centered&&!p.isEmpty()){
+                int end=0;for(Rect position:positions)if(!position.isEmpty()&&position.top==p.top)end=Math.max(end,position.right);
+                offset=Math.max(0,(getWidth()-getPaddingRight()-end)/2);
+            }
+            getChildAt(i).layout(p.left+offset, p.top, p.right+offset, p.bottom);
         }
     }
 

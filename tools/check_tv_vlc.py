@@ -260,7 +260,7 @@ def check_contract(root, host_root=None, work=None):
     engine = (root / sources[1]).read_text() if sources[1].endswith('VlcEngine.java') else (root / 'player/vlc/java/com/leotv/player/vlc/VlcEngine.java').read_text()
     for contract in ['player.getTime()', 'clock.position(now,cachedDuration)', 'case MediaPlayer.Event.TimeChanged:', 'seekPending=true', 'syncClock()', 'player.getLength()', 'player.getRate()', 'player.setTime(', 'player.setRate(', 'media.setHWDecoderEnabled(',
             'player.getAudioTracks()', 'player.getSpuTracks()', 'player.setAudioTrack(', 'player.setSpuTrack(', 'player.addSlave(',
-            'owner.onPrepared(null)', 'owner.onCompletion(null)', 'ready && event.getBuffering()', 'ticket != generation',
+            'owner.onPrepared(null)', 'owner.onCompletion(null)', 'if(playingIntent)owner.onInfo', 'ticket != generation',
             'oldPlayer.setEventListener(null)', 'oldPlayer.release()', 'oldLibrary.release()', 'oldProxy::close', 'audio.abandonAudioFocus(']:
         require(contract in engine, 'Missing real VLC control/lifecycle contract: ' + contract)
     require(engine.index('oldProxy.interrupt()')<engine.index('surface.detach()')<engine.index('RELEASES.submit'), 'VLC reads and window callbacks must detach before asynchronous decoder release')

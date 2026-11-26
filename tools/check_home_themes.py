@@ -40,10 +40,20 @@ def check(root):
     if any(token in scroll+navigation+page for token in ('pinHero(', 'pinnedHeight', 'updatePinnedHero', 'cacheHero(', 'controls.setClipBounds')):raise ValueError('All detail themes must scroll as one page without a pinned hero or clipped content')
     if 'scroll.targetPosition()' not in navigation or 'page.scroll.animating()' not in library or 'surface=null;' not in page or 'scroll.setClipChildren(true)' not in page:raise ValueError('Single-page remote reveal and viewport clipping must retain the original layout')
     if 'theme!=0&&theme!=2' not in theme or 'heroHeightChanged(height)' not in home or 'rowParams.height=item==page.heroFrame' not in tv:raise ValueError('The nonclassic TV home themes must fill the viewport and update recycled row height')
+    for token in ('rowParams.width=ViewGroup.LayoutParams.MATCH_PARENT','frame.setLayoutParams(new ViewGroup.LayoutParams(-1,-2))'):
+        if token not in tv:raise ValueError('Native section width must follow the viewport, never the narrower text column')
+    if 'preloadRows=third' not in personal or 'params.topMargin = params.bottomMargin = 0' not in personal:
+        raise ValueError('TV cache/preload preferences must share one native pair without duplicating row margins')
+    for token in ('new String[]{"沉浸海报","雷霆","影视库"}','selectedId(int index)','selectedIndex(int id)','validId(int id)'):
+        if token not in theme:raise ValueError('Phone theme removal must retain stable saved ids and selection mapping')
+    if 'boolean left=!p.phone&&' not in theme or 'p.dots.setGravity(left?Gravity.LEFT:Gravity.CENTER)' not in theme or 'p.badges.centered(!left)' not in theme:
+        raise ValueError('Phone home metadata, badge rows and pips must share bottom-center alignment')
+    if 'syncHeroLayout()' not in page or 'info.getMeasuredHeight()+lp.topMargin+lp.bottomMargin' not in page:
+        raise ValueError('Natural detail metadata must fit its scrolling hero without clipping the header')
     declaration=json.loads((root/'detail/runtime-sources.json').read_text())
     for group in ('common','tv','mobile'):
         actual=sorted(str(p.relative_to(root)) for p in (root/'detail/runtime'/group).rglob('*.java'))
         if sorted(declaration['source_sets'][group])!=actual:raise ValueError('Home theme/recycler helpers must be declared for both variants.')
-    return {'both_clients_home_themes':5,'existing_csp_feed_preserved':True,'native_tv_home_recycling':True,'mobile_library_portrait_artwork':True,'landscape_library_overlay':True,'api23':True}
+    return {'home_themes':{'tv':5,'mobile':3},'existing_csp_feed_preserved':True,'native_tv_home_recycling':True,'mobile_library_portrait_artwork':True,'landscape_library_overlay':True,'api23':True}
 
 if __name__=='__main__':print(check(Path(__file__).resolve().parents[1]))

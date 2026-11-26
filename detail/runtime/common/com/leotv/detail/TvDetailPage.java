@@ -55,6 +55,7 @@ final class TvDetailPage implements DetailPage {
     private BackdropIdentity searchWork;
     private String sourceArtwork="";
     int surfaceColour=DetailHero.DEFAULT_COLOR, theme=-1, themeWidth, themeHeight;
+    int themedHeroHeight;
     boolean mounted=true, reversed, reversePlay, manualSource;
     boolean metadataResolved, artworkRevealed;
     private boolean sourcePending;
@@ -322,11 +323,19 @@ final class TvDetailPage implements DetailPage {
         }
         return false;
     }
-    private boolean beforeDraw(){if(!mounted)return true;if(content.getWidth()!=themeWidth||content.getHeight()!=themeHeight){ThemeLayout.apply(this);refresh(BackdropSettings.read(activity).proxy);}loadingState();libraryLayout.sync();
+    private boolean beforeDraw(){if(!mounted)return true;if(content.getWidth()!=themeWidth||content.getHeight()!=themeHeight){ThemeLayout.apply(this);refresh(BackdropSettings.read(activity).proxy);}loadingState();libraryLayout.sync();syncHeroLayout();
         if(initialPlayFocus)scroll.enforceInitialViewport();
         if(playbackFocusPending)restorePlaybackFocus();
         if(initialPlayFocus&&playButton.isShown()&&playButton.getWidth()>0&&playButton.getHeight()>0&&(!playButton.isFocused()||scroll.getScrollY()!=0))navigation.focusPrimary();
         return mobile||!initialPlayFocus||!heroFrame.isLayoutRequested();}
+    private void syncHeroLayout(){
+        if(DetailTheme.library(activity,mobile)||info.getParent()!=heroFrame||scroll.animating()||heroFrame.getWidth()<=0)return;
+        FrameLayout.LayoutParams lp=(FrameLayout.LayoutParams)info.getLayoutParams();
+        int width=lp.width>0?lp.width:heroFrame.getWidth();
+        if(info.isLayoutRequested()||info.getWidth()!=width)info.measure(View.MeasureSpec.makeMeasureSpec(width,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED));
+        int height=Math.max(themedHeroHeight,info.getMeasuredHeight()+lp.topMargin+lp.bottomMargin+dp(24));
+        ViewGroup.LayoutParams frame=heroFrame.getLayoutParams();if(frame.height!=height){frame.height=height;heroFrame.setLayoutParams(frame);}
+    }
     private boolean navigationKey(int code){return code==KeyEvent.KEYCODE_DPAD_UP||code==KeyEvent.KEYCODE_DPAD_DOWN||code==KeyEvent.KEYCODE_DPAD_LEFT||code==KeyEvent.KEYCODE_DPAD_RIGHT||code==KeyEvent.KEYCODE_DPAD_CENTER||code==KeyEvent.KEYCODE_ENTER||code==KeyEvent.KEYCODE_BACK;}
     private boolean key(KeyEvent event){
         if(!mobile&&playbackFocusPending&&event.getAction()==KeyEvent.ACTION_DOWN){restorePlaybackFocus();playbackFocusPending=false;restoredPlaybackView=null;}

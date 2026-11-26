@@ -128,9 +128,9 @@ final class NativeHomeRows implements AutoCloseable {
         Section(View view){super(view);}
     }
     final class Sections extends Presenter {
-        @Override public Presenter$ViewHolder onCreateViewHolder(ViewGroup parent){FrameLayout frame=new FrameLayout(page.activity);frame.setClipChildren(false);frame.setClipToPadding(false);return new Section(frame);}
+        @Override public Presenter$ViewHolder onCreateViewHolder(ViewGroup parent){FrameLayout frame=new FrameLayout(page.activity);frame.setLayoutParams(new ViewGroup.LayoutParams(-1,-2));frame.setClipChildren(false);frame.setClipToPadding(false);return new Section(frame);}
         @Override public void onBindViewHolder(Presenter$ViewHolder holder,Object item){
-            Section section=(Section)holder;section.item=item;FrameLayout frame=(FrameLayout)holder.view;frame.removeAllViews();ViewGroup.LayoutParams rowParams=frame.getLayoutParams();if(rowParams!=null){rowParams.height=item==page.heroFrame?page.heroFrame.getLayoutParams().height:ViewGroup.LayoutParams.WRAP_CONTENT;frame.setLayoutParams(rowParams);}
+            Section section=(Section)holder;section.item=item;FrameLayout frame=(FrameLayout)holder.view;frame.removeAllViews();ViewGroup.LayoutParams rowParams=frame.getLayoutParams();if(rowParams!=null){rowParams.width=ViewGroup.LayoutParams.MATCH_PARENT;rowParams.height=item==page.heroFrame?page.heroFrame.getLayoutParams().height:ViewGroup.LayoutParams.WRAP_CONTENT;frame.setLayoutParams(rowParams);}
             if(item instanceof CspHomePage.Shelf){if(section.row==null)section.row=new Row();section.row.bind((CspHomePage.Shelf)item);frame.addView(section.row.root,new FrameLayout.LayoutParams(-1,-2));}
             else {View view=(View)item;if(view.getParent() instanceof ViewGroup)((ViewGroup)view.getParent()).removeView(view);frame.addView(view,new FrameLayout.LayoutParams(-1,item==page.heroFrame?page.heroFrame.getLayoutParams().height:-2));}
         }

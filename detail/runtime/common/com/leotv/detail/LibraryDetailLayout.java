@@ -33,7 +33,7 @@ final class LibraryDetailLayout {
         if(!applied){synopsisColor=p.synopsis.getCurrentTextColor();titlePadding=new int[]{p.title.getPaddingLeft(),p.title.getPaddingTop(),p.title.getPaddingRight(),p.title.getPaddingBottom()};for(int i=0;i<p.info.getChildCount();i++){View v=p.info.getChildAt(i);original.add(v);params.put(v,v.getLayoutParams());}for(int i=0;i<p.controls.getChildCount();i++){View v=p.controls.getChildAt(i);originalControls.add(v);params.put(v,v.getLayoutParams());}}
         applied=true;measuredWidth=0;detach(p.info);p.info.removeAllViews();detach(p.actionRow);detach(p.synopsis);
         int side=p.mobile?dp(14):Math.max(dp(18),Math.min(dp(38),Math.round(width*.026f)));
-        p.info.setPadding(side,0,side,dp(6));p.info.setGravity(Gravity.LEFT);p.info.setBackgroundColor(Color.TRANSPARENT);
+        p.info.setPadding(side,0,side,dp(6));p.info.setGravity(Gravity.LEFT);p.info.setBackgroundColor(Color.TRANSPARENT);p.badges.centered(false);
         for(View v:new View[]{p.title,p.brandingHeader,p.titleArt,p.heroActions,p.badges,p.facts,p.synopsis,p.tagline,p.cast,p.crewLine}){detach(v);p.info.addView(v,new LinearLayout.LayoutParams(-1,-2));}
         boolean landscape=!p.portraitArtwork();
         int logoHeight=p.mobile?Math.max(dp(82),Math.min(dp(162),Math.round(width*.16f))):Math.max(dp(107),Math.min(dp(211),Math.round(width*.21f)));

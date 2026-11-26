@@ -21,7 +21,7 @@ final class ThemeLayout {
         boolean left = cinema || thunder;
         int heroHeight=mobile?Math.max(p.dp(240),Math.min((int)(width*1.5f),(int)(height*(value==2?.48f:value==1?.64f:.78f))))
                 :thunder?Math.max(p.dp(360),(int)(height*.78f)):compact?Math.max(p.dp(300),(int)(height*.65f)):Math.max(p.dp(360),height);
-        p.heroFrame.getLayoutParams().height=heroHeight;
+        p.themedHeroHeight=heroHeight;p.heroFrame.getLayoutParams().height=heroHeight;
         if (p.surface != null) {
             FrameLayout.LayoutParams surfaceParams = (FrameLayout.LayoutParams) p.surface.getLayoutParams();
             surfaceParams.topMargin = heroHeight; surfaceParams.height = Math.max(height, p.dp(240));
@@ -32,6 +32,7 @@ final class ThemeLayout {
         if(!below&&p.info.getParent()==p.page){p.page.removeView(p.info);p.heroFrame.addView(p.info,new FrameLayout.LayoutParams(-1,-2,Gravity.BOTTOM));}
         if(!below) {
         FrameLayout.LayoutParams params=(FrameLayout.LayoutParams)p.info.getLayoutParams();
+        params.topMargin=params.bottomMargin=params.leftMargin=params.rightMargin=0;
         params.width=left?(int)(width*(thunder?.68f:.55f)):-1;params.gravity=Gravity.BOTTOM|Gravity.LEFT;
         p.info.setLayoutParams(params);
         }
@@ -40,6 +41,8 @@ final class ThemeLayout {
         int side=mobile?20:left?44:64;p.info.setPadding(p.dp(side),p.dp(below?12:0),p.dp(side),p.dp(mobile?16:thunder?28:cinema?36:16));
         int gravity=left?Gravity.LEFT:Gravity.CENTER;
         p.title.setGravity(gravity);p.facts.setGravity(gravity);p.synopsis.setGravity(gravity);
+        p.brandingHeader.setGravity(gravity);p.tagline.setGravity(gravity);p.cast.setGravity(gravity);p.crewLine.setGravity(gravity);
+        p.badges.centered(!left);
         p.title.setTextSize(mobile?25:left?36:compact?24:26);
         p.synopsis.setMaxLines(thunder?2:cinema?3:mobile?3:2);p.synopsis.setTextSize(mobile?13:14);
         p.playButton.setVisibility(View.VISIBLE); p.playButton.thunder(thunder);

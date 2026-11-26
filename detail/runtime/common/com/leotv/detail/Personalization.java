@@ -46,15 +46,15 @@ public final class Personalization {
                 () -> {MetadataSettings.setNewHome(activity,!MetadataSettings.newHome(activity));refresh(activity,rows);});
         LinearLayout homeThemes=rows;
         if(!Device.MOBILE){homeThemes=new LinearLayout(activity);homeThemes.setOrientation(LinearLayout.HORIZONTAL);LinearLayout.LayoutParams line=new LinearLayout.LayoutParams(-1,-2);line.topMargin=rowSpacing(target);rows.addView(homeThemes,line);}
-        add(activity,homeThemes,template,summary,HOME_THEME,()->NativeDialogs.choose(activity,HOME_THEME,HomeTheme.NAMES,MetadataSettings.homeTheme(activity),index->{MetadataSettings.setHomeTheme(activity,index);refresh(activity,rows);}));
+        add(activity,homeThemes,template,summary,HOME_THEME,()->NativeDialogs.choose(activity,HOME_THEME,HomeTheme.NAMES,HomeTheme.selectedIndex(MetadataSettings.homeTheme(activity)),index->{MetadataSettings.setHomeTheme(activity,HomeTheme.selectedId(index));refresh(activity,rows);}));
+        LinearLayout preloadRows=rows;
         if(!Device.MOBILE){
             add(activity,homeThemes,template,summary,RECENT,()->{MetadataSettings.setNewHomeRecent(activity,!MetadataSettings.newHomeRecent(activity));refresh(activity,rows);});
             LinearLayout third=new LinearLayout(activity);third.setOrientation(LinearLayout.HORIZONTAL);LinearLayout.LayoutParams line=new LinearLayout.LayoutParams(-1,-2);line.topMargin=rowSpacing(target);rows.addView(third,line);
             add(activity,third,template,summary,CACHE,()->cacheLimit(activity,rows));
+            preloadRows=third;
         }
         if(Device.MOBILE)add(activity,rows,template,summary,CACHE,()->cacheLimit(activity,rows));
-        LinearLayout preloadRows=rows;
-        if(!Device.MOBILE){preloadRows=new LinearLayout(activity);preloadRows.setOrientation(LinearLayout.HORIZONTAL);LinearLayout.LayoutParams line=new LinearLayout.LayoutParams(-1,-2);line.topMargin=rowSpacing(target);rows.addView(preloadRows,line);}
         add(activity,preloadRows,template,summary,"视频预加载",()->PreloadSettings.show(activity,()->refresh(activity,rows)));
         if(Device.MOBILE)add(activity, rows, template, summary, "弹幕 API",
                 () -> DanmakuUi.settings(activity));
@@ -80,7 +80,7 @@ public final class Personalization {
         summary(endpoint,custom?"自定义":"默认内置");
         summary(rows.findViewWithTag(SEARCH), MetadataSettings.resourceGlobalSearch(activity)?"开启":"关闭");
         summary(rows.findViewWithTag(HOME), MetadataSettings.newHome(activity)?"开启":"关闭");
-        summary(rows.findViewWithTag(HOME_THEME),HomeTheme.NAMES[MetadataSettings.homeTheme(activity)]);
+        summary(rows.findViewWithTag(HOME_THEME),HomeTheme.NAMES[HomeTheme.selectedIndex(MetadataSettings.homeTheme(activity))]);
         summary(rows.findViewWithTag(RECENT),MetadataSettings.newHomeRecent(activity)?"开启":"关闭");
         summary(rows.findViewWithTag(CACHE),MetadataSettings.homeCacheMb(activity)+" MB");
         summary(rows.findViewWithTag("视频预加载"),PreloadSettings.enabled(activity)?"开启":"关闭");
@@ -134,6 +134,7 @@ public final class Personalization {
         }
         else {
             params.width = 0; params.weight = 1;
+            params.topMargin = params.bottomMargin = 0;
             params.leftMargin = params.rightMargin = 0; params.setMarginStart(0);
             params.setMarginEnd(rows.getChildCount() == 0 ? columnSpacing(template) : 0);
         }

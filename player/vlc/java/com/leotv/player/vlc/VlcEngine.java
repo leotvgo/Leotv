@@ -108,7 +108,9 @@ final class VlcEngine {
             case MediaPlayer.Event.Opening: clock.running(false,SystemClock.uptimeMillis());owner.l(2); break;
             case MediaPlayer.Event.Buffering:
                 buffering=event.getBuffering()<100f;syncClock();
-                owner.onInfo(null, ready && event.getBuffering() >= 100f ? 702 : 701, 0);
+                // Paused native input may continue filling its cache. Only an active
+                // playback intent may show the host's buffering/network overlay.
+                if(playingIntent)owner.onInfo(null, ready && !buffering ? 702 : 701, 0);
                 owner.onBufferingUpdate(null, (int) event.getBuffering()); break;
             case MediaPlayer.Event.Playing:
                 nativePlaying=true;clock.speed(player.getRate(),SystemClock.uptimeMillis());syncClock();
@@ -120,7 +122,7 @@ final class VlcEngine {
                 if(seekPending){clock.reanchor(event.getTimeChanged(),SystemClock.uptimeMillis());seekPending=false;}
                 else clock.sample(event.getTimeChanged(),SystemClock.uptimeMillis());
                 syncClock();break;
-            case MediaPlayer.Event.Paused: nativePlaying=false;syncClock();owner.m0(2); owner.onInfo(null, 701, 0); break;
+            case MediaPlayer.Event.Paused: nativePlaying=false;syncClock();hideBuffering();owner.m0(2);break;
             case MediaPlayer.Event.EndReached:
                 if (ended) break;
                 if (!ready) { fail("VLC 媒体在准备完成前结束"); break; }
@@ -166,9 +168,21 @@ final class VlcEngine {
     boolean playing() { return current() && player.isPlaying(); }
     boolean seekable() { return current() && ready && player.isSeekable(); }
     boolean ended() { return ended; }
-    void pause() { resumeAfterFocusLoss = false; playingIntent = false;syncClock(); if (player != null && player.isPlaying()) player.pause(); }
+    private void hideBuffering(){
+        // The host's ready event also restarts timers/danmaku. Use only its
+        // original overlay cleanup, leaving the explicit pause intact.
+        Context screen=surface.getContext();
+        if(screen instanceof com.fongmi.android.tv.ui.activity.VideoActivity)
+            ((com.fongmi.android.tv.ui.activity.VideoActivity)screen).p0();
+        else if(screen instanceof com.fongmi.android.tv.ui.activity.LiveActivity)
+            ((com.fongmi.android.tv.ui.activity.LiveActivity)screen).b0();
+        else if(screen instanceof com.fongmi.android.tv.ui.activity.CastActivity)
+            ((com.fongmi.android.tv.ui.activity.CastActivity)screen).V();
+    }
+    void pause() { resumeAfterFocusLoss = false; playingIntent = false;syncClock();if(current())hideBuffering(); if (player != null && player.isPlaying()) player.pause(); }
     void play() {
         resumeAfterFocusLoss = false; playingIntent = true;
+        if(current()&&buffering)owner.onInfo(null,701,0);
         if (current() && !ended) try { acquireFocus(); player.play(); } catch (IOException problem) { fail(problem.getMessage()); }
     }
     void seek(long value) {

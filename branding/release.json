@@ -1,8 +1,8 @@
 {
   "channel": "prerelease",
-  "version_name": "5.3.4-preview.8",
-  "version_code": 654,
-  "title": "Leotv 5.3.4-preview.8 单页详情、首页整屏与花瓣光点可见性测试版",
+  "version_name": "5.3.4-preview.9",
+  "version_code": 655,
+  "title": "Leotv 5.3.4-preview.9 布局与 VLC 暂停状态修复测试版",
   "prerelease": true,
   "make_latest": false
 }
