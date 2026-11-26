@@ -417,7 +417,7 @@
   "authorized_651_source_repairs": {
     "README.md": {
       "before_sha256": "63915ad6cacc095f492eda54de3a308a645b6619cd5cfef48466af3175db63ee",
-      "after_sha256": "c60005056e69624dde6ba4d5f231805f7b70e46023e2028577d9ead358be8053",
+      "after_sha256": "3e0a4e1cfb7e424acc5d29543f07d287fbe65e5ab067880a1373120d227b1c89",
       "reason": "651 scope and source-only evidence; device playback and motion clarity remain pending user acceptance"
     },
     "branding/AndroidManifest.xml": {
@@ -527,7 +527,7 @@
     },
     "docs/LEOTV-5.3.4-PREVIEW-5-651-PLAYER-DANMAKU-20261126.md": {
       "before_sha256": null,
-      "after_sha256": "2fb78679eb5ddbc490131134fa0d607832f7c59d8632de1bda4ca46f266733ff",
+      "after_sha256": "6c5034b5cc2d60cdc3e67568e89c544901ac3269a9ec393d54e875558be8bb65",
       "reason": "651 scope and source-only evidence; device playback and motion clarity remain pending user acceptance"
     },
     "evidence/player-651-fixed-options.json": {
@@ -559,6 +559,11 @@
       "before_sha256": "c04b4b27b52fd661e9397af821a61340be5d9840a6bdf0ac54cfa3fdc87e3f29",
       "reason": "Run required production MPV Java8/API23 source contracts in GitHub before each mobile APK; no local APK regression",
       "after_sha256": "c64c2a61a0650a34168287bcd6e15593b4bc70efa690c146701573efc22d63eb"
+    },
+    "evidence/player-651-signed-delivery-20261126.json": {
+      "before_sha256": null,
+      "reason": "Verified 651 actual fixed-signature release evidence and PRIVATE restoration; documentation only, no APK input changes",
+      "after_sha256": "948363fbb30fa6fdb1653c67139c022b0b52eee6424563946fe18bd56e578970"
     }
   },
   "651_repair_inputs": {
@@ -567,6 +572,10 @@
     "version_code": 651,
     "user_feedback": "Low-end mobile MPV stutter vs smooth Exo, native kernel selection, inline MPV configuration/no extra popup, warning flood, TV VLC invalid state, moving Danmaku blur",
     "native_producer_unchanged": "673ddfa1197f401d536eccec00902cf488d3e25d",
-    "resize_review": "Pinned MPV context_android.c reconfig handles dimensions, control returns VO_NOTIMPL; rebind only changed real geometry and test unchanged/rotated notifications in GitHub source compile"
+    "resize_review": "Pinned MPV context_android.c reconfig handles dimensions, control returns VO_NOTIMPL; rebind only changed real geometry and test unchanged/rotated notifications in GitHub source compile",
+    "build_run_id": 45796033391,
+    "publish_run_id": 45797051343,
+    "apk_input_commit": "b1deeebe1e1a38a0984c7ee80e68775abeec1853",
+    "actual_signed_delivery_verified": true
   }
 }

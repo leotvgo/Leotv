@@ -1,6 +1,6 @@
 # Leotv — 5.3.4-preview.5 / 651 播放器与滚动弹幕修复
 
-正在交付 **5.3.4-preview.5 / 651**：手机 MPV 去除重复 Surface 输出重建，内置低开销参数，原播放设置页直接显示 MPV 完整列表，取消额外按钮及整页弹窗；原生内核选择先保存进度与选择，native 警告停止逐条弹提示。TV VLC 改用等待真实就绪的双 SurfaceView，修复 `invalid state`；普通/特效滚动文字对齐物理像素并关闭额外位图过滤。保持 API23、TV/手机、双 ABI 和固定 native/签名，真机待验收。[651 范围与边界](docs/LEOTV-5.3.4-PREVIEW-5-651-PLAYER-DANMAKU-20261126.md)。
+已发布 **5.3.4-preview.5 / 651**：[四套固定签名 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4-preview.5-build-45796033391)。手机 MPV 去除重复 Surface 输出重建，内置低开销参数，原播放设置页直接显示 MPV 完整列表，取消额外按钮及整页弹窗；原生内核选择先保存进度与选择，native 警告停止逐条弹提示。TV VLC 改用等待真实就绪的双 SurfaceView，修复 `invalid state`；普通/特效滚动文字对齐物理像素并关闭额外位图过滤。API23、TV/手机、双 ABI、原样/变化与固定 native/签名核对通过，仓库已恢复 PRIVATE，真机待验收。[651 范围与边界](docs/LEOTV-5.3.4-PREVIEW-5-651-PLAYER-DANMAKU-20261126.md)。
 
 已发布 **5.3.4-preview.4 / 650**：[四套固定签名修复 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4-preview.4-build-45784246148)。修复 TV 比例钩子复用字符串寄存器导致整个播放页面的 VerifyError；手机 MPV 改用固定 0.38 的真实软件回退选项，并恢复原生设置行、选择窗及修改/返回刷新。特效三项移到个性设置弹幕 API 下方，手机行间距接入左侧小电视原弹幕 Slider/选择窗，TV 原生间距对齐；移除霓虹文字额外模糊阴影并固定缓存 px 密度，九样式、动画默认及原时钟/字号/透明度保持。源码、R8/API23、寄存器类型、原样/允许变化、native/对应源码与固定签名核对通过；仓库已恢复 PRIVATE，实际设备播放和文字观感待用户验收。详见[650 固定签名交付核对](docs/LEOTV-5.3.4-PREVIEW-4-650-DELIVERY-20261126.md)。
 
