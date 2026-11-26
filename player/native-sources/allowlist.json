@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "path": ".github/workflows/player-native-build.yml",
+      "sha256": "087302715c1f9a0c9ca8c0c9384dd59da02bd252589f1d11317d6704e3936222",
+      "bytes": 2234
+    },
+    {
+      "path": "player/native/lock.json",
+      "sha256": "3cdaf3028d5a29363f21ef3206575ec13bf52b136d15a5c1e2e94d840ac05872",
+      "bytes": 16498
+    },
+    {
+      "path": "player/native/proguard-rules.pro",
+      "sha256": "c74eea50bb3d4e6038d7f1efd98fc66d8b92530043eb34c0d225ad2d74a3f079",
+      "bytes": 176
+    },
+    {
+      "path": "player/native-sources/mpv/contract/is/xyz/mpv/MPVLib.java",
+      "sha256": "451b1f8b84b20dc8dce162c07ca46cde30536f8141bf93a3164db82bcd9463eb",
+      "bytes": 6813
+    },
+    {
+      "path": "player/native-sources/mpv/is_xyz_mpv_MPVLib.h",
+      "sha256": "25a8ebda1420e9e63ae242da7855578701c9c6cf3e6ede2fb835c4cead7b694c",
+      "bytes": 3070
+    },
+    {
+      "path": "player/native-sources/mpv/player.cpp",
+      "sha256": "43cdbdf29c6258a3b99d83e571153e89823d9cba9a4eefa8cd03ae87f590186d",
+      "bytes": 12918
+    },
+    {
+      "path": "player/native-sources/recipes/LICENSE",
+      "sha256": "a618084dcea6a9a555571ffc1c7dd828eb40c20c8287dc3c3cbf5831ce72c506",
+      "bytes": 1099
+    },
+    {
+      "path": "player/native-sources/recipes/README.md",
+      "sha256": "995bd73f1a9626b3b117083b5644e017ef63c453270fd21900e40aa1ede7b97a",
+      "bytes": 487
+    },
+    {
+      "path": "player/native-sources/recipes/buildall.sh",
+      "sha256": "13c82962d02dba39487590a8be070f86e3b010dedcc467b15866dfa7951c2aaf",
+      "bytes": 3786
+    },
+    {
+      "path": "player/native-sources/recipes/include/depinfo.sh",
+      "sha256": "39034575a0470b76ce5b13df09f9ae0f29111bc0632e6bbda377c6cc5a930308",
+      "bytes": 992
+    },
+    {
+      "path": "player/native-sources/recipes/include/path.sh",
+      "sha256": "b5554788b3f0d94fa77c52480b44c6118c428e608327eef09f345584018abc71",
+      "bytes": 909
+    },
+    {
+      "path": "player/native-sources/recipes/scripts/dav1d.sh",
+      "sha256": "8717a693b35c5e6100917f9d4dcca5d589c39fec431ff32f09989187b5b2785a",
+      "bytes": 404
+    },
+    {
+      "path": "player/native-sources/recipes/scripts/ffmpeg.sh",
+      "sha256": "6ff5cd4ed292ea2b17e95febf387a5d2b3366f5011fda72462a5451e27f9c146",
+      "bytes": 1334
+    },
+    {
+      "path": "player/native-sources/recipes/scripts/freetype2.sh",
+      "sha256": "7106e47146cd38ab345bbe1c2e76a2823d8e385728b5ac10ae99a6c1534f97a3",
+      "bytes": 346
+    },
+    {
+      "path": "player/native-sources/recipes/scripts/fribidi.sh",
+      "sha256": "133bc90a43e5ed52049450c690d1e441250354b5ae6f877edae4e579d2081e31",
+      "bytes": 370
+    },
+    {
+      "path": "player/native-sources/recipes/scripts/harfbuzz.sh",
+      "sha256": "eb1e8e3d5dc303febddc0a7dbc57bc79a2d05dd0d523edf90eecd02c7310f1dc",
+      "bytes": 382
+    },
+    {
+      "path": "player/native-sources/recipes/scripts/libass.sh",
+      "sha256": "e3fbbdb2918758ad097389f2d5f1c9ae078a7965eae8f7983cb1ba44a94feaa8",
+      "bytes": 438
+    },
+    {
+      "path": "player/native-sources/recipes/scripts/libplacebo.sh",
+      "sha256": "06e670ac8dacbf6b045d44decd410f15e26edbd3d7f383ece5770e33bb02c770",
+      "bytes": 693
+    },
+    {
+      "path": "player/native-sources/recipes/scripts/lua.sh",
+      "sha256": "3469be45453bf8d2beb47d12ef84b817e6caae18b60ec695c8c2e9c599555c6e",
+      "bytes": 1158
+    },
+    {
+      "path": "player/native-sources/recipes/scripts/mbedtls.sh",
+      "sha256": "2e6810db1b506b7437efb100f7b3c4634f57f3434f3828b1bffa70a0a4f67407",
+      "bytes": 393
+    },
+    {
+      "path": "player/native-sources/recipes/scripts/mpv.sh",
+      "sha256": "b672c60fb9f60247e3e35cc2606e7d4eea9d6eafc68bcaf97b6c5bc5ed9a365b",
+      "bytes": 676
+    },
+    {
+      "path": "player/native-sources/recipes/scripts/unibreak.sh",
+      "sha256": "83f94f6a6c407ca3e2e8d11ea7bc0fc86abfa9e0b598c1e318d7f380b15ff222",
+      "bytes": 369
+    },
+    {
+      "path": "player/native-sources/sources.lock.json",
+      "sha256": "f3c295b7681d9f0a28b9cfd96a89d390ab96829029f645e468fc056b435b036c",
+      "bytes": 6537
+    },
+    {
+      "path": "tools/build_player_native.py",
+      "sha256": "0ed413ba992b2fa615f49c85fa91db54701d71d2c329f8677c5334445ef607cf",
+      "bytes": 8472
+    },
+    {
+      "path": "tools/check_player_native.py",
+      "sha256": "41c012c03970c3d27139d7b98823ded63d722982ec72f5f1648c454580081e4d",
+      "bytes": 7103
+    }
+  ],
+  "new_java_classes": [
+    "is.xyz.mpv.MPVLib",
+    "is.xyz.mpv.MPVLib$*",
+    "org.videolan.libvlc.*"
+  ],
+  "new_apk_assets_from": "player/native/lock.json variants/engines; preserve all original ZIP assets",
+  "new_native_libraries_from": "player/native/lock.json engines.*.abis and mpv.expected_libraries"
+}

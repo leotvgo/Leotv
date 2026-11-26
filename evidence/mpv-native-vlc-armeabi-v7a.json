@@ -1,0 +1,73 @@
+{
+  "abi": "armeabi-v7a",
+  "api": 23,
+  "minimum_load_alignment": 4096,
+  "libraries": [
+    {
+      "name": "libc++_shared.so",
+      "bytes": 554808,
+      "sha256": "092a44574c247982e265743acb1227e11a2f079a765814fef1b627dbfb2b79d5",
+      "elf_class": 1,
+      "machine": 40,
+      "android_api_note": 16,
+      "soname": "libc++_shared.so",
+      "needed": [
+        "libc.so",
+        "libdl.so"
+      ],
+      "load_alignment": [
+        4096,
+        4096
+      ],
+      "api23_unresolved_strong": []
+    },
+    {
+      "name": "libvlc.so",
+      "bytes": 39938252,
+      "sha256": "041d2c273667ad6fa1149c58fe5f4c4a9feac9383d92de62c0e37d95a1eb0140",
+      "elf_class": 1,
+      "machine": 40,
+      "android_api_note": 17,
+      "soname": "libvlc.so",
+      "needed": [
+        "libdl.so",
+        "libc++_shared.so",
+        "libm.so",
+        "libEGL.so",
+        "libGLESv2.so",
+        "liblog.so",
+        "libstdc++.so",
+        "libc.so"
+      ],
+      "load_alignment": [
+        4096,
+        4096
+      ],
+      "api23_unresolved_strong": []
+    },
+    {
+      "name": "libvlcjni.so",
+      "bytes": 71256,
+      "sha256": "8a3a4fbf8b200f87ef0c13b479c2f70449030aaa56ea6e8e40e1c6f42d1b6f55",
+      "elf_class": 1,
+      "machine": 40,
+      "android_api_note": 17,
+      "soname": "libvlcjni.so",
+      "needed": [
+        "libdl.so",
+        "libvlc.so",
+        "liblog.so",
+        "libc.so",
+        "libm.so"
+      ],
+      "load_alignment": [
+        4096,
+        4096
+      ],
+      "api23_unresolved_strong": []
+    }
+  ],
+  "errors": [],
+  "boundary": "Static ELF names against API23 NDK stubs and the exact companion set; weak imports/dlopen/device behavior require device acceptance.",
+  "engine": "vlc"
+}

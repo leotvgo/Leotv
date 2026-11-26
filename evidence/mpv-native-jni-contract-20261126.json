@@ -1,0 +1,18 @@
+{
+  "java_source_level": 8,
+  "android_platform": 23,
+  "javac_generated_header": "player/native-sources/mpv/is_xyz_mpv_MPVLib.h",
+  "syntax_checked_abis": [
+    "armeabi-v7a",
+    "arm64-v8a"
+  ],
+  "ndk_for_static_contract": "26.1.10909125",
+  "build_ndk": "27.0.12077973",
+  "checks": [
+    "javac -source 8 -target 8 against android-23/android.jar",
+    "aarch64-linux-android23-clang++ -std=c++14 -fsyntax-only",
+    "armv7a-linux-androideabi23-clang++ -std=c++14 -fsyntax-only"
+  ],
+  "native_product_status": "awaiting CI: no MPV ELF success claimed",
+  "device_test": false
+}
