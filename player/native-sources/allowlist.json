@@ -7,9 +7,14 @@
       "bytes": 2234
     },
     {
+      "path": "player/native/RELEASE-INPUTS.md",
+      "sha256": "1274a7d8712c33d24acba0ac9eb122f18a45ccefffeaf2df5118c6f351140d06",
+      "bytes": 2746
+    },
+    {
       "path": "player/native/lock.json",
-      "sha256": "8e9668feacfe7560f90c3af2e50d70828b95ca908230240329f8b32274881a00",
-      "bytes": 16781
+      "sha256": "c9e7d1249504bb18d50050078091956fd5d30324a919345e6b7a1177ab8e8d16",
+      "bytes": 40704
     },
     {
       "path": "player/native/proguard-rules.pro",
@@ -45,6 +50,11 @@
       "path": "player/native-sources/ndk-runtime.lock.json",
       "sha256": "6c88b715c41293595d592f23d32b9cc4dda28d48b5c546a2ba3d79c868777083",
       "bytes": 2866
+    },
+    {
+      "path": "player/native-sources/package_inputs.py",
+      "sha256": "3f55da1baccfc7d8544bc2aaf8c511359610d1539c7f51f6015208ee43960329",
+      "bytes": 6582
     },
     {
       "path": "player/native-sources/recipes/LICENSE",
@@ -133,8 +143,8 @@
     },
     {
       "path": "tools/build_player_native.py",
-      "sha256": "05b6531c8f1f1e7c67db8e5ac7231fff41fae6821a9e850fa5cf9476dd38910d",
-      "bytes": 9600
+      "sha256": "acfa4e0ff867d6ed3fc7be785e0007e3a7e6b218ff326d5e7ebc012c174b90c6",
+      "bytes": 10952
     },
     {
       "path": "tools/check_player_native.py",

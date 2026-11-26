@@ -69,6 +69,19 @@ def stage_vlc(args):
             path=output/row['path'];path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
     run([sys.executable,ROOT/'tools/check_player_native.py','--engine','vlc','--abi',args.abi,'--directory',output/args.abi,'--ndk',args.ndk,'--lock',ROOT/'player/native/lock.json','--output',output/f'vlc-{args.abi}-audit.json'])
 
+def stage_mpv(args):
+    lock=json.loads((ROOT/'player/native/lock.json').read_text())
+    engine=lock['engines']['mpv'];product=engine['abis'][args.abi]
+    archive=args.from_archive
+    if args.fixed_input:
+        archive=args.work/product['native_archive']['name']
+        if not archive.exists() or sha(archive)!=product['native_archive']['sha256']:
+            release=engine['permanent_release']
+            run(['gh','release','download',release['tag'],'--repo',release['repository'],'--pattern',archive.name,'--dir',args.work,'--clobber'])
+    if sha(archive)!=product['native_archive']['sha256']:raise ValueError('fixed native archive hash mismatch')
+    extract(archive,args.output)
+    run([sys.executable,ROOT/'tools/check_player_native.py','--engine','mpv','--abi',args.abi,'--directory',args.output/args.abi,'--ndk',args.ndk,'--lock',ROOT/'player/native/lock.json','--output',args.output/f'mpv-{args.abi}-staged-audit.json'])
+
 def build_mpv(args):
     source_lock=json.loads((ROOT/'player/native-sources/sources.lock.json').read_text())
     properties=(args.ndk/'source.properties').read_text()
@@ -121,7 +134,7 @@ def build_mpv(args):
     # compiler metadata and audit alongside binaries for corresponding-source delivery.
     provenance=output/'corresponding-source';provenance.mkdir(parents=True,exist_ok=True)
     shutil.copytree(archives,provenance/'archives',dirs_exist_ok=True)
-    shutil.copytree(ROOT/'player/native-sources',provenance/'leotv-native',dirs_exist_ok=True)
+    shutil.copytree(ROOT/'player/native-sources',provenance/'leotv-native',dirs_exist_ok=True,ignore=shutil.ignore_patterns('__pycache__','*.pyc','*.pyo'))
     shutil.copy2(args.ndk/'source.properties',provenance/'ndk-source.properties')
     configs=provenance/'config'/args.abi;configs.mkdir(parents=True,exist_ok=True)
     for name in ['mpv','libplacebo','ffmpeg']:
@@ -137,6 +150,9 @@ def build_mpv(args):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--engine',choices=['mpv','vlc'],required=True);p.add_argument('--abi',choices=ABIS,required=True)
     p.add_argument('--ndk',type=Path,required=True);p.add_argument('--work',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--jobs',type=int,default=4)
+    inputs=p.add_mutually_exclusive_group();inputs.add_argument('--fixed-input',action='store_true');inputs.add_argument('--from-archive',type=Path)
     a=p.parse_args();a.ndk=a.ndk.resolve();a.work=a.work.resolve();a.output=a.output.resolve();a.work.mkdir(parents=True,exist_ok=True)
-    (build_mpv if a.engine=='mpv' else stage_vlc)(a)
+    if a.engine=='vlc' and (a.fixed_input or a.from_archive):p.error('MPV archive input options cannot be used for VLC')
+    if a.engine=='mpv' and (a.fixed_input or a.from_archive):stage_mpv(a)
+    else:(build_mpv if a.engine=='mpv' else stage_vlc)(a)
 if __name__=='__main__':main()

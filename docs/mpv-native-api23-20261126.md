@@ -1,8 +1,9 @@
 # API23 手机 MPV 与 TV VLC 固定原生输入
 
 任务A在独立分支实现原生模块，未编辑主工作区649、普通APK构建、版本、签名或仓库可见性。
-首次native-only CI `45756633457` 已完成：MPV64与VLC两个ABI成功，MPV32编译成功但官方C++运行库4KiB对齐被过严门禁拒绝；**MPV32可下载制品尚未取得，任务未完成**。
-VLC双ABI官方输入已实际取得并通过静态API23核对，设备效果仍由最终APK真机验收。
+第二次native-only CI `45758740047` 四矩阵成功，MPV/VLC两个ABI实物已下载并核对，任务A原生代码与制品已完成。
+MPV的两个独立native档及完整对应源码档已准备永久固定release输入，由协调者审阅发布；没有构建应用APK。
+原生API23结论来自编译、ELF/完整依赖/源配置与JNI契约核对，设备效果仍由最终固定签名APK真机验收。
 
 ## 构建与来源
 
@@ -96,7 +97,18 @@ MPV/FFmpeg/JNI新编译库必须至少16KiB ELF对齐。唯一例外为固定NDK
 已完成：全来源/依赖锁、可审查native-only workflow、JNI真实实现、Java8/API23契约生成、两个API23编译器语法核对；VLC双ABI提取/强导入/SONAME/对齐/hash核对。
 首次CI实测：MPV64共27,137,560字节、11库、API23全组强符号/SONAME/nonfree/16KiB门禁通过；MPV32在门禁前共24,259,488字节，唯一失败为官方C++运行库4KiB对齐，未上传artifact。VLC两套CI成功产物已下载，hash完全匹配固定AAR输入。
 
-本次修复用Google官方NDK ZIP的精确byte range/成员CRC获取两套运行库，SHA256/字节/Android note/PT_LOAD锁定；官方完整archive SHA1来自SDK仓库XML，不声称已下载或独立核对整个NDK ZIP。官方NDK NOTICE与clang_source_info的LLVM基底/Android补丁完整commit也已保存并锁hash，随对应源artifact保留。原始运行库不替换版本、不改ABI、不strip；五个针对性契约核对确认正确32位例外放行、hash/对齐改变拒绝、其他MPV库不降门禁、64位仍16KiB。
+修复用Google官方NDK ZIP的精确byte range/成员CRC获取两套运行库，SHA256/字节/Android note/PT_LOAD锁定；官方完整archive SHA1来自SDK仓库XML，不声称已下载或独立核对整个NDK ZIP。官方NDK NOTICE与clang_source_info的LLVM基底/Android补丁完整commit也已保存并锁hash，随对应源artifact保留。原始运行库不替换版本、不改ABI、不strip；五个针对性契约核对确认正确32位例外放行、hash/对齐改变拒绝、其他MPV库不降门禁、64位仍16KiB。
 
-未完成：重跑取得MPV32成功artifact，并核对两个ABI新产物/运行库原样收据及锁回填；最终native artifact固定发布输入和APK合并/签名/设备验收。
-只有脚本和语法核对不算MPV交付完成，待协调者触发native-only CI后继续处理实际失败并取得两个ABI制品。
+第二次CI实际交付：手机MPV32共24,688,552字节（24.69 MB）、MPV64共27,639,440字节（27.64 MB），各11库；TV VLC32共40,564,316字节（40.56 MB）、VLC64共44,235,352字节（44.24 MB），各3库。
+上述是原生库增量，保留原Exo/IJK及全部原库；最终APK另有Java/资源/ZIP/签名增量。
+全部实物hash、完整DT_NEEDED/strong API23、SONAME、Android note、对齐和原厂C++原样收据均核对通过。
+两个libplayer.so均有匹配14个JNI导出；两个MPV binary含glsl-shaders选项，实际编译配置OpenGL/Android EGL/MediaCodec/mbedTLS启用，Vulkan/AImageReader/nonfree关闭。
+VLC matching classes.jar和所有AAR资产hash通过，两个原TV APK未发现新增AAR资产路径碰撞。
+
+永久MPV输入使用 `leotv-player-native-api23-20261126-673ddfa1`，每ABI独立native tar及对应源码tar均已生成SHA256。
+见 `player/native/RELEASE-INPUTS.md` 和 `player/native/lock.json`；发布由协调者执行，状态明确为prepared-for-coordinator-publication。
+最终APK CI用 `--fixed-input` 精确tag/文件/hash读取永久release，不依赖30天artifact或重新native编译；已用 `--from-archive` 验证两个实际档完整11库门禁。
+对应源码档包括实际producer的28项构建输入、17项依赖source archive、两ABI真实配置、NDK NOTICE/源码基底，解开后独立 `--sources` 28项通过。
+
+任务A完成项：实际双ABI MPV/API23链、匹配JNI、VLC固定套件、变体/资源/R8/native允许清单、构建与哈希/许可/强引用/对齐门禁、固定可重复使用的原生与完整源码档。
+后续由协调者处理永久native release输入发布、649三方合并、最终APK GitHub必需编译/R8/原样与变化/固定签名核对；最终运行效果由用户真机验收。

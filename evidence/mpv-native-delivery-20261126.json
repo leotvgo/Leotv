@@ -1,0 +1,891 @@
+{
+  "schema_version": 1,
+  "producer_commit": "673ddfa1197f401d536eccec00902cf488d3e25d",
+  "run_id": 45758740047,
+  "ci_conclusion": "success",
+  "device_acceptance": false,
+  "permanent_release": {
+    "repository": "leotvgo/Leotv",
+    "tag": "leotv-player-native-api23-20261126-673ddfa1",
+    "target_commit": "673ddfa1197f401d536eccec00902cf488d3e25d",
+    "status": "prepared-for-coordinator-publication",
+    "prerelease": true,
+    "make_latest": false
+  },
+  "source_archive": {
+    "name": "leotv-player-mpv-source-api23-673ddfa1.tar.gz",
+    "sha256": "dec3bc01bcf093c0d7cccf6a5292d6f23403c30d23d6fa5e6d107ee12ea3a1e0",
+    "bytes": 72815586,
+    "url": "https://github.com/leotvgo/Leotv/releases/download/leotv-player-native-api23-20261126-673ddfa1/leotv-player-mpv-source-api23-673ddfa1.tar.gz"
+  },
+  "engines": {
+    "mpv": {
+      "armeabi-v7a": {
+        "native_bytes": 24688552,
+        "libraries": [
+          {
+            "name": "libavcodec.so",
+            "bytes": 11474932,
+            "sha256": "139771ede1be7e5bf5e950bb9f3b861ca2cc0504cca96e5f392042e7c525be5a",
+            "elf_class": 1,
+            "machine": 40,
+            "android_api_note": 23,
+            "soname": "libavcodec.so",
+            "needed": [
+              "libswresample.so",
+              "libavutil.so",
+              "libm.so",
+              "libandroid.so",
+              "libz.so",
+              "libdl.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libavdevice.so",
+            "bytes": 6832,
+            "sha256": "c569a0a40f2d9d34dd93ef833c21fbcffeda23096c64e0a611820183ba7bee1f",
+            "elf_class": 1,
+            "machine": 40,
+            "android_api_note": 23,
+            "soname": "libavdevice.so",
+            "needed": [
+              "libavformat.so",
+              "libavutil.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libavfilter.so",
+            "bytes": 3415236,
+            "sha256": "e4cd3d49f1996e6bce03ff49740d739188648dac331fd3ccce89b770dddf468f",
+            "elf_class": 1,
+            "machine": 40,
+            "android_api_note": 23,
+            "soname": "libavfilter.so",
+            "needed": [
+              "libswscale.so",
+              "libpostproc.so",
+              "libavformat.so",
+              "libavcodec.so",
+              "libswresample.so",
+              "libavutil.so",
+              "libm.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libavformat.so",
+            "bytes": 2446316,
+            "sha256": "1d07b9a006d505c91f889a99982849eca9d5455f065bfcd8230c711c41b71080",
+            "elf_class": 1,
+            "machine": 40,
+            "android_api_note": 23,
+            "soname": "libavformat.so",
+            "needed": [
+              "libavcodec.so",
+              "libavutil.so",
+              "libm.so",
+              "libz.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libavutil.so",
+            "bytes": 626528,
+            "sha256": "04fab4519ccea1edde04dee7284804adf0dc29977e4716666185a60ad0ddcdec",
+            "elf_class": 1,
+            "machine": 40,
+            "android_api_note": 23,
+            "soname": "libavutil.so",
+            "needed": [
+              "libm.so",
+              "libandroid.so",
+              "libdl.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libc++_shared.so",
+            "bytes": 1301936,
+            "sha256": "0ce8906c20a019f56d2cefbadeac35cca102234971d2c8a1e09c69ee099f957a",
+            "elf_class": 1,
+            "machine": 40,
+            "android_api_note": 21,
+            "soname": "libc++_shared.so",
+            "needed": [
+              "libc.so",
+              "libm.so",
+              "libdl.so"
+            ],
+            "load_alignment": [
+              4096,
+              4096,
+              4096,
+              4096
+            ],
+            "required_load_alignment": 4096,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libmpv.so",
+            "bytes": 4860580,
+            "sha256": "40bad20d5c3df4f2b2e53babe6a17439b2606fe5d8e1ac2ebd6b966ce1599f41",
+            "elf_class": 1,
+            "machine": 40,
+            "android_api_note": 23,
+            "soname": "libmpv.so",
+            "needed": [
+              "libm.so",
+              "libz.so",
+              "libavcodec.so",
+              "libavfilter.so",
+              "libavformat.so",
+              "libavutil.so",
+              "libdl.so",
+              "libc++_shared.so",
+              "libswresample.so",
+              "libswscale.so",
+              "libandroid.so",
+              "libavdevice.so",
+              "libOpenSLES.so",
+              "libEGL.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libplayer.so",
+            "bytes": 27268,
+            "sha256": "119ef5bac11267cfd2b5e0e73d9a2256903b34c698c0b50fc6be0629a1e8a97b",
+            "elf_class": 1,
+            "machine": 40,
+            "android_api_note": 23,
+            "soname": "libplayer.so",
+            "needed": [
+              "libmpv.so",
+              "libavcodec.so",
+              "liblog.so",
+              "libandroid.so",
+              "libc++_shared.so",
+              "libm.so",
+              "libdl.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libpostproc.so",
+            "bytes": 32284,
+            "sha256": "eec29038c32e73b1b988f87c2a81e1b7679b3d7613c95d55b9ba9744287ec6db",
+            "elf_class": 1,
+            "machine": 40,
+            "android_api_note": 23,
+            "soname": "libpostproc.so",
+            "needed": [
+              "libavutil.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libswresample.so",
+            "bytes": 88744,
+            "sha256": "da64d2b641b96ff5e6a9292e55fde6c4ad3b2b0175918c0b1c0351ea1644a47a",
+            "elf_class": 1,
+            "machine": 40,
+            "android_api_note": 23,
+            "soname": "libswresample.so",
+            "needed": [
+              "libavutil.so",
+              "libm.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libswscale.so",
+            "bytes": 407896,
+            "sha256": "faad736ac5eaf6904829f54fc5099fd0cdf05512fcc23aff946afc974f863459",
+            "elf_class": 1,
+            "machine": 40,
+            "android_api_note": 23,
+            "soname": "libswscale.so",
+            "needed": [
+              "libavutil.so",
+              "libm.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          }
+        ],
+        "ci_artifact": {
+          "archive_download_url": "https://api.github.com/repos/leotvgo/Leotv/actions/artifacts/15089340595/zip",
+          "expired": false,
+          "expires_at": "2026-12-26T05:06:03Z",
+          "id": 15089340595,
+          "name": "player-native-mpv-armeabi-v7a-673ddfa1197f401d536eccec00902cf488d3e25d",
+          "size_in_bytes": 85000552,
+          "sha256": "cf6f311e402a47d8b89453b8af2e678e4b078d3eac8f499c28a230f0f5aa1edc"
+        },
+        "api23_unresolved_strong": [],
+        "jni_exports": [
+          "Java_is_xyz_mpv_MPVLib_attachSurface",
+          "Java_is_xyz_mpv_MPVLib_create",
+          "Java_is_xyz_mpv_MPVLib_destroy",
+          "Java_is_xyz_mpv_MPVLib_detachSurface",
+          "Java_is_xyz_mpv_MPVLib_enqueueCommand",
+          "Java_is_xyz_mpv_MPVLib_getPropertyBoolean",
+          "Java_is_xyz_mpv_MPVLib_getPropertyByteArray",
+          "Java_is_xyz_mpv_MPVLib_getPropertyDouble",
+          "Java_is_xyz_mpv_MPVLib_getPropertyInt",
+          "Java_is_xyz_mpv_MPVLib_getPropertyString",
+          "Java_is_xyz_mpv_MPVLib_init",
+          "Java_is_xyz_mpv_MPVLib_observeProperty",
+          "Java_is_xyz_mpv_MPVLib_replaceSurface",
+          "Java_is_xyz_mpv_MPVLib_setOptionString"
+        ],
+        "glsl_shaders_option_present": true,
+        "compiled_configuration": {
+          "mpv-config.h": {
+            "HAVE_ANDROID": 1,
+            "HAVE_EGL_ANDROID": 1,
+            "HAVE_GL": 1,
+            "HAVE_OPENSLES": 1,
+            "HAVE_ANDROID_MEDIA_NDK": 0,
+            "HAVE_VULKAN": 0,
+            "HAVE_VULKAN_INTEROP": 0
+          },
+          "libplacebo-config.h": {
+            "PL_HAVE_OPENGL": 1,
+            "PL_HAVE_VULKAN": 0
+          },
+          "ffmpeg-config.h": {
+            "CONFIG_JNI": 1,
+            "CONFIG_MEDIACODEC": 1,
+            "CONFIG_MBEDTLS": 1,
+            "CONFIG_VULKAN": 0,
+            "CONFIG_GPL": 1,
+            "CONFIG_NONFREE": 0,
+            "CONFIG_VERSION3": 1
+          }
+        },
+        "ndk_runtime": {
+          "ndk_revision": "27.0.12077973",
+          "before_strip_sha256": "0ce8906c20a019f56d2cefbadeac35cca102234971d2c8a1e09c69ee099f957a",
+          "after_strip_sha256": "0ce8906c20a019f56d2cefbadeac35cca102234971d2c8a1e09c69ee099f957a",
+          "strip_applied": false,
+          "official_archive": {
+            "url": "https://dl.google.com/android/repository/android-ndk-r27-linux.zip",
+            "bytes": 663957918,
+            "sha1": "5e5cd517bdb98d7e0faf2c494a3041291e71bdcc",
+            "metadata_url": "https://dl.google.com/android/repository/repository2-1.xml"
+          }
+        },
+        "native_archive": {
+          "name": "leotv-player-mpv-api23-armeabi-v7a-673ddfa1.tar.gz",
+          "sha256": "86e41ebc8f433950b22163c019431ade4ebe50448fe82081105ba9ca7d1ca0b8",
+          "bytes": 11899441,
+          "url": "https://github.com/leotvgo/Leotv/releases/download/leotv-player-native-api23-20261126-673ddfa1/leotv-player-mpv-api23-armeabi-v7a-673ddfa1.tar.gz"
+        }
+      },
+      "arm64-v8a": {
+        "native_bytes": 27639440,
+        "libraries": [
+          {
+            "name": "libavcodec.so",
+            "bytes": 11892328,
+            "sha256": "bc3209aa83df080dd74cd41ba0643a60e13f183164eda37492f180b2d5bda14f",
+            "elf_class": 2,
+            "machine": 183,
+            "android_api_note": 23,
+            "soname": "libavcodec.so",
+            "needed": [
+              "libswresample.so",
+              "libavutil.so",
+              "libm.so",
+              "libandroid.so",
+              "libz.so",
+              "libdl.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libavdevice.so",
+            "bytes": 9000,
+            "sha256": "fb5cdb0f1a4d1e5b5e64174acad6d54e6bb428264bc51f9d1a3be63a0a9f9550",
+            "elf_class": 2,
+            "machine": 183,
+            "android_api_note": 23,
+            "soname": "libavdevice.so",
+            "needed": [
+              "libavformat.so",
+              "libavutil.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libavfilter.so",
+            "bytes": 4233944,
+            "sha256": "9f03e74686efeed46e636917a0c98f23ab42b51f261a0660124dd544b1f37601",
+            "elf_class": 2,
+            "machine": 183,
+            "android_api_note": 23,
+            "soname": "libavfilter.so",
+            "needed": [
+              "libswscale.so",
+              "libpostproc.so",
+              "libavformat.so",
+              "libavcodec.so",
+              "libswresample.so",
+              "libavutil.so",
+              "libm.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libavformat.so",
+            "bytes": 2641912,
+            "sha256": "b1d8ad8f37d2aeec3a57f23a65313e534a35e64f6bc36dc0697cfb62fd5e9caf",
+            "elf_class": 2,
+            "machine": 183,
+            "android_api_note": 23,
+            "soname": "libavformat.so",
+            "needed": [
+              "libavcodec.so",
+              "libavutil.so",
+              "libm.so",
+              "libz.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libavutil.so",
+            "bytes": 708088,
+            "sha256": "565accb7d81d9a5bea3fd52e4e60d5bd15c59c9649d059dcef69c981f090f8f1",
+            "elf_class": 2,
+            "machine": 183,
+            "android_api_note": 23,
+            "soname": "libavutil.so",
+            "needed": [
+              "libm.so",
+              "libandroid.so",
+              "libdl.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libc++_shared.so",
+            "bytes": 1794776,
+            "sha256": "46b51d661454b9cfaf42c1dc90893b5ad601b7a7ffc2e09d44bb3cc9d20e7ae2",
+            "elf_class": 2,
+            "machine": 183,
+            "android_api_note": 21,
+            "soname": "libc++_shared.so",
+            "needed": [
+              "libc.so",
+              "libm.so",
+              "libdl.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libmpv.so",
+            "bytes": 5558552,
+            "sha256": "639dc20215f0634e98d2e48cdd5ba56a50908ad150fbb52e7cc26f195ab16d7b",
+            "elf_class": 2,
+            "machine": 183,
+            "android_api_note": 23,
+            "soname": "libmpv.so",
+            "needed": [
+              "libm.so",
+              "libz.so",
+              "libavcodec.so",
+              "libavfilter.so",
+              "libavformat.so",
+              "libavutil.so",
+              "libdl.so",
+              "libc++_shared.so",
+              "libswresample.so",
+              "libswscale.so",
+              "libandroid.so",
+              "libavdevice.so",
+              "libOpenSLES.so",
+              "libEGL.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              65536,
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libplayer.so",
+            "bytes": 58880,
+            "sha256": "fbf93aec0d99d392dcfc8348b0ca626b0c972078875c141fd9261b98e1c7632e",
+            "elf_class": 2,
+            "machine": 183,
+            "android_api_note": 23,
+            "soname": "libplayer.so",
+            "needed": [
+              "libmpv.so",
+              "libavcodec.so",
+              "liblog.so",
+              "libandroid.so",
+              "libc++_shared.so",
+              "libm.so",
+              "libdl.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libpostproc.so",
+            "bytes": 37352,
+            "sha256": "7322e6a5e61d9f4a0518602dfd0a15bfec8ba14b3e4b6d56aa184cfca0ede28c",
+            "elf_class": 2,
+            "machine": 183,
+            "android_api_note": 23,
+            "soname": "libpostproc.so",
+            "needed": [
+              "libavutil.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libswresample.so",
+            "bytes": 97192,
+            "sha256": "b1fb1976d45a1bfe3f932570bf1457f9444e648dd805dee9dac6db0ae60f9b03",
+            "elf_class": 2,
+            "machine": 183,
+            "android_api_note": 23,
+            "soname": "libswresample.so",
+            "needed": [
+              "libavutil.so",
+              "libm.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libswscale.so",
+            "bytes": 607416,
+            "sha256": "bc26bcc1b681006edf1f26c682a864a5d279aca5e442ec1b4e113c34262443f2",
+            "elf_class": 2,
+            "machine": 183,
+            "android_api_note": 23,
+            "soname": "libswscale.so",
+            "needed": [
+              "libavutil.so",
+              "libm.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              16384,
+              16384,
+              16384,
+              16384
+            ],
+            "required_load_alignment": 16384,
+            "api23_unresolved_strong": []
+          }
+        ],
+        "ci_artifact": {
+          "archive_download_url": "https://api.github.com/repos/leotvgo/Leotv/actions/artifacts/15089405473/zip",
+          "expired": false,
+          "expires_at": "2026-12-26T05:05:29Z",
+          "id": 15089405473,
+          "name": "player-native-mpv-arm64-v8a-673ddfa1197f401d536eccec00902cf488d3e25d",
+          "size_in_bytes": 85877644,
+          "sha256": "bb67e3f9740fbac81542219bcb96bc4f6072b3cb9d814be0956dcf57885ab69d"
+        },
+        "api23_unresolved_strong": [],
+        "jni_exports": [
+          "Java_is_xyz_mpv_MPVLib_attachSurface",
+          "Java_is_xyz_mpv_MPVLib_create",
+          "Java_is_xyz_mpv_MPVLib_destroy",
+          "Java_is_xyz_mpv_MPVLib_detachSurface",
+          "Java_is_xyz_mpv_MPVLib_enqueueCommand",
+          "Java_is_xyz_mpv_MPVLib_getPropertyBoolean",
+          "Java_is_xyz_mpv_MPVLib_getPropertyByteArray",
+          "Java_is_xyz_mpv_MPVLib_getPropertyDouble",
+          "Java_is_xyz_mpv_MPVLib_getPropertyInt",
+          "Java_is_xyz_mpv_MPVLib_getPropertyString",
+          "Java_is_xyz_mpv_MPVLib_init",
+          "Java_is_xyz_mpv_MPVLib_observeProperty",
+          "Java_is_xyz_mpv_MPVLib_replaceSurface",
+          "Java_is_xyz_mpv_MPVLib_setOptionString"
+        ],
+        "glsl_shaders_option_present": true,
+        "compiled_configuration": {
+          "mpv-config.h": {
+            "HAVE_ANDROID": 1,
+            "HAVE_EGL_ANDROID": 1,
+            "HAVE_GL": 1,
+            "HAVE_OPENSLES": 1,
+            "HAVE_ANDROID_MEDIA_NDK": 0,
+            "HAVE_VULKAN": 0,
+            "HAVE_VULKAN_INTEROP": 0
+          },
+          "libplacebo-config.h": {
+            "PL_HAVE_OPENGL": 1,
+            "PL_HAVE_VULKAN": 0
+          },
+          "ffmpeg-config.h": {
+            "CONFIG_JNI": 1,
+            "CONFIG_MEDIACODEC": 1,
+            "CONFIG_MBEDTLS": 1,
+            "CONFIG_VULKAN": 0,
+            "CONFIG_GPL": 1,
+            "CONFIG_NONFREE": 0,
+            "CONFIG_VERSION3": 1
+          }
+        },
+        "ndk_runtime": {
+          "ndk_revision": "27.0.12077973",
+          "before_strip_sha256": "46b51d661454b9cfaf42c1dc90893b5ad601b7a7ffc2e09d44bb3cc9d20e7ae2",
+          "after_strip_sha256": "46b51d661454b9cfaf42c1dc90893b5ad601b7a7ffc2e09d44bb3cc9d20e7ae2",
+          "strip_applied": false,
+          "official_archive": {
+            "url": "https://dl.google.com/android/repository/android-ndk-r27-linux.zip",
+            "bytes": 663957918,
+            "sha1": "5e5cd517bdb98d7e0faf2c494a3041291e71bdcc",
+            "metadata_url": "https://dl.google.com/android/repository/repository2-1.xml"
+          }
+        },
+        "native_archive": {
+          "name": "leotv-player-mpv-api23-arm64-v8a-673ddfa1.tar.gz",
+          "sha256": "2a05a96f5b3dcd077f709ad7e75a39140b3c33d9392440fbc7415be2a235ad2b",
+          "bytes": 12487935,
+          "url": "https://github.com/leotvgo/Leotv/releases/download/leotv-player-native-api23-20261126-673ddfa1/leotv-player-mpv-api23-arm64-v8a-673ddfa1.tar.gz"
+        }
+      }
+    },
+    "vlc": {
+      "armeabi-v7a": {
+        "native_bytes": 40564316,
+        "libraries": [
+          {
+            "name": "libc++_shared.so",
+            "bytes": 554808,
+            "sha256": "092a44574c247982e265743acb1227e11a2f079a765814fef1b627dbfb2b79d5",
+            "elf_class": 1,
+            "machine": 40,
+            "android_api_note": 16,
+            "soname": "libc++_shared.so",
+            "needed": [
+              "libc.so",
+              "libdl.so"
+            ],
+            "load_alignment": [
+              4096,
+              4096
+            ],
+            "required_load_alignment": 4096,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libvlc.so",
+            "bytes": 39938252,
+            "sha256": "041d2c273667ad6fa1149c58fe5f4c4a9feac9383d92de62c0e37d95a1eb0140",
+            "elf_class": 1,
+            "machine": 40,
+            "android_api_note": 17,
+            "soname": "libvlc.so",
+            "needed": [
+              "libdl.so",
+              "libc++_shared.so",
+              "libm.so",
+              "libEGL.so",
+              "libGLESv2.so",
+              "liblog.so",
+              "libstdc++.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              4096,
+              4096
+            ],
+            "required_load_alignment": 4096,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libvlcjni.so",
+            "bytes": 71256,
+            "sha256": "8a3a4fbf8b200f87ef0c13b479c2f70449030aaa56ea6e8e40e1c6f42d1b6f55",
+            "elf_class": 1,
+            "machine": 40,
+            "android_api_note": 17,
+            "soname": "libvlcjni.so",
+            "needed": [
+              "libdl.so",
+              "libvlc.so",
+              "liblog.so",
+              "libc.so",
+              "libm.so"
+            ],
+            "load_alignment": [
+              4096,
+              4096
+            ],
+            "required_load_alignment": 4096,
+            "api23_unresolved_strong": []
+          }
+        ],
+        "ci_artifact": {
+          "archive_download_url": "https://api.github.com/repos/leotvgo/Leotv/actions/artifacts/15088773254/zip",
+          "expired": false,
+          "expires_at": "2026-12-26T05:01:43Z",
+          "id": 15088773254,
+          "name": "player-native-vlc-armeabi-v7a-673ddfa1197f401d536eccec00902cf488d3e25d",
+          "size_in_bytes": 53255745,
+          "sha256": "184e83aab2d59e3dd3b4d5753f3653008d1cafd54ad92feff899a64d0e36993e"
+        },
+        "api23_unresolved_strong": [],
+        "java_classes": {
+          "archive_path": "classes.jar",
+          "path": "java/libvlc-3.6.0.jar",
+          "sha256": "32b9f7c7ecca03216d09a2a2a5717c4c1bbb87ff6c7f4fd115470ec93cfea05c",
+          "bytes": 156293
+        },
+        "assets_verified": 35,
+        "ordinary_original_asset_collisions": []
+      },
+      "arm64-v8a": {
+        "native_bytes": 44235352,
+        "libraries": [
+          {
+            "name": "libc++_shared.so",
+            "bytes": 911696,
+            "sha256": "d5d0588bbc3c1c8f25b890ba6a97694dc8fe3d4dce7fbc5204107c1342034282",
+            "elf_class": 2,
+            "machine": 183,
+            "android_api_note": 21,
+            "soname": "libc++_shared.so",
+            "needed": [
+              "libc.so",
+              "libdl.so"
+            ],
+            "load_alignment": [
+              4096,
+              4096
+            ],
+            "required_load_alignment": 4096,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libvlc.so",
+            "bytes": 43227576,
+            "sha256": "65d21db2fda2d579d4aeeab6f7641098c72e71eb0a57e7eee7767ab0405bfb6c",
+            "elf_class": 2,
+            "machine": 183,
+            "android_api_note": 21,
+            "soname": "libvlc.so",
+            "needed": [
+              "libc++_shared.so",
+              "libm.so",
+              "libEGL.so",
+              "libGLESv2.so",
+              "liblog.so",
+              "libstdc++.so",
+              "libdl.so",
+              "libc.so"
+            ],
+            "load_alignment": [
+              4096,
+              4096
+            ],
+            "required_load_alignment": 4096,
+            "api23_unresolved_strong": []
+          },
+          {
+            "name": "libvlcjni.so",
+            "bytes": 96080,
+            "sha256": "4a5e2ff4de2847ad3ed3f2cdf2cf624a0fb78a612e0fe2057eb573622abf1a3a",
+            "elf_class": 2,
+            "machine": 183,
+            "android_api_note": 21,
+            "soname": "libvlcjni.so",
+            "needed": [
+              "libvlc.so",
+              "liblog.so",
+              "libc.so",
+              "libm.so",
+              "libdl.so"
+            ],
+            "load_alignment": [
+              4096,
+              4096
+            ],
+            "required_load_alignment": 4096,
+            "api23_unresolved_strong": []
+          }
+        ],
+        "ci_artifact": {
+          "archive_download_url": "https://api.github.com/repos/leotvgo/Leotv/actions/artifacts/15087984302/zip",
+          "expired": false,
+          "expires_at": "2026-12-26T05:01:19Z",
+          "id": 15087984302,
+          "name": "player-native-vlc-arm64-v8a-673ddfa1197f401d536eccec00902cf488d3e25d",
+          "size_in_bytes": 53750889,
+          "sha256": "cffb83bb3396ee6a454209845b12c0ed118a0f26623f6cad1a01b10decc12b8f"
+        },
+        "api23_unresolved_strong": [],
+        "java_classes": {
+          "archive_path": "classes.jar",
+          "path": "java/libvlc-3.6.0.jar",
+          "sha256": "32b9f7c7ecca03216d09a2a2a5717c4c1bbb87ff6c7f4fd115470ec93cfea05c",
+          "bytes": 156293
+        },
+        "assets_verified": 35,
+        "ordinary_original_asset_collisions": []
+      }
+    }
+  },
+  "source_archive_verification": "Extracted standalone corresponding-source archive: all 28 producer input hashes pass; all 17 dependency archives present with fixed hashes.",
+  "staging_verification": "Both single-ABI native tar archives staged through build_player_native.py --from-archive; complete locks and API23 signature/ELF/hash/SONAME/alignment gates pass against local NDK26 API23 stubs."
+}
