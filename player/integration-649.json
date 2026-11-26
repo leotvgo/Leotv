@@ -854,7 +854,7 @@
     },
     "README.md": {
       "before_sha256": "dfe99d6b975866b4478d5d473aaf1576565bb4b48751002a3db84ef36ae780bf",
-      "after_sha256": "5b24eaa30f10ddaf5e4fbc466469b4244000e8cdcc7f48442d4c8b8498a978be",
+      "after_sha256": "0a02ce7261dd4ae40f746f08956f081786c2b1108136748d781b0b81aac953ab",
       "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
     },
     "branding/AndroidManifest.xml": {
@@ -904,7 +904,7 @@
     },
     "docs/LEOTV-5.3.4-PREVIEW-7-653-NATIVE-PLAYBACK-UI-EFFECTS-20261126.md": {
       "before_sha256": null,
-      "after_sha256": "941b404e2fcc30dd137c4151fa350d91310c3b575e77ca0a8a78c30355e3d45c",
+      "after_sha256": "afc9736e75d410b182e1c38941f64330968bce19aa72818b95fdfbd76c8256c8",
       "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
     },
     "docs/LEOTV-HOME-THEMES-LIBRARY-RECYCLING-20261126.md": {
@@ -914,12 +914,12 @@
     },
     "evidence/player-653-coordination.json": {
       "before_sha256": null,
-      "after_sha256": "aeaa1b7d70ba4c7971c5148075321cccbb4cd76e21f106d66d8e8635ff5b7841",
+      "after_sha256": "88897d8693cbdc3fe68c39199d7fbb1f5c88e348a74cb9755a221ec7a9296234",
       "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
     },
     "evidence/player-653-mpv-source.json": {
       "before_sha256": null,
-      "after_sha256": "81f5bb25ef51c7d77023e235dc020d8fa5c023010a35f816175e38c928f7e209",
+      "after_sha256": "d56c699fc9ea15821384d932e10c6dcff6d7a3c64f9c4967af861bce22f1d1f0",
       "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
     },
     "evidence/player-653-vlc-source.json": {
@@ -1031,6 +1031,11 @@
       "before_sha256": "62aa9263b300be6c674ca2b771f693f1554fa803d521e1f0a64eac62eff7e956",
       "after_sha256": "0c632f8a4f491ef68b137afe6d8f2a27c165be92c69fdc192e19cea9271ab67b",
       "reason": "Verify real native TTC face/family metadata against fictional Unicode fonts, avoiding a system-default family mismatch"
+    },
+    "evidence/player-653-signed-delivery-20261126.json": {
+      "before_sha256": null,
+      "reason": "Verified653 actual signed APK/source delivery and PRIVATE restoration, with no APK input change",
+      "after_sha256": "8a4e273d74118647493258176ff98094f382d2fcf01c8f0b62e0ed5073898644"
     }
   },
   "653_unified_delivery": {
@@ -1056,6 +1061,10 @@
       "fixed_libass_source_verified": true,
       "native_fonts_family_metadata_used": true,
       "ttc_supported": true
-    }
+    },
+    "build_run_id": 45828265714,
+    "publish_run_id": 45829398021,
+    "apk_input_commit": "89163ff640c2d01a65a397484c7f9081b04bdaf0",
+    "actual_signed_delivery_verified": true
   }
 }

@@ -8,5 +8,9 @@
     "msg_094a537d581d"
   ],
   "ownership": "Original staged source preserved and merged; this session completes viewport and player fixes. No worker restarted or user data modified.",
-  "pending_device_acceptance": true
+  "pending_device_acceptance": true,
+  "unified_commit": "89163ff640c2d01a65a397484c7f9081b04bdaf0",
+  "handover_completed": true,
+  "build_run_id": 45828265714,
+  "publish_run_id": 45829398021
 }

@@ -31,3 +31,14 @@ MPV专属列表仅为解码、MPV配置、着色器三行。原字幕预设/系�
 允许变化限定于已授权新主页/影视库/回收、MPV设置/原字幕预设、VLC释放/原选择及加载门禁、TV详情滚动、特效图案/取样和对应测试/版本文档。保留完整649/650/651/652账本及另一窗口来源，再记录本轮后继SHA256。原数据库/schema、站点协议、JNI、ZIP/native、Android6回移层和TV/手机/双ABI区分保持。
 
 不做本地APK打包或反复设备回归。GitHub执行源码、生产VLC异步交接、MPV设置/时间、TV滚动/API23、特效组合/内存、原样/允许变化、R8/JNI与固定签名及对应源码核对；发布后恢复PRIVATE。实际设备的字幕特效、VLC切核/退出、各主题快速遥控和组合观感由用户验收。
+
+
+## 实际固定签名交付
+
+[四套APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4-preview.7-build-45828265714)，输入代码 `89163ff640c2d01a65a397484c7f9081b04bdaf0`；[构建45828265714](https://github.com/leotvgo/Leotv/actions/runs/45828265714)与[发布45829398021](https://github.com/leotvgo/Leotv/actions/runs/45829398021)成功。首轮45826594335在交付前为固定libass缺省font family复核主动取消，随后补齐系统TTC/TTF真实family及虚构集合字体契约。中止后恢复PRIVATE，最终构建前重新确认PUBLIC；发布后恢复并独立核对PRIVATE。Latest仍为5.3.3 / 646。
+
+下载核对全部14个发布资产与四份内部完整审计，bytes/SHA256/digest一致，公开摘要绑定完整审计SHA256。四个实际APK独立通过 `apksigner verify --min-sdk-version 23` 的v1与固定证书 `ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a`，`zipalign -P 16 -c 4`通过；实际Manifest为 `com.leotv.app` / preview.7 / code653 / API23。
+
+原ZIP保护项TV32/64为1700/1689、手机32/64为1667/1656，原native分别32/21/34/23全部原字节保留；只追加VLC三库或MPV十一库，逐库精确匹配固定lock并保留ABI区分。R8 8.8.34 release/full实际marker、完整JNI、原样/允许变化语义、对应源码成员和源码commit核对通过，native未重编。
+
+GitHub的VLC生产异步交接/退出取消、MPV原预设/字体集合、TV重复遥控目标/首次视口、组合底板/叠加花瓣/采样权重/缓存及API23检查通过。实际签名包、对应源码和完整审计保存在忽略目录 `.work/fix653/delivery/`；[结构化核对](../evidence/player-653-signed-delivery-20261126.json)记录实际hash。另一个窗口的已授权源码已合并，未重启或关闭其会话。设备上的字幕、VLC切核/退出、各主题遥控和效果观感仍由用户验收。

@@ -157,16 +157,9 @@
   "source_sha256": {
     "player/mpv/java/com/leotv/player/mpv/MobileMpv.java": "52d8fc588fdbb5b0cb3baf5476b23219b17fa1df12afa96a16bbae66786d920b",
     "player/mpv/java/com/leotv/player/mpv/MpvEngine.java": "10d54b2d292abf2b10a2d384048440e28f9f9033ec7d28bb299da82702a1caee",
-    "player/mpv/java/com/leotv/player/mpv/MpvOptions.java": "d03303946974a268f4ab45e538bc6483f2eb883465e2b6a53af5e2e134ad5c77",
+    "player/mpv/java/com/leotv/player/mpv/MpvOptions.java": "ba052eeeefb854004f1b49bf8ba116ff9644e30b369df41e6c7a08bba1d5542b",
     "player/mpv/java/com/leotv/player/mpv/MpvSettings.java": "62cde52372e9ce83f11d36d02b632c29eaa74911d68d63a4f6237e7767ddbfc1",
-    "player/mpv/java/com/leotv/player/mpv/MpvStore.java": "263e82a7277e18a8c26cabb071bbcc5f7be7aaa76af1e41f2300d0d9698723d4",
+    "player/mpv/java/com/leotv/player/mpv/MpvStore.java": "5940a7516164d9b9f6d1cd9c0719bc5c73521dacd45ea3c6e9e319546b1d194e",
     "player/mpv/java/is/xyz/mpv/MPVLib.java": "a02327eb9172e11fc41c65e62284e28f7e250b26842f3700879c8edda61c33de"
-  },
-  "java8_api23_compile": true,
-  "synthetic_config_header_shader_font_contracts": true,
-  "production_engine_synthetic_native_event_contracts": true,
-  "native_code_executed": false,
-  "production_settings_synthetic_switch_save_return_recreate": true,
-  "fixed_mpv_038_defaults_and_argb_encoding": true,
-  "targeted_dex_assembly_and_d8_api23": false
+  }
 }
