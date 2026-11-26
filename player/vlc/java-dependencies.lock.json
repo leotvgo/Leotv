@@ -1,0 +1,34 @@
+{
+  "min_api": 23,
+  "java_release": 8,
+  "dependencies": [
+    {
+      "coordinate": "androidx.annotation:annotation:1.1.0",
+      "url": "https://dl.google.com/dl/android/maven2/androidx/annotation/annotation/1.1.0/annotation-1.1.0.jar",
+      "sha256": "d38d63edb30f1467818d50aaf05f8a692dea8b31392a049bfa991b159ad5b692",
+      "source_url": "https://dl.google.com/dl/android/maven2/androidx/annotation/annotation/1.1.0/annotation-1.1.0-sources.jar",
+      "source_sha256": "92bcd2773b5624fd88b7ee21d5685145d7cafed59316c4ce83de33a7b2dd8c02",
+      "license": "Apache-2.0",
+      "program_classes": {
+        "androidx/annotation/MainThread.class": "0c3ece59a5fa3f3a9882d80e5c90f9896f392c1cce926afc0d09e525d3158b14",
+        "androidx/annotation/NonNull.class": "f80c70e3c8236dc927b4a87bc86bd4f8d78cca3f960f4d1673fe31647eaa8beb",
+        "androidx/annotation/Nullable.class": "719756c8252b5869914636a69bdfbf0851268ace21f374bb668df71598fa6242",
+        "androidx/annotation/RequiresApi.class": "bbe3a6c9ad5c8a9fb8e01a3208ae4f8bc5a8f207cf52150da6f9f8ce17bb9c2e"
+      },
+      "selection": "Only missing LibVLC dependencies; original androidx.annotation.Keep and all host classes remain library inputs."
+    },
+    {
+      "coordinate": "androidx.collection:collection:1.1.0",
+      "url": "https://dl.google.com/dl/android/maven2/androidx/collection/collection/1.1.0/collection-1.1.0.jar",
+      "sha256": "632a0e5407461de774409352940e292a291037724207a787820c77daf7d33b72",
+      "source_url": "https://dl.google.com/dl/android/maven2/androidx/collection/collection/1.1.0/collection-1.1.0-sources.jar",
+      "source_sha256": "158ae7efee9c7394a241139ebf220751f8b812eda40269a38ef725dbe784b98d",
+      "license": "Apache-2.0",
+      "program_classes": {
+        "androidx/collection/ContainerHelpers.class": "38da89699a5da2d46347fc72a62c1ece258f5b2380926929214b86d60d5875d2",
+        "androidx/collection/LongSparseArray.class": "c978a778ad95bab98edc3b9f341cbd647bc08851c289f94b225290b278a0a3ed"
+      },
+      "selection": "Only missing LibVLC dependencies; original androidx.annotation.Keep and all host classes remain library inputs."
+    }
+  ]
+}

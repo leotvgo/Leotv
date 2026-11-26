@@ -68,7 +68,8 @@ jobs:
                   staged_tag = f'leotv-{staged_version}-build-{run_id}'
                   subprocess.run(['gh', 'release', 'download', staged_tag, '--repo', repo, '--dir', str(target), '--clobber',
                       '--pattern', f'leotv-{variant}.apk', '--pattern', f'leotv-{variant}.signature.json',
-                      '--pattern', f'leotv-{variant}-unsigned.audit.json'], check=True)
+                      '--pattern', f'leotv-{variant}-unsigned.audit.json',
+                      *(['--pattern', f'leotv-{variant}-player-source.tar.gz'] if variant.startswith('tv') else [])], check=True)
               report = json.loads((target / f'leotv-{variant}.signature.json').read_text())
               audit = json.loads((target / f'leotv-{variant}-unsigned.audit.json').read_text())
               apk = target / f'leotv-{variant}.apk'
@@ -76,6 +77,24 @@ jobs:
                   raise SystemExit('Signed APK identity verification failed.')
               if audit['package'] != 'com.leotv.app' or not audit['expected_changes_match'] or not audit['baseline_audit']['equal']:
                   raise SystemExit('Leotv identity/source audit verification failed.')
+              if audit['version_code'] >= 649:
+                  native = audit.get('player_native', {})
+                  expected_engine = 'mpv' if variant.startswith('mobile') else 'vlc'
+                  program = audit.get('overlay_compile', {}).get('player_program', {})
+                  if native.get('engine') != expected_engine or native.get('api') != 23 or native.get('errors') != [] \
+                          or native.get('original_libraries_replaced') is not False or native.get('native_compiled_during_apk_build') is not False \
+                          or audit.get('added_player_native_libraries_exact') != (11 if expected_engine == 'mpv' else 3) \
+                          or audit.get('added_player_native_zip_alignment_kib') != 16 or not program.get('jni_names_and_signatures_preserved'):
+                      raise SystemExit('Player input/API23/JNI/additive ZIP audit verification failed.')
+                  source = audit.get('player_corresponding_source', {})
+                  if not source.get('sha256') or not source.get('bytes'):
+                      raise SystemExit('Exact corresponding-source delivery is required for the new player.')
+                  if variant.startswith('tv'):
+                      bundle = target / f'leotv-{variant}-player-source.tar.gz'
+                      if source.get('source_commit') != data['head_sha'] or source.get('name') != bundle.name or bundle.stat().st_size != source['bytes'] \
+                              or hashlib.sha256(bundle.read_bytes()).hexdigest() != source['sha256']:
+                          raise SystemExit('VLC corresponding-source archive differs from its verified build.')
+                      files.append(str(bundle))
               selected_channel = audit.get('release_channel', 'prerelease')
               if selected_channel not in ('stable', 'prerelease') or channel is not None and selected_channel != channel:
                   raise SystemExit('Four APK variants must use the same release channel.')
@@ -100,6 +119,7 @@ jobs:
           official = channel == 'stable'
           title = f'Leotv {version}' if official else f'Leotv {version}（固定签名测试）'
           notes.write_text(f'Leotv {version} {"正式版" if official else "测试 APK"}，来自成功构建 #{run_id}。\n\n应用包名 com.leotv.app；提供 TV/手机、32/64 位四个固定签名 APK。保留已验收的原生详情、手机玻璃状态栏和悬浮导航、追更日历、跨订阅自动找源、收藏与续播。\n\n' +
+              ('手机可选择 MPV（含配置及着色器），TV可选择 VLC；原系统/IJK/Exo及649的共享进度、预载、弹幕特效保留。VLC配套源码档随本次发布；MPV固定双ABI源码与构建配置：https://github.com/leotvgo/Leotv/releases/tag/leotv-player-native-api23-20261126-673ddfa1 。\n\n' if audit['version_code'] >= 649 else '') +
               ('新增代码采用 R8 release/full 混淆优化；保留数据库、JAR/JNI 与反射接口、Android 6 回移层和各 ABI 原生库。完整源码/变化审计与混淆映射保存在内部草稿，公开摘要与完整记录的 SHA-256 绑定。\n\n' if official else '') +
               f'Android 6（API 23）编译、原样/变化审计与固定签名检查已通过；签名后真机运行验收单独记录。\n\n构建：https://github.com/{repo}/actions/runs/{run_id}\n')
           tag = f'leotv-{version}' if official else f'leotv-{version}-build-{run_id}'

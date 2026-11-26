@@ -21,6 +21,13 @@ from apply_native_details import apply as apply_native_details
 from apply_danmaku import apply as apply_danmaku
 from apply_category_paging import apply as apply_category_paging
 from apply_video_preload import apply as apply_video_preload
+from apply_mobile_mpv import apply as apply_mobile_mpv, source_set as mobile_mpv_source_set, owns_program_class as mobile_mpv_program_class
+from check_mobile_mpv import check as check_mobile_mpv, check_compiled as check_compiled_mobile_mpv
+from apply_tv_vlc import apply as apply_tv_vlc
+from check_tv_vlc import check_contract as check_tv_vlc
+from player_inputs import vlc_integration, rules as player_rules, owns_vlc_class, payload as player_payload, audit_zip as audit_player_zip
+from check_player_program import check as check_player_program
+from player_inputs import corresponding_source as player_corresponding_source
 from apply_danmaku_effects import apply as apply_danmaku_effects
 from check_native_details import check_contract as check_detail_contract, source_set as detail_source_set
 from harden_overlays import compile_program, audit_program
@@ -190,7 +197,7 @@ def apply_source_overlay(project, profile, values, flavor, lock, spec):
     return changed_classes, changed_sources
 
 
-def compile_overlays(project, profile, spec, apk, sdk, apktool, work, log, r8=None):
+def compile_overlays(project, profile, spec, apk, sdk, apktool, work, log, r8=None, player_input=None):
     tools = work / 'compile-tools'
     export = 'java.base/jdk.internal.org.objectweb.asm=ALL-UNNAMED'
     run(['javac', '--add-exports', export, '-cp', apktool, '-d', tools, ROOT / 'research/DexReferenceJar.java'], log)
@@ -204,15 +211,24 @@ def compile_overlays(project, profile, spec, apk, sdk, apktool, work, log, r8=No
     sources = [BRANDING / profile['java_source']] + sorted((ROOT / spec['ui_source_root']).glob('*.java'))
     native_sources = detail_source_set(ROOT, family)
     sources += native_sources
+    sources += mobile_mpv_source_set(ROOT, family)
+    vlc = vlc_integration(ROOT)
+    sources += vlc.source_set(ROOT, family)
     native_class_roots = {source.stem for source in native_sources}
-    run(['javac', '--release', '8', '-encoding', 'UTF-8', '-cp', str(android) + os.pathsep + str(reference),
+    classpath = [str(android), str(reference)]
+    if family == 'tv':
+        matched_jar = player_input / 'java/libvlc-3.6.0.jar'
+        classpath.append(str(matched_jar))
+    run(['javac', '--release', '8', '-encoding', 'UTF-8', '-cp', os.pathsep.join(classpath),
          '-d', classes, *sources], log)
+    vlc_program = vlc.install_java_program(ROOT, family, classes, matched_jar) if family == 'tv' else []
     settings = json.loads((ROOT / 'branding/hardening.json').read_text()) if (ROOT / 'branding/hardening.json').is_file() else {'enabled': False}
     hardening, mapping = None, None
     if settings['enabled']:
         if r8 is None:
             raise ValueError('Protected builds require --r8 with the fixed R8 8.8.34 JAR.')
-        settings, hardening, mapping = compile_program(ROOT, classes, android, reference, r8, dex, work, run, log)
+        settings, hardening, mapping = compile_program(ROOT, classes, android, reference, r8, dex, work, run, log,
+                                                     extra_rules=player_rules(ROOT, family))
     else:
         run([sdk / 'build-tools/36.1.0/d8', '--min-api', '23', '--lib', android, '--lib', reference,
              '--output', dex, *sorted(classes.rglob('*.class'))], log)
@@ -224,6 +240,9 @@ def compile_overlays(project, profile, spec, apk, sdk, apktool, work, log, r8=No
         target_dex = min(dex_files, key=lambda name: struct.unpack_from('<I', original.read(name), 88)[0])
     decoded = work / 'logo-smali'
     run(['java', '-jar', apktool, 'd', '-r', '--frame-path', work / 'framework', '-o', decoded, wrapper], log)
+    if family == 'mobile':
+        check_compiled_mobile_mpv(decoded)
+    player_program_report = check_player_program(ROOT, classes, decoded, family)
     if hardening is not None:
         checked, added = audit_program(classes, decoded, mapping, settings, family == 'mobile')
         hardening.update(checked)
@@ -233,14 +252,16 @@ def compile_overlays(project, profile, spec, apk, sdk, apktool, work, log, r8=No
         hardening.update({'dex_file': dex_name, 'dex_sha256': sha256(data), 'host_program_reoptimized': False})
         return {'sources': {str(source.relative_to(ROOT)): sha256(source.read_bytes()) for source in sources},
                 'java_release': 8, 'd8_min_api': 23, 'program_classes': len(added),
-                'reference_jar_packaged': False, 'hardening': hardening}, added, {dex_name: data}, mapping
-    emitted = list(decoded.glob('smali*/com/leotv/**/*.smali'))
+                'reference_jar_packaged': False, 'hardening': hardening,
+                'player_program': player_program_report, 'libvlc_program_inputs': vlc_program}, added, {dex_name: data}, mapping
+    emitted = list(decoded.glob('smali*/**/*.smali'))
     added = set()
     for source in emitted:
         descriptor = re.search(r'(?m)^\.class[^\n]* (L[^;]+;)$', source.read_text()).group(1)
         if descriptor != LOGO_CLASS and not re.fullmatch(r'Lcom/leotv/ui/(?:GlobalChrome(?:\$[A-Za-z0-9_$]+)?|ProgressiveBlur|NativeViewport(?:\$[A-Za-z0-9_$]+)?|TvCategoryChrome(?:\$[A-Za-z0-9_$]+)?|NativePhoneInsets(?:\$[A-Za-z0-9_$]+)?);', descriptor) \
                 and not any(re.fullmatch(r'Lcom/leotv/detail/' + re.escape(name) + r'(?:\$[A-Za-z0-9_$]+)?(?:\$-(?:CC|EL))?;', descriptor)
-                            for name in native_class_roots):
+                            for name in native_class_roots) and not (family == 'mobile' and mobile_mpv_program_class(descriptor)) \
+                and not (family == 'tv' and owns_vlc_class(ROOT, descriptor)):
             raise ValueError('Overlay compilation emitted an undeclared program class: ' + descriptor)
         target = project / ('smali' if target_dex == 'classes.dex' else 'smali_' + target_dex[:-4]) / (descriptor[1:-1] + '.smali')
         if target.exists():
@@ -251,7 +272,8 @@ def compile_overlays(project, profile, spec, apk, sdk, apktool, work, log, r8=No
     if LOGO_CLASS not in added or 'Lcom/leotv/ui/GlobalChrome;' not in added or 'Lcom/leotv/ui/ProgressiveBlur;' not in added:
         raise ValueError('Required overlay classes are missing.')
     return {'sources': {str(source.relative_to(ROOT)): sha256(source.read_bytes()) for source in sources},
-            'java_release': 8, 'd8_min_api': 23, 'program_classes': len(added), 'reference_jar_packaged': False}, added, {}, None
+            'java_release': 8, 'd8_min_api': 23, 'program_classes': len(added), 'reference_jar_packaged': False,
+            'player_program': player_program_report, 'libvlc_program_inputs': vlc_program}, added, {}, None
 
 
 def resource_overlay(original, values, allowed):
@@ -323,12 +345,13 @@ def keep_mobile_dex_string_indices_bounded(project, variant):
     return sorted(names)
 
 
-def validate_output(original_apk, output_apk, expected, files, added_asset):
+def validate_output(original_apk, output_apk, expected, files, added_asset, player_files=None):
     with zipfile.ZipFile(original_apk) as original, zipfile.ZipFile(output_apk) as output:
         originals = {name for name in original.namelist() if not is_signature(name)}
         dex = {name for name in originals if re.fullmatch(r'classes(?:\d+)?\.dex', name)}
         removed = set(files)
         added = {item['path'] for item in files.values()} | {added_asset}
+        added.update(player_files or {})
         added_dex = {name for name in expected if re.fullmatch(r'classes(?:\d+)?\.dex', name) and name not in originals}
         added.update(added_dex)
         names = (originals - removed) | added
@@ -364,6 +387,8 @@ def main():
     parser.add_argument('--sdk', type=Path, default=Path.home() / 'Library/Android/sdk')
     parser.add_argument('--apktool', type=Path)
     parser.add_argument('--r8', type=Path, help='Checksum-pinned R8 8.8.34 JAR for protected release overlays')
+    parser.add_argument('--player-input', type=Path, required=True, help='Previously staged fixed native input for this variant')
+    parser.add_argument('--player-ndk', type=Path, required=True, help='NDK API23 stubs for the consumption audit; no compilation')
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
     apk_name, project_name, pinned = VARIANTS[args.variant]
@@ -383,8 +408,13 @@ def main():
     provenance = verify_assets()
     lock = json.loads((BRANDING / 'source-lock.json').read_text())[args.variant]
     detail_contract = check_detail_contract(ROOT, args.variant, source)
+    mobile_mpv_contract = check_mobile_mpv(ROOT) if args.variant.startswith('mobile') else None
+    tv_vlc_contract = check_tv_vlc(ROOT) if args.variant.startswith('tv') else None
+    player_files, player_report = player_payload(ROOT, args.variant, args.player_input, args.player_ndk)
     args.output = args.output or ROOT / 'artifacts' / f'leotv-{values["version_name"]}-{args.variant}-unsigned.apk'
     args.output.parent.mkdir(parents=True, exist_ok=True)
+    player_source_report = player_corresponding_source(ROOT, args.variant, args.player_input,
+                                                     args.output.parent / f'leotv-{args.variant}-player-source.tar.gz')
     with tempfile.TemporaryDirectory(prefix='leotv-brand-build-') as temporary:
         work, log = Path(temporary), Path(temporary) / 'build.log'
         try:
@@ -413,8 +443,12 @@ def main():
             changed.update(preload_changed); changed_sources.update(preload_sources)
             effects_changed, effects_sources = apply_danmaku_effects(project, ROOT, args.variant)
             changed.update(effects_changed); changed_sources.update(effects_sources)
+            mpv_changed, mpv_sources = apply_mobile_mpv(project, ROOT, args.variant)
+            changed.update(mpv_changed); changed_sources.update(mpv_sources)
+            vlc_changed, vlc_sources = apply_tv_vlc(project, ROOT, args.variant)
+            changed.update(vlc_changed); changed_sources.update(vlc_sources)
             print(f'{args.variant}: compiling Leotv branding and native chrome against API 23...', flush=True)
-            compile_report, added, protected_dex, mapping = compile_overlays(project, profile, spec, apk, args.sdk, apktool, work, log, args.r8)
+            compile_report, added, protected_dex, mapping = compile_overlays(project, profile, spec, apk, args.sdk, apktool, work, log, args.r8, args.player_input)
             if release['channel'] == 'stable' and not compile_report.get('hardening'):
                 raise ValueError('Official release program code must pass R8 protection gates.')
             changed.update(added)
@@ -465,8 +499,11 @@ def main():
             expected.update({item['path']: item['bytes'] for item in files.values()})
             expected[spec['default_logo_asset']] = (BRANDING / spec['default_logo_asset']).read_bytes()
             expected.update(protected_dex)
+            expected.update(player_files)
             combined = work / 'combined.apk'
             with zipfile.ZipFile(apk) as original, zipfile.ZipFile(assembled) as built, zipfile.ZipFile(combined, 'w') as output:
+                if set(player_files) & set(original.namelist()):
+                    raise ValueError('Player additions must not replace any original ZIP/native entry')
                 dex = {name: built.read(name) for name in built.namelist() if re.fullmatch(r'classes(?:\d+)?\.dex', name)}
                 if set(dex) != {name for name in original.namelist() if re.fullmatch(r'classes(?:\d+)?\.dex', name)}:
                     raise ValueError('Original multidex set changed.')
@@ -483,6 +520,8 @@ def main():
                 output.writestr(spec['default_logo_asset'], expected[spec['default_logo_asset']], compress_type=zipfile.ZIP_STORED)
                 for name, data in protected_dex.items():
                     output.writestr(name, data, compress_type=zipfile.ZIP_STORED)
+                for name, data in player_files.items():
+                    output.writestr(name, data, compress_type=zipfile.ZIP_STORED if name.startswith('lib/') else zipfile.ZIP_DEFLATED)
             aligned = work / 'aligned.apk'
             zipalign = args.sdk / 'build-tools/36.1.0/zipalign'
             run([zipalign, '-P', '16', '-f', '4', combined, aligned], log)
@@ -494,7 +533,8 @@ def main():
             run(['java', '-Xmx1536m', '-cp', str(classes) + os.pathsep + str(apktool), 'DexSemanticAudit',
                  apk, aligned, dex_report, '--expected-changes', ','.join(sorted(changed))], log)
             report = json.loads(dex_report.read_text())
-            report.update(validate_output(apk, aligned, expected, files, spec['default_logo_asset']))
+            report.update(validate_output(apk, aligned, expected, files, spec['default_logo_asset'], player_files))
+            report.update(audit_player_zip(aligned, apk, player_files))
             report.update({
                 'variant': args.variant, **values,
                 'release_channel': release['channel'], 'protected_release': bool(compile_report.get('hardening')),
@@ -502,6 +542,9 @@ def main():
                 'unsigned': True, 'native_zip_alignment_kib': 16,
                 'baseline_audit': baseline_audit, 'allowed_changed_classes': sorted(changed),
                 'source_edits': changed_sources, 'manifest_edits': manifest_report,
+                'mobile_mpv_contract': mobile_mpv_contract,
+                'tv_vlc_contract': tv_vlc_contract, 'player_native': player_report,
+                'player_corresponding_source': player_source_report,
                 'resource_edits': resource_report, 'overlay_compile': compile_report,
                 'layout_edits': layout_report,
                 'qr_web_input_edits': web_report,

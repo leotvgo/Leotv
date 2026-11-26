@@ -25,6 +25,10 @@ jobs:
         run: bash scripts/audit-release-tree.sh
       - name: Verify all four source variants and ordered native hooks
         run: python3 -B tools/check_build_sources.py
+      - name: Verify pinned native sources and exact JNI build recipe
+        run: python3 -B tools/check_player_native.py --sources
+      - name: Verify preserved 649 sources, player variant separation and immutable input/source delivery
+        run: python3 -B tools/check_player_integration.py
       - name: Verify ported episode normalization and detail precedence using fictional fixtures
         run: python3 -B research/check_episode_port.py
       - name: Verify entry and history metadata do not wait for a blocked provider
@@ -167,7 +171,7 @@ jobs:
           log-accepted-android-sdk-licenses: false
       - name: Install Android build tools
         run: |
-          sdkmanager 'platforms;android-23' 'build-tools;36.1.0'
+          sdkmanager 'platforms;android-23' 'build-tools;36.1.0' 'ndk;27.0.12077973'
           command -v zstd || sudo apt-get install -y zstd
       - name: Fetch pinned inputs and dependencies
         env:
@@ -176,6 +180,14 @@ jobs:
         run: |
           python3 tools/ci_dependencies.py --output "$RUNNER_TEMP/deps"
           python3 tools/ci_input.py --repo "$GITHUB_REPOSITORY" --variant "$VARIANT" --output "$RUNNER_TEMP/input"
+      - name: Stage permanent API23 player input and matching Java/source archives without native compilation
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VARIANT: ${{ matrix.variant }}
+        run: |
+          python3 -B tools/stage_player_inputs.py --variant "$VARIANT" \
+            --ndk "$ANDROID_SDK_ROOT/ndk/27.0.12077973" \
+            --work "$RUNNER_TEMP/player-download" --output "$RUNNER_TEMP/player-input"
       - name: Build Leotv and verify the baseline plus declared identity and UI changes
         env:
           VARIANT: ${{ matrix.variant }}
@@ -185,6 +197,8 @@ jobs:
             --apk "$RUNNER_TEMP/input/$INPUT_FILENAME" \
             --apktool "$RUNNER_TEMP/deps/apktool_2.11.0.jar" \
             --r8 "$RUNNER_TEMP/deps/r8-8.8.34.jar" \
+            --player-input "$RUNNER_TEMP/player-input" \
+            --player-ndk "$ANDROID_SDK_ROOT/ndk/27.0.12077973" \
             --sdk "$ANDROID_SDK_ROOT" \
             --output "artifacts/leotv-$VARIANT-unsigned.apk"
       - name: Sign installable APK with the fixed APK certificate
@@ -218,6 +232,7 @@ jobs:
             artifacts/leotv-${{ matrix.variant }}.apk
             artifacts/leotv-${{ matrix.variant }}.signature.json
             artifacts/leotv-${{ matrix.variant }}-unsigned.audit.json
+            artifacts/leotv-${{ matrix.variant }}-player-source.tar.gz
           retention-days: 14
       - name: Stage verified APK in a release draft when Actions storage is unavailable
         if: steps.signed_artifact.outcome == 'failure'

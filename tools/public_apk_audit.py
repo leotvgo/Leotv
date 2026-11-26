@@ -9,7 +9,8 @@ def summarize(source):
     data=json.loads(source)
     retained=('variant','package','version_name','version_code','min_sdk','release_channel','protected_release',
               'expected_changes_match','output_apk_sha256','unsigned','native_zip_alignment_kib','native_libraries_exact',
-              'native_abis','resource_ids_and_configurations_retained','resource_style_spans_retained','device_validation','added_dex_paths')
+              'native_abis','resource_ids_and_configurations_retained','resource_style_spans_retained','device_validation','added_dex_paths',
+              'added_player_native_libraries_exact','added_player_native_zip_alignment_kib','player_corresponding_source')
     result={key:data[key] for key in retained if key in data}
     baseline=data['baseline_audit']
     result['baseline_audit']={key:baseline[key] for key in ('equal','original_classes','rebuilt_classes','changed_classes') if key in baseline}
@@ -18,6 +19,13 @@ def summarize(source):
             'program_classes','renamed_program_classes','stable_abi_members_verified','mapping_inputs_declared','source_file_names_removed',
             'client_flag_verified','string_protection','neutral_dictionary_sha256')
     result['overlay_compile']={'hardening':{key:hardening[key] for key in public if key in hardening}}
+    if 'player_program' in data['overlay_compile']:
+        result['overlay_compile']['player_program'] = data['overlay_compile']['player_program']
+        result['overlay_compile']['hardening']['player_rules_sha256'] = hardening['player_rules_sha256']
+    if 'player_native' in data:
+        native = data['player_native']
+        result['player_native'] = {key: native[key] for key in ('engine','abi','api','lock_sha256','errors','original_libraries_replaced','native_compiled_during_apk_build')}
+        result['player_native']['added_native_bytes'] = sum(row['bytes'] for row in native['libraries'])
     result['audit_scope']='Summary of the verified build; full source and change evidence retained in its private symbol draft.'
     result['full_audit_sha256']=hashlib.sha256(source).hexdigest()
     return result

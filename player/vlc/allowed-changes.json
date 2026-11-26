@@ -234,5 +234,15 @@
     "com/okpro",
     "is/xyz/mpv"
   ],
-  "mobile_added_classes_resources_libraries": []
+  "mobile_added_classes_resources_libraries": [],
+  "additional_program_classes": [
+    "Landroidx/annotation/MainThread;",
+    "Landroidx/annotation/NonNull;",
+    "Landroidx/annotation/Nullable;",
+    "Landroidx/annotation/RequiresApi;",
+    "Landroidx/collection/ContainerHelpers;",
+    "Landroidx/collection/LongSparseArray;"
+  ],
+  "additional_dependency_lock": "player/vlc/java-dependencies.lock.json",
+  "jni_cache_contract": "player/vlc/jni-abi.json"
 }

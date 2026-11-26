@@ -1,0 +1,155 @@
+{
+  "jni_source_sha256": "25ccc0246d3d57ccd858988ab4d34d5c5e03fd43f33977e3ad0917a1e2df48de",
+  "classes": {
+    "org.videolan.libvlc.VLCObject": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [
+        "dispatchEventFromNative(IJJFLjava/lang/String;)V"
+      ],
+      "fields": [
+        "mInstance:J"
+      ]
+    },
+    "org.videolan.libvlc.Media": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [
+        "createAudioTrackFromNative(Ljava/lang/String;Ljava/lang/String;IIIIILjava/lang/String;Ljava/lang/String;II)Lorg/videolan/libvlc/interfaces/IMedia$Track;",
+        "createVideoTrackFromNative(Ljava/lang/String;Ljava/lang/String;IIIIILjava/lang/String;Ljava/lang/String;IIIIIIII)Lorg/videolan/libvlc/interfaces/IMedia$Track;",
+        "createSubtitleTrackFromNative(Ljava/lang/String;Ljava/lang/String;IIIIILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/videolan/libvlc/interfaces/IMedia$Track;",
+        "createUnknownTrackFromNative(Ljava/lang/String;Ljava/lang/String;IIIIILjava/lang/String;Ljava/lang/String;)Lorg/videolan/libvlc/interfaces/IMedia$Track;",
+        "createSlaveFromNative(IILjava/lang/String;)Lorg/videolan/libvlc/interfaces/IMedia$Slave;",
+        "createStatsFromNative(IFIFIIIIIIIIIIF)Lorg/videolan/libvlc/interfaces/IMedia$Stats;"
+      ],
+      "fields": []
+    },
+    "org.videolan.libvlc.interfaces.IMedia$Track": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [],
+      "fields": []
+    },
+    "org.videolan.libvlc.interfaces.IMedia$Slave": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [],
+      "fields": []
+    },
+    "org.videolan.libvlc.MediaPlayer": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [
+        "createTitleFromNative(JLjava/lang/String;I)Lorg/videolan/libvlc/MediaPlayer$Title;",
+        "createChapterFromNative(JJLjava/lang/String;)Lorg/videolan/libvlc/MediaPlayer$Chapter;",
+        "createTrackDescriptionFromNative(ILjava/lang/String;)Lorg/videolan/libvlc/MediaPlayer$TrackDescription;"
+      ],
+      "fields": []
+    },
+    "org.videolan.libvlc.MediaPlayer$Title": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [],
+      "fields": []
+    },
+    "org.videolan.libvlc.MediaPlayer$Chapter": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [],
+      "fields": []
+    },
+    "org.videolan.libvlc.MediaPlayer$TrackDescription": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [],
+      "fields": []
+    },
+    "org.videolan.libvlc.MediaPlayer$Equalizer": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [],
+      "fields": [
+        "mInstance:J"
+      ]
+    },
+    "org.videolan.libvlc.MediaDiscoverer": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [
+        "createDescriptionFromNative(Ljava/lang/String;Ljava/lang/String;I)Lorg/videolan/libvlc/MediaDiscoverer$Description;"
+      ],
+      "fields": []
+    },
+    "org.videolan.libvlc.MediaDiscoverer$Description": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [],
+      "fields": []
+    },
+    "org.videolan.libvlc.RendererDiscoverer": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [
+        "createDescriptionFromNative(Ljava/lang/String;Ljava/lang/String;)Lorg/videolan/libvlc/RendererDiscoverer$Description;",
+        "createItemFromNative(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IJ)Lorg/videolan/libvlc/RendererItem;"
+      ],
+      "fields": []
+    },
+    "org.videolan.libvlc.RendererDiscoverer$Description": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [],
+      "fields": []
+    },
+    "org.videolan.libvlc.Dialog": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [
+        "displayErrorFromNative(Ljava/lang/String;Ljava/lang/String;)V",
+        "displayLoginFromNative(JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)Lorg/videolan/libvlc/Dialog;",
+        "displayQuestionFromNative(JLjava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/videolan/libvlc/Dialog;",
+        "displayProgressFromNative(JLjava/lang/String;Ljava/lang/String;ZFLjava/lang/String;)Lorg/videolan/libvlc/Dialog;",
+        "cancelFromNative(Lorg/videolan/libvlc/Dialog;)V",
+        "updateProgressFromNative(Lorg/videolan/libvlc/Dialog;FLjava/lang/String;)V"
+      ],
+      "fields": []
+    },
+    "org.videolan.libvlc.AWindow": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [
+        "getVideoSurface()Landroid/view/Surface;",
+        "getSubtitlesSurface()Landroid/view/Surface;",
+        "registerNative(J)I",
+        "unregisterNative()V",
+        "setBuffersGeometry(Landroid/view/Surface;III)Z",
+        "setVideoLayout(IIIIII)V",
+        "SurfaceTexture_attachToGLContext(I)Z",
+        "SurfaceTexture_detachFromGLContext()V",
+        "SurfaceTexture_waitAndUpdateTexImage([F)Z",
+        "SurfaceTexture_getSurface()Landroid/view/Surface;"
+      ]
+    }
+  },
+  "source": "fixed libvlcjni.c JNI_OnLoad and companion AWindow callbacks",
+  "excluded_ui_roots": [
+    "org.videolan.libvlc.VideoHelper",
+    "org.videolan.libvlc.util.VLCVideoLayout",
+    "org.videolan.libvlc.util.DisplayManager"
+  ]
+}

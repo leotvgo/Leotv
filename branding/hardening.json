@@ -191,6 +191,247 @@
         "measure(Ljava/lang/Object;Landroid/graphics/Paint;)V",
         "draw(Ljava/lang/Object;Ljava/lang/Object;Landroid/graphics/Canvas;FF)Z"
       ]
+    },
+    "com.leotv.player.mpv.MobileMpv": {
+      "clients": [
+        "mobile"
+      ],
+      "methods": [
+        "active(Ljava/lang/Object;)Z",
+        "forcedExo(Ljava/lang/Object;)Z",
+        "position(Ljava/lang/Object;)J",
+        "duration(Ljava/lang/Object;)J",
+        "speed(Ljava/lang/Object;)F",
+        "width(Ljava/lang/Object;)I",
+        "height(Ljava/lang/Object;)I",
+        "playing(Ljava/lang/Object;)Z",
+        "finished(Ljava/lang/Object;)Z",
+        "hasTrack(Ljava/lang/Object;I)Z",
+        "pause(Ljava/lang/Object;)V",
+        "play(Ljava/lang/Object;)V",
+        "seek(Ljava/lang/Object;J)V",
+        "setSpeed(Ljava/lang/Object;F)V",
+        "stop(Ljava/lang/Object;)V",
+        "release(Ljava/lang/Object;)V",
+        "attach(Ljava/lang/Object;Landroid/view/View;Landroid/view/View;)V",
+        "update(Ljava/lang/Object;)V",
+        "updateActivity(Landroid/app/Activity;)V",
+        "playerNames(I[Ljava/lang/String;)[Ljava/lang/String;",
+        "tracks(Ljava/lang/Object;ILjava/util/List;)V",
+        "selectTracks(Ljava/lang/Object;Ljava/util/List;)V",
+        "settings(Ljava/lang/Object;)V",
+        "settingsClick(Ljava/lang/Object;Landroid/view/View;)Z",
+        "fileResult(Landroid/app/Activity;IILandroid/content/Intent;)Z",
+        "load(Ljava/lang/Object;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)Z"
+      ]
+    },
+    "is.xyz.mpv.MPVLib": {
+      "clients": [
+        "mobile"
+      ],
+      "methods": [
+        "attachSurface(Landroid/view/Surface;)V",
+        "create(Landroid/content/Context;)V",
+        "destroy()I",
+        "detachSurface()V",
+        "enqueueCommand(J[Ljava/lang/String;)I",
+        "getPropertyBoolean(Ljava/lang/String;)Ljava/lang/Boolean;",
+        "getPropertyByteArray(Ljava/lang/String;)[B",
+        "getPropertyDouble(Ljava/lang/String;)Ljava/lang/Double;",
+        "getPropertyInt(Ljava/lang/String;)Ljava/lang/Integer;",
+        "getPropertyString(Ljava/lang/String;)Ljava/lang/String;",
+        "init()V",
+        "observeProperty(Ljava/lang/String;I)I",
+        "replaceSurface(Landroid/view/Surface;)V",
+        "setOptionString(Ljava/lang/String;Ljava/lang/String;)I",
+        "event(I)V",
+        "eventCommandReply(JI)V",
+        "eventEndFile(IILjava/lang/String;)V",
+        "eventProperty(Ljava/lang/String;)V",
+        "eventProperty(Ljava/lang/String;D)V",
+        "eventProperty(Ljava/lang/String;J)V",
+        "eventProperty(Ljava/lang/String;Ljava/lang/String;)V",
+        "eventProperty(Ljava/lang/String;Z)V",
+        "logMessage(Ljava/lang/String;ILjava/lang/String;)V"
+      ]
+    },
+    "org.videolan.libvlc.VLCObject": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [
+        "dispatchEventFromNative(IJJFLjava/lang/String;)V"
+      ],
+      "fields": [
+        "mInstance:J"
+      ]
+    },
+    "org.videolan.libvlc.Media": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [
+        "createAudioTrackFromNative(Ljava/lang/String;Ljava/lang/String;IIIIILjava/lang/String;Ljava/lang/String;II)Lorg/videolan/libvlc/interfaces/IMedia$Track;",
+        "createVideoTrackFromNative(Ljava/lang/String;Ljava/lang/String;IIIIILjava/lang/String;Ljava/lang/String;IIIIIIII)Lorg/videolan/libvlc/interfaces/IMedia$Track;",
+        "createSubtitleTrackFromNative(Ljava/lang/String;Ljava/lang/String;IIIIILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/videolan/libvlc/interfaces/IMedia$Track;",
+        "createUnknownTrackFromNative(Ljava/lang/String;Ljava/lang/String;IIIIILjava/lang/String;Ljava/lang/String;)Lorg/videolan/libvlc/interfaces/IMedia$Track;",
+        "createSlaveFromNative(IILjava/lang/String;)Lorg/videolan/libvlc/interfaces/IMedia$Slave;",
+        "createStatsFromNative(IFIFIIIIIIIIIIF)Lorg/videolan/libvlc/interfaces/IMedia$Stats;"
+      ],
+      "fields": []
+    },
+    "org.videolan.libvlc.interfaces.IMedia$Track": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [],
+      "fields": []
+    },
+    "org.videolan.libvlc.interfaces.IMedia$Slave": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [],
+      "fields": []
+    },
+    "org.videolan.libvlc.MediaPlayer": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [
+        "createTitleFromNative(JLjava/lang/String;I)Lorg/videolan/libvlc/MediaPlayer$Title;",
+        "createChapterFromNative(JJLjava/lang/String;)Lorg/videolan/libvlc/MediaPlayer$Chapter;",
+        "createTrackDescriptionFromNative(ILjava/lang/String;)Lorg/videolan/libvlc/MediaPlayer$TrackDescription;"
+      ],
+      "fields": []
+    },
+    "org.videolan.libvlc.MediaPlayer$Title": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [],
+      "fields": []
+    },
+    "org.videolan.libvlc.MediaPlayer$Chapter": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [],
+      "fields": []
+    },
+    "org.videolan.libvlc.MediaPlayer$TrackDescription": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [],
+      "fields": []
+    },
+    "org.videolan.libvlc.MediaPlayer$Equalizer": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [],
+      "fields": [
+        "mInstance:J"
+      ]
+    },
+    "org.videolan.libvlc.MediaDiscoverer": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [
+        "createDescriptionFromNative(Ljava/lang/String;Ljava/lang/String;I)Lorg/videolan/libvlc/MediaDiscoverer$Description;"
+      ],
+      "fields": []
+    },
+    "org.videolan.libvlc.MediaDiscoverer$Description": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [],
+      "fields": []
+    },
+    "org.videolan.libvlc.RendererDiscoverer": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [
+        "createDescriptionFromNative(Ljava/lang/String;Ljava/lang/String;)Lorg/videolan/libvlc/RendererDiscoverer$Description;",
+        "createItemFromNative(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IJ)Lorg/videolan/libvlc/RendererItem;"
+      ],
+      "fields": []
+    },
+    "org.videolan.libvlc.RendererDiscoverer$Description": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [],
+      "fields": []
+    },
+    "org.videolan.libvlc.Dialog": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [
+        "displayErrorFromNative(Ljava/lang/String;Ljava/lang/String;)V",
+        "displayLoginFromNative(JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)Lorg/videolan/libvlc/Dialog;",
+        "displayQuestionFromNative(JLjava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/videolan/libvlc/Dialog;",
+        "displayProgressFromNative(JLjava/lang/String;Ljava/lang/String;ZFLjava/lang/String;)Lorg/videolan/libvlc/Dialog;",
+        "cancelFromNative(Lorg/videolan/libvlc/Dialog;)V",
+        "updateProgressFromNative(Lorg/videolan/libvlc/Dialog;FLjava/lang/String;)V"
+      ],
+      "fields": []
+    },
+    "org.videolan.libvlc.AWindow": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [
+        "getVideoSurface()Landroid/view/Surface;",
+        "getSubtitlesSurface()Landroid/view/Surface;",
+        "registerNative(J)I",
+        "unregisterNative()V",
+        "setBuffersGeometry(Landroid/view/Surface;III)Z",
+        "setVideoLayout(IIIIII)V",
+        "SurfaceTexture_attachToGLContext(I)Z",
+        "SurfaceTexture_detachFromGLContext()V",
+        "SurfaceTexture_waitAndUpdateTexImage([F)Z",
+        "SurfaceTexture_getSurface()Landroid/view/Surface;"
+      ]
+    },
+    "com.leotv.player.vlc.VlcBridge": {
+      "clients": [
+        "tv"
+      ],
+      "methods": [
+        "sitePlayerType(Lcom/fongmi/android/tv/bean/Site;)I",
+        "names([Ljava/lang/String;)[Ljava/lang/String;",
+        "bind(LC3/e;Landroid/view/View;Ltv/danmaku/ijk/media/player/ui/IjkVideoView;)V",
+        "visible(LC3/e;)V",
+        "load(LC3/e;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Lcom/fongmi/android/tv/bean/Drm;Ljava/util/List;Ljava/util/List;Ljava/lang/String;J)V",
+        "position(LC3/e;)J",
+        "duration(LC3/e;)J",
+        "rate(LC3/e;)F",
+        "playing(LC3/e;)Z",
+        "seekable(LC3/e;)Z",
+        "ended(LC3/e;)Z",
+        "dimensions(LC3/e;)Ljava/lang/String;",
+        "hasTrack(LC3/e;I)Z",
+        "tracks(LC3/e;I)Ljava/util/List;",
+        "applyTracks(LC3/e;Ljava/util/List;)Z",
+        "subtitle(LC3/e;Lcom/fongmi/android/tv/bean/Sub;)Z",
+        "pause(LC3/e;)V",
+        "play(LC3/e;)V",
+        "seek(LC3/e;J)V",
+        "liveEdge(LC3/e;)V",
+        "rate(LC3/e;F)V",
+        "resize(LC3/e;I)V",
+        "stop(LC3/e;)V",
+        "release(LC3/e;)V"
+      ],
+      "fields": [
+        "PLAYER:I"
+      ]
     }
   }
 }

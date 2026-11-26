@@ -31,6 +31,12 @@ def main():
         raise SystemExit('Invalid APK version.')
     tag = f'leotv-{version}-build-{run_id}'
     files = [apk, signature, audit_path]
+    source = audit.get('player_corresponding_source', {})
+    if args.variant.startswith('tv') and source:
+        bundle = root / source['name']
+        if bundle.stat().st_size != source['bytes'] or hashlib.sha256(bundle.read_bytes()).hexdigest() != source['sha256']:
+            raise SystemExit('Corresponding-source archive does not match the audited player input.')
+        files.append(bundle)
     if args.symbols:
         mapping = root / f'leotv-{args.variant}-unsigned.mapping.txt'
         hardening = audit.get('overlay_compile', {}).get('hardening', {})

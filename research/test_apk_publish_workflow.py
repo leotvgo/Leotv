@@ -24,10 +24,11 @@ RELEASE_ID = 42
 
 
 class GitHub:
-    def __init__(self, existing=None, invalid=None, conclusion='success', official=False, protection=False):
+    def __init__(self, existing=None, invalid=None, conclusion='success', official=False, protection=False, players=False):
         self.existing, self.invalid, self.conclusion = existing, invalid, conclusion
         self.official = official
         self.protection = protection
+        self.players = players
         self.tag = 'leotv-5.1.8' if official else TAG
         self.mutations, self.files, self.api_requests = [], {}, []
 
@@ -62,6 +63,21 @@ class GitHub:
             items = {f'leotv-{variant}.apk': apk,
                      f'leotv-{variant}.signature.json': json.dumps(signature).encode(),
                      f'leotv-{variant}-unsigned.audit.json': json.dumps(audit).encode()}
+            if self.players:
+                mobile = variant.startswith('mobile')
+                audit['version_code'] = 649
+                audit['player_native'] = {'engine': 'mpv' if mobile else 'vlc', 'api': 24 if self.invalid == 'player_api' else 23,
+                    'errors': [], 'original_libraries_replaced': False, 'native_compiled_during_apk_build': False}
+                audit['added_player_native_libraries_exact'] = 11 if mobile else 3
+                audit['added_player_native_zip_alignment_kib'] = 16
+                audit.setdefault('overlay_compile', {})['player_program'] = {'jni_names_and_signatures_preserved': self.invalid != 'player_jni'}
+                source = b'fictional corresponding source, no binaries or credentials'
+                audit['player_corresponding_source'] = {'name': f'leotv-{variant}-player-source.tar.gz', 'bytes': len(source),
+                    'source_commit': 'wrong' if self.invalid == 'player_source_commit' else COMMIT,
+                    'sha256': 'wrong' if self.invalid == 'player_source' else hashlib.sha256(source).hexdigest()}
+                if not mobile:
+                    items[f'leotv-{variant}-player-source.tar.gz'] = source
+                items[f'leotv-{variant}-unsigned.audit.json'] = json.dumps(audit).encode()
             for name, data in items.items():
                 (folder / name).write_bytes(data)
                 self.files[name] = data
@@ -73,7 +89,7 @@ class GitHub:
                 assert 'draft=false' in command and ('prerelease=false' if self.official else 'prerelease=true') in command
                 assert ('make_latest=true' if self.official else 'make_latest=false') in command
                 assert 'tag_name=' + self.tag in command
-                assert len(self.assets()) == 12
+                assert len(self.assets()) == (14 if self.players else 12)
                 self.mutations.append(('edit', list(command)))
                 self.existing = 'published'
                 return subprocess.CompletedProcess(command, 0, '', '')
@@ -201,6 +217,21 @@ class PublishWorkflowTest(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 self.execute(github)
             self.assertEqual(github.mutations, [])
+
+    def test_player_release_requires_signed_artifacts_and_attaches_exact_vlc_source(self):
+        github = GitHub(players=True)
+        self.execute(github)
+        self.assertEqual(len(github.assets()), 14)
+        self.assertIn('leotv-tv-v7a-player-source.tar.gz', github.files)
+        self.assertIn('leotv-tv-v8a-player-source.tar.gz', github.files)
+
+    def test_invalid_player_api_jni_or_corresponding_source_never_publishes(self):
+        for invalid in ('player_api', 'player_jni', 'player_source', 'player_source_commit'):
+            with self.subTest(invalid=invalid):
+                github = GitHub(players=True, invalid=invalid)
+                with self.assertRaises(SystemExit):
+                    self.execute(github)
+                self.assertEqual(github.mutations, [])
 
 
 if __name__ == '__main__':

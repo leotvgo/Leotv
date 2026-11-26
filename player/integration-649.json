@@ -1,0 +1,300 @@
+{
+  "base_commit": "c1e488b819266abce08e9cb6188dd99ca4c0545d",
+  "worker_commits": [
+    "68c95e4987f15e887ebfe820fe6e6046e669925e",
+    "673ddfa1197f401d536eccec00902cf488d3e25d",
+    "e951c5c2c91a72100744ca666dbe79c5431f8f2b",
+    "e9c4ffa98694228fbef338681f5c1216c2001faa",
+    "0481fca30bba78c72dec2ef39b04389d61c1fae2"
+  ],
+  "preserved_649_sources": {
+    "README.md": "c2ba98e244d12a6bb1c6ca5d0e965481b8abe6bef6acd95fc23888aa9076e2e0",
+    "branding/AndroidManifest.xml": "2db87838619f76c1425c2b9df46881397583b10712855a00e8fc832fac1c0405",
+    "branding/proguard-release.pro": "f81393c56c5613c4184a9342ddb31681033d53b4b9ef462562f50c290fdbc555",
+    "branding/release.json": "776c643f203ca0ec9f5c602eaaf8a4c3ce7f453601bf067af32026795c7ada6b",
+    "branding/res/values/strings.xml": "ab611a89b7d2451df1f8f6a03af60aacea4cbc4f40b6b5e4dcc17a1a956b9598",
+    "detail/danmaku-native-source-lock.json": "eaa6f6707af39f7976d68cb9384511de162e38d42a9b9ba1b14a058b5e825a37",
+    "detail/effects-native-source-lock.json": "ff619443dd51000b6e64a5ffa80d21090be5bc9ce8f48882519d870aa6a242ff",
+    "detail/native-history-source-lock.json": "1a58b27b556c6de4930bfa907754f2f52832e365f9939739751dd55fc614cdca",
+    "detail/runtime-sources.json": "911cb4a36bce2d80c2dfd358b3ff311986b3dcd8f51e2c55896d628fedc6f8e8",
+    "detail/runtime/common/com/leotv/detail/DanmakuEffectPolicy.java": "f062a85b9e385188e4da130389f6f5e253ef3eeb819414603319b216963873d2",
+    "detail/runtime/common/com/leotv/detail/DanmakuEffects.java": "135cf3e070339cef0f7e441c952a875f96aa66e259bdfbe0e1b702fc74156bf6",
+    "detail/runtime/common/com/leotv/detail/DanmakuPlayback.java": "e9ab7ab6fa4423b813fef53fc3e23182898e61ec72d7023283a29aca6aace57d",
+    "detail/runtime/common/com/leotv/detail/DanmakuSettings.java": "ca501064605e010dc1c37d73ea27e45582d1c873ff7350f3bfb716dc2bbc4468",
+    "detail/runtime/common/com/leotv/detail/DanmakuSpacing.java": "8808cb19a16fcf6a343aa5737d007805808062b74b8872c765a0c45f43ba76d6",
+    "detail/runtime/common/com/leotv/detail/DanmakuUi.java": "57f0c2a8d298a55921b2e39d8a538adc44f4cf94577c8884579049f3cf16e770",
+    "detail/runtime/common/com/leotv/detail/DetailActivity.java": "bddeb73e5b98e33f0b911b52493dc7705d6f10361035fddc22cc90fc1dbb0be4",
+    "detail/runtime/common/com/leotv/detail/DetailProgress.java": "b6235df3951fb8d1b4f7156c5b3ad241c301cadfa9a9003502b0bc547eaa1a3a",
+    "detail/runtime/common/com/leotv/detail/DetailRecommendations.java": "b0f17170b8c7d572254d1502b445bbe49e7d747355625255b59eb8e9cf870e17",
+    "detail/runtime/common/com/leotv/detail/DetailStills.java": "8c2008510361f24519173263c930f0e248feab50498e8efc634dd9c37e3aaba2",
+    "detail/runtime/common/com/leotv/detail/LibraryDetailLayout.java": "5f2384c15c1b3c48fdee80cc49a41686bbf85d410897552ad065bc20cb533fff",
+    "detail/runtime/common/com/leotv/detail/NativeLibrary.java": "d5ee2b2aef6117d56cebd3d37cfaf4c7f4e730bb587f02ff726869da392c6cde",
+    "detail/runtime/common/com/leotv/detail/NativeRouting.java": "bf515446b221b3690eda9614f64cd9768e9398643a581c7cb97950b46bc226d1",
+    "detail/runtime/common/com/leotv/detail/Playback.java": "83b795a100a109397d8cfa711127656552acf9c322d79de15667be40aa81ccfe",
+    "detail/runtime/common/com/leotv/detail/PreloadHost.java": "bd7d0fb47abcdc2f2b5a87786b7d646a96d19b4aef31a2a89e2162d2cee9db92",
+    "detail/runtime/common/com/leotv/detail/TvDetailPage.java": "c4a99c0421cb00d2d7a238b286e907a6fc79ea0a1181b52404ef3c2eed0602f5",
+    "detail/runtime/common/com/leotv/detail/VideoPreload.java": "42f9d1f07b07f3318e34d0bb78f94ec54812cfd4260d2042c1d7e5d2e2b6b69e",
+    "docs/LEOTV-5.3.4-PREVIEW-3-PROGRESS-PRELOAD-SPACING-20261126.md": "3357090300746076e08adef535b7f28eb58d6bb0acb512796cecf7ec4c57a5b1",
+    "research/check_danmaku_effect_policy.py": "75c43877e61e1a20f4e3d007d0d02669b00a2b037b6de5a45602f2d791bc6577",
+    "research/check_detail_progress.py": "283fa72672493b61693f9a6e54629e6befce835eaad45001b085e6685e4f26e7",
+    "research/check_video_preload_handoff.py": "5c49d3237f21ee9e74abb7e7e9afe61574e3f416e1c881ff02479d46fb5db756",
+    "research/detail-check/src/test/java/com/leotv/detail/DanmakuEffectsTest.java": "fe53154873254f3ae9302b4f1581260d82c26093e139c2182815ece8912774e7",
+    "research/effects-check/build.gradle": "f7f93fb28f23e05ae9e44e1afe1bc28b118a099132df6591712bb1b6698f91c7",
+    "research/effects-check/settings.gradle": "29ff368b36bbc92978d43dbc3aa6469b3ac880fb2d544b5a5c3a2bf68361b20e",
+    "research/effects-check/src/stub/java/com/leotv/detail/CacheMaintenance.java": "f302e27dd8d86ab0d905b9ae8902c6b64be1ecfc9ecc23482915456cfb4c37a2",
+    "research/effects-check/src/stub/java/com/leotv/detail/DanmakuPlayback.java": "3a60e04bd180df59d333799bcbe3179386a73acd28851339926dbc5bf7ed537f",
+    "research/effects-check/src/stub/java/com/leotv/detail/DanmakuSettings.java": "ac97c9f45c84be57f63039f3d7bff36eb3e01e3ededbb3f86030a5b28dfb1f7b",
+    "research/effects-check/src/stub/java/com/leotv/detail/DanmakuSpacing.java": "cfb26e67bc12bf1aa3a401e8f1535458a434b48bb1f762a265526b814e7a8d37",
+    "research/effects-check/src/stub/java/com/leotv/detail/NativeDialogs.java": "a4aefa34387e34e89db66db814a90f79347dcd97105bdf19eb6990543097d9f8",
+    "research/effects-check/src/stub/java/com/leotv/detail/PreloadHost.java": "e06c7a1347b9720a560d981cf59906503d74d8489bcb1f515be5e36afab54471",
+    "tools/apply_danmaku.py": "ffc12e822a270f08efd5855d108de3bf1e9c1620c7661fbecc449b80f5cf88ae",
+    "tools/apply_danmaku_effects.py": "2de96603ceff83c4d7652255d112f460b97abf7a21331f4f0032de4cc1f55577",
+    "tools/apply_video_preload.py": "4934b5894de8e5c64ba4f3f65ea1de3b773c4df2068858b5af1e4ebc1d41cb76",
+    "tools/check_danmaku_effects.py": "7f9853a2aeb4ad918de4eedd72c14e1702afcaed004be6fb964fb2f3cb7671bd",
+    "tools/check_detail_progress.py": "2366c84ebf3c4091e665174539a3c03664d243d871f596d671976ffd998b805a",
+    "tools/check_native_details.py": "87da8c0d7b02653dc32c3dae9558e6939a9ced4f7124624e29dffdab58b25da7",
+    "tools/check_video_preload.py": "f34db33b6713b2a829531c46861a9852b8cd885701a85a744168c2cb9af35ee0",
+    "detail/runtime/common/com/leotv/detail/DanmakuAvatar.java": "188f5cdc8e468a7c9d37fabf0634e4155b5a05a83a15890c653da404bb68024f",
+    "detail/artwork/danmaku-reference-avatar.png": "50a27072c86d2020c7385f04de3b306922d85d1a52c44430b336619c2b53c8dd",
+    "detail/artwork/danmaku-reference-avatar.json": "005ff3fd852e57f5564e3f5746bb06aac5966a656269c68c204992785f32c303",
+    "evidence/leotv-5.3.4-preview.3-649-code-ready-20261126.json": "bc29fb0c2d22df8fe79918fa3f3177a4981180b4a4370ce3c51868c1498bff91",
+    "evidence/leotv-649-reference-effects-ready-20261126.json": "6a4172595991877765ecb0e401001c3f921975364db7268c640c4da221a9cae9"
+  },
+  "allowed_builder_integration_changes": [
+    ".github/workflows/ordinary-build.yml",
+    "branding/hardening.json",
+    "tools/build_branded.py",
+    "tools/check_build_sources.py",
+    "tools/harden_overlays.py",
+    "tools/public_apk_audit.py",
+    "tools/stage_ci_apk.py",
+    ".github/workflows/publish-test-apks.yml",
+    "research/test_apk_publish_workflow.py"
+  ],
+  "player_variant_selection": {
+    "mobile-v7a": {
+      "engine": "mpv",
+      "abi": "armeabi-v7a"
+    },
+    "mobile-v8a": {
+      "engine": "mpv",
+      "abi": "arm64-v8a"
+    },
+    "tv-v7a": {
+      "engine": "vlc",
+      "abi": "armeabi-v7a"
+    },
+    "tv-v8a": {
+      "engine": "vlc",
+      "abi": "arm64-v8a"
+    }
+  },
+  "player_module_allowlists": [
+    "player/mpv/allowed-changes.json",
+    "player/vlc/allowed-changes.json"
+  ],
+  "native_payload_allowlist": "player/native/lock.json",
+  "new_dependencies": "player/vlc/java-dependencies.lock.json",
+  "new_jni_cache_contract": "player/vlc/jni-abi.json",
+  "native_archive_mode": "fixed-input",
+  "validation_tests": false,
+  "device_validation": "Pending signed APK acceptance on Android6/dual ABI/TV/mobile",
+  "preserved_649_hardening": {
+    "settings": {
+      "enabled": true,
+      "r8_version": "8.8.34",
+      "r8_sha256": "f8370523cb41819bb83ae0747c8373d6faef8457b620111bdea5d49066f33bd2",
+      "rules": "branding/proguard-release.pro",
+      "internal_package": "com.leotv.internal",
+      "min_api": 23
+    },
+    "stable_abi": {
+      "com.leotv.branding.LogoLoader": {
+        "methods": [
+          "load(Landroid/widget/ImageView;Ljava/lang/String;)V"
+        ]
+      },
+      "com.leotv.ui.GlobalChrome": {
+        "methods": [
+          "install(Landroid/app/Application;)V",
+          "openFollowing(Landroid/app/Activity;)V",
+          "backFollowing(Landroid/app/Activity;)Z",
+          "rememberBackground(Landroid/app/Activity;)V",
+          "loadingBackground(Landroid/content/Context;)Landroid/graphics/drawable/Drawable;"
+        ]
+      },
+      "com.leotv.ui.GlobalChrome$FollowingPage": {
+        "methods": [
+          "resume()V",
+          "pause()V",
+          "close()V",
+          "closePicker()Z",
+          "viewportInsets(II)V"
+        ]
+      },
+      "com.leotv.detail.DetailActivity": {
+        "methods": [
+          "<init>()V",
+          "saveDetailState(Landroid/os/Bundle;)V"
+        ]
+      },
+      "com.leotv.detail.FollowingActivity": {
+        "methods": [
+          "<init>()V",
+          "homePage(Landroid/app/Activity;Ljava/lang/Runnable;)Landroid/view/View;"
+        ]
+      },
+      "com.leotv.detail.JarIntegration": {
+        "methods": [
+          "register(Ljava/lang/Object;Ljava/lang/reflect/InvocationHandler;)V"
+        ],
+        "fields": [
+          "METADATA:Ljava/lang/String;"
+        ]
+      },
+      "com.leotv.detail.NativeRouting": {
+        "methods": [
+          "redirect(Landroid/app/Activity;)Z",
+          "redirected(Landroid/app/Activity;)Z",
+          "redirectNewIntent(Landroid/app/Activity;Landroid/content/Intent;)Z",
+          "openResource(Landroid/app/Activity;Landroid/content/Intent;)V",
+          "openIndexResource(Landroid/app/Activity;Ljava/lang/Object;Landroid/os/Bundle;)V",
+          "isFullscreenPlayer(Landroid/app/Activity;)Z",
+          "ownsNativeDetails()Z",
+          "ownsNativeChrome()Z",
+          "detailClient()Ljava/lang/String;"
+        ]
+      },
+      "com.leotv.detail.Personalization": {
+        "methods": [
+          "attach(Landroid/app/Activity;Landroid/view/View;)V"
+        ]
+      },
+      "com.leotv.detail.NativeEpisodeUi": {
+        "methods": [
+          "watch(Ljava/lang/Object;)V",
+          "owned(Ljava/lang/Object;)Z",
+          "selectNative(Ljava/lang/Object;Ljava/lang/Object;)Z"
+        ]
+      },
+      "com.leotv.detail.Playback": {
+        "methods": [
+          "prepareWindow(Landroid/app/Activity;)V",
+          "initialize(Landroid/app/Activity;)V",
+          "release(Landroid/app/Activity;)V",
+          "checkpoint(Landroid/app/Activity;)V",
+          "leave(Landroid/app/Activity;)Z",
+          "select(Landroid/app/Activity;)Z",
+          "applyOrder(Landroid/app/Activity;)V",
+          "videoChanged(Landroid/app/Activity;)V",
+          "videoSizeChanged(Ljava/lang/Object;II)V",
+          "consumeNativeDetail(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;",
+          "controlsShown(Landroid/app/Activity;)V"
+        ]
+      },
+      "com.leotv.detail.MetadataSettings": {
+        "methods": [
+          "initialize(Landroid/content/Context;)V"
+        ]
+      },
+      "com.leotv.detail.Device": {
+        "fields": [
+          "MOBILE:Z"
+        ]
+      },
+      "com.leotv.detail.CspCategoryActivity": {
+        "methods": [
+          "<init>()V",
+          "onCreate(Landroid/os/Bundle;)V"
+        ]
+      },
+      "com.leotv.detail.DanmakuPlayback": {
+        "methods": [
+          "initialize(Landroid/app/Activity;)V",
+          "begin(Landroid/app/Activity;)V",
+          "result(Landroid/app/Activity;Ljava/lang/Object;)V",
+          "nativeSelection(Ljava/lang/Object;)V",
+          "release(Landroid/app/Activity;)V",
+          "fileResult(Landroid/app/Activity;IILandroid/content/Intent;)Z",
+          "pause(Landroid/app/Activity;)V",
+          "resume(Landroid/app/Activity;)V",
+          "installControls(Landroid/app/Activity;)V",
+          "openSearch(Landroid/app/Activity;)V",
+          "menuCreated(Ljava/lang/Object;)V",
+          "bootstrapBegin(Landroid/app/Activity;)V",
+          "bootstrapAllowed(Landroid/app/Activity;)Z",
+          "bootstrapEnd(Landroid/app/Activity;)V"
+        ]
+      },
+      "com.leotv.detail.DanmakuSettings": {
+        "methods": [
+          "subscription(Ljava/lang/Object;Ljava/lang/Object;)V",
+          "initialize(Landroid/content/Context;)V"
+        ]
+      },
+      "com.leotv.detail.DanmakuUi": {
+        "methods": [
+          "settings(Landroid/app/Activity;)V",
+          "attach(Landroid/app/Activity;Landroid/view/View;)V",
+          "focusApi(Landroid/app/Activity;Landroid/view/View;)V"
+        ]
+      },
+      "com.leotv.detail.NativeQrInput": {
+        "methods": [
+          "receive(Ljava/lang/String;)Z",
+          "release(Landroid/app/Activity;)V"
+        ]
+      },
+      "com.leotv.detail.NativeCategoryPaging": {
+        "methods": [
+          "owned(Ljava/lang/Object;)Z",
+          "refresh(Ljava/lang/Object;)V",
+          "track(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;)V",
+          "result(Ljava/lang/Object;Ljava/lang/Object;)V",
+          "accept(Ljava/lang/Object;Ljava/lang/Object;)Z",
+          "hold(Ljava/lang/Object;Ljava/lang/Object;)V",
+          "append(Ljava/lang/Object;Ljava/lang/Object;Ljava/util/List;Ljava/lang/Runnable;)V",
+          "complete(Ljava/lang/Object;)V",
+          "canScrollPage(Ljava/lang/Object;Landroid/view/View;)Z",
+          "idle(Ljava/lang/Object;Landroid/view/View;I)V"
+        ]
+      },
+      "com.leotv.detail.CacheMaintenance": {
+        "methods": [
+          "beforeClear()V",
+          "afterClear()V",
+          "install(Landroid/app/Application;)V"
+        ]
+      },
+      "com.leotv.detail.VideoPreload": {
+        "methods": [
+          "begin(Landroid/app/Activity;)V",
+          "wrap(Landroid/app/Activity;Ljava/util/concurrent/Callable;)Ljava/util/concurrent/Callable;",
+          "result(Ljava/lang/Object;Ljava/lang/Object;Z)V",
+          "resume(Landroid/app/Activity;)V",
+          "error(Landroid/app/Activity;Ljava/lang/Object;)Z"
+        ]
+      },
+      "com.leotv.detail.DetailProgress": {
+        "methods": [
+          "beforeRequest(Landroid/app/Activity;)V",
+          "restore(Landroid/app/Activity;)V",
+          "ready(Landroid/app/Activity;)V",
+          "deleted(Ljava/lang/Object;)V",
+          "clearHistory(I)V"
+        ]
+      },
+      "com.leotv.detail.DanmakuSpacing": {
+        "methods": [
+          "pixels()I"
+        ]
+      },
+      "com.leotv.detail.DanmakuEffects": {
+        "methods": [
+          "measure(Ljava/lang/Object;Landroid/graphics/Paint;)V",
+          "draw(Ljava/lang/Object;Ljava/lang/Object;Landroid/graphics/Canvas;FF)Z"
+        ]
+      }
+    }
+  }
+}

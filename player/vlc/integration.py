@@ -36,6 +36,23 @@ def install_java_program(root, variant, classes, matched_jar):
         for name in names:
             target = classes / name; target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(jar.read(name)); result.append('L' + name[:-6] + ';')
+    # The host's AndroidX classes were obfuscated; use only the real missing dependencies.
+    dependencies = json.loads((root / 'player/vlc/java-dependencies.lock.json').read_text())
+    for dependency in dependencies['dependencies']:
+        name = dependency['url'].rsplit('/', 1)[-1]
+        path = matched_jar.parent / name
+        if hashlib.sha256(path.read_bytes()).hexdigest() != dependency['sha256']:
+            raise ValueError('VLC Java dependency artifact hash mismatch: ' + name)
+        with zipfile.ZipFile(path) as jar:
+            for member, digest in dependency['program_classes'].items():
+                raw = jar.read(member)
+                if hashlib.sha256(raw).hexdigest() != digest:
+                    raise ValueError('VLC dependency class hash mismatch: ' + member)
+                target = classes / member
+                if target.exists():
+                    raise ValueError('VLC dependency program collision: ' + member)
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(raw); result.append('L' + member[:-6] + ';')
     return result
 
 

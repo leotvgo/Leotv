@@ -14,7 +14,7 @@ def sha256(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def compile_program(root, classes, android, reference, r8, output, work, run, log):
+def compile_program(root, classes, android, reference, r8, output, work, run, log, extra_rules=''):
     settings = json.loads((root / 'branding/hardening.json').read_text())
     if not r8.is_file() or sha256(r8) != settings['r8_sha256']:
         raise ValueError('The fixed R8 compiler is missing or has an unexpected checksum.')
@@ -23,6 +23,8 @@ def compile_program(root, classes, android, reference, r8, output, work, run, lo
         raise ValueError('Unexpected R8 compiler version.')
     mapping, seeds, usage = (work / ('r8-' + name + '.txt') for name in ['mapping', 'seeds', 'usage'])
     rules = root / settings['rules']
+    player_rules = work / 'r8-player.pro'
+    player_rules.write_text(extra_rules)
     private_seed=secrets.token_bytes(32)
     seed_file=work / 'literal-seed.bin';seed_file.write_bytes(private_seed);seed_file.chmod(0o600)
     protection_tools=work / 'protection-tools';export='java.base/jdk.internal.org.objectweb.asm=ALL-UNNAMED'
@@ -35,7 +37,7 @@ def compile_program(root, classes, android, reference, r8, output, work, run, lo
     outputs = work / 'r8-output.pro'
     outputs.write_text(f'-printmapping {mapping}\n-printseeds {seeds}\n-printusage {usage}\n-classobfuscationdictionary {dictionary}\n-obfuscationdictionary {dictionary}\n')
     run(['java', '-Xmx1536m', '-cp', r8, 'com.android.tools.r8.R8', '--release', '--min-api', str(settings['min_api']),
-        '--lib', android, '--lib', reference, '--pg-conf', rules, '--pg-conf', outputs,
+        '--lib', android, '--lib', reference, '--pg-conf', rules, '--pg-conf', player_rules, '--pg-conf', outputs,
         '--output', output, *sorted(classes.rglob('*.class'))], log)
     if sorted(path.name for path in output.glob('classes*.dex')) != ['classes.dex']:
         raise ValueError('Expected one bounded R8 overlay DEX.')
@@ -59,6 +61,7 @@ def compile_program(root, classes, android, reference, r8, output, work, run, lo
     protection.pop('literal_sha256')
     return settings, {'mode': 'r8-release-full', 'r8_version': version, 'r8_sha256': sha256(r8),
         'rules_sha256': sha256(rules), 'min_api': settings['min_api'], 'mapping_sha256': sha256(mapping),
+        'player_rules_sha256': sha256(player_rules),
         'compiler_marker': marker,
         'program_input_classes': len(list(classes.rglob('*.class'))), 'reference_jar_packaged': False,
         'string_protection':protection,'neutral_dictionary_sha256':sha256(dictionary)}, mapping
@@ -97,6 +100,9 @@ def audit_program(classes, decoded, mapping, settings, expected_mobile=None):
         emitted[descriptor] = text
     checked = 0
     for name, contract in settings['stable_abi'].items():
+        client = 'mobile' if expected_mobile else 'tv'
+        if contract.get('clients') and client not in contract['clients']:
+            continue
         descriptor = 'L' + name.replace('.', '/') + ';'
         if descriptor not in emitted:
             raise ValueError('Protected ABI class is missing: ' + name)
