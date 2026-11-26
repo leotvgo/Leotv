@@ -1397,7 +1397,7 @@
     },
     "research/effects-check/src/test/java/com/leotv/detail/NativeHomeFocusTest.java": {
       "before_sha256": null,
-      "after_sha256": "563b044ca5ce1b6146fe091c7931a2d2a852cc43baa339701e2c09c7c900f290",
+      "after_sha256": "7b3124411295d1b02843aee81514c9b1abd9336e5e2b30e40969d9f451d8e9dd",
       "reason": "User-authorized656 TV home focus regression repair plus explicitly requested TV thunder full-screen detail hero and library bottom-left metadata/actions; retain phone layout and prior native/player/effect/data gates. Category sections restore native measurement; pending focus waits for actual card acceptance."
     },
     "research/generate_home_focus_check.py": {
@@ -1429,6 +1429,14 @@
     "tv_library_detail_bottom_left": true,
     "other_655_runtime_changes_preserved": true,
     "recent_history_requires_actual_card_focus": true,
-    "api23_focus_scenarios": 6
+    "api23_focus_scenarios": 6,
+    "pre_apk_gate_attempts": [
+      {
+        "build_run_id": 45854740242,
+        "apk_job_started": false,
+        "failure": "Test window did not expose live View-tree focus through Activity.getCurrentFocus; fixture Host now forwards to content.findFocus. Production source unchanged.",
+        "repository_restored_private": true
+      }
+    ]
   }
 }

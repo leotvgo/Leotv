@@ -4,8 +4,9 @@ import org.junit.*;import org.junit.runner.RunWith;import org.robolectric.*;impo
 import static org.junit.Assert.*;
 @RunWith(RobolectricTestRunner.class) @Config(sdk=23,manifest=Config.NONE)
 public class NativeHomeFocusTest {
+ public static class Host extends Activity {View content;@Override public View getCurrentFocus(){return content==null?super.getCurrentFocus():content.findFocus();}}
  Activity activity;HomeFocusSubject subject;View hero;
- @Before public void open(){activity=Robolectric.buildActivity(Activity.class).setup().get();subject=new HomeFocusSubject(activity);activity.setContentView(subject.list);hero=new View(activity);hero.setFocusable(true);subject.list.addView(hero,new LinearLayout.LayoutParams(1280,720));layout();assertTrue(hero.requestFocus());}
+ @Before public void open(){Host host=Robolectric.buildActivity(Host.class).setup().get();activity=host;subject=new HomeFocusSubject(activity);host.content=subject.list;activity.setContentView(subject.list);hero=new View(activity);hero.setFocusable(true);subject.list.addView(hero,new LinearLayout.LayoutParams(1280,720));layout();assertTrue(hero.requestFocus());assertSame(hero,activity.getCurrentFocus());}
  void layout(){View decor=activity.getWindow().getDecorView();decor.measure(View.MeasureSpec.makeMeasureSpec(1280,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(720,View.MeasureSpec.EXACTLY));decor.layout(0,0,1280,720);}
  HomeFocusSubject.Row row(int count){HomeFocusSubject.Row r=new HomeFocusSubject.Row(activity,count);subject.entries.add(r.shelf);subject.attached.put(r.shelf,r);return r;}
  View card(HomeFocusSubject.Row row,int position){View card=new View(activity);card.setFocusable(true);card.setTag(position);row.grid.addView(card,new LinearLayout.LayoutParams(100,80));return card;}
