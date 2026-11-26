@@ -904,7 +904,7 @@
     },
     "docs/LEOTV-5.3.4-PREVIEW-7-653-NATIVE-PLAYBACK-UI-EFFECTS-20261126.md": {
       "before_sha256": null,
-      "after_sha256": "11d632cee5be31f89e583e412ff434c9bfc92cd9ff9ef6fb01e96571934a210f",
+      "after_sha256": "941b404e2fcc30dd137c4151fa350d91310c3b575e77ca0a8a78c30355e3d45c",
       "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
     },
     "docs/LEOTV-HOME-THEMES-LIBRARY-RECYCLING-20261126.md": {
@@ -944,7 +944,7 @@
     },
     "player/mpv/java/com/leotv/player/mpv/MpvStore.java": {
       "before_sha256": "fb7711d498a5a9fb9f5ae61df7d64e77a92ac0e575f800916bc13f99ef125039",
-      "after_sha256": "73d2c5cec2af093b03973fff0a9ebe75bf6f06ba0ed06231bd73dfab96eade65",
+      "after_sha256": "5940a7516164d9b9f6d1cd9c0719bc5c73521dacd45ea3c6e9e319546b1d194e",
       "reason": "User-authorized unified653: native MPV subtitle/preset and menu simplification, common danmu load retained; VLC async drain and original handoff; TV remote/hero stability; shape/color variants, increased orbit/petal weights and composable petals. Preserve earlier home/UI source, all core functions/data/native/API23 and no whole-comment vertical bounce."
     },
     "player/vlc/allowed-changes.json": {
@@ -1045,6 +1045,12 @@
     ],
     "petal_overlay_fraction_of_other_effects": 0.25,
     "global_effect_rate_unchanged": true,
-    "vertical_bounce_added": false
+    "vertical_bounce_added": false,
+    "font_family_review": {
+      "cancelled_pre_delivery_run": 45826594335,
+      "fixed_libass_source_verified": true,
+      "native_fonts_family_metadata_used": true,
+      "ttc_supported": true
+    }
   }
 }

@@ -15,6 +15,7 @@ final class MpvStore {
     final Context context;
     final SharedPreferences prefs;
     final File directory,fontsDirectory,shadersDirectory;
+    private String presetFamily;
     MpvStore(Context c) {
         context=c.getApplicationContext(); prefs=context.getSharedPreferences("leotv.mobile.mpv",0);
         directory=new File(context.getNoBackupFilesDir(),"mobile-mpv");
@@ -72,7 +73,7 @@ final class MpvStore {
     /** SFNT name table family: Unicode typographic family (16), then legacy family (1). */
     static String family(File file)throws IOException {
         try(RandomAccessFile in=new RandomAccessFile(file,"r")){
-            in.readInt();int tables=in.readUnsignedShort();if(tables<=0||tables>256)throw new IOException("字体表数量无效");in.skipBytes(6);
+            int magic=in.readInt();if(magic==0x74746366){in.readInt();long faces=in.readInt()&0xffffffffL;if(faces==0||faces>256)throw new IOException("字体集合数量无效");int face=Locale.getDefault().getLanguage().equals("zh")&&faces>2?2:0;in.seek(12L+face*4L);long offset=in.readInt()&0xffffffffL;if(offset+12>in.length())throw new IOException("字体集合偏移无效");in.seek(offset);in.readInt();}int tables=in.readUnsignedShort();if(tables<=0||tables>256)throw new IOException("字体表数量无效");in.skipBytes(6);
             long name=-1,length=0;
             for(int i=0;i<tables;i++){int tag=in.readInt();in.readInt();long offset=in.readInt()&0xffffffffL,size=in.readInt()&0xffffffffL;if(tag==0x6e616d65){name=offset;length=size;}}
             if(name<0||name+length>in.length())throw new IOException("字体名称表无效");in.seek(name);int format=in.readUnsignedShort(),count=in.readUnsignedShort(),strings=in.readUnsignedShort();
@@ -93,6 +94,7 @@ final class MpvStore {
         for(String[] candidates:new String[][]{{"NotoSans-Regular.ttf","Roboto-Regular.ttf","DroidSans.ttf"},{"NotoSansCJK-Regular.ttc","NotoSansSC-Regular.otf","DroidSansFallback.ttf"}}){
             for(String name:candidates){File source=new File("/system/fonts",name);if(!source.isFile()||source.length()>24*1024*1024)continue;File target=new File(preset,name);
                 if(!target.isFile()||target.length()!=source.length())try(InputStream in=new FileInputStream(source);OutputStream out=new FileOutputStream(target)){copy(in,out,24*1024*1024);}
+                try{presetFamily=family(target);}catch(IOException unavailable){continue;}
                 break;
             }
         }
@@ -115,7 +117,7 @@ final class MpvStore {
         o.put("video-sync",MpvOptions.choice("video-sync",prefs.getString("video-sync","audio"),"audio","display-resample"));
         // Preserve styled/animated ASS and embedded fonts. Removed custom form values never override a file.
         o.put("sub-ass-override","no");o.put("embeddedfonts","yes");
-        o.put("sub-fonts-dir",presetFonts().getAbsolutePath());
+        o.put("sub-fonts-dir",presetFonts().getAbsolutePath());if(presetFamily!=null)o.put("sub-font",presetFamily);
         nativeCaption(o);
         o.put("glsl-shaders",shaderList());return o;
     }
