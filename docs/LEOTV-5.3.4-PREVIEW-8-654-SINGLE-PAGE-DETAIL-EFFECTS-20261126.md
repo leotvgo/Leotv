@@ -25,3 +25,14 @@ TV光影、雷霆、影视库的主视觉使用完整视口高度，经典/极�
 源码准入增加654后继SHA256，保留此前全部账本。GitHub必需检查包括：海报全滚出/无半屏裁剪、各TV首页主题高度、原手机高度、底部定位边界、光点静止可见、花瓣绘制层次及无重复字形缓存、独立动画组与原缓存上限、API23/R8、原样/允许变化和固定签名。原ZIP、native、JNI/回移层、数据库、协议、MPV/VLC修复、TV/手机与双ABI区别保持。
 
 不做本地APK打包或反复设备回归。构建/发布前确认PUBLIC，完成后恢复PRIVATE；签名后实际单页滚动、首页空白、影视库信息位置、光点和花瓣观感由用户真机验收。
+
+
+## 实际固定签名交付
+
+[四套APK发布页](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4-preview.8-build-45839111195)，APK输入代码 `2dc504e4cc6a7568971fec86e8d708034d53418f`；[构建45839111195](https://github.com/leotvgo/Leotv/actions/runs/45839111195)及[发布45840420717](https://github.com/leotvgo/Leotv/actions/runs/45840420717)成功。先核对PUBLIC再触发，发布后恢复并独立核对PRIVATE，正式Latest保持5.3.3 / 646。
+
+全部14个发布资产、四份内部完整审计下载核对，bytes/SHA256/digest一致，公开摘要绑定完整审计SHA256。四个实际APK均以 `apksigner verify --min-sdk-version 23` 独立确认v1和固定证书 `ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a`，`zipalign -P 16 -c 4`通过。binary Manifest为 `com.leotv.app` / preview.8 / code654 / API23。
+
+原ZIP保护项TV32/64为1700/1689、手机32/64为1667/1656，原native32/21/34/23全部逐字保持；追加VLC三库或MPV十一库精确匹配固定lock，各ABI未混入另一套。原样/允许变化DEX语义、R8 8.8.34 release/full实际marker、完整JNI和对应源码成员/commit核对通过，native未重编。
+
+GitHub的单页海报全滚出/无内容裁剪、TV首页五主题高度/手机原默认、底板/叠加花瓣前后层次、双光点关闭动画仍可见、无底板花瓣不生成第二份文字位图、三动画组边界及原缓存限制/API23检查通过。固定签名APK、对应源码和完整审计保存在忽略目录 `.work/fix654/delivery/`；[结构化交付核对](../evidence/player-654-signed-delivery-20261126.json)记录实际hash与PRIVATE收据。双光点默认仍约占全部弹幕3.5%，不是给全部弹幕添加。实际设备的滚动、首页/影视库位置和效果观感待用户验收。

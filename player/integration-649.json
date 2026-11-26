@@ -1075,7 +1075,7 @@
     },
     "README.md": {
       "before_sha256": "0a02ce7261dd4ae40f746f08956f081786c2b1108136748d781b0b81aac953ab",
-      "after_sha256": "ca730b3a7ff6d5a91a5446196af8814ea51fcba6176e6e9d9b82c879ce96f373",
+      "after_sha256": "ed3bea9e940561d4a226c33fd7e7fa99cb6ac175f0519477c161bcd6a0a7e6ff",
       "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
     },
     "branding/AndroidManifest.xml": {
@@ -1180,13 +1180,18 @@
     },
     "docs/LEOTV-5.3.4-PREVIEW-8-654-SINGLE-PAGE-DETAIL-EFFECTS-20261126.md": {
       "before_sha256": null,
-      "after_sha256": "33ecf3a0ffc2869ef2965e23f9e66682662dc0a407bf93a81d77db9318ee3ab0",
+      "after_sha256": "b7d9a7da71462796598260841c008395a905766571c1659f9ff2f959a67a6666",
       "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
     },
     "research/check_home_geometry.py": {
       "before_sha256": null,
       "after_sha256": "f7d5cf54c0e2f0e2b5f4b6aec23ce98135e7e1668caeeeb7b47a298139778e16",
       "reason": "User-authorized654 single scrolling detail page without pinned/clipped half-screen hero, bottom anchored library actions/info, full TV home theme extent and native row height; visible orbit/petals with bounded family slots, original unboxed glyph rendering and no duplicate glyph bitmap. Preserve native/SDK23/ABI/data and existing feature structure."
+    },
+    "evidence/player-654-signed-delivery-20261126.json": {
+      "before_sha256": null,
+      "reason": "Verified654 actual fixed-signature APK/source delivery and private restoration, documentation only",
+      "after_sha256": "8338103ef5692d76bf8bd72dff65de10e8d19374f4fe7aca35f7c2ce1252c44b"
     }
   },
   "654_delivery_inputs": {
@@ -1200,6 +1205,10 @@
     "max_animated_comments": 3,
     "max_comments_per_animation_family": 1,
     "global_fraction_unchanged": true,
-    "native_inputs_unchanged": true
+    "native_inputs_unchanged": true,
+    "build_run_id": 45839111195,
+    "publish_run_id": 45840420717,
+    "apk_input_commit": "2dc504e4cc6a7568971fec86e8d708034d53418f",
+    "actual_signed_delivery_verified": true
   }
 }
