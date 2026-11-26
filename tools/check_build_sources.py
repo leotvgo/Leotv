@@ -114,7 +114,7 @@ def check_sources(root=ROOT):
         raise ValueError('Native recent history must retain the original outer list side padding.')
     if 'hero.externalTail(true)' not in home or 'hero.drawHomeFade(canvas' not in home or 'if(externalTail)' not in hero or 'setWillNotDraw(false)' not in hero or 'hero.onFrame(' not in home:
         raise ValueError('TV artwork must draw in its own View with a continuous parent fade before list content.')
-    if 'else addView(hero,0,' not in home or 'child==viewport()){backdrop.setBounds(0,0,getWidth(),getHeight());backdrop.draw(canvas)' not in home or 'if(!phone)hero.setVisibility(visible?VISIBLE:GONE)' not in home or 'hero.setTranslationY(top)' not in home:
+    if 'else addView(hero,0,' not in home or 'child==scroll){backdrop.setBounds(0,0,getWidth(),getHeight());backdrop.draw(canvas)' not in home or 'if(!phone)hero.setVisibility(visible?VISIBLE:GONE)' not in home or 'hero.setTranslationY(top)' not in home:
         raise ValueError('TV hero must draw behind the scrolling content and follow its layout and visibility.')
     if 'canvas.drawRect(0,start-top,w,height-top,paint)' not in hero or 'clipHeight>h&&imageBounds.bottom<clipHeight' not in hero:
         raise ValueError('Home tail must continue below the hero layout edge without exposing the image clip.')

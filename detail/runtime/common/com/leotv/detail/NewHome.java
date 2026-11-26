@@ -49,7 +49,7 @@ public final class NewHome implements AutoCloseable {
         if(!vod()){hide();return false;}
         if(page!=null){
             if(categoryMode){page.setVisibility(View.GONE);nativeUi.restoreToolbar();if(guardRecommendation(selectedCategory)){nativeRoot.setVisibility(View.INVISIBLE);nativeUi.mountRecommendation(selectedCategory);return true;}String selected=nativeUi.currentCategoryId();if(!selected.isEmpty()&&selectedCategory!=null&&!selected.equals(selectedCategory.id))for(CspHomeData.Category option:categories)if(!option.recommended&&option.id.equals(selected)){nativeUi.restoreCategory();selectedCategory=option;break;}if(selectedCategory!=null)NativeCategoryPaging.enter(activity,current.site.key,selectedCategory.id);if(nativeUi.categoryHeader==null&&!nativeUi.category(selectedCategory)){categoryMode=false;NativeCategoryPaging.leave(activity);}else {restoreNative();return false;}}
-            nativeUi.restoreCategory();nativeRoot.setVisibility(View.INVISIBLE);page.setVisibility(View.VISIBLE);nativeUi.borrow(page);nativeUi.layoutToolbar(page);nativeUi.homeAction(page.shortcut,page.scrollY()>page.dp(120));page.active(true);page.restoreInitialFocus();
+            nativeUi.restoreCategory();nativeRoot.setVisibility(View.INVISIBLE);page.setVisibility(View.VISIBLE);nativeUi.borrow(page);nativeUi.layoutToolbar(page);nativeUi.homeAction(page.shortcut,page.scroll.getScrollY()>page.dp(120));page.active(true);page.restoreInitialFocus();
             page.syncHistory();refreshHeroSettings();syncPending=false;
             return true;
         }
@@ -65,7 +65,7 @@ public final class NewHome implements AutoCloseable {
         });
         final CspHomePage mounted=page;
         mounted.backgroundChanged=()->{if(!closed&&page==mounted&&token==generation)publishBackground();};
-        mounted.viewportChanged=()->{if(closed||page!=mounted||token!=generation)return;nativeUi.scrolled(mounted.scrollY());nativeUi.homeAction(mounted.shortcut,mounted.scrollY()>mounted.dp(120));loadVisibleRows();};
+        mounted.viewportChanged=()->{if(closed||page!=mounted||token!=generation)return;nativeUi.scrolled(mounted.scroll.getScrollY());nativeUi.homeAction(mounted.shortcut,mounted.scroll.getScrollY()>mounted.dp(120));loadVisibleRows();};
         View navigation=phone?find("navigation"):null;
         ViewGroup.LayoutParams params=parent instanceof RelativeLayout?new RelativeLayout.LayoutParams(-1,-1):new FrameLayout.LayoutParams(-1,-1);
         int index=navigation!=null&&navigation.getParent()==parent?parent.indexOfChild(navigation):parent.getChildCount();parent.addView(page,index,params);page.setTranslationZ(1);page.setOutlineProvider(null);
@@ -92,7 +92,7 @@ public final class NewHome implements AutoCloseable {
         }
         loadVisibleRows();
     }
-    void loadVisibleRows(){if(page==null||current==null||categoryMode||!running)return;for(int i=0;i<categories.size();i++){if(!page.wantsRow(i))continue;if(!requested.add(i))continue;final int index=i;final NewHomeSite value=current;final long token=generation;CspHomeData.Category category=categories.get(i);final long rowToken=rowGeneration;worker.execute(()->loadRow(value,token,category,index,rowToken));}}
+    void loadVisibleRows(){if(page==null||current==null||categoryMode||!running)return;int bottom=page.scroll.getScrollY()+page.scroll.getHeight()+page.dp(300);for(int i=0;i<categories.size();i++){if(i>=3&&(page.shelves.get(i).root.getTop()==0||page.shelves.get(i).root.getTop()>bottom))continue;if(!requested.add(i))continue;final int index=i;final NewHomeSite value=current;final long token=generation;CspHomeData.Category category=categories.get(i);final long rowToken=rowGeneration;worker.execute(()->loadRow(value,token,category,index,rowToken));}}
     void loadRow(NewHomeSite value,long token,CspHomeData.Category category,int index,long rowToken){
         if(!validSite(value,token)||rowToken!=rowGeneration)return;
         if(categoryMode||!running){main.post(()->{if(valid(value,token))requested.remove(index);});return;}
@@ -126,13 +126,13 @@ public final class NewHome implements AutoCloseable {
     public void userInput(){if(!phone&&shown())page.initialFocusPending=false;}
     public boolean canWakeShortcuts(){return shown()&&page.leftContentEdge(activity.getCurrentFocus());}
     public void openShortcut(String action){if(!phone&&!closed)nativeUi.tvAction(action);}
-    public boolean focusContentAfterShortcut(View previous){if(!shown())return false;if(previous!=null&&previous.isShown()&&previous.isEnabled()&&NativeCspUi.descendant(previous,page.viewport())&&previous.requestFocus())return true;return page.focusContent();}
+    public boolean focusContentAfterShortcut(View previous){if(!shown())return false;if(previous!=null&&previous.isShown()&&previous.isEnabled()&&NativeCspUi.descendant(previous,page.scroll)&&previous.requestFocus())return true;return page.focusContent();}
     public boolean handleKey(android.view.KeyEvent event){
         if(phone||page==null||closed||categoryMode||!running)return false;
         int code=event.getKeyCode(),action=event.getAction();
         if(action==android.view.KeyEvent.ACTION_UP&&code==tvDirection){tvDirection=-1;return true;}
         if(code==android.view.KeyEvent.KEYCODE_BACK){
-            if(action==android.view.KeyEvent.ACTION_DOWN){if(!tvBack&&page.scrollY()<=0&&nativeUi.siteFocused())return false;tvBack=true;return true;}
+            if(action==android.view.KeyEvent.ACTION_DOWN){if(!tvBack&&page.scroll.getScrollY()<=0&&nativeUi.siteFocused())return false;tvBack=true;return true;}
             if(action==android.view.KeyEvent.ACTION_UP&&tvBack){tvBack=false;if(!event.isCanceled()&&!page.historyBack()&&!page.focusFirstInRow(activity.getCurrentFocus()))nativeUi.focusSite();return true;}
             return false;
         }

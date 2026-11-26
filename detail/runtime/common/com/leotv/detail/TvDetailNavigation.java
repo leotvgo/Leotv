@@ -153,11 +153,6 @@ final class TvDetailNavigation {
         View focused = page.findFocus();
         View target = descendant(focused, module.view) ? focused : module.container;
         if (!descendant(target, page)) return;
-        // Keep an actor/card row's picture and label together when revealing it.
-        // The hero actions share the whole metadata column, so return them to
-        // the top without pinning/transforming any part of the page.
-        if(descendant(target,hero)){scroll.position(0,true);return;}
-        if(module.container.getHeight()<=scroll.getHeight()-Math.round(56*page.getResources().getDisplayMetrics().density))target=module.container;
         bounds.set(0, 0, target.getWidth(), target.getHeight());
         page.offsetDescendantRectToMyCoords(target, bounds);
         int inset = Math.round(28 * page.getResources().getDisplayMetrics().density);

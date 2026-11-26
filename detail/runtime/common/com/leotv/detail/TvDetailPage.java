@@ -329,7 +329,7 @@ final class TvDetailPage implements DetailPage {
         if(initialPlayFocus&&playButton.isShown()&&playButton.getWidth()>0&&playButton.getHeight()>0&&(!playButton.isFocused()||scroll.getScrollY()!=0))navigation.focusPrimary();
         return mobile||!initialPlayFocus||!heroFrame.isLayoutRequested();}
     private void syncHeroLayout(){
-        if(DetailTheme.library(activity,mobile)||info.getParent()!=heroFrame||scroll.animating()||heroFrame.getWidth()<=0)return;
+        if(mobile||theme!=DetailTheme.TV_THUNDER||info.getParent()!=heroFrame||scroll.animating()||heroFrame.getWidth()<=0)return;
         FrameLayout.LayoutParams lp=(FrameLayout.LayoutParams)info.getLayoutParams();
         int width=lp.width>0?lp.width:heroFrame.getWidth();
         if(info.isLayoutRequested()||info.getWidth()!=width)info.measure(View.MeasureSpec.makeMeasureSpec(width,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED));
@@ -380,11 +380,11 @@ final class TvDetailPage implements DetailPage {
         actorFallback.setVisibility(value.actors.isEmpty()?View.VISIBLE:View.GONE);actorFallback.setText(value.cast.isEmpty()?(value.complete?"暂无演员资料":"演员资料加载中…"):value.cast);
         if(previous==null||previous.actors!=value.actors){portraits.clear();actors.removeAllViews();
         for(MobileDetailMetadata.Actor actor:value.actors){LinearLayout cell=column();cell.setPadding(dp(6),dp(8),dp(6),dp(8));
-            cell.setFocusable(true);DetailCardStyle.apply(cell);
+            cell.setFocusable(true);cell.setBackground(focusBackground(activity));
             String role=actor.role.isEmpty()?"":"导演".equals(actor.role)?"，"+actor.role:"，饰 "+actor.role;
             cell.setContentDescription(actor.name+role+"，查看相关作品");cell.setOnClickListener(view->openPerson(actor));
             ImageView image=new DetailImageView(activity);image.setContentDescription(actor.name);cell.addView(image,new LinearLayout.LayoutParams(dp(64),dp(68)));
-            TextView name=label(actor.name,12);DetailCardStyle.text(name);name.setMaxLines(1);cell.addView(name);
+            TextView name=label(actor.name,12);name.setMaxLines(1);cell.addView(name);
             if(!actor.role.isEmpty()){TextView character=label(actor.role,10);character.setMaxLines(1);cell.addView(character);}
             actors.addView(cell,new LinearLayout.LayoutParams(dp(80),-2));portraits.add(new Portrait(image,actor.image));}}
         actorTheme();renderBranding();refreshActions();refresh(BackdropSettings.read(activity).proxy);

@@ -1,8 +1,8 @@
 {
   "channel": "prerelease",
-  "version_name": "5.3.4-preview.10",
-  "version_code": 656,
-  "title": "Leotv 5.3.4-preview.10 TV 主页焦点与详情左下布局测试版",
+  "version_name": "5.3.4-preview.11",
+  "version_code": 657,
+  "title": "Leotv 5.3.4-preview.11 首页分类与演员布局回退测试版",
   "prerelease": true,
   "make_latest": false
 }

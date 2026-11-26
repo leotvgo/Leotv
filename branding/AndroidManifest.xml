@@ -2,8 +2,8 @@
 <!-- Identity overlay for all four ordinary variants; component class names retain their ABI. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.leotv.app"
-    android:versionCode="656"
-    android:versionName="5.3.4-preview.10">
+    android:versionCode="657"
+    android:versionName="5.3.4-preview.11">
     <uses-sdk android:minSdkVersion="23" />
     <application android:label="@string/app_name" />
 </manifest>

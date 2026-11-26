@@ -32,7 +32,6 @@ final class ThemeLayout {
         if(!below&&p.info.getParent()==p.page){p.page.removeView(p.info);p.heroFrame.addView(p.info,new FrameLayout.LayoutParams(-1,-2,Gravity.BOTTOM));}
         if(!below) {
         FrameLayout.LayoutParams params=(FrameLayout.LayoutParams)p.info.getLayoutParams();
-        params.topMargin=params.bottomMargin=params.leftMargin=params.rightMargin=0;
         params.width=left?(int)(width*(thunder?.68f:.55f)):-1;params.gravity=Gravity.BOTTOM|Gravity.LEFT;
         p.info.setLayoutParams(params);
         }
@@ -41,8 +40,6 @@ final class ThemeLayout {
         int side=mobile?20:left?44:64;p.info.setPadding(p.dp(side),p.dp(below?12:0),p.dp(side),p.dp(mobile?16:thunder?28:cinema?36:16));
         int gravity=left?Gravity.LEFT:Gravity.CENTER;
         p.title.setGravity(gravity);p.facts.setGravity(gravity);p.synopsis.setGravity(gravity);
-        p.brandingHeader.setGravity(gravity);p.tagline.setGravity(gravity);p.cast.setGravity(gravity);p.crewLine.setGravity(gravity);
-        p.badges.centered(!left);
         p.title.setTextSize(mobile?25:left?36:compact?24:26);
         p.synopsis.setMaxLines(thunder?2:cinema?3:mobile?3:2);p.synopsis.setTextSize(mobile?13:14);
         p.playButton.setVisibility(View.VISIBLE); p.playButton.thunder(thunder);

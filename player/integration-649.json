@@ -1449,5 +1449,107 @@
     "actual_signed_delivery_verified": true,
     "repository_visibility": "private",
     "six_api23_focus_checks_passed": true
+  },
+  "authorized_657_source_repairs": {
+    "README.md": {
+      "before_sha256": "d30d06ad464cf06b39ea84d25943e21c32483ef1639b1adfaf5624b51550c324",
+      "after_sha256": "5b4e983e742a5bb0dad90de935112d97de482dce3d4dc71f866ac35a209d3acd",
+      "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "e3518468b2e5b6540dd355dd39f3e96b3df71b74150f0b99da1d8835d4153242",
+      "after_sha256": "26b9c7bd8d58fe92da595a244b218e2140d09a074f81bb85cec09c67dc2f8a55",
+      "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    },
+    "branding/release.json": {
+      "before_sha256": "3a99ee46b87a07ae9307d15c0602621429ae49cd644c0e378670c778384b148b",
+      "after_sha256": "f4115867d89f39b967126c874fe0eab16ca76c8f0ad74ca8a6f479e8d1579dfd",
+      "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    },
+    "branding/res/values/strings.xml": {
+      "before_sha256": "6a45403d7235419c74a582bf0bb611b9678a40342b47b21ebbfaa00511883b5a",
+      "after_sha256": "c56927bc17890d49b6e729f5794913b16ec14d6728146e9411a4633c58cb6b05",
+      "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    },
+    "detail/home-layout-rollback.json": {
+      "before_sha256": null,
+      "after_sha256": "b2587724ee7ab316be88b35cf2ee52928e632b0f61eb6292c120b7fb25d10bfa",
+      "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    },
+    "detail/runtime/common/com/leotv/detail/CspHomePage.java": {
+      "before_sha256": "6281bb502cc96e0617a234e8a6b975aca6bc3c7a1ae8fda0151dcfab89898df7",
+      "after_sha256": "aa84ea4fbf21dc8a238ad380c422a8e2fa32a241e7e73529f90bec49b860f048",
+      "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    },
+    "detail/runtime/common/com/leotv/detail/NativeCspUi.java": {
+      "before_sha256": "7bd023be5a7b6f1dc237e446ccdcb49041b8ee1a765aa85a7541f70514346eb4",
+      "after_sha256": "c6c177cd1fbdff422ee14a0df4b4ccac2046709cf094755cd060aaf18096bb8e",
+      "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    },
+    "detail/runtime/common/com/leotv/detail/NewHome.java": {
+      "before_sha256": "56f708b717b18ae722107f4369dfec575070176fb2a89bc27b195dfe127027c8",
+      "after_sha256": "64c7225ef0c23fd229b58f7d17297016e1168383b17ccc75df8d4e9c6f8689c8",
+      "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    },
+    "detail/runtime/common/com/leotv/detail/TvDetailNavigation.java": {
+      "before_sha256": "02373837d4bea7603329c8fc2f6123747f7677488d0fa30bd4e5e9f61da56444",
+      "after_sha256": "26fdd43972488d188208f1a6ffbde31b47148ba717098d5242f1a7f1361693b9",
+      "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    },
+    "detail/runtime/common/com/leotv/detail/TvDetailPage.java": {
+      "before_sha256": "9773a4449849dfd0a256e6639427744f5b94b4876d1fe626ee1eaa14638755c6",
+      "after_sha256": "4daeb83092327385d390a0a907e6929e323622bb3f753738d71b03db7a23ef96",
+      "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    },
+    "detail/runtime/tv/com/leotv/detail/ThemeLayout.java": {
+      "before_sha256": "dc55a19922981e7b10e893d2f1af3510f7212384b7e61618ccfe363bfe41e4b2",
+      "after_sha256": "339d159696c9c9db0b266e20abf939298c04cf69fd0523adc40f043f9b29682b",
+      "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    },
+    "docs/LEOTV-5.3.4-PREVIEW-11-657-HOME-ACTORS-ROLLBACK-20261127.md": {
+      "before_sha256": null,
+      "after_sha256": "c919f207cb6dd8435650644c6d8fb36b63d804e95ecac59de37259615b3159b5",
+      "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    },
+    "research/effects-check/build.gradle": {
+      "before_sha256": "ad722a3a4ce3faaec93fd4f1a9d66a5e5d60be64b40b9ada3e2b65f08f7c5f06",
+      "after_sha256": "e1ae601b468ce8e33e4890d4af7acc265be7d44e2bd4c642b0480d467449a330",
+      "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    },
+    "tools/check_build_sources.py": {
+      "before_sha256": "5ebe8632cf0dcf9e605dfca5eac245e68ca76d60758272ca1df832e4642d3e1c",
+      "after_sha256": "bab4cee26478d085ddf3d6fa4d12e19533e58bd1e3fd6ad2e80f67b11fb5ff10",
+      "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    },
+    "tools/check_home_layout_rollback.py": {
+      "before_sha256": null,
+      "after_sha256": "cf052b56bcde99b00e0a4f4431eb359911bb1990aad2f967eb9d7b04c530312e",
+      "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    },
+    "tools/check_home_themes.py": {
+      "before_sha256": "d79d05ff55f1489e54409e7eee32cd329a8584d58e4dec5a957688fcc7506539",
+      "after_sha256": "080e818408f713c96f1e22d70c4a02364b15c3c6026ebe12d3bd06e751101b36",
+      "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "e1c77c238a1b2a6228383f6b9e7f575d489e3d02f18630d4b3d515a760ed1a6c",
+      "after_sha256": "1502b2fc051d8c3fac5b9fdc4b8d1be0840f9e079ce1885176f5c77d330f3dfb",
+      "reason": "User explicitly requested rollback of broken home category geometry/navigation and other-theme actor layout. Restore exact pre-recycler code652 modules, retain carousel-only themes and thunder/library fullscreen bottom-left hero requests, and preserve current native/player/danmaku/data/signing changes. Source rollback blocks are bound to archived code, no fabricated layout equivalence."
+    }
+  },
+  "657_delivery_inputs": {
+    "base_commit": "d3b73687b146b9c7c5cf82d8dfd24a23df24946e",
+    "release": "5.3.4-preview.11",
+    "version_code": 657,
+    "home_layout_restore_commit": "2bdca91e16b9a768d4e585354a8a4c37968e80d5",
+    "home_layout_restore_version_code": 652,
+    "restored_source_blocks": 23,
+    "home_categories_use_original_scrollview": true,
+    "new_home_recycler_withdrawn_from_execution": true,
+    "home_themes_carousel_only": true,
+    "actor_creation_restored_exact": true,
+    "tv_thunder_library_hero_requests_preserved": true,
+    "player_native_and_danmaku_changes_preserved": true,
+    "native_inputs_unchanged": true
   }
 }
