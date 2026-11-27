@@ -308,6 +308,7 @@ final class TvDetailPage implements DetailPage {
                 if(mobile)playbackPaths.toggle(flag);else{renderMobilePaths();playbackPaths.select(source,flag,true);}
             });
             row.setActivated(flag.equals(selectedFlag));TextView label=NativeViews.text(row);if(label!=null)label.setActivated(flag.equals(selectedFlag));
+            if(!mobile&&label!=null)label.setTextSize(14);
             if(mobile){LinearLayout group=column();group.addView(row,new LinearLayout.LayoutParams(-1,-2));playbackPaths.children(group,flag);flags.addView(group,new LinearLayout.LayoutParams(-1,-2));}
             else flags.addView(row,new LinearLayout.LayoutParams(-2,-2));
         }

@@ -2101,7 +2101,7 @@
     }
   },
   "authorized_663_additions": {
-    "tools/check_launch_rollback.py": "74ef25dd2b308aa4c9591342daddb6b5d2380d63872303cc2cfc5f2038a09340"
+    "tools/check_launch_rollback.py": "3cab75046cfbc16df077a787130a69f7244db782ae5c5ca05ce3275583627c1a"
   },
   "authorized_663_source_repairs": {
     ".github/workflows/ordinary-build.yml": {
@@ -2111,7 +2111,7 @@
     },
     "README.md": {
       "before_sha256": "f6293db3ec8967b27b4acc007ffa568d4943044dcc696d192dd525c113fb4865",
-      "after_sha256": "deafaeae2a43bf8d71b125154e341e27f6f5cd16af4b12602d9e2054792e37ca",
+      "after_sha256": "c50d8cc8c7346886acb17cc72b2c140f3e80b11422363d8886d49718e71b9258",
       "reason": "User-authorized original OS-dependent startup restoration, removing the fullscreen override while retaining TV anydpi banner and accepted 662 menu/playback behavior; latest authorization requests direct GitHub build as version 5.3.6 / 663."
     },
     "branding/AndroidManifest.xml": {
@@ -2126,7 +2126,7 @@
     },
     "branding/release.json": {
       "before_sha256": "97027926beb0bff484e5666b1e403a86a8b9925732b36bb8d57c8870be307dd5",
-      "after_sha256": "b36c3033c07a289fd47bfedadd8fbc0849647d59aab760de60a1c672cf12b35a",
+      "after_sha256": "fc4d3045518a23c20384352849ed410b60c628c7358b1a192c3d652d0465ab0c",
       "reason": "User-authorized original OS-dependent startup restoration, removing the fullscreen override while retaining TV anydpi banner and accepted 662 menu/playback behavior; latest authorization requests direct GitHub build as version 5.3.6 / 663."
     },
     "tools/apply_launch_branding.py": {
@@ -2158,6 +2158,11 @@
       "before_sha256": "3ed8277bf616677dccf950ac74394575a338a48027dbf81367b115fbc62bbbd0",
       "after_sha256": "00690830cecbcd925ab771b13e8954c911b940314c0a2a392fb53869895dee82",
       "reason": "User-authorized original OS-dependent startup restoration, removing the fullscreen override while retaining TV anydpi banner and accepted 662 menu/playback behavior; latest authorization requests direct GitHub build as version 5.3.6 / 663."
+    },
+    "detail/runtime/common/com/leotv/detail/TvDetailPage.java": {
+      "before_sha256": "0d753b72dc3ba6bd586f1d1f6dd04d69f7467e4f7e7cd1e203fe5438e6b64bd3",
+      "after_sha256": "66f3aa101d83240672efecce06aac0363edfe75193f86df9a0d06e5956834dbc",
+      "reason": "Additional explicit user request: reduce only TV detail parent flag from original 16sp to 14sp; keep mobile and 12sp child paths unchanged; bind this narrow allowed change in the mandatory path/source gate."
     }
   },
   "authorized_663_launch_rollback": {
@@ -2178,6 +2183,17 @@
       "branding/java/mobile/com/leotv/branding/LogoLoader.java": "babdf2de90fac077bf803f6f8625228418fe447ba037dc2772273acbc824e499",
       "branding/java/tv/com/leotv/branding/LogoLoader.java": "9707be6e912a4bb3c8466827cd5f78bdf8576b16fdaad64eebe967160d42ff89"
     },
-    "delivery": "Direct GitHub build/publication authorized as 5.3.6 / 663; no local APK packaging or device execution."
+    "delivery": "Direct GitHub build/publication authorized as 5.3.6 / 663; no local APK packaging or device execution.",
+    "authorized_tv_parent_flag_font": {
+      "source": "detail/runtime/common/com/leotv/detail/TvDetailPage.java",
+      "method": "renderMobilePaths",
+      "before_sha256": "0d753b72dc3ba6bd586f1d1f6dd04d69f7467e4f7e7cd1e203fe5438e6b64bd3",
+      "after_sha256": "66f3aa101d83240672efecce06aac0363edfe75193f86df9a0d06e5956834dbc",
+      "original_sp": 16,
+      "updated_sp": 14,
+      "mobile_changed": false,
+      "child_path_sp": 12,
+      "reason": "User screenshot identifies the upper UC无限 parent flag as too large; reduce only this TV parent label one typography step, preserving child paths and every other detail/menu behavior."
+    }
   }
 }

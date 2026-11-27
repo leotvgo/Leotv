@@ -10,7 +10,14 @@ from apply_launch_branding import banner_bitmap
 def check(root):
     contract=json.loads((root/'player/integration-649.json').read_text())['authorized_663_launch_rollback']
     for name,digest in contract['preserved_menu_and_playback_sources'].items():
-        if hashlib.sha256((root/name).read_bytes()).hexdigest()!=digest:
+        data=(root/name).read_bytes()
+        font=contract.get('authorized_tv_parent_flag_font',{})
+        if name==font.get('source'):
+            change=b'            if(!mobile&&label!=null)label.setTextSize(14);\n'
+            if data.count(change)!=1 or font.get('before_sha256')!=digest:
+                raise ValueError('TV parent flag font change differs from the authorized scope')
+            data=data.replace(change,b'',1)
+        if hashlib.sha256(data).hexdigest()!=digest:
             raise ValueError('Startup rollback changed an accepted menu/playback source: '+name)
     builder=(root/'tools/build_branded.py').read_text()
     if 'apply_launch_branding(resources' in builder or 'launch_drawable' in builder:
