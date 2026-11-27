@@ -1997,7 +1997,7 @@
     },
     "README.md": {
       "before_sha256": "7efdcf2930dbcd0cf36eabdd3fa77fff4e2049d91f9e040d3ac50f23d7cdea52",
-      "after_sha256": "6728e3dc292faa3600f282ed3723aa8c88722fc3dda074b7b04d5a7ca5f95c0d",
+      "after_sha256": "f6293db3ec8967b27b4acc007ffa568d4943044dcc696d192dd525c113fb4865",
       "reason": "Continue interrupted authorized 5.3.6 launch, phone path selection and empty-resource feedback fixes; retain API23, eight products and native playback. Carry forward verified 661 delivery documentation."
     },
     "branding/AndroidManifest.xml": {

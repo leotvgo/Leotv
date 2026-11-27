@@ -17,3 +17,16 @@
 新增源码：ui/java/com/leotv/ui/LaunchArtwork.java、branding/res/drawable/leotv_launch.xml、research/path-popup-check/src/test/java/com/leotv/detail/LaunchDrawableTest.java。其余变化列入player/integration-649.json的authorized_662_source_repairs；原文件基准摘要继续保留。签名私钥不进入Git、日志或资产，完整映射/审计保持内部草稿。
 
 按2026-11-26的临时公开授权，确认PUBLIC后触发编译/自动发布；完成必要核对后恢复PRIVATE。旧661八套APK及审计先保留内部归档。设备播放、菜单交互、实际启动效果和远端站点耗时由用户真机验收。
+
+## 实际交付完成
+
+- 成功构建源码：`b42355c34def65c420dfc31e50f011d85531b06d`。构建 [46000892791](https://github.com/leotvgo/Leotv/actions/runs/46000892791) 与自动发布 [46002717801](https://github.com/leotvgo/Leotv/actions/runs/46002717801) 成功。
+- [5.3.6 / 662 正式下载](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.6)：完整/基础、TV/手机、双ABI八套固定签名APK，正式Latest已更新；正式Git tag也逐项核对为成功构建源码。
+- 实际API23/35启动XML加载、背景覆盖、图标方形/居中检查，实际浮层触摸及同名父子/残留selected/反复开关单选检查通过。详情并行检查验证阻塞时先显示元数据、加载期间不误报失效、完整空结果提示；可选整套模型/UI回归仍关闭。
+- 每套签名后APK的API23 v1、签名载荷不变和固定证书由CI核对；固定证书SHA256 `ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a`。独立核对公开APK/报告文件摘要、内部完整审计/映射摘要、对应播放器源码和四组完整/基础共享源码/hook/ZIP指纹，全部通过。
+- 八套实际R8输出的新增原生调用目标都存在，缺失为零；原样代码语义、明确允许变化及原ZIP/native/JNI/资源ID/配置门禁保持。
+- 首轮45999581430在APK编译前因并行详情抽取测试漏带新增resourceResult方法失败；补齐实际方法及虚构Toast依赖并增加空结果验证。46000508075在源码/UI门禁通过后、APK编译前取消，以保留有可用路径时站点原始名称和顺序。662最终源码及八套实际APK由46000892791完成。
+- 661八套APK及原审计保留内部草稿 `leotv-5.3.6-661-archived`；662完整审计及映射保留内部草稿 `leotv-symbols-5.3.6-build-46000892791`。
+- 发布和必要核对完成后，仓库已恢复 **PRIVATE** 并核对。未本地打包APK、未执行真机；启动观感、真实菜单及站点耗时由用户真机验收。
+
+逐产品证据：[662固定签名交付记录](../evidence/leotv-5.3.6-662-signed-delivery-20261127.json)。
