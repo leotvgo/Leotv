@@ -17,3 +17,16 @@
 四组来源资源核对通过：TV每ABI990项、手机每ABI1257项style配置原样一致；三处原兼容启动XML路径不再替换，TV anydpi输出仍等于661固定实现。GlobalChrome源码直接与661成功源码核对一致；四变体源码/有序hook门禁通过。
 
 按已有临时公开授权确认PUBLIC后触发GitHub编译/自动发布，必要核对后恢复PRIVATE。旧662八套APK及原审计保留内部归档；实际启动呈现由用户真机验收。
+
+## 实际交付完成
+
+- 成功源码：`d91bcfd994787fd1e465fe71c66bed407416449f`；[构建46008834263](https://github.com/leotvgo/Leotv/actions/runs/46008834263)与[自动发布46010725356](https://github.com/leotvgo/Leotv/actions/runs/46010725356)均成功，八套实际APK为5.3.6 / 663。
+- [正式下载](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.6)：完整/基础、TV/手机、双ABI，固定签名覆盖升级662；Latest和正式Git tag已核对为成功源码。
+- 八套实际资源门禁：TV两ABI各990项、手机两ABI各1257项原style配置逐项一致；原兼容启动XML的三处ZIP路径全部保留，launch_theme_edits为空。所有TV产物的anydpi banner仍等于661固定bitmap XML。未加入额外全屏启动图或退出监听。
+- 实际编译源码摘要核对TV父线路14sp单行变化；除该允许变化，菜单、路径名持久化、等待/取消、空资源提示、播放器与LogoLoader源码摘要一致。下层路径仍为12sp，手机代码分支保持。
+- 八套签名后APK的API23 v1、签名载荷不变和固定证书由CI核对；证书SHA256为`ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a`。公开APK及报告摘要、内部完整审计/映射摘要、VLC配套源码与MPV固定源码摘要，独立核对通过。
+- 四组完整/基础的共享源码、hook及非新增播放器ZIP指纹一致；原样代码/允许变化、JNI/native/寄存器/资源ID配置门禁通过，新增宿主调用目标缺失为零。可选整套模型/UI回归仍关闭；保留实际手机浮层触摸及单选门禁。
+- 旧662八套APK和审计留在内部草稿`leotv-5.3.6-662-archived`；本版映射/完整审计保留内部草稿`leotv-symbols-5.3.6-build-46008834263`。
+- 发布及必要核对完成后已恢复 **PRIVATE** 并核对。未本地打包、未运行真机；启动呈现及TV字号观感待用户验收。
+
+逐产品证据：[663固定签名交付记录](../evidence/leotv-5.3.6-663-signed-delivery-20261127.json)。

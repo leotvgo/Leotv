@@ -2111,7 +2111,7 @@
     },
     "README.md": {
       "before_sha256": "f6293db3ec8967b27b4acc007ffa568d4943044dcc696d192dd525c113fb4865",
-      "after_sha256": "c50d8cc8c7346886acb17cc72b2c140f3e80b11422363d8886d49718e71b9258",
+      "after_sha256": "b75eefb629f5df6dcb325e1dfba4a1f466fa82887cac999a34dfe6fcbe916d09",
       "reason": "User-authorized original OS-dependent startup restoration, removing the fullscreen override while retaining TV anydpi banner and accepted 662 menu/playback behavior; latest authorization requests direct GitHub build as version 5.3.6 / 663."
     },
     "branding/AndroidManifest.xml": {

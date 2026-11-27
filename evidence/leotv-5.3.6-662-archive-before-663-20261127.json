@@ -1,0 +1,11 @@
+{
+  "old_release_id": 460590805,
+  "old_source_commit": "b42355c34def65c420dfc31e50f011d85531b06d",
+  "archive_tag": "leotv-5.3.6-662-archived",
+  "archive_git_object_sha": "b42355c34def65c420dfc31e50f011d85531b06d",
+  "old_apks_preserved": 8,
+  "replacement_source_commit": "d91bcfd994787fd1e465fe71c66bed407416449f",
+  "original_version_name_preserved": "5.3.6",
+  "replacement_version_code": 663,
+  "initial_replacement_source_commit": "d2567607b7ac067bf08f2f9a57119824ae35beae"
+}
