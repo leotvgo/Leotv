@@ -1,0 +1,344 @@
+{
+  "version_name": "5.3.6",
+  "version_code": 660,
+  "build_run_id": 45965676158,
+  "commit": "141f0a4b35714047a018d1d81c84b39edd926a43",
+  "release_url": "https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.6",
+  "certificate_sha256": "ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a",
+  "local_apk_built": false,
+  "device_executed": false,
+  "verification": "CI verified actual signed API23 APKs and original/allowed changes; release asset SHA256 independently bound to downloaded signature and audit reports.",
+  "variants": {
+    "tv-v7a": {
+      "source_variant": "tv-v7a",
+      "profile": "full",
+      "apk_sha256": "890220f3d69c26406257ac66c11d2ade1a4c3a46cd4faf4a160d8d5a4cb200dc",
+      "apk_bytes": 129234858,
+      "actual_fixed_certificate_and_api23_v1_verified_in_ci": true,
+      "release_upload_digest_matches_signed_apk": true,
+      "bound_full_audit_sha256": "a90c16e6603e10cb8eb5dc32e6cb00dbd71c1753b428c24bd62092078d61acda",
+      "original_zip_entries_exact": 1700,
+      "original_native_libraries_exact": 32,
+      "shared_feature_fingerprints": [
+        "a8dbf10f243a9f970bb992a376c3d964bc4e5169dfda8023cf805ef3d23fcd34",
+        "6a8bfe6cb9e38b42a8ed127a51c83d9c14c22dc4edf9347f85a6cfcc5981b0e9",
+        "7d46570653a4dfe83e017c22a3f2b5f7a52b9632e098a15e1de7d30749718eae"
+      ],
+      "url": "https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.6/leotv-tv-v7a.apk"
+    },
+    "tv-v8a": {
+      "source_variant": "tv-v8a",
+      "profile": "full",
+      "apk_sha256": "ef96922be199356173a047f68927972100b641b462aa01d7402be22a04d566ca",
+      "apk_bytes": 131798087,
+      "actual_fixed_certificate_and_api23_v1_verified_in_ci": true,
+      "release_upload_digest_matches_signed_apk": true,
+      "bound_full_audit_sha256": "859ff6bc26174256969a45af04555ad627e340f730c59ab916d3d6329ae546b8",
+      "original_zip_entries_exact": 1689,
+      "original_native_libraries_exact": 21,
+      "shared_feature_fingerprints": [
+        "a8dbf10f243a9f970bb992a376c3d964bc4e5169dfda8023cf805ef3d23fcd34",
+        "6a8bfe6cb9e38b42a8ed127a51c83d9c14c22dc4edf9347f85a6cfcc5981b0e9",
+        "cd522d9c63bc08bbff0b37a8c21e26749a3bba85937f7868511839c00fc07e64"
+      ],
+      "url": "https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.6/leotv-tv-v8a.apk"
+    },
+    "mobile-v7a": {
+      "source_variant": "mobile-v7a",
+      "profile": "full",
+      "apk_sha256": "5c3dd3bd5bad3a06d4637d850da1b451278a6fce489e815bec07126c12684609",
+      "apk_bytes": 108418320,
+      "actual_fixed_certificate_and_api23_v1_verified_in_ci": true,
+      "release_upload_digest_matches_signed_apk": true,
+      "bound_full_audit_sha256": "a664147c8301fd74d044ee3916dd16f79d88efa01013ecfb6ef7b52403f31d60",
+      "original_zip_entries_exact": 1667,
+      "original_native_libraries_exact": 34,
+      "shared_feature_fingerprints": [
+        "0f40d8d362bc6bcadd28f5a749a0310526173d58c011984de51f708a7cd41476",
+        "143c9100c88289b3c46c6f6b37e2b7d66793d56ec2640d7f4d129a4d1156ee04",
+        "33667151f6b151ddc96ede1d99c61b23b40029164fb8ca2750b8cbae4843f78b"
+      ],
+      "url": "https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.6/leotv-mobile-v7a.apk"
+    },
+    "mobile-v8a": {
+      "source_variant": "mobile-v8a",
+      "profile": "full",
+      "apk_sha256": "835f3ebeb99f743d231d7213b4b36710178588b3026be27792dc3bcd12693b30",
+      "apk_bytes": 110580121,
+      "actual_fixed_certificate_and_api23_v1_verified_in_ci": true,
+      "release_upload_digest_matches_signed_apk": true,
+      "bound_full_audit_sha256": "d911e37062a61731d9239591f75441b099c3f352af46c34a09ccc3b882545758",
+      "original_zip_entries_exact": 1656,
+      "original_native_libraries_exact": 23,
+      "shared_feature_fingerprints": [
+        "0f40d8d362bc6bcadd28f5a749a0310526173d58c011984de51f708a7cd41476",
+        "143c9100c88289b3c46c6f6b37e2b7d66793d56ec2640d7f4d129a4d1156ee04",
+        "eca8a4386e89e58be096b03168edcc322006efe8238f1c9a555105cfd2a14674"
+      ],
+      "url": "https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.6/leotv-mobile-v8a.apk"
+    },
+    "tv-v7a-core": {
+      "source_variant": "tv-v7a",
+      "profile": "core",
+      "apk_sha256": "739eba148857ef4276c70e02c55650bd1de9424c984fe3c392a04110c20ccaf3",
+      "apk_bytes": 88443905,
+      "actual_fixed_certificate_and_api23_v1_verified_in_ci": true,
+      "release_upload_digest_matches_signed_apk": true,
+      "bound_full_audit_sha256": "e829bac4ee4c57819d0fcafb8c239b9b77d2a892d6d2fdef86d0c971794401e3",
+      "original_zip_entries_exact": 1700,
+      "original_native_libraries_exact": 32,
+      "shared_feature_fingerprints": [
+        "a8dbf10f243a9f970bb992a376c3d964bc4e5169dfda8023cf805ef3d23fcd34",
+        "6a8bfe6cb9e38b42a8ed127a51c83d9c14c22dc4edf9347f85a6cfcc5981b0e9",
+        "7d46570653a4dfe83e017c22a3f2b5f7a52b9632e098a15e1de7d30749718eae"
+      ],
+      "url": "https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.6/leotv-tv-v7a-core.apk"
+    },
+    "tv-v8a-core": {
+      "source_variant": "tv-v8a",
+      "profile": "core",
+      "apk_sha256": "24670b19554ca211ccab5730cbb09ebb688beb41e2ecc1aa1f15624397dc7716",
+      "apk_bytes": 87328932,
+      "actual_fixed_certificate_and_api23_v1_verified_in_ci": true,
+      "release_upload_digest_matches_signed_apk": true,
+      "bound_full_audit_sha256": "b9288ce2cadd48f9161622d8071d52b1414f5806d630a5796aca5ee1df5cce3d",
+      "original_zip_entries_exact": 1689,
+      "original_native_libraries_exact": 21,
+      "shared_feature_fingerprints": [
+        "a8dbf10f243a9f970bb992a376c3d964bc4e5169dfda8023cf805ef3d23fcd34",
+        "6a8bfe6cb9e38b42a8ed127a51c83d9c14c22dc4edf9347f85a6cfcc5981b0e9",
+        "cd522d9c63bc08bbff0b37a8c21e26749a3bba85937f7868511839c00fc07e64"
+      ],
+      "url": "https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.6/leotv-tv-v8a-core.apk"
+    },
+    "mobile-v7a-core": {
+      "source_variant": "mobile-v7a",
+      "profile": "core",
+      "apk_sha256": "ae696ae12bceb3c2f387151bf5bd6b5ee744d966aacdacb9beacb094c007537c",
+      "apk_bytes": 83579347,
+      "actual_fixed_certificate_and_api23_v1_verified_in_ci": true,
+      "release_upload_digest_matches_signed_apk": true,
+      "bound_full_audit_sha256": "2c2f7256ff4d63cb5c210e7676aa7345c185aaabcf61450466d62e98520988b7",
+      "original_zip_entries_exact": 1667,
+      "original_native_libraries_exact": 34,
+      "shared_feature_fingerprints": [
+        "0f40d8d362bc6bcadd28f5a749a0310526173d58c011984de51f708a7cd41476",
+        "143c9100c88289b3c46c6f6b37e2b7d66793d56ec2640d7f4d129a4d1156ee04",
+        "33667151f6b151ddc96ede1d99c61b23b40029164fb8ca2750b8cbae4843f78b"
+      ],
+      "url": "https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.6/leotv-mobile-v7a-core.apk"
+    },
+    "mobile-v8a-core": {
+      "source_variant": "mobile-v8a",
+      "profile": "core",
+      "apk_sha256": "8d7d202a09158a249f2656318741dbd9e1a2e4324accf17412dc80052cc6bcbc",
+      "apk_bytes": 82792050,
+      "actual_fixed_certificate_and_api23_v1_verified_in_ci": true,
+      "release_upload_digest_matches_signed_apk": true,
+      "bound_full_audit_sha256": "f262bd97ff1ed03bfc3f270ad5bae83a260bf9a37a03903ea9a408d71f764ef9",
+      "original_zip_entries_exact": 1656,
+      "original_native_libraries_exact": 23,
+      "shared_feature_fingerprints": [
+        "0f40d8d362bc6bcadd28f5a749a0310526173d58c011984de51f708a7cd41476",
+        "143c9100c88289b3c46c6f6b37e2b7d66793d56ec2640d7f4d129a4d1156ee04",
+        "eca8a4386e89e58be096b03168edcc322006efe8238f1c9a555105cfd2a14674"
+      ],
+      "url": "https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.6/leotv-mobile-v8a-core.apk"
+    }
+  },
+  "release_assets": [
+    {
+      "name": "leotv-mobile-v7a-core-unsigned.audit.json",
+      "bytes": 3852,
+      "sha256": "85805c65fdda0cc6f3cab856f521d7b0a90e081a1b0e47a300df224f54afb51f"
+    },
+    {
+      "name": "leotv-mobile-v7a-core.apk",
+      "bytes": 83579347,
+      "sha256": "ae696ae12bceb3c2f387151bf5bd6b5ee744d966aacdacb9beacb094c007537c"
+    },
+    {
+      "name": "leotv-mobile-v7a-core.signature.json",
+      "bytes": 360,
+      "sha256": "fd2be11563fdb22571a8df22e255afbd10f2f9817b64ca32333d392587011d14"
+    },
+    {
+      "name": "leotv-mobile-v7a-unsigned.audit.json",
+      "bytes": 4332,
+      "sha256": "d0f263150d2f7ee617188672f413d1cc266d78be8c4b69e20175ca163b28d7e3"
+    },
+    {
+      "name": "leotv-mobile-v7a.apk",
+      "bytes": 108418320,
+      "sha256": "5c3dd3bd5bad3a06d4637d850da1b451278a6fce489e815bec07126c12684609"
+    },
+    {
+      "name": "leotv-mobile-v7a.signature.json",
+      "bytes": 355,
+      "sha256": "c16d826a442f067b49f4a29aa09adb377db4851d9a3f2fc9bb68f8c78e37d04a"
+    },
+    {
+      "name": "leotv-mobile-v8a-core-unsigned.audit.json",
+      "bytes": 3848,
+      "sha256": "50d848d8862e1d5e556507af341d8bd8547c4b632662aa4ea6be67dd242f7eae"
+    },
+    {
+      "name": "leotv-mobile-v8a-core.apk",
+      "bytes": 82792050,
+      "sha256": "8d7d202a09158a249f2656318741dbd9e1a2e4324accf17412dc80052cc6bcbc"
+    },
+    {
+      "name": "leotv-mobile-v8a-core.signature.json",
+      "bytes": 360,
+      "sha256": "060d4744934225f22fcfa66e3f8253af31d638449687354282be518cca9be5f1"
+    },
+    {
+      "name": "leotv-mobile-v8a-unsigned.audit.json",
+      "bytes": 4328,
+      "sha256": "e77a1ec1fc8fc8e36bb3826ce266a14869b7d1cfe21e0ecbb4310dba6be1ea1f"
+    },
+    {
+      "name": "leotv-mobile-v8a.apk",
+      "bytes": 110580121,
+      "sha256": "835f3ebeb99f743d231d7213b4b36710178588b3026be27792dc3bcd12693b30"
+    },
+    {
+      "name": "leotv-mobile-v8a.signature.json",
+      "bytes": 355,
+      "sha256": "02e88de7889ae0fd898f63e3538096edab357370d9911b07386adf13edf39b38"
+    },
+    {
+      "name": "leotv-tv-v7a-core-unsigned.audit.json",
+      "bytes": 3844,
+      "sha256": "d28b6e0cbcae178027d9f065c9b624bf34afd41fe8b3ebf83145e4ec0e8645c4"
+    },
+    {
+      "name": "leotv-tv-v7a-core.apk",
+      "bytes": 88443905,
+      "sha256": "739eba148857ef4276c70e02c55650bd1de9424c984fe3c392a04110c20ccaf3"
+    },
+    {
+      "name": "leotv-tv-v7a-core.signature.json",
+      "bytes": 356,
+      "sha256": "eeb78077eb922c4d0fde844bed5821222a2c1ce9b8175e85b4b457031dec36bd"
+    },
+    {
+      "name": "leotv-tv-v7a-player-source.tar.gz",
+      "bytes": 32972739,
+      "sha256": "4f44d706aefc07b41aed42c31edac2ba418cf0239ac7b54756ad3293c0bb7a4c"
+    },
+    {
+      "name": "leotv-tv-v7a-unsigned.audit.json",
+      "bytes": 4228,
+      "sha256": "05ec9f0ee0a51023eed1e37f32df71517386e2c6d6b3c395917616ef135d2b10"
+    },
+    {
+      "name": "leotv-tv-v7a.apk",
+      "bytes": 129234858,
+      "sha256": "890220f3d69c26406257ac66c11d2ade1a4c3a46cd4faf4a160d8d5a4cb200dc"
+    },
+    {
+      "name": "leotv-tv-v7a.signature.json",
+      "bytes": 351,
+      "sha256": "b58af1c52282cb3de6f94a5a44056483fb6061a36f0cb15004f5f08ed7f84f28"
+    },
+    {
+      "name": "leotv-tv-v8a-core-unsigned.audit.json",
+      "bytes": 3840,
+      "sha256": "84fac4d9e4d8b41e98a9dc5c30a7e1abc26c164f10bdd9ad5c2c2454e8d63760"
+    },
+    {
+      "name": "leotv-tv-v8a-core.apk",
+      "bytes": 87328932,
+      "sha256": "24670b19554ca211ccab5730cbb09ebb688beb41e2ecc1aa1f15624397dc7716"
+    },
+    {
+      "name": "leotv-tv-v8a-core.signature.json",
+      "bytes": 356,
+      "sha256": "bfc1af63db48dc3dcf634cea41d10b0203466e11bb514c1d20cd9bb5f270dc0c"
+    },
+    {
+      "name": "leotv-tv-v8a-player-source.tar.gz",
+      "bytes": 32972739,
+      "sha256": "4f44d706aefc07b41aed42c31edac2ba418cf0239ac7b54756ad3293c0bb7a4c"
+    },
+    {
+      "name": "leotv-tv-v8a-unsigned.audit.json",
+      "bytes": 4224,
+      "sha256": "82290a96911f4dd23ccb51ad5744461d8ccd397b3bd56659f47e27a3acb3c247"
+    },
+    {
+      "name": "leotv-tv-v8a.apk",
+      "bytes": 131798087,
+      "sha256": "ef96922be199356173a047f68927972100b641b462aa01d7402be22a04d566ca"
+    },
+    {
+      "name": "leotv-tv-v8a.signature.json",
+      "bytes": 351,
+      "sha256": "7ee464194d6ae1aedc21364d835859190fff92c808a8e404c74f0338eb16913a"
+    }
+  ],
+  "profile_pairs": {
+    "tv-v7a": {
+      "full": [
+        "a8dbf10f243a9f970bb992a376c3d964bc4e5169dfda8023cf805ef3d23fcd34",
+        "6a8bfe6cb9e38b42a8ed127a51c83d9c14c22dc4edf9347f85a6cfcc5981b0e9",
+        "7d46570653a4dfe83e017c22a3f2b5f7a52b9632e098a15e1de7d30749718eae"
+      ],
+      "core": [
+        "a8dbf10f243a9f970bb992a376c3d964bc4e5169dfda8023cf805ef3d23fcd34",
+        "6a8bfe6cb9e38b42a8ed127a51c83d9c14c22dc4edf9347f85a6cfcc5981b0e9",
+        "7d46570653a4dfe83e017c22a3f2b5f7a52b9632e098a15e1de7d30749718eae"
+      ]
+    },
+    "tv-v8a": {
+      "full": [
+        "a8dbf10f243a9f970bb992a376c3d964bc4e5169dfda8023cf805ef3d23fcd34",
+        "6a8bfe6cb9e38b42a8ed127a51c83d9c14c22dc4edf9347f85a6cfcc5981b0e9",
+        "cd522d9c63bc08bbff0b37a8c21e26749a3bba85937f7868511839c00fc07e64"
+      ],
+      "core": [
+        "a8dbf10f243a9f970bb992a376c3d964bc4e5169dfda8023cf805ef3d23fcd34",
+        "6a8bfe6cb9e38b42a8ed127a51c83d9c14c22dc4edf9347f85a6cfcc5981b0e9",
+        "cd522d9c63bc08bbff0b37a8c21e26749a3bba85937f7868511839c00fc07e64"
+      ]
+    },
+    "mobile-v7a": {
+      "full": [
+        "0f40d8d362bc6bcadd28f5a749a0310526173d58c011984de51f708a7cd41476",
+        "143c9100c88289b3c46c6f6b37e2b7d66793d56ec2640d7f4d129a4d1156ee04",
+        "33667151f6b151ddc96ede1d99c61b23b40029164fb8ca2750b8cbae4843f78b"
+      ],
+      "core": [
+        "0f40d8d362bc6bcadd28f5a749a0310526173d58c011984de51f708a7cd41476",
+        "143c9100c88289b3c46c6f6b37e2b7d66793d56ec2640d7f4d129a4d1156ee04",
+        "33667151f6b151ddc96ede1d99c61b23b40029164fb8ca2750b8cbae4843f78b"
+      ]
+    },
+    "mobile-v8a": {
+      "full": [
+        "0f40d8d362bc6bcadd28f5a749a0310526173d58c011984de51f708a7cd41476",
+        "143c9100c88289b3c46c6f6b37e2b7d66793d56ec2640d7f4d129a4d1156ee04",
+        "eca8a4386e89e58be096b03168edcc322006efe8238f1c9a555105cfd2a14674"
+      ],
+      "core": [
+        "0f40d8d362bc6bcadd28f5a749a0310526173d58c011984de51f708a7cd41476",
+        "143c9100c88289b3c46c6f6b37e2b7d66793d56ec2640d7f4d129a4d1156ee04",
+        "eca8a4386e89e58be096b03168edcc322006efe8238f1c9a555105cfd2a14674"
+      ]
+    }
+  },
+  "all_four_profile_pairs_match": true,
+  "publish_run_id": 45967252438,
+  "official_latest": true,
+  "prerelease": false,
+  "public_confirmed_before_dispatch": true,
+  "repository_visibility_after_delivery": "PRIVATE",
+  "private_symbol_release_draft_verified": true,
+  "optional_model_ui_regressions": false,
+  "first_source_run": {
+    "run_id": 45964620624,
+    "conclusion": "failure",
+    "reason": "Required preload fixture omitted the new PlaybackPaths compilation dependency; corrected before APK compilation."
+  }
+}
