@@ -54,12 +54,13 @@ final class DetailPlaybackPaths {
                 Object response=PreloadHost.requestPaths(page.activity,snapshot);
                 if(response==null)throw new IllegalStateException("Missing path response");
                 Object urls=PreloadHost.call(response,"getUrl");
-                List<String> returned=PlaybackPaths.names(urls);List<String> available=new ArrayList<>();
+                List<String> returned=PlaybackPaths.names(urls);boolean available=false;
                 for(int i=0;i<returned.size();i++){
                     PreloadHost.call(urls,"set",i);
-                    if(!PreloadHost.text(PreloadHost.call(urls,"v")).trim().isEmpty())available.add(returned.get(i));
+                    if(!PreloadHost.text(PreloadHost.call(urls,"v")).trim().isEmpty())available=true;
                 }
-                result=available;
+                // Preserve provider path order/names when any path is usable.
+                result=available?returned:Collections.emptyList();
             }catch(ReflectiveOperationException|RuntimeException unavailable){error=true;}
             List<String> values=result;boolean unavailable=error;
             page.activity.runOnUiThread(()->{
