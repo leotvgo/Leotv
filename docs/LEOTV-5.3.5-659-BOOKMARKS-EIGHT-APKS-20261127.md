@@ -22,3 +22,21 @@ GitHub 保留完整原 APK 语义/ZIP、固定 native/API23、R8 8.8.34 release/
 新增实际 API23 分类位置测试：进入详情不瞬间回首项、离开视野保留分类位置/数据顺序、返回键两步、分类标题返回首作。使用当前生产焦点/滚动方法与实际 Views，不宣称真实设备验收。发布脚本的虚构产物测试覆盖八产品齐备、基础版原生/类残留及跨档位业务漂移拒绝发布。没有本地 APK 构建或重复设备打包。
 
 按已授权窗口先核对 PUBLIC 再触发，构建/发布结束恢复并核对 PRIVATE。私有订阅、凭据、签名私钥不进入 Git/产物。旧未确认 Tg 自动找源逻辑和全部其他功能保持。
+
+## 已正式交付
+
+- APK 输入提交：ad98284d55beeaa2206506514b7d8dc0ff392eff。
+- GitHub 构建 45932375923、发布 45933492169 均成功；正式 [Leotv 5.3.5 / 659](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.5) 已核对为 Latest、非草稿、非预发布。
+- 八个 APK、26 个发布资产和八个内部完整审计已下载核对大小和 SHA-256；全部实际包的 apksigner API23 v1 固定证书、16KiB native 对齐、原 ZIP/native、R8 8.8.34 release/full、字符串保护与对应源码绑定通过。
+- 四对完整版/基础版的业务源码、非播放器钩子和实际共用 ZIP 字节指纹一致。基础版实际 APK 均无新增 MPV/VLC 的原生库/资源，编译产物及宿主无其类/引用；原 System/IJK/Exo 保留。
+- 四项实际 API23 分类位置/返回检查通过：进入详情不瞬间回首项、离开视野保留顺序和位置、返回键首作后顶部、分类标题返回首作。原生资源绑定和长按保持。
+- 固定证书 SHA-256：ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a。签名私钥和完整混淆资料未公开。
+- 仓库先确认 PUBLIC 再构建，发布后已恢复并独立确认 PRIVATE。没有本地 APK 构建或真实设备执行；运行交互仍由用户验收。
+- [八套实际产物与四对功能一致性记录](../evidence/leotv-5.3.5-659-signed-delivery-20261127.json)。
+
+| 设备 / ABI | 完整内核版 | 基础版（不含新增 MPV/VLC） |
+| --- | --- | --- |
+| TV / armeabi-v7a | [下载](https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.5/leotv-tv-v7a.apk) | [下载](https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.5/leotv-tv-v7a-core.apk) |
+| TV / arm64-v8a | [下载](https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.5/leotv-tv-v8a.apk) | [下载](https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.5/leotv-tv-v8a-core.apk) |
+| 手机 / armeabi-v7a | [下载](https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.5/leotv-mobile-v7a.apk) | [下载](https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.5/leotv-mobile-v7a-core.apk) |
+| 手机 / arm64-v8a | [下载](https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.5/leotv-mobile-v8a.apk) | [下载](https://github.com/leotvgo/Leotv/releases/download/leotv-5.3.5/leotv-mobile-v8a-core.apk) |

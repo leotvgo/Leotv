@@ -1,6 +1,6 @@
 # Leotv — 5.3.5 / 659 分类位置保留与八套 APK
 
-待 GitHub 正式构建 **5.3.5 / 659**：TV 新主页保留各分类遥控位置，离开视野/进入详情不归零，返回键先回该分类首作、再回顶部。按用户要求提供 TV/手机、双 ABI、完整内核版和不含新增 MPV/VLC 的基础版，共八套固定签名 APK；其余源码/钩子/资源逐对核对一致，沿用 R8 release/full。原布局和长按搜索保持。[659 范围与交付规则](docs/LEOTV-5.3.5-659-BOOKMARKS-EIGHT-APKS-20261127.md)。
+已正式发布 **5.3.5 / 659**：[八套固定签名 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.5)。TV 新主页保留每个分类遥控位置，离开视野或进入详情不归零，返回键先回当前分类首作、再回顶部。完整内核版及不含新增 MPV/VLC 的基础版各四套，均保留原 System/IJK/Exo 和其他功能；两组共用源码、非播放器钩子及实际 ZIP 载荷逐对核对一致。八套实际 APK 的 API23、R8 release/full、原样/允许变化、固定 native、源码及签名核对通过，四项分类位置/返回检查通过。正式 Latest 已更新，仓库已恢复 PRIVATE，真实交互待用户验收。[659 范围与交付记录](docs/LEOTV-5.3.5-659-BOOKMARKS-EIGHT-APKS-20261127.md)。
 
 已发布 **5.3.4-preview.12 / 658**：[四套固定签名 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.4-preview.12-build-45924371141)。按用户要求，新主页轮播和全部分类/更多自绘资源海报长按直接进入原生全局搜索，绕过原站 indexs/changeable 与详情解析，沿用完整关键词及 TV/手机原任务标志。手机轮播补回长按识别，抬手不再重复触发短按。六项实际 API23 长按/手势检查通过；原 23 个布局恢复块继续核对一致，四套实际 APK 的签名、原样/允许变化、固定 native 与对应源码已核对，仓库已恢复 PRIVATE。按用户优先级本版不猜测改动 Tg 豆瓣首次自动找源，也未修改或发布私有订阅/JAR/凭据。[658 范围与交付](docs/LEOTV-5.3.4-PREVIEW-12-658-NATIVE-POSTER-SEARCH-20261127.md)。
 

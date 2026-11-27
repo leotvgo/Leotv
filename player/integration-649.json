@@ -1702,7 +1702,7 @@
     },
     "README.md": {
       "before_sha256": "7c98f65aa8e4d7a7457e2752ee34b96ed0aad8df9b41a2bd5838f45fe84bb366",
-      "after_sha256": "adf0d9ae408521b139fe5215ee8adc713ebd04e7e98d959b6c9a22e8af5d2011",
+      "after_sha256": "4fbca417b784dd7dc09218a0f171d0ab91f6da123ed33fbf1d6c5b81e9fe8813",
       "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
     },
     "branding/AndroidManifest.xml": {
@@ -1732,7 +1732,7 @@
     },
     "docs/LEOTV-5.3.5-659-BOOKMARKS-EIGHT-APKS-20261127.md": {
       "before_sha256": null,
-      "after_sha256": "19963219e1b0e89986e0ed4a75f19a5daa3f27f8ea6bcafdb617b3e7e7dc9e3f",
+      "after_sha256": "7193b339b63d2ca1ab7444f2bea4f8b5440e8feac10e566828262611b74307ac",
       "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
     },
     "research/effects-check/build.gradle": {
@@ -1809,6 +1809,11 @@
       "before_sha256": "931c911b44ca55a334ed48419247964315c46f2c6cccf166a280e773ee0cfc30",
       "after_sha256": "f374ddbbe3bdcd31e213b708134b8fa6b11ce75353e15b13ad391ee7eaae75d2",
       "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "evidence/leotv-5.3.5-659-signed-delivery-20261127.json": {
+      "before_sha256": null,
+      "reason": "Verified official5.3.5/659 eight fixed-signature products, four equivalent profile pairs, bookmark checks and PRIVATE restoration; documentation only",
+      "after_sha256": "d561195efb87cbe3f383173342042fab919db8af31a35982e8fa77a7abc61078"
     }
   },
   "659_delivery_inputs": {
@@ -1825,6 +1830,14 @@
     "back_first_card_then_top": true,
     "shared_feature_pair_parity_required": true,
     "native_inputs_unchanged": true,
-    "all_other_features_preserved": true
+    "all_other_features_preserved": true,
+    "build_run_id": 45932375923,
+    "publish_run_id": 45933492169,
+    "apk_input_commit": "ad98284d55beeaa2206506514b7d8dc0ff392eff",
+    "actual_signed_delivery_verified": true,
+    "repository_visibility": "private",
+    "eight_actual_apks_verified": true,
+    "four_profile_pairs_verified": true,
+    "official_latest": true
   }
 }
