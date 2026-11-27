@@ -59,4 +59,23 @@ public class MobilePathPopupTest {
         assertEquals("直连",PlaybackPaths.chosen(activity,"fiction-site","fiction-work","Leo夸克"));
         assertTrue(flags.getLayoutParams() instanceof FrameLayout.LayoutParams);
     }
+    @Test public void parentNameAndStaleTextSelectionCannotCheckAnotherChild()throws Exception {
+        Activity activity=Robolectric.buildActivity(Activity.class).setup().visible().get();
+        LinearLayout content=new LinearLayout(activity);content.setOrientation(LinearLayout.VERTICAL);activity.setContentView(content);
+        content.addView(new TextView(activity),new LinearLayout.LayoutParams(-1,240));
+        LinearLayout flags=new LinearLayout(activity);flags.setOrientation(LinearLayout.VERTICAL);
+        MobileSourceBar bar=new MobileSourceBar(activity,flags);bar.hierarchical=true;bar.selected("UC原画");
+        ScrollView scroll=new ScrollView(activity);scroll.addView(flags,new ScrollView.LayoutParams(-1,-2));bar.picker.addView(scroll);content.addView(bar);
+        View first=NativeViews.adapter(activity,"adapter_quality","UC原画",()->{});
+        View second=NativeViews.adapter(activity,"adapter_quality","Leo代理原画",()->{});
+        first.setSelected(true);second.setActivated(true);
+        flags.addView(first,new LinearLayout.LayoutParams(-1,48));flags.addView(second,new LinearLayout.LayoutParams(-1,48));
+        layout(content,480,900);Shadows.shadowOf(Looper.getMainLooper()).idle();
+        for(int i=0;i<3;i++){
+            bar.selector.performClick();PopupWindow popup=window(bar);assertTrue(popup.isShowing());
+            popup.getContentView().getViewTreeObserver().dispatchOnPreDraw();
+            assertNull("Parent flag text and marquee selection are not a path choice",NativeViews.text(first).getCompoundDrawables()[2]);
+            assertNotNull(NativeViews.text(second).getCompoundDrawables()[2]);bar.dismiss();
+        }
+    }
 }

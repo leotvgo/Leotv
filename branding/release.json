@@ -1,8 +1,8 @@
 {
   "channel": "stable",
   "version_name": "5.3.6",
-  "version_code": 661,
-  "title": "Leotv 5.3.6 播放、线路菜单与启动图修复正式版",
+  "version_code": 662,
+  "title": "Leotv 5.3.6 全屏启动图与手机线路选择修复正式版",
   "prerelease": false,
   "make_latest": true
 }

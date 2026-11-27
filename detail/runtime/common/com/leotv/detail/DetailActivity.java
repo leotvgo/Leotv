@@ -74,6 +74,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
     private void completeSource(int sourceToken,SourceGateway.Detail value){
         if(isDestroyed()||sourceToken!=sourceGeneration)return;
         boolean keepArtwork=source!=null;sourcePending=false;source=value;page.bindSource(value,keepArtwork);
+        resourceResult(value);
         if(metadata!=null)page.render(metadata);
         BackdropIdentity resolved=identity();
         // Same evidence keeps its live job and poster; newly supplied year/type refines matching once.
@@ -150,12 +151,18 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
         getIntent().putExtra("key",site.key).putExtra("id",vod.optString("vod_id")).putExtra("name",vod.optString("vod_name")).putExtra("pic",vod.optString("vod_pic"));
         String id=vod.optString("vod_id");
         DetailSessionCache.State cached=DetailSessionCache.get(this,site.key,id);
-        if(cached!=null){bindChangedSource(cached.source);return;}
+        if(cached!=null){bindChangedSource(cached.source);resourceResult(cached.source);return;}
+        page.playButton.idle("正在解析资源…");
         sourceTask=worker.submit(()->{
             try{SourceGateway.Detail detail=SourceGateway.load(this,site.key,id);
-                main.post(()->{if(!isDestroyed()&&token==sourceGeneration)bindChangedSource(detail);});
-            }catch(Exception unavailable){main.post(()->{if(!isDestroyed()&&token==sourceGeneration)page.playButton.idle("线路详情暂不可用");});}
+                main.post(()->{if(!isDestroyed()&&token==sourceGeneration){bindChangedSource(detail);resourceResult(detail);}});
+            }catch(Exception unavailable){main.post(()->{if(!isDestroyed()&&token==sourceGeneration){page.playButton.idle("线路详情暂不可用");android.widget.Toast.makeText(this,"资源加载失败，请重试或更换站源",android.widget.Toast.LENGTH_LONG).show();}});}
         });
+    }
+    private void resourceResult(SourceGateway.Detail detail){
+        if(!detail.episodes.isEmpty())return;
+        page.playButton.idle("该资源跑路了 请更换站源");
+        android.widget.Toast.makeText(this,"该资源跑路了 请更换站源",android.widget.Toast.LENGTH_LONG).show();
     }
     /** A source picker changes the playable rows of the same work, not its artwork or metadata job. */
     private void bindChangedSource(SourceGateway.Detail detail){

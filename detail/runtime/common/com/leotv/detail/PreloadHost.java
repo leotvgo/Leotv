@@ -128,6 +128,10 @@ final class PreloadHost {
         return result;
     }
     static Object request(Context context,Snapshot snapshot)throws ReflectiveOperationException{
+        Object result=requestPaths(context,snapshot);
+        return usable(result)?result:null;
+    }
+    static Object requestPaths(Context context,Snapshot snapshot)throws ReflectiveOperationException{
         Object site=snapshot.site;String key=text(call(site,"getKey")),episode=snapshot.order.get(snapshot.next);
         int type=integer(call(site,"getType"));Object result;
         if(type==3){
@@ -154,7 +158,7 @@ final class PreloadHost {
         Object urls=call(result,"getUrl");Object values=call(urls,"getValues");
         if(values instanceof List&&!((List<?>)values).isEmpty())call(urls,"set",Math.max(0,Math.min(snapshot.key.quality,((List<?>)values).size()-1)));
         if(values instanceof List&&!((List<?>)values).isEmpty())call(urls,"set",PlaybackPaths.position(context,key,snapshot.key.work,snapshot.key.flag,urls,snapshot.key.quality));
-        return usable(result)?result:null;
+        return result;
     }
     private PreloadHost(){}
 }

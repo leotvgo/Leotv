@@ -1988,5 +1988,97 @@
       "after_sha256": "66ddf84d0f0c5de88ff987a71cad817bff6fb967a8855384a0390b2e85770dd6",
       "reason": "Fix the build661 release preparation dependency guard after adding mandatory path-ui: require sources, effects and actual nested popup checks before any APK matrix job; keep all draft ownership and upload recovery checks."
     }
+  },
+  "authorized_662_source_repairs": {
+    ".github/workflows/ordinary-build.yml": {
+      "before_sha256": "6a78fb44b6355f3e70213789b899036cf547f59a11203c7a443eaeee4750a7ae",
+      "after_sha256": "c4cff32ed33797d5bb2786cd2882f41c20b296f7c389120e97bff844de403b71",
+      "reason": "Continue interrupted authorized 5.3.6 launch, phone path selection and empty-resource feedback fixes; retain API23, eight products and native playback. Carry forward verified 661 delivery documentation."
+    },
+    "README.md": {
+      "before_sha256": "7efdcf2930dbcd0cf36eabdd3fa77fff4e2049d91f9e040d3ac50f23d7cdea52",
+      "after_sha256": "6728e3dc292faa3600f282ed3723aa8c88722fc3dda074b7b04d5a7ca5f95c0d",
+      "reason": "Continue interrupted authorized 5.3.6 launch, phone path selection and empty-resource feedback fixes; retain API23, eight products and native playback. Carry forward verified 661 delivery documentation."
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "7366a34eec1aafc8306fcdd7311080474b87fcfa6898253970ede7e11e33b738",
+      "after_sha256": "03f15433357815ad9722e9e7f90ad44456ce573cd14788834b8294449b320464",
+      "reason": "Continue interrupted authorized 5.3.6 launch, phone path selection and empty-resource feedback fixes; retain API23, eight products and native playback. Carry forward verified 661 delivery documentation."
+    },
+    "branding/changes.json": {
+      "before_sha256": "b2b8cac4cef0e0d4712ef741c12ceec7ae0fc693c4ec2f2283ea1db4d20999f0",
+      "after_sha256": "cc3b09c8083a40da56b6cc3b65c35b7be5a524d6ddb89857d8f9b529e6bc63aa",
+      "reason": "Continue interrupted authorized 5.3.6 launch, phone path selection and empty-resource feedback fixes; retain API23, eight products and native playback. Carry forward verified 661 delivery documentation."
+    },
+    "branding/release.json": {
+      "before_sha256": "57c4fe921e188e477d376becd952671dc5ba2a4dd32ad5dce909ca7abb75e37f",
+      "after_sha256": "97027926beb0bff484e5666b1e403a86a8b9925732b36bb8d57c8870be307dd5",
+      "reason": "Continue interrupted authorized 5.3.6 launch, phone path selection and empty-resource feedback fixes; retain API23, eight products and native playback. Carry forward verified 661 delivery documentation."
+    },
+    "detail/runtime/common/com/leotv/detail/DetailActivity.java": {
+      "before_sha256": "bddeb73e5b98e33f0b911b52493dc7705d6f10361035fddc22cc90fc1dbb0be4",
+      "after_sha256": "9a86774917cba96647ecce1ac00d81cc783b5a5d05969e0af3141ddddfdd8cb7",
+      "reason": "Continue interrupted authorized 5.3.6 launch, phone path selection and empty-resource feedback fixes; retain API23, eight products and native playback. Carry forward verified 661 delivery documentation."
+    },
+    "detail/runtime/common/com/leotv/detail/DetailPlaybackPaths.java": {
+      "before_sha256": "922cc5a817a61794749d399c6eae1de7e782a747c868d1ba9e20d8e1c333f5b5",
+      "after_sha256": "e848f073a6ecf42af1b23fb7d177effa89dd6250fb6bf211ed25b7ac1c98bfd5",
+      "reason": "Continue interrupted authorized 5.3.6 launch, phone path selection and empty-resource feedback fixes; retain API23, eight products and native playback. Carry forward verified 661 delivery documentation."
+    },
+    "detail/runtime/common/com/leotv/detail/DetailSourcePopup.java": {
+      "before_sha256": "835495a19125ab692ac7122267e8434ee4949998176599573669244b98e0cc75",
+      "after_sha256": "50a64ca53a6dd006ddbe5a499cac1eafe297de29a8023f83004ec11f0917b720",
+      "reason": "Continue interrupted authorized 5.3.6 launch, phone path selection and empty-resource feedback fixes; retain API23, eight products and native playback. Carry forward verified 661 delivery documentation."
+    },
+    "detail/runtime/common/com/leotv/detail/PreloadHost.java": {
+      "before_sha256": "e70675dd4c5624d758949f8e3400c8f1f97a633ae659cbd505ec64abd2aa658b",
+      "after_sha256": "9f40f43951b9bf8e5ca98efadff76826caf7173ae4795bdc99d9fba33d38a587",
+      "reason": "Continue interrupted authorized 5.3.6 launch, phone path selection and empty-resource feedback fixes; retain API23, eight products and native playback. Carry forward verified 661 delivery documentation."
+    },
+    "research/path-popup-check/src/test/java/com/leotv/detail/MobilePathPopupTest.java": {
+      "before_sha256": "e13259692a48c370877595426465d1a5756e2db619e1c295f0881224f7275423",
+      "after_sha256": "532845b9268c7ee8c88c655e0eae75516f415954aadc17301876b7ac58cc9f5c",
+      "reason": "Continue interrupted authorized 5.3.6 launch, phone path selection and empty-resource feedback fixes; retain API23, eight products and native playback. Carry forward verified 661 delivery documentation."
+    },
+    "tools/apply_launch_branding.py": {
+      "before_sha256": "8fc521247c8acd7eb78639c3bd9cfab4059fbd834ce0fee846cc4ae172f13f22",
+      "after_sha256": "6716406848bc05e173d5b242301fbf53858f92e617d8983774c3967a3e88444b",
+      "reason": "Continue interrupted authorized 5.3.6 launch, phone path selection and empty-resource feedback fixes; retain API23, eight products and native playback. Carry forward verified 661 delivery documentation."
+    },
+    "tools/build_branded.py": {
+      "before_sha256": "e25f849800f1f8e62d9ededaf5159fe435ce5af25f23c94ef67dcbc0f1afff9d",
+      "after_sha256": "25165a59283895760d7963feec71c8f36ca4fd1eabc1f0250fff2642622c66e2",
+      "reason": "Continue interrupted authorized 5.3.6 launch, phone path selection and empty-resource feedback fixes; retain API23, eight products and native playback. Carry forward verified 661 delivery documentation."
+    },
+    "tools/check_playback_paths.py": {
+      "before_sha256": "675d49a56f7e5d001dc7fccdf6781c80d870c8069beb2e1757185546cb6de7f5",
+      "after_sha256": "413708a31f1b13037d2f9237b564ea2720377e4ceff12a2e57a93e9c8cd0ab61",
+      "reason": "Continue interrupted authorized 5.3.6 launch, phone path selection and empty-resource feedback fixes; retain API23, eight products and native playback. Carry forward verified 661 delivery documentation."
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "490a405cbe9d7fa8651d07ab6f8d6b2a5189e44d367c89df2ba532f5ebb7f7c1",
+      "after_sha256": "04d64f5222be41000ce2a3f68128a4bc8c89a0f7fb890436ec28c05b4110a57e",
+      "reason": "Continue interrupted authorized 5.3.6 launch, phone path selection and empty-resource feedback fixes; retain API23, eight products and native playback. Carry forward verified 661 delivery documentation."
+    },
+    "ui/java/com/leotv/ui/GlobalChrome.java": {
+      "before_sha256": "00690830cecbcd925ab771b13e8954c911b940314c0a2a392fb53869895dee82",
+      "after_sha256": "3ed8277bf616677dccf950ac74394575a338a48027dbf81367b115fbc62bbbd0",
+      "reason": "Continue interrupted authorized 5.3.6 launch, phone path selection and empty-resource feedback fixes; retain API23, eight products and native playback. Carry forward verified 661 delivery documentation."
+    }
+  },
+  "authorized_662_additions": {
+    "ui/java/com/leotv/ui/LaunchArtwork.java": "8b342ca3c3b1b085ce03021170ed040e24714ff974d93d5f0caee072e4f0eafe",
+    "branding/res/drawable/leotv_launch.xml": "57338c9743e845ce02064408555398acd4e754dc48a97b3c47676b52b95abcc6",
+    "research/path-popup-check/src/test/java/com/leotv/detail/LaunchDrawableTest.java": "054ee9cc1907e9383fb0a8f6ec2809f495d297de469ffc7622a95e7d7dde5cbb"
+  },
+  "authorized_662_launch_artwork_origin": {
+    "source": "branding/res/drawable/ic_launcher_foreground.png",
+    "source_sha256": "e60910c1f47b20fb6f6b5ca3f1a14053cfc2eb5980d7e6d89eafe31d03b6d0b7",
+    "viewport": [
+      432,
+      432
+    ],
+    "mask": "Original white artwork pixel runs at min(R,G,B)>=230; no coordinate stretching",
+    "launch_file": "branding/res/drawable/leotv_launch.xml"
   }
 }

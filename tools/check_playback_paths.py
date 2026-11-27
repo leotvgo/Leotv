@@ -19,10 +19,18 @@ def check(root):
                   'NativeRouting.isFullscreenPlayer(activity)', 'Device.MOBILE?"e":"d"'):
         if token not in paths:
             raise ValueError('Path-name persistence/native selection contract missing: ' + token)
-    for token in ('PreloadHost.request(page.activity,snapshot)', 'token!=generation', 'source!=detail',
+    for token in ('PreloadHost.requestPaths(page.activity,snapshot)', 'token!=generation', 'source!=detail',
                   'Objects.equals(config,SiteFeed.configId())', 'worker.shutdownNow()', 'ArrayBlockingQueue<Runnable>(1)'):
         if token not in selector:
             raise ValueError('Bounded source-owned path discovery contract missing: ' + token)
+    for token in ('new ThreadPoolExecutor(2,2,10', 'main.postDelayed(timeout,15000)', 'main.removeCallbacks(timeout)',
+                  'empty=!unavailable&&values.isEmpty()', '该资源跑路了 请更换站源'):
+        if token not in selector:raise ValueError('Path cancellation/empty-response feedback contract missing: '+token)
+    if 'bar.hierarchical ? item.isActivated()' not in read('DetailSourcePopup'):
+        raise ValueError('Hierarchical child checks must follow only their owner activation state')
+    activity=read('DetailActivity')
+    if 'resourceResult(detail)' not in activity or 'resourceResult(cached.source)' not in activity or 'resourceResult(value)' not in activity:
+        raise ValueError('A completed selected resource without episodes must notify both clients')
     if '"playerContent"' in selector or 'setUrl' in paths or 'putString' in selector:
         raise ValueError('Path UI must use native protocol dispatch and persist names only.')
     for token in ('mobileSources.hierarchical=true', 'playbackPaths.children(group,flag)',

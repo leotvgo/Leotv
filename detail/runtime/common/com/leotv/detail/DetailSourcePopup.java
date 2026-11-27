@@ -163,8 +163,10 @@ final class DetailSourcePopup {
         if (params != null && (params.width != -1 || params.height != -2)) { params.width = -1; params.height = -2; item.requestLayout(); }
         LabelStyle state = labels.get(label);
         if (state == null) { state = new LabelStyle(label); labels.put(label, state); }
-        state.apply(item.isActivated() || item.isSelected() || label.isActivated() || label.isSelected()
-                || label.getText().toString().equals(bar.selectedName()));
+        // Hierarchical rows already have a source/path owner. Text equality with
+        // the parent flag and TextView's marquee state must not select a child.
+        state.apply(bar.hierarchical ? item.isActivated() : item.isActivated() || item.isSelected()
+                || label.isActivated() || label.isSelected() || label.getText().toString().equals(bar.selectedName()));
     }
 
     private final class LabelStyle {
