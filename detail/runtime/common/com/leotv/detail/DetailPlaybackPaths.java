@@ -67,7 +67,7 @@ final class DetailPlaybackPaths {
                 if(!page.mounted||token!=generation||source!=detail||!Objects.equals(config,SiteFeed.configId()))return;
                 if(timeout!=null)main.removeCallbacks(timeout);timeout=null;
                 loading=false;failed=unavailable;empty=!unavailable&&values.isEmpty();names=values;render();
-                if(empty)Toast.makeText(page.activity,"该资源跑路了 请更换站源",Toast.LENGTH_LONG).show();
+                if(empty&&page.actions.resourceFeedbackAllowed(detail))Toast.makeText(page.activity,"该资源跑路了 请更换站源",Toast.LENGTH_LONG).show();
             });
         });
         timeout=()->{
@@ -86,7 +86,7 @@ final class DetailPlaybackPaths {
         LinearLayout children=new LinearLayout(page.activity);children.setOrientation(LinearLayout.VERTICAL);
         children.setPadding(page.dp(18),0,0,0);parent.addView(children,new LinearLayout.LayoutParams(-1,-2));
         if(loading||failed||names.size()<2) {
-            TextView text=new TextView(page.activity);text.setText(loading?"正在加载播放路径…":failed?"加载失败或超时，点击重试":empty?"该资源跑路了 请更换站源":"该线路没有额外播放路径");
+            TextView text=new TextView(page.activity);text.setText(loading?"正在加载播放路径…":failed?"加载失败或超时，点击重试":empty&&page.actions.resourceFeedbackAllowed(source)?"该资源跑路了 请更换站源":"该线路没有额外播放路径");
             text.setTextColor(0xffcdd1d6);text.setTextSize(13);text.setPadding(page.dp(10),page.dp(8),page.dp(10),page.dp(8));
             if(failed)text.setOnClickListener(v->{load();render();});children.addView(text);
         }else items(children,true);

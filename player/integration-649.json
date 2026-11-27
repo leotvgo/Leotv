@@ -2195,5 +2195,89 @@
       "child_path_sp": 12,
       "reason": "User screenshot identifies the upper UC无限 parent flag as too large; reduce only this TV parent label one typography step, preserving child paths and every other detail/menu behavior."
     }
+  },
+  "authorized_664_stable_abi_additions": {
+    "com.leotv.detail.NativeRouting": {
+      "methods": [
+        "openHistory(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"
+      ]
+    }
+  },
+  "authorized_664_source_repairs": {
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "e010b7e47bcbca16291ea1314761f6f7039538ef8be276894270c34394ac775c",
+      "after_sha256": "d2e550acc5f06fb7a6737eecd21b01055abde0f18589fabb7a3138fe5e8bcb3c",
+      "reason": "User-authorized 664 repair: expired-resource feedback only for manual source changes and explicit native history entries; preserve 5.3.6, API23, original startup/menu/player and all eight products."
+    },
+    "branding/hardening.json": {
+      "before_sha256": "a04593705880f90efad6c7431885e7a1c15ddc2fae7aa14a504dc0d26e74cdd9",
+      "after_sha256": "49611111a74de8b085c988aa15c54cd49fe9406a397498a17d4908c17def84cb",
+      "reason": "User-authorized 664 repair: expired-resource feedback only for manual source changes and explicit native history entries; preserve 5.3.6, API23, original startup/menu/player and all eight products."
+    },
+    "branding/release.json": {
+      "before_sha256": "fc4d3045518a23c20384352849ed410b60c628c7358b1a192c3d652d0465ab0c",
+      "after_sha256": "6b02e0c8610d7d46cb0d4927eb2aa28ffc9cd4ede5c0df30c8e1404b57944a6e",
+      "reason": "User-authorized 664 repair: expired-resource feedback only for manual source changes and explicit native history entries; preserve 5.3.6, API23, original startup/menu/player and all eight products."
+    },
+    "detail/native-source-lock.json": {
+      "before_sha256": "471cec0c4cd65659247910a156660360cfd2a80e1f580c8329dfaef45493372a",
+      "after_sha256": "73dae908cc1d18e149c402a47e3360ddacb45c950079d08ed007107eb7be3961",
+      "reason": "User-authorized 664 repair: expired-resource feedback only for manual source changes and explicit native history entries; preserve 5.3.6, API23, original startup/menu/player and all eight products."
+    },
+    "detail/runtime/common/com/leotv/detail/DetailActivity.java": {
+      "before_sha256": "9a86774917cba96647ecce1ac00d81cc783b5a5d05969e0af3141ddddfdd8cb7",
+      "after_sha256": "6e907f24772be9d883cd2d22c42b88766d4acd407c4d15034002d8080a292cb6",
+      "reason": "User-authorized 664 repair: expired-resource feedback only for manual source changes and explicit native history entries; preserve 5.3.6, API23, original startup/menu/player and all eight products."
+    },
+    "detail/runtime/common/com/leotv/detail/DetailPlaybackPaths.java": {
+      "before_sha256": "34766d3a4144f35a4cb38c63edca820ee11874f84c176c8890140238667e8c28",
+      "after_sha256": "8eccc9ec6452458ef2ea975c699fe7c3420a9a30b164ffb58d35ed96136eceea",
+      "reason": "User-authorized 664 repair: expired-resource feedback only for manual source changes and explicit native history entries; preserve 5.3.6, API23, original startup/menu/player and all eight products."
+    },
+    "detail/runtime/common/com/leotv/detail/NativeRouting.java": {
+      "before_sha256": "bf515446b221b3690eda9614f64cd9768e9398643a581c7cb97950b46bc226d1",
+      "after_sha256": "279b763290d057435d35d07f37977f1bb1c32ad4e09629416e67a035df086e0d",
+      "reason": "User-authorized 664 repair: expired-resource feedback only for manual source changes and explicit native history entries; preserve 5.3.6, API23, original startup/menu/player and all eight products."
+    },
+    "detail/runtime/common/com/leotv/detail/TvDetailPage.java": {
+      "before_sha256": "66f3aa101d83240672efecce06aac0363edfe75193f86df9a0d06e5956834dbc",
+      "after_sha256": "17199e6727d1bfbc3cd285c58f409f991cfcf6acfde78eaaabbbde589feea2a7",
+      "reason": "User-authorized 664 repair: expired-resource feedback only for manual source changes and explicit native history entries; preserve 5.3.6, API23, original startup/menu/player and all eight products."
+    },
+    "research/check_detail_parallel.py": {
+      "before_sha256": "1e1de4c08831f3b8c6888e1d4de89598749aadb15de0758b42378a70d15a8d58",
+      "after_sha256": "2bdd54dda05feabcd09a0f9a319e85a27ebf5737a70735655a088501ef69b9cc",
+      "reason": "User-authorized 664 repair: expired-resource feedback only for manual source changes and explicit native history entries; preserve 5.3.6, API23, original startup/menu/player and all eight products."
+    },
+    "tools/apply_native_details.py": {
+      "before_sha256": "a24869ccec004bd9132e23cf7a3e6eef49cb2452255d874b6d404814c4c07660",
+      "after_sha256": "cfa81db767bf43c2c8f443f269adc2132f1ad281884bd0c33904ef4d3118d4e0",
+      "reason": "User-authorized 664 repair: expired-resource feedback only for manual source changes and explicit native history entries; preserve 5.3.6, API23, original startup/menu/player and all eight products."
+    },
+    "tools/check_launch_rollback.py": {
+      "before_sha256": "3cab75046cfbc16df077a787130a69f7244db782ae5c5ca05ce3275583627c1a",
+      "after_sha256": "209a65cfae9f7931b009cab8de42dd599015403ef536f62403fa8771c0b1470c",
+      "reason": "User-authorized 664 repair: expired-resource feedback only for manual source changes and explicit native history entries; preserve 5.3.6, API23, original startup/menu/player and all eight products."
+    },
+    "tools/check_playback_paths.py": {
+      "before_sha256": "413708a31f1b13037d2f9237b564ea2720377e4ceff12a2e57a93e9c8cd0ab61",
+      "after_sha256": "0615e4df5ec0252637f4cc5303b67a1f1c62c0ceb6e06b46d9a133a0c697facb",
+      "reason": "User-authorized 664 repair: expired-resource feedback only for manual source changes and explicit native history entries; preserve 5.3.6, API23, original startup/menu/player and all eight products."
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "262dbb1b29c0d23d15cbefe854cc703521087a8a2f86fe2626af83f9a7722f18",
+      "after_sha256": "7205a5a0957c8803ab26b15e1d0119c15a96d66e1f3ad45befa398250221a8b5",
+      "reason": "User-authorized 664 repair: expired-resource feedback only for manual source changes and explicit native history entries; preserve 5.3.6, API23, original startup/menu/player and all eight products."
+    },
+    "tools/check_native_details.py": {
+      "before_sha256": "9f24fba6a02c9d29bc8127c8cb6c2aaf878bd5394df152de10177619810f57b3",
+      "after_sha256": "765154290a9322340b7011dac77d5ac9ee35d51d2c43a473c9dc05a4d22a4b55",
+      "reason": "User-authorized 664 repair: expired-resource feedback only for manual source changes and explicit native history entries; preserve 5.3.6, API23, original startup/menu/player and all eight products."
+    },
+    "README.md": {
+      "before_sha256": "b75eefb629f5df6dcb325e1dfba4a1f466fa82887cac999a34dfe6fcbe916d09",
+      "after_sha256": "53eb695ed0f4b8574261ba61cdfa51922ef6782c4d0e9e86a560428410854498",
+      "reason": "Document the user-authorized 5.3.6 / 664 resource feedback scope and direct GitHub delivery."
+    }
   }
 }

@@ -57,6 +57,7 @@ def check_contract(root, variant, project=None):
         'smali/com/fongmi/android/tv/ui/activity/M.smali'})
     expected_paths.update({'smali/S3/f.1.smali'} if mobile else {'smali/A0/a.smali', 'smali/O3/l.smali'})
     expected_paths.update({'smali/S3/z.smali'} if mobile else {'smali/P3/e.smali','smali/P3/f.smali'})
+    expected_paths.update({'smali/T3/a.smali','smali/R3/F.smali'} if mobile else {'smali/Q3/a.smali'})
     expected_paths.add('smali/U3/g.smali' if mobile else 'smali/S3/d.smali')
     if set(lock) != expected_paths:
         raise ValueError('Native ordinary source edit list differs from its declaration: ' + variant)

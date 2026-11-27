@@ -53,6 +53,8 @@ def apply(project, root, variant):
     changes, descriptors = {}, set()
     paths = [base_path, settings_path, VIDEO, result_path,source_path,home_path,cache_path]
     index_paths=['smali/S3/z.smali'] if mobile else ['smali/P3/e.smali','smali/P3/f.smali']
+    history_paths=['smali/T3/a.smali','smali/R3/F.smali'] if mobile else ['smali/Q3/a.smali']
+    paths.extend(history_paths)
     paths.extend(index_paths)
     if mobile:
         paths.extend([player_path, episode_path])
@@ -104,6 +106,17 @@ def apply(project, root, variant):
     return-void
 .end method
 '''
+        elif path in history_paths:
+            ranges={'smali/Q3/a.smali':['v3 .. v8','v1 .. v6'],
+                    'smali/T3/a.smali':['v2 .. v7'],'smali/R3/F.smali':['v1 .. v6']}[path]
+            for registers in ranges:
+                native='    invoke-static/range {'+registers+'}, Lcom/fongmi/android/tv/ui/activity/VideoActivity;->b1(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V'
+                if text.count(native)!=1:
+                    raise ValueError('Expected one preserved history click: '+path+' '+registers)
+                before=text[:text.index(native)]
+                if 'Lcom/fongmi/android/tv/bean/History;->getVodPic()' not in before[-700:]:
+                    raise ValueError('History feedback marker must not attach to resource/favorite/cast clicks: '+path)
+                text=text.replace(native,native.replace('Lcom/fongmi/android/tv/ui/activity/VideoActivity;->b1','Lcom/leotv/detail/NativeRouting;->openHistory'),1)
         elif path in index_paths:
             signature='n(Lcom/fongmi/android/tv/bean/Vod;)V' if mobile else 'a(Lcom/fongmi/android/tv/bean/Vod;)V'
             def index_resource(body):

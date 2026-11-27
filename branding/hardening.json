@@ -59,7 +59,8 @@
         "isFullscreenPlayer(Landroid/app/Activity;)Z",
         "ownsNativeDetails()Z",
         "ownsNativeChrome()Z",
-        "detailClient()Ljava/lang/String;"
+        "detailClient()Ljava/lang/String;",
+        "openHistory(Landroid/app/Activity;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"
       ]
     },
     "com.leotv.detail.Personalization": {

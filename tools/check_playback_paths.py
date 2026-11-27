@@ -29,8 +29,16 @@ def check(root):
     if 'bar.hierarchical ? item.isActivated()' not in read('DetailSourcePopup'):
         raise ValueError('Hierarchical child checks must follow only their owner activation state')
     activity=read('DetailActivity')
-    if 'resourceResult(detail)' not in activity or 'resourceResult(cached.source)' not in activity or 'resourceResult(value)' not in activity:
+    if 'resourceResult(detail)' not in activity or 'resourceResult(source)' not in activity or 'resourceResult(value)' not in activity:
         raise ValueError('A completed selected resource without episodes must notify both clients')
+    for token in ('resourceFeedbackAllowed(detail)', 'bindChangedSource(detail,true)', 'bindChangedSource(detail,false)',
+                  'getBooleanExtra(NativeRouting.RESOURCE_FEEDBACK,false)', 'source==detail'):
+        if token not in activity:raise ValueError('Resource feedback must belong to history/manual source only: '+token)
+    for token in ('empty&&page.actions.resourceFeedbackAllowed(detail)', 'empty&&page.actions.resourceFeedbackAllowed(source)'):
+        if token not in selector:raise ValueError('Automatic path discovery must not report an expired resource: '+token)
+    routing=read('NativeRouting')
+    if 'public static void openHistory(' not in routing or '.putExtra(RESOURCE_FEEDBACK,true)' not in routing:
+        raise ValueError('Only native history clicks may qualify initial resource feedback')
     if '"playerContent"' in selector or 'setUrl' in paths or 'putString' in selector:
         raise ValueError('Path UI must use native protocol dispatch and persist names only.')
     for token in ('mobileSources.hierarchical=true', 'playbackPaths.children(group,flag)',
@@ -52,6 +60,11 @@ def check_native(variant, project):
     hook = '    invoke-static {' + ('v3' if mobile else 'v1') + ', p1}, Lcom/leotv/detail/PlaybackPaths;->apply(Landroid/app/Activity;Ljava/lang/Object;)V'
     if body.count(hook) != 1 or body.index(hook) > body.index('Lcom/fongmi/android/tv/bean/Url;->set(I)'):
         raise ValueError('Path selection must run once before the original native URL selection: ' + variant)
+    expected={'smali/T3/a.smali':1,'smali/R3/F.smali':1} if mobile else {'smali/Q3/a.smali':2}
+    for name,count in expected.items():
+        history=(project/name).read_text()
+        if history.count('Lcom/leotv/detail/NativeRouting;->openHistory(')!=count:
+            raise ValueError('All native recent/history clicks must retain an explicit feedback entry: '+variant+' '+name)
     return True
 
 

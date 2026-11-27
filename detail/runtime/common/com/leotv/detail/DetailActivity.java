@@ -21,7 +21,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
     private BackdropSettings.Options metadataOptions;
     private BackdropSettings.Options requestedOptions;
     private BackdropIdentity requestedIdentity;
-    private boolean sourcePending;
+    private boolean sourcePending,resourceFeedbackAllowed;
     private TvDetailPage page;
     private int generation,sourceGeneration;
     private long metadataCacheTicket=CacheMaintenance.ticket();
@@ -36,11 +36,13 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
         }
         if(saved!=null&&saved.containsKey("leotv.detail.site"))getIntent().putExtra("key",saved.getString("leotv.detail.site")).putExtra("id",saved.getString("leotv.detail.id")).putExtra("name",saved.getString("leotv.detail.name")).putExtra("pic",saved.getString("leotv.detail.pic"));
         if(saved!=null&&saved.getBoolean(PLAYBACK_RETURN,false))getIntent().putExtra(PLAYBACK_RETURN,true);
+        if(saved!=null)getIntent().putExtra(NativeRouting.RESOURCE_FEEDBACK,saved.getBoolean(NativeRouting.RESOURCE_FEEDBACK,false));
         MetadataSettings.initialize(this);MetadataMatchStore.install(this);FollowStore.install(this);SiteFeed.initialize(this);
         page=new TvDetailPage(this,this);
         load();
     }
     private void load(){
+        resourceFeedbackAllowed=getIntent().getBooleanExtra(NativeRouting.RESOURCE_FEEDBACK,false);
         int token=++generation,sourceToken=++sourceGeneration;String site=getIntent().getStringExtra("key"),id=getIntent().getStringExtra("id");
         org.json.JSONObject followed=FollowingActivity.metadata(getIntent());
         if(site==null||id==null||id.isEmpty()||site.isEmpty()&&followed==null)return;
@@ -53,7 +55,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
             page.bindSource(source);enrich(token);return;
         }
         DetailSessionCache.State cached=DetailSessionCache.get(this,site,id);
-        if(cached!=null){metadataCacheTicket=cached.cacheTicket;source=cached.source;metadata=cached.metadata==null?null:cached.metadata.detached();metadataOptions=BackdropSettings.read(this);page.bindSource(source,metadata!=null);if(metadata!=null)page.render(metadata);if(metadata==null||!metadata.complete)enrich(token);return;}
+        if(cached!=null){metadataCacheTicket=cached.cacheTicket;source=cached.source;metadata=cached.metadata==null?null:cached.metadata.detached();metadataOptions=BackdropSettings.read(this);page.bindSource(source,metadata!=null);resourceResult(source);if(metadata!=null)page.render(metadata);if(metadata==null||!metadata.complete)enrich(token);return;}
         org.json.JSONObject seed=RelatedDetail.metadata(id);
         if(seed==null)seed=NativeRouting.searchMetadata(getIntent());
         if(seed!=null){
@@ -145,27 +147,33 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
         NativeRouting.play(this,source.site,source.id,source.name,source.picture,episode.flag,episode.url,episode.name);
     }
     @Override public void changeSource(SiteFeed.Site site,org.json.JSONObject vod){
+        resourceFeedbackAllowed=false;getIntent().removeExtra(NativeRouting.RESOURCE_FEEDBACK);
         if(sourceTask!=null)sourceTask.cancel(true);
         int token=++sourceGeneration;
         FollowingActivity.resolved(getIntent());
         getIntent().putExtra("key",site.key).putExtra("id",vod.optString("vod_id")).putExtra("name",vod.optString("vod_name")).putExtra("pic",vod.optString("vod_pic"));
         String id=vod.optString("vod_id");
         DetailSessionCache.State cached=DetailSessionCache.get(this,site.key,id);
-        if(cached!=null){bindChangedSource(cached.source);resourceResult(cached.source);return;}
+        if(cached!=null){bindChangedSource(cached.source,true);resourceResult(cached.source);return;}
         page.playButton.idle("正在解析资源…");
         sourceTask=worker.submit(()->{
             try{SourceGateway.Detail detail=SourceGateway.load(this,site.key,id);
-                main.post(()->{if(!isDestroyed()&&token==sourceGeneration){bindChangedSource(detail);resourceResult(detail);}});
+                main.post(()->{if(!isDestroyed()&&token==sourceGeneration){bindChangedSource(detail,true);resourceResult(detail);}});
             }catch(Exception unavailable){main.post(()->{if(!isDestroyed()&&token==sourceGeneration){page.playButton.idle("线路详情暂不可用");android.widget.Toast.makeText(this,"资源加载失败，请重试或更换站源",android.widget.Toast.LENGTH_LONG).show();}});}
         });
     }
     private void resourceResult(SourceGateway.Detail detail){
-        if(!detail.episodes.isEmpty())return;
+        if(!resourceFeedbackAllowed(detail)||!detail.episodes.isEmpty())return;
         page.playButton.idle("该资源跑路了 请更换站源");
         android.widget.Toast.makeText(this,"该资源跑路了 请更换站源",android.widget.Toast.LENGTH_LONG).show();
     }
     /** A source picker changes the playable rows of the same work, not its artwork or metadata job. */
-    private void bindChangedSource(SourceGateway.Detail detail){
+    @Override
+    public boolean resourceFeedbackAllowed(SourceGateway.Detail detail){
+        return resourceFeedbackAllowed&&!sourcePending&&source==detail;
+    }
+    private void bindChangedSource(SourceGateway.Detail detail,boolean notify){
+        resourceFeedbackAllowed=notify;getIntent().putExtra(NativeRouting.RESOURCE_FEEDBACK,notify);
         sourcePending=false;source=detail;page.bindSource(detail,true);cacheState();
     }
     @Override public void automaticSource(SiteFeed.Site site,SourceGateway.Detail detail){
@@ -174,7 +182,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
         FollowingActivity.resolved(getIntent());
         getIntent().putExtra("key",site.key).putExtra("id",detail.id).putExtra("name",detail.name).putExtra("pic",detail.picture);
         getIntent().removeExtra("mark");
-        bindChangedSource(detail);
+        bindChangedSource(detail,false);
     }
     @Override public void download(){
         if(page!=null)page.nativeEpisodes.open(true);
@@ -182,7 +190,7 @@ public final class DetailActivity extends androidx.appcompat.app.j implements Tv
     @Override public void onResume(){super.onResume();if(page!=null){if(!Device.MOBILE&&getIntent().getBooleanExtra(PLAYBACK_RETURN,false)){getIntent().removeExtra(PLAYBACK_RETURN);page.requestPlaybackFocus();}page.resume();BackdropSettings.Options previous=metadataOptions!=null?metadataOptions:requestedOptions;if(source!=null&&previous!=null&&!previous.same(BackdropSettings.read(this)))enrich(++generation);}}
     @Override public void onPause(){cacheState();if(page!=null)page.suspend();super.onPause();}
     /** The preserved AppCompat callback is final; the application lifecycle saves these extras. */
-    public void saveDetailState(Bundle saved){saved.putString("leotv.detail.site",getIntent().getStringExtra("key"));saved.putString("leotv.detail.id",getIntent().getStringExtra("id"));saved.putString("leotv.detail.name",getIntent().getStringExtra("name"));saved.putString("leotv.detail.pic",getIntent().getStringExtra("pic"));saved.putBoolean(PLAYBACK_RETURN,getIntent().getBooleanExtra(PLAYBACK_RETURN,false));for(String key:new String[]{SEARCH_NAME,SEARCH_SITE,SEARCH_ID})saved.putString(key,getIntent().getStringExtra(key));}
+    public void saveDetailState(Bundle saved){saved.putBoolean(NativeRouting.RESOURCE_FEEDBACK,resourceFeedbackAllowed);saved.putString("leotv.detail.site",getIntent().getStringExtra("key"));saved.putString("leotv.detail.id",getIntent().getStringExtra("id"));saved.putString("leotv.detail.name",getIntent().getStringExtra("name"));saved.putString("leotv.detail.pic",getIntent().getStringExtra("pic"));saved.putBoolean(PLAYBACK_RETURN,getIntent().getBooleanExtra(PLAYBACK_RETURN,false));for(String key:new String[]{SEARCH_NAME,SEARCH_SITE,SEARCH_ID})saved.putString(key,getIntent().getStringExtra(key));}
     @Override public void onConfigurationChanged(android.content.res.Configuration configuration){super.onConfigurationChanged(configuration);if(page!=null){page.theme=-1;page.content.requestLayout();page.refresh(BackdropSettings.read(this).proxy);}}
     @Override public void onDestroy(){
         JarIntegration.release(this);

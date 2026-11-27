@@ -17,6 +17,12 @@ def check(root):
             if data.count(change)!=1 or font.get('before_sha256')!=digest:
                 raise ValueError('TV parent flag font change differs from the authorized scope')
             data=data.replace(change,b'',1)
+        successor=json.loads((root/'player/integration-649.json').read_text()).get('authorized_664_source_repairs',{}).get(name)
+        if successor:
+            baseline=font.get('after_sha256') if name==font.get('source') else digest
+            if successor['before_sha256']!=baseline or not successor.get('reason'):
+                raise ValueError('664 feedback repair must extend the accepted 663 source: '+name)
+            data=(root/name).read_bytes();digest=successor['after_sha256']
         if hashlib.sha256(data).hexdigest()!=digest:
             raise ValueError('Startup rollback changed an accepted menu/playback source: '+name)
     builder=(root/'tools/build_branded.py').read_text()

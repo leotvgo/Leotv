@@ -14,6 +14,7 @@ final class TvDetailPage implements DetailPage {
         void changeSource(SiteFeed.Site site, org.json.JSONObject vod);
         void rematch();
         void download();
+        default boolean resourceFeedbackAllowed(SourceGateway.Detail detail) { return false; }
         default void automaticSource(SiteFeed.Site site, SourceGateway.Detail detail) { changeSource(site, detail.json); }
     }
     final Activity activity;

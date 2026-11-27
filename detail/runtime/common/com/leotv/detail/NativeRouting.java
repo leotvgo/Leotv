@@ -6,6 +6,7 @@ import android.content.Intent;
 /** Every resource opens the native detail Activity; the retained host Activity is fullscreen-only. */
 public final class NativeRouting {
     public static final String PLAYER = "leotv.fullscreen.player";
+    static final String RESOURCE_FEEDBACK="leotv.detail.resource.feedback";
     private static final String REDIRECTED = "leotv.detail.redirected";
     static final String EPISODE = "leotv.episode.url", FLAG = "leotv.episode.flag";
     static final String APPLIED = "leotv.selection.applied";
@@ -51,6 +52,12 @@ public final class NativeRouting {
         next.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         activity.startActivity(next);
         activity.overridePendingTransition(0,0);
+    }
+    /** Only the preserved History/recent-history click branches call this entry. */
+    public static void openHistory(Activity activity,String site,String id,String name,String picture,String mark) {
+        openResource(activity,new Intent().putExtra("key",site).putExtra("id",id).putExtra("name",name)
+                .putExtra("pic",picture).putExtra("mark",mark).putExtra("collect",false).putExtra("cast",false)
+                .putExtra(RESOURCE_FEEDBACK,true).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
     static void openCspResource(Activity activity,String key,org.json.JSONObject item){
         SiteFeed.Site site=SiteFeed.find(SiteFeed.sites(),key);

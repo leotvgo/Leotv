@@ -33,8 +33,9 @@ def check(root=ROOT):
     playback_fixes=manifest.get('authorized_661_source_repairs',{})
     launch_paths=manifest.get('authorized_662_source_repairs',{})
     startup_rollback=manifest.get('authorized_663_source_repairs',{})
+    resource_feedback=manifest.get('authorized_664_source_repairs',{})
     def expected_revision(name,previous,start=651):
-        for revision,changes in ((651,incremental),(652,current),(653,home_ui),(654,unified),(655,repaired),(656,takeover),(657,home_focus),(658,layout_rollback),(659,poster_search),(660,official_profiles),(661,playback_paths),(662,playback_fixes),(663,launch_paths),(664,startup_rollback)):
+        for revision,changes in ((651,incremental),(652,current),(653,home_ui),(654,unified),(655,repaired),(656,takeover),(657,home_focus),(658,layout_rollback),(659,poster_search),(660,official_profiles),(661,playback_paths),(662,playback_fixes),(663,launch_paths),(664,startup_rollback),(665,resource_feedback)):
             if revision<start or name not in changes:continue
             repair=changes[name]
             if repair['before_sha256']!=previous or not repair.get('reason'):
@@ -81,8 +82,11 @@ def check(root=ROOT):
         if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=expected_revision(name,repair['after_sha256'],664):
             raise ValueError('662 launch/path/resource feedback source differs from its authorized repair: '+name)
     for name,repair in startup_rollback.items():
-        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=repair['after_sha256']:
+        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=expected_revision(name,repair['after_sha256'],665):
             raise ValueError('Authorized local startup rollback differs from its reviewed source: '+name)
+    for name,repair in resource_feedback.items():
+        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=repair['after_sha256']:
+            raise ValueError('664 resource feedback differs from its authorized scope: '+name)
     removals=manifest.get('authorized_663_removed_sources',{})
     for name,digest in manifest.get('authorized_662_additions',{}).items():
         if name in removals:
@@ -94,7 +98,7 @@ def check(root=ROOT):
     if set(removals)-set(manifest.get('authorized_662_additions',{})):
         raise ValueError('Startup rollback must not remove other accepted features')
     for name,digest in manifest.get('authorized_663_additions',{}).items():
-        if hashlib.sha256((root/name).read_bytes()).hexdigest()!=digest:
+        if hashlib.sha256((root/name).read_bytes()).hexdigest()!=expected_revision(name,digest,665):
             raise ValueError('Startup rollback audit addition differs from its reviewed source: '+name)
     origin=manifest.get('authorized_662_launch_artwork_origin',{})
     if origin and hashlib.sha256((root/origin['source']).read_bytes()).hexdigest()!=origin['source_sha256']:
@@ -119,6 +123,8 @@ def check(root=ROOT):
     for name, value in previous['stable_abi'].items():
         expected=json.loads(json.dumps(value))
         additions=manifest.get('authorized_650_stable_abi_additions',{}).get(name,{})
+        for kind,members in manifest.get('authorized_664_stable_abi_additions',{}).get(name,{}).items():
+            additions={**additions,kind:additions.get(kind,[])+members}
         for kind,members in additions.items():
             if len(members)!=len(set(members)) or set(members)&set(expected.get(kind,[])):
                 raise ValueError('650 ABI additions duplicate original members: '+name)
