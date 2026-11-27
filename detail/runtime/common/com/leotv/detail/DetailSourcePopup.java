@@ -109,7 +109,7 @@ final class DetailSourcePopup {
     private int contentWidth(Rect frame) {
         int width = dp(112);
         for (TextView label : labels.keySet()) width = Math.max(width,
-                (int) Math.ceil(label.getPaint().measureText(label.getText().toString())) + dp(42));
+                (int) Math.ceil(label.getPaint().measureText(label.getText().toString())) + dp(bar.hierarchical?60:42));
         return Math.min(width, Math.max(1, frame.width() - dp(32)));
     }
 
@@ -131,6 +131,7 @@ final class DetailSourcePopup {
     }
 
     private void styleRows() {
+        if(bar.hierarchical){styleHierarchy(source);return;}
         if (source instanceof TextView) style(source, (TextView)source);
         else if (source instanceof ViewGroup) {
             ViewGroup list = (ViewGroup)source;
@@ -139,6 +140,11 @@ final class DetailSourcePopup {
                 if (label != null) style(item, label);
             }
         }
+    }
+
+    private void styleHierarchy(View view) {
+        if(view.hasOnClickListeners()){TextView label=firstLabel(view);if(label!=null)style(view,label);return;}
+        if(view instanceof ViewGroup)for(int i=0;i<((ViewGroup)view).getChildCount();i++)styleHierarchy(((ViewGroup)view).getChildAt(i));
     }
 
     private TextView firstLabel(View view) {

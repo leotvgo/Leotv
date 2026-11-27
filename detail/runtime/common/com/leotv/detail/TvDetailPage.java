@@ -43,6 +43,7 @@ final class TvDetailPage implements DetailPage {
     final List<Portrait> portraits=new ArrayList<>();
     final DetailEpisodeCards cards;
     final NativeEpisodeUi nativeEpisodes;
+    final DetailPlaybackPaths playbackPaths;
     final NativeEpisodeGroups episodeGroups;
     SourceGateway.Detail source;
     MobileDetailMetadata.Result metadata;
@@ -147,6 +148,7 @@ final class TvDetailPage implements DetailPage {
         actors=new LinearLayout(activity);actors.setOrientation(LinearLayout.HORIZONTAL);
         HorizontalScrollView actorScroll=new HorizontalScrollView(activity);actorScroll.setHorizontalScrollBarEnabled(false);
         actorScroll.addView(actors);controls.addView(actorScroll);navigation.add(actors,actorScroll);
+        playbackPaths=new DetailPlaybackPaths(this);
         flags=column();NativeViews.identify(activity,flags,"flag");
         flagScroll=new HorizontalScrollView(activity);flagScroll.setHorizontalScrollBarEnabled(false);flagScroll.addView(flags);
         siteSearch=new DetailSiteSearch(activity,new DetailSiteSearch.Listener(){
@@ -160,14 +162,17 @@ final class TvDetailPage implements DetailPage {
         sitePicker=new DetailSitePicker(activity,mobile,siteSearch,this::searchSources);
         if(mobile){
             addSourceActions();
-            flagScroll.removeView(flags);mobileSources=new MobileSourceBar(activity,flags,()->source!=null);mobileSources.picker.addView(flags,new LinearLayout.LayoutParams(-1,-2));
+            flagScroll.removeView(flags);mobileSources=new MobileSourceBar(activity,flags,()->source!=null);mobileSources.hierarchical=true;
+            ScrollView sourceScroll=new ScrollView(activity);sourceScroll.setFillViewport(true);sourceScroll.addView(flags,new ScrollView.LayoutParams(-1,-2));
+            mobileSources.picker.addView(sourceScroll,new LinearLayout.LayoutParams(-1,-2));
             mobileSources.siteSelector(sitePicker.selector);controls.addView(mobileSources);mobileSources.surfaceColour(surfaceColour);
             navigation.add(sitePicker.selector,mobileSources);
         }else{
             mobileSources=null;LinearLayout siteRow=column();siteRow.setGravity(Gravity.LEFT);
             siteRow.addView(sitePicker.selector,new LinearLayout.LayoutParams(-2,-2));
             LinearLayout.LayoutParams lines=new LinearLayout.LayoutParams(-1,-2);lines.topMargin=dp(6);siteRow.addView(flagScroll,lines);
-            controls.addView(siteRow);navigation.add(sitePicker.selector,siteRow);navigation.add(flags,siteRow);
+            HorizontalScrollView paths=new HorizontalScrollView(activity);paths.setHorizontalScrollBarEnabled(false);paths.addView(playbackPaths.rows);siteRow.addView(paths,new LinearLayout.LayoutParams(-1,-2));
+            controls.addView(siteRow);navigation.add(sitePicker.selector,siteRow);navigation.add(flags,siteRow);navigation.add(playbackPaths.rows,siteRow);
         }
         if(!mobile){TextView heading=label("选集",18);heading.setPadding(0,dp(16),0,dp(8));controls.addView(heading);}
         episodes=new LinearLayout(activity);episodes.setId(View.generateViewId());episodes.setOrientation(LinearLayout.HORIZONTAL);episodes.setClipChildren(false);
@@ -282,12 +287,31 @@ final class TvDetailPage implements DetailPage {
         if(!siteSearch.started())searchSources();
     }
     private void showFlags(){
-        flags.removeAllViews();LinkedHashSet<String> names=new LinkedHashSet<>();for(SourceGateway.Episode episode:source.episodes)names.add(episode.flag);
+        renderMobilePaths();
+        playbackPaths.select(source,selectedFlag,!mobile);
+    }
+    void renderMobilePaths(){
+        flags.removeAllViews();if(source==null)return;
+        LinkedHashSet<String> names=new LinkedHashSet<>();for(SourceGateway.Episode episode:source.episodes)names.add(episode.flag);
         flags.setOrientation(mobile?LinearLayout.VERTICAL:LinearLayout.HORIZONTAL);
-        for(String flag:names){View row=NativeViews.adapter(activity,"adapter_flag",flag,()->{nativeEpisodes.dismiss();selectedFlag=flag;showFlags();showEpisodes();if(mobileSources!=null)mobileSources.picked(flag);});
+        for(String flag:names){
+            View row=NativeViews.adapter(activity,"adapter_flag",flag+(mobile?(playbackPaths.expanded(flag)?"  ⌃":"  ⌄"):""),()->{
+                nativeEpisodes.dismiss();selectedFlag=flag;
+                if(preferred==null||!flag.equals(preferred.flag)){
+                    SourceGateway.Episode first=null,matching=null;
+                    for(SourceGateway.Episode item:source.episodes)if(flag.equals(item.flag)){
+                        if(first==null)first=item;if(preferred!=null&&preferred.name.equals(item.name))matching=item;
+                    }
+                    preferred=matching==null?first:matching;
+                }
+                showEpisodes();
+                if(mobile)playbackPaths.toggle(flag);else{renderMobilePaths();playbackPaths.select(source,flag,true);}
+            });
             row.setActivated(flag.equals(selectedFlag));TextView label=NativeViews.text(row);if(label!=null)label.setActivated(flag.equals(selectedFlag));
-            flags.addView(row,new LinearLayout.LayoutParams(mobile?-1:-2,-2));}
-        if(mobileSources!=null)mobileSources.refresh();
+            if(mobile){LinearLayout group=column();group.addView(row,new LinearLayout.LayoutParams(-1,-2));playbackPaths.children(group,flag);flags.addView(group,new LinearLayout.LayoutParams(-1,-2));}
+            else flags.addView(row,new LinearLayout.LayoutParams(-2,-2));
+        }
+        if(mobileSources!=null){mobileSources.selected(selectedFlag);mobileSources.refresh();}
     }
     void showEpisodes(){
         cards.clear();episodes.removeAllViews();if(source==null)return;
@@ -443,7 +467,7 @@ final class TvDetailPage implements DetailPage {
     @Override public boolean needsArtworkFallback(){return metadata!=null&&hero.unavailable();}
     @Override public void fallback(){}
     @Override public void trimMemory(){if(images!=null)images.trimMemory(owns()&&scroll.isShown());}
-    @Override public void close(){if(!mounted)return;mounted=false;suspend();nativeEpisodes.close();siteSearch.close();sitePicker.close();cards.clear();stills.close();recommendations.detach();collection.detach();
+    @Override public void close(){if(!mounted)return;mounted=false;suspend();playbackPaths.close();nativeEpisodes.close();siteSearch.close();sitePicker.close();cards.clear();stills.close();recommendations.detach();collection.detach();
         viewportHandler.removeCallbacksAndMessages(null);if(scroll.getViewTreeObserver().isAlive())scroll.getViewTreeObserver().removeOnScrollChangedListener(viewportChanged);
         MetadataSettings.preferences(activity).unregisterOnSharedPreferenceChangeListener(themeChanges);
         if(images!=null)images.close();hero.close();titleArt.close();scroll.stopAnimation();content.getViewTreeObserver().removeOnPreDrawListener(preDraw);

@@ -16,6 +16,7 @@ final class MobileSourceBar extends LinearLayout {
     interface ActionReady { boolean ready(); }
     private final ActionReady actionReady;
     private boolean loading;
+    boolean hierarchical;
     private String selected = "播放线路";
 
     MobileSourceBar(Activity activity, View source) {
@@ -69,9 +70,9 @@ final class MobileSourceBar extends LinearLayout {
     void refresh() {
         boolean ready=!loading && actionReady.ready();
         for(int i=0;i<actions.getChildCount();i++){View action=actions.getChildAt(i);action.setEnabled(ready);action.setAlpha(ready?1:.4f);}
-        TextView active = selectedLabel(source, false);
+        TextView active = hierarchical ? null : selectedLabel(source, false);
         if (active != null) selected = active.getText().toString();
-        else if (selected.equals("播放线路")) {
+        else if (!hierarchical && selected.equals("播放线路")) {
             TextView first = firstLabel(source); if (first != null) selected = first.getText().toString();
         }
         String text = loading ? "正在解析选集…" : selected + (picker.expanded ? "  ⌃" : "  ⌄");
@@ -80,6 +81,7 @@ final class MobileSourceBar extends LinearLayout {
     }
     void dismiss() { popup.dismiss(); }
     void surfaceColour(int colour) { popup.surfaceColour(colour); }
+    void selected(String text) { selected = text.isEmpty()?"播放线路":text; }
     void picked(String text) { selected = text; dismiss(); refresh(); }
     String selectedName() { return selected; }
     @Override protected void onDetachedFromWindow() { dismiss(); super.onDetachedFromWindow(); }
@@ -128,7 +130,7 @@ final class MobileSourceBar extends LinearLayout {
             TextView label = event.getActionMasked() == MotionEvent.ACTION_UP ? hitLabel(source, event.getRawX(), event.getRawY()) : null;
             boolean handled = super.dispatchTouchEvent(event);
             int slop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
-            if (handled && label != null && Math.abs(event.getRawX()-downX) < slop && Math.abs(event.getRawY()-downY) < slop) {
+            if (!hierarchical && handled && label != null && Math.abs(event.getRawX()-downX) < slop && Math.abs(event.getRawY()-downY) < slop) {
                 String title = label.getText().toString(); post(() -> picked(title));
             }
             return handled;
@@ -137,7 +139,7 @@ final class MobileSourceBar extends LinearLayout {
             View focused = findFocus(); TextView label = focused == null ? null : firstLabel(focused);
             boolean handled = super.dispatchKeyEvent(event);
             int key = event.getKeyCode();
-            if (handled && label != null && event.getAction() == KeyEvent.ACTION_UP && !event.isCanceled()
+            if (!hierarchical && handled && label != null && event.getAction() == KeyEvent.ACTION_UP && !event.isCanceled()
                     && (key == KeyEvent.KEYCODE_DPAD_CENTER || key == KeyEvent.KEYCODE_ENTER)) {
                 String title = label.getText().toString(); post(() -> picked(title));
             }

@@ -176,6 +176,10 @@ def check_contract(root, variant, project=None):
                         'i0:Z', 'U:Landroidx/leanback/widget/ArrayObjectAdapter;', 'h0:LC3/e;', 'g0:L'+BEANS+'History;']
     video_fields.append('M:Lw3/b;' if mobile else 'N:Lt3/g;')
     contracts['com/fongmi/android/tv/ui/activity/VideoActivity'] = (video_methods, video_fields)
+    video_methods.append('g0()L' + BEANS + 'Flag;')
+    video_fields.append('T:Lcom/fongmi/android/tv/ui/adapter/q;' if mobile else 'Z:Lcom/fongmi/android/tv/ui/adapter/C;')
+    contracts[BEANS + 'Url'] = (['getValues()Ljava/util/List;', 'n(I)Ljava/lang/String;', 'set(I)L' + BEANS + 'Url;'], [])
+    contracts[BEANS + 'Result'][0].append('getUrl()L' + BEANS + 'Url;')
     contracts[BEANS+'Danmaku'] = (['from(Ljava/lang/String;)L'+BEANS+'Danmaku;', 'empty()L'+BEANS+'Danmaku;',
                                  'getName()Ljava/lang/String;', 'getUrl()Ljava/lang/String;', 'getRealUrl()Ljava/lang/String;', 'setName(Ljava/lang/String;)V'], [])
     contracts['okhttp3/OkHttpClient$Builder'] = (['<init>()V', 'connectTimeout(JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;', 'readTimeout(JLjava/util/concurrent/TimeUnit;)Lokhttp3/OkHttpClient$Builder;', 'build()Lokhttp3/OkHttpClient;'], [])
@@ -295,6 +299,11 @@ def check_contract(root, variant, project=None):
     native_menu=text('R3/p' if mobile else 'O3/k')
     if ('LF3/f;->s:Ljava/util/List;' if mobile else 'LC3/e;->s:Ljava/util/List;') not in native_menu:
         raise ValueError('Native Danmaku menu must use the player Danmaku source list: ' + variant)
+    quality = 'com/fongmi/android/tv/ui/adapter/q' if mobile else 'com/fongmi/android/tv/ui/adapter/C'
+    # q is also the phone episode adapter; extend its existing ABI contract.
+    if quality not in contracts:
+        contracts[quality] = ([], [])
+    contracts[quality][1].append('e:I' if mobile else 'd:I')
     # Cached Flag activation is private in every ordinary variant; there is no
     # boolean setter (setActivated(Flag) also replaces episode references).
     if not re.search(r'(?m)^\.field private activated:Z$', text(BEANS + 'Flag')):

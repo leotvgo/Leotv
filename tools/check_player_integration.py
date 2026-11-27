@@ -29,8 +29,9 @@ def check(root=ROOT):
     layout_rollback=manifest.get('authorized_657_source_repairs',{})
     poster_search=manifest.get('authorized_658_source_repairs',{})
     official_profiles=manifest.get('authorized_659_source_repairs',{})
+    playback_paths=manifest.get('authorized_660_source_repairs',{})
     def expected_revision(name,previous,start=651):
-        for revision,changes in ((651,incremental),(652,current),(653,home_ui),(654,unified),(655,repaired),(656,takeover),(657,home_focus),(658,layout_rollback),(659,poster_search),(660,official_profiles)):
+        for revision,changes in ((651,incremental),(652,current),(653,home_ui),(654,unified),(655,repaired),(656,takeover),(657,home_focus),(658,layout_rollback),(659,poster_search),(660,official_profiles),(661,playback_paths)):
             if revision<start or name not in changes:continue
             repair=changes[name]
             if repair['before_sha256']!=previous or not repair.get('reason'):
@@ -65,8 +66,11 @@ def check(root=ROOT):
         if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=expected_revision(name,repair['after_sha256'],660):
             raise ValueError('658 source differs from its declared successor: '+name)
     for name,repair in official_profiles.items():
-        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=repair['after_sha256']:
+        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=expected_revision(name,repair['after_sha256'],661):
             raise ValueError('659 source differs from its declared repair: '+name)
+    for name,repair in playback_paths.items():
+        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=repair['after_sha256']:
+            raise ValueError('660 playback path source differs from its declared repair: '+name)
     for name, digest in manifest['preserved_649_sources'].items():
         if name in repairs and repairs[name]['before_sha256']!=digest:
             raise ValueError('650 repair changed the recorded 649 baseline: '+name)

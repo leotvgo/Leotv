@@ -242,6 +242,13 @@ def apply(project, root, variant):
                                + ordinary + '\n\n    :leotv_episode_selected')
                 return body.replace(ordinary, replacement)
             text = replace_method(text, signature, selection)
+            def playback_paths(body):
+                marker = '    invoke-virtual {p1}, Lcom/fongmi/android/tv/bean/Result;->getUrl()Lcom/fongmi/android/tv/bean/Url;'
+                if body.count(marker) != 2 or body.count('Lcom/fongmi/android/tv/bean/Url;->set(I)') != 1 or body.index(marker) > body.index('Lcom/fongmi/android/tv/bean/Url;->set(I)'):
+                    raise ValueError('Expected one native player Result quality selection.')
+                register = 'v3' if mobile else 'v1'
+                return body.replace(marker, '    invoke-static {' + register + ', p1}, Lcom/leotv/detail/PlaybackPaths;->apply(Landroid/app/Activity;Ljava/lang/Object;)V\n\n' + marker, 1)
+            text = replace_method(text, signature, playback_paths)
         elif path == source_path:
             def source_cache(body):
                 position=re.search(r'(?m)^    \.locals (\d+)',body)

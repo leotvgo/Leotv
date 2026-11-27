@@ -153,6 +153,7 @@ final class PreloadHost {
         call(result,"setKey",key);call(result,"setHeader",call(site,"getHeader"));
         Object urls=call(result,"getUrl");Object values=call(urls,"getValues");
         if(values instanceof List&&!((List<?>)values).isEmpty())call(urls,"set",Math.max(0,Math.min(snapshot.key.quality,((List<?>)values).size()-1)));
+        if(values instanceof List&&!((List<?>)values).isEmpty())call(urls,"set",PlaybackPaths.position(context,key,snapshot.key.work,snapshot.key.flag,urls,snapshot.key.quality));
         return usable(result)?result:null;
     }
     private PreloadHost(){}

@@ -1,8 +1,8 @@
 {
   "channel": "stable",
-  "version_name": "5.3.5",
-  "version_code": 659,
-  "title": "Leotv 5.3.5 分类位置保留与双内核档位正式版",
+  "version_name": "5.3.6",
+  "version_code": 660,
+  "title": "Leotv 5.3.6 详情播放路径正式版",
   "prerelease": false,
   "make_latest": true
 }
