@@ -14,8 +14,7 @@
     "drawable/ic_logo",
     "mipmap/ic_launcher",
     "mipmap/ic_launcher_round",
-    "mipmap/ic_banner",
-    "drawable/compat_splash_screen_no_icon_background"
+    "mipmap/ic_banner"
   ],
   "tv": {
     "fixed_landscape_activities": [

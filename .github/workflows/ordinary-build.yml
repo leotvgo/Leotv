@@ -80,9 +80,7 @@ jobs:
         with:
           gradle-version: '8.14.3'
       - name: Verify actual phone nested popup touch and parent LayoutParams on API23 and Android15
-        run: |
-          python3 -B tools/apply_launch_branding.py --drawable-out research/path-popup-check/src/test/resources/leotv-launch.bin
-          gradle --no-daemon --console=plain --max-workers=2 -p research/path-popup-check test
+        run: gradle --no-daemon --console=plain --max-workers=2 -p research/path-popup-check test
 
   prepare:
     needs: [sources, effects, path-ui]

@@ -32,7 +32,8 @@ from apply_danmaku_effects import apply as apply_danmaku_effects
 from check_player_registers import check_project as check_player_registers
 from check_native_details import check_contract as check_detail_contract, source_set as detail_source_set
 from harden_overlays import compile_program, audit_program, audit_host_hooks
-from apply_launch_branding import apply as apply_launch_branding, banner_bitmap, launch_drawable
+from apply_launch_branding import banner_bitmap
+from check_launch_rollback import check_resources as check_launch_resources
 from apk_products import product_id, PROFILES, PRODUCTS
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -304,10 +305,6 @@ def resource_overlay(original, values, allowed):
         elif name == 'drawable/ic_logo':
             source = 'res/drawable-nodpi/ic_logo.png'
             value = source
-        elif name == 'drawable/compat_splash_screen_no_icon_background':
-            old=table.pool.strings[entry['references'][0][1]]
-            files[old]={'path':old,'bytes':launch_drawable(ROOT),'source':'branding/res/drawable/leotv_launch.xml'}
-            continue
         elif name in ('mipmap/ic_launcher', 'mipmap/ic_launcher_round'):
             if entry['density'] == 0xfffe:
                 continue  # Retain adaptive XML/IDs; its foreground is replaced.
@@ -505,7 +502,8 @@ def main():
                         manifest, change = BinaryXml(manifest).set_activity_orientation(activity_name, 0)
                         manifest_report.append(change)
                 resources, resource_report, files = resource_overlay(original.read('resources.arsc'), values, spec['allowed_resources'])
-                resources, launch_theme_report = apply_launch_branding(resources, args.variant)
+                launch_theme_report = []
+                launch_restore_report = check_launch_resources(original.read('resources.arsc'), resources, files, args.variant)
                 layouts, layout_report = {}, []
                 table = ResourceTable(original.read('resources.arsc'))
                 for resource, contract in profile.get('layout_edits', {}).items():
@@ -581,6 +579,7 @@ def main():
                 'resource_edits': resource_report, 'overlay_compile': compile_report,
                 'layout_edits': layout_report,
                 'launch_theme_edits': launch_theme_report,
+                'launch_restore': launch_restore_report,
                 'qr_web_input_edits': web_report,
                 'branding_assets_sha256': sha256((BRANDING / 'asset-provenance.json').read_bytes()),
                 'default_logo_sha256': provenance['assets'][spec['default_logo_asset']]['sha256'],

@@ -2085,5 +2085,99 @@
     ],
     "mask": "Original white artwork pixel runs at min(R,G,B)>=230; no coordinate stretching",
     "launch_file": "branding/res/drawable/leotv_launch.xml"
+  },
+  "authorized_663_removed_sources": {
+    "ui/java/com/leotv/ui/LaunchArtwork.java": {
+      "before_sha256": "8b342ca3c3b1b085ce03021170ed040e24714ff974d93d5f0caee072e4f0eafe",
+      "reason": "User explicitly authorized removing the extra fullscreen startup picture and its isolated implementation; historical 662 source/artifacts remain archived, accepted menu and TV banner fixes preserved."
+    },
+    "branding/res/drawable/leotv_launch.xml": {
+      "before_sha256": "57338c9743e845ce02064408555398acd4e754dc48a97b3c47676b52b95abcc6",
+      "reason": "User explicitly authorized removing the extra fullscreen startup picture and its isolated implementation; historical 662 source/artifacts remain archived, accepted menu and TV banner fixes preserved."
+    },
+    "research/path-popup-check/src/test/java/com/leotv/detail/LaunchDrawableTest.java": {
+      "before_sha256": "054ee9cc1907e9383fb0a8f6ec2809f495d297de469ffc7622a95e7d7dde5cbb",
+      "reason": "User explicitly authorized removing the extra fullscreen startup picture and its isolated implementation; historical 662 source/artifacts remain archived, accepted menu and TV banner fixes preserved."
+    }
+  },
+  "authorized_663_additions": {
+    "tools/check_launch_rollback.py": "74ef25dd2b308aa4c9591342daddb6b5d2380d63872303cc2cfc5f2038a09340"
+  },
+  "authorized_663_source_repairs": {
+    ".github/workflows/ordinary-build.yml": {
+      "before_sha256": "c4cff32ed33797d5bb2786cd2882f41c20b296f7c389120e97bff844de403b71",
+      "after_sha256": "6a78fb44b6355f3e70213789b899036cf547f59a11203c7a443eaeee4750a7ae",
+      "reason": "User-authorized original OS-dependent startup restoration, removing the fullscreen override while retaining TV anydpi banner and accepted 662 menu/playback behavior; latest authorization requests direct GitHub build as version 5.3.6 / 663."
+    },
+    "README.md": {
+      "before_sha256": "f6293db3ec8967b27b4acc007ffa568d4943044dcc696d192dd525c113fb4865",
+      "after_sha256": "deafaeae2a43bf8d71b125154e341e27f6f5cd16af4b12602d9e2054792e37ca",
+      "reason": "User-authorized original OS-dependent startup restoration, removing the fullscreen override while retaining TV anydpi banner and accepted 662 menu/playback behavior; latest authorization requests direct GitHub build as version 5.3.6 / 663."
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "03f15433357815ad9722e9e7f90ad44456ce573cd14788834b8294449b320464",
+      "after_sha256": "e010b7e47bcbca16291ea1314761f6f7039538ef8be276894270c34394ac775c",
+      "reason": "User-authorized original OS-dependent startup restoration, removing the fullscreen override while retaining TV anydpi banner and accepted 662 menu/playback behavior; latest authorization requests direct GitHub build as version 5.3.6 / 663."
+    },
+    "branding/changes.json": {
+      "before_sha256": "cc3b09c8083a40da56b6cc3b65c35b7be5a524d6ddb89857d8f9b529e6bc63aa",
+      "after_sha256": "b2b8cac4cef0e0d4712ef741c12ceec7ae0fc693c4ec2f2283ea1db4d20999f0",
+      "reason": "User-authorized original OS-dependent startup restoration, removing the fullscreen override while retaining TV anydpi banner and accepted 662 menu/playback behavior; latest authorization requests direct GitHub build as version 5.3.6 / 663."
+    },
+    "branding/release.json": {
+      "before_sha256": "97027926beb0bff484e5666b1e403a86a8b9925732b36bb8d57c8870be307dd5",
+      "after_sha256": "b36c3033c07a289fd47bfedadd8fbc0849647d59aab760de60a1c672cf12b35a",
+      "reason": "User-authorized original OS-dependent startup restoration, removing the fullscreen override while retaining TV anydpi banner and accepted 662 menu/playback behavior; latest authorization requests direct GitHub build as version 5.3.6 / 663."
+    },
+    "tools/apply_launch_branding.py": {
+      "before_sha256": "6716406848bc05e173d5b242301fbf53858f92e617d8983774c3967a3e88444b",
+      "after_sha256": "8737388b1d411e1afc4126947138845a61acbcd4bb033a6f80fd37e53bd5e213",
+      "reason": "User-authorized original OS-dependent startup restoration, removing the fullscreen override while retaining TV anydpi banner and accepted 662 menu/playback behavior; latest authorization requests direct GitHub build as version 5.3.6 / 663."
+    },
+    "tools/build_branded.py": {
+      "before_sha256": "25165a59283895760d7963feec71c8f36ca4fd1eabc1f0250fff2642622c66e2",
+      "after_sha256": "98e0439e6ec26b3b000f2124d3e13ee88f92520e2f0fa8c71d1c3eff510b53e8",
+      "reason": "User-authorized original OS-dependent startup restoration, removing the fullscreen override while retaining TV anydpi banner and accepted 662 menu/playback behavior; latest authorization requests direct GitHub build as version 5.3.6 / 663."
+    },
+    "tools/check_build_sources.py": {
+      "before_sha256": "088c076ca2faba68a478545a94126be6caf6a7f8a26bc9186d193224529ca7e1",
+      "after_sha256": "a7195c3c2e5c407e4e93018ead4794833afa00cddf0be7b657d8a79f621091f3",
+      "reason": "User-authorized original OS-dependent startup restoration, removing the fullscreen override while retaining TV anydpi banner and accepted 662 menu/playback behavior; latest authorization requests direct GitHub build as version 5.3.6 / 663."
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "04d64f5222be41000ce2a3f68128a4bc8c89a0f7fb890436ec28c05b4110a57e",
+      "after_sha256": "262dbb1b29c0d23d15cbefe854cc703521087a8a2f86fe2626af83f9a7722f18",
+      "reason": "User-authorized original OS-dependent startup restoration, removing the fullscreen override while retaining TV anydpi banner and accepted 662 menu/playback behavior; latest authorization requests direct GitHub build as version 5.3.6 / 663."
+    },
+    "tools/public_apk_audit.py": {
+      "before_sha256": "8700e591afc7c134463af9201908bd9aaa6d6a73b6ced883c90274cde67d8117",
+      "after_sha256": "e0cb28be4e152cd97bdf748442eb8d8864a731352e669485f08b0690b9022d45",
+      "reason": "User-authorized original OS-dependent startup restoration, removing the fullscreen override while retaining TV anydpi banner and accepted 662 menu/playback behavior; latest authorization requests direct GitHub build as version 5.3.6 / 663."
+    },
+    "ui/java/com/leotv/ui/GlobalChrome.java": {
+      "before_sha256": "3ed8277bf616677dccf950ac74394575a338a48027dbf81367b115fbc62bbbd0",
+      "after_sha256": "00690830cecbcd925ab771b13e8954c911b940314c0a2a392fb53869895dee82",
+      "reason": "User-authorized original OS-dependent startup restoration, removing the fullscreen override while retaining TV anydpi banner and accepted 662 menu/playback behavior; latest authorization requests direct GitHub build as version 5.3.6 / 663."
+    }
+  },
+  "authorized_663_launch_rollback": {
+    "startup_baseline_before_661": "141f0a4b35714047a018d1d81c84b39edd926a43",
+    "retained_661_banner_function_sha256": "b5104aa15e57e86abbe1d2f096d5a20df66929787a11014d8104eb83d423f532",
+    "preserved_menu_and_playback_sources": {
+      "detail/runtime/common/com/leotv/detail/DetailActivity.java": "9a86774917cba96647ecce1ac00d81cc783b5a5d05969e0af3141ddddfdd8cb7",
+      "detail/runtime/common/com/leotv/detail/DetailPlaybackPaths.java": "34766d3a4144f35a4cb38c63edca820ee11874f84c176c8890140238667e8c28",
+      "detail/runtime/common/com/leotv/detail/DetailSourcePopup.java": "50a64ca53a6dd006ddbe5a499cac1eafe297de29a8023f83004ec11f0917b720",
+      "detail/runtime/common/com/leotv/detail/PreloadHost.java": "9f40f43951b9bf8e5ca98efadff76826caf7173ae4795bdc99d9fba33d38a587",
+      "detail/runtime/common/com/leotv/detail/PlaybackPaths.java": "afc891761b439910bfd0dca183691886d2bc6388239a0a5c4ebc284ce56b73a3",
+      "detail/runtime/common/com/leotv/detail/TvDetailPage.java": "0d753b72dc3ba6bd586f1d1f6dd04d69f7467e4f7e7cd1e203fe5438e6b64bd3",
+      "tools/check_playback_paths.py": "413708a31f1b13037d2f9237b564ea2720377e4ceff12a2e57a93e9c8cd0ab61",
+      "branding/hardening.json": "a04593705880f90efad6c7431885e7a1c15ddc2fae7aa14a504dc0d26e74cdd9",
+      "branding/proguard-release.pro": "831babd69c6782f1843d5e2dc1b84c10fb935d1c51a1686d79449be440a5b03e",
+      "research/path-popup-check/src/test/java/com/leotv/detail/MobilePathPopupTest.java": "532845b9268c7ee8c88c655e0eae75516f415954aadc17301876b7ac58cc9f5c",
+      "research/check_detail_parallel.py": "1e1de4c08831f3b8c6888e1d4de89598749aadb15de0758b42378a70d15a8d58",
+      "branding/java/mobile/com/leotv/branding/LogoLoader.java": "babdf2de90fac077bf803f6f8625228418fe447ba037dc2772273acbc824e499",
+      "branding/java/tv/com/leotv/branding/LogoLoader.java": "9707be6e912a4bb3c8466827cd5f78bdf8576b16fdaad64eebe967160d42ff89"
+    },
+    "delivery": "Direct GitHub build/publication authorized as 5.3.6 / 663; no local APK packaging or device execution."
   }
 }

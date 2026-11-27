@@ -10,7 +10,7 @@ def summarize(source):
     retained=('variant','product','player_profile','delivery_products','shared_feature_source_sha256','shared_feature_hooks_sha256','shared_zip_payload_sha256','package','version_name','version_code','min_sdk','release_channel','protected_release',
               'expected_changes_match','output_apk_sha256','unsigned','native_zip_alignment_kib','native_libraries_exact',
               'native_abis','resource_ids_and_configurations_retained','resource_style_spans_retained','device_validation','added_dex_paths',
-              'added_player_native_libraries_exact','added_player_native_zip_alignment_kib','player_corresponding_source','launch_theme_edits')
+              'added_player_native_libraries_exact','added_player_native_zip_alignment_kib','player_corresponding_source','launch_theme_edits','launch_restore')
     result={key:data[key] for key in retained if key in data}
     baseline=data['baseline_audit']
     result['baseline_audit']={key:baseline[key] for key in ('equal','original_classes','rebuilt_classes','changed_classes') if key in baseline}

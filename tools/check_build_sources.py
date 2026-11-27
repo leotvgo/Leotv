@@ -32,6 +32,7 @@ from check_tv_vlc import check_contract as check_vlc
 from check_video_preload import check as check_video_preload, check_native as check_native_preload
 from check_detail_progress import check as check_detail_progress, check_native as check_native_progress
 from check_playback_paths import check as check_playback_paths, check_native as check_native_paths
+from check_launch_rollback import check as check_launch_rollback
 from check_player_registers import check_project as check_player_registers
 from check_danmaku_effects import check as check_danmaku_effects, check_native as check_native_effects
 
@@ -56,6 +57,7 @@ def check_sources(root=ROOT):
     check_video_preload(root)
     check_detail_progress(root)
     check_playback_paths(root)
+    check_launch_rollback(root)
     check_danmaku_effects(root)
     check_mpv(root)
     check_vlc(root)

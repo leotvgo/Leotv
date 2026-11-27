@@ -187,7 +187,6 @@ public final class GlobalChrome {
             if (controller != null) controller.trim();
         }
         @Override public void onActivityCreated(Activity activity, Bundle state) {
-            LaunchArtwork.created(activity);
             if (state != null && state.getBoolean(FOLLOWING, false) && activity.getIntent() != null)
                 activity.getIntent().putExtra(FOLLOWING, true);
         }
