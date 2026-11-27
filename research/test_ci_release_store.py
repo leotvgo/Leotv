@@ -183,7 +183,8 @@ class ReleaseStoreTest(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         workflow = (root / '.github/workflows/ordinary-build.yml').read_text()
         self.assertRegex(workflow, r'(?m)^  effects:\n    needs: sources\n')
-        self.assertRegex(workflow, r'(?m)^  prepare:\n    needs: \[sources, effects\]\n')
+        self.assertRegex(workflow, r'(?m)^  path-ui:\n    needs: sources\n')
+        self.assertRegex(workflow, r'(?m)^  prepare:\n    needs: \[sources, effects, path-ui\]\n')
         self.assertRegex(workflow, r'(?m)^  apk:\n    needs: prepare\n')
         self.assertNotIn("'create'", (root / 'tools/stage_ci_apk.py').read_text())
 
