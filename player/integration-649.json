@@ -1900,6 +1900,11 @@
       "before_sha256": "593178a8eba5f64b25e9378a4ae25d690d233399949921da4cfc948e00432f18",
       "after_sha256": "9f4d4b0479b26a83269b4ad3d8c07f2233038547b45aea0469668ef5600a8920",
       "reason": "用户明确要求手机详情线路下展开真实播放路径、TV在线路下直接显示，并按所选路径播放及换集；直接发布 5.3.6 / 660 正式版，保留原播放器及其他功能。"
+    },
+    "research/check_video_preload_handoff.py": {
+      "before_sha256": "5c49d3237f21ee9e74abb7e7e9afe61574e3f416e1c881ff02479d46fb5db756",
+      "after_sha256": "f6b293811a75d7ed5020fae862baccebd84e962809a403c80332c1fa230ee4b2",
+      "reason": "新增真实 PlaybackPaths 依赖进入既有必需预加载 CI 编译入口，虚构数据覆盖所选名称、返回重排、缺失回退、来源隔离及两端原生适配器位置，不扩大产品功能。"
     }
   }
 }
