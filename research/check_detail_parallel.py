@@ -20,6 +20,7 @@ def method(text,name):
 
 
 FIXTURES={
+ 'android/widget/Toast.java':'''package android.widget; public class Toast {public static final int LENGTH_LONG=1;public static String last="";public static Toast makeText(android.app.Activity c,String text,int duration){last=text;return new Toast();}public void show(){}}''',
  'android/content/Intent.java':'''package android.content; public class Intent {private final java.util.Map<String,String> data=new java.util.HashMap<>();public Intent putExtra(String k,String v){data.put(k,v);return this;}public String getStringExtra(String k){return data.get(k);}}''',
  'android/app/Activity.java':'''package android.app; public class Activity {private final android.content.Intent intent=new android.content.Intent();public android.content.Intent getIntent(){return intent;}public boolean isDestroyed(){return false;}}''',
  'android/os/Handler.java':'''package android.os; public class Handler {public boolean post(Runnable r){r.run();return true;}}''',
@@ -44,8 +45,10 @@ public class DetailParallelCheck {
    try{worker.awaitTermination(5,TimeUnit.SECONDS);metadataWorker.awaitTermination(5,TimeUnit.SECONDS);}catch(InterruptedException interrupted){Thread.currentThread().interrupt();}}
  }
  static void await(CountDownLatch latch,String reason)throws Exception{if(!latch.await(5,TimeUnit.SECONDS))throw new AssertionError(reason);}
- static void run(String title,String history,boolean refresh,boolean failure)throws Exception{
+ static void run(String title,String history,boolean refresh,boolean failure)throws Exception{run(title,history,refresh,failure,false);}
+ static void run(String title,String history,boolean refresh,boolean failure,boolean empty)throws Exception{
   SourceGateway.reset();NativeLibrary.savedTitle=history;DetailSessionCache.writes.set(0);DetailSessionCache.state=null;
+  SourceGateway.empty=empty;android.widget.Toast.last="";
   MobileDetailMetadata.published=new CountDownLatch(1);MobileDetailMetadata.calls.set(0);SourceGateway.fail=failure;
   DetailActivity c=new DetailActivity();c.getIntent().putExtra("key","fiction-site").putExtra("id","fiction-id");
   if(title!=null)c.getIntent().putExtra("name",title);
@@ -53,15 +56,18 @@ public class DetailParallelCheck {
    c.load();await(SourceGateway.started,"Provider did not start");
    await(MobileDetailMetadata.published,"Metadata waited for provider resolution");
    if(DetailSessionCache.writes.get()!=0)throw new AssertionError("Provisional source was cached");
+   if(!android.widget.Toast.last.isEmpty())throw new AssertionError("Loading preview was called an expired resource");
    if(refresh){c.generation++;c.enrich(c.generation);c.metadataTask.get(5,TimeUnit.SECONDS);}
    SourceGateway.allowSource.countDown();c.sourceTask.get(5,TimeUnit.SECONDS);if(c.metadataTask!=null)c.metadataTask.get(5,TimeUnit.SECONDS);
    if(c.metadata==null)throw new AssertionError("Early metadata not published");
    if(failure){if(!c.page.failed||DetailSessionCache.writes.get()!=0)throw new AssertionError("Provider error overwrote metadata or cached provisional state");}
    else if(c.sourcePending||!c.page.keptArtwork)throw new AssertionError("Provider response lost after metadata refresh or replaced early artwork");
+   if(empty&&!android.widget.Toast.last.equals("该资源跑路了 请更换站源"))throw new AssertionError("Completed empty detail did not notify the user");
   }finally{c.close();}
  }
  public static void main(String[] args)throws Exception{
   run("示例剧","",false,false);run(null,"示例剧",false,false);run("示例剧","",true,false);run("示例剧","",false,true);
+  run("示例剧","",false,false,true);
   SourceGateway.reset();NativeLibrary.savedTitle="";MobileDetailMetadata.calls.set(0);MobileDetailMetadata.published=new CountDownLatch(1);
   DetailActivity c=new DetailActivity();c.getIntent().putExtra("key","fiction-site").putExtra("id","fiction-id");
   try{c.load();await(SourceGateway.started,"Provider missing");if(MobileDetailMetadata.calls.get()!=0)throw new AssertionError("Empty title requested metadata");SourceGateway.allowSource.countDown();c.sourceTask.get(5,TimeUnit.SECONDS);await(MobileDetailMetadata.published,"Resolved title did not start metadata");}finally{c.close();}
@@ -72,10 +78,10 @@ public class DetailParallelCheck {
  }
 }
 class SourceGateway {
- static CountDownLatch started,allowSource;static boolean fail;
- static void reset(){started=new CountDownLatch(1);allowSource=new CountDownLatch(1);fail=false;}
+ static CountDownLatch started,allowSource;static boolean fail,empty;
+ static void reset(){started=new CountDownLatch(1);allowSource=new CountDownLatch(1);fail=false;empty=false;}
  static org.json.JSONObject body()throws Exception{return new org.json.JSONObject().put("vod_name","示例剧");}
- static class Detail {String site,id,name,year,type;boolean searchCurrentSite;Detail(String s,String i,org.json.JSONObject j){site=s;id=i;name=j.optString("vod_name");year=j.optString("vod_year");type=j.optString("type_name");}}
+ static class Detail {String site,id,name,year,type;boolean searchCurrentSite;java.util.List<Object> episodes=new java.util.ArrayList<>();Detail(String s,String i,org.json.JSONObject j){site=s;id=i;name=j.optString("vod_name");year=j.optString("vod_year");type=j.optString("type_name");if(!empty)episodes.add(new Object());}}
  __PREVIEW_METHODS__
  static Detail load(android.app.Activity c,String s,String i)throws Exception{started.countDown();if(!allowSource.await(5,TimeUnit.SECONDS))throw new AssertionError("Provider latch timed out");if(fail)throw new Exception("fictional provider failure");return new Detail(s,i,body());}
 }
@@ -97,7 +103,7 @@ class MetadataMatchStore {static Object find(BackdropIdentity w){return null;}st
 def main():
     folder=ROOT/'detail/runtime/common/com/leotv/detail'
     controller=(folder/'DetailActivity.java').read_text();source=(folder/'SourceGateway.java').read_text()
-    methods='\n'.join(method(controller,n) for n in ['load','completeSource','identity','enrich','applyMetadata','cacheState'])
+    methods='\n'.join(method(controller,n) for n in ['load','completeSource','resourceResult','identity','enrich','applyMetadata','cacheState'])
     harness=HARNESS.replace('__CONTROLLER_METHODS__',methods).replace('__PREVIEW_METHODS__',method(source,'preview')+'\n'+method(source,'text'))
     with tempfile.TemporaryDirectory(prefix='leotv-detail-parallel-') as temporary:
         root=Path(temporary);files=[]

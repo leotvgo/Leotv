@@ -2064,6 +2064,11 @@
       "before_sha256": "00690830cecbcd925ab771b13e8954c911b940314c0a2a392fb53869895dee82",
       "after_sha256": "3ed8277bf616677dccf950ac74394575a338a48027dbf81367b115fbc62bbbd0",
       "reason": "Continue interrupted authorized 5.3.6 launch, phone path selection and empty-resource feedback fixes; retain API23, eight products and native playback. Carry forward verified 661 delivery documentation."
+    },
+    "research/check_detail_parallel.py": {
+      "before_sha256": "d53b67295341f0f32faf2781520521b7ab58e4e5c18902217d24aa6443be3e35",
+      "after_sha256": "1e1de4c08831f3b8c6888e1d4de89598749aadb15de0758b42378a70d15a8d58",
+      "reason": "The required parallel-detail harness extracts actual completeSource and must also include its new resourceResult dependency; preserve blocked-provider checks and verify no expiry toast while loading, plus toast for a completed empty response."
     }
   },
   "authorized_662_additions": {
