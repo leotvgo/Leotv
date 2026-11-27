@@ -1,5 +1,6 @@
 """Bind the authorized detail path UI to the native Result URL selection on both clients."""
 from pathlib import Path
+import json
 from apply_native_details import method
 
 
@@ -7,6 +8,13 @@ def check(root):
     folder = root / 'detail/runtime/common/com/leotv/detail'
     read = lambda name: (folder / (name + '.java')).read_text()
     paths, selector, page = read('PlaybackPaths'), read('DetailPlaybackPaths'), read('TvDetailPage')
+    stable=json.loads((root/'branding/hardening.json').read_text())['stable_abi']
+    if stable.get('com.leotv.detail.PlaybackPaths',{}).get('methods') != ['apply(Landroid/app/Activity;Ljava/lang/Object;)V']:
+        raise ValueError('Native playback path entry must be retained and checked after R8.')
+    if 'if(!bar.hierarchical)source.setLayoutParams' not in read('DetailSourcePopup'):
+        raise ValueError('Nested ScrollView path list must retain its required LayoutParams type.')
+    if 'label.setTextSize(mobile?13:12)' not in selector:
+        raise ValueError('Playback path labels must be secondary to the source/site text.')
     for token in ('names.indexOf(name)', 'SiteFeed.configId()', 'work+"\\n"+flag', 'putString(key(site,work,flag),name)',
                   'NativeRouting.isFullscreenPlayer(activity)', 'Device.MOBILE?"e":"d"'):
         if token not in paths:

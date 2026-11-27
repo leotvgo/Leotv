@@ -17,6 +17,7 @@
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.Personalization { public <methods>; }
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.NativeEpisodeUi { public <methods>; }
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.Playback { public <methods>; }
+-keep,includedescriptorclasses,allowoptimization class com.leotv.detail.PlaybackPaths { public static void apply(android.app.Activity,java.lang.Object); }
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.DanmakuPlayback { public <methods>; }
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.DanmakuSettings { public <methods>; }
 -keep,includedescriptorclasses,allowoptimization class com.leotv.detail.DanmakuUi { public <methods>; }

@@ -133,6 +133,8 @@ jobs:
               channel = selected_channel
               if channel == 'stable':
                   hardening = audit.get('overlay_compile', {}).get('hardening', {})
+                  if audit['version_code'] >= 661 and (hardening.get('external_hook_targets_verified', 0) <= 0 or hardening.get('missing_external_hook_targets') != 0):
+                      raise SystemExit('Actual R8 output must resolve every preserved native hook target before release.')
                   if not audit.get('protected_release') or hardening.get('mode') != 'r8-release-full' or hardening.get('min_api') != 23 \
                           or not hardening.get('mapping_inputs_declared') or hardening.get('renamed_program_classes', 0) <= 0 \
                           or hardening.get('stable_abi_members_verified', 0) <= 0 or len(audit.get('added_dex_paths', [])) != 1:

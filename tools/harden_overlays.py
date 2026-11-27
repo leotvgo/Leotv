@@ -129,3 +129,21 @@ def audit_program(classes, decoded, mapping, settings, expected_mobile=None, add
     return {'program_classes': len(emitted), 'renamed_program_classes': renamed,
         'stable_abi_members_verified': checked, 'mapping_inputs_declared': True,
         'source_file_names_removed': True, 'client_flag_verified': expected_mobile is not None}, set(emitted)
+
+
+def audit_host_hooks(project, decoded):
+    """Resolve actual preserved-host calls against the R8 output, after obfuscation."""
+    emitted = {}
+    for path in decoded.glob('smali*/**/*.smali'):
+        text = path.read_text()
+        descriptor = re.search(r'(?m)^\.class[^\n]* (L[^;]+;)$', text).group(1)
+        emitted[descriptor] = set(re.findall(r'(?m)^\.method[^\n]* (\S+\([^\n]*\)\S+)$', text))
+    targets = set()
+    for path in project.glob('smali*/**/*.smali'):
+        for descriptor, signature in re.findall(r'(?m)^\s*invoke-\S+[^\n]* (Lcom/leotv/[^;]+;)->(\S+\([^\n]*\)\S+)$', path.read_text()):
+            if signature not in emitted.get(descriptor, set()):
+                raise ValueError('Preserved host calls a missing R8 class/method: ' + descriptor + '->' + signature)
+            targets.add((descriptor, signature))
+    if not targets:
+        raise ValueError('No external host hook targets were audited.')
+    return {'external_hook_targets_verified': len(targets), 'missing_external_hook_targets': 0}

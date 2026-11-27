@@ -37,6 +37,8 @@ jobs:
         run: python3 -B research/check_video_preload_policy.py
       - name: Verify all-site raw preload handoff across native playback header reset
         run: python3 -B research/check_video_preload_handoff.py
+      - name: Reject missing or renamed native playback hook targets after R8
+        run: python3 -B research/check_external_hooks.py
       - name: Verify shared TMDB progress, native episode boundaries, history deletion and Pro spacing
         run: python3 -B research/check_detail_progress.py
       - name: Verify VLC cached timestamp interpolation and native pause, seek and rate boundaries
@@ -64,8 +66,24 @@ jobs:
       - name: Verify nine native effect templates, font and opacity, coordinates and cache bounds on API23
         run: gradle --no-daemon --console=plain --max-workers=2 -p research/effects-check test
 
+  path-ui:
+    needs: sources
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.14.3'
+      - name: Verify actual phone nested popup touch and parent LayoutParams on API23 and Android15
+        run: gradle --no-daemon --console=plain --max-workers=2 -p research/path-popup-check test
+
   prepare:
-    needs: [sources, effects]
+    needs: [sources, effects, path-ui]
     permissions:
       contents: write
     runs-on: ubuntu-22.04

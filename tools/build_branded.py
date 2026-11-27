@@ -31,7 +31,8 @@ from player_inputs import corresponding_source as player_corresponding_source
 from apply_danmaku_effects import apply as apply_danmaku_effects
 from check_player_registers import check_project as check_player_registers
 from check_native_details import check_contract as check_detail_contract, source_set as detail_source_set
-from harden_overlays import compile_program, audit_program
+from harden_overlays import compile_program, audit_program, audit_host_hooks
+from apply_launch_branding import apply as apply_launch_branding, banner_bitmap
 from apk_products import product_id, PROFILES, PRODUCTS
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -249,6 +250,7 @@ def compile_overlays(project, profile, spec, apk, sdk, apktool, work, log, r8=No
     if hardening is not None:
         checked, added = audit_program(classes, decoded, mapping, settings, family == 'mobile', additional_players=additional_players)
         hardening.update(checked)
+        hardening.update(audit_host_hooks(project, decoded))
         next_index = max(1 if name == 'classes.dex' else int(re.fullmatch(r'classes(\d+)\.dex', name).group(1)) for name in dex_files) + 1
         dex_name = f'classes{next_index}.dex'
         data = (dex / 'classes.dex').read_bytes()
@@ -310,13 +312,17 @@ def resource_overlay(original, values, allowed):
             value = source
         elif name == 'mipmap/ic_banner':
             source = 'res/mipmap-xhdpi/ic_banner.png'
-            value = 'res/mipmap-anydpi-v26/ic_banner.png' if entry['density'] == 0xfffe else source
+            value = 'res/mipmap-anydpi-v26/ic_banner.xml' if entry['density'] == 0xfffe else source
         else:
             raise ValueError('Unknown allowed branding resource: ' + name)
         changes[entry['id'], entry['config']] = value
         if source:
             old = table.pool.strings[entry['references'][0][1]]
             replacement = {'path': value, 'bytes': (BRANDING / source).read_bytes(), 'source': source}
+            if name == 'mipmap/ic_banner' and entry['density'] == 0xfffe:
+                foreground = next(e for e in table.entries if e['name'] == 'drawable/ic_banner_foreground')
+                replacement['bytes'] = banner_bitmap(int(foreground['id'], 16))
+                replacement['source'] = 'generated bitmap XML referencing drawable/ic_banner_foreground'
             if old in files and files[old] != replacement:
                 raise ValueError('A shared resource path needs different branding images.')
             files[old] = replacement
@@ -495,6 +501,7 @@ def main():
                         manifest, change = BinaryXml(manifest).set_activity_orientation(activity_name, 0)
                         manifest_report.append(change)
                 resources, resource_report, files = resource_overlay(original.read('resources.arsc'), values, spec['allowed_resources'])
+                resources, launch_theme_report = apply_launch_branding(resources, args.variant)
                 layouts, layout_report = {}, []
                 table = ResourceTable(original.read('resources.arsc'))
                 for resource, contract in profile.get('layout_edits', {}).items():
@@ -569,6 +576,7 @@ def main():
                 'shared_feature_source_sha256':feature_source_fingerprint,'shared_feature_hooks_sha256':feature_hook_fingerprint,'shared_zip_payload_sha256':shared_payload_fingerprint,
                 'resource_edits': resource_report, 'overlay_compile': compile_report,
                 'layout_edits': layout_report,
+                'launch_theme_edits': launch_theme_report,
                 'qr_web_input_edits': web_report,
                 'branding_assets_sha256': sha256((BRANDING / 'asset-provenance.json').read_bytes()),
                 'default_logo_sha256': provenance['assets'][spec['default_logo_asset']]['sha256'],

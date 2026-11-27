@@ -1906,5 +1906,82 @@
       "after_sha256": "f6b293811a75d7ed5020fae862baccebd84e962809a403c80332c1fa230ee4b2",
       "reason": "新增真实 PlaybackPaths 依赖进入既有必需预加载 CI 编译入口，虚构数据覆盖所选名称、返回重排、缺失回退、来源隔离及两端原生适配器位置，不扩大产品功能。"
     }
+  },
+  "authorized_661_source_repairs": {
+    ".github/workflows/ordinary-build.yml": {
+      "before_sha256": "6da491e44adc1e76fbdb4beed0ed239aada4ff6c090eebc129d9d580f44b88b8",
+      "after_sha256": "6a78fb44b6355f3e70213789b899036cf547f59a11203c7a443eaeee4750a7ae",
+      "reason": "用户真机反馈后明确要求修复 5.3.6 两端 PlaybackPaths 类缺失崩溃、手机线路浮层布局参数、TV 路径字号、大图 banner 和图标外侧启动颜色；661 保留原功能，补实际 R8 调用目标及指定主题/anydpi 资源门禁，直接正式交付八套 APK。"
+    },
+    ".github/workflows/publish-test-apks.yml": {
+      "before_sha256": "945d68030056dcfbe1b756f722254f3986cdbb06036e5ceabf2db7f5444f331d",
+      "after_sha256": "823b807820e1f8fb70416d6d22178149824316dca11e5e6f1bc42db057ed20fd",
+      "reason": "用户真机反馈后明确要求修复 5.3.6 两端 PlaybackPaths 类缺失崩溃、手机线路浮层布局参数、TV 路径字号、大图 banner 和图标外侧启动颜色；661 保留原功能，补实际 R8 调用目标及指定主题/anydpi 资源门禁，直接正式交付八套 APK。"
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "c5c46232f0d74d528d6b7c2fc0d88a72d2a407fe5a9136fae49b231a5e1aa50b",
+      "after_sha256": "7366a34eec1aafc8306fcdd7311080474b87fcfa6898253970ede7e11e33b738",
+      "reason": "用户真机反馈后明确要求修复 5.3.6 两端 PlaybackPaths 类缺失崩溃、手机线路浮层布局参数、TV 路径字号、大图 banner 和图标外侧启动颜色；661 保留原功能，补实际 R8 调用目标及指定主题/anydpi 资源门禁，直接正式交付八套 APK。"
+    },
+    "branding/hardening.json": {
+      "before_sha256": "60dd8d59c191bfdbf39838db72de268e49b3d72a37e71eb1647f79063fc180d4",
+      "after_sha256": "a04593705880f90efad6c7431885e7a1c15ddc2fae7aa14a504dc0d26e74cdd9",
+      "reason": "用户真机反馈后明确要求修复 5.3.6 两端 PlaybackPaths 类缺失崩溃、手机线路浮层布局参数、TV 路径字号、大图 banner 和图标外侧启动颜色；661 保留原功能，补实际 R8 调用目标及指定主题/anydpi 资源门禁，直接正式交付八套 APK。"
+    },
+    "branding/proguard-release.pro": {
+      "before_sha256": "f81393c56c5613c4184a9342ddb31681033d53b4b9ef462562f50c290fdbc555",
+      "after_sha256": "831babd69c6782f1843d5e2dc1b84c10fb935d1c51a1686d79449be440a5b03e",
+      "reason": "用户真机反馈后明确要求修复 5.3.6 两端 PlaybackPaths 类缺失崩溃、手机线路浮层布局参数、TV 路径字号、大图 banner 和图标外侧启动颜色；661 保留原功能，补实际 R8 调用目标及指定主题/anydpi 资源门禁，直接正式交付八套 APK。"
+    },
+    "branding/release.json": {
+      "before_sha256": "efe51ebf2fa8e6105517ecc744021c19c07c88db0d7b7fafa09a1fb09137e329",
+      "after_sha256": "57c4fe921e188e477d376becd952671dc5ba2a4dd32ad5dce909ca7abb75e37f",
+      "reason": "用户真机反馈后明确要求修复 5.3.6 两端 PlaybackPaths 类缺失崩溃、手机线路浮层布局参数、TV 路径字号、大图 banner 和图标外侧启动颜色；661 保留原功能，补实际 R8 调用目标及指定主题/anydpi 资源门禁，直接正式交付八套 APK。"
+    },
+    "detail/runtime/common/com/leotv/detail/DetailPlaybackPaths.java": {
+      "before_sha256": "c90e45cb3f923bf6e4197780210d69513ae05d2fa2cb490d4273fa77561ba2ce",
+      "after_sha256": "922cc5a817a61794749d399c6eae1de7e782a747c868d1ba9e20d8e1c333f5b5",
+      "reason": "用户真机反馈后明确要求修复 5.3.6 两端 PlaybackPaths 类缺失崩溃、手机线路浮层布局参数、TV 路径字号、大图 banner 和图标外侧启动颜色；661 保留原功能，补实际 R8 调用目标及指定主题/anydpi 资源门禁，直接正式交付八套 APK。"
+    },
+    "detail/runtime/common/com/leotv/detail/DetailSourcePopup.java": {
+      "before_sha256": "70598a3f921bd8f57d73dccc1befaa206a72d931ad32a392f8c508b28cf52494",
+      "after_sha256": "835495a19125ab692ac7122267e8434ee4949998176599573669244b98e0cc75",
+      "reason": "用户真机反馈后明确要求修复 5.3.6 两端 PlaybackPaths 类缺失崩溃、手机线路浮层布局参数、TV 路径字号、大图 banner 和图标外侧启动颜色；661 保留原功能，补实际 R8 调用目标及指定主题/anydpi 资源门禁，直接正式交付八套 APK。"
+    },
+    "tools/android_branding.py": {
+      "before_sha256": "9d04b04b3fc0aa4f33f12b01083978fb2fe4d5cde9f7305fdebb361d2defacfa",
+      "after_sha256": "07dc69fcf7728763adf08579fee5b0fda61428bebb229002b96c05a88b4cd4d0",
+      "reason": "用户真机反馈后明确要求修复 5.3.6 两端 PlaybackPaths 类缺失崩溃、手机线路浮层布局参数、TV 路径字号、大图 banner 和图标外侧启动颜色；661 保留原功能，补实际 R8 调用目标及指定主题/anydpi 资源门禁，直接正式交付八套 APK。"
+    },
+    "tools/build_branded.py": {
+      "before_sha256": "4f53bee63da68a5ddcd050b290995ab215163e7e411f0ab546be0f8e75ee9611",
+      "after_sha256": "e25f849800f1f8e62d9ededaf5159fe435ce5af25f23c94ef67dcbc0f1afff9d",
+      "reason": "用户真机反馈后明确要求修复 5.3.6 两端 PlaybackPaths 类缺失崩溃、手机线路浮层布局参数、TV 路径字号、大图 banner 和图标外侧启动颜色；661 保留原功能，补实际 R8 调用目标及指定主题/anydpi 资源门禁，直接正式交付八套 APK。"
+    },
+    "tools/check_playback_paths.py": {
+      "before_sha256": "912be8ab9448daa7e36f74f4a336bc75b50165fe7dd7b438f0e2b41c228a653c",
+      "after_sha256": "675d49a56f7e5d001dc7fccdf6781c80d870c8069beb2e1757185546cb6de7f5",
+      "reason": "用户真机反馈后明确要求修复 5.3.6 两端 PlaybackPaths 类缺失崩溃、手机线路浮层布局参数、TV 路径字号、大图 banner 和图标外侧启动颜色；661 保留原功能，补实际 R8 调用目标及指定主题/anydpi 资源门禁，直接正式交付八套 APK。"
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "9f4d4b0479b26a83269b4ad3d8c07f2233038547b45aea0469668ef5600a8920",
+      "after_sha256": "490a405cbe9d7fa8651d07ab6f8d6b2a5189e44d367c89df2ba532f5ebb7f7c1",
+      "reason": "用户真机反馈后明确要求修复 5.3.6 两端 PlaybackPaths 类缺失崩溃、手机线路浮层布局参数、TV 路径字号、大图 banner 和图标外侧启动颜色；661 保留原功能，补实际 R8 调用目标及指定主题/anydpi 资源门禁，直接正式交付八套 APK。"
+    },
+    "tools/harden_overlays.py": {
+      "before_sha256": "05a0bfd4530f26eefaccd04e3a517795a9f58bc99b3bf1e84abdbb3b335c5680",
+      "after_sha256": "546dbab8ba49df470199882b5b815dc848b49ba6e59a8647b4fd6f5b197eb6cb",
+      "reason": "用户真机反馈后明确要求修复 5.3.6 两端 PlaybackPaths 类缺失崩溃、手机线路浮层布局参数、TV 路径字号、大图 banner 和图标外侧启动颜色；661 保留原功能，补实际 R8 调用目标及指定主题/anydpi 资源门禁，直接正式交付八套 APK。"
+    },
+    "tools/public_apk_audit.py": {
+      "before_sha256": "99fc4ef1dd776ff0132977888d6bd09116503a520ad2db4ea76c1e54ae17cc42",
+      "after_sha256": "8700e591afc7c134463af9201908bd9aaa6d6a73b6ced883c90274cde67d8117",
+      "reason": "用户真机反馈后明确要求修复 5.3.6 两端 PlaybackPaths 类缺失崩溃、手机线路浮层布局参数、TV 路径字号、大图 banner 和图标外侧启动颜色；661 保留原功能，补实际 R8 调用目标及指定主题/anydpi 资源门禁，直接正式交付八套 APK。"
+    },
+    "README.md": {
+      "before_sha256": "4fbca417b784dd7dc09218a0f171d0ab91f6da123ed33fbf1d6c5b81e9fe8813",
+      "after_sha256": "7efdcf2930dbcd0cf36eabdd3fa77fff4e2049d91f9e040d3ac50f23d7cdea52",
+      "reason": "延续用户此前授权的 5.3.6 /660 正式交付文档，并记录本次661修复；README是交付说明，不进入APK可执行源码，保留所有代码门禁。"
+    }
   }
 }

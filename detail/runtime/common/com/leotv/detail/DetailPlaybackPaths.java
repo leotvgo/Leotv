@@ -86,6 +86,12 @@ final class DetailPlaybackPaths {
                 render();if(page.mobileSources!=null)page.mobileSources.dismiss();
             });
             item.setActivated(i==active);TextView label=NativeViews.text(item);if(label!=null)label.setActivated(i==active);
+            if(label!=null){
+                label.setTextSize(mobile?13:12);label.setMinHeight(page.dp(mobile?36:32));
+                label.setPadding(page.dp(10),page.dp(6),page.dp(10),page.dp(6));
+            }
+            item.setMinimumHeight(page.dp(mobile?36:32));
+            if(!mobile){android.view.ViewGroup.LayoutParams params=item.getLayoutParams();if(params!=null)params.height=-2;}
             parent.addView(item,new LinearLayout.LayoutParams(mobile?-1:-2,-2));
         }
     }

@@ -1,0 +1,2 @@
+package com.leotv.detail;
+final class MetadataCache {static String hash(String value){try{java.security.MessageDigest hash=java.security.MessageDigest.getInstance("SHA-256");StringBuilder b=new StringBuilder();for(byte v:hash.digest(value.getBytes(java.nio.charset.StandardCharsets.UTF_8)))b.append(String.format("%02x",v&255));return b.toString();}catch(Exception error){throw new AssertionError(error);}}}

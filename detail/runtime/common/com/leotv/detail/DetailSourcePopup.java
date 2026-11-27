@@ -54,7 +54,9 @@ final class DetailSourcePopup {
                 setManager.invoke(source, verticalManager);
             }
             sourceParams = source.getLayoutParams();
-            source.setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
+            // Hierarchical flags live inside ScrollView, whose children require
+            // FrameLayout.LayoutParams. Keep that parent's actual parameter type.
+            if(!bar.hierarchical)source.setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
             bar.removeView(bar.picker); bar.picker.expanded = true;
             menu = new FrameLayout(activity);
             GradientDrawable background = new GradientDrawable(); background.setColor(backgroundColour); background.setCornerRadius(dp(8));

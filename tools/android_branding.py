@@ -202,7 +202,61 @@ class ResourceTable:
                     'name': type_pool.strings[type_id - 1] + '/' + key_pool.strings[key],
                     'density': density, 'config': config.hex(), 'references': references,
                     'normalized': bytes(normalized), 'simple': not bool(entry_flags & 1),
+                    'begin': begin, 'end': end, 'chunk': position,
+                    'offset_slot': table_offset + index * (2 if flags & 2 else 4) + (2 if flags & 1 else 0),
+                    'offset_units': 4 if flags & 3 else 1, 'offset_width': 2 if flags & 3 else 4,
                 })
+
+    def edit_styles(self, changes):
+        """Patch only declared style members; preserve all resource IDs/configurations."""
+        requested = {name for name in changes}
+        selected = [entry for entry in self.entries if entry['name'] in requested]
+        if {entry['name'] for entry in selected} != requested:
+            raise ValueError('A declared launch theme is missing.')
+        grouped, report = {}, []
+        for entry in selected:
+            if entry['simple'] or not entry['name'].startswith('style/'):
+                raise ValueError('Launch theme must be a resource bag.')
+            body = bytearray(self.data[entry['begin']:entry['end']])
+            size, count = u16(body, 0), u32(body, 12)
+            members = {u32(body, size + i * 12): bytes(body[size + i * 12 + 4:size + (i + 1) * 12]) for i in range(count)}
+            for attribute, (kind, value) in changes[entry['name']].items():
+                before = members.get(attribute)
+                members[attribute] = struct.pack('<HBBI', 8, 0, kind, value)
+                report.append({'resource': entry['name'], 'resource_id': entry['id'], 'configuration': entry['config'],
+                               'attribute': f'0x{attribute:08x}', 'before': before.hex() if before else None,
+                               'after_type': kind, 'after': value})
+            put32(body, 12, len(members))
+            body = body[:size] + b''.join(struct.pack('<I', attribute) + value for attribute, value in sorted(members.items()))
+            grouped.setdefault(entry['chunk'], []).append((entry, body))
+        package_offset, _, package_header, package_size = self.package_part
+        package = bytearray(self.data[package_offset:package_offset + package_header])
+        for position, kind, header, size in chunks(self.data, package_offset + package_header, package_offset + package_size):
+            chunk = bytearray(self.data[position:position + size])
+            for entry, body in grouped.get(position, []):
+                chunk.extend(b'\0' * (-len(chunk) % 4))
+                offset = len(chunk) - u32(chunk, 16)
+                slot = entry['offset_slot'] - position
+                if entry['offset_width'] == 2:
+                    if offset // entry['offset_units'] >= 0xffff:
+                        raise ValueError('Launch theme exceeded compact resource offset range.')
+                    struct.pack_into('<H', chunk, slot, offset // entry['offset_units'])
+                else:
+                    put32(chunk, slot, offset)
+                chunk.extend(body)
+            put32(chunk, 4, len(chunk)); package.extend(chunk)
+        put32(package, 4, len(package))
+        output = bytearray(self.data[:u16(self.data, 2)])
+        for position, kind, _, size in self.parts:
+            output.extend(package if kind == 0x200 else self.data[position:position + size])
+        put32(output, 4, len(output))
+        before, after = self.snapshot(), ResourceTable(output).snapshot()
+        if before.keys() != after.keys():
+            raise ValueError('Launch theme changed resource IDs/configurations.')
+        allowed = {(entry['id'], entry['config']) for entry in selected}
+        if any(before[key] != after[key] for key in before if key not in allowed):
+            raise ValueError('Launch theme changed an unrelated resource.')
+        return bytes(output), report
 
     def snapshot(self):
         return {
