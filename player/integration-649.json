@@ -1982,6 +1982,11 @@
       "before_sha256": "4fbca417b784dd7dc09218a0f171d0ab91f6da123ed33fbf1d6c5b81e9fe8813",
       "after_sha256": "7efdcf2930dbcd0cf36eabdd3fa77fff4e2049d91f9e040d3ac50f23d7cdea52",
       "reason": "延续用户此前授权的 5.3.6 /660 正式交付文档，并记录本次661修复；README是交付说明，不进入APK可执行源码，保留所有代码门禁。"
+    },
+    "research/test_ci_release_store.py": {
+      "before_sha256": "e3ef8c604eb164afd14f455c5dbc34b97e237a8d10681424b24e3b60ee05dc52",
+      "after_sha256": "66ddf84d0f0c5de88ff987a71cad817bff6fb967a8855384a0390b2e85770dd6",
+      "reason": "Fix the build661 release preparation dependency guard after adding mandatory path-ui: require sources, effects and actual nested popup checks before any APK matrix job; keep all draft ownership and upload recovery checks."
     }
   }
 }
