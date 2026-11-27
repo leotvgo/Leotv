@@ -1626,7 +1626,7 @@
     },
     "research/effects-check/src/test/java/com/leotv/detail/PosterSearchTest.java": {
       "before_sha256": null,
-      "after_sha256": "e7b02cc7825c082c7b8aea5659aa9a1f46cab407f8eed429292f572bc2b250eb",
+      "after_sha256": "13e1c10d877f66ffbee099c42a0e6f263a06eb852f7eb136280d66e396e1b9bb",
       "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
     },
     "research/generate_poster_gesture_check.py": {
@@ -1668,6 +1668,14 @@
     "long_press_event_hooks_only": true,
     "automatic_source_logic_unchanged": true,
     "private_subscription_material_not_committed": true,
-    "native_inputs_unchanged": true
+    "native_inputs_unchanged": true,
+    "pre_apk_gate_attempts": [
+      {
+        "build_run_id": 45923918973,
+        "apk_job_started": false,
+        "failure": "The cleanup test called Android View.performLongClick with no parent after removing its listener; Android falls back to the parent context menu. Mount the test view before checking that no stale search action remains. Runtime source unchanged.",
+        "repository_restored_private": true
+      }
+    ]
   }
 }
