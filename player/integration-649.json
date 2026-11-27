@@ -1566,7 +1566,7 @@
   "authorized_658_source_repairs": {
     "README.md": {
       "before_sha256": "e531a6ef93a0d5edee44243c6d48337aebfa35c9c6e16ef991540df6da43ffee",
-      "after_sha256": "1b43aaca7de6eb82d5512493ca25c35c90e8cea7726bd72454686e420eb021d1",
+      "after_sha256": "7c98f65aa8e4d7a7457e2752ee34b96ed0aad8df9b41a2bd5838f45fe84bb366",
       "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
     },
     "branding/AndroidManifest.xml": {
@@ -1616,7 +1616,7 @@
     },
     "docs/LEOTV-5.3.4-PREVIEW-12-658-NATIVE-POSTER-SEARCH-20261127.md": {
       "before_sha256": null,
-      "after_sha256": "921b2d4616780464ca1bd731bd66a1cc2c75da6578bcd9cf777387b5d48300b9",
+      "after_sha256": "41a98ef1bb5891aac6c21b252eb37c3543c1bb80f31a208c96f7fb628c9984ec",
       "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
     },
     "research/effects-check/build.gradle": {
@@ -1653,6 +1653,11 @@
       "before_sha256": null,
       "after_sha256": "8d5676a4d166a79034cce7a981f8dff079e99af98c0fda38310927c1d425ae65",
       "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "evidence/player-658-signed-delivery-20261127.json": {
+      "before_sha256": null,
+      "reason": "Verified658 native poster long-press APK/source delivery, six API23 event checks and PRIVATE restoration; documentation only",
+      "after_sha256": "37ce27ee362dbdd38385b4f5959233a512ae57a24695b283aaf0d204aa31fa2c"
     }
   },
   "658_delivery_inputs": {
@@ -1676,6 +1681,12 @@
         "failure": "The cleanup test called Android View.performLongClick with no parent after removing its listener; Android falls back to the parent context menu. Mount the test view before checking that no stale search action remains. Runtime source unchanged.",
         "repository_restored_private": true
       }
-    ]
+    ],
+    "build_run_id": 45924371141,
+    "publish_run_id": 45925051024,
+    "apk_input_commit": "c1b19b14b46c4f394a80205d4e42bf804ce2f6bf",
+    "actual_signed_delivery_verified": true,
+    "repository_visibility": "private",
+    "six_api23_poster_checks_passed": true
   }
 }
