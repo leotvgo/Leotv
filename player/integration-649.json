@@ -2276,8 +2276,8 @@
     },
     "README.md": {
       "before_sha256": "b75eefb629f5df6dcb325e1dfba4a1f466fa82887cac999a34dfe6fcbe916d09",
-      "after_sha256": "53eb695ed0f4b8574261ba61cdfa51922ef6782c4d0e9e86a560428410854498",
-      "reason": "Document the user-authorized 5.3.6 / 664 resource feedback scope and direct GitHub delivery."
+      "after_sha256": "460f3d6d30e72526e979e73a208a797f1d55520fcedac3e05bcc34d431571294",
+      "reason": "Record verified 664 eight-APK delivery, requested feedback scope, original startup/native/profile preservation and PRIVATE restoration; no runtime source changes."
     }
   }
 }
