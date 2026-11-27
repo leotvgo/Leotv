@@ -78,7 +78,7 @@ final class NativeCspCategory implements AutoCloseable {
             try{NativeCspUi.bindCard(owner,holder.view,item,()->{if(!closed&&!owner.closed)owner.open(item);});}
             catch(ReflectiveOperationException|RuntimeException unavailable){View name=NativeCspUi.named(owner,holder.view,"name");if(name instanceof TextView)((TextView)name).setText("卡片加载失败，点击重试");holder.view.setOnClickListener(v->onBindViewHolder(holder,item));}
         }
-        @Override public void onUnbindViewHolder(Presenter$ViewHolder holder){View image=NativeCspUi.named(owner,holder.view,"image");if(image instanceof ImageView)NativeCspUi.releaseHomeImage((ImageView)image);holder.view.setOnClickListener(null);holder.view.animate().cancel();holder.view.setScaleX(1);holder.view.setScaleY(1);holder.view.setTranslationZ(0);holder.view.setSelected(false);}
+        @Override public void onUnbindViewHolder(Presenter$ViewHolder holder){View image=NativeCspUi.named(owner,holder.view,"image");if(image instanceof ImageView)NativeCspUi.releaseHomeImage((ImageView)image);holder.view.setOnClickListener(null);PosterSearch.detach(holder.view);holder.view.animate().cancel();holder.view.setScaleX(1);holder.view.setScaleY(1);holder.view.setTranslationZ(0);holder.view.setSelected(false);}
     }
     final class Rows extends Presenter {
         final ListRowPresenter nativeRows;

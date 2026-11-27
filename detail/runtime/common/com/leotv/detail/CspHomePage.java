@@ -59,6 +59,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         info.addView(titleArt,new LinearLayout.LayoutParams(-1,dp(phone?56:64)));titleArt.setVisibility(GONE);info.addView(title,new LinearLayout.LayoutParams(-1,-2));info.addView(badges,new LinearLayout.LayoutParams(-1,-2));info.addView(facts,new LinearLayout.LayoutParams(-1,-2));info.addView(overview,new LinearLayout.LayoutParams(-1,-2));info.addView(dots,new LinearLayout.LayoutParams(-1,-2));
         heroFrame.addView(info,new FrameLayout.LayoutParams(-1,-2,Gravity.BOTTOM));
         heroFrame.setFocusable(true);heroFrame.setFocusableInTouchMode(!phone);heroFrame.setClickable(true);heroFrame.setOnClickListener(v->{int index=Math.max(0,Math.min(heroIndex,heroItems.size()-1));if(first!=null&&!heroItems.isEmpty())actions.resource(first,heroItems.get(index));});
+        PosterSearch.attach(activity,heroFrame,()->closed||!pageActive||heroItems.isEmpty()?null:heroItems.get(Math.max(0,Math.min(heroIndex,heroItems.size()-1))));
         if(phone)heroGestures();
         hero.onIndex(this::selected);hero.onIncoming(this::selected);
         shortcut=new android.widget.ImageView(activity);View nativeTop=NativeViews.find(activity,"top");if(nativeTop instanceof android.widget.ImageView)shortcut.setImageDrawable(NativeViews.drawable(((android.widget.ImageView)nativeTop).getDrawable(),shortcut));else shortcut.setImageDrawable(new NativeCspUi.Glyph(false,false));shortcut.setPadding(dp(12),dp(12),dp(12),dp(12));shortcut.setContentDescription("一键回顶");shortcut.setFocusable(true);shortcut.setClickable(true);shortcut.setBackground(TvDetailPage.focusBackground(activity));shortcut.setOnClickListener(v->scroll.smoothScrollTo(0,0));addView(shortcut,new FrameLayout.LayoutParams(dp(48),dp(48),Gravity.BOTTOM|Gravity.RIGHT));shortcut.setVisibility(phone?VISIBLE:GONE);
@@ -90,17 +91,18 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     void heroGestures(){
         final int slop=android.view.ViewConfiguration.get(activity).getScaledTouchSlop();
         android.view.GestureDetector detector=new android.view.GestureDetector(activity,new android.view.GestureDetector.SimpleOnGestureListener(){
-            boolean horizontal,vertical,stepped;
-            @Override public boolean onDown(android.view.MotionEvent event){horizontal=vertical=stepped=false;return true;}
+            boolean horizontal,vertical,stepped,longPressed;
+            @Override public boolean onDown(android.view.MotionEvent event){horizontal=vertical=stepped=longPressed=false;return true;}
             @Override public boolean onScroll(android.view.MotionEvent start,android.view.MotionEvent end,float distanceX,float distanceY){
                 if(start==null)return false;float x=end.getX()-start.getX(),y=end.getY()-start.getY();
                 if(!horizontal&&!vertical){if(Math.max(Math.abs(x),Math.abs(y))<=slop)return true;horizontal=Math.abs(x)>Math.abs(y);vertical=!horizontal;}
                 if(vertical){if(heroFrame.getParent()!=null)heroFrame.getParent().requestDisallowInterceptTouchEvent(false);return false;}
                 if(!stepped){hero.step(x<0?1:-1);stepped=true;}return true;
             }
-            @Override public boolean onSingleTapUp(android.view.MotionEvent event){return !horizontal&&!vertical&&heroFrame.performClick();}
+            @Override public void onLongPress(android.view.MotionEvent event){if(!horizontal&&!vertical){longPressed=true;heroFrame.performLongClick();}}
+            @Override public boolean onSingleTapUp(android.view.MotionEvent event){return !longPressed&&!horizontal&&!vertical&&heroFrame.performClick();}
         });
-        detector.setIsLongpressEnabled(false);detector.setOnDoubleTapListener(null);
+        detector.setIsLongpressEnabled(true);detector.setOnDoubleTapListener(null);
         heroFrame.setOnTouchListener((view,event)->{if(closed||!pageActive)return false;int action=event.getActionMasked();if(action==android.view.MotionEvent.ACTION_DOWN&&view.getParent()!=null)view.getParent().requestDisallowInterceptTouchEvent(true);detector.onTouchEvent(event);if((action==android.view.MotionEvent.ACTION_UP||action==android.view.MotionEvent.ACTION_CANCEL)&&view.getParent()!=null)view.getParent().requestDisallowInterceptTouchEvent(false);return true;});
     }
     int dp(int value){return Math.round(value*getResources().getDisplayMetrics().density);}
@@ -272,7 +274,7 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
         void reset(){if(selected==0&&viewport.getScrollX()==0&&(phone||((TvShelfScroll)viewport).focused==null))return;selected=0;if(!phone)((TvShelfScroll)viewport).focused=null;viewport.scrollTo(0,0);}
     }
     void active(boolean value){HomeTheme.apply(this);if(closed||!phone&&pageActive==value)return;boolean leaving=pageActive&&!value;pageActive=value;if(recent!=null)recent.active(value);hero.setActive(value&&heroFrame.getVisibility()==VISIBLE);if(value)updateInsets();else if(leaving&&!phone){int y=scroll.getScrollY();for(Shelf shelf:shelves){if(shelf.rail.hasFocus()&&shelf.rail.getChildCount()>0)shelf.rail.getChildAt(0).requestFocus();shelf.reset();}scroll.scrollTo(0,y);}}
-    @Override public void close(){if(closed)return;closed=true;if(scroll.getViewTreeObserver().isAlive())scroll.getViewTreeObserver().removeOnScrollChangedListener(scrollChanged);viewportChanged=null;backgroundChanged=null;hero.onFrame(null);heroFrame.setOnClickListener(null);heroFrame.setOnTouchListener(null);if(recent!=null)recent.close();hero.close();titleArt.close();}
+    @Override public void close(){if(closed)return;closed=true;if(scroll.getViewTreeObserver().isAlive())scroll.getViewTreeObserver().removeOnScrollChangedListener(scrollChanged);viewportChanged=null;backgroundChanged=null;hero.onFrame(null);heroFrame.setOnClickListener(null);PosterSearch.detach(heroFrame);heroFrame.setOnTouchListener(null);if(recent!=null)recent.close();hero.close();titleArt.close();}
     final class Backdrop extends Drawable {
         Drawable fallback;final Paint paint=new Paint();int colour=DetailHero.DEFAULT_COLOR;Shader shader;int paintedHeight,paintedHero;
         @Override public void draw(Canvas canvas){if(hero==null||!hero.hasArtwork()){android.graphics.Rect before=new android.graphics.Rect(fallback.getBounds());fallback.setBounds(getBounds());fallback.draw(canvas);fallback.setBounds(before);return;}

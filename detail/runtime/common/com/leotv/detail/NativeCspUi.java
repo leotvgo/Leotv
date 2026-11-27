@@ -179,6 +179,7 @@ final class NativeCspUi {
                 try{View nativeCard=createCard(activity,retry,item,style,width,action);nativeCard.setDuplicateParentStateEnabled(true);retry.removeAllViews();retry.addView(nativeCard,new FrameLayout.LayoutParams(width,-2));retry.setOnClickListener(v->action.run());}
                 catch(ReflectiveOperationException|RuntimeException pending){}
             };
+            PosterSearch.attach(activity,retry,item);
             retry.setOnClickListener(v->restore.run());retry.post(restore);return retry;
         }
     }
@@ -201,6 +202,7 @@ final class NativeCspUi {
             bind(activity,root,"name",bean,"getName","getNameVisible");bind(activity,root,"year",bean,"getYear","getYearVisible");bind(activity,root,"site",bean,"getSiteName","getSiteVisible");bind(activity,root,"remark",bean,"getRemarks","getRemarkVisible");
             ImageView image=(ImageView)named(activity,root,"image");if(image!=null){String name=(String)vod.getMethod("getName").invoke(bean),picture=(String)vod.getMethod("getPic").invoke(bean);homeImage(image,name,SourceArtwork.hostSource(picture));}
             root.setFocusable(true);root.setClickable(true);root.setOnClickListener(v->action.run());
+            PosterSearch.attach(activity,root,item);
     }
     /** The host's posted loader drops unmeasured views and explicitly selects DiskCacheStrategy.NONE. */
     static void homeImage(ImageView image,String title,String source){

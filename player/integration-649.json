@@ -1562,5 +1562,112 @@
     "actual_signed_delivery_verified": true,
     "repository_visibility": "private",
     "restored_blocks_match_archived_source": true
+  },
+  "authorized_658_source_repairs": {
+    "README.md": {
+      "before_sha256": "e531a6ef93a0d5edee44243c6d48337aebfa35c9c6e16ef991540df6da43ffee",
+      "after_sha256": "1b43aaca7de6eb82d5512493ca25c35c90e8cea7726bd72454686e420eb021d1",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "26b9c7bd8d58fe92da595a244b218e2140d09a074f81bb85cec09c67dc2f8a55",
+      "after_sha256": "48ccc6784294f660e0f260b73f0e251aabfffd046c00d331e5cea6dd6e6f18f4",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "branding/release.json": {
+      "before_sha256": "f4115867d89f39b967126c874fe0eab16ca76c8f0ad74ca8a6f479e8d1579dfd",
+      "after_sha256": "3e592e7d77edad72a2288c2dc6467a84454fb8291fa4235bf91b95eb59c86849",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "branding/res/values/strings.xml": {
+      "before_sha256": "c56927bc17890d49b6e729f5794913b16ec14d6728146e9411a4633c58cb6b05",
+      "after_sha256": "03880a6d99db80c4769df660976c89f227c54658a11232d84ffbd198106ae777",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "detail/home-layout-rollback.json": {
+      "before_sha256": "b2587724ee7ab316be88b35cf2ee52928e632b0f61eb6292c120b7fb25d10bfa",
+      "after_sha256": "98a082f32823f6105b68179856198088b697b0c083f1a3f5d0c985d4493a1420",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "detail/runtime-sources.json": {
+      "before_sha256": "19c28f002071a4a2aff88fe9b345db2de7e8a6dc833dd49fff16fe2a2718762f",
+      "after_sha256": "7407d3ad7566d12bb5ff4789e0cc7c98b7f7f00a86c7dee3f92c02a988d50cf3",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "detail/runtime/common/com/leotv/detail/CspHomePage.java": {
+      "before_sha256": "aa84ea4fbf21dc8a238ad380c422a8e2fa32a241e7e73529f90bec49b860f048",
+      "after_sha256": "5ac4e7e70133282c61c8a93297750b83f4b853bd748574d982ff917cde591ed4",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "detail/runtime/common/com/leotv/detail/NativeCspUi.java": {
+      "before_sha256": "c6c177cd1fbdff422ee14a0df4b4ccac2046709cf094755cd060aaf18096bb8e",
+      "after_sha256": "3369007fccb58a35de9892de3fe46eb5054c530e7add2c6df3eba745bee8e991",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "detail/runtime/common/com/leotv/detail/PosterSearch.java": {
+      "before_sha256": null,
+      "after_sha256": "3c850aefddc81e99c2611aca815465c0f9729e5c1f37b2682b9a309a80aa5eab",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "detail/runtime/tv/com/leotv/detail/NativeCspCategory.java": {
+      "before_sha256": "da0f1a9b9dcd44dd746ddbd72dff1b8502321cf923a9dbe07bfa9f09dcb96bf3",
+      "after_sha256": "0cef2ca1c29cbcda7a5421a8407687138316710ab6c486838bf375b834ecb003",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "docs/LEOTV-5.3.4-PREVIEW-12-658-NATIVE-POSTER-SEARCH-20261127.md": {
+      "before_sha256": null,
+      "after_sha256": "921b2d4616780464ca1bd731bd66a1cc2c75da6578bcd9cf777387b5d48300b9",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "research/effects-check/build.gradle": {
+      "before_sha256": "e1ae601b468ce8e33e4890d4af7acc265be7d44e2bd4c642b0480d467449a330",
+      "after_sha256": "822a52b06b3c2c9be2353237074bf8f18b86830f82e4a69f062378004520b4a6",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "research/effects-check/src/test/java/com/leotv/detail/PosterSearchTest.java": {
+      "before_sha256": null,
+      "after_sha256": "e7b02cc7825c082c7b8aea5659aa9a1f46cab407f8eed429292f572bc2b250eb",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "research/generate_poster_gesture_check.py": {
+      "before_sha256": null,
+      "after_sha256": "73b39bfbf46f763de0c7b8ed7acd7e5c69f639fddfa9013da21c609bff63d64d",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "tools/check_build_sources.py": {
+      "before_sha256": "bab4cee26478d085ddf3d6fa4d12e19533e58bd1e3fd6ad2e80f67b11fb5ff10",
+      "after_sha256": "608e750e5fa362bbacfe454aa66d073b91e507e2d8b6b52c96bb3ab141dce406",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "tools/check_home_layout_rollback.py": {
+      "before_sha256": "cf052b56bcde99b00e0a4f4431eb359911bb1990aad2f967eb9d7b04c530312e",
+      "after_sha256": "0f0b733bb16f222607803206ff0e77d813be0941674bafd20b26ab827cd56ed2",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "1502b2fc051d8c3fac5b9fdc4b8d1be0840f9e079ce1885176f5c77d330f3dfb",
+      "after_sha256": "ba3b7281f6f9a2348366c227b52b9d18689e55218ae4fa1caa4072ad4433d584",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    },
+    "tools/check_poster_search.py": {
+      "before_sha256": null,
+      "after_sha256": "8d5676a4d166a79034cce7a981f8dff079e99af98c0fda38310927c1d425ae65",
+      "reason": "User explicitly requested original native resource-poster long press across new-home carousel/categories/more, independent of source index/change settings. Add event hooks and API23 gesture checks only, preserving restored 652 geometry and original native search destination/keyword/task semantics. Defer unverified Tg automatic-source changes as requested; no private subscription data included."
+    }
+  },
+  "658_delivery_inputs": {
+    "base_commit": "38af14af9c98057dbc4d482cdf88ae91434511bd",
+    "release": "5.3.4-preview.12",
+    "version_code": 658,
+    "native_poster_long_press": true,
+    "tv_native_search_activity": "CollectActivity",
+    "mobile_native_search_activity": "SearchActivity",
+    "source_flags_bypassed_for_long_press": true,
+    "phone_carousel_gesture_consumed": true,
+    "restored_layout_source_blocks": 23,
+    "long_press_event_hooks_only": true,
+    "automatic_source_logic_unchanged": true,
+    "private_subscription_material_not_committed": true,
+    "native_inputs_unchanged": true
   }
 }

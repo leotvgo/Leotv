@@ -120,5 +120,15 @@
       "baseline_end": "    void syncHeroBounds()",
       "sha256": "69a2347aa8ee806645ec3d94337b5a96eb3034a285d7c48dd81331fe81462d7c"
     }
+  ],
+  "authorized_event_additions": [
+    {
+      "path": "detail/runtime/common/com/leotv/detail/NativeCspUi.java",
+      "remove_exact": [
+        "            PosterSearch.attach(activity,retry,item);\n",
+        "            PosterSearch.attach(activity,root,item);\n"
+      ],
+      "authorization": "User explicitly requested native poster long press on all new-home categories. Remove only these event hooks when comparing restored geometry/binding source to 652."
+    }
   ]
 }

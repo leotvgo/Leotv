@@ -1,12 +1,20 @@
 plugins { id 'java' }
 repositories { mavenCentral(); google() }
 sourceSets {
-    main.java.srcDirs = ['src/stub/java']
-    test.java.srcDirs = ['../detail-check/src/test/java']
-    test.java.include '**/DanmakuEffectsTest.java', '**/TvDetailScrollTest.java'
+    main.java.srcDirs = ['src/stub/java', layout.buildDirectory.dir('generated/poster-gesture')]
+    test.java.srcDirs = ['../detail-check/src/test/java', 'src/test/java']
+    test.java.include '**/DanmakuEffectsTest.java', '**/TvDetailScrollTest.java', '**/PosterSearchTest.java'
+}
+tasks.register('generatePosterGestureCheck', Exec) {
+    inputs.file '../generate_poster_gesture_check.py'
+    inputs.file '../../detail/runtime/common/com/leotv/detail/CspHomePage.java'
+    outputs.dir layout.buildDirectory.dir('generated/poster-gesture')
+    commandLine 'python3', '-B', '../generate_poster_gesture_check.py', '--output', layout.buildDirectory.dir('generated/poster-gesture').get().asFile
 }
 tasks.named('compileJava') {
+    dependsOn 'generatePosterGestureCheck'
     source '../../detail/runtime/common/com/leotv/detail/DanmakuEffects.java', '../../detail/runtime/common/com/leotv/detail/DanmakuEffectPolicy.java', '../../detail/runtime/common/com/leotv/detail/DanmakuAvatar.java', '../../detail/runtime/common/com/leotv/detail/TvDetailScroll.java'
+    source '../../detail/runtime/common/com/leotv/detail/PosterSearch.java'
 }
 dependencies {
     compileOnly 'org.robolectric:android-all:15-robolectric-12650502'

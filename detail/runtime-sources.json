@@ -120,6 +120,7 @@
       "detail/runtime/common/com/leotv/detail/PlayerOverlayAnchor.java",
       "detail/runtime/common/com/leotv/detail/PlayerOverlayPosition.java",
       "detail/runtime/common/com/leotv/detail/PlayerTitleArt.java",
+      "detail/runtime/common/com/leotv/detail/PosterSearch.java",
       "detail/runtime/common/com/leotv/detail/PreloadHost.java",
       "detail/runtime/common/com/leotv/detail/PreloadPolicy.java",
       "detail/runtime/common/com/leotv/detail/PreloadSettings.java",

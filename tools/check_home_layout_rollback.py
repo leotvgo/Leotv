@@ -17,6 +17,16 @@ def check(root):
         raise ValueError('Restored category geometry must retain its declared pre-recycler delivery baseline')
     for row in manifest['restored_blocks']:
         data=(root/row['path']).read_bytes()
+        for addition in manifest.get('authorized_event_additions',[]):
+            if addition['path']!=row['path']:continue
+            if addition['path']!='detail/runtime/common/com/leotv/detail/NativeCspUi.java' or set(addition['remove_exact'])!={'            PosterSearch.attach(activity,retry,item);\n','            PosterSearch.attach(activity,root,item);\n'}:
+                raise ValueError('Only the two explicitly authorized long-press event hooks may be excluded from restored-source equality')
+            source=data.decode()
+            if not addition.get('authorization'):raise ValueError('Post-rollback event additions need explicit user authorization')
+            for text in addition['remove_exact']:
+                if source.count(text)!=1:raise ValueError('Authorized poster event hook must occur exactly once')
+                source=source.replace(text,'',1)
+            data=source.encode()
         if 'marker' in row:data=block(data.decode(),row['marker']).encode()
         elif 'start' in row:
             source=data.decode();a=source.index(row['start']);b=source.index(row['end'],a);data=source[a:b].encode()
