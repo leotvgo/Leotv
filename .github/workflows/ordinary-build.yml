@@ -156,12 +156,36 @@ jobs:
       matrix:
         include:
           - variant: tv-v7a
+            product: tv-v7a
+            profile: full
             filename: leanback-armeabi_v7a.apk
           - variant: tv-v8a
+            product: tv-v8a
+            profile: full
             filename: leanback-arm64_v8a.apk
           - variant: mobile-v7a
+            product: mobile-v7a
+            profile: full
             filename: mobile-armeabi_v7a.apk
           - variant: mobile-v8a
+            product: mobile-v8a
+            profile: full
+            filename: mobile-arm64_v8a.apk
+          - variant: tv-v7a
+            product: tv-v7a-core
+            profile: core
+            filename: leanback-armeabi_v7a.apk
+          - variant: tv-v8a
+            product: tv-v8a-core
+            profile: core
+            filename: leanback-arm64_v8a.apk
+          - variant: mobile-v7a
+            product: mobile-v7a-core
+            profile: core
+            filename: mobile-armeabi_v7a.apk
+          - variant: mobile-v8a
+            product: mobile-v8a-core
+            profile: core
             filename: mobile-arm64_v8a.apk
     steps:
       - uses: actions/checkout@v4
@@ -187,9 +211,10 @@ jobs:
           python3 tools/ci_dependencies.py --output "$RUNNER_TEMP/deps"
           python3 tools/ci_input.py --repo "$GITHUB_REPOSITORY" --variant "$VARIANT" --output "$RUNNER_TEMP/input"
       - name: Verify mobile MPV engine and inline settings source contracts on API23
-        if: startsWith(matrix.variant, 'mobile')
+        if: matrix.profile == 'full' && startsWith(matrix.variant, 'mobile')
         run: python3 -B tools/check_mobile_mpv.py --java --sdk "$ANDROID_SDK_ROOT"
       - name: Stage permanent API23 player input and matching Java/source archives without native compilation
+        if: matrix.profile == 'full'
         env:
           GH_TOKEN: ${{ github.token }}
           VARIANT: ${{ matrix.variant }}
@@ -201,18 +226,23 @@ jobs:
         env:
           VARIANT: ${{ matrix.variant }}
           INPUT_FILENAME: ${{ matrix.filename }}
+          PRODUCT: ${{ matrix.product }}
+          PLAYER_PROFILE: ${{ matrix.profile }}
         run: |
-          python3 tools/build_branded.py --variant "$VARIANT" \
+          PLAYER_ARGS=()
+          if [ "$PLAYER_PROFILE" = full ]; then
+            PLAYER_ARGS=(--player-input "$RUNNER_TEMP/player-input" --player-ndk "$ANDROID_SDK_ROOT/ndk/27.0.12077973")
+          fi
+          python3 tools/build_branded.py --variant "$VARIANT" --player-profile "$PLAYER_PROFILE" \
             --apk "$RUNNER_TEMP/input/$INPUT_FILENAME" \
             --apktool "$RUNNER_TEMP/deps/apktool_2.11.0.jar" \
             --r8 "$RUNNER_TEMP/deps/r8-8.8.34.jar" \
-            --player-input "$RUNNER_TEMP/player-input" \
-            --player-ndk "$ANDROID_SDK_ROOT/ndk/27.0.12077973" \
+            "${PLAYER_ARGS[@]}" \
             --sdk "$ANDROID_SDK_ROOT" \
-            --output "artifacts/leotv-$VARIANT-unsigned.apk"
+            --output "artifacts/leotv-$PRODUCT-unsigned.apk"
       - name: Sign installable APK with the fixed APK certificate
         env:
-          VARIANT: ${{ matrix.variant }}
+          VARIANT: ${{ matrix.product }}
           APK_KEYSTORE_BASE64: ${{ secrets.APK_KEYSTORE_BASE64 }}
           APK_STORE_PASSWORD: ${{ secrets.APK_STORE_PASSWORD }}
           APK_KEY_PASSWORD: ${{ secrets.APK_KEY_PASSWORD }}
@@ -226,27 +256,27 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           APK_CERT_SHA256: ${{ vars.APK_CERT_SHA256 }}
-          VARIANT: ${{ matrix.variant }}
+          VARIANT: ${{ matrix.product }}
         run: python3 tools/stage_ci_apk.py --variant "$VARIANT" --symbols
       - name: Publish only a bound audit summary after preserving the full source audit privately
         env:
-          VARIANT: ${{ matrix.variant }}
+          VARIANT: ${{ matrix.product }}
         run: python3 tools/public_apk_audit.py --variant "$VARIANT"
       - id: signed_artifact
         uses: actions/upload-artifact@v4
         continue-on-error: true
         with:
-          name: ordinary-${{ matrix.variant }}-signed
+          name: ordinary-${{ matrix.product }}-signed
           path: |
-            artifacts/leotv-${{ matrix.variant }}.apk
-            artifacts/leotv-${{ matrix.variant }}.signature.json
-            artifacts/leotv-${{ matrix.variant }}-unsigned.audit.json
-            artifacts/leotv-${{ matrix.variant }}-player-source.tar.gz
+            artifacts/leotv-${{ matrix.product }}.apk
+            artifacts/leotv-${{ matrix.product }}.signature.json
+            artifacts/leotv-${{ matrix.product }}-unsigned.audit.json
+            artifacts/leotv-${{ matrix.product }}-player-source.tar.gz
           retention-days: 14
       - name: Stage verified APK in a release draft when Actions storage is unavailable
         if: steps.signed_artifact.outcome == 'failure'
         env:
           GH_TOKEN: ${{ github.token }}
           APK_CERT_SHA256: ${{ vars.APK_CERT_SHA256 }}
-          VARIANT: ${{ matrix.variant }}
+          VARIANT: ${{ matrix.product }}
         run: python3 tools/stage_ci_apk.py --variant "$VARIANT"

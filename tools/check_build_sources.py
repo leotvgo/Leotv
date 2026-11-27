@@ -18,6 +18,7 @@ from apply_qr_web import check_contract as check_qr_web_contract
 from check_tmdb_loading import check as check_tmdb_loading
 from check_home_themes import check as check_home_themes
 from check_poster_search import check as check_poster_search
+from check_delivery_profiles import check as check_delivery_profiles
 from check_cache_maintenance import check as check_cache_maintenance, check_native as check_native_cache
 from check_detail_search import check as check_detail_search
 from check_tmdb_optimization import check as check_tmdb_optimization
@@ -46,6 +47,7 @@ def check_sources(root=ROOT):
     check_tmdb_loading(root)
     check_home_themes(root)
     check_poster_search(root)
+    check_delivery_profiles(root)
     check_cache_maintenance(root)
     check_detail_search(root)
     check_tmdb_optimization(root)

@@ -1,8 +1,8 @@
 {
-  "channel": "prerelease",
-  "version_name": "5.3.4-preview.12",
-  "version_code": 658,
-  "title": "Leotv 5.3.4-preview.12 新主页海报原生长按搜索测试版",
-  "prerelease": true,
-  "make_latest": false
+  "channel": "stable",
+  "version_name": "5.3.5",
+  "version_code": 659,
+  "title": "Leotv 5.3.5 分类位置保留与双内核档位正式版",
+  "prerelease": false,
+  "make_latest": true
 }

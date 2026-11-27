@@ -30,7 +30,13 @@ def check(root):
         if 'marker' in row:data=block(data.decode(),row['marker']).encode()
         elif 'start' in row:
             source=data.decode();a=source.index(row['start']);b=source.index(row['end'],a);data=source[a:b].encode()
-        if hashlib.sha256(data).hexdigest()!=row.get('sha256',row.get('whole_file_sha256')):
+        expected=row.get('sha256',row.get('whole_file_sha256'))
+        for policy in manifest.get('authorized_focus_policy_changes',[]):
+            if policy['path']==row['path'] and policy['marker']==row.get('marker'):
+                if policy['marker'] not in ('    void resetOffscreenRows(', '    boolean focusFirstInRow(', '    final class Shelf {') or policy['baseline_sha256']!=expected or not policy.get('authorization'):
+                    raise ValueError('Bookmark changes must extend the unchanged archived layout baseline')
+                expected=policy['after_sha256']
+        if hashlib.sha256(data).hexdigest()!=expected:
             raise ValueError('Restored category/actor source drifted from the archived implementation: '+row['path']+' '+row.get('marker',row.get('start','whole file')))
     return {'base_version_code':652,'restored_source_blocks':len(manifest['restored_blocks']),'newhome_category_and_actor_code_exact':True}
 

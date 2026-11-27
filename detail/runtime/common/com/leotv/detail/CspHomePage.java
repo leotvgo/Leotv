@@ -191,14 +191,10 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
     boolean moveCard(View focus,boolean right){if(inHistory(focus))return recent.move(right);Shelf shelf=shelfOf(focus);if(shelf==null)return false;int index=cardIndex(shelf,focus);if(index<0)return false;int next=Math.max(0,Math.min(shelf.rail.getChildCount()-1,index+(right?1:-1)));focusHome(shelf.rail.getChildAt(next));return true;}
     boolean focusFirstInRow(View focus){
         if(inHistory(focus))return !recent.atStart()&&recent.focusFirst();
-        Shelf shelf=shelfOf(focus);if(shelf==null||cardIndex(shelf,focus)<=0||shelf.rail.getChildCount()==0)return false;
+        Shelf shelf=shelfOf(focus);if(shelf==null||cardIndex(shelf,focus)==0||shelf.rail.getChildCount()==0)return false;
         return focusHome(shelf.rail.getChildAt(0));
     }
-    void resetOffscreenRows(){
-        if(phone||!pageActive||scroll.getHeight()==0)return;
-        int top=scroll.getScrollY()+scroll.getPaddingTop(),bottom=scroll.getScrollY()+scroll.getHeight()-scroll.getPaddingBottom();
-        int offset=rows.getTop();for(Shelf shelf:shelves){if(shelf.root.hasFocus()||shelf.root.getHeight()==0)continue;int y=offset+shelf.root.getTop();if(y+shelf.root.getHeight()<=top||y>=bottom)shelf.reset();}
-    }
+    void resetOffscreenRows(){ /* Keep each category bookmark until the user explicitly returns to its first card. */ }
     /** Layout bounds in the ancestor's unscrolled content coordinates, including the final focus zoom. */
     android.graphics.Rect bounds(View view,ViewGroup ancestor,boolean zoom){
         int x=zoom?(int)Math.ceil(view.getWidth()*.05f)+dp(2):0,y=zoom?(int)Math.ceil(view.getHeight()*.05f)+dp(2):0;
@@ -269,11 +265,11 @@ final class CspHomePage extends FrameLayout implements AutoCloseable {
                 }
             }
             TextView more=text("更多\n›",20);more.setGravity(Gravity.CENTER);more.setFocusable(true);more.setClickable(true);more.setBackground(TvDetailPage.focusBackground(activity));more.setOnClickListener(v->actions.category(category));rail.addView(more,new LinearLayout.LayoutParams(width,height));
-            if(selected>=0&&selected<rail.getChildCount())rail.getChildAt(selected).requestFocus();viewport.post(()->{if(!closed){if(!phone){if(pageActive&&viewport.hasFocus())((TvShelfScroll)viewport).reveal();else viewport.scrollTo(this.selected==0?0:position,0);resetOffscreenRows();}else viewport.scrollTo(position,0);}});
+            if(selected>=0&&selected<rail.getChildCount())rail.getChildAt(selected).requestFocus();viewport.post(()->{if(!closed){if(!phone){if(pageActive&&viewport.hasFocus())((TvShelfScroll)viewport).reveal();else viewport.scrollTo(position,0);resetOffscreenRows();}else viewport.scrollTo(position,0);}});
         }
         void reset(){if(selected==0&&viewport.getScrollX()==0&&(phone||((TvShelfScroll)viewport).focused==null))return;selected=0;if(!phone)((TvShelfScroll)viewport).focused=null;viewport.scrollTo(0,0);}
     }
-    void active(boolean value){HomeTheme.apply(this);if(closed||!phone&&pageActive==value)return;boolean leaving=pageActive&&!value;pageActive=value;if(recent!=null)recent.active(value);hero.setActive(value&&heroFrame.getVisibility()==VISIBLE);if(value)updateInsets();else if(leaving&&!phone){int y=scroll.getScrollY();for(Shelf shelf:shelves){if(shelf.rail.hasFocus()&&shelf.rail.getChildCount()>0)shelf.rail.getChildAt(0).requestFocus();shelf.reset();}scroll.scrollTo(0,y);}}
+    void active(boolean value){HomeTheme.apply(this);if(closed||!phone&&pageActive==value)return;pageActive=value;if(recent!=null)recent.active(value);hero.setActive(value&&heroFrame.getVisibility()==VISIBLE);if(value)updateInsets();}
     @Override public void close(){if(closed)return;closed=true;if(scroll.getViewTreeObserver().isAlive())scroll.getViewTreeObserver().removeOnScrollChangedListener(scrollChanged);viewportChanged=null;backgroundChanged=null;hero.onFrame(null);heroFrame.setOnClickListener(null);PosterSearch.detach(heroFrame);heroFrame.setOnTouchListener(null);if(recent!=null)recent.close();hero.close();titleArt.close();}
     final class Backdrop extends Drawable {
         Drawable fallback;final Paint paint=new Paint();int colour=DetailHero.DEFAULT_COLOR;Shader shader;int paintedHeight,paintedHero;

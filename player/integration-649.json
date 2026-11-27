@@ -1688,5 +1688,143 @@
     "actual_signed_delivery_verified": true,
     "repository_visibility": "private",
     "six_api23_poster_checks_passed": true
+  },
+  "authorized_659_source_repairs": {
+    ".github/workflows/ordinary-build.yml": {
+      "before_sha256": "8eb95f3de66205c47d78da82a07b0b25fdc1b185490144a6e156771960fa10f8",
+      "after_sha256": "6da491e44adc1e76fbdb4beed0ed239aada4ff6c090eebc129d9d580f44b88b8",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    ".github/workflows/publish-test-apks.yml": {
+      "before_sha256": "1f0a2e0ea5803eb8f56d4b138e1c5d001c98e9865cf50a286933cddc41ad97c2",
+      "after_sha256": "945d68030056dcfbe1b756f722254f3986cdbb06036e5ceabf2db7f5444f331d",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "README.md": {
+      "before_sha256": "7c98f65aa8e4d7a7457e2752ee34b96ed0aad8df9b41a2bd5838f45fe84bb366",
+      "after_sha256": "adf0d9ae408521b139fe5215ee8adc713ebd04e7e98d959b6c9a22e8af5d2011",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "48ccc6784294f660e0f260b73f0e251aabfffd046c00d331e5cea6dd6e6f18f4",
+      "after_sha256": "c9d53bdc512fc8384c7d85ca2e0f053ae4aba80d867d7f546f2462d8f680be9b",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "branding/release.json": {
+      "before_sha256": "3e592e7d77edad72a2288c2dc6467a84454fb8291fa4235bf91b95eb59c86849",
+      "after_sha256": "258aab91b716fde76a38f4eb0a9b8219ce6db8041802419280a9e7f79625ba58",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "branding/res/values/strings.xml": {
+      "before_sha256": "03880a6d99db80c4769df660976c89f227c54658a11232d84ffbd198106ae777",
+      "after_sha256": "b9c41e40f60bc13ac1f4f1736329e73a071f004079c06d9e7e0c09b33446c9ae",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "detail/home-layout-rollback.json": {
+      "before_sha256": "98a082f32823f6105b68179856198088b697b0c083f1a3f5d0c985d4493a1420",
+      "after_sha256": "5a2001a5219b1588d70f9f89a58edd1e1e7a3a3465a2c5837b24ba33e7f3b721",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "detail/runtime/common/com/leotv/detail/CspHomePage.java": {
+      "before_sha256": "5ac4e7e70133282c61c8a93297750b83f4b853bd748574d982ff917cde591ed4",
+      "after_sha256": "8f7eb9baec11f54c24c89ff78901ab3f8318204c42511f76f4fdbe6ce977779c",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "docs/LEOTV-5.3.5-659-BOOKMARKS-EIGHT-APKS-20261127.md": {
+      "before_sha256": null,
+      "after_sha256": "19963219e1b0e89986e0ed4a75f19a5daa3f27f8ea6bcafdb617b3e7e7dc9e3f",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "research/effects-check/build.gradle": {
+      "before_sha256": "822a52b06b3c2c9be2353237074bf8f18b86830f82e4a69f062378004520b4a6",
+      "after_sha256": "61f487484635a2327591a6486ad99af084abbf87b5e2d37ed37e40d647516c78",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "research/effects-check/src/test/java/com/leotv/detail/HomeBookmarkTest.java": {
+      "before_sha256": null,
+      "after_sha256": "3dbce6c5b1a821092ae3041a010cfabec720bad15e240786543a35871655a1ab",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "research/generate_home_bookmark_check.py": {
+      "before_sha256": null,
+      "after_sha256": "272af290f7a9d3ddbcbaff594113273774b8c587cd5059873ab29a7a8786b9c1",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "research/test_apk_publish_workflow.py": {
+      "before_sha256": "6de7125652ac6878952697a35a3dc57d2250be0948ca67e4594e98eca18b4fb7",
+      "after_sha256": "d4a95b932d809c9eb9e825bd4e086d64b67da7b9ab0736b12ed40c4e059005b6",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "tools/apk_products.py": {
+      "before_sha256": null,
+      "after_sha256": "e17d45886eea3e0589714a93d9a1eab481b843cf135917e0a3bf47fe772ddd5f",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "tools/build_branded.py": {
+      "before_sha256": "405af99871d81ad6aef67cab3cd8a532e09e763df2f4eef0c0f8ee3ec20a48bb",
+      "after_sha256": "4f53bee63da68a5ddcd050b290995ab215163e7e411f0ab546be0f8e75ee9611",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "tools/check_build_sources.py": {
+      "before_sha256": "608e750e5fa362bbacfe454aa66d073b91e507e2d8b6b52c96bb3ab141dce406",
+      "after_sha256": "72fe26dc85395fd30b2164b8d0aa2756d4088293b52f1991ab65b4f5ab99fe20",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "tools/check_delivery_profiles.py": {
+      "before_sha256": null,
+      "after_sha256": "29adce7e52f91a3308b728a1ff4373f055fc48e9dfb5cfe48f2bf9ecb807c9f3",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "tools/check_home_layout_rollback.py": {
+      "before_sha256": "0f0b733bb16f222607803206ff0e77d813be0941674bafd20b26ab827cd56ed2",
+      "after_sha256": "41276bec62ae4918022b91c894199fd90e74a67ba7f54d3d373815bb58879b60",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "ba3b7281f6f9a2348366c227b52b9d18689e55218ae4fa1caa4072ad4433d584",
+      "after_sha256": "593178a8eba5f64b25e9378a4ae25d690d233399949921da4cfc948e00432f18",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "tools/check_player_program.py": {
+      "before_sha256": "17ae2d0437d755f76ccff4f67e7546771655ddcdeee231882fcfcae159c1c32e",
+      "after_sha256": "824517a827b6e8de28aa04cdc0a80414dd247d7407351255d53940f30d2681b9",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "tools/harden_overlays.py": {
+      "before_sha256": "7877a78d63d3ee54659c9d2cab118de682b24f1edca0e8b5acfb82e85e47e6a1",
+      "after_sha256": "05a0bfd4530f26eefaccd04e3a517795a9f58bc99b3bf1e84abdbb3b335c5680",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "tools/prepare_ci_release.py": {
+      "before_sha256": "d319b0ae2f659789c3aefe64891cd82c86106503386bc21e5529c511c9e83efd",
+      "after_sha256": "9b13d2dc14ab659363f1c380102d56df28a9f82c46e624dbc8fd676983ce1d3c",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "tools/public_apk_audit.py": {
+      "before_sha256": "7446b779d4ca880d8db94f05212af2e1fe72debaaef09263c9092c88d72895ab",
+      "after_sha256": "99fc4ef1dd776ff0132977888d6bd09116503a520ad2db4ea76c1e54ae17cc42",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    },
+    "tools/stage_ci_apk.py": {
+      "before_sha256": "931c911b44ca55a334ed48419247964315c46f2c6cccf166a280e773ee0cfc30",
+      "after_sha256": "f374ddbbe3bdcd31e213b708134b8fa6b11ce75353e15b13ad391ee7eaae75d2",
+      "reason": "User-authorized official5.3.5/659: retain TV category focus/scroll bookmarks, explicit Back first-card then top, and deliver eight TV/mobile/ABI full/core APKs. Only added MPV/VLC modules excluded in core; shared feature/hooks/ZIP fingerprints must match each full/core pair. Keep all native/data/signature/API23/R8 gates and other accepted features."
+    }
+  },
+  "659_delivery_inputs": {
+    "base_commit": "9b48cdd9d50e934bc9dad86d3a7b3eed1b315c98",
+    "release": "5.3.5",
+    "version_code": 659,
+    "channel": "stable",
+    "eight_products": true,
+    "profiles": [
+      "full",
+      "core"
+    ],
+    "tv_category_positions_retained": true,
+    "back_first_card_then_top": true,
+    "shared_feature_pair_parity_required": true,
+    "native_inputs_unchanged": true,
+    "all_other_features_preserved": true
   }
 }

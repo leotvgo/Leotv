@@ -67,7 +67,7 @@ def compile_program(root, classes, android, reference, r8, output, work, run, lo
         'string_protection':protection,'neutral_dictionary_sha256':sha256(dictionary)}, mapping
 
 
-def audit_program(classes, decoded, mapping, settings, expected_mobile=None):
+def audit_program(classes, decoded, mapping, settings, expected_mobile=None, additional_players=True):
     inputs = {str(path.relative_to(classes))[:-6].replace('/', '.') for path in classes.rglob('*.class')}
     roots = {name.split('$')[0] for name in inputs}
     origins = {}
@@ -100,6 +100,7 @@ def audit_program(classes, decoded, mapping, settings, expected_mobile=None):
         emitted[descriptor] = text
     checked = 0
     for name, contract in settings['stable_abi'].items():
+        if not additional_players and name.startswith(('com.leotv.player.','is.xyz.mpv.','org.videolan.')):continue
         client = 'mobile' if expected_mobile else 'tv'
         if contract.get('clients') and client not in contract['clients']:
             continue

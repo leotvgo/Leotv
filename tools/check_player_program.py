@@ -38,12 +38,18 @@ def members(path):
     return fields, methods
 
 
-def check(root, classes, decoded, family):
+def check(root, classes, decoded, family, player_profile='full'):
     texts = {}
     for path in decoded.glob('smali*/**/*.smali'):
         text = path.read_text()
         name = re.search(r'(?m)^\.class[^\n]* (L[^;]+;)$', text).group(1)
         texts[name] = text
+    if player_profile=='core':
+        forbidden=('Lcom/leotv/player/','Lis/xyz/mpv/','Lorg/videolan/')
+        if any(any(token in text for token in forbidden) for text in texts.values()) or any(str(path.relative_to(classes)).startswith(('com/leotv/player/','is/xyz/mpv/','org/videolan/')) for path in classes.rglob('*.class')):
+            raise ValueError('Core APK must not compile or reference MPV/VLC program/JNI classes')
+        return {'player_profile':'core','additional_player_classes_absent':True,'native_methods_verified':0,'missing_classes_suppressed':False}
+    if player_profile!='full':raise ValueError('Unknown player profile')
     forbidden = 'Lorg/videolan/' if family == 'mobile' else 'Lis/xyz/mpv/'
     if any(name.startswith(forbidden) for name in texts):
         raise ValueError('The other client player was included in this variant')
@@ -93,5 +99,5 @@ def check(root, classes, decoded, family):
             raise ValueError('VLC output requires undeclared resource IDs')
     if not natives:
         raise ValueError('Expected real player native methods in program output')
-    return {'native_methods_verified': natives, 'jni_names_and_signatures_preserved': True,
+    return {'player_profile':'full','native_methods_verified': natives, 'jni_names_and_signatures_preserved': True,
             'vlc_unused_resource_helpers_removed': family == 'tv', 'missing_classes_suppressed': False}

@@ -18,7 +18,7 @@ def prepare(repo, run_id, commit, version, store=None):
     for symbols in (True, False):
         tag = f'leotv-{"symbols-" if symbols else ""}{version}-build-{run_id}'
         releases.append(store.ensure(tag, f'Leotv {version}（{"内部 R8 映射" if symbols else "待发布"}）',
-            '内部构建映射，保持草稿。' if symbols else '等待四套固定签名 APK 和报告齐备后发布。',
+            '内部构建映射，保持草稿。' if symbols else '等待 TV/手机、双 ABI、完整/基础版八套固定签名 APK 和报告齐备后发布。',
             symbols=symbols, prerelease=not symbols))
     return releases
 

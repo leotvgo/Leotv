@@ -1,9 +1,9 @@
 plugins { id 'java' }
 repositories { mavenCentral(); google() }
 sourceSets {
-    main.java.srcDirs = ['src/stub/java', layout.buildDirectory.dir('generated/poster-gesture')]
+    main.java.srcDirs = ['src/stub/java', layout.buildDirectory.dir('generated/poster-gesture'), layout.buildDirectory.dir('generated/home-bookmarks')]
     test.java.srcDirs = ['../detail-check/src/test/java', 'src/test/java']
-    test.java.include '**/DanmakuEffectsTest.java', '**/TvDetailScrollTest.java', '**/PosterSearchTest.java'
+    test.java.include '**/DanmakuEffectsTest.java', '**/TvDetailScrollTest.java', '**/PosterSearchTest.java', '**/HomeBookmarkTest.java'
 }
 tasks.register('generatePosterGestureCheck', Exec) {
     inputs.file '../generate_poster_gesture_check.py'
@@ -13,8 +13,15 @@ tasks.register('generatePosterGestureCheck', Exec) {
 }
 tasks.named('compileJava') {
     dependsOn 'generatePosterGestureCheck'
+    dependsOn 'generateHomeBookmarkCheck'
     source '../../detail/runtime/common/com/leotv/detail/DanmakuEffects.java', '../../detail/runtime/common/com/leotv/detail/DanmakuEffectPolicy.java', '../../detail/runtime/common/com/leotv/detail/DanmakuAvatar.java', '../../detail/runtime/common/com/leotv/detail/TvDetailScroll.java'
     source '../../detail/runtime/common/com/leotv/detail/PosterSearch.java'
+}
+tasks.register('generateHomeBookmarkCheck', Exec) {
+    inputs.file '../generate_home_bookmark_check.py'
+    inputs.file '../../detail/runtime/common/com/leotv/detail/CspHomePage.java'
+    outputs.dir layout.buildDirectory.dir('generated/home-bookmarks')
+    commandLine 'python3', '-B', '../generate_home_bookmark_check.py', '--output', layout.buildDirectory.dir('generated/home-bookmarks').get().asFile
 }
 dependencies {
     compileOnly 'org.robolectric:android-all:15-robolectric-12650502'

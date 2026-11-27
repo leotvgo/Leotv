@@ -7,7 +7,7 @@ from pathlib import Path
 
 def summarize(source):
     data=json.loads(source)
-    retained=('variant','package','version_name','version_code','min_sdk','release_channel','protected_release',
+    retained=('variant','product','player_profile','delivery_products','shared_feature_source_sha256','shared_feature_hooks_sha256','shared_zip_payload_sha256','package','version_name','version_code','min_sdk','release_channel','protected_release',
               'expected_changes_match','output_apk_sha256','unsigned','native_zip_alignment_kib','native_libraries_exact',
               'native_abis','resource_ids_and_configurations_retained','resource_style_spans_retained','device_validation','added_dex_paths',
               'added_player_native_libraries_exact','added_player_native_zip_alignment_kib','player_corresponding_source')

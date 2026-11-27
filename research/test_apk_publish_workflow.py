@@ -11,6 +11,9 @@ import subprocess
 import tempfile
 import textwrap
 import unittest
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"tools"))
+from apk_products import PRODUCTS, source_variant, player_profile
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,12 +27,13 @@ RELEASE_ID = 42
 
 
 class GitHub:
-    def __init__(self, existing=None, invalid=None, conclusion='success', official=False, protection=False, players=False, registers=False):
+    def __init__(self, existing=None, invalid=None, conclusion='success', official=False, protection=False, players=False, registers=False, profiles=False):
         self.existing, self.invalid, self.conclusion = existing, invalid, conclusion
         self.official = official
         self.protection = protection
         self.players = players
         self.registers = registers
+        self.profiles = profiles
         self.tag = 'leotv-5.1.8' if official else TAG
         self.mutations, self.files, self.api_requests = [], {}, []
 
@@ -81,6 +85,16 @@ class GitHub:
                 if not mobile:
                     items[f'leotv-{variant}-player-source.tar.gz'] = source
                 items[f'leotv-{variant}-unsigned.audit.json'] = json.dumps(audit).encode()
+            if self.profiles:
+                core=player_profile(variant)=='core'
+                audit.update({'version_code':659,'product':variant,'variant':source_variant(variant),'player_profile':'core' if core else 'full','delivery_products':list(PRODUCTS),
+                    'shared_feature_source_sha256':'d'*64,'shared_feature_hooks_sha256':'e'*64,'shared_zip_payload_sha256':('f'*64 if self.invalid!='profile_parity' or not core else 'a'*64),
+                    'player_register_types':{'method_count':70,'hook_count':100}})
+                if core:
+                    audit.update({'player_native':{'engine':'none','api':23,'errors':[],'original_libraries_replaced':False,'native_compiled_during_apk_build':False},'added_player_native_libraries_exact':1 if self.invalid=='core_native' else 0,'player_corresponding_source':{}})
+                    audit.setdefault('overlay_compile',{})['player_program']={'additional_player_classes_absent':self.invalid!='core_program'}
+                    items.pop(f'leotv-{variant}-player-source.tar.gz',None)
+                items[f'leotv-{variant}-unsigned.audit.json']=json.dumps(audit).encode()
             for name, data in items.items():
                 (folder / name).write_bytes(data)
                 self.files[name] = data
@@ -92,7 +106,7 @@ class GitHub:
                 assert 'draft=false' in command and ('prerelease=false' if self.official else 'prerelease=true') in command
                 assert ('make_latest=true' if self.official else 'make_latest=false') in command
                 assert 'tag_name=' + self.tag in command
-                assert len(self.assets()) == (14 if self.players else 12)
+                assert len(self.assets()) == (26 if self.profiles else 14 if self.players else 12)
                 self.mutations.append(('edit', list(command)))
                 self.existing = 'published'
                 return subprocess.CompletedProcess(command, 0, '', '')
@@ -135,6 +149,19 @@ class PublishWorkflowTest(unittest.TestCase):
                 with patch.object(subprocess, 'run', github.run), patch.object(subprocess, 'check_output', github.output):
                     with contextlib.redirect_stdout(io.StringIO()):
                         exec(compile(BODY, 'publish-workflow', 'exec'), {})
+
+    def test_eight_products_preserve_shared_features_and_exclude_core_native_players(self):
+        github=GitHub(players=True,registers=True,profiles=True)
+        self.execute(github)
+        self.assertEqual(len(github.assets()),26)
+        for product in PRODUCTS:self.assertIn(f'leotv-{product}.apk',github.files)
+        self.assertNotIn('leotv-tv-v7a-core-player-source.tar.gz',github.files)
+
+    def test_core_payload_or_cross_profile_feature_drift_never_publishes(self):
+        for invalid in ('core_native','core_program','profile_parity'):
+            github=GitHub(players=True,registers=True,profiles=True,invalid=invalid)
+            with self.assertRaises(SystemExit):self.execute(github)
+            self.assertEqual(github.mutations,[])
 
     def test_new_release_is_a_complete_verified_draft_before_becoming_visible(self):
         github = GitHub()

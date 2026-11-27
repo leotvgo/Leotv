@@ -7,11 +7,12 @@ import os
 from pathlib import Path
 import re
 from ci_release_store import ReleaseStore
+from apk_products import PRODUCTS
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--variant', required=True, choices=['tv-v7a', 'tv-v8a', 'mobile-v7a', 'mobile-v8a'])
+    parser.add_argument('--variant', required=True, choices=PRODUCTS)
     parser.add_argument('--symbols', action='store_true', help='Archive only verified private R8 mappings; never publish this draft')
     args = parser.parse_args()
     repo, run_id, commit = (os.environ[name] for name in ['GITHUB_REPOSITORY', 'GITHUB_RUN_ID', 'GITHUB_SHA'])

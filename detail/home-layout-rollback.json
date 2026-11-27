@@ -130,5 +130,28 @@
       ],
       "authorization": "User explicitly requested native poster long press on all new-home categories. Remove only these event hooks when comparing restored geometry/binding source to 652."
     }
+  ],
+  "authorized_focus_policy_changes": [
+    {
+      "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+      "marker": "    void resetOffscreenRows(",
+      "baseline_sha256": "5c2e1806b2f9373656cfe3562f01211aa13476f2726f33751d835eac78aec943",
+      "after_sha256": "2261c9e8b333af117ad514852439ee45187430f5e2e240e4fee6c4bf911d7948",
+      "authorization": "User explicitly requested preserving TV category positions and using Back as first-card then top; geometry and ordering remain unchanged."
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+      "marker": "    boolean focusFirstInRow(",
+      "baseline_sha256": "e1f09bbd0279577bf2208e14bf02c575cb5f2f2b350496a01dc8e9a3fc410029",
+      "after_sha256": "e4fccd3cf03dc84def903bbbcf691168dff4f276d3cfe462d2a7f7e40b6aa24e",
+      "authorization": "User explicitly requested preserving TV category positions and using Back as first-card then top; geometry and ordering remain unchanged."
+    },
+    {
+      "path": "detail/runtime/common/com/leotv/detail/CspHomePage.java",
+      "marker": "    final class Shelf {",
+      "baseline_sha256": "bdd367bd950f94dfb9831792e7079b467800adb23a47b6c33aba33d126fb6fc8",
+      "after_sha256": "180664eb17303818cdb0d481b67e924e59dfa9a062a45b2c4b080af14cf6e4c6",
+      "authorization": "User explicitly requested preserving TV category positions and using Back as first-card then top; geometry and ordering remain unchanged."
+    }
   ]
 }
