@@ -17,7 +17,8 @@ final class LiulangMetadata {
         String year=source==null?"":source.optString("vod_year"),type=source==null?"":source.optString("type_name"),remarks=source==null?"":source.optString("vod_remarks"),score=source==null?"":source.optString("vod_douban_score",source.optString("vod_score"));
         if(score.isEmpty())score=score(remarks);boolean fromSource=!score.isEmpty();if(score.isEmpty()&&metadata!=null)score=score(metadata.facts);
         if(year.isEmpty()&&metadata!=null&&metadata.releaseDate.length()>=4)year=metadata.releaseDate.substring(0,4);
-        if(type.isEmpty()&&metadata!=null){String[] pieces=metadata.facts.split("\\s*·\\s*");for(String piece:pieces)if(!piece.contains("★")&&!piece.contains("⭐")&&!piece.matches(".*\\d.*")){type=piece;break;}}
+        if(metadata!=null){String[] pieces=metadata.facts.split("\\s*·\\s*");for(String piece:pieces)if(!piece.contains("★")&&!piece.contains("⭐")&&!piece.matches(".*\\d.*")){type=piece;break;}}
+        if(type.contains(",")||type.contains("，")||type.contains("/")){String[] genres=type.split("[,，/]");type=genres.length==0?"":genres[0].trim();}
         remarks=remarks.replaceAll("(?:豆瓣|评分|[★⭐])\\s*\\d+(?:\\.\\d+)?","").trim();if(remarks.matches("\\d+(?:\\.\\d+)?"))remarks="";
         List<String> fields=new ArrayList<>();for(String value:new String[]{year,remarks,type})if(!value.isEmpty()&&!fields.contains(value))fields.add(value);
         SpannableStringBuilder text=new SpannableStringBuilder(android.text.TextUtils.join(" · ",fields));

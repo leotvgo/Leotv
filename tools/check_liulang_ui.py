@@ -56,6 +56,11 @@ def check(root):
     if 'setAlpha(1)' in hero or 'setAlpha(previous==null?1:0)' in hero:raise ValueError('ImageView integer alpha would make hero nearly transparent')
     if 'legacyResources(activity,file)' not in resource_code or 'addAssetPath' not in resource_code:raise ValueError('API23 independent resource fallback missing')
     if '请选择站点' in home or 'root.setVisibility(value?View.VISIBLE:View.GONE)' in home:raise ValueError('Startup or paused transition exposes an empty/host screen')
+    history=(root/'detail/runtime/tv/com/leotv/detail/LiulangHistory.java').read_text()
+    if 'res.find(root,"posterContent").setVisibility(View.VISIBLE)' not in history:raise ValueError('History list must reveal the imported hidden content container')
+    episodes=(root/'detail/runtime/tv/com/leotv/detail/LiulangEpisodes.java').read_text()
+    if 'episodes.setVerticalSpacing(res.dp(8))' not in episodes or 'setIncludeFontPadding(false)' not in episodes or 'setClipChildren(true)' not in episodes:raise ValueError('Episode rows must retain explicit spacing and contained text bounds')
+    if 'root.dispatchKeyEvent(event)' not in home:raise ValueError('TV theme navigation must dispatch to its active hierarchy')
     return {'theme_id':5,'tv_only':True,'min_api':23,'reference_resources':len(resources['files']),'source_files':len(lock['sources']),'original_player_and_data_retained':True,'device_validation':False}
 
 

@@ -2934,7 +2934,7 @@
     },
     "detail/liulang/source-lock.json": {
       "before_sha256": "0fa8da730949fd192a01b41619f52802e6ef454f83a55fe7642ad8bd75f07bbb",
-      "after_sha256": "7ffe348c84258698aab125fbbf0008ac1b0bc98881145801da5c894d3d9f015c",
+      "after_sha256": "60ce9ae4a7d4f83c5beae45981a9f8e35e6ad321c350f57fa426176ac4e525ec",
       "reason": "User-authorized build669 TV Liulang fixes: API23 resource-loading crash, ImageView alpha visibility, startup loading state, preserved transition frame, matching native page wallpaper and retained current hero. Phone/other themes and existing playback/Danmaku unchanged."
     },
     "detail/runtime-sources.json": {
@@ -2954,7 +2954,7 @@
     },
     "detail/runtime/tv/com/leotv/detail/LiulangDetailLayout.java": {
       "before_sha256": "fdaaaf0095ce18108cc2e278d9b0683b2035a43a6ae319dbed9a4376e46fab48",
-      "after_sha256": "47d709c454b044e9bbe21268e0e10bad25dcd2b9f8d46dc5feaebff52b2a426b",
+      "after_sha256": "e2e6724d23f771d593f0f730973903fdd52f1a44b620436bc6cab453f34b4105",
       "reason": "User-authorized build669 TV Liulang fixes: API23 resource-loading crash, ImageView alpha visibility, startup loading state, preserved transition frame, matching native page wallpaper and retained current hero. Phone/other themes and existing playback/Danmaku unchanged."
     },
     "detail/runtime/tv/com/leotv/detail/LiulangHeroImage.java": {
@@ -2964,7 +2964,7 @@
     },
     "detail/runtime/tv/com/leotv/detail/LiulangHome.java": {
       "before_sha256": "6ca4924e19d1bfc6d97865ed77b7be057752d32d64a9daaa1aeef4bc764260e2",
-      "after_sha256": "dfca3c2901730928f75623ce8bd410a6f2dae7c7798ad0edf7f648f0b082d351",
+      "after_sha256": "6234919beae39d8ad0fdd2f475c95436f473747802b6e6a9e8c896d63e6d8dd1",
       "reason": "User-authorized build669 TV Liulang fixes: API23 resource-loading crash, ImageView alpha visibility, startup loading state, preserved transition frame, matching native page wallpaper and retained current hero. Phone/other themes and existing playback/Danmaku unchanged."
     },
     "detail/runtime/tv/com/leotv/detail/LiulangResources.java": {
@@ -2994,7 +2994,7 @@
     },
     "tools/check_liulang_ui.py": {
       "before_sha256": "03cc26b4102d24c894789af657f327423c5c32b3f05bc006d1c1b6892be59869",
-      "after_sha256": "68147c12d2e38d43e8e3ceea0e2310e9365d92876fdd540e60c1e62f39b17196",
+      "after_sha256": "887e62a07fd4cf14018ee4f8018e1cd4e5c1ef2bb4b720b175418bcb1df30168",
       "reason": "User-authorized build669 TV Liulang fixes: API23 resource-loading crash, ImageView alpha visibility, startup loading state, preserved transition frame, matching native page wallpaper and retained current hero. Phone/other themes and existing playback/Danmaku unchanged."
     },
     "tools/check_player_integration.py": {
@@ -3016,6 +3016,21 @@
       "before_sha256": "1847ddac72dde84cace5a60efdde1daaca30c048f890f662da72aed1d60f39bd",
       "after_sha256": "9c05a1d35fc41ff9f2f848358ceda18351dcbd9be2c90ebcbeec5debd87e98d8",
       "reason": "Keep the mode fixture API surface synchronized with Android no-animation search transition calls."
+    },
+    "detail/runtime/tv/com/leotv/detail/LiulangEpisodes.java": {
+      "before_sha256": "0ad9f52b30c39a517dece717c0660043a69ac8effa27ede989ee84b9e21dd93b",
+      "after_sha256": "a91804feac189d3eae5e1cb61acb3475fa902cbe01e121c212ac2c769cfd4823",
+      "reason": "User-authorized fixes from device testing and reference screenshots: reveal history content, route remote keys into theme, bound header/episode layout and restore card spacing while preserving metadata matched episode names."
+    },
+    "detail/runtime/tv/com/leotv/detail/LiulangHistory.java": {
+      "before_sha256": "7f811e5f8679dafb79e0007d8698fff9394896e57c6887d612075da1ee543c6c",
+      "after_sha256": "b04603b84bb3a70a461771287e103bc4f95fd639dba575cff226d3f043b490ca",
+      "reason": "User-authorized fixes from device testing and reference screenshots: reveal history content, route remote keys into theme, bound header/episode layout and restore card spacing while preserving metadata matched episode names."
+    },
+    "detail/runtime/tv/com/leotv/detail/LiulangMetadata.java": {
+      "before_sha256": "a5315a88db512a8ef52d969a7e802c0413ae1aad0aa4ec0528bc18c1f101ed3a",
+      "after_sha256": "2cd741d624a14858d8457b1bf116c1c77e582c44498938ee8df8797334ea626f",
+      "reason": "User-authorized fixes from device testing and reference screenshots: reveal history content, route remote keys into theme, bound header/episode layout and restore card spacing while preserving metadata matched episode names."
     }
   },
   "authorized_669_additions": {
@@ -3024,6 +3039,6 @@
     "research/ui-check/src/stub/java/com/leotv/detail/LiulangSurfaces.java": "3179420f51f344e95c4a41927300e91fb17249faaf63ed9250925f474eed7fd8",
     "research/liulang-ui-check/src/stub/java/com/leotv/detail/LiulangMode.java": "a6372500d564430685e203548c1d9d77f6703d5ef55a4eefb08cc9ef29d9c8d7",
     "research/liulang-ui-check/src/stub/java/com/fongmi/android/tv/ui/activity/KeepActivity.java": "4ef4b0d788267308cc9e1cf821db90164daa93ee3b1a9c26e9e2bc6ad865b7a5",
-    "docs/LEOTV-5.3.6-669-LIULANG-ANDROID6-ARTWORK-20261128.md": "568070e344ccc417ee91462c6673b0414b8410924bd5f0dc2120ab90158bfcc3"
+    "docs/LEOTV-5.3.6-669-LIULANG-ANDROID6-ARTWORK-20261128.md": "4a09c81ba12009c9c663a5f76f3767dc2b45699f9f6afd319e9a605d4a39db77"
   }
 }
