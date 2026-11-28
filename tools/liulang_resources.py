@@ -223,10 +223,6 @@ def payload(root, variant, sdk, work, log):
             subprocess.run([str(arg) for arg in command], stdout=stream, stderr=subprocess.STDOUT, check=True, timeout=120)
     run([aapt, 'compile', '--dir', target / 'res', '-o', flat])
     run([aapt, 'link', '--manifest', manifest, '-I', sdk / 'platforms/android-23/android.jar', '--package-id', '0x6f', '--allow-reserved-package-id', '--auto-add-overlay', '-o', output, flat])
-    with zipfile.ZipFile(output) as original,zipfile.ZipFile(normalized,'w') as destination:
-        for entry in original.infolist():
-            data=original.read(entry);destination.writestr(entry,omit_empty_library_chunks(data) if entry.filename=='resources.arsc' else data)
-    normalized.replace(output)
     with zipfile.ZipFile(output) as archive:
         if any(name.endswith(('.dex', '.so')) for name in archive.namelist()):
             raise ValueError('Liulang resource archive must never contain code or native libraries')

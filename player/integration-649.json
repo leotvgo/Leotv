@@ -2760,7 +2760,7 @@
     },
     "detail/liulang/source-lock.json": {
       "before_sha256": "657ad09db23e94b75798f4a27ce728f4560b901fd53604815466e1705b0aca5a",
-      "after_sha256": "354b4005599f0ec6db7600f0f9e0d49209be06861868436145857394565bd7b1",
+      "after_sha256": "0fa8da730949fd192a01b41619f52802e6ef454f83a55fe7642ad8bd75f07bbb",
       "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
     },
     "detail/runtime/common/com/leotv/detail/LiulangMode.java": {
@@ -2825,7 +2825,7 @@
     },
     "tools/liulang_resources.py": {
       "before_sha256": "e44a0a08752a6a8f12fe6fbb6b2ad5d6158edd161a8d952b7bf2458722d15690",
-      "after_sha256": "6ba60c1dacb5ab7cd07111b99f74c52e866b8c82938557a072fcd7be8853cdf7",
+      "after_sha256": "4bb03dfb3b3d21a4ff11848927e3535e9cec061f172e51f21a679b1c57c571e7",
       "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
     },
     "ui/java/com/leotv/ui/GlobalChrome.java": {

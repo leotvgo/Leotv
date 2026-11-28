@@ -33,7 +33,7 @@
     "detail/runtime/tv/com/leotv/detail/LiulangSites.java": "7120a1a9bb1194329c6744c92f57d7ad8bd6696b766a7d13dd85fb584204e2cd",
     "detail/runtime/tv/com/leotv/detail/LiulangStyle.java": "8f6f3acd984c2da666aa503bbf8c443f3508a1944afa79c6befd3230600cf4fc",
     "detail/runtime/tv/com/leotv/detail/LiulangTitleArt.java": "96f1b9962edfc77520613f922993b26e91f6cdbefa7224941f322295f447cd48",
-    "tools/liulang_resources.py": "6ba60c1dacb5ab7cd07111b99f74c52e866b8c82938557a072fcd7be8853cdf7"
+    "tools/liulang_resources.py": "4bb03dfb3b3d21a4ff11848927e3535e9cec061f172e51f21a679b1c57c571e7"
   },
   "native_libraries_added": false,
   "resource_namespace": "com.leotv.liulang:0x6f",
