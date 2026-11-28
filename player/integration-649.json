@@ -2934,7 +2934,7 @@
     },
     "detail/liulang/source-lock.json": {
       "before_sha256": "0fa8da730949fd192a01b41619f52802e6ef454f83a55fe7642ad8bd75f07bbb",
-      "after_sha256": "9baba71921052e6a672e49db1f7a5108ad9773fb65ba509968941c24000d8daa",
+      "after_sha256": "cd58db4481a692a52d96a8a7a30eb784ef7651efb67880d1e0078b014f0e8457",
       "reason": "User-authorized build669 TV Liulang fixes: API23 resource-loading crash, ImageView alpha visibility, startup loading state, preserved transition frame, matching native page wallpaper and retained current hero. Phone/other themes and existing playback/Danmaku unchanged."
     },
     "detail/runtime-sources.json": {
@@ -2984,7 +2984,7 @@
     },
     "research/liulang-ui-check/src/test/java/com/leotv/detail/LiulangRuntimeTest.java": {
       "before_sha256": "bc3b3357fcec20d3dc2804bb170f684d8ffd796695bf22c7e7d081eff6b3588b",
-      "after_sha256": "b5f68d4e740920f92703b380dd095aeb1d69ad212ed7649d92df512488cebe85",
+      "after_sha256": "45760508329c77157348651badc202f118b879f87ece91c804658a6527170440",
       "reason": "User-authorized build669 TV Liulang fixes: API23 resource-loading crash, ImageView alpha visibility, startup loading state, preserved transition frame, matching native page wallpaper and retained current hero. Phone/other themes and existing playback/Danmaku unchanged."
     },
     "tools/check_launch_rollback.py": {
@@ -3045,6 +3045,6 @@
     "research/liulang-ui-check/src/stub/java/com/leotv/detail/LiulangMode.java": "a6372500d564430685e203548c1d9d77f6703d5ef55a4eefb08cc9ef29d9c8d7",
     "research/liulang-ui-check/src/stub/java/com/fongmi/android/tv/ui/activity/KeepActivity.java": "4ef4b0d788267308cc9e1cf821db90164daa93ee3b1a9c26e9e2bc6ad865b7a5",
     "docs/LEOTV-5.3.6-669-LIULANG-ANDROID6-ARTWORK-20261128.md": "81ec4efd148648fd921f8f4293d3afea64f473021a12845b427429cd1cba7d65",
-    "detail/runtime/tv/com/leotv/detail/LiulangWallpaper.java": "24804cc57a45814fc9dd536d7557f6d22adce4b246cbfb0226c3a73377229b69"
+    "detail/runtime/tv/com/leotv/detail/LiulangWallpaper.java": "544d8bbbab24f5ff23df2e5ec4315b0a1af34d70b49d88ba38cd0f223c229f17"
   }
 }

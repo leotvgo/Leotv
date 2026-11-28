@@ -36,7 +36,7 @@
     "tools/liulang_resources.py": "4bb03dfb3b3d21a4ff11848927e3535e9cec061f172e51f21a679b1c57c571e7",
     "detail/runtime/tv/com/leotv/detail/LiulangSurfaces.java": "cd383431dedbbb1c38e899f286d9c01e6fc02c7b9f824249a1c2613e4a21a2a7",
     "detail/runtime/mobile/com/leotv/detail/LiulangSurfaces.java": "3179420f51f344e95c4a41927300e91fb17249faaf63ed9250925f474eed7fd8",
-    "detail/runtime/tv/com/leotv/detail/LiulangWallpaper.java": "24804cc57a45814fc9dd536d7557f6d22adce4b246cbfb0226c3a73377229b69"
+    "detail/runtime/tv/com/leotv/detail/LiulangWallpaper.java": "544d8bbbab24f5ff23df2e5ec4315b0a1af34d70b49d88ba38cd0f223c229f17"
   },
   "native_libraries_added": false,
   "resource_namespace": "com.leotv.liulang:0x6f",
