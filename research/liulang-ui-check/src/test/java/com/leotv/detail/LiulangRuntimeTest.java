@@ -72,6 +72,15 @@ public class LiulangRuntimeTest {
             LiulangSurfaces.destroyed(nativePage);assertSame(original,nativeContent.getBackground());assertEquals(1f,wallpaper.getAlpha(),0);
         }finally{LiulangSurfaces.destroyed(nativePage);host.pause().stop().destroy();}
     }
+    @Test public void wallpaperRequiresPosterFocusWaitsTenSecondsAndRestoresOnBack(){
+        FrameLayout root=new FrameLayout(resources);content.addView(root,new FrameLayout.LayoutParams(-1,-1));
+        View nav=new View(resources),types=new View(resources),posters=new View(resources),info=new View(resources),focus=new View(resources);
+        for(View v:new View[]{nav,types,posters,info,focus})root.addView(v,new FrameLayout.LayoutParams(200,100));measure(root,960,540);
+        final boolean[] eligible={false};final int[] moves={0},opens={0};
+        LiulangWallpaper mode=new LiulangWallpaper(new LiulangWallpaper.Host(){public boolean eligible(){return eligible[0];}public void move(int direction){moves[0]+=direction;}public void open(){opens[0]++;}public View focused(){return focus;}},root,nav,types,posters,info);
+        try{Shadows.shadowOf(Looper.getMainLooper()).idleFor(10,TimeUnit.SECONDS);assertFalse(mode.showing);eligible[0]=true;mode.touch();Shadows.shadowOf(Looper.getMainLooper()).idleFor(9999,TimeUnit.MILLISECONDS);assertFalse(mode.showing);Shadows.shadowOf(Looper.getMainLooper()).idleFor(1,TimeUnit.MILLISECONDS);assertTrue(mode.showing);Shadows.shadowOf(Looper.getMainLooper()).idleFor(10,TimeUnit.SECONDS);assertEquals(1,moves[0]);mode.key(new KeyEvent(0,22));assertEquals(2,moves[0]);mode.key(new KeyEvent(1,22));mode.key(new KeyEvent(0,23));assertEquals(1,opens[0]);mode.key(new KeyEvent(1,23));mode.key(new KeyEvent(0,4));assertFalse(mode.showing);assertTrue(mode.key(new KeyEvent(1,4)));mode.active(false);Shadows.shadowOf(Looper.getMainLooper()).idleFor(30,TimeUnit.SECONDS);assertFalse(mode.showing);assertEquals(0f,nav.getTranslationY(),0);}
+        finally{mode.close();content.removeView(root);}
+    }
     @Test public void identicalProgressiveHeroCallbacksKeepOneInFlightLoadAndDisplayFirstImage()throws Exception{
         byte[] png=png(Color.BLUE);AtomicInteger calls=new AtomicInteger();CountDownLatch entered=new CountDownLatch(1),release=new CountDownLatch(1);
         LiulangHeroImage hero=new LiulangHeroImage(resources,null,(context,path,source,request)->{calls.incrementAndGet();entered.countDown();release.await(3,TimeUnit.SECONDS);request.check();return png;});content.addView(hero,new FrameLayout.LayoutParams(-1,-1));

@@ -5,7 +5,7 @@ sourceSets {
     test.java.srcDirs=['src/test/java']
 }
 tasks.named('compileJava') {
-    source '../../detail/runtime/tv/com/leotv/detail/LiulangSurfaces.java', '../../detail/runtime/tv/com/leotv/detail/LiulangResources.java', '../../detail/runtime/tv/com/leotv/detail/LiulangStyle.java', '../../detail/runtime/tv/com/leotv/detail/LiulangHeroImage.java', '../../detail/runtime/tv/com/leotv/detail/LiulangBackdrop.java', '../../detail/runtime/tv/com/leotv/detail/LiulangDots.java', '../../detail/runtime/tv/com/leotv/detail/LiulangRoundedImage.java', '../../detail/runtime/tv/com/leotv/detail/LiulangFlow.java', '../../detail/runtime/tv/com/leotv/detail/LiulangHistoryBar.java'
+    source '../../detail/runtime/tv/com/leotv/detail/LiulangWallpaper.java', '../../detail/runtime/tv/com/leotv/detail/LiulangSurfaces.java', '../../detail/runtime/tv/com/leotv/detail/LiulangResources.java', '../../detail/runtime/tv/com/leotv/detail/LiulangStyle.java', '../../detail/runtime/tv/com/leotv/detail/LiulangHeroImage.java', '../../detail/runtime/tv/com/leotv/detail/LiulangBackdrop.java', '../../detail/runtime/tv/com/leotv/detail/LiulangDots.java', '../../detail/runtime/tv/com/leotv/detail/LiulangRoundedImage.java', '../../detail/runtime/tv/com/leotv/detail/LiulangFlow.java', '../../detail/runtime/tv/com/leotv/detail/LiulangHistoryBar.java'
 }
 dependencies {
     compileOnly 'org.robolectric:android-all:15-robolectric-12650502'

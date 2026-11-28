@@ -29,7 +29,7 @@ final class LiulangHome implements AutoCloseable {
     final LinkedHashMap<String,Page> cache=new LinkedHashMap<>(16,.75f,true);final ArrayDeque<Page> folders=new ArrayDeque<>();
     SiteFeed.Site site;Integer configuration;String identity="";List<CspHomeData.Category> categories=new ArrayList<>();Page page;
     long generation,selection;boolean active=true,closed,filterVisible,historyVisible;int selected=-1,navSelected;long backAt;
-    LiulangHistory history;LiulangSites siteSheet;
+    LiulangHistory history;LiulangSites siteSheet;final LiulangWallpaper wallpaper;
     final Runnable selectedWork=()->loadSelected();
     final class Page {final CspHomeData.Category category;final HashMap<String,String> extend;final List<JSONObject> items=new ArrayList<>();int number,focus;boolean more=true,busy;Page(CspHomeData.Category c,HashMap<String,String> e){category=c;extend=e;}}
     LiulangHome(NewHome owner){
@@ -47,6 +47,7 @@ final class LiulangHome implements AutoCloseable {
         metadata=new CspHeroMetadata(activity);images=new DetailThumbnails(activity,BackdropSettings.read(activity).proxy,true);
         content.addView(root,new FrameLayout.LayoutParams(-1,-1));root.setElevation(res.dp(2));
         history=new LiulangHistory(activity,res,historyPanel,()->{if(historyVisible&&history!=null)history.focusFirst();});historyPanel.addView(history.root,new FrameLayout.LayoutParams(-1,-1));
+        wallpaper=new LiulangWallpaper(new LiulangWallpaper.Host(){public boolean eligible(){return !closed&&active&&!historyVisible&&!filterVisible&&siteSheet==null&&activity.hasWindowFocus()&&NativeCspUi.descendant(activity.getCurrentFocus(),posters)&&page!=null&&!page.items.isEmpty();}public void move(int direction){if(page!=null){int index=selected+direction;if(index>=0&&index<page.items.size()){posters.setSelectedPosition(index);select(index);}}}public void open(){if(page!=null&&selected>=0&&selected<page.items.size())resource(page.items.get(selected));}public View focused(){return activity.getCurrentFocus();}},root,res.find(root,"navBar"),types,res.find(root,"posterArea"),res.find(root,"heroInfo"));
         historyPanel.setBackgroundColor(Color.TRANSPARENT);root.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->refreshImages());
     }
     boolean logoReady(){if(logo==null)return false;logo.setVisibility(logo.ready()?View.VISIBLE:View.GONE);return logo.ready();}
@@ -93,11 +94,12 @@ final class LiulangHome implements AutoCloseable {
             filterRows.addView(row);
         }filters.post(()->{if(filterVisible)filterRows.requestFocus();});root.findViewById(res.id("heroInfo")).setAlpha(.25f);
     }
-    void history(boolean show){historyVisible=show;historyPanel.setVisibility(show?View.VISIBLE:View.GONE);if(history!=null){history.active(show&&active);if(show){history.refresh();historyPanel.post(()->history.focusFirst());}}if(!show&&homeButton!=null)homeButton.setSelected(false);else if(homeButton!=null)homeButton.setSelected(true);}
+    void history(boolean show){if(wallpaper!=null&&wallpaper.showing)wallpaper.restore(0);historyVisible=show;historyPanel.setVisibility(show?View.VISIBLE:View.GONE);if(history!=null){history.active(show&&active);if(show){history.refresh();historyPanel.post(()->history.focusFirst());}}if(!show&&homeButton!=null)homeButton.setSelected(false);else if(homeButton!=null)homeButton.setSelected(true);}
     void sites(){if(siteSheet!=null)siteSheet.close();siteSheet=new LiulangSites(activity,res,content,homeButton,()->siteSheet=null);}
     void nav(String action){switch(action){case "点播":history(false);if(!categories.isEmpty())category(categories.get(0),false);break;case "站点":sites();break;case "历史":history(!historyVisible);break;case "追更":activity.startActivity(new android.content.Intent().setClassName(activity.getPackageName(),"com.leotv.detail.FollowingActivity"));break;case "搜索":LiulangMode.search(activity,"");break;case "直播":activity.startActivity(new android.content.Intent().setClassName(activity.getPackageName(),"com.fongmi.android.tv.ui.activity.LiveActivity"));break;default:owner.nativeUi.tvAction(action.equals("搜索")?"search":action.equals("收藏")?"keep":action.equals("推送")?"push":"setting");}}
     boolean key(KeyEvent event){
         if(closed||!active||!root.isShown())return false;
+        if(wallpaper.key(event))return true;
         if(handle(event))return true;
         int code=event.getKeyCode();boolean direction=code>=KeyEvent.KEYCODE_DPAD_UP&&code<=KeyEvent.KEYCODE_DPAD_RIGHT;
         if(direction||code==KeyEvent.KEYCODE_DPAD_CENTER||code==KeyEvent.KEYCODE_ENTER||code==KeyEvent.KEYCODE_NUMPAD_ENTER){
@@ -112,9 +114,9 @@ final class LiulangHome implements AutoCloseable {
     boolean back(){if(siteSheet!=null){siteSheet.close();return true;}if(filterVisible){filter(false);types.requestFocus();return true;}if(historyVisible){if(history.resetDelete())return true;history(false);homeButton.requestFocus();return true;}if(!folders.isEmpty()){page=folders.pop();display();posters.requestFocus();return true;}long now=android.os.SystemClock.uptimeMillis();if(now-backAt<2000)activity.finish();else{backAt=now;Toast.makeText(activity,"再按一次返回退出",Toast.LENGTH_SHORT).show();}return true;}
     boolean shown(){return !closed&&active&&root.isShown();}
     boolean focus(View previous){if(previous!=null&&previous.isShown()&&NativeCspUi.descendant(previous,root)&&previous.requestFocus())return true;return posters.requestFocus();}
-    void active(boolean value){active=value;if(value)root.setVisibility(View.VISIBLE);hero.active(value);if(history!=null)history.active(value&&historyVisible);if(!value){selection++;metadata.cancel();main.removeCallbacksAndMessages(null);images.idle();}else{loadSelected();refreshImages();}}
+    void active(boolean value){active=value;wallpaper.active(value);if(value)root.setVisibility(View.VISIBLE);hero.active(value);if(history!=null)history.active(value&&historyVisible);if(!value){selection++;metadata.cancel();main.removeCallbacksAndMessages(null);images.idle();}else{loadSelected();refreshImages();}}
     Drawable background(){return hero.getDrawable();}
-    @Override public void close(){if(closed)return;closed=true;generation++;selection++;if(siteSheet!=null)siteSheet.close();metadata.close();images.close();hero.close();logo.close();history.close();worker.shutdownNow();main.removeCallbacksAndMessages(null);TmdbArtwork.releaseOwner(this);content.removeView(root);for(Map.Entry<View,Integer> e:hidden.entrySet())if(e.getKey().getParent()!=null)e.getKey().setVisibility(e.getValue());hidden.clear();cache.clear();folders.clear();}
+    @Override public void close(){if(closed)return;closed=true;wallpaper.close();generation++;selection++;if(siteSheet!=null)siteSheet.close();metadata.close();images.close();hero.close();logo.close();history.close();worker.shutdownNow();main.removeCallbacksAndMessages(null);TmdbArtwork.releaseOwner(this);content.removeView(root);for(Map.Entry<View,Integer> e:hidden.entrySet())if(e.getKey().getParent()!=null)e.getKey().setVisibility(e.getValue());hidden.clear();cache.clear();folders.clear();}
     final class Labels extends Presenter {
         final boolean navigation;Labels(boolean navigation){this.navigation=navigation;}
         @Override public Presenter$ViewHolder onCreateViewHolder(ViewGroup parent){View view=res.inflate(navigation?"adapter_func_v2":"adapter_type",parent);return new Presenter$ViewHolder(view);}

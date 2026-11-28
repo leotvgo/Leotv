@@ -24,7 +24,7 @@
     "detail/runtime/tv/com/leotv/detail/LiulangHeroImage.java": "98251f49f27ce933f43114d4e4c48a852cbbe30469964c6cc7ccffbeaf943a96",
     "detail/runtime/tv/com/leotv/detail/LiulangHistory.java": "b04603b84bb3a70a461771287e103bc4f95fd639dba575cff226d3f043b490ca",
     "detail/runtime/tv/com/leotv/detail/LiulangHistoryBar.java": "63feb618a1b1656f75086e9ebe556ec72f6f4d0922a5ace5ce1c3e6654a1e116",
-    "detail/runtime/tv/com/leotv/detail/LiulangHome.java": "6234919beae39d8ad0fdd2f475c95436f473747802b6e6a9e8c896d63e6d8dd1",
+    "detail/runtime/tv/com/leotv/detail/LiulangHome.java": "794aed00dbe2c473a78846eb739796117dece4e37fb11fe2366019b7675cee59",
     "detail/runtime/tv/com/leotv/detail/LiulangMetadata.java": "2cd741d624a14858d8457b1bf116c1c77e582c44498938ee8df8797334ea626f",
     "detail/runtime/tv/com/leotv/detail/LiulangPlayer.java": "3a293891c56dec1f412f95cc28fe0ee0eb6d54a44c26107c61b99c028430470e",
     "detail/runtime/tv/com/leotv/detail/LiulangResources.java": "18be5fb72d77d450d3ad03bf0c3ed50ca57e30ed2f903ec246582898ae4bd393",
@@ -35,7 +35,8 @@
     "detail/runtime/tv/com/leotv/detail/LiulangTitleArt.java": "96f1b9962edfc77520613f922993b26e91f6cdbefa7224941f322295f447cd48",
     "tools/liulang_resources.py": "4bb03dfb3b3d21a4ff11848927e3535e9cec061f172e51f21a679b1c57c571e7",
     "detail/runtime/tv/com/leotv/detail/LiulangSurfaces.java": "cd383431dedbbb1c38e899f286d9c01e6fc02c7b9f824249a1c2613e4a21a2a7",
-    "detail/runtime/mobile/com/leotv/detail/LiulangSurfaces.java": "3179420f51f344e95c4a41927300e91fb17249faaf63ed9250925f474eed7fd8"
+    "detail/runtime/mobile/com/leotv/detail/LiulangSurfaces.java": "3179420f51f344e95c4a41927300e91fb17249faaf63ed9250925f474eed7fd8",
+    "detail/runtime/tv/com/leotv/detail/LiulangWallpaper.java": "24804cc57a45814fc9dd536d7557f6d22adce4b246cbfb0226c3a73377229b69"
   },
   "native_libraries_added": false,
   "resource_namespace": "com.leotv.liulang:0x6f",
