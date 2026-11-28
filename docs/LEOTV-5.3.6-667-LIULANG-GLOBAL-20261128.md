@@ -21,3 +21,9 @@
 原版部分方法无法直接反编译为可编译源码，迁入代码依据原 Java 阅读材料及 smali 契约连接已有服务；没有打入浪壳的同名 Activity、整个 DEX 或新的播放器库。UI 模式仍需用户对照原版真机验收，资源参数和静态检查不能证明所有分辨率、动画时序和遥控路径完全一致。
 
 本版为 5.3.6 / 667 测试交付，正式 664 与 665/666 测试下载保留。成功构建及实际审计结果完成后记录。
+
+## 资源兼容排查记录
+
+两轮初始构建在资源链接阶段失败，Java/API23/R8 均已通过。第一轮是反编译 style 尺寸使用 -2 原始文本，第二轮是 XML 的 clipToOutline/paddingHorizontal 与 vector fillType 不在 API23 公共属性集中。已按等价行为转换：wrap_content；运行时 View.setClipToOutline；左右 padding；原历史圆环的反向内轮廓采用 API23 winding。历史图标实际 path 的 EVEN_ODD/WINDING 原生绘图逐像素比较通过，原始参考资源不改。
+
+独立资源编译及完整属性检查已通过：102 个源资源文件、117 种输出 Android 属性、18 个编译布局、548 个 XML 引用、17 个运行时绑定目标和两个 ABI 的原控件构造。新增 liulang-resources 必需 job 在 prepare 前检查整套资源；实际每个 TV APK 还检查 R8 输出保留 XML 构造，发布时核对真实签名 APK 的两项主题资产，手机资产必须为空。

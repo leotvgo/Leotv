@@ -42,7 +42,7 @@ jobs:
           EXPECTED_CERT: ${{ vars.APK_CERT_SHA256 }}
         run: |
           python3 - <<'PY'
-          import base64, hashlib, json, os, pathlib, subprocess, sys, xml.etree.ElementTree as ET
+          import base64, hashlib, json, os, pathlib, subprocess, sys, zipfile, xml.etree.ElementTree as ET
           sys.path.insert(0, 'tools')
           from apk_products import PRODUCTS, BASE_VARIANTS, source_variant, player_profile
           repo = os.environ['GITHUB_REPOSITORY']
@@ -100,6 +100,18 @@ jobs:
                   raise SystemExit('Signed APK identity verification failed.')
               if audit['package'] != 'com.leotv.app' or not audit['expected_changes_match'] or not audit['baseline_audit']['equal']:
                   raise SystemExit('Leotv identity/source audit verification failed.')
+              if audit['version_code'] >= 667:
+                  theme = audit.get('liulang_resources', {})
+                  with zipfile.ZipFile(apk) as archive:
+                      actual = {name for name in archive.namelist() if name.startswith('assets/leotv/liulang/')}
+                      if variant.startswith('tv'):
+                          expected = {'assets/leotv/liulang/resources.bin', 'assets/leotv/liulang/resources.json'}
+                          if not theme.get('enabled') or theme.get('min_api') != 23 or not theme.get('resource_only') or not theme.get('compiled_xml_audit', {}).get('post_r8_xml_constructors_verified') or actual != expected or set(theme.get('assets', {})) != expected:
+                              raise SystemExit('TV theme requires API23 resource and actual R8 XML constructor audits.')
+                          if any(hashlib.sha256(archive.read(name)).hexdigest() != theme['assets'][name] for name in expected):
+                              raise SystemExit('TV theme asset differs from its audited resource package.')
+                      elif theme.get('enabled') or not theme.get('mobile_payload_unchanged') or actual:
+                          raise SystemExit('Phone APK must not contain the TV theme resource package.')
               if audit['version_code'] >= 650:
                   registers = audit.get('player_register_types', {})
                   if registers.get('method_count', 0) <= 0 or registers.get('hook_count', 0) <= 0:

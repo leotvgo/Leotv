@@ -36,9 +36,12 @@ def check(root):
     builder=(root/'tools/build_branded.py').read_text()
     if 'liulang_payload(ROOT,args.variant' not in builder or "report['liulang_resources']=theme_report" not in builder:
         raise ValueError('Resource-only payload must be bound to actual APK audit')
-    for name in ('LiulangHeroImage','LiulangRoundedImage','LiulangDots'):
+    for name in ('LiulangHeroImage','LiulangRoundedImage','LiulangDots','LiulangHistoryBar'):
         if '-keep class com.leotv.detail.'+name not in (root/'branding/proguard-release.pro').read_text():
             raise ValueError('XML constructor would be removed/renamed by R8: '+name)
+    workflow=(root/'.github/workflows/ordinary-build.yml').read_text()
+    if 'liulang-resources:' not in workflow or 'phone-glass, liulang-resources]' not in workflow or 'LiulangVectorCompatibilityTest' not in workflow:
+        raise ValueError('Complete API23 resource and vector compatibility gates must precede APK preparation')
     return {'theme_id':5,'tv_only':True,'min_api':23,'reference_resources':len(resources['files']),'source_files':len(lock['sources']),'original_player_and_data_retained':True,'device_validation':False}
 
 

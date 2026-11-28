@@ -64,8 +64,9 @@ final class LiulangResources extends ContextWrapper {
         JSONArray extras=bindings.optJSONArray(name);
         for(int i=0;extras!=null&&i<extras.length();i++){
             JSONObject item=extras.optJSONObject(i);View view=item==null?null:find(root,item.optString("id"));if(view==null)continue;
+            if(item.has("clipToOutline"))view.setClipToOutline(item.optBoolean("clipToOutline"));
             if(item.has("focusOutFront")||item.has("focusOutEnd"))invoke(view,"setFocusOutAllowed",new Class<?>[]{boolean.class,boolean.class},new Object[]{item.optBoolean("focusOutFront"),item.optBoolean("focusOutEnd")});
-            if(item.has("lottie_rawRes")){String raw=item.optString("lottie_rawRes");invoke(view,"setAnimation",new Class<?>[]{int.class},new Object[]{id("raw",raw.substring(raw.indexOf('/')+1))});invoke(view,"setRepeatCount",new Class<?>[]{int.class},new Object[]{item.optBoolean("lottie_loop")?-1:0});if(item.optBoolean("lottie_autoPlay"))invoke(view,"playAnimation",new Class<?>[0],new Object[0]);}
+            if(item.has("lottie_rawRes")){String raw=item.optString("lottie_rawRes");invoke(view,"setAnimation",new Class<?>[]{int.class},new Object[]{id("raw",raw.substring(raw.indexOf('/')+1))});invoke(view,"setRepeatCount",new Class<?>[]{int.class},new Object[]{item.optBoolean("lottie_loop")?-1:0});if(item.optBoolean("lottie_autoPlay"))try{view.getClass().getField("x").setBoolean(view,true);Object drawable=view.getClass().getField("t").get(view);if(drawable instanceof android.graphics.drawable.Animatable)((android.graphics.drawable.Animatable)drawable).start();}catch(ReflectiveOperationException failure){throw new IllegalStateException("Original animation contract unavailable",failure);}}
         }
         disablePlatformFocus(root);
     }

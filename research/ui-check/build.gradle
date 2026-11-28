@@ -36,6 +36,7 @@ test {
     classpath += files(provider { fileTree(aarClasses).matching { include '**/*.jar' } })
     systemProperty 'robolectric.dependency.repo.url', 'https://repo.maven.apache.org/maven2'
     systemProperty 'leotv.preview.dir', file('../../artifacts/ui-preview').absolutePath
+    systemProperty 'leotv.liulang.history.vector', file('../../detail/liulang/reference-res/drawable/ic_history_ring.xml').absolutePath
     maxHeapSize = '1g'
     maxParallelForks = 1
     testLogging { events 'passed', 'failed'; exceptionFormat 'full' }

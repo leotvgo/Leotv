@@ -185,7 +185,8 @@ class ReleaseStoreTest(unittest.TestCase):
         self.assertRegex(workflow, r'(?m)^  effects:\n    needs: sources\n')
         self.assertRegex(workflow, r'(?m)^  path-ui:\n    needs: sources\n')
         self.assertRegex(workflow, r'(?m)^  phone-glass:\n    needs: sources\n')
-        self.assertRegex(workflow, r'(?m)^  prepare:\n    needs: \[sources, effects, path-ui, phone-glass\]\n')
+        self.assertRegex(workflow, r'(?m)^  liulang-resources:\n    needs: sources\n')
+        self.assertRegex(workflow, r'(?m)^  prepare:\n    needs: \[sources, effects, path-ui, phone-glass, liulang-resources\]\n')
         self.assertRegex(workflow, r'(?m)^  apk:\n    needs: prepare\n')
         self.assertNotIn("'create'", (root / 'tools/stage_ci_apk.py').read_text())
 

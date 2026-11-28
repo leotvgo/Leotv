@@ -98,7 +98,7 @@ jobs:
         with:
           gradle-version: '8.14.3'
       - name: Verify atomic phone menu visibility, native actions and interruptible glass motion
-        run: gradle --no-daemon --console=plain --max-workers=2 -p research/ui-check test --tests com.leotv.ui.PhoneGlassChromeTest --tests com.leotv.ui.PhoneNavigationTest --tests com.leotv.ui.GlobalChromeTest
+        run: gradle --no-daemon --console=plain --max-workers=2 -p research/ui-check test --tests com.leotv.ui.PhoneGlassChromeTest --tests com.leotv.ui.PhoneNavigationTest --tests com.leotv.ui.GlobalChromeTest --tests com.leotv.ui.LiulangVectorCompatibilityTest
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -107,7 +107,7 @@ jobs:
           retention-days: 14
 
   prepare:
-    needs: [sources, effects, path-ui, phone-glass]
+    needs: [sources, effects, path-ui, phone-glass, liulang-resources]
     permissions:
       contents: write
     runs-on: ubuntu-22.04
@@ -120,6 +120,30 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 -B tools/prepare_ci_release.py
+
+  liulang-resources:
+    needs: sources
+    runs-on: ubuntu-22.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+          log-accepted-android-sdk-licenses: false
+      - name: Compile and audit the complete isolated TV resource package against API23
+        run: |
+          sdkmanager 'platforms;android-23' 'build-tools;36.1.0'
+          python3 -B tools/liulang_resources.py --sdk "$ANDROID_SDK_ROOT" --output artifacts/liulang-api23-resources.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: liulang-api23-resources
+          path: artifacts/liulang-api23-resources.json
+          retention-days: 14
 
   models:
     needs: sources

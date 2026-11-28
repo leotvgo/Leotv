@@ -2534,13 +2534,28 @@
     },
     ".github/workflows/ordinary-build.yml": {
       "before_sha256": "ab47aa2d6ec7623a7359b79eaa1751edead0208bc92c95927cf7506d63b248ba",
-      "after_sha256": "3df6397400eeb8ee172f1de5586bbd68430af1031574220fe225f10c084cf8d0",
+      "after_sha256": "c4d6535e9214d3507e6938c82cd52674ad84ffbe5484a8844d08f818d5c183b0",
       "reason": "Bind the complete TV mode, source history panel, playback input isolation and API23 resource enum adaptation with mandatory session checks."
+    },
+    ".github/workflows/publish-test-apks.yml": {
+      "before_sha256": "823b807820e1f8fb70416d6d22178149824316dca11e5e6f1bc42db057ed20fd",
+      "after_sha256": "6efc9925c45e9295c38d984201173df49bb678b53363ac678330f00c58f0cb38",
+      "reason": "Complete API23 compatibility audit before APK builds, preserve exact vector fill pixels, bind runtime clipping and original animation ABI, verify actual signed TV assets and original/mobile resource separation."
+    },
+    "research/test_ci_release_store.py": {
+      "before_sha256": "6ec780e10bdb0fa895d434019c35487aa3c39356505a1a0c6513cf3c1ba52c88",
+      "after_sha256": "f9bd1540a0d84aa65698b6509b48628bd99dbcf5043d6a76f47204ca2c17d18f",
+      "reason": "Complete API23 compatibility audit before APK builds, preserve exact vector fill pixels, bind runtime clipping and original animation ABI, verify actual signed TV assets and original/mobile resource separation."
+    },
+    "research/ui-check/build.gradle": {
+      "before_sha256": "12ca3b4c58db448073078a1ccc9d31bfaafb6ae6b00e27fac2c179a4f430ee0b",
+      "after_sha256": "61a61b80238e7377ab22bc0dafdb28f4d93d5ff4cb0afdf7068a0577de1db707",
+      "reason": "Complete API23 compatibility audit before APK builds, preserve exact vector fill pixels, bind runtime clipping and original animation ABI, verify actual signed TV assets and original/mobile resource separation."
     }
   },
   "authorized_667_additions": {
     "detail/liulang/resource-lock.json": "ec03496c11ada08482384403515a5374dbeeb42927c6af775015e1fae6d45fbe",
-    "detail/liulang/source-lock.json": "11afb6270ba199229af3c5483a6a2e30649dde4a2cb67f5314837c64ba63126d",
+    "detail/liulang/source-lock.json": "657ad09db23e94b75798f4a27ce728f4560b901fd53604815466e1705b0aca5a",
     "detail/liulang/reference-res/drawable/selector_item.xml": "eb7962c4e05a190bc6aa3b819b1e05d4a7ef31d747ab09bde607b515135ff8e8",
     "detail/liulang/reference-res/drawable/ic_vod_delete.xml": "fdbbd10687429a471971707831f4ab75c81a13508d1df2258750424caab0ae6e",
     "detail/liulang/reference-res/drawable/bg_episode_list_bottom.xml": "6b6eb54d3b8b182c5a2a5e5e3e5515797efff2a4a1135273c5b5c59752de2c24",
@@ -2644,25 +2659,26 @@
     "detail/liulang/reference-res/raw/preload_success.json": "281106aff07518f0db1f8e317998c8585eaef91b48967f84dc203b66adc9417b",
     "detail/liulang/reference-res/raw/equalizer.json": "3b06dcf4ebb04e3dcc0377f53c597af9498d41d9941dbdf6e8c6616ee59b926c",
     "detail/runtime/tv/com/leotv/detail/LiulangEpisodes.java": "9012e1164e21c1e4c3775118de3a9549edde7ca6d8d1e6a9ec16a05b4974792b",
-    "detail/runtime/tv/com/leotv/detail/LiulangDetailLayout.java": "e8399e9a7a1fe6ca2e5200c18fe4ceed34cfec64d1888e45c370f689671d7668",
+    "detail/runtime/tv/com/leotv/detail/LiulangDetailLayout.java": "a7caed755774cee3b65493723f991e59972d29d3cd76ea2e40cbede48236d387",
     "detail/runtime/tv/com/leotv/detail/LiulangDots.java": "81f9776561464fde7da2f3900a81a6a985a8b67915b79127c46b64ab4d9ac186",
     "detail/runtime/tv/com/leotv/detail/LiulangHome.java": "816ded3aa87585a809c9efc67e3985ef16085f4c886e4ffa69483712703e84b4",
-    "detail/runtime/tv/com/leotv/detail/LiulangPlayer.java": "3ab3d985c94a0ae05f3ccc012419d7861dc2644cb92b3037004a7b2b71e3585b",
-    "detail/runtime/tv/com/leotv/detail/LiulangResources.java": "7f9b0c2191607106350ccd2d3e6eec686ceaa7a3bcec169189feac4bbe3ac2ac",
-    "detail/runtime/tv/com/leotv/detail/LiulangHeroImage.java": "216e6e7141840534e8063f657a8719c30260be4a0d4d1aa122f68ebfae13a01c",
+    "detail/runtime/tv/com/leotv/detail/LiulangPlayer.java": "3a293891c56dec1f412f95cc28fe0ee0eb6d54a44c26107c61b99c028430470e",
+    "detail/runtime/tv/com/leotv/detail/LiulangResources.java": "97f011155863614e72f11c555c3b1d3cc713c7eca420c59240c748d5ff435bee",
+    "detail/runtime/tv/com/leotv/detail/LiulangHeroImage.java": "6fd99f96621819b196677bd51afcc50e2369b467fb6c2ea66bd8fd21c5868c86",
     "detail/runtime/tv/com/leotv/detail/LiulangRoundedImage.java": "850c73f26f376ba7a2d5d78f08bca09c0ff3bfda3c811c1bbb73205dd537bb10",
     "detail/runtime/common/com/leotv/detail/LiulangMode.java": "d8bba589908e55be9ebad89d73a99fb837826730dfe99b6c43792d83f1f6d362",
     "detail/runtime/mobile/com/leotv/detail/LiulangDetailLayout.java": "c590f5f13c2799c862b6a452055bc28fd9875a5b2b8301c9373c5d9f3ec095a4",
     "detail/runtime/mobile/com/leotv/detail/LiulangHome.java": "2ec70b0f7e75b6bf4ea3e79099b779473f599092498f17f9f1b82f6d4ded04a6",
     "detail/runtime/mobile/com/leotv/detail/LiulangPlayer.java": "375a889f75909fd2df0f6dfceb75fc0d62ab9eadc54444ff1fb8f59f3401163d",
-    "tools/liulang_resources.py": "66d3c393824ec827ad20f122b277625d90796af6de48e040045c927c8dbb185e",
-    "tools/check_liulang_ui.py": "5eab897185345392756a5c81fbc6f764e5471066b9fa1a9bbc3b585a5c40c4fc",
-    "docs/LEOTV-5.3.6-667-LIULANG-GLOBAL-20261128.md": "ed124fc0bd6efe266c54b0ad4ec09a85afbc88a9646b0d8d25c4781ab3c2c35c",
+    "tools/liulang_resources.py": "e44a0a08752a6a8f12fe6fbb6b2ad5d6158edd161a8d952b7bf2458722d15690",
+    "tools/check_liulang_ui.py": "13b9e3537c0af833d4bd8b6737163cad1afa9b96d2c39d25cb397f0c192227a5",
+    "docs/LEOTV-5.3.6-667-LIULANG-GLOBAL-20261128.md": "c711c3a47ba9387eea91f186cc4a4f4cbaab0817b65981f71580acd7272605d3",
     "docs/LEOTV-LIULANG-TV-GLOBAL-UI-FEASIBILITY-20261128.md": "59bb0d1fb10e3b7ed7779c66d8dffa62f82b18a2a1e6164c11132847f2a8e371",
     "evidence/liulang-tv-global-ui-research-20261128.json": "04ab496a9185b228bf8e7f340b066a5aaef9ea00e37addd10a06bf33b0bf9565",
     "evidence/liulang-tv-ui-selected-abi-comparison-20261128.json": "7671c554cf4ec2b6fdd290d40f64f6674f3edca73ca5d0937bac88f6449f4eee",
     "detail/runtime/tv/com/leotv/detail/LiulangHistory.java": "7f811e5f8679dafb79e0007d8698fff9394896e57c6887d612075da1ee543c6c",
     "detail/runtime/tv/com/leotv/detail/LiulangHistoryBar.java": "63feb618a1b1656f75086e9ebe556ec72f6f4d0922a5ace5ce1c3e6654a1e116",
-    "research/check_liulang_mode.py": "d270448517060782de3e2a6667ed45726a36ce963daaadbd9e76fe8299268816"
+    "research/check_liulang_mode.py": "d270448517060782de3e2a6667ed45726a36ce963daaadbd9e76fe8299268816",
+    "research/ui-check/src/test/java/com/leotv/ui/LiulangVectorCompatibilityTest.java": "a0339b76d5958bff9f7af6cba4910cca251883f8eb74f629b62eb75ff3240503"
   }
 }
