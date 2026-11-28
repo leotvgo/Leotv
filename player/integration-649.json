@@ -2370,6 +2370,7 @@
     "tools/check_liquid_glass.py": "becc72a2c4e29e75dfee96401e31ec381a708ddc990152d6b0f0706b69b32318",
     "ui/java/com/leotv/ui/LiquidGlassButton.java": "6efa905ca4ea4feaa0dd4112541c2b23908a7d769888f88a9e41eecc401d0025",
     "ui/java/com/leotv/ui/PhoneGlassChrome.java": "682960edfc8b36f8c0aa29d6af74de5770d19b89950d0e115b8b029ef2dc4fee",
-    "ui/liquid-glass-source-lock.json": "b1b8c643b2aa4b8d8391a96a5a74889e75be5f851778e015ff1528743e132449"
+    "ui/liquid-glass-source-lock.json": "b1b8c643b2aa4b8d8391a96a5a74889e75be5f851778e015ff1528743e132449",
+    "research/ui-check/src/stub/java/com/leotv/detail/NativeQrInput.java": "6d49ee62e55d40c0b89ceb577f299350bf909a0e0ef3faf59bdc985f875fc3a9"
   }
 }
