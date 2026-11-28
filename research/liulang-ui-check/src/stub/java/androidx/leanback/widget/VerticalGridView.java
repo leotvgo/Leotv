@@ -1,0 +1,1 @@
+package androidx.leanback.widget;public class VerticalGridView extends android.widget.FrameLayout {public VerticalGridView(android.content.Context c,android.util.AttributeSet a){super(c,a);}public void setFocusOutAllowed(boolean a,boolean b){}}

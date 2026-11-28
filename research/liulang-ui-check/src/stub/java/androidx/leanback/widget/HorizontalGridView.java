@@ -1,0 +1,1 @@
+package androidx.leanback.widget;public class HorizontalGridView extends android.widget.FrameLayout {public HorizontalGridView(android.content.Context c,android.util.AttributeSet a){super(c,a);}public void setFocusOutAllowed(boolean a,boolean b){}}

@@ -1,0 +1,1 @@
+package com.airbnb.lottie;public class LottieAnimationView extends android.widget.ImageView {public boolean x;public final android.graphics.drawable.Drawable t=new android.graphics.drawable.ColorDrawable();public LottieAnimationView(android.content.Context c,android.util.AttributeSet a){super(c,a);}public void setAnimation(int id){}public void setRepeatCount(int count){}}

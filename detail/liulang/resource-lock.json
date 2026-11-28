@@ -25,7 +25,17 @@
     "fragment_history",
     "adapter_history_poster",
     "adapter_func_v2",
-    "overlay_focus"
+    "overlay_focus",
+    "dialog_v2_site",
+    "adapter_site_simple",
+    "activity_search",
+    "adapter_keyboard_text",
+    "adapter_keyboard_icon",
+    "adapter_search_word",
+    "adapter_search_record",
+    "adapter_search_site",
+    "adapter_tmdb_keyboard_icon",
+    "adapter_tmdb_keyboard_text"
   ],
   "files": {
     "layout/adapter_history_poster.xml": "45fd9bbb8b3ac5fc65062ea5d07f6e3f4589e4213947436862870038db8b2216",
@@ -121,7 +131,7 @@
     "drawable/shape_oval_clip.xml": "7e10af12a9174fdba3905498a358205473621b060e81c7fa3ccd00df7a3ff088",
     "drawable/selector_home_logo.xml": "d21dd00756e855a3bd254a33d5cec3182e5e3100ad9ccb034266ffc4df27fab9",
     "drawable/shape_home_logo_focused.xml": "d0e2eb7c974f3d38ab7e1badfe78f6cdea381cdeab4bd32d0709fdf24f56ef49",
-    "values/selected.xml": "a00e9d4ee75cb3d2e0b481cb198f8e9228cc7e13a40347955af9092b4fdb1d28",
+    "values/selected.xml": "01456a00ec6187c2c4b3a4ebee3c4bec4af825f338afd50ecb81902f5fe51e66",
     "drawable/selector_episode.xml": "7e18f0e2ac950a7155501cd9db6d25854a5c25909e3bc849e4a53013120b1c99",
     "drawable/selector_chip_round.xml": "7e7557e94b0fa8129afc6a7eb0dcb6e468b84d20f26825f887b12ffd25cdf6a0",
     "drawable/shape_chip_round_focused.xml": "2028075c2103c0adc1a32b3a72bb70327143a84b0b7a72c353a746f7a0a41e7a",
@@ -129,7 +139,46 @@
     "drawable/shape_vod_focused.xml": "b31ac9b99791b8956f0b887a6e8f9ee7b1a486fcb0917617507ec7491fd7e36d",
     "layout/overlay_focus.xml": "b70221126505980469b22f457243b903ff33c6b77a4611e8d0e2f77c62d5816f",
     "layout/adapter_func_v2.xml": "9c53d5f2781601e7fabb77f346b0f2ad9fc656465dbdf8929d89600eef7b6c3e",
-    "color/selector_func_v2_text.xml": "426e42830bcaff9a98a4435f10a917e3d391b303970defb3928d4f07ec701293"
+    "color/selector_func_v2_text.xml": "426e42830bcaff9a98a4435f10a917e3d391b303970defb3928d4f07ec701293",
+    "drawable/ic_keyboard_search.xml": "766a1288f5565fc8a7ec9755c1e0275a975ef1343c49df84d5471b0dc86da5a3",
+    "drawable/selector_tmdb_search.xml": "59f60281a3c8bd3ca38c63b00bb250d623e39020799e3520411c94ca970211c9",
+    "drawable/shape_tmdb_search_normal.xml": "6f6bcf6d7aa373c1063f5dc9f92b80ad5154cd01016049adeac1ff7135cc3659",
+    "drawable/shape_tmdb_search_focused.xml": "59df0d92f5ee9b585d683e6b43ab38303a715983608f731d167563f803fe10df",
+    "drawable/selector_tmdb_input.xml": "f8b6bdc4fcfb4de484b894a5ae4b2cf47357f1f9862a80aa84c67085cf44afd5",
+    "drawable/shape_tmdb_input_normal.xml": "a9715d6a074818e57284b49a25464f76656c767e6cd01e00bfc53e33c548da38",
+    "drawable/shape_tmdb_input_focused.xml": "5c936215488127f42f789548ff82cd4dff40782332dc3fae6f24dd75cac82ca9",
+    "drawable/selector_keyboard.xml": "8171a240f1469b5aa4c419a56596ed2655150cf84918d507e61445734bd8905e",
+    "drawable/shape_keyboard_normal.xml": "3073edcde0dc919ee73b2a67fd5b4d22c347b0ed84772c846cc869eb63ca9541",
+    "drawable/shape_keyboard_focused.xml": "7e4e8b8e8753c51186abd3793c0faaecdae4807ebc7676a8e8677881149bd532",
+    "drawable/selector_tmdb_key.xml": "872d7978f41414d7d1212a0f86f3cfd332c15b4544b462dab22a1d6afd95a44c",
+    "drawable/shape_tmdb_key_normal.xml": "2a211ef6d8b801f27a6258576ec1bc91553a6fc28e35b7882dc2708c3af6b1b3",
+    "drawable/shape_tmdb_key_focused.xml": "f6054e74107ed478da71216b5983b07666f9a2c32128a874cc25b52091c3f140",
+    "drawable/selector_segment_line.xml": "e123ce9fe5ecb94e1c895b628f283546a362159e2dd5906e1d8eb8eac7ca8f66",
+    "drawable/shape_segment_line_white.xml": "6c2a5bfddf70748b753a066b1d5a8f6f24cdb501b8bd067200075bedd12116bf",
+    "drawable/shape_segment_line_red.xml": "5581eeb575b4c34c44ae3afabaef21478cc484632e23f1628ae24f2ab3c581e3",
+    "drawable/selector_flag_line.xml": "17d435473e65a88b38c5c2585fd1e62eab1a9b0d23f1d0a2ad362cb8a8c83282",
+    "drawable/shape_flag_line_normal.xml": "a5e9a93616273ca0574a84f7d8e8157f7cc8620240478f3b776d973e343ff7d7",
+    "drawable/shape_flag_line_activated.xml": "cfe4b8f69ddd6b349412c53e2ce96e368b46bf591e9cabe18ad217a8e24879b2",
+    "drawable/shape_flag_line_focused.xml": "1119654519e310f9c8c36714cc73aabb2a40c8e1bee3baf84687409a34fd3414",
+    "layout/adapter_search_site.xml": "4e22ee8741e76eec705f7a1fcdc6cb2098a8090e1f47c85f10f3ea9ec13d97a6",
+    "layout/adapter_search_record.xml": "3f9a6e3dc05d3986bf8270d24066f825c2083bbabf44e8d0338dabdbd7bd0362",
+    "layout/adapter_search_word.xml": "3f9a6e3dc05d3986bf8270d24066f825c2083bbabf44e8d0338dabdbd7bd0362",
+    "layout/adapter_keyboard_icon.xml": "607d643b13da64d71746d94f5ccc82ccf0cec4ad32c0f0c1458e02347bffedb2",
+    "layout/adapter_keyboard_text.xml": "8bf6d563c80987266f3073f323aa8ebe0f30c4e80a3ae6824a3bd8a5584c393a",
+    "layout/activity_search.xml": "4c15f368b2df98cf192d770e9dd4829990afb5debdeb7b51350117e5418dda67",
+    "drawable/ic_search_mic.xml": "c8e0339aa5fc637d0025171586243efd35cb42740e3e91a78ac67f69d21b9b1c",
+    "layout/adapter_site_simple.xml": "4df16cb0143a116f9354d05c11b7e763ee102c473b37ebd57e8d24f963d0b520",
+    "layout/dialog_v2_site.xml": "63b9c9c2345da4213755675c0faa2e8781f4158558134147107bd9f9a1199b62",
+    "drawable/ic_douban_dou.xml": "e7128759b3ee058e407198900f1755ce1a6cd655c9d2f1a12229afc7e04c61ee",
+    "drawable/bg_v2_site.xml": "59728ba2b62b8403400f679a92c02b9d1f03f99726bb33f44c9b421d397634c9",
+    "drawable/ic_setting_home.xml": "6dafe0ac7fe8f7e4099d830405e70706b4bba0fa82ec1b89f04a49e805179208",
+    "drawable/ic_keyboard.xml": "5b19443a14b30ce72b66c5e3fd25d668e54977929813037cac1514c7a540dc0e",
+    "drawable/ic_keyboard_back.xml": "1ca1b5909bb268a82ea3103465da34e7ea98323a147175808ec851d19c7c5ec5",
+    "drawable/ic_keyboard_right.xml": "51696e247956231b67ecc82460f447fb2f5cecb947baed695e377752ab7cbdd1",
+    "drawable/ic_keyboard_left.xml": "6ab0e36f9a7ad8f3800dff71d3e8007645940f44862d0885a5a3cb45b8fac927",
+    "drawable/ic_keyboard_remote.xml": "5645ef0b2e13829890cf9704cbd0b95067078def8aa41ccddd5c2ff4cab26e1d",
+    "layout/adapter_tmdb_keyboard_text.xml": "031eba2ab6f3a63b8c010ac9af45d75b782e922230ae6911e2352e2b211e293e",
+    "layout/adapter_tmdb_keyboard_icon.xml": "a467c794a987e5f0554ea49c6a2d96bab8c65fabec2b78171798dbe95f681b7d"
   },
   "selected_value_entries": [
     {
@@ -365,7 +414,27 @@
     {
       "type": "style",
       "name": "Vod.Grid.Large",
-      "sha256": "23d9f8a9962544b27272b44c6c8911c97df705c382fdb20a3d62fb17f025a336"
+      "sha256": "365c173d69a606526b9e0c8fb0d22debd68a689a69bb3e7894a744e1b0603143"
+    },
+    {
+      "type": "color",
+      "name": "black_30",
+      "sha256": "c0a9a0a1c61f59ddc4c71d894895f1009362da3a0d7e6af8a5c0664192f15633"
+    },
+    {
+      "type": "string",
+      "name": "search_hot",
+      "sha256": "766761868705dca337dfac577d3926a4f681db67da8bbd1576772bf3a8096948"
+    },
+    {
+      "type": "string",
+      "name": "search_record",
+      "sha256": "b0e9c49ee180d632ec7c9babd6c035ecf74594122c8bd4b57686e97b525303c7"
+    },
+    {
+      "type": "string",
+      "name": "search_keyword",
+      "sha256": "fa875d2e1602cdecf1ed19eaf9ccaf6ed0c90851adf6612d3980e4c001299e0a"
     }
   ]
 }

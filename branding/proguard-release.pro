@@ -41,3 +41,5 @@
 -keep class com.leotv.detail.LiulangDots { public <init>(android.content.Context, android.util.AttributeSet); }
 
 -keep class com.leotv.detail.LiulangHistoryBar { public <init>(android.content.Context, android.util.AttributeSet); }
+-keep class com.leotv.detail.LiulangFlow { public <init>(android.content.Context, android.util.AttributeSet); }
+-keep,includedescriptorclasses,allowoptimization class com.leotv.detail.LiulangSearchActivity { public <init>(); public <methods>; protected <methods>; }

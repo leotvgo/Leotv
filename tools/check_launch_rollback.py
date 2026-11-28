@@ -23,11 +23,12 @@ def check(root):
             if successor['before_sha256']!=baseline or not successor.get('reason'):
                 raise ValueError('664 feedback repair must extend the accepted 663 source: '+name)
             data=(root/name).read_bytes();digest=successor['after_sha256']
-        mode=json.loads((root/'player/integration-649.json').read_text()).get('authorized_667_source_repairs',{}).get(name)
-        if mode:
-            if mode['before_sha256']!=digest or not mode.get('reason'):
-                raise ValueError('TV global mode must extend the recorded accepted source: '+name)
-            data=(root/name).read_bytes();digest=mode['after_sha256']
+        for revision in (667,668):
+            mode=json.loads((root/'player/integration-649.json').read_text()).get('authorized_'+str(revision)+'_source_repairs',{}).get(name)
+            if mode:
+                if mode['before_sha256']!=digest or not mode.get('reason'):
+                    raise ValueError('TV global mode must extend the recorded accepted source: '+name)
+                data=(root/name).read_bytes();digest=mode['after_sha256']
         if hashlib.sha256(data).hexdigest()!=digest:
             raise ValueError('Startup rollback changed an accepted menu/playback source: '+name)
     builder=(root/'tools/build_branded.py').read_text()

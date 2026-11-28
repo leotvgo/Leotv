@@ -28,6 +28,8 @@ CLASS_MAP = {
     'com.fongmi.android.tv.ui.custom.CustomRecyclerView': 'androidx.leanback.widget.VerticalGridView',
     'androidx.recyclerview.widget.RecyclerView': 'androidx.leanback.widget.VerticalGridView',
     'com.fongmi.android.tv.ui.custom.CustomTypeView': 'TextView',
+    'com.fongmi.android.tv.ui.custom.CustomSearchView': 'EditText',
+    'com.fongmi.android.tv.ui.custom.CustomMic': 'ImageView',
     'com.fongmi.android.tv.ui.custom.MarqueeTextView': 'TextView',
     'com.fongmi.android.tv.ui.custom.HistoryProgressBar': 'com.leotv.detail.LiulangHistoryBar',
     'androidx.media3.ui.PlayerSeekView': 'FrameLayout',
@@ -64,12 +66,17 @@ def prepare(root, target):
         for index, node in enumerate(tree.getroot().iter()):
             original_tag = node.tag
             node.tag = CLASS_MAP.get(node.tag, node.tag)
+            if path.stem=='activity_search' and node.get(A+'id','').split('/')[-1] in ('wordRecycler','recordRecycler'):
+                node.tag='com.leotv.detail.LiulangFlow'
             if node.tag != original_tag:
                 adaptations.append({'layout': path.stem, 'node': index, 'class_before': original_tag, 'class_after': node.tag})
             if A + 'defaultFocusHighlightEnabled' in node.attrib:
                 node.attrib.pop(A + 'defaultFocusHighlightEnabled')
                 adaptations.append({'layout': path.stem, 'node': index, 'api26_default_focus_highlight': 'disabled by runtime when available'})
             extra = {}
+            background=node.get(A+'background','')
+            if background.startswith('@drawable/') and background.split('/')[-1] in ('selector_item_round','selector_segment_round','selector_item_round_resume','selector_episode','selector_flag_line','selector_segment_line','selector_detail_item','selector_detail_play','selector_control','selector_control_circle','selector_tmdb_key','selector_keyboard','selector_tmdb_input','selector_tmdb_search','selector_search_danmaku','selector_home_logo','selector_vod'):
+                extra['liulang_background']=background.split('/')[-1]
             if A+'clipToOutline' in node.attrib:
                 extra['clipToOutline']=node.attrib.pop(A+'clipToOutline')
                 adaptations.append({'layout':path.stem,'node':index,'clipToOutline':'API21 View.setClipToOutline'})
@@ -78,6 +85,10 @@ def prepare(root, target):
                 if value is not None:
                     for edge in edges:node.set(A+edge,value)
                     adaptations.append({'layout':path.stem,'node':index,'attribute_before':shorthand,'attributes_after':list(edges),'value':value})
+            for shorthand,edges in (('layout_marginHorizontal',('layout_marginLeft','layout_marginRight')),('layout_marginVertical',('layout_marginTop','layout_marginBottom'))):
+                value=node.attrib.pop(A+shorthand,None)
+                if value is not None:
+                    for edge in edges:node.set(A+edge,value)
             for key in list(node.attrib):
                 if not key.startswith(P):
                     continue
@@ -212,6 +223,10 @@ def payload(root, variant, sdk, work, log):
             subprocess.run([str(arg) for arg in command], stdout=stream, stderr=subprocess.STDOUT, check=True, timeout=120)
     run([aapt, 'compile', '--dir', target / 'res', '-o', flat])
     run([aapt, 'link', '--manifest', manifest, '-I', sdk / 'platforms/android-23/android.jar', '--package-id', '0x6f', '--allow-reserved-package-id', '--auto-add-overlay', '-o', output, flat])
+    with zipfile.ZipFile(output) as original,zipfile.ZipFile(normalized,'w') as destination:
+        for entry in original.infolist():
+            data=original.read(entry);destination.writestr(entry,omit_empty_library_chunks(data) if entry.filename=='resources.arsc' else data)
+    normalized.replace(output)
     with zipfile.ZipFile(output) as archive:
         if any(name.endswith(('.dex', '.so')) for name in archive.namelist()):
             raise ValueError('Liulang resource archive must never contain code or native libraries')
@@ -232,6 +247,7 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--sdk',required=True,type=Path)
     parser.add_argument('--output',required=True,type=Path)
+    parser.add_argument('--assets-dir',type=Path)
     args=parser.parse_args();root=Path(__file__).resolve().parents[1]
     with tempfile.TemporaryDirectory(prefix='leotv-liulang-resources-') as temporary:
         work=Path(temporary);log=work/'resource-check.log'
@@ -245,4 +261,7 @@ if __name__=='__main__':
             report['tv_v8a_xml_audit']=audit_compiled_resources(root,archive,'tv-v8a',metadata['bindings'])
         args.output.parent.mkdir(parents=True,exist_ok=True)
         args.output.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+        if args.assets_dir:
+            args.assets_dir.mkdir(parents=True,exist_ok=True)
+            for name,data in files.items():(args.assets_dir/Path(name).name).write_bytes(data)
         print('API23 resource compilation, every Android attribute, XML reference, decoration target and both native constructor sets passed.')

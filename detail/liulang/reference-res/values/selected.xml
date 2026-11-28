@@ -74,4 +74,8 @@
   <style name="Vod.Grid.Large" parent="@style/Vod.Grid">
     <item name="cornerSize">8dp</item>
   </style>
+  <color name="black_30">#4d000000</color>
+  <string name="search_hot">热搜</string>
+  <string name="search_record">历史</string>
+  <string name="search_keyword">关键字…</string>
 </resources>

@@ -40,6 +40,7 @@ public final class NativeRouting {
         com.leotv.ui.GlobalChrome.rememberBackground(activity);
         org.json.JSONObject metadata=searchMetadata(incoming);
         if(metadata!=null&&MetadataSettings.resourceGlobalSearch(activity)) {
+            if(!Device.MOBILE&&LiulangMode.search(activity,metadata.optString("vod_name")))return;
             Intent search=new Intent().setClassName(activity.getPackageName(),"com.fongmi.android.tv.ui.activity."+(Device.MOBILE?"SearchActivity":"CollectActivity"));
             search.putExtra("keyword",metadata.optString("vod_name"));activity.startActivity(search);return;
         }

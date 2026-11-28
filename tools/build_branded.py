@@ -487,6 +487,9 @@ def main():
                     spec['original_package'], values['package'], spec['original_version_name'], values['version_name'],
                     spec['original_version_code'], values['version_code'])
                 landscape = args.variant.startswith('tv-')
+                if landscape:
+                    manifest=BinaryXml(manifest).add_native_activity('com.leotv.detail.LiulangSearchActivity',landscape=True)
+                    manifest_report.append({'path':'manifest/application/activity','attribute':'name','before':None,'after':'com.leotv.detail.LiulangSearchActivity'})
                 manifest = BinaryXml(manifest).add_native_activity('com.leotv.detail.DetailActivity', landscape=landscape,config_changes=0x480)
                 manifest_report.append({'path': 'manifest/application/activity', 'attribute': 'name',
                                         'before': None, 'after': 'com.leotv.detail.DetailActivity'})

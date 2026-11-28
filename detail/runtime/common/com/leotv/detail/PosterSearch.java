@@ -28,6 +28,7 @@ final class PosterSearch {
     }
     static boolean open(Activity activity,JSONObject item){
         String keyword=keyword(item);if(keyword.isEmpty()||activity.isFinishing()||activity.isDestroyed())return false;
+        if(!Device.MOBILE&&LiulangMode.search(activity,keyword))return true;
         activity.startActivity(intent(activity,keyword,Device.MOBILE));return true;
     }
     private PosterSearch(){}

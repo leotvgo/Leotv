@@ -1,0 +1,1 @@
+package com.leotv.detail;class TmdbArtwork {static byte[] get(android.content.Context c,String p,String route,BackdropHttp.Request r)throws Exception{throw new java.io.IOException("No real network in fixtures");}}

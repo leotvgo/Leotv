@@ -1,0 +1,1 @@
+package com.leotv.detail;class SourceArtwork {static byte[] fetch(String p,String route,BackdropHttp.Request r,int limit)throws Exception{throw new java.io.IOException("No real network in fixtures");}}

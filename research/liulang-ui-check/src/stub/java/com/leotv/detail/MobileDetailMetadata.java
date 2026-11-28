@@ -1,0 +1,1 @@
+package com.leotv.detail;class MobileDetailMetadata {static String imageAddress(String p,String s){return p;}static boolean tmdbArtwork(String p){return p.startsWith("/fiction");}static java.util.Map<String,String> imageHeaders(String a){return java.util.Collections.emptyMap();}}

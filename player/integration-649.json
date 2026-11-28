@@ -2685,13 +2685,13 @@
   "authorized_668_source_repairs": {
     ".github/workflows/ordinary-build.yml": {
       "before_sha256": "c4d6535e9214d3507e6938c82cd52674ad84ffbe5484a8844d08f818d5c183b0",
-      "after_sha256": "de10e0fd970f5894386736f978c64bd91a788fe2e63636f93cc18df07b59a305",
-      "reason": "User authorized additional comic Danmaku based on seven reference images: eight new styles and two transparent user-image figures; retain original styles, global sampling and orbit/petal weights, native clock/actions/ABI, bounded cache and eight products."
+      "after_sha256": "12c28dfa83259bf49e8d9ef2e954edc8d127255244264021d5bc013ca70976ea",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
     },
     "README.md": {
       "before_sha256": "87e614fb6bc237e80f52942bbc80da895d41299f114322a07c35658342ed8ad9",
-      "after_sha256": "0e23652ee8b3487a0c9e1619e56cfc0ad48b6e2c01789384279a889575b8dbf4",
-      "reason": "User authorized additional comic Danmaku based on seven reference images: eight new styles and two transparent user-image figures; retain original styles, global sampling and orbit/petal weights, native clock/actions/ABI, bounded cache and eight products."
+      "after_sha256": "a054ddcc9043d9bcb9694a4f5469e429926a2dadf435c9cce781d3f01070f474",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
     },
     "branding/AndroidManifest.xml": {
       "before_sha256": "822a29d6a5adeda55ae0191b429db5b684c7c5041e4e763be378f34bdb11356d",
@@ -2700,13 +2700,13 @@
     },
     "branding/release.json": {
       "before_sha256": "0c55b98b987aa4ed3443fed59873d7e4b2ccdfcd60d3f9341c541f0458acc102",
-      "after_sha256": "f597e8e6217169d8ab4db526c5f70a179d43b63b3997b7ac48164e87e42d8f57",
-      "reason": "User authorized additional comic Danmaku based on seven reference images: eight new styles and two transparent user-image figures; retain original styles, global sampling and orbit/petal weights, native clock/actions/ABI, bounded cache and eight products."
+      "after_sha256": "51dbef90ecbd9225b8174863ade10bc4e32877b0bb5199c6ab9e76146c81eb01",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
     },
     "detail/runtime-sources.json": {
       "before_sha256": "5fdeb8fd0fb296d8eb187ebdbafe080ad6b4231bc549ce4c49cfb10acae18c21",
-      "after_sha256": "26e1520bd7a9bdf7272ec4d16d7e709e13d51d71825d83d9103bb607e61283af",
-      "reason": "User authorized additional comic Danmaku based on seven reference images: eight new styles and two transparent user-image figures; retain original styles, global sampling and orbit/petal weights, native clock/actions/ABI, bounded cache and eight products."
+      "after_sha256": "aef567609ffa9415ab5ccc2f12f885f86cedd1c6c13d582df441e93ef5d3bf66",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
     },
     "detail/runtime/common/com/leotv/detail/DanmakuEffectPolicy.java": {
       "before_sha256": "300f86f113fe16c3ddd7ebe526a164eb7708ec22b1d56932dbfada12fac42c8c",
@@ -2742,6 +2742,101 @@
       "before_sha256": "a3aad4732dd4d0adf9a37b4d02db2616471c8cd67d39b3bd181c72d2b0ebb3dd",
       "after_sha256": "a2fee3963dce76b5de473a55847916fe8351b04e2931707265016e6f28ecc670",
       "reason": "User authorized additional comic Danmaku based on seven reference images: eight new styles and two transparent user-image figures; retain original styles, global sampling and orbit/petal weights, native clock/actions/ABI, bounded cache and eight products."
+    },
+    "branding/proguard-release.pro": {
+      "before_sha256": "ae41ffb9f2ce4cee8848abe18382a3fecf9041cac003aceb0e735dc371bd8dc8",
+      "after_sha256": "5c1a0a974a398b5b843d17f668e48e88886e02dd3063d3e2617fd230f4b24544",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "detail/liulang/reference-res/values/selected.xml": {
+      "before_sha256": "a00e9d4ee75cb3d2e0b481cb198f8e9228cc7e13a40347955af9092b4fdb1d28",
+      "after_sha256": "01456a00ec6187c2c4b3a4ebee3c4bec4af825f338afd50ecb81902f5fe51e66",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "detail/liulang/resource-lock.json": {
+      "before_sha256": "ec03496c11ada08482384403515a5374dbeeb42927c6af775015e1fae6d45fbe",
+      "after_sha256": "ceb5b7b2412495ff03db00585e19d18997beac5861e5ba0106634aa56284da96",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "detail/liulang/source-lock.json": {
+      "before_sha256": "657ad09db23e94b75798f4a27ce728f4560b901fd53604815466e1705b0aca5a",
+      "after_sha256": "354b4005599f0ec6db7600f0f9e0d49209be06861868436145857394565bd7b1",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "detail/runtime/common/com/leotv/detail/LiulangMode.java": {
+      "before_sha256": "d8bba589908e55be9ebad89d73a99fb837826730dfe99b6c43792d83f1f6d362",
+      "after_sha256": "c1b312ffa7b47aaa653bc2a8046ed0bdf9411180d024632d5cc48f53ffe01f2b",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "detail/runtime/common/com/leotv/detail/NativeRouting.java": {
+      "before_sha256": "abf2e151086b9de52db402da97df6af9e4b846612cca47d25d691a8d2d351656",
+      "after_sha256": "23676cf24d6064a673bc3ffdd9fab73c01b81856d2fe8c0c65cf1e85567d1188",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "detail/runtime/common/com/leotv/detail/PosterSearch.java": {
+      "before_sha256": "3c850aefddc81e99c2611aca815465c0f9729e5c1f37b2682b9a309a80aa5eab",
+      "after_sha256": "3254d59d16a6aa6628836f17832e3272c2b3bcae88f898d9605c5d2759a87f74",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "detail/runtime/tv/com/leotv/detail/LiulangDetailLayout.java": {
+      "before_sha256": "a7caed755774cee3b65493723f991e59972d29d3cd76ea2e40cbede48236d387",
+      "after_sha256": "fdaaaf0095ce18108cc2e278d9b0683b2035a43a6ae319dbed9a4376e46fab48",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "detail/runtime/tv/com/leotv/detail/LiulangEpisodes.java": {
+      "before_sha256": "9012e1164e21c1e4c3775118de3a9549edde7ca6d8d1e6a9ec16a05b4974792b",
+      "after_sha256": "0ad9f52b30c39a517dece717c0660043a69ac8effa27ede989ee84b9e21dd93b",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "detail/runtime/tv/com/leotv/detail/LiulangHeroImage.java": {
+      "before_sha256": "6fd99f96621819b196677bd51afcc50e2369b467fb6c2ea66bd8fd21c5868c86",
+      "after_sha256": "3553854bf99e6f6571035a02e4a38cfcc81dab411eee084f440b2dc4780ede97",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "detail/runtime/tv/com/leotv/detail/LiulangHome.java": {
+      "before_sha256": "816ded3aa87585a809c9efc67e3985ef16085f4c886e4ffa69483712703e84b4",
+      "after_sha256": "6ca4924e19d1bfc6d97865ed77b7be057752d32d64a9daaa1aeef4bc764260e2",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "detail/runtime/tv/com/leotv/detail/LiulangResources.java": {
+      "before_sha256": "97f011155863614e72f11c555c3b1d3cc713c7eca420c59240c748d5ff435bee",
+      "after_sha256": "8461f28c4b668f52fe9804080b9d233e0cba364f2ab577cbf84ce3738fa63471",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "research/check_liulang_mode.py": {
+      "before_sha256": "d270448517060782de3e2a6667ed45726a36ce963daaadbd9e76fe8299268816",
+      "after_sha256": "1847ddac72dde84cace5a60efdde1daaca30c048f890f662da72aed1d60f39bd",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "tools/build_branded.py": {
+      "before_sha256": "87e68b9c70f88e3d94e4de571ed857a84f190bf75ebb59e613f40d7795d4e85e",
+      "after_sha256": "7bbe8a8047762d1fec2121faf69d6347e74470842716c50a96a295f20c14ef19",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "tools/check_launch_rollback.py": {
+      "before_sha256": "a613f48714f21acfa264efa718e35ce44a2c5d36c95e8c524ae23745cad913ec",
+      "after_sha256": "9ef95812adeed7d5849232d4948b857d650e1f1a6d1a06df639f89a307ac5ff3",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "tools/check_liulang_ui.py": {
+      "before_sha256": "13b9e3537c0af833d4bd8b6737163cad1afa9b96d2c39d25cb397f0c192227a5",
+      "after_sha256": "03cc26b4102d24c894789af657f327423c5c32b3f05bc006d1c1b6892be59869",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "tools/liulang_resources.py": {
+      "before_sha256": "e44a0a08752a6a8f12fe6fbb6b2ad5d6158edd161a8d952b7bf2458722d15690",
+      "after_sha256": "6ba60c1dacb5ab7cd07111b99f74c52e866b8c82938557a072fcd7be8853cdf7",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "ui/java/com/leotv/ui/GlobalChrome.java": {
+      "before_sha256": "9eb17399f6fde97a1aae3dd86aac2752b6ec9d87c18f9714574a0877192994e5",
+      "after_sha256": "c191103d0c1e13ee16d796d2a33513640a6fdb19d8128c382329926206ae8d89",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
+    },
+    "ui/liquid-glass-source-lock.json": {
+      "before_sha256": "30984852ecb5032dda9660d98f4158f90d74723dfeaf740a15ed4585926caaf6",
+      "after_sha256": "0434496a8490a9a7f8507097ba8279900c8e498974f8250d33bd6c12ed4badb3",
+      "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
     }
   },
   "authorized_668_additions": {
@@ -2751,6 +2846,68 @@
     "docs/LEOTV-5.3.6-668-COMIC-DANMAKU-20261128.md": "1d22c8611fe8e84c77b1e802b20cf5ba7251a4d00b1aa40323494b40f8e874e0",
     "detail/artwork/comic-20261128/provenance.json": "fd5b3a09f5d792328a163e9ff09d88d401f5b668a9dbe629a73139cceb0c58ca",
     "detail/artwork/comic-20261128/suit-figure.png": "705404f8f07e276746f511017f4bb9cdd86396a11fabd40e3eb48eba04a52e2f",
-    "detail/artwork/comic-20261128/masked-figure.png": "77e9f425ea0270a292c2183470d85d0b3ef274a32e76b8cafcb670179bec9f4a"
+    "detail/artwork/comic-20261128/masked-figure.png": "77e9f425ea0270a292c2183470d85d0b3ef274a32e76b8cafcb670179bec9f4a",
+    "detail/liulang/reference-res/drawable/shape_tmdb_key_normal.xml": "2a211ef6d8b801f27a6258576ec1bc91553a6fc28e35b7882dc2708c3af6b1b3",
+    "detail/liulang/reference-res/drawable/bg_v2_site.xml": "59728ba2b62b8403400f679a92c02b9d1f03f99726bb33f44c9b421d397634c9",
+    "detail/liulang/reference-res/drawable/ic_search_mic.xml": "c8e0339aa5fc637d0025171586243efd35cb42740e3e91a78ac67f69d21b9b1c",
+    "detail/liulang/reference-res/drawable/shape_flag_line_normal.xml": "a5e9a93616273ca0574a84f7d8e8157f7cc8620240478f3b776d973e343ff7d7",
+    "detail/liulang/reference-res/drawable/selector_keyboard.xml": "8171a240f1469b5aa4c419a56596ed2655150cf84918d507e61445734bd8905e",
+    "detail/liulang/reference-res/drawable/selector_tmdb_key.xml": "872d7978f41414d7d1212a0f86f3cfd332c15b4544b462dab22a1d6afd95a44c",
+    "detail/liulang/reference-res/drawable/selector_flag_line.xml": "17d435473e65a88b38c5c2585fd1e62eab1a9b0d23f1d0a2ad362cb8a8c83282",
+    "detail/liulang/reference-res/drawable/selector_tmdb_input.xml": "f8b6bdc4fcfb4de484b894a5ae4b2cf47357f1f9862a80aa84c67085cf44afd5",
+    "detail/liulang/reference-res/drawable/shape_tmdb_input_normal.xml": "a9715d6a074818e57284b49a25464f76656c767e6cd01e00bfc53e33c548da38",
+    "detail/liulang/reference-res/drawable/shape_tmdb_key_focused.xml": "f6054e74107ed478da71216b5983b07666f9a2c32128a874cc25b52091c3f140",
+    "detail/liulang/reference-res/drawable/ic_setting_home.xml": "6dafe0ac7fe8f7e4099d830405e70706b4bba0fa82ec1b89f04a49e805179208",
+    "detail/liulang/reference-res/drawable/selector_tmdb_search.xml": "59f60281a3c8bd3ca38c63b00bb250d623e39020799e3520411c94ca970211c9",
+    "detail/liulang/reference-res/drawable/shape_flag_line_activated.xml": "cfe4b8f69ddd6b349412c53e2ce96e368b46bf591e9cabe18ad217a8e24879b2",
+    "detail/liulang/reference-res/drawable/shape_tmdb_input_focused.xml": "5c936215488127f42f789548ff82cd4dff40782332dc3fae6f24dd75cac82ca9",
+    "detail/liulang/reference-res/drawable/ic_keyboard_search.xml": "766a1288f5565fc8a7ec9755c1e0275a975ef1343c49df84d5471b0dc86da5a3",
+    "detail/liulang/reference-res/drawable/ic_keyboard_right.xml": "51696e247956231b67ecc82460f447fb2f5cecb947baed695e377752ab7cbdd1",
+    "detail/liulang/reference-res/drawable/shape_tmdb_search_focused.xml": "59df0d92f5ee9b585d683e6b43ab38303a715983608f731d167563f803fe10df",
+    "detail/liulang/reference-res/drawable/shape_segment_line_white.xml": "6c2a5bfddf70748b753a066b1d5a8f6f24cdb501b8bd067200075bedd12116bf",
+    "detail/liulang/reference-res/drawable/ic_keyboard_remote.xml": "5645ef0b2e13829890cf9704cbd0b95067078def8aa41ccddd5c2ff4cab26e1d",
+    "detail/liulang/reference-res/drawable/ic_douban_dou.xml": "e7128759b3ee058e407198900f1755ce1a6cd655c9d2f1a12229afc7e04c61ee",
+    "detail/liulang/reference-res/drawable/ic_keyboard_back.xml": "1ca1b5909bb268a82ea3103465da34e7ea98323a147175808ec851d19c7c5ec5",
+    "detail/liulang/reference-res/drawable/shape_keyboard_focused.xml": "7e4e8b8e8753c51186abd3793c0faaecdae4807ebc7676a8e8677881149bd532",
+    "detail/liulang/reference-res/drawable/ic_keyboard.xml": "5b19443a14b30ce72b66c5e3fd25d668e54977929813037cac1514c7a540dc0e",
+    "detail/liulang/reference-res/drawable/shape_flag_line_focused.xml": "1119654519e310f9c8c36714cc73aabb2a40c8e1bee3baf84687409a34fd3414",
+    "detail/liulang/reference-res/drawable/selector_segment_line.xml": "e123ce9fe5ecb94e1c895b628f283546a362159e2dd5906e1d8eb8eac7ca8f66",
+    "detail/liulang/reference-res/drawable/ic_keyboard_left.xml": "6ab0e36f9a7ad8f3800dff71d3e8007645940f44862d0885a5a3cb45b8fac927",
+    "detail/liulang/reference-res/drawable/shape_segment_line_red.xml": "5581eeb575b4c34c44ae3afabaef21478cc484632e23f1628ae24f2ab3c581e3",
+    "detail/liulang/reference-res/drawable/shape_tmdb_search_normal.xml": "6f6bcf6d7aa373c1063f5dc9f92b80ad5154cd01016049adeac1ff7135cc3659",
+    "detail/liulang/reference-res/drawable/shape_keyboard_normal.xml": "3073edcde0dc919ee73b2a67fd5b4d22c347b0ed84772c846cc869eb63ca9541",
+    "detail/liulang/reference-res/layout/adapter_keyboard_text.xml": "8bf6d563c80987266f3073f323aa8ebe0f30c4e80a3ae6824a3bd8a5584c393a",
+    "detail/liulang/reference-res/layout/adapter_site_simple.xml": "4df16cb0143a116f9354d05c11b7e763ee102c473b37ebd57e8d24f963d0b520",
+    "detail/liulang/reference-res/layout/adapter_tmdb_keyboard_icon.xml": "a467c794a987e5f0554ea49c6a2d96bab8c65fabec2b78171798dbe95f681b7d",
+    "detail/liulang/reference-res/layout/activity_search.xml": "4c15f368b2df98cf192d770e9dd4829990afb5debdeb7b51350117e5418dda67",
+    "detail/liulang/reference-res/layout/adapter_search_record.xml": "3f9a6e3dc05d3986bf8270d24066f825c2083bbabf44e8d0338dabdbd7bd0362",
+    "detail/liulang/reference-res/layout/adapter_search_word.xml": "3f9a6e3dc05d3986bf8270d24066f825c2083bbabf44e8d0338dabdbd7bd0362",
+    "detail/liulang/reference-res/layout/adapter_tmdb_keyboard_text.xml": "031eba2ab6f3a63b8c010ac9af45d75b782e922230ae6911e2352e2b211e293e",
+    "detail/liulang/reference-res/layout/adapter_search_site.xml": "4e22ee8741e76eec705f7a1fcdc6cb2098a8090e1f47c85f10f3ea9ec13d97a6",
+    "detail/liulang/reference-res/layout/dialog_v2_site.xml": "63b9c9c2345da4213755675c0faa2e8781f4158558134147107bd9f9a1199b62",
+    "detail/liulang/reference-res/layout/adapter_keyboard_icon.xml": "607d643b13da64d71746d94f5ccc82ccf0cec4ad32c0f0c1458e02347bffedb2",
+    "detail/runtime/tv/com/leotv/detail/LiulangFlow.java": "90027bdc4a79707092e4c7657c55edc22a4da9a8426e15d0aa3782e7a5185ab6",
+    "detail/runtime/tv/com/leotv/detail/LiulangSites.java": "7120a1a9bb1194329c6744c92f57d7ad8bd6696b766a7d13dd85fb584204e2cd",
+    "detail/runtime/tv/com/leotv/detail/LiulangTitleArt.java": "96f1b9962edfc77520613f922993b26e91f6cdbefa7224941f322295f447cd48",
+    "detail/runtime/tv/com/leotv/detail/LiulangStyle.java": "8f6f3acd984c2da666aa503bbf8c443f3508a1944afa79c6befd3230600cf4fc",
+    "detail/runtime/tv/com/leotv/detail/LiulangSearchActivity.java": "554b69bff7f51fa1609c1d7318c704cc38ac05d5f2522eeab0ceb35e045452ce",
+    "detail/runtime/tv/com/leotv/detail/LiulangMetadata.java": "a5315a88db512a8ef52d969a7e802c0413ae1aad0aa4ec0528bc18c1f101ed3a",
+    "detail/runtime/tv/com/leotv/detail/LiulangBackdrop.java": "9290aee0ca800d70ee49b58e026f67f90c8cdee71ad8ddf3cb5c549995da4e51",
+    "research/liulang-ui-check/build.gradle": "39402865b861287f64920f38949f1b823f9ac3b6ea6f1fcc86f6a406009519f6",
+    "research/liulang-ui-check/src/test/java/com/leotv/detail/LiulangRuntimeTest.java": "bc3b3357fcec20d3dc2804bb170f684d8ffd796695bf22c7e7d081eff6b3588b",
+    "research/liulang-ui-check/src/stub/java/androidx/core/widget/NestedScrollView.java": "832b178ba0c7b379ba5ded79f3296a438948e0ebaf92e81b3c81e5b077fbc07e",
+    "research/liulang-ui-check/src/stub/java/androidx/leanback/widget/HorizontalGridView.java": "bf0bb75b65ff28ac5fba256096b70f30df12b4e45ab39ea7d7883fd7e9fb1476",
+    "research/liulang-ui-check/src/stub/java/androidx/leanback/widget/VerticalGridView.java": "e87cc90f32813149ad907c6e045fa21b768d398e68d652e607f59baa0ff9bacd",
+    "research/liulang-ui-check/src/stub/java/com/leotv/detail/SourceArtwork.java": "98f45c402fa1ce93424b96a3ad1eadde260bf67dc224cad2fe1bfde0b1b38560",
+    "research/liulang-ui-check/src/stub/java/com/leotv/detail/BackdropHttp.java": "d5208de69e42a743e06ac4a6cd19f0c6aee1bea5693094fbebbf7e72dfadb910",
+    "research/liulang-ui-check/src/stub/java/com/leotv/detail/BackdropSettings.java": "231a2d09976e275b1d1342c06fc5759bc79e8526494dac8687910e9e9edfa8db",
+    "research/liulang-ui-check/src/stub/java/com/leotv/detail/MetadataSettings.java": "9381fecf6b4271d5e5afa2ea4ce53c0c98e3bf0fe3e33b4cbb3b42eef2f42dc7",
+    "research/liulang-ui-check/src/stub/java/com/leotv/detail/MobileDetailMetadata.java": "a38c920f48ee6444126a6ea843cc626fb635b04432b9f6aafdec40eda08a0ca7",
+    "research/liulang-ui-check/src/stub/java/com/leotv/detail/TmdbArtwork.java": "2b3c6a89ff098e4fe50b0f2ac4614a8ee7b51d1a14180d3455b520ca520fcc28",
+    "research/liulang-ui-check/src/stub/java/com/airbnb/lottie/LottieAnimationView.java": "d02e28bd26c7d0943494ee8cff12b58f3810626fd29281624a137807dc2e4568",
+    "research/liulang-ui-check/src/stub/java/com/fongmi/android/tv/ui/custom/CustomUpDownView.java": "7bb40ed588559b07e84ac91775926bd19e3ff838e9c45a5ae584eee7d3100f7a",
+    "research/effects-check/src/stub/java/com/leotv/detail/LiulangMode.java": "e69d309f6d5e8f37140d0a0689145c09d39b8d429fa85d9d492208293a9d898d",
+    "research/ui-check/src/stub/java/com/leotv/detail/LiulangMode.java": "3cbfd07adc50cea48d902a8521cccfbc5c3f4c47ff7db5290aa38be9a2a508e2",
+    "docs/LEOTV-5.3.6-668-LIULANG-ALIGNMENT-20261128.md": "7e1721c81294179015f358d36edc4bfd816a57c4064923b541ea7def60e260c6"
   }
 }

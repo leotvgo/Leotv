@@ -132,7 +132,7 @@ jobs:
   liulang-resources:
     needs: sources
     runs-on: ubuntu-22.04
-    timeout-minutes: 6
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -146,11 +146,18 @@ jobs:
       - name: Compile and audit the complete isolated TV resource package against API23
         run: |
           sdkmanager 'platforms;android-23' 'build-tools;36.1.0'
-          python3 -B tools/liulang_resources.py --sdk "$ANDROID_SDK_ROOT" --output artifacts/liulang-api23-resources.json
+          python3 -B tools/liulang_resources.py --sdk "$ANDROID_SDK_ROOT" --output artifacts/liulang-api23-resources.json --assets-dir artifacts/liulang-ui-fixture
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.14.3'
+      - name: Verify actual theme resource context, display density and asynchronous backdrop visibility
+        run: gradle --no-daemon --console=plain --max-workers=2 -p research/liulang-ui-check test
       - uses: actions/upload-artifact@v4
         with:
           name: liulang-api23-resources
-          path: artifacts/liulang-api23-resources.json
+          path: |
+            artifacts/liulang-api23-resources.json
+            research/liulang-ui-check/build/test-results/test/*.xml
           retention-days: 14
 
   models:

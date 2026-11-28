@@ -36,9 +36,19 @@ def check(root):
     builder=(root/'tools/build_branded.py').read_text()
     if 'liulang_payload(ROOT,args.variant' not in builder or "report['liulang_resources']=theme_report" not in builder:
         raise ValueError('Resource-only payload must be bound to actual APK audit')
-    for name in ('LiulangHeroImage','LiulangRoundedImage','LiulangDots','LiulangHistoryBar'):
+    for name in ('LiulangHeroImage','LiulangRoundedImage','LiulangDots','LiulangHistoryBar','LiulangFlow'):
         if '-keep class com.leotv.detail.'+name not in (root/'branding/proguard-release.pro').read_text():
             raise ValueError('XML constructor would be removed/renamed by R8: '+name)
+    resource_code=(root/'detail/runtime/tv/com/leotv/detail/LiulangResources.java').read_text()
+    for token in ('extends LayoutInflater','metrics.density=width/960f','config.densityDpi=metrics.densityDpi','LiulangStyle.drawable'):
+        if token not in resource_code:raise ValueError('TV split context/density/dynamic style contract missing: '+token)
+    if 'homeButton.setOnClickListener(v->sites())' not in home or 'LiulangMode.search(activity,"")' not in home:
+        raise ValueError('Home logo and search must match the selected original V2 actions')
+    site_code=(root/'detail/runtime/tv/com/leotv/detail/LiulangSites.java').read_text()
+    if 'width/5' not in site_code or 'getMethod("l",site.raw.getClass())' not in site_code:
+        raise ValueError('Right site sheet must retain its one-fifth width and native site-selection action')
+    if 'LiulangMode.redirectSearch(activity)' not in (root/'ui/java/com/leotv/ui/GlobalChrome.java').read_text():
+        raise ValueError('Native search entry points must follow the selected TV mode')
     workflow=(root/'.github/workflows/ordinary-build.yml').read_text()
     if 'liulang-resources:' not in workflow or 'phone-glass, liulang-resources]' not in workflow or 'LiulangVectorCompatibilityTest' not in workflow:
         raise ValueError('Complete API23 resource and vector compatibility gates must precede APK preparation')

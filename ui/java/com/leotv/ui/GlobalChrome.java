@@ -156,6 +156,7 @@ public final class GlobalChrome {
         void scene(Activity activity){if(homeColour==null||!Scene.accepts(activity)||activity.isFinishing()||activity.isDestroyed())return;Scene value=scenes.get(activity);if(value==null){value=new Scene(activity);scenes.put(activity,value);}value.refresh();}
 
         @Override public void onActivityResumed(Activity activity) {
+            if(com.leotv.detail.LiulangMode.redirectSearch(activity))return;
             if(Scene.accepts(activity)){known.put(activity,true);scene(activity);}
             if(activity.getClass().getName().equals("com.fongmi.android.tv.ui.activity.VodActivity")&&activity.getIntent().getBooleanExtra("leotv.csp.category",false)){
                 View content=activity.findViewById(android.R.id.content);if(content instanceof FrameLayout){TvCategoryChrome chrome=categories.get(activity);if(chrome==null){chrome=new TvCategoryChrome(activity,(FrameLayout)content);categories.put(activity,chrome);}chrome.resume();}return;
