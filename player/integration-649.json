@@ -2288,7 +2288,7 @@
     },
     "README.md": {
       "before_sha256": "460f3d6d30e72526e979e73a208a797f1d55520fcedac3e05bcc34d431571294",
-      "after_sha256": "2c7220879c797d955756f44a05213ad0c460c261e548edcde650b1dfaf1991c2",
+      "after_sha256": "bfab0a198e5d0fd3ebd75bfe3d70492662396197065bc98261b20ec649ac4da0",
       "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
     },
     "branding/AndroidManifest.xml": {
@@ -2373,7 +2373,7 @@
     }
   },
   "authorized_665_additions": {
-    "docs/LEOTV-LIQUID-GLASS-DESIGN-20261128.md": "94d7695363d8e6bf17e854c638cb29b0bc26988d3c92846fe1691122fd05be6a",
+    "docs/LEOTV-LIQUID-GLASS-DESIGN-20261128.md": "c9bad86e507b5041f832ed134ccdb581289fc699a23021af8e8f7313a4b56c01",
     "research/ui-check/src/stub/java/com/leotv/detail/CacheMaintenance.java": "a4e1f3e4cd9611e2998b826cf55aa9b69d8178a622be8d83a28bdaa1b846a12d",
     "research/ui-check/src/stub/java/com/leotv/detail/DanmakuSettings.java": "dcc7d86d39f281088e7d04c7412d84d59c275ec44602fc22e4feee9bc2c296e1",
     "research/ui-check/src/test/java/com/leotv/ui/PhoneGlassChromeTest.java": "4fc02ac3a6850494fc9bb1fc969319eda51769320cc4311719fedac00b9e0bf3",
@@ -2381,6 +2381,8 @@
     "ui/java/com/leotv/ui/LiquidGlassButton.java": "6efa905ca4ea4feaa0dd4112541c2b23908a7d769888f88a9e41eecc401d0025",
     "ui/java/com/leotv/ui/PhoneGlassChrome.java": "682960edfc8b36f8c0aa29d6af74de5770d19b89950d0e115b8b029ef2dc4fee",
     "ui/liquid-glass-source-lock.json": "b1b8c643b2aa4b8d8391a96a5a74889e75be5f851778e015ff1528743e132449",
-    "research/ui-check/src/stub/java/com/leotv/detail/NativeQrInput.java": "6d49ee62e55d40c0b89ceb577f299350bf909a0e0ef3faf59bdc985f875fc3a9"
+    "research/ui-check/src/stub/java/com/leotv/detail/NativeQrInput.java": "6d49ee62e55d40c0b89ceb577f299350bf909a0e0ef3faf59bdc985f875fc3a9",
+    "docs/LEOTV-5.3.6-665-GLASS-UI-DELIVERY-20261128.md": "b5ba86637ac3d2d95cbdb5766627ae7e8e92c64658c204feb2da28893cc626f0",
+    "evidence/leotv-5.3.6-665-signed-delivery-20261128.json": "5e71779d85d994abaecada839cbdf011c5caf8fb8d0de02654ddd0b4872eac97"
   }
 }
