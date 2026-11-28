@@ -11,6 +11,11 @@ public final class NewHome implements AutoCloseable {
     public boolean update(){return false;}
     public boolean back(){return false;}
     public boolean handleKey(KeyEvent event){return false;}
+    public boolean shown(){return false;}
+    public boolean canWakeShortcuts(){return false;}
+    public boolean focusContentAfterShortcut(android.view.View view){return false;}
+    public void openShortcut(String action){}
+    public void userInput(){}
     public Drawable background(){return null;}
     public void resume(){}
     public void pause(){}

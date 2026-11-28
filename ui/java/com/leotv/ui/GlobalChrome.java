@@ -111,7 +111,7 @@ public final class GlobalChrome {
     }
 
     private GlobalChrome() {}
-    static Drawable nativeGlass(android.content.Context context){return new NavigationGlass(context.getResources().getDisplayMetrics().density);}
+    static Drawable nativeGlass(android.content.Context context){return new PhoneGlassChrome.ButtonMaterial(context);}
 
     public static synchronized void install(Application app) {
         if (installed != null && installed.get() == app) return;
@@ -243,6 +243,8 @@ public final class GlobalChrome {
         NativeViewport viewport;
         final Map<ViewGroup, NativeViewport> viewports = new IdentityHashMap<>();
         final Map<Bitmap, Bitmap> softwareImages = new IdentityHashMap<>();
+        Rect glassReadback;
+        long buttonCaptureAt;
         boolean dirty = true, discovery = true, closed, windowAdjusted, running;
         int width, height, statusHeight, navigationHeight, lastScrollX, lastScrollY, sourceArea;
         float topStart, topEnd, topPaintEnd, bottomStart;
@@ -254,7 +256,7 @@ public final class GlobalChrome {
             phone = phoneClient(activity);
             portal = new Portal(activity, this);
             following=new FollowingNavigation(this);
-            phoneInsets=phone?new NativePhoneInsets(activity,content):null;
+            phoneInsets=phone?new NativePhoneInsets(activity,content,this):null;
             newHome=new NewHome(activity,content,phone);
             if(phone){decor.setSystemUiVisibility(decor.getSystemUiVisibility()|LAYOUT_FLAGS);activity.getWindow().setStatusBarColor(Color.TRANSPARENT);activity.getWindow().setNavigationBarColor(Color.TRANSPARENT);}
         }
@@ -334,6 +336,7 @@ public final class GlobalChrome {
             if (!running) return;
             if(!backgroundPrepared)rememberBackdrop();backgroundPrepared=false;
             following.pausePage();
+            if(phoneInsets!=null)phoneInsets.pause();
             following.hide();
             disableContent();
             following.transparent();
@@ -896,6 +899,15 @@ public final class GlobalChrome {
             }
         }
 
+        /** Capture only the phone glass band, excluding the glass and retained controls. */
+        void glassScene(Canvas canvas) {
+            int oldX=origin[0],oldY=origin[1],oldWidth=width,oldHeight=height;
+            Rect oldReadback=glassReadback;
+            content.getLocationOnScreen(origin);width=content.getWidth();height=content.getHeight();
+            glassReadback=canvas.getClipBounds();glassReadback.offset(origin[0],origin[1]);
+            try{scene(canvas);}finally{origin[0]=oldX;origin[1]=oldY;width=oldWidth;height=oldHeight;glassReadback=oldReadback;}
+        }
+
         private void scenePixels(Canvas canvas) {
             background(canvas);
             for (int i = 0; i < content.getChildCount(); i++) drawScene(canvas, content.getChildAt(i));
@@ -906,6 +918,9 @@ public final class GlobalChrome {
             android.graphics.drawable.BitmapDrawable original = (android.graphics.drawable.BitmapDrawable) drawable;
             Bitmap bitmap = original.getBitmap();
             if (bitmap == null || bitmap.getConfig() == null || !"HARDWARE".equals(bitmap.getConfig().name())) return drawable;
+            if(glassReadback!=null){Rect visible=new Rect();if(!view.getGlobalVisibleRect(visible)||!Rect.intersects(visible,glassReadback))return new ReadbackSpacer(drawable);}
+            if(glassReadback!=null&&bitmap.getAllocationByteCount()>8*1024*1024)
+                throw new IllegalStateException("Glass image readback exceeds the native budget");
             Bitmap pixels = softwareImages.get(bitmap);
             if (pixels == null || pixels.isRecycled()) {
                 pixels = bitmap.copy(Bitmap.Config.ARGB_8888, false);
@@ -925,7 +940,7 @@ public final class GlobalChrome {
         }
 
         private void prepareImages(View view, ArrayList<ImageSwap> swaps) {
-            if (!shown(view) || view == portal || bars.contains(view)) return;
+            if (!shown(view) || view == portal || bars.contains(view) || phoneChrome(view)) return;
             Drawable background = view.getBackground(), converted = softwareDrawable(background, view);
             if (converted != background) { swaps.add(new ImageSwap(view, background, true)); view.setBackground(converted); }
             if (view instanceof ImageView) {
@@ -937,7 +952,7 @@ public final class GlobalChrome {
         }
 
         private void drawScene(Canvas canvas, View view) {
-            if (!shown(view) || view == portal || bars.contains(view)) return;
+            if (!shown(view) || view == portal || bars.contains(view) || phoneChrome(view)) return;
             if (view == pager && visiblePage != null) {
                 drawBackground(canvas, view);
                 view.getLocationOnScreen(at); int left = at[0] - origin[0];
@@ -952,12 +967,15 @@ public final class GlobalChrome {
             }
             boolean containsBar = false;
             for (View bar : bars) if (inside(bar, view)) containsBar = true;
+            if(phone&&(inside(following.nativeNavigation,view)||following.phoneGlass!=null&&inside(following.phoneGlass.plane,view)))containsBar=true;
             if (view instanceof ViewGroup && (containsBar || view == root || inside(source, view))) {
                 drawBackground(canvas, view);
                 ViewGroup group = (ViewGroup) view;
                 for (int i = 0; i < group.getChildCount(); i++) drawScene(canvas, group.getChildAt(i));
             } else drawView(canvas, view);
         }
+
+        private boolean phoneChrome(View view){return phone&&(view==following.nativeNavigation||following.phoneGlass!=null&&view==following.phoneGlass.plane);}
 
         private void drawBackground(Canvas canvas, View view) {
             Drawable drawable = view.getBackground();
@@ -1038,6 +1056,7 @@ public final class GlobalChrome {
         android.widget.LinearLayout shortcutMenu;int menuKey=-1;
         final android.content.SharedPreferences shortcutPrefs;
         final Map<String,View> shortcutButtons=new java.util.LinkedHashMap<>();
+        final Map<View,LiquidGlassButton> shortcutGlass=new IdentityHashMap<>();
         String lastShortcut;long shortcutGeneration;
         View nativeNavigation;
         Drawable originalBackground;
@@ -1048,8 +1067,10 @@ public final class GlobalChrome {
         android.view.ViewOutlineProvider originalOutline;
         final Map<View, Background> parents = new IdentityHashMap<>();
         final Drawable glass;
+        final Drawable phoneClear=new ColorDrawable(Color.TRANSPARENT);
+        PhoneGlassChrome phoneGlass;
         android.widget.RelativeLayout.LayoutParams navigationLayout;
-        int marginLeft,marginRight,marginBottom;
+        int marginLeft,marginRight,marginBottom,originalHeight;
         int navLeft,navTop,navRight,navBottom;
         float originalZ;
         View homePage, homeContainer;
@@ -1084,20 +1105,23 @@ public final class GlobalChrome {
                 originalZ=view.getTranslationZ();navLeft=view.getPaddingLeft();navTop=view.getPaddingTop();navRight=view.getPaddingRight();navBottom=view.getPaddingBottom();
                 if(view.getLayoutParams() instanceof android.widget.RelativeLayout.LayoutParams){
                     navigationLayout=(android.widget.RelativeLayout.LayoutParams)view.getLayoutParams();
-                    marginLeft=navigationLayout.leftMargin;marginRight=navigationLayout.rightMargin;marginBottom=navigationLayout.bottomMargin;
+                    marginLeft=navigationLayout.leftMargin;marginRight=navigationLayout.rightMargin;marginBottom=navigationLayout.bottomMargin;originalHeight=navigationLayout.height;
                 }
                 if(reopen)owner.activity.getIntent().putExtra(FOLLOWING,true);
             }
             // A stateful tint must stay clear even if a native tab replaces its background.
             if(view.getBackgroundTintList()!=null)view.setBackgroundTintList(null);
-            if(view.getBackground()!=glass)view.setBackground(glass);
+            if(view.getBackground()!=phoneClear)view.setBackground(phoneClear);
             if(view.getTranslationZ()!=owner.dp(8))view.setTranslationZ(owner.dp(8));
             if(view.getPaddingLeft()!=0||view.getPaddingTop()!=0||view.getPaddingRight()!=0||view.getPaddingBottom()!=0)view.setPadding(0,0,0,0);
             if(navigationLayout!=null){
                 WindowInsets insets=owner.content.getRootWindowInsets();
-                int side=owner.dp(16),bottom=owner.dp(8)+(insets==null?0:insets.getSystemWindowInsetBottom());
-                if(navigationLayout.leftMargin!=side||navigationLayout.rightMargin!=side||navigationLayout.bottomMargin!=bottom){
+                int available=view.getParent() instanceof View?((View)view.getParent()).getWidth():owner.content.getWidth();
+                int side=Math.max(owner.dp(20),Math.max(Math.round(available*.12f),(available-owner.dp(420))/2));
+                int bottom=owner.dp(10)+(insets==null?0:insets.getSystemWindowInsetBottom());
+                if(navigationLayout.leftMargin!=side||navigationLayout.rightMargin!=side||navigationLayout.bottomMargin!=bottom||navigationLayout.height!=owner.dp(60)){
                     navigationLayout.leftMargin=side;navigationLayout.rightMargin=side;navigationLayout.bottomMargin=bottom;
+                    navigationLayout.height=owner.dp(60);
                     view.setLayoutParams(navigationLayout);
                 }
             }
@@ -1122,6 +1146,8 @@ public final class GlobalChrome {
                         if(menu.size()!=3)return;
                         installMenu(navigation,menu);
                     }
+                    if(phoneGlass==null)phoneGlass=new PhoneGlassChrome(owner,navigation,id);
+                    phoneGlass.update(menu);
                     if(calendar==null&&owner.activity.getIntent().getBooleanExtra(FOLLOWING,false))openHome();
                     if(calendar!=null){
                         WindowInsets insets=owner.content.getRootWindowInsets();
@@ -1152,9 +1178,10 @@ public final class GlobalChrome {
                 android.view.MenuItem item=menu.getItem(i);ids[i]=item.getItemId();titles[i]=item.getTitle();icons[i]=item.getIcon();
                 checked[i]=item.isChecked();visible[i]=item.isVisible();enabled[i]=item.isEnabled();
             }
+            boolean ready=PhoneGlassChrome.coreReady(menu,id);
             menu.clear();
             for(int i=0;i<4;i++){
-                if(i==1){menu.add(0,id,i,"追更").setIcon(new CalendarIcon(owner.activity)).setCheckable(true)
+                if(i==1){menu.add(0,id,i,"追更").setIcon(new CalendarIcon(owner.activity)).setCheckable(true).setVisible(ready)
                         .setOnMenuItemClickListener(item->{openHome();return true;});}
                 else{
                     int old=i==0?0:i-1;
@@ -1223,7 +1250,7 @@ public final class GlobalChrome {
             catch(ReflectiveOperationException unavailable){android.util.Log.w("LeotvFollowing","Native tab selection unavailable",unavailable);}
         }
         void resumePage(){if(calendar!=null)calendar.resume();}
-        void pausePage(){if(calendar!=null)calendar.pause();}
+        void pausePage(){if(calendar!=null)calendar.pause();if(phoneGlass!=null)phoneGlass.pause();for(LiquidGlassButton surface:shortcutGlass.values())surface.pause();}
         void dismissCalendar(){
             FollowingPage page=calendar;View view=homePage;calendar=null;homePage=null;
             if(page!=null)page.close();
@@ -1233,12 +1260,13 @@ public final class GlobalChrome {
             if(owner.activity.getIntent()!=null)owner.activity.getIntent().removeExtra(FOLLOWING);
         }
         void restoreNavigation(){
+            if(phoneGlass!=null){phoneGlass.close();phoneGlass=null;}
             for(Background state:parents.values())state.discard();parents.clear();
             if(nativeNavigation==null)return;
-            if(nativeNavigation.getBackground()==glass)nativeNavigation.setBackground(originalBackground);
+            if(nativeNavigation.getBackground()==glass||nativeNavigation.getBackground()==phoneClear)nativeNavigation.setBackground(originalBackground);
             if(nativeNavigation.getBackgroundTintList()==null){nativeNavigation.setBackgroundTintList(originalTint);nativeNavigation.setBackgroundTintMode(originalTintMode);}
             nativeNavigation.setTranslationZ(originalZ);nativeNavigation.setPadding(navLeft,navTop,navRight,navBottom);
-            if(navigationLayout!=null){navigationLayout.leftMargin=marginLeft;navigationLayout.rightMargin=marginRight;navigationLayout.bottomMargin=marginBottom;nativeNavigation.setLayoutParams(navigationLayout);navigationLayout=null;}
+            if(navigationLayout!=null){navigationLayout.leftMargin=marginLeft;navigationLayout.rightMargin=marginRight;navigationLayout.bottomMargin=marginBottom;navigationLayout.height=originalHeight;nativeNavigation.setLayoutParams(navigationLayout);navigationLayout=null;}
             if(nativeNavigation.getElevation()==0)nativeNavigation.setElevation(originalElevation);
             if(nativeNavigation.getOutlineProvider()==null)nativeNavigation.setOutlineProvider(originalOutline);
             if(nativeNavigation.getStateListAnimator()==null)nativeNavigation.setStateListAnimator(originalAnimator);
@@ -1278,15 +1306,15 @@ public final class GlobalChrome {
         void show(){
             if(shortcutMenu==null||!shortcutMenu.isShown()){View current=owner.activity.getCurrentFocus();previousFocus=new java.lang.ref.WeakReference<>(current==null?owner.content.findFocus():current);}
             if(shortcutMenu==null){
-                shortcutMenu=new android.widget.LinearLayout(owner.activity);shortcutMenu.setOrientation(android.widget.LinearLayout.VERTICAL);shortcutMenu.setTag("leotv_home_shortcuts");shortcutMenu.setPadding(owner.dp(6),owner.dp(6),owner.dp(6),owner.dp(6));shortcutMenu.setClipChildren(false);shortcutMenu.setClipToPadding(false);
+                shortcutMenu=new android.widget.LinearLayout(owner.activity);shortcutMenu.setOrientation(android.widget.LinearLayout.VERTICAL);shortcutMenu.setTag("leotv_home_shortcuts");shortcutMenu.setPadding(owner.dp(6),owner.dp(6),owner.dp(6),owner.dp(6));shortcutMenu.setClipChildren(false);shortcutMenu.setClipToPadding(false);shortcutMenu.setBackground(new PhoneGlassChrome.RailMaterial());
                 String[] actions={"following","search","keep","history","push","setting"},labels={"追更日历","搜索","收藏","历史","推送","设置"};
                 for(int i=0;i<actions.length;i++){
                     final String action=actions[i];android.widget.ImageButton icon=new android.widget.ImageButton(owner.activity);icon.setTag(i==0?"leotv_following_entry":"leotv_home_"+action+"_entry");icon.setContentDescription(labels[i]);
                     if(i==0){button=icon;icon.setImageDrawable(new CalendarIcon(owner.activity));}else {int resource=owner.activity.getResources().getIdentifier("ic_home_"+action,"drawable",owner.activity.getPackageName());if(resource!=0)icon.setImageDrawable(owner.activity.getResources().getDrawable(resource));}
                     icon.setScaleType(ImageView.ScaleType.FIT_CENTER);icon.setFocusable(true);icon.setFocusableInTouchMode(true);icon.setPadding(owner.dp(12),owner.dp(12),owner.dp(12),owner.dp(12));icon.setStateListAnimator(null);icon.setOutlineProvider(null);
-                    icon.setBackground(new NavigationGlass(owner.content.getResources().getDisplayMetrics().density,true));if(Build.VERSION.SDK_INT>=26)try{View.class.getMethod("setDefaultFocusHighlightEnabled",boolean.class).invoke(icon,false);}catch(ReflectiveOperationException unavailable){}
+                    icon.setBackground(new ColorDrawable(Color.TRANSPARENT));shortcutGlass.put(icon,new LiquidGlassButton(owner,icon));if(Build.VERSION.SDK_INT>=26)try{View.class.getMethod("setDefaultFocusHighlightEnabled",boolean.class).invoke(icon,false);}catch(ReflectiveOperationException unavailable){}
                     shortcutButtons.put(action,icon);
-                    icon.setOnFocusChangeListener((view,focused)->{if(focused&&!action.equals(lastShortcut)){lastShortcut=action;if(shortcutPrefs!=null)shortcutPrefs.edit().putString("last_action",action).apply();}view.animate().cancel();view.animate().scaleX(focused?1.12f:1).scaleY(focused?1.12f:1).setDuration(150).setInterpolator(new android.view.animation.DecelerateInterpolator()).start();});icon.setOnClickListener(v->{restoreContentFocus();if(action.equals("following"))open();else owner.newHome.openShortcut(action);});
+                    icon.setOnFocusChangeListener((view,focused)->{if(focused&&!action.equals(lastShortcut)){lastShortcut=action;if(shortcutPrefs!=null)shortcutPrefs.edit().putString("last_action",action).apply();}view.animate().cancel();view.animate().scaleX(focused?1.04f:1).scaleY(focused?1.04f:1).setDuration(150).setInterpolator(new android.view.animation.DecelerateInterpolator()).start();});icon.setOnClickListener(v->{restoreContentFocus();if(action.equals("following"))open();else owner.newHome.openShortcut(action);});
                     android.widget.LinearLayout.LayoutParams cell=new android.widget.LinearLayout.LayoutParams(owner.dp(48),owner.dp(48));cell.bottomMargin=i==actions.length-1?0:owner.dp(4);shortcutMenu.addView(icon,cell);
                 }
                 FrameLayout.LayoutParams layout=new FrameLayout.LayoutParams(-2,-2,android.view.Gravity.LEFT|android.view.Gravity.CENTER_VERTICAL);layout.leftMargin=owner.dp(6);owner.content.addView(shortcutMenu,layout);shortcutMenu.setElevation(owner.dp(80));
@@ -1295,9 +1323,10 @@ public final class GlobalChrome {
             shortcutMenu.setVisibility(View.VISIBLE);target.requestFocus();
             target.post(()->{if(!closed&&owner.running&&token==shortcutGeneration&&target.isShown()&&!shortcutMenu.hasFocus())target.requestFocus();});
         }
-        void hide(){shortcutGeneration++;if(shortcutMenu!=null)shortcutMenu.setVisibility(View.GONE);}
+        void hide(){shortcutGeneration++;if(shortcutMenu!=null)shortcutMenu.setVisibility(View.GONE);for(LiquidGlassButton surface:shortcutGlass.values())surface.pause();}
         void close(){
             closed=true;hide();dismissCalendar();
+            for(LiquidGlassButton surface:shortcutGlass.values())surface.close();shortcutGlass.clear();
             if(shortcutMenu!=null&&shortcutMenu.getParent()==owner.content)owner.content.removeView(shortcutMenu);
             shortcutButtons.clear();
             if(owner.decor.getViewTreeObserver().isAlive())owner.decor.getViewTreeObserver().removeOnPreDrawListener(this);
@@ -1321,6 +1350,13 @@ public final class GlobalChrome {
         final boolean background;
         ImageSwap(View view, Drawable original, boolean background) { this.view = view; this.original = original; this.background = background; }
         void restore() { if (background) view.setBackground(original); else ((ImageView) view).setImageDrawable(original); }
+    }
+    /** Same intrinsic geometry without a forbidden off-band hardware-bitmap readback. */
+    private static final class ReadbackSpacer extends Drawable{
+        final int width,height;
+        ReadbackSpacer(Drawable original){width=original.getIntrinsicWidth();height=original.getIntrinsicHeight();setBounds(original.getBounds());}
+        @Override public int getIntrinsicWidth(){return width;}@Override public int getIntrinsicHeight(){return height;}
+        @Override public void draw(Canvas canvas){}@Override public void setAlpha(int value){}@Override public void setColorFilter(ColorFilter value){}@Override public int getOpacity(){return PixelFormat.TRANSPARENT;}
     }
 
     private static final class Portal extends View {

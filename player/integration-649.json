@@ -2279,5 +2279,97 @@
       "after_sha256": "460f3d6d30e72526e979e73a208a797f1d55520fcedac3e05bcc34d431571294",
       "reason": "Record verified 664 eight-APK delivery, requested feedback scope, original startup/native/profile preservation and PRIVATE restoration; no runtime source changes."
     }
+  },
+  "authorized_665_source_repairs": {
+    ".github/workflows/ordinary-build.yml": {
+      "before_sha256": "6a78fb44b6355f3e70213789b899036cf547f59a11203c7a443eaeee4750a7ae",
+      "after_sha256": "ab47aa2d6ec7623a7359b79eaa1751edead0208bc92c95927cf7506d63b248ba",
+      "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
+    },
+    "README.md": {
+      "before_sha256": "460f3d6d30e72526e979e73a208a797f1d55520fcedac3e05bcc34d431571294",
+      "after_sha256": "2c7220879c797d955756f44a05213ad0c460c261e548edcde650b1dfaf1991c2",
+      "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "d2e550acc5f06fb7a6737eecd21b01055abde0f18589fabb7a3138fe5e8bcb3c",
+      "after_sha256": "671d079c04952ec75450fb63c87d03f73d282dc0d33bb3f74069955b3473d9a4",
+      "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
+    },
+    "branding/release.json": {
+      "before_sha256": "6b02e0c8610d7d46cb0d4927eb2aa28ffc9cd4ede5c0df30c8e1404b57944a6e",
+      "after_sha256": "dd6b63ed5cecd0558cf2dff6dbb68120e176e383eb607b0d7252a964e125dce4",
+      "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
+    },
+    "detail/home-layout-rollback.json": {
+      "before_sha256": "5a2001a5219b1588d70f9f89a58edd1e1e7a3a3465a2c5837b24ba33e7f3b721",
+      "after_sha256": "167d5f2b7a8e751e9ec16d3666bd941aa73e12f444c6132d90e504a7b5cf251a",
+      "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
+    },
+    "detail/runtime/common/com/leotv/detail/CspHomePage.java": {
+      "before_sha256": "8f7eb9baec11f54c24c89ff78901ab3f8318204c42511f76f4fdbe6ce977779c",
+      "after_sha256": "148c74d096fbca4d6e8cd27e414d95a5c84a5d05171577768f28e23575f1ccb5",
+      "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
+    },
+    "detail/runtime/common/com/leotv/detail/NativeCspUi.java": {
+      "before_sha256": "3369007fccb58a35de9892de3fe46eb5054c530e7add2c6df3eba745bee8e991",
+      "after_sha256": "f4db50e3db989cf043765c0bb6193defb0cd407d5914c578edf27e65cef5be60",
+      "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
+    },
+    "research/ui-check/src/stub/java/com/leotv/detail/NewHome.java": {
+      "before_sha256": "350133880e2ab05feb02e5d210d637862ccdaeb83d0bf327ab8fba7a97e7de4b",
+      "after_sha256": "02e21c94c70e995464e650c14fe45b2e1b89db74aa6b8e02f0084ad1b0aded64",
+      "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
+    },
+    "research/ui-check/src/test/java/com/leotv/ui/PhoneNavigationTest.java": {
+      "before_sha256": "4476c7f7e7679da76d04adfa10dc88db99ecd6f0c99c0800213615f95af54a29",
+      "after_sha256": "f4181852574324a38a3c314c17d3a418ef37d89da3612b2b3a0e496ac027cb67",
+      "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
+    },
+    "tools/build_branded.py": {
+      "before_sha256": "98e0439e6ec26b3b000f2124d3e13ee88f92520e2f0fa8c71d1c3eff510b53e8",
+      "after_sha256": "af34e186637de1cbfc140a1322ee323131db3c2452a3ceb1739b663a6595745f",
+      "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
+    },
+    "tools/check_build_sources.py": {
+      "before_sha256": "a7195c3c2e5c407e4e93018ead4794833afa00cddf0be7b657d8a79f621091f3",
+      "after_sha256": "14addbbca3a0126dc10c1f13e3cd60d27785560450c58cd027db61da598cdac3",
+      "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
+    },
+    "tools/check_home_layout_rollback.py": {
+      "before_sha256": "41276bec62ae4918022b91c894199fd90e74a67ba7f54d3d373815bb58879b60",
+      "after_sha256": "263d1187ce6a949a51c5b66d17588265292ea0b17100ae5c2f6960dd0c7eca3b",
+      "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "7205a5a0957c8803ab26b15e1d0119c15a96d66e1f3ad45befa398250221a8b5",
+      "after_sha256": "70c5aa89b8e380c9f40cd227d420237b1d47d2d9ddee817d788db771a7a45aac",
+      "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
+    },
+    "ui/java/com/leotv/ui/GlobalChrome.java": {
+      "before_sha256": "00690830cecbcd925ab771b13e8954c911b940314c0a2a392fb53869895dee82",
+      "after_sha256": "4c4c3c0ec00fb085fd501f9ca867183643ade13a11e52604e47e4293e88eb71a",
+      "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
+    },
+    "ui/java/com/leotv/ui/NativePhoneInsets.java": {
+      "before_sha256": "a6dc830a7cc63200799139602db531234caaf9a209dfbdcd1e63e71eadb4e555",
+      "after_sha256": "d894923172d26a6db14fa5e5b7eb7af8a69ca7fcd9fd282a4cb341254210913e",
+      "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
+    },
+    "ui/java/com/leotv/ui/ProgressiveBlur.java": {
+      "before_sha256": "863b6900c55961562fffcea64edcf20f8475324e8656d0d9e35a21f54ec9b251",
+      "after_sha256": "0e337b3762d7cf2ccb0d40149031aa021a932e4f84ea68164b878fcd3c71bcb8",
+      "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
+    }
+  },
+  "authorized_665_additions": {
+    "docs/LEOTV-LIQUID-GLASS-DESIGN-20261128.md": "94d7695363d8e6bf17e854c638cb29b0bc26988d3c92846fe1691122fd05be6a",
+    "research/ui-check/src/stub/java/com/leotv/detail/CacheMaintenance.java": "a4e1f3e4cd9611e2998b826cf55aa9b69d8178a622be8d83a28bdaa1b846a12d",
+    "research/ui-check/src/stub/java/com/leotv/detail/DanmakuSettings.java": "dcc7d86d39f281088e7d04c7412d84d59c275ec44602fc22e4feee9bc2c296e1",
+    "research/ui-check/src/test/java/com/leotv/ui/PhoneGlassChromeTest.java": "93705faae075908df5f56383e001b0be8854cbe6721fb950afde41e87d0c73b9",
+    "tools/check_liquid_glass.py": "becc72a2c4e29e75dfee96401e31ec381a708ddc990152d6b0f0706b69b32318",
+    "ui/java/com/leotv/ui/LiquidGlassButton.java": "6efa905ca4ea4feaa0dd4112541c2b23908a7d769888f88a9e41eecc401d0025",
+    "ui/java/com/leotv/ui/PhoneGlassChrome.java": "682960edfc8b36f8c0aa29d6af74de5770d19b89950d0e115b8b029ef2dc4fee",
+    "ui/liquid-glass-source-lock.json": "b1b8c643b2aa4b8d8391a96a5a74889e75be5f851778e015ff1528743e132449"
   }
 }

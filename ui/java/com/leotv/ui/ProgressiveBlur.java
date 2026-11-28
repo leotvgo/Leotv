@@ -57,7 +57,7 @@ final class ProgressiveBlur {
         return Math.round(a + (b - a) * amount);
     }
 
-    private static void box(int[] input, int[] output, int width, int height, int radius, boolean horizontal) {
+    static void box(int[] input, int[] output, int width, int height, int radius, boolean horizontal) {
         int lines = horizontal ? height : width, length = horizontal ? width : height;
         int count = radius * 2 + 1;
         for (int line = 0; line < lines; line++) {

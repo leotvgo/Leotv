@@ -34,8 +34,9 @@ def check(root=ROOT):
     launch_paths=manifest.get('authorized_662_source_repairs',{})
     startup_rollback=manifest.get('authorized_663_source_repairs',{})
     resource_feedback=manifest.get('authorized_664_source_repairs',{})
+    glass_ui=manifest.get('authorized_665_source_repairs',{})
     def expected_revision(name,previous,start=651):
-        for revision,changes in ((651,incremental),(652,current),(653,home_ui),(654,unified),(655,repaired),(656,takeover),(657,home_focus),(658,layout_rollback),(659,poster_search),(660,official_profiles),(661,playback_paths),(662,playback_fixes),(663,launch_paths),(664,startup_rollback),(665,resource_feedback)):
+        for revision,changes in ((651,incremental),(652,current),(653,home_ui),(654,unified),(655,repaired),(656,takeover),(657,home_focus),(658,layout_rollback),(659,poster_search),(660,official_profiles),(661,playback_paths),(662,playback_fixes),(663,launch_paths),(664,startup_rollback),(665,resource_feedback),(666,glass_ui)):
             if revision<start or name not in changes:continue
             repair=changes[name]
             if repair['before_sha256']!=previous or not repair.get('reason'):
@@ -85,8 +86,14 @@ def check(root=ROOT):
         if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=expected_revision(name,repair['after_sha256'],665):
             raise ValueError('Authorized local startup rollback differs from its reviewed source: '+name)
     for name,repair in resource_feedback.items():
-        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=repair['after_sha256']:
+        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=expected_revision(name,repair['after_sha256'],666):
             raise ValueError('664 resource feedback differs from its authorized scope: '+name)
+    for name,repair in glass_ui.items():
+        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=repair['after_sha256']:
+            raise ValueError('665 glass UI differs from its authorized scope: '+name)
+    for name,digest in manifest.get('authorized_665_additions',{}).items():
+        if hashlib.sha256((root/name).read_bytes()).hexdigest()!=digest:
+            raise ValueError('665 glass UI addition differs from its reviewed source: '+name)
     removals=manifest.get('authorized_663_removed_sources',{})
     for name,digest in manifest.get('authorized_662_additions',{}).items():
         if name in removals:

@@ -17,6 +17,13 @@ def check(root):
         raise ValueError('Restored category geometry must retain its declared pre-recycler delivery baseline')
     for row in manifest['restored_blocks']:
         data=(root/row['path']).read_bytes()
+        for addition in manifest.get('authorized_glass_markers',[]):
+            if addition['path']!=row['path']:continue
+            if addition['path']!='detail/runtime/common/com/leotv/detail/NativeCspUi.java' or addition['remove_exact']!='if(phone&&grid)view.setTag("leotv_glass_quick_filter");' or not addition.get('authorization'):
+                raise ValueError('Only the explicitly authorized phone glass filter marker may be excluded from restored-source equality')
+            source=data.decode()
+            if source.count(addition['remove_exact'])!=1:raise ValueError('Phone glass filter marker must occur exactly once')
+            data=source.replace(addition['remove_exact'],'',1).encode()
         for addition in manifest.get('authorized_event_additions',[]):
             if addition['path']!=row['path']:continue
             if addition['path']!='detail/runtime/common/com/leotv/detail/NativeCspUi.java' or set(addition['remove_exact'])!={'            PosterSearch.attach(activity,retry,item);\n','            PosterSearch.attach(activity,root,item);\n'}:

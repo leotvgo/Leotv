@@ -10,11 +10,13 @@ import android.widget.FrameLayout;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
-/** Native window insets and floating actions, with no scene capture or periodic redraw. */
+/** Native window insets; action optics never change native click handlers or ownership. */
 final class NativePhoneInsets implements AutoCloseable {
     final Activity activity;final FrameLayout content;
+    final GlobalChrome.Controller owner;
     final View scrim;
     final Map<View,Margin> actions=new IdentityHashMap<>();
+    final Map<View,LiquidGlassButton> surfaces=new IdentityHashMap<>();
     final ViewTreeObserver.OnGlobalLayoutListener layout=()->dirty=true;
     View header;int left,top,right,bottom,appliedTop;
     SettingsInset settings;
@@ -22,8 +24,8 @@ final class NativePhoneInsets implements AutoCloseable {
     int lastTop=-1,lastBottom=-1,lastNavigation=-1,lastNavigationTop=Integer.MAX_VALUE;
     int shadeTop;
     final int[] origin=new int[2],navigationOrigin=new int[2],settingsOrigin=new int[2];
-    NativePhoneInsets(Activity activity,FrameLayout content){
-        this.activity=activity;this.content=content;
+    NativePhoneInsets(Activity activity,FrameLayout content,GlobalChrome.Controller owner){
+        this.activity=activity;this.content=content;this.owner=owner;
         scrim=new View(activity);scrim.setTag("leotv_status_scrim");scrim.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);scrim.setClickable(false);scrim.setFocusable(false);
         scrim.setBackground(new StatusShade(dp(8)));scrim.setElevation(dp(16));scrim.setOutlineProvider(null);
         content.getViewTreeObserver().addOnGlobalLayoutListener(layout);
@@ -37,7 +39,7 @@ final class NativePhoneInsets implements AutoCloseable {
         if((activity.getWindow().getAttributes().flags&android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN)!=0)above=0;
         int navHeight=navigation==null?0:navigation.getHeight();
         int navTop=Integer.MAX_VALUE;
-        if(navigation!=null&&navigation.isShown()&&navHeight>0){navigation.getLocationOnScreen(navigationOrigin);navTop=navigationOrigin[1];}
+        if(navigation!=null&&navigation.isShown()&&navHeight>0){navigation.getLocationOnScreen(navigationOrigin);navTop=navigationOrigin[1]-Math.round(navigation.getTranslationY());}
         boolean statusVisible=(activity.getWindow().getAttributes().flags&android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN)==0
                 &&(activity.getWindow().getDecorView().getSystemUiVisibility()&View.SYSTEM_UI_FLAG_FULLSCREEN)==0;
         boolean changed=dirty||header!=nextHeader||above!=lastTop||below!=lastBottom||navHeight!=lastNavigation||navTop!=lastNavigationTop;
@@ -94,12 +96,16 @@ final class NativePhoneInsets implements AutoCloseable {
     private void findActions(View view,int lift){
         boolean floating=false;for(Class<?> type=view.getClass();type!=null;type=type.getSuperclass())if(type.getName().equals("com.google.android.material.floatingactionbutton.FloatingActionButton")){floating=true;break;}
         if(floating&&view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams){
-            Margin state=actions.get(view);if(state!=null&&state.params!=view.getLayoutParams()){state.restore();state=null;}if(state==null){state=new Margin(view);actions.put(view,state);}state.apply(lift);return;
+            Margin state=actions.get(view);if(state!=null&&state.params!=view.getLayoutParams()){state.restore();state=null;}if(state==null){state=new Margin(view);actions.put(view,state);}state.apply(lift);skin(view);return;
         }
+        if("leotv_glass_home_action".equals(view.getTag())||"leotv_glass_quick_filter".equals(view.getTag())){skin(view);return;}
         if(view instanceof ViewGroup){ViewGroup group=(ViewGroup)view;for(int i=0;i<group.getChildCount();i++)findActions(group.getChildAt(i),lift);}
     }
+    private void skin(View view){if(!surfaces.containsKey(view))surfaces.put(view,new LiquidGlassButton(owner,view));}
+    void pause(){for(LiquidGlassButton surface:surfaces.values())surface.pause();}
     private void restoreHeader(){if(header!=null&&header.getPaddingTop()==appliedTop)header.setPadding(left,top,right,bottom);header=null;}
     @Override public void close(){
+        for(LiquidGlassButton surface:surfaces.values())surface.close();surfaces.clear();
         restoreHeader();for(Margin state:actions.values())state.restore();actions.clear();
         if(settings!=null){settings.restore();settings=null;}
         if(scrim.getParent()==content)content.removeView(scrim);
@@ -132,21 +138,18 @@ final class NativePhoneInsets implements AutoCloseable {
     }
     private static final class Margin{
         final View view;final ViewGroup.MarginLayoutParams params;final int original;int applied;
-        android.graphics.drawable.Drawable glass;
         android.content.res.ColorStateList tint;android.animation.StateListAnimator animator;float elevation;
-        final View.OnLayoutChangeListener geometry=(v,l,t,r,b,ol,ot,or,ob)->{if(glass!=null)glass.setBounds(0,0,v.getWidth(),v.getHeight());};
         Margin(View view){
             this.view=view;params=(ViewGroup.MarginLayoutParams)view.getLayoutParams();original=applied=params.bottomMargin;
             tint=view.getBackgroundTintList();animator=view.getStateListAnimator();elevation=view.getElevation();
             view.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.TRANSPARENT));view.setElevation(0);
             try{view.getClass().getMethod("setCompatElevation",float.class).invoke(view,0f);}catch(ReflectiveOperationException unavailable){}
             view.setStateListAnimator(null);
-            glass=GlobalChrome.nativeGlass(view.getContext());glass.setBounds(0,0,view.getWidth(),view.getHeight());view.getOverlay().add(glass);view.addOnLayoutChangeListener(geometry);
         }
         void apply(int lift){applied=original+lift;if(params.bottomMargin!=applied){params.bottomMargin=applied;view.setLayoutParams(params);}}
         void restore(){
             if(params.bottomMargin==applied){params.bottomMargin=original;if(view.getLayoutParams()==params)view.setLayoutParams(params);}
-            if(glass!=null){view.getOverlay().remove(glass);view.removeOnLayoutChangeListener(geometry);view.setBackgroundTintList(tint);view.setStateListAnimator(animator);view.setElevation(elevation);}
+            view.setBackgroundTintList(tint);view.setStateListAnimator(animator);view.setElevation(elevation);
         }
     }
     /** Light glass at the window edge, fading down to clear within the existing bounds. */

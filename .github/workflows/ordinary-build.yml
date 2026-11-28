@@ -82,8 +82,30 @@ jobs:
       - name: Verify actual phone nested popup touch and parent LayoutParams on API23 and Android15
         run: gradle --no-daemon --console=plain --max-workers=2 -p research/path-popup-check test
 
+  phone-glass:
+    needs: sources
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.14.3'
+      - name: Verify atomic phone menu visibility, native actions and interruptible glass motion
+        run: gradle --no-daemon --console=plain --max-workers=2 -p research/ui-check test --tests com.leotv.ui.PhoneGlassChromeTest --tests com.leotv.ui.PhoneNavigationTest --tests com.leotv.ui.GlobalChromeTest
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phone-liquid-glass-check
+          path: research/ui-check/build/test-results/test/*.xml
+          retention-days: 14
+
   prepare:
-    needs: [sources, effects, path-ui]
+    needs: [sources, effects, path-ui, phone-glass]
     permissions:
       contents: write
     runs-on: ubuntu-22.04

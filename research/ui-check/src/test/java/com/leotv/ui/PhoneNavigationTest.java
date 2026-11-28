@@ -109,13 +109,14 @@ public class PhoneNavigationTest {
         assertNull(host.root.findViewWithTag("leotv_bottom_fade"));
         FrameLayout container=host.root.findViewById(306);
         assertEquals(host.root.getHeight(),container.getHeight());
-        assertEquals(16,host.navigation.getLeft());assertEquals(16,host.root.getWidth()-host.navigation.getRight());
-        assertEquals(8,host.root.getHeight()-host.navigation.getBottom());
+        assertEquals(43,host.navigation.getLeft());assertEquals(43,host.root.getWidth()-host.navigation.getRight());
+        assertEquals(10,host.root.getHeight()-host.navigation.getBottom());
         host.pattern.draws=0;for(int i=0;i<host.navigation.getChildCount();i++)((Counter)host.navigation.getChildAt(i)).draws=0;
         Bitmap image=render();image.recycle();assertEquals(1,host.pattern.draws);
         for(int i=0;i<host.navigation.getChildCount();i++)assertEquals(1,((Counter)host.navigation.getChildAt(i)).draws);
         assertNull(bottomBuffer("image"));assertNull(bottomBuffer("overlay"));
-        assertEquals(android.graphics.PixelFormat.TRANSLUCENT,host.navigation.getBackground().getOpacity());
+        assertEquals(android.graphics.PixelFormat.TRANSPARENT,host.navigation.getBackground().getOpacity());
+        assertNotNull(host.root.findViewWithTag("leotv_phone_liquid_glass"));
         int[] arrowAt=new int[2],navAt=new int[2];host.arrow.getLocationOnScreen(arrowAt);host.navigation.getLocationOnScreen(navAt);
         assertTrue("native arrow clears the glass navigation",arrowAt[1]+host.arrow.getHeight()<navAt[1]);
         assertEquals(Color.TRANSPARENT,host.arrow.getBackgroundTintList().getDefaultColor());
@@ -137,10 +138,13 @@ public class PhoneNavigationTest {
         host.navigation.setSelectedItemId(101);layout();assertSame(glass,host.navigation.getBackground());
     }
     @Test @Config(sdk=35) @GraphicsMode(GraphicsMode.Mode.NATIVE)
-    public void scrolledCardsAreSharpAndVisibleThroughTheRealGlassCapsule()throws Exception{
+    public void onlyTheGlassCapsuleBlursTheScrolledCardsAndHasNoIdleTicker()throws Exception{
         host.scroll.scrollTo(0,400);layout();Bitmap image=render();
         int y=host.navigation.getTop()+20;
-        assertTrue("fine scroll detail remains visible beneath navigation",Math.abs(Color.red(image.getPixel(248,y))-Color.red(image.getPixel(256,y)))>180);
+        assertTrue("faint glass softens detail while keeping the background visible",Math.abs(Color.red(image.getPixel(248,y))-Color.red(image.getPixel(256,y)))<220);
+        assertTrue("content outside the capsule stays sharp",Math.abs(Color.red(image.getPixel(248,400))-Color.red(image.getPixel(256,400)))>230);
+        PhoneGlassChrome.Plane glass=(PhoneGlassChrome.Plane)host.root.findViewWithTag("leotv_phone_liquid_glass");assertNotNull(glass.blurred);
+        assertTrue(glass.blurred.getWidth()<=240);assertTrue(glass.blurred.getHeight()<=96);
         assertNull(bottomBuffer("overlay"));assertNull(bottomBuffer("image"));
         image.recycle();
         long frames=chrome.frameSignals;org.robolectric.shadows.ShadowLooper.shadowMainLooper().idleFor(100,java.util.concurrent.TimeUnit.MILLISECONDS);

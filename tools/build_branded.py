@@ -264,7 +264,7 @@ def compile_overlays(project, profile, spec, apk, sdk, apktool, work, log, r8=No
     added = set()
     for source in emitted:
         descriptor = re.search(r'(?m)^\.class[^\n]* (L[^;]+;)$', source.read_text()).group(1)
-        if descriptor != LOGO_CLASS and not re.fullmatch(r'Lcom/leotv/ui/(?:GlobalChrome(?:\$[A-Za-z0-9_$]+)?|ProgressiveBlur|NativeViewport(?:\$[A-Za-z0-9_$]+)?|TvCategoryChrome(?:\$[A-Za-z0-9_$]+)?|NativePhoneInsets(?:\$[A-Za-z0-9_$]+)?);', descriptor) \
+        if descriptor != LOGO_CLASS and not re.fullmatch(r'Lcom/leotv/ui/(?:GlobalChrome(?:\$[A-Za-z0-9_$]+)?|ProgressiveBlur|PhoneGlassChrome(?:\$[A-Za-z0-9_$]+)?|LiquidGlassButton(?:\$[A-Za-z0-9_$]+)?|NativeViewport(?:\$[A-Za-z0-9_$]+)?|TvCategoryChrome(?:\$[A-Za-z0-9_$]+)?|NativePhoneInsets(?:\$[A-Za-z0-9_$]+)?);', descriptor) \
                 and not any(re.fullmatch(r'Lcom/leotv/detail/' + re.escape(name) + r'(?:\$[A-Za-z0-9_$]+)?(?:\$-(?:CC|EL))?;', descriptor)
                             for name in native_class_roots) and not (family == 'mobile' and mobile_mpv_program_class(descriptor)) \
                 and not (family == 'tv' and owns_vlc_class(ROOT, descriptor)):

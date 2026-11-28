@@ -153,5 +153,12 @@
       "after_sha256": "180664eb17303818cdb0d481b67e924e59dfa9a062a45b2c4b080af14cf6e4c6",
       "authorization": "User explicitly requested preserving TV category positions and using Back as first-card then top; geometry and ordering remain unchanged."
     }
+  ],
+  "authorized_glass_markers": [
+    {
+      "path": "detail/runtime/common/com/leotv/detail/NativeCspUi.java",
+      "remove_exact": "if(phone&&grid)view.setTag(\"leotv_glass_quick_filter\");",
+      "authorization": "2026-11-28 user explicitly requested the same glass/water material on the phone category quick-filter button. Add only a renderer tag, preserving the archived complete layout, native icon and click action."
+    }
   ]
 }
