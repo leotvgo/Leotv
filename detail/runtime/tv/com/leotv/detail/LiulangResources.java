@@ -26,7 +26,7 @@ final class LiulangResources extends ContextWrapper {
     final Resources.Theme theme;
     final JSONObject bindings;
     private LayoutInflater inflater;
-    LiulangResources(Activity activity,Resources loaded,JSONObject bindings){super(activity);resources=adapt(loaded,activity);theme=resources.newTheme();theme.setTo(activity.getTheme());this.bindings=bindings;}
+    LiulangResources(Activity activity,Resources loaded,JSONObject bindings){super(activity);resources=adapt(loaded,activity);theme=theme(resources,activity);this.bindings=bindings;}
     LiulangResources(Activity activity){
         super(activity);
         try{
@@ -49,10 +49,22 @@ final class LiulangResources extends ContextWrapper {
             Resources loaded=activity.getPackageManager().getResourcesForApplication(info);
             if(loaded.getIdentifier("activity_home_v2","layout",PACKAGE)==0)loaded=legacyResources(activity,file);
             resources=adapt(loaded,activity);
-            theme=resources.newTheme();theme.setTo(activity.getTheme());
+            theme=theme(resources,activity);
             bindings=manifest.getJSONObject("bindings");
             if(id("layout","activity_home_v2")==0)throw new IOException("TV resource package unavailable");
         }catch(Exception error){throw new IllegalStateException("浪壳界面资源未通过加载核对",error);}
+    }
+    static Resources.Theme theme(Resources resources,Activity activity){
+        Resources.Theme theme=resources.newTheme();
+        // API23 cannot copy theme references between independently loaded AssetManagers.
+        // Reapply styles against this table so platform TextView colors resolve locally.
+        if(android.os.Build.VERSION.SDK_INT<=23){
+            theme.applyStyle(android.R.style.Theme_Material_NoActionBar,true);
+            int style=activity.getApplicationInfo().theme;
+            try{int declared=activity.getPackageManager().getActivityInfo(activity.getComponentName(),0).theme;if(declared!=0)style=declared;}catch(android.content.pm.PackageManager.NameNotFoundException ignored){}
+            if(style!=0)theme.applyStyle(style,true);
+        }else theme.setTo(activity.getTheme());
+        return theme;
     }
     /** API23 PackageManager can return cached host resources and ignore a copied ApplicationInfo's splits. */
     static Resources legacyResources(Activity activity,File payload)throws Exception{

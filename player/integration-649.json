@@ -2934,7 +2934,7 @@
     },
     "detail/liulang/source-lock.json": {
       "before_sha256": "0fa8da730949fd192a01b41619f52802e6ef454f83a55fe7642ad8bd75f07bbb",
-      "after_sha256": "519a4d521d37e44afba106e3984f9419560e9b3161d1be6dea4e0c18d0930468",
+      "after_sha256": "7ffe348c84258698aab125fbbf0008ac1b0bc98881145801da5c894d3d9f015c",
       "reason": "User-authorized build669 TV Liulang fixes: API23 resource-loading crash, ImageView alpha visibility, startup loading state, preserved transition frame, matching native page wallpaper and retained current hero. Phone/other themes and existing playback/Danmaku unchanged."
     },
     "detail/runtime-sources.json": {
@@ -2969,7 +2969,7 @@
     },
     "detail/runtime/tv/com/leotv/detail/LiulangResources.java": {
       "before_sha256": "8461f28c4b668f52fe9804080b9d233e0cba364f2ab577cbf84ce3738fa63471",
-      "after_sha256": "3ce21bd8207bbfb4e24169b7de2e691f94ed3ea0e199a36c80ddf8ab0980ed94",
+      "after_sha256": "18be5fb72d77d450d3ad03bf0c3ed50ca57e30ed2f903ec246582898ae4bd393",
       "reason": "User-authorized build669 TV Liulang fixes: API23 resource-loading crash, ImageView alpha visibility, startup loading state, preserved transition frame, matching native page wallpaper and retained current hero. Phone/other themes and existing playback/Danmaku unchanged."
     },
     "detail/runtime/tv/com/leotv/detail/LiulangSearchActivity.java": {
