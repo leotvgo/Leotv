@@ -15,7 +15,7 @@ final class LiulangSearchLayout {
         reserve(res,res.find(page,"recordRecycler"),"adapter_search_record",2);
         reserve(res,res.find(page,"wordRecycler"),"adapter_search_word",3);
     }
-    static void reserve(LiulangResources res,View view,String layout,int rows){View chip=res.inflate(layout,(ViewGroup)view);chip.measure(0,0);ViewGroup.LayoutParams p=view.getLayoutParams();p.height=(chip.getMeasuredHeight()+res.dp(12))*rows;view.setLayoutParams(p);}
+    static void reserve(LiulangResources res,View view,String layout,int rows){View chip=res.inflate(layout,(ViewGroup)view);chip.measure(0,0);ViewGroup parent=(ViewGroup)view.getParent();int index=parent.indexOfChild(view);ViewGroup.LayoutParams p=view.getLayoutParams();p.height=(chip.getMeasuredHeight()+res.dp(12))*rows;parent.removeView(view);ScrollView viewport=new ScrollView(res);viewport.setClipChildren(true);viewport.setClipToPadding(true);viewport.setVerticalScrollBarEnabled(false);viewport.addView(view,new ScrollView.LayoutParams(-1,-2));parent.addView(viewport,index,p);}
     static FrameLayout poster(LiulangResources res,ViewGroup parent){
         FrameLayout cell=new FrameLayout(res);cell.setLayoutParams(new ViewGroup.LayoutParams(res.dp(132),res.dp(232)));cell.setFocusable(true);cell.setFocusableInTouchMode(true);cell.setClipChildren(true);cell.setClipToPadding(true);
         View card=res.inflate("adapter_vod_rect_search",cell);card.setFocusable(false);card.setFocusableInTouchMode(false);card.setDuplicateParentStateEnabled(true);
