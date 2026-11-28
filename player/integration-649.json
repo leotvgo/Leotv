@@ -2444,7 +2444,7 @@
   "authorized_667_source_repairs": {
     "README.md": {
       "before_sha256": "29216d403542c529f80dbde8e5c520eb221379286e6237a00f8b5d77c1617cf1",
-      "after_sha256": "842f00b4081cfe99a7f557a3ca29d35425d9aa622997d3fe8669c0edd8d86e87",
+      "after_sha256": "87e614fb6bc237e80f52942bbc80da895d41299f114322a07c35658342ed8ad9",
       "reason": "User-authorized optional TV 浪壳全局 migration: selected big-poster home, detail and fullscreen control UI; preserve phone/other themes, original player/data/native services and eight fixed-signature products; new resources isolated and audited."
     },
     "branding/AndroidManifest.xml": {
@@ -2672,13 +2672,14 @@
     "detail/runtime/mobile/com/leotv/detail/LiulangPlayer.java": "375a889f75909fd2df0f6dfceb75fc0d62ab9eadc54444ff1fb8f59f3401163d",
     "tools/liulang_resources.py": "e44a0a08752a6a8f12fe6fbb6b2ad5d6158edd161a8d952b7bf2458722d15690",
     "tools/check_liulang_ui.py": "13b9e3537c0af833d4bd8b6737163cad1afa9b96d2c39d25cb397f0c192227a5",
-    "docs/LEOTV-5.3.6-667-LIULANG-GLOBAL-20261128.md": "c711c3a47ba9387eea91f186cc4a4f4cbaab0817b65981f71580acd7272605d3",
+    "docs/LEOTV-5.3.6-667-LIULANG-GLOBAL-20261128.md": "ed30d1e65c509f379ced84ac42b6d991122e23bdad1b0f1e191215c887371437",
     "docs/LEOTV-LIULANG-TV-GLOBAL-UI-FEASIBILITY-20261128.md": "59bb0d1fb10e3b7ed7779c66d8dffa62f82b18a2a1e6164c11132847f2a8e371",
     "evidence/liulang-tv-global-ui-research-20261128.json": "04ab496a9185b228bf8e7f340b066a5aaef9ea00e37addd10a06bf33b0bf9565",
     "evidence/liulang-tv-ui-selected-abi-comparison-20261128.json": "7671c554cf4ec2b6fdd290d40f64f6674f3edca73ca5d0937bac88f6449f4eee",
     "detail/runtime/tv/com/leotv/detail/LiulangHistory.java": "7f811e5f8679dafb79e0007d8698fff9394896e57c6887d612075da1ee543c6c",
     "detail/runtime/tv/com/leotv/detail/LiulangHistoryBar.java": "63feb618a1b1656f75086e9ebe556ec72f6f4d0922a5ace5ce1c3e6654a1e116",
     "research/check_liulang_mode.py": "d270448517060782de3e2a6667ed45726a36ce963daaadbd9e76fe8299268816",
-    "research/ui-check/src/test/java/com/leotv/ui/LiulangVectorCompatibilityTest.java": "a0339b76d5958bff9f7af6cba4910cca251883f8eb74f629b62eb75ff3240503"
+    "research/ui-check/src/test/java/com/leotv/ui/LiulangVectorCompatibilityTest.java": "a0339b76d5958bff9f7af6cba4910cca251883f8eb74f629b62eb75ff3240503",
+    "evidence/leotv-5.3.6-667-signed-delivery-20261128.json": "8784f0f528415b119a8b1cd22db92c007263035ee57e088e1f39ab94396a3ebb"
   }
 }

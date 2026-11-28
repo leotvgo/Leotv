@@ -20,10 +20,22 @@
 
 原版部分方法无法直接反编译为可编译源码，迁入代码依据原 Java 阅读材料及 smali 契约连接已有服务；没有打入浪壳的同名 Activity、整个 DEX 或新的播放器库。UI 模式仍需用户对照原版真机验收，资源参数和静态检查不能证明所有分辨率、动画时序和遥控路径完全一致。
 
-本版为 5.3.6 / 667 测试交付，正式 664 与 665/666 测试下载保留。成功构建及实际审计结果完成后记录。
+本版为 5.3.6 / 667 测试交付，正式 664 与 665/666 测试下载保留。实际交付已完成，详见下方记录。
 
 ## 资源兼容排查记录
 
 两轮初始构建在资源链接阶段失败，Java/API23/R8 均已通过。第一轮是反编译 style 尺寸使用 -2 原始文本，第二轮是 XML 的 clipToOutline/paddingHorizontal 与 vector fillType 不在 API23 公共属性集中。已按等价行为转换：wrap_content；运行时 View.setClipToOutline；左右 padding；原历史圆环的反向内轮廓采用 API23 winding。历史图标实际 path 的 EVEN_ODD/WINDING 原生绘图逐像素比较通过，原始参考资源不改。
 
 独立资源编译及完整属性检查已通过：102 个源资源文件、117 种输出 Android 属性、18 个编译布局、548 个 XML 引用、17 个运行时绑定目标和两个 ABI 的原控件构造。新增 liulang-resources 必需 job 在 prepare 前检查整套资源；实际每个 TV APK 还检查 R8 输出保留 XML 构造，发布时核对真实签名 APK 的两项主题资产，手机资产必须为空。
+
+## 实际交付完成
+
+- 成功源码 `6903541561c10e9fb7aab270484c1d264ee1616a`；[构建 46128543021](https://github.com/leotvgo/Leotv/actions/runs/46128543021)及[自动发布 46129597339](https://github.com/leotvgo/Leotv/actions/runs/46129597339)成功。[八套 667 测试 APK](https://github.com/leotvgo/Leotv/releases/tag/leotv-5.3.6-build-46128543021)。
+- 实际八套源码报告的 159 份不同 Java 源码与成功提交一致，模式源码锁与资源锁均核对；原样/允许变化、API23/R8、字面量保护、原 ZIP/native、JNI、寄存器和固定签名门禁通过。缺失原生调用目标为零。
+- GitHub 的源码模式会话检查、资源独立编译、原播放浮层/弹幕及 26 项 UI/矢量检查通过。四套 TV 实际 APK 的 XML 引用/运行时绑定/保留宿主构造及 R8 后四个新 View 构造均核对通过。
+- TV 资源包 SHA-256 `18f97a8d57a6341d8010345698499a560b067af924c8c7c6d4e8d12cb0cd8f87`，绑定元数据 SHA-256 `c216511f34851180c3470e8127b6c55af72287aae56d2c70e5d9a6c341bbfbd8`；四套 TV 完全一致。自动发布逐一打开签名 APK 核对这两项资源字节，手机 APK 不含主题资源包。
+- 固定证书 SHA-256 `ae582f13d01312df9a7ab46e458ef103febb1cfebf698719eb4137f17764f24a`；CI 对真实签名 APK 核对 Android 6 v1、对齐和签名前后载荷一致；发布 APK 摘要与签名报告一致。公开摘要/内部完整审计/映射逐项绑定，内部草稿 `leotv-symbols-5.3.6-build-46128543021` 保持私有。
+- 四组完整/基础共用源码、非新增播放器调用与非播放器 ZIP 载荷一致；VLC/MPV 固定输入及对应源码保持。原启动资源、style 和原 native 与 664 对照保持。正式 664/Latest 及 666 修复版发布身份和资产摘要保持。
+- 发布和必要核对完成后仓库已恢复 **PRIVATE** 并核对。未执行真机；静态/API23/R8 和资源验证不证明所有设备的显示/动画/遥控与原版完全一致，需用户逐页对照验收。
+
+[逐产品证据](../evidence/leotv-5.3.6-667-signed-delivery-20261128.json)。
