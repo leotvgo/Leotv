@@ -2363,7 +2363,7 @@
     },
     "research/ui-check/src/test/java/com/leotv/ui/GlobalChromeTest.java": {
       "before_sha256": "5320840667cbc35f766c4dbfedaff0e2e3ab7e825cf3faed25f5eb6345c35ed1",
-      "after_sha256": "1b2fc8e872a4118a01e8726039bd8e4931d0d51359d7106730dcb19cadc56c1f",
+      "after_sha256": "132aed8e0392be19367cc7053d38217778f0c4f59d23586248f91910ace3317f",
       "reason": "Align the existing TV UI fixture with the retained content-edge shortcut entry and key-down return; retain native focus and glass assertions."
     }
   },
