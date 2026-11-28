@@ -160,5 +160,24 @@
       "remove_exact": "if(phone&&grid)view.setTag(\"leotv_glass_quick_filter\");",
       "authorization": "2026-11-28 user explicitly requested the same glass/water material on the phone category quick-filter button. Add only a renderer tag, preserving the archived complete layout, native icon and click action."
     }
-  ]
+  ],
+  "authorized_liulang_mode_hooks": {
+    "path": "detail/runtime/common/com/leotv/detail/NewHome.java",
+    "remove_exact": [
+      "    LiulangHome liulang;\n",
+      "        if(!phone&&enabled&&LiulangMode.enabled(activity)){if(page!=null)unmount();if(liulang==null){com.leotv.ui.GlobalChrome.clearHomeBackground(activity);liulang=new LiulangHome(this);}return liulang.update();}\n",
+      "        if(liulang!=null){liulang.close();liulang=null;}\n",
+      "if(liulang!=null)return liulang.shown();",
+      "if(liulang!=null)return;",
+      "if(liulang!=null)return false;",
+      "if(liulang!=null)return liulang.focus(previous);",
+      "        if(liulang!=null)return liulang.key(event);\n",
+      "if(liulang!=null)return liulang.back();",
+      "if(liulang!=null)liulang.active(true);",
+      "if(liulang!=null)liulang.active(false);",
+      "if(liulang!=null)return liulang.background();",
+      "if(liulang!=null){liulang.close();liulang=null;}"
+    ],
+    "authorization": "User explicitly requested optional TV full Liulang mode; only early routing/lifecycle hooks are inserted. Removing those exact hooks must reproduce the unchanged archived regular NewHome implementation."
+  }
 }

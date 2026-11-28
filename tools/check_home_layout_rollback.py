@@ -17,6 +17,15 @@ def check(root):
         raise ValueError('Restored category geometry must retain its declared pre-recycler delivery baseline')
     for row in manifest['restored_blocks']:
         data=(root/row['path']).read_bytes()
+        mode=manifest.get('authorized_liulang_mode_hooks',{})
+        if mode.get('path')==row['path']:
+            if mode['path']!='detail/runtime/common/com/leotv/detail/NewHome.java' or not mode.get('authorization'):
+                raise ValueError('Only isolated TV mode hooks may extend the original home owner')
+            source=data.decode()
+            for token in mode['remove_exact']:
+                if source.count(token)!=1:raise ValueError('TV mode routing hook must occur exactly once')
+                source=source.replace(token,'',1)
+            data=source.encode()
         for addition in manifest.get('authorized_glass_markers',[]):
             if addition['path']!=row['path']:continue
             if addition['path']!='detail/runtime/common/com/leotv/detail/NativeCspUi.java' or addition['remove_exact']!='if(phone&&grid)view.setTag("leotv_glass_quick_filter");' or not addition.get('authorization'):

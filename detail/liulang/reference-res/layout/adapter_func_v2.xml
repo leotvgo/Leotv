@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:layout_width="wrap_content"
+    android:layout_height="64dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:stateListAnimator="@null"
+    android:defaultFocusHighlightEnabled="false">
+    <com.google.android.material.textview.MaterialTextView
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="@color/selector_func_v2_text"
+        android:layout_gravity="center"
+        android:id="@+id/text"
+        android:duplicateParentState="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"/>
+    <View
+        android:layout_gravity="bottom|center_horizontal"
+        android:id="@+id/indicator"
+        android:background="#e50914"
+        android:visibility="invisible"
+        android:layout_width="20dp"
+        android:layout_height="2dp"
+        android:layout_marginBottom="18dp"/>
+</FrameLayout>

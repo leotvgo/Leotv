@@ -1,0 +1,67 @@
+package com.leotv.detail;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.*;
+import android.widget.*;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+
+/** Imported control styling and episode state over the sole retained VideoActivity/player. */
+final class LiulangPlayer implements AutoCloseable,ViewTreeObserver.OnPreDrawListener {
+    private static final Map<Activity,LiulangPlayer> ACTIVE=new WeakHashMap<>();
+    static void install(Activity activity){if(!LiulangMode.session(activity)||ACTIVE.containsKey(activity))return;ACTIVE.put(activity,new LiulangPlayer(activity));}
+    static void release(Activity activity){LiulangPlayer value=ACTIVE.remove(activity);if(value!=null)value.close();}
+    static void pause(Activity activity){LiulangPlayer value=ACTIVE.get(activity);if(value!=null){value.main.removeCallbacksAndMessages(null);value.panel.setVisibility(View.GONE);}}
+    static boolean leave(Activity activity){LiulangPlayer value=ACTIVE.get(activity);return value!=null&&value.closeLayer();}
+    final Activity activity;final LiulangResources res;final ViewGroup content;final LinearLayout control;final View nativeSeek;
+    final ViewGroup panel;final LiulangEpisodes episodes;final LinearLayout actions;
+    final Map<View,Slot> moved=new LinkedHashMap<>();final Handler main=new Handler(Looper.getMainLooper());
+    final Window.Callback original,callback;final Runnable hide=()->hideControls();
+    SourceGateway.Detail source;SourceGateway.Episode current;String flag="";boolean closed,reverse,reversePlay,wasShowing;long lastSync;int lastKey=-1;View previous;
+    LiulangPlayer(Activity activity){this.activity=activity;res=new LiulangResources(activity);content=(ViewGroup)activity.findViewById(android.R.id.content);
+        View nativeControl=NativeViews.find(activity,"control");if(!(nativeControl instanceof LinearLayout))throw new IllegalStateException("Retained TV control contract unavailable");control=(LinearLayout)nativeControl;
+        control.setPadding(res.dp(24),res.dp(24),res.dp(24),res.dp(16));control.setBackground(res.drawable("shape_controller"));nativeSeek=nativeControl.findViewById(nativeId("seek"));
+        if(nativeSeek!=null){move(nativeSeek,control,0);LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(-1,-2);lp.bottomMargin=res.dp(12);nativeSeek.setLayoutParams(lp);}
+        View originalActions=nativeControl.findViewById(nativeId("actionLayout"));View imported=res.inflate("view_control_vod_action",control);actions=(LinearLayout)((HorizontalScrollView)imported).getChildAt(0);
+        Map<String,String> aliases=new HashMap<>();aliases.put("repeat","loop");aliases.put("danmaku","danmu");aliases.put("edition","title");
+        for(String name:new String[]{"prev","next","parse","player","decode","reset","speed","scale","text","repeat","danmaku","edition","opening","ending"}){
+            View placeholder=res.find(imported,name);View nativeView=originalActions==null?null:originalActions.findViewById(nativeId(aliases.containsKey(name)?aliases.get(name):name));
+            if(nativeView==null){if(placeholder!=null)placeholder.setVisibility(View.GONE);continue;}
+            int index=actions.indexOfChild(placeholder);ViewGroup.LayoutParams lp=placeholder.getLayoutParams();actions.removeView(placeholder);move(nativeView,actions,index);nativeView.setLayoutParams(lp);style(nativeView,name);
+        }
+        TextView episodeButton=res.find(imported,"episodes");episodeButton.setOnClickListener(v->showEpisodes());
+        View collect=res.find(imported,"collect");collect.setOnClickListener(v->{sync();if(source!=null)try{NativeLibrary.toggle(activity,source);sync();}catch(ReflectiveOperationException error){Toast.makeText(activity,"收藏暂不可用",Toast.LENGTH_SHORT).show();}});
+        View replay=res.find(imported,"replay");replay.setOnClickListener(v->{try{Object player=activity.getClass().getField("h0").get(activity);player.getClass().getMethod("g0",long.class).invoke(player,0L);}catch(ReflectiveOperationException error){Toast.makeText(activity,"重播暂不可用",Toast.LENGTH_SHORT).show();}});
+        View track=res.find(imported,"track");track.setOnClickListener(v->NativeDialogs.choose(activity,"轨道",new String[]{"音轨","视频轨道"},0,index->{View nativeView=originalActions==null?null:originalActions.findViewById(nativeId(index==0?"audio":"video"));if(nativeView!=null)nativeView.performClick();}));
+        for(String name:new String[]{"qualityEntry","chapter"}){View view=res.find(imported,name);if(view!=null)view.setVisibility(View.GONE);}
+        if(originalActions!=null&&originalActions.getParent() instanceof View)((View)originalActions.getParent()).setVisibility(View.GONE);control.addView(imported,new LinearLayout.LayoutParams(-1,-2));
+        for(int i=0;i<actions.getChildCount();i++)if(actions.getChildAt(i).getId()==View.NO_ID)actions.getChildAt(i).setId(View.generateViewId());
+        ViewGroup sourceVideo=(ViewGroup)res.inflate("activity_video",content);panel=(ViewGroup)res.find(sourceVideo,"episodePanel");NativeCspUi.remove(panel);panel.setVisibility(View.GONE);FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(-1,-2,android.view.Gravity.BOTTOM);content.addView(panel,params);panel.setElevation(res.dp(90));
+        episodes=new LiulangEpisodes(res,panel,"array",new LiulangEpisodes.Actions(){public void play(SourceGateway.Episode episode){playEpisode(episode);}public void flag(String value){flag=value;refreshEpisodes();}public void order(boolean reversed,boolean backwards){reverse=reversed;reversePlay=backwards;try{Object history=activity.getClass().getField("g0").get(activity);history.getClass().getMethod("setRevSort",boolean.class).invoke(history,reversed);history.getClass().getMethod("setRevPlay",boolean.class).invoke(history,backwards);}catch(ReflectiveOperationException ignored){}refreshEpisodes();}});
+        original=activity.getWindow().getCallback();callback=(Window.Callback)java.lang.reflect.Proxy.newProxyInstance(Window.Callback.class.getClassLoader(),new Class<?>[]{Window.Callback.class},(proxy,method,args)->{if(!closed&&method.getName().equals("dispatchKeyEvent")&&key((KeyEvent)args[0]))return true;try{return method.invoke(original,args);}catch(InvocationTargetException error){throw error.getCause();}});activity.getWindow().setCallback(callback);content.getViewTreeObserver().addOnPreDrawListener(this);sync();
+    }
+    int nativeId(String name){return activity.getResources().getIdentifier(name,"id",activity.getPackageName());}
+    void move(View view,ViewGroup target,int index){if(!moved.containsKey(view)&&view.getParent() instanceof ViewGroup)moved.put(view,new Slot(view));NativeCspUi.remove(view);target.addView(view,index);}
+    void style(View view,String name){view.setStateListAnimator(null);view.setMinimumHeight(res.dp(30));view.setBackground(res.drawable(name.equals("prev")||name.equals("next")?"selector_control_circle":"selector_control"));if(view instanceof TextView){TextView text=(TextView)view;text.setTextSize(14);text.setTextColor(Color.WHITE);text.setGravity(android.view.Gravity.CENTER);if(name.equals("prev")||name.equals("next")){text.setText("");text.setCompoundDrawablesWithIntrinsicBounds(res.drawable("ic_play_"+name),null,null,null);text.setContentDescription(name.equals("prev")?"上集":"下集");}}}
+    @Override public boolean onPreDraw(){if(closed)return true;sync();boolean showing=control.getVisibility()==View.VISIBLE;if(showing&&!wasShowing){for(String name:new String[]{"title","clock"}){View widget=NativeViews.find(activity,"widget");View text=widget==null?null:widget.findViewById(nativeId(name));if(text instanceof TextView)((TextView)text).setTextSize(20);}main.removeCallbacks(hide);main.postDelayed(hide,5000);}wasShowing=showing;return true;}
+    void sync(){long now=android.os.SystemClock.uptimeMillis();if(now-lastSync<200)return;lastSync=now;if(source==null){DetailSessionCache.State cache=DetailSessionCache.get(activity,activity.getIntent().getStringExtra("key"),activity.getIntent().getStringExtra("id"));if(cache!=null)source=cache.source;}if(source==null)return;
+        try{Object history=activity.getClass().getField("g0").get(activity);if(history!=null){Object nativeFlag=history.getClass().getMethod("getFlag").invoke(history);String active=nativeFlag==null?"":String.valueOf(nativeFlag.getClass().getMethod("getFlag").invoke(nativeFlag));String url=String.valueOf(history.getClass().getMethod("getEpisodeUrl").invoke(history));for(SourceGateway.Episode value:source.episodes)if(value.flag.equals(active)&&value.url.equals(url)){current=value;break;}if(flag.isEmpty())flag=active;reverse=Boolean.TRUE.equals(history.getClass().getMethod("isRevSort").invoke(history));reversePlay=Boolean.TRUE.equals(history.getClass().getMethod("isRevPlay").invoke(history));}}
+        catch(ReflectiveOperationException ignored){}if(flag.isEmpty()&&!source.episodes.isEmpty())flag=source.episodes.get(0).flag;
+    }
+    void refreshEpisodes(){sync();episodes.bind(source,flag,current,reverse,reversePlay);}
+    void showEpisodes(){sync();if(source==null)return;previous=activity.getCurrentFocus();control.setVisibility(View.GONE);panel.setVisibility(View.VISIBLE);refreshEpisodes();episodes.focusEpisode();}
+    void playEpisode(SourceGateway.Episode episode){try{Object flags=activity.getClass().getField("U").get(activity);int count=((Number)flags.getClass().getMethod("size").invoke(flags)).intValue();for(int i=0;i<count;i++){Object nativeFlag=flags.getClass().getMethod("get",int.class).invoke(flags,i);if(!episode.flag.equals(String.valueOf(nativeFlag.getClass().getMethod("getFlag").invoke(nativeFlag))))continue;for(Object item:(List<?>)nativeFlag.getClass().getMethod("getEpisodes").invoke(nativeFlag)){if(!episode.url.equals(item.getClass().getMethod("getUrl").invoke(item)))continue;activity.getClass().getMethod("O0",nativeFlag.getClass(),boolean.class,boolean.class).invoke(activity,nativeFlag,true,false);activity.getClass().getMethod("L0",item.getClass()).invoke(activity,item);current=episode;flag=episode.flag;panel.setVisibility(View.GONE);return;}}}catch(ReflectiveOperationException error){Toast.makeText(activity,"选集接口暂不可用",Toast.LENGTH_SHORT).show();}}
+    boolean closeLayer(){if(panel.getVisibility()==View.VISIBLE){panel.setVisibility(View.GONE);showControls();return true;}if(control.getVisibility()==View.VISIBLE){hideControls();return true;}return false;}
+    void showControls(){control.setVisibility(View.VISIBLE);Playback.controlsShown(activity);View first=null;for(int i=0;i<actions.getChildCount();i++)if(actions.getChildAt(i).getVisibility()==View.VISIBLE&&actions.getChildAt(i).isEnabled()){first=actions.getChildAt(i);break;}if(first!=null)first.requestFocus();main.removeCallbacks(hide);main.postDelayed(hide,5000);}
+    void hideControls(){control.setVisibility(View.GONE);View widget=NativeViews.find(activity,"widget");View top=widget==null?null:widget.findViewById(nativeId("top"));if(top!=null)top.setVisibility(View.GONE);View video=NativeViews.find(activity,"video");if(video!=null)video.requestFocus();}
+    boolean key(KeyEvent event){int code=event.getKeyCode();if(event.getAction()==KeyEvent.ACTION_UP&&lastKey==code){lastKey=-1;return true;}if(panel.getVisibility()==View.VISIBLE){if(code==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_DOWN){closeLayer();lastKey=code;}return true;}if(episodes.key(event,activity.getCurrentFocus(),episodes.flags))return true;return false;}
+        if(code==KeyEvent.KEYCODE_BACK&&control.getVisibility()==View.VISIBLE){if(event.getAction()==KeyEvent.ACTION_DOWN){hideControls();lastKey=code;}return true;}
+        if(control.getVisibility()!=View.VISIBLE&&(code==KeyEvent.KEYCODE_DPAD_DOWN||code==KeyEvent.KEYCODE_MENU)){if(event.getAction()==KeyEvent.ACTION_DOWN){showControls();lastKey=code;}return true;}
+        if(control.getVisibility()==View.VISIBLE){main.removeCallbacks(hide);main.postDelayed(hide,5000);}return false;
+    }
+    @Override public void close(){if(closed)return;closed=true;main.removeCallbacksAndMessages(null);if(content.getViewTreeObserver().isAlive())content.getViewTreeObserver().removeOnPreDrawListener(this);if(activity.getWindow().getCallback()==callback)activity.getWindow().setCallback(original);NativeCspUi.remove(panel);}
+    static final class Slot{final ViewGroup parent;final int index;final ViewGroup.LayoutParams params;Slot(View view){parent=(ViewGroup)view.getParent();index=parent.indexOfChild(view);params=view.getLayoutParams();}}
+}

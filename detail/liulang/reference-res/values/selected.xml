@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <color name="black">#000000</color>
+  <color name="black_20">#33000000</color>
+  <color name="black_40">#66000000</color>
+  <color name="black_50">#80000000</color>
+  <color name="black_80">#cc000000</color>
+  <color name="red">#e50914</color>
+  <color name="red_500">#ff6b6b</color>
+  <color name="transparent">#00000000</color>
+  <color name="white">#ffffff</color>
+  <color name="white_10">#1affffff</color>
+  <color name="white_20">#33ffffff</color>
+  <color name="yellow_500">#ffeb3b</color>
+  <string name="danmaku">弹幕</string>
+  <string name="detail_desc">简介</string>
+  <string name="error_empty">这里什麽都没有 ��</string>
+  <string name="history_delete_all_title">删除全部历史</string>
+  <string name="history_view_detail">查看详情</string>
+  <string name="home_history">历史</string>
+  <string name="home_tmdb_tag">TMDB</string>
+  <string name="home_vod">点播</string>
+  <string name="keep">收藏</string>
+  <string name="parse">解析</string>
+  <string name="play">播放</string>
+  <string name="play_change">换源</string>
+  <string name="play_chapter">章节</string>
+  <string name="play_decode">解码</string>
+  <string name="play_ed">片尾</string>
+  <string name="play_edition">标题</string>
+  <string name="play_episodes">选集</string>
+  <string name="play_exo">EXO</string>
+  <string name="play_next">下集</string>
+  <string name="play_op">片头</string>
+  <string name="play_prev">上集</string>
+  <string name="play_repeat">循环</string>
+  <string name="play_replay">重播</string>
+  <string name="play_reset">刷新</string>
+  <string name="play_scale">原始</string>
+  <string name="play_speed">1.00</string>
+  <string name="play_track">轨道</string>
+  <string name="play_track_text">字幕</string>
+  <style name="Control" parent="">
+    <item name="android:textSize">14sp</item>
+    <item name="android:textColor">@color/text</item>
+    <item name="android:background">@drawable/selector_control</item>
+    <item name="android:focusable">true</item>
+    <item name="android:focusableInTouchMode">true</item>
+    <item name="android:nextFocusUp">@id/exo_progress</item>
+    <item name="android:layout_width">-2</item>
+    <item name="android:layout_height">-2</item>
+    <item name="android:minHeight">30dp</item>
+  </style>
+  <style name="Player" parent="">
+    <item name="resize_mode">fit</item>
+    <item name="use_artwork">true</item>
+    <item name="use_controller">false</item>
+  </style>
+  <style name="Player.Vod" parent="@style/Player">
+    <item name="keep_content_on_player_reset">false</item>
+  </style>
+  <style name="Shadow" parent="">
+    <item name="android:shadowColor">#b0000000</item>
+    <item name="android:shadowDx">1.5</item>
+    <item name="android:shadowDy">1.5</item>
+    <item name="android:shadowRadius">2</item>
+  </style>
+  <style name="Vod" parent="">
+    <item name="cornerFamily">rounded</item>
+  </style>
+  <style name="Vod.Grid" parent="@style/Vod">
+    <item name="cornerSize">8dp</item>
+  </style>
+  <style name="Vod.Grid.Large" parent="@style/Vod.Grid">
+    <item name="cornerSize">8dp</item>
+  </style>
+</resources>

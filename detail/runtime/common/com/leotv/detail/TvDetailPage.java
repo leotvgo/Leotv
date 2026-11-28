@@ -40,6 +40,7 @@ final class TvDetailPage implements DetailPage {
     final LinearLayout flags, episodes;
     final HorizontalScrollView flagScroll, episodeScroll;
     final LibraryDetailLayout libraryLayout;
+    LiulangDetailLayout liulang;
     final Actions actions;
     final List<Portrait> portraits=new ArrayList<>();
     final DetailEpisodeCards cards;
@@ -211,6 +212,7 @@ final class TvDetailPage implements DetailPage {
         MetadataSettings.preferences(activity).registerOnSharedPreferenceChangeListener(themeChanges);
         ThemeLayout.apply(this);if(!mobile)navigation.start();
         loadingState();
+        if(!mobile&&LiulangMode.session(activity)){initialPlayFocus=false;scroll.finishInitialViewport();liulang=new LiulangDetailLayout(this);}
     }
 
     private static android.graphics.drawable.Drawable hostBackdrop(Activity activity) {
@@ -287,6 +289,11 @@ final class TvDetailPage implements DetailPage {
         if(keepArtwork)siteSearch.adoptedSource();
         if(!siteSearch.started())searchSources();
     }
+    void selectLiulangFlag(String flag){
+        nativeEpisodes.dismiss();selectedFlag=flag;SourceGateway.Episode first=null,matched=null;
+        if(source!=null)for(SourceGateway.Episode item:source.episodes)if(flag.equals(item.flag)){if(first==null)first=item;if(preferred!=null&&preferred.name.equals(item.name))matched=item;}
+        preferred=matched==null?first:matched;showFlags();showEpisodes();
+    }
     private void showFlags(){
         renderMobilePaths();
         playbackPaths.select(source,selectedFlag,!mobile);
@@ -330,13 +337,13 @@ final class TvDetailPage implements DetailPage {
     }
     BackdropIdentity searchWork(){return searchWork;}
     void searchSources(){if(source!=null&&searchWork!=null){boolean automatic=source.episodes.isEmpty()&&!manualSource;if(automatic)playButton.idle("正在加载…");String keyword=metadata!=null&&!metadata.resourceTitle.isEmpty()?metadata.resourceTitle:searchWork.sourceTitle;siteSearch.begin(searchWork,automatic,keyword);}}
-    void resume(){hero.setActive(true);if(source!=null&&!sourcePending){preferred=NativeLibrary.resume(activity,source,null);updatePlayButton();if(preferred!=null&&!preferred.flag.equals(selectedFlag)){selectedFlag=preferred.flag;showFlags();}showEpisodes();refreshActions();}ThemeLayout.apply(this);refresh(BackdropSettings.read(activity).proxy);}
+    void resume(){hero.setActive(true);if(source!=null&&!sourcePending){preferred=NativeLibrary.resume(activity,source,null);updatePlayButton();if(preferred!=null&&!preferred.flag.equals(selectedFlag)){selectedFlag=preferred.flag;showFlags();}showEpisodes();refreshActions();}ThemeLayout.apply(this);refresh(BackdropSettings.read(activity).proxy);if(liulang!=null)liulang.resume();}
     private void updatePlayButton(){
         NativeLibrary.Progress saved=NativeLibrary.progress(activity,source,preferred);
         if(saved!=null)playButton.resume(saved.position,saved.duration);
         else playButton.idle(preferred==null?"暂无可播放剧集":"播放");
     }
-    void suspend(){playbackFocusPending=false;restoredPlaybackView=null;hero.setActive(false);nativeEpisodes.dismiss();if(mobileSources!=null)mobileSources.dismiss();sitePicker.dismiss();if(personPopup!=null)personPopup.close();personPopup=null;if(matchPopup!=null)matchPopup.dismiss();matchPopup=null;}
+    void suspend(){if(liulang!=null)liulang.pause();playbackFocusPending=false;restoredPlaybackView=null;hero.setActive(false);nativeEpisodes.dismiss();if(mobileSources!=null)mobileSources.dismiss();sitePicker.dismiss();if(personPopup!=null)personPopup.close();personPopup=null;if(matchPopup!=null)matchPopup.dismiss();matchPopup=null;}
     void requestPlaybackFocus(){if(!mobile){initialPlayFocus=false;scroll.finishInitialViewport();playbackFocusPending=true;restoredPlaybackView=null;}}
     private boolean restorePlaybackFocus(){
         if(!playbackFocusPending||mobile||!mounted||source==null||preferred==null||!content.hasWindowFocus()||episodes.isLayoutRequested())return false;
@@ -349,7 +356,7 @@ final class TvDetailPage implements DetailPage {
         }
         return false;
     }
-    private boolean beforeDraw(){if(!mounted)return true;if(content.getWidth()!=themeWidth||content.getHeight()!=themeHeight){ThemeLayout.apply(this);refresh(BackdropSettings.read(activity).proxy);}loadingState();libraryLayout.sync();syncHeroLayout();
+    private boolean beforeDraw(){if(!mounted)return true;if(liulang!=null&&!liulang.extras){liulang.sync();return true;}if(content.getWidth()!=themeWidth||content.getHeight()!=themeHeight){ThemeLayout.apply(this);refresh(BackdropSettings.read(activity).proxy);}loadingState();libraryLayout.sync();syncHeroLayout();
         if(initialPlayFocus)scroll.enforceInitialViewport();
         if(playbackFocusPending)restorePlaybackFocus();
         if(initialPlayFocus&&playButton.isShown()&&playButton.getWidth()>0&&playButton.getHeight()>0&&(!playButton.isFocused()||scroll.getScrollY()!=0))navigation.focusPrimary();
@@ -364,6 +371,7 @@ final class TvDetailPage implements DetailPage {
     }
     private boolean navigationKey(int code){return code==KeyEvent.KEYCODE_DPAD_UP||code==KeyEvent.KEYCODE_DPAD_DOWN||code==KeyEvent.KEYCODE_DPAD_LEFT||code==KeyEvent.KEYCODE_DPAD_RIGHT||code==KeyEvent.KEYCODE_DPAD_CENTER||code==KeyEvent.KEYCODE_ENTER||code==KeyEvent.KEYCODE_BACK;}
     private boolean key(KeyEvent event){
+        if(liulang!=null){if(liulang.key(event))return true;if(!liulang.extras)return false;}
         if(!mobile&&playbackFocusPending&&event.getAction()==KeyEvent.ACTION_DOWN){restorePlaybackFocus();playbackFocusPending=false;restoredPlaybackView=null;}
         if(!mobile&&initialPlayFocus&&event.getAction()==KeyEvent.ACTION_DOWN&&navigationKey(event.getKeyCode())){if(event.getKeyCode()==KeyEvent.KEYCODE_DPAD_CENTER||event.getKeyCode()==KeyEvent.KEYCODE_ENTER)navigation.focusPrimary();initialPlayFocus=false;scroll.finishInitialViewport();}
         if(nativeEpisodes.active()&&event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)nativeEpisodes.dismiss();return true;}
@@ -469,7 +477,7 @@ final class TvDetailPage implements DetailPage {
     @Override public boolean needsArtworkFallback(){return metadata!=null&&hero.unavailable();}
     @Override public void fallback(){}
     @Override public void trimMemory(){if(images!=null)images.trimMemory(owns()&&scroll.isShown());}
-    @Override public void close(){if(!mounted)return;mounted=false;suspend();playbackPaths.close();nativeEpisodes.close();siteSearch.close();sitePicker.close();cards.clear();stills.close();recommendations.detach();collection.detach();
+    @Override public void close(){if(!mounted)return;mounted=false;if(liulang!=null)liulang.close();suspend();playbackPaths.close();nativeEpisodes.close();siteSearch.close();sitePicker.close();cards.clear();stills.close();recommendations.detach();collection.detach();
         viewportHandler.removeCallbacksAndMessages(null);if(scroll.getViewTreeObserver().isAlive())scroll.getViewTreeObserver().removeOnScrollChangedListener(viewportChanged);
         MetadataSettings.preferences(activity).unregisterOnSharedPreferenceChangeListener(themeChanges);
         if(images!=null)images.close();hero.close();titleArt.close();scroll.stopAnimation();content.getViewTreeObserver().removeOnPreDrawListener(preDraw);

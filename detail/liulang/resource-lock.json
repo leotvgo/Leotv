@@ -1,0 +1,371 @@
+{
+  "version": 1,
+  "authorization": "2026-11-28: migrate the selected TV big-poster home, detail and fullscreen playback UI as optional 浪壳全局; preserve existing Leotv actions, data, API23 and eight products.",
+  "source_apks": {
+    "armeabi-v7a": "139dfc45a5496156fab6a20d712bb8a38e84a6ac894d9bb0841ce351006ba882",
+    "arm64-v8a": "432420be33f9f6096ae8ba13abc97f27c900ea3cfe2b87e97527b9f4949997dc"
+  },
+  "source_package": "com.fongmi.android.tv",
+  "resource_package": "com.leotv.liulang",
+  "resource_package_id": "0x6f",
+  "layout_roots": [
+    "activity_home_v2",
+    "activity_detail",
+    "activity_video",
+    "view_control_vod",
+    "view_control_vod_action",
+    "view_widget_vod",
+    "adapter_vod_rect",
+    "adapter_episode",
+    "adapter_segment",
+    "adapter_type",
+    "adapter_flag",
+    "dialog_vod_home_v2",
+    "adapter_vod_home_v2",
+    "fragment_history",
+    "adapter_history_poster",
+    "adapter_func_v2",
+    "overlay_focus"
+  ],
+  "files": {
+    "layout/adapter_history_poster.xml": "45fd9bbb8b3ac5fc65062ea5d07f6e3f4589e4213947436862870038db8b2216",
+    "drawable/ic_vod_delete.xml": "fdbbd10687429a471971707831f4ab75c81a13508d1df2258750424caab0ae6e",
+    "drawable/bg_tmdb_tag.xml": "9cb6a376bbdb4dc07998a1b8b667c92eac25bfd281b77140f46dc23bf2b82c31",
+    "layout/fragment_history.xml": "61beb1977faf173afe3f02746975070c37f0c075a0e46fc9b1599285ff686e74",
+    "drawable/selector_history_delete_bg.xml": "846b45a5bc05059970c18953dbade66dd037ce81a418fbfdfb2ba33005d01007",
+    "drawable/ic_arrow_down_circle.xml": "2887b33ce1dcf3829e706f8be9a88702cbd45acc38b3bff04ca20529c8b664e4",
+    "drawable/selector_item_round_resume.xml": "de9a0e7143490838caefaf4761a6a71e0697f4ac45c55da8e5b94f426fc169bc",
+    "drawable/shape_item_round_resume_normal.xml": "49cfa809ca49b7f299592561db863a3192532af62f36db366db6f782336e3ccf",
+    "drawable/shape_item_round_activated.xml": "c2568ed5ed5b741ed66925aba770bb1f7e4251fa6b08c7cd97122bdbecb6ca47",
+    "drawable/shape_item_round_focused.xml": "8b3c800a0a3e4569adf658eea0e512f76412ae27076ecd84391b9b49d313acdd",
+    "color/selector_type_text.xml": "ebeb98030629f301b506c26961038e82b51222c7bc1da93442548a3acf109e0e",
+    "drawable/shape_poster_card.xml": "db459dc76bf222b12e1fc1213b25bf6bd21604cc6755edd5908e5dda000975b1",
+    "drawable/shape_config_name.xml": "7c67c05741f579257fe7b554a119bfc7023a63c723bf539b196b775d7fb0bac5",
+    "drawable/bg_hero_mask_v.xml": "74481c6ae858c9abc5b284fd7809deb28fa02ae22ed8dca46250a6442756d6a4",
+    "drawable/bg_hero_mask_h.xml": "6f0cd658b99fd9788cb104fc21f2604474db79ea131395698f9dbd2e3a457d8a",
+    "layout/adapter_vod_home_v2.xml": "227c7ad6d88eccb2e4d837934acdc6d84758852b48f66f4cb3e5ad256f127a30",
+    "drawable/shape_line_tapered.xml": "21c549f8be889983d60e175545039790382059693d636929d993b917f5b9b5fe",
+    "drawable/selector_check_circle.xml": "c2e4fd0ba0cc5576855101421afbb2d53b88b34eb2e08c39be03b1dca0fed8e0",
+    "drawable/shape_check_circle_off.xml": "44ff32c6e6e4f9eb30d8ca1f0e8c0f11def32f80a16bebe77d5cdedad76dc702",
+    "drawable/shape_check_circle_on.xml": "c3a74f010240d6fe720828f00640c40c79f31880f9106538bc4590b600b4c188",
+    "drawable/shape_check_circle_off_focused.xml": "ad70e090ac303fe762cdb29b4abe9fd2a81064a109fb79521d6413a86b4ac2d4",
+    "drawable/shape_check_circle_on_focused.xml": "ebd138f619c59d6b96145368024801eaa8fe2dec86b2594dbe5d3390eb9e3022",
+    "color/selector_site_item_text.xml": "6e9f88256208fe67af1138fea5fcc6f2dcb261bb3f0b3fa56f1454123eb29466",
+    "drawable/selector_site_item_background.xml": "0b537dd1d2dd8a8c6fe47825e0c0dfacd27568fa5f427282d015808a75586ce9",
+    "drawable/shape_chip_round_normal.xml": "96fec2d2da9d65d560de5d373938b7f8f54f8c5b6eebccbf9e5f83b586da7a89",
+    "drawable/shape_chip_round_activated.xml": "96fec2d2da9d65d560de5d373938b7f8f54f8c5b6eebccbf9e5f83b586da7a89",
+    "drawable/shape_site_item_focused.xml": "06b41cd08b3a10399ac374683900859bae9aab2e9263bb8e20773216d76a3db9",
+    "layout/dialog_vod_home_v2.xml": "ba9d23b86e20523d5e964ff6732d83c519fd8e0bd770c9f2eb79c86a252df1b9",
+    "color/selector_config_item_delete.xml": "6e9f88256208fe67af1138fea5fcc6f2dcb261bb3f0b3fa56f1454123eb29466",
+    "drawable/selector_config_delete_background.xml": "dd5fc9e93d6099c22009824220dbdcea94e9745e3cf12a3cfba010985d401a3f",
+    "drawable/shape_circle_white_30.xml": "7154b6147537a65474bba9edc0cd6aa8f44d9803d0a57b0cc36992d69b68b18b",
+    "drawable/shape_circle_dark_selected.xml": "1618ab3cc5fabf11b1f56afa714f62f1d7c6e2a7f401efe26224570b03c05f8a",
+    "drawable/shape_circle_white_focused.xml": "80bcca7c988f9b8a29fb9a0b64dfed5e6428007eadaa44b3d038308bc9582a7e",
+    "drawable/ic_site_sort.xml": "e3013f9466cfdb796c45d6a3846f4c00bd8bbfd85a95ab3a9e81f355060a8b5e",
+    "drawable/ic_site_search.xml": "766a1288f5565fc8a7ec9755c1e0275a975ef1343c49df84d5471b0dc86da5a3",
+    "layout/adapter_flag.xml": "5f8cf9c53f36d972f879a51fbddb76ae5226e3c4fbe0c95e8e6f9afaf48192c5",
+    "drawable/selector_item.xml": "eb7962c4e05a190bc6aa3b819b1e05d4a7ef31d747ab09bde607b515135ff8e8",
+    "drawable/shape_item_normal.xml": "ac7b38e93b1635dfcc88233ea712e702182804ca265451edadf08461ae2a85ca",
+    "drawable/shape_item_activated.xml": "20668c6f6776a8447745bb02b79ebc57f563f9f355934f3bcf170f6a6eeb32db",
+    "drawable/shape_item_focused.xml": "b2d70294305a100674bb813f98696541a184d434aff7aafe964260629c55f357",
+    "color/text.xml": "a341813e1d6f128b20bb25571af9155405a324f52f47ac32817d1c759ba04ba9",
+    "layout/adapter_type.xml": "ed05858d33041b2a074dd07f2e93cbaed150f72c7f4ad974929ceb6259ec930a",
+    "drawable/selector_item_round.xml": "81fa01c03bdabbec9a211325c69e2b6414f25d0782efc5f171cc0750002cce76",
+    "drawable/shape_item_round_normal.xml": "424ab7fd37c2453e7eb61cd8bfabf603fae3c60014ccf2cba375a89983bc41e7",
+    "layout/adapter_segment.xml": "c0a879ec017f8ec2247bf4ca46055ec50cf21b452289f6e13f7027ea7970dc73",
+    "drawable/selector_segment_round.xml": "e77e5fb89242f44f9650d4f6465bd14c50553806e3c0ea1df8c55f237dbeabeb",
+    "drawable/shape_segment_round_normal.xml": "5c93e3c686c343e4f5e78c73ef02de6eabf8915879e1c26823315a720283641e",
+    "drawable/shape_segment_round_activated.xml": "0b7644eb9cadb49e18b710a7db8002298cc0ed022fd0d6da4a8508b7d8afe405",
+    "drawable/shape_segment_round_focused.xml": "52badc90a2071eccf3592fa6dd373c10823d2db6b189594c541a366010d1437d",
+    "color/selector_flag_text.xml": "ebeb98030629f301b506c26961038e82b51222c7bc1da93442548a3acf109e0e",
+    "layout/adapter_episode.xml": "d0f5beda68504795e42426cc4eb0e963d9c5e5c3bdf2ca11199bfd65e9ea92da",
+    "raw/equalizer.json": "3b06dcf4ebb04e3dcc0377f53c597af9498d41d9941dbdf6e8c6616ee59b926c",
+    "layout/adapter_vod_rect.xml": "eda7ff7f1ec53564209d3d73f1ed3e3b527be2f1ac33b25184a7c7f316c361e0",
+    "layout/view_widget_vod.xml": "eab2875f21ec996a7572a96e5a9d816a9e23a5c6443addbb29adf11471dd1a60",
+    "drawable/ic_widget_forward.xml": "6e0adee68c69bdbbf762cf3ea6053627d74c7ec3cf3c05ee9f8f2dcdc81e8457",
+    "drawable/ic_widget_play.xml": "5f0384cf0992a71d3f5f4bce3b4da20078a3c7bc600f06e1569c2437d4feca58",
+    "drawable/shape_widget.xml": "3eb718bfa42f3e76e6cdf27d1427e2be57dfc3720ba663da2198c77074ae9d88",
+    "drawable/ic_widget_error.xml": "3a3f639a31ce7b7adeb13447686e5e710b3725563893ac112d08327b394ef21e",
+    "layout/view_control_vod_action.xml": "3b868c56822ad91e173609de3dfc38568bfbd95bd21eb9a70215b619f125859d",
+    "drawable/selector_control.xml": "2b560d0f750935c59b607446691646cc4d3d2bef7dc3faca1a7d7af2fa3e7efe",
+    "drawable/shape_chip_normal.xml": "fd2050344f6c8223ad2e1c631ee343a17bc9f6dfd4e9ada03f64c2c5069fed58",
+    "drawable/shape_chip_activated.xml": "fd2050344f6c8223ad2e1c631ee343a17bc9f6dfd4e9ada03f64c2c5069fed58",
+    "drawable/ic_control_keep_off.xml": "ba0cbd41bec364b3b1c6764230da4f8dea66cf37d27eab1245c018b666167983",
+    "drawable/selector_control_circle.xml": "ffb27da86df6eef330196ad5359cfd66848fd95cd336ccfe2379ccd331d17b30",
+    "drawable/ic_play_next.xml": "54af69c3d6cd38f26c65857366605b08da87a159efeb916077461faf084d3cfb",
+    "drawable/ic_play_prev.xml": "fdecba6053627f0eabaad4921c02a232b0502b403da2f46646dee5db3f7995a3",
+    "layout/view_control_vod.xml": "7d6e141b71a01d7f5262fde9b17330eab6c25b68a3a84cd39f5c5ad0f5421d1c",
+    "drawable/shape_controller.xml": "2646464be780942384eebaf8013e67c887cc374e8d7dae5e4010221cda8d8c81",
+    "layout/activity_video.xml": "f4c272df15e21dbfe364eeae362ca0cecadfd40c553358f257187932a06d6473",
+    "drawable/shape_red_bar.xml": "3ee6368587898acd8693b29ed8b27dbdbcc1c4bf6d3bb49dfe79fe35712b7d8b",
+    "drawable/bg_episode_list_bottom.xml": "6b6eb54d3b8b182c5a2a5e5e3e5515797efff2a4a1135273c5b5c59752de2c24",
+    "drawable/ic_detail_change.xml": "282a3248a42db2e7a861fab13495cfcd19d0342e55de05c38e8be47d7d189b4f",
+    "drawable/ic_detail_keep_off.xml": "e2d0cd765faeb264907c20a983defbaa513e80b5037e096d5d3abf72324b2148",
+    "drawable/ic_detail_desc.xml": "cfdeaf3b376fd5f028f671907905e0fb464445b0a68a0b852a78048f82f71d23",
+    "raw/preload_success.json": "281106aff07518f0db1f8e317998c8585eaef91b48967f84dc203b66adc9417b",
+    "layout/view_progress.xml": "f08694df38133e01b7749916b4f04e10a14d99a7c519099728280a99730324e7",
+    "drawable/selector_video.xml": "541848a8ddd6bded4b656d194e0c0af1ba0676072e9ba7d097cd651fd13953bb",
+    "drawable/shape_video_focused.xml": "ffab44640a84a9a86ca63895596d9f037ad3fda16c8d7e73a75e0be3032416db",
+    "layout/activity_detail.xml": "4e64fdf19d09b7abe39c1f4a7b2bf879ebd05124359335b7305dba476a4c8281",
+    "raw/empty.json": "9e98c6b6ab636d72622d40a03933252dea69b5bf17e7503270e85e7cb5151d15",
+    "drawable/selector_detail_item.xml": "7e18f0e2ac950a7155501cd9db6d25854a5c25909e3bc849e4a53013120b1c99",
+    "drawable/shape_detail_item_normal.xml": "a297093aa521f0500f8a101c8ffe98fa2102acc9de6561d097f169adbe9a7f39",
+    "drawable/shape_detail_item_activated.xml": "a297093aa521f0500f8a101c8ffe98fa2102acc9de6561d097f169adbe9a7f39",
+    "drawable/shape_detail_item_focused.xml": "6a126417fca87629f4471ae776ed198963400dee5335e6e469c7151ee63cb40a",
+    "drawable/selector_detail_play.xml": "da949df31c73a87cb55a033c8722bca21f673c5e632142fbf767bfb8a2fe7aff",
+    "drawable/shape_detail_play_focused.xml": "1119654519e310f9c8c36714cc73aabb2a40c8e1bee3baf84687409a34fd3414",
+    "layout/activity_home_v2.xml": "6c1ad5739859c5503178d16fd991b6dd374af7d227af2b1c2d6cb482786e8e87",
+    "drawable/bg_v2_filter_fade.xml": "096f219eb6b00d82634df4bad667c956e2a114ea08de04a260391552b49fca89",
+    "drawable/ic_history_ring.xml": "b134105d1773a79374d9c79e284249fdcbc50d740938d957460ecf45b065febb",
+    "drawable/ic_home_logo.xml": "89da192abb4fc96c1b529900684f2e3cb12ae1b5dc6435a67e72478e8990b843",
+    "drawable/shape_oval_clip.xml": "7e10af12a9174fdba3905498a358205473621b060e81c7fa3ccd00df7a3ff088",
+    "drawable/selector_home_logo.xml": "d21dd00756e855a3bd254a33d5cec3182e5e3100ad9ccb034266ffc4df27fab9",
+    "drawable/shape_home_logo_focused.xml": "d0e2eb7c974f3d38ab7e1badfe78f6cdea381cdeab4bd32d0709fdf24f56ef49",
+    "values/selected.xml": "a00e9d4ee75cb3d2e0b481cb198f8e9228cc7e13a40347955af9092b4fdb1d28",
+    "drawable/selector_episode.xml": "7e18f0e2ac950a7155501cd9db6d25854a5c25909e3bc849e4a53013120b1c99",
+    "drawable/selector_chip_round.xml": "7e7557e94b0fa8129afc6a7eb0dcb6e468b84d20f26825f887b12ffd25cdf6a0",
+    "drawable/shape_chip_round_focused.xml": "2028075c2103c0adc1a32b3a72bb70327143a84b0b7a72c353a746f7a0a41e7a",
+    "drawable/selector_vod.xml": "d9b0dfdc32826c8ae70dfcf54d76bf5bb87acbb31299ecd93d9ad810346d4d3b",
+    "drawable/shape_vod_focused.xml": "b31ac9b99791b8956f0b887a6e8f9ee7b1a486fcb0917617507ec7491fd7e36d",
+    "layout/overlay_focus.xml": "b70221126505980469b22f457243b903ff33c6b77a4611e8d0e2f77c62d5816f",
+    "layout/adapter_func_v2.xml": "9c53d5f2781601e7fabb77f346b0f2ad9fc656465dbdf8929d89600eef7b6c3e",
+    "color/selector_func_v2_text.xml": "426e42830bcaff9a98a4435f10a917e3d391b303970defb3928d4f07ec701293"
+  },
+  "selected_value_entries": [
+    {
+      "type": "color",
+      "name": "black",
+      "sha256": "81357579c2312aa9c685a2afc36221ab23a208d40050ff14825b29c4a0fb03e6"
+    },
+    {
+      "type": "color",
+      "name": "black_20",
+      "sha256": "f1200e7dc069527fa4475f1650f069a120bdbe3ff38ea93ae30f049819326534"
+    },
+    {
+      "type": "color",
+      "name": "black_40",
+      "sha256": "96e643e0f8fb3799daf6ce9d57c3385366ac982de48febf434c1439b78679c6a"
+    },
+    {
+      "type": "color",
+      "name": "black_50",
+      "sha256": "8e02047e18570afc77bb5e387bd74e9a02c31b8a0fc8e3955ab35ecfef56efb0"
+    },
+    {
+      "type": "color",
+      "name": "black_80",
+      "sha256": "5b3a35ad6e87c6f136b5a739323f7023426515875b2e9c9e83ef7d079e3d7f02"
+    },
+    {
+      "type": "color",
+      "name": "red",
+      "sha256": "897df7d47bc7ba4a583e0f870236d1a4db8960189a278b12cb4a10924e061c41"
+    },
+    {
+      "type": "color",
+      "name": "red_500",
+      "sha256": "92f4489609364736be4d4904278eb619c1d5114e9bf21720b949c90123a83f80"
+    },
+    {
+      "type": "color",
+      "name": "transparent",
+      "sha256": "7b10a4647372a409d0b3217d21794037aa1bb3e55a64dc2034edc70c0e37f27e"
+    },
+    {
+      "type": "color",
+      "name": "white",
+      "sha256": "f575dec88347e9edbd2085e441a1541aca6f9525ed75612ca1b0dc97fc9a849c"
+    },
+    {
+      "type": "color",
+      "name": "white_10",
+      "sha256": "c91260f87524bb2fb16fef2fb5f15d036258b4ecd03c20520000453be7914ccd"
+    },
+    {
+      "type": "color",
+      "name": "white_20",
+      "sha256": "f15d5d38d378b577f1d0eced026ca937352ba4d611ce034416b27f8cc16c6bb0"
+    },
+    {
+      "type": "color",
+      "name": "yellow_500",
+      "sha256": "cb761550463b969d100058d9708f2700f91951ac070486bc2ee3a26bad06733f"
+    },
+    {
+      "type": "string",
+      "name": "danmaku",
+      "sha256": "7ec38ecd7b813498c762ce35c734efabc5fbc0e1b6c2b5adeb956b230ce48d5b"
+    },
+    {
+      "type": "string",
+      "name": "detail_desc",
+      "sha256": "d942596105d1a14c30d208ba78ef11598faff6f1780bb322b340e270ec2e279a"
+    },
+    {
+      "type": "string",
+      "name": "error_empty",
+      "sha256": "39e45b70d3f668f22a4821d84e41c806b1a49e18c6fa70ef2b1037043669f500"
+    },
+    {
+      "type": "string",
+      "name": "history_delete_all_title",
+      "sha256": "795c13b964167709d8f9413ed41c378cdd44afc345fdba5ccc3ec9b070e7846c"
+    },
+    {
+      "type": "string",
+      "name": "history_view_detail",
+      "sha256": "4474d29871d4969bc8d2f3c5280fecdbe3c20e9bdaa243e7be051bf4ef5a8da8"
+    },
+    {
+      "type": "string",
+      "name": "home_history",
+      "sha256": "080a442b5a1d57c62a675c3a38fa725bc14ed3a6c1a186e8332de752e89ffbdd"
+    },
+    {
+      "type": "string",
+      "name": "home_tmdb_tag",
+      "sha256": "a9650adbe68c3cd5f850c6ad5b209826781772f6d1734fa1ff49ec1d9a88cf0e"
+    },
+    {
+      "type": "string",
+      "name": "home_vod",
+      "sha256": "a5f80fefbed2e76701dc8639dc2fd883ac50c13a8600ead4f8c1564fe2bfda51"
+    },
+    {
+      "type": "string",
+      "name": "keep",
+      "sha256": "ea5d412f10190a4abba52a1fbd7e0dc0297dc618a0568ecb7039cd78271a60cc"
+    },
+    {
+      "type": "string",
+      "name": "parse",
+      "sha256": "f7f1d75318864c8938778c687c860b7ce12fe10dda2f8d2cd1cc2b14f4e6b124"
+    },
+    {
+      "type": "string",
+      "name": "play",
+      "sha256": "a6651502253126dd49b47c130367d9f4e9636b714f40e06fe251f45a2754d653"
+    },
+    {
+      "type": "string",
+      "name": "play_change",
+      "sha256": "8875650b6f2da1fd1a943ae7982d6e99c37c5c6d8200f3d25c4743a7c2a0fb70"
+    },
+    {
+      "type": "string",
+      "name": "play_chapter",
+      "sha256": "0d93eba9dd6ffb6aa4cf04e2405814e1ebc342c28a0d74b31a53d35df89bbef4"
+    },
+    {
+      "type": "string",
+      "name": "play_decode",
+      "sha256": "087afa60c0d766f95df10787cd8cc95b8bce5d2b329964622b3bc9cecb58074f"
+    },
+    {
+      "type": "string",
+      "name": "play_ed",
+      "sha256": "d7f8e452f6edf2bebd4111128716f37581fc9d6e5d1395d42752680a4ef473ac"
+    },
+    {
+      "type": "string",
+      "name": "play_edition",
+      "sha256": "f9efa39af337ed523d8f00591825ba02edba1b24f72265f639fde8c56f1631c0"
+    },
+    {
+      "type": "string",
+      "name": "play_episodes",
+      "sha256": "bb4b2d30d34d8809a8c7c627c6468efc7c802839cebcc0bbc76a0318caa6d117"
+    },
+    {
+      "type": "string",
+      "name": "play_exo",
+      "sha256": "229ff6b4011ce6ba6e47f9dbe4e4b9f5ee813fdae93d0802fb1037d7e780bb04"
+    },
+    {
+      "type": "string",
+      "name": "play_next",
+      "sha256": "6c68178941680e7fb00ff3a62c269ce9b31b6fb653e977285d67d5a09064238b"
+    },
+    {
+      "type": "string",
+      "name": "play_op",
+      "sha256": "515eef82c1dc0c20a13362ca72e4e5537b91cbe185584dd2a0daedb295fa2fe4"
+    },
+    {
+      "type": "string",
+      "name": "play_prev",
+      "sha256": "f4fcb3c08e6f38580c9ab404c4299dcce39a66c2ed8af1fdd041b68afbc18c45"
+    },
+    {
+      "type": "string",
+      "name": "play_repeat",
+      "sha256": "26d9e53c1101999527a1dbd1269347fe617d00b6a63ebc63a3a5ec797371bae0"
+    },
+    {
+      "type": "string",
+      "name": "play_replay",
+      "sha256": "e588e742dbc116625e05de1b08edcb8c2bf30c75d109931b38bd85bafd3502b8"
+    },
+    {
+      "type": "string",
+      "name": "play_reset",
+      "sha256": "b12e99b994173b26abec0f71cc5a27183f864c166f325f945481f441f729b287"
+    },
+    {
+      "type": "string",
+      "name": "play_scale",
+      "sha256": "819546655bc8f56f36d1e096fbfd9958d17e0eb0cc00d1cf30ab8267868f6767"
+    },
+    {
+      "type": "string",
+      "name": "play_speed",
+      "sha256": "67468c0fbbf4dec3b033e517eb95778048a3e61c864e039672bb4c685fd92b71"
+    },
+    {
+      "type": "string",
+      "name": "play_track",
+      "sha256": "35287d378c937d62996862a62f8ddedb16893fb1f79ca9c27d23020f941da5ca"
+    },
+    {
+      "type": "string",
+      "name": "play_track_text",
+      "sha256": "a25900f6fc2e84e2aa18d2cae0cf45ac75047d7c1422b37cfbec7fdf7807eb34"
+    },
+    {
+      "type": "style",
+      "name": "Control",
+      "sha256": "28090e2be1e6ce62f66e039de07537f36a13dec8c06660622b3989b8a9209454"
+    },
+    {
+      "type": "style",
+      "name": "Player",
+      "sha256": "f5b2bd90781c271efccb68fc436888986f487254d25902a5b44fa93d2dfd575f"
+    },
+    {
+      "type": "style",
+      "name": "Player.Vod",
+      "sha256": "281a0ccaba274a603a14d765c84b9a790a75cd931147bcb1995f7b84e6373a6b"
+    },
+    {
+      "type": "style",
+      "name": "Shadow",
+      "sha256": "10abeb97bce3f5785810c1ebdfcf344701e2ed8f54abbf5b5f1eb3172b80462f"
+    },
+    {
+      "type": "style",
+      "name": "Vod",
+      "sha256": "bc6ef9f3a2db1368277d7ff38f2ea8bd8515d14a6c76bcae014888445875c0e4"
+    },
+    {
+      "type": "style",
+      "name": "Vod.Grid",
+      "sha256": "f30c605778bda162750cac825e05c1d113b14bb25db48b49bfd7c796a613d15b"
+    },
+    {
+      "type": "style",
+      "name": "Vod.Grid.Large",
+      "sha256": "23d9f8a9962544b27272b44c6c8911c97df705c382fdb20a3d62fb17f025a336"
+    }
+  ]
+}

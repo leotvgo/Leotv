@@ -1,0 +1,36 @@
+{
+  "theme_id": 5,
+  "version_code": 667,
+  "min_api": 23,
+  "clients": [
+    "tv"
+  ],
+  "authorization": "User explicitly requested full TV 浪壳全局 migration of the selected large-poster home, detail and fullscreen playback controls, retaining current Leotv functionality.",
+  "sources": {
+    "detail/runtime/common/com/leotv/detail/LiulangMode.java": "d8bba589908e55be9ebad89d73a99fb837826730dfe99b6c43792d83f1f6d362",
+    "detail/runtime/mobile/com/leotv/detail/LiulangDetailLayout.java": "c590f5f13c2799c862b6a452055bc28fd9875a5b2b8301c9373c5d9f3ec095a4",
+    "detail/runtime/mobile/com/leotv/detail/LiulangHome.java": "2ec70b0f7e75b6bf4ea3e79099b779473f599092498f17f9f1b82f6d4ded04a6",
+    "detail/runtime/mobile/com/leotv/detail/LiulangPlayer.java": "375a889f75909fd2df0f6dfceb75fc0d62ab9eadc54444ff1fb8f59f3401163d",
+    "detail/runtime/tv/com/leotv/detail/LiulangDetailLayout.java": "0a66c6f43f805a7f43a344e9fffe5da0a189d1c954cf4a0ac23a70de2fa1c5b9",
+    "detail/runtime/tv/com/leotv/detail/LiulangDots.java": "81f9776561464fde7da2f3900a81a6a985a8b67915b79127c46b64ab4d9ac186",
+    "detail/runtime/tv/com/leotv/detail/LiulangEpisodes.java": "06cae927e97531b45ec3e1999ec90cc847372e81fbf6136553a5ae9cf9ca8bd8",
+    "detail/runtime/tv/com/leotv/detail/LiulangHeroImage.java": "216e6e7141840534e8063f657a8719c30260be4a0d4d1aa122f68ebfae13a01c",
+    "detail/runtime/tv/com/leotv/detail/LiulangHome.java": "8cf313a9ab6f1cd008d5ad26e211e1733b3e9df2a16979754c7e3c0feb881907",
+    "detail/runtime/tv/com/leotv/detail/LiulangPlayer.java": "78e9ac827973f517dcd86c1f95dbeb440ad675d985e82ac9873978d123c642f8",
+    "detail/runtime/tv/com/leotv/detail/LiulangResources.java": "7f9b0c2191607106350ccd2d3e6eec686ceaa7a3bcec169189feac4bbe3ac2ac",
+    "detail/runtime/tv/com/leotv/detail/LiulangRoundedImage.java": "850c73f26f376ba7a2d5d78f08bca09c0ff3bfda3c811c1bbb73205dd537bb10",
+    "detail/runtime/common/com/leotv/detail/HomeTheme.java": "41aac79b364ac25965a0985c3e09d0dcfc7dd163937d50e3154f92bbc8f4e576",
+    "detail/runtime/common/com/leotv/detail/NewHome.java": "37c0b9b56f0faf0230627e47e86ab9bead249ed35908936ba8d36c5ed563154c",
+    "detail/runtime/common/com/leotv/detail/NativeRouting.java": "abf2e151086b9de52db402da97df6af9e4b846612cca47d25d691a8d2d351656",
+    "detail/runtime/common/com/leotv/detail/Playback.java": "4c26ed9dfeb98326ad8b687e72fa1e5320577988c99c94045ce713c6f6a22ca6",
+    "detail/runtime/common/com/leotv/detail/TvDetailPage.java": "abcebe2925f789e96ffc86f1134a8d89a5697ba4d6c24170037ccaf97854449a",
+    "tools/liulang_resources.py": "127a355e9ec56c4b288fcc406d88441c693cceaeb5e4971a90cd9e492201e229"
+  },
+  "native_libraries_added": false,
+  "resource_namespace": "com.leotv.liulang:0x6f",
+  "resource_assets": [
+    "assets/leotv/liulang/resources.bin",
+    "assets/leotv/liulang/resources.json"
+  ],
+  "device_validation": false
+}

@@ -36,3 +36,6 @@
 
 # Preserve decoder calls without exposing their implementation names or folding decrypted values.
 -keep,allowobfuscation class com.leotv.detail.RuntimeStrings { public static java.lang.String decode(java.lang.String,long,long); }
+-keep class com.leotv.detail.LiulangHeroImage { public <init>(android.content.Context, android.util.AttributeSet); }
+-keep class com.leotv.detail.LiulangRoundedImage { public <init>(android.content.Context, android.util.AttributeSet); }
+-keep class com.leotv.detail.LiulangDots { public <init>(android.content.Context, android.util.AttributeSet); }

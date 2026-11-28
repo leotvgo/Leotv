@@ -118,6 +118,7 @@ public final class Playback {
         DanmakuPlayback.initialize(activity);
         DetailProgress.initialize(activity);
         VideoPreload.initialize(activity);
+        if(!Device.MOBILE)LiulangPlayer.install(activity);
     }
     private static void titleArtwork(Activity activity) {
         List<String> logos = activity.getIntent().getStringArrayListExtra(NativeRouting.TITLE_LOGOS);
@@ -138,7 +139,7 @@ public final class Playback {
         }
         title.anchor(anchor); title.load(logos, BackdropSettings.read(activity).proxy); titles.put(activity, title);
     }
-    public static void checkpoint(Activity activity){VideoPreload.pause(activity);DanmakuPlayback.pause(activity);NativeLibrary.checkpoint(activity);}
+    public static void checkpoint(Activity activity){if(!Device.MOBILE)LiulangPlayer.pause(activity);VideoPreload.pause(activity);DanmakuPlayback.pause(activity);NativeLibrary.checkpoint(activity);}
     /** The TV touch callback shows the bottom bar alone; reuse the native widget title/size panel. */
     public static void controlsShown(Activity activity){
         if(Device.MOBILE||!NativeRouting.isFullscreenPlayer(activity))return;
@@ -149,6 +150,7 @@ public final class Playback {
         if(top!=null)top.setVisibility(android.view.View.VISIBLE);
     }
     public static boolean leave(Activity activity) {
+        if(!Device.MOBILE&&LiulangPlayer.leave(activity))return true;
         if (!NativeRouting.isFullscreenPlayer(activity)) return false;
         activity.finish(); return true;
     }
@@ -228,6 +230,7 @@ public final class Playback {
             oriented.put(activity, media);
     }
     public static void release(Activity activity) {
+        if(!Device.MOBILE)LiulangPlayer.release(activity);
         DetailProgress.release(activity);
         VideoPreload.release(activity);
         DanmakuPlayback.release(activity);

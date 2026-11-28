@@ -46,6 +46,8 @@ LOCKS = ('branding/source-lock.json', 'detail/native-source-lock.json',
 
 
 def check_sources(root=ROOT):
+    from check_liulang_ui import check as check_liulang_ui
+    check_liulang_ui(root)
     from check_liquid_glass import check as check_liquid_glass
     check_liquid_glass(root)
     check_tmdb_loading(root)

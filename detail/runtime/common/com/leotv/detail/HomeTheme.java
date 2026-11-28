@@ -11,12 +11,12 @@ import java.util.Arrays;
 final class HomeTheme {
     static final String[] NAMES=Device.MOBILE
             ?new String[]{"沉浸海报","雷霆","影视库"}
-            :new String[]{"经典","光影 · Infuse 风格","极简","雷霆","影视库"};
+            :new String[]{"经典","光影 · Infuse 风格","极简","雷霆","影视库","浪壳全局"};
     static final int THUNDER=3,LIBRARY=4;
     // Keep persisted ids 3/4 stable when the phone selector removes ids 1/2.
     static int selectedId(int index){return Device.MOBILE?(index==1?THUNDER:index==2?LIBRARY:0):index;}
     static int selectedIndex(int id){return Device.MOBILE?(id==THUNDER?1:id==LIBRARY?2:0):id;}
-    static int validId(int id){return id==0||id==THUNDER||id==LIBRARY||!Device.MOBILE&&(id==1||id==2)?id:0;}
+    static int validId(int id){return id==0||id==THUNDER||id==LIBRARY||!Device.MOBILE&&(id==1||id==2||id==5)?id:0;}
     static void apply(CspHomePage p){
         int value=MetadataSettings.homeTheme(p.activity),width=p.getWidth(),height=p.getHeight();
         if(width<=0||height<=0)return;

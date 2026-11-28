@@ -12,6 +12,8 @@ def summarize(source):
               'native_abis','resource_ids_and_configurations_retained','resource_style_spans_retained','device_validation','added_dex_paths',
               'added_player_native_libraries_exact','added_player_native_zip_alignment_kib','player_corresponding_source','launch_theme_edits','launch_restore')
     result={key:data[key] for key in retained if key in data}
+    if 'liulang_resources' in data:
+        result['liulang_resources']={key:value for key,value in data['liulang_resources'].items() if key!='class_and_api_adaptations'}
     baseline=data['baseline_audit']
     result['baseline_audit']={key:baseline[key] for key in ('equal','original_classes','rebuilt_classes','changed_classes') if key in baseline}
     hardening=data['overlay_compile']['hardening']

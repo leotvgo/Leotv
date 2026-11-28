@@ -54,6 +54,8 @@ def check(root):
     for group in ('common','tv','mobile'):
         actual=sorted(str(p.relative_to(root)) for p in (root/'detail/runtime'/group).rglob('*.java'))
         if sorted(declaration['source_sets'][group])!=actual:raise ValueError('Home theme/recycler helpers must be declared for both variants.')
-    return {'home_themes':{'tv':5,'mobile':3},'existing_csp_feed_preserved':True,'tv_home_categories_restored_to_652':True,'mobile_library_portrait_artwork':True,'landscape_library_overlay':True,'api23':True}
+    if '"浪壳全局"' not in theme or 'LiulangMode.enabled(activity)' not in read('NewHome'):
+        raise ValueError('The separately authorized TV global mode must have a stable selector and isolated owner')
+    return {'home_themes':{'tv':6,'mobile':3},'existing_csp_feed_preserved':True,'tv_home_categories_restored_to_652':True,'mobile_library_portrait_artwork':True,'landscape_library_overlay':True,'api23':True}
 
 if __name__=='__main__':print(check(Path(__file__).resolve().parents[1]))

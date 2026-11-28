@@ -1,8 +1,8 @@
 {
   "channel": "prerelease",
   "version_name": "5.3.6",
-  "version_code": 666,
-  "title": "Leotv 5.3.6 / 666 TV 玻璃快捷菜单遥控修复",
+  "version_code": 667,
+  "title": "Leotv 5.3.6 / 667 TV 浪壳全局迁移测试",
   "prerelease": true,
   "make_latest": false
 }

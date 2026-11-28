@@ -45,6 +45,7 @@ public final class NativeRouting {
         }
         Intent next = new Intent(incoming);
         next.setClass(activity, DetailActivity.class);
+        if(!Device.MOBILE)next.putExtra(LiulangMode.EXTRA,LiulangMode.enabled(activity));
         next.removeExtra(REDIRECTED);
         next.removeExtra(PLAYER); next.removeExtra(APPLIED);
         next.removeExtra(EPISODE); next.removeExtra(FLAG);
@@ -153,6 +154,7 @@ public final class NativeRouting {
         }
         // A resource-list preview may carry collect/search state that closes the native player.
         // A selected episode always gets a fresh fullscreen playback request.
+        LiulangMode.carry(activity,intent);
         intent.putExtra(PLAYER, true).putExtra("key", site).putExtra("id", id)
                 .putExtra("name", name).putExtra("pic", picture).putExtra(FLAG, flag).putExtra(EPISODE, url)
                 .putExtra("mark", episodeName).putExtra(APPLIED, false);

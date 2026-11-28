@@ -2440,5 +2440,221 @@
   "authorized_666_additions": {
     "docs/LEOTV-5.3.6-666-TV-SHORTCUT-INPUT-20261128.md": "ad13dc78641ccd6210b848b9c70d17febc07cd7bf83e2eea06fed6df07071799",
     "evidence/leotv-5.3.6-666-signed-delivery-20261128.json": "0381a3843e298df50611a2ef825283e41d15774e5561b53e2d734a5899bb5af7"
+  },
+  "authorized_667_source_repairs": {
+    "README.md": {
+      "before_sha256": "29216d403542c529f80dbde8e5c520eb221379286e6237a00f8b5d77c1617cf1",
+      "after_sha256": "842f00b4081cfe99a7f557a3ca29d35425d9aa622997d3fe8669c0edd8d86e87",
+      "reason": "User-authorized optional TV 浪壳全局 migration: selected big-poster home, detail and fullscreen control UI; preserve phone/other themes, original player/data/native services and eight fixed-signature products; new resources isolated and audited."
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "843cef4fe1ccbd14e435a7b1b93d3ea682483d2fdaa0d4f2e7035a37a0bdee9b",
+      "after_sha256": "822a29d6a5adeda55ae0191b429db5b684c7c5041e4e763be378f34bdb11356d",
+      "reason": "User-authorized optional TV 浪壳全局 migration: selected big-poster home, detail and fullscreen control UI; preserve phone/other themes, original player/data/native services and eight fixed-signature products; new resources isolated and audited."
+    },
+    "branding/proguard-release.pro": {
+      "before_sha256": "831babd69c6782f1843d5e2dc1b84c10fb935d1c51a1686d79449be440a5b03e",
+      "after_sha256": "38805ed4a2c7f1882eeb587b067df9a640bbedea7a364f691f5caf38bde19ea7",
+      "reason": "User-authorized optional TV 浪壳全局 migration: selected big-poster home, detail and fullscreen control UI; preserve phone/other themes, original player/data/native services and eight fixed-signature products; new resources isolated and audited."
+    },
+    "branding/release.json": {
+      "before_sha256": "4e6838fdc60c55483e820fbfdc8a00c755e00932d52eac2835dd2b0b462d533b",
+      "after_sha256": "0c55b98b987aa4ed3443fed59873d7e4b2ccdfcd60d3f9341c541f0458acc102",
+      "reason": "User-authorized optional TV 浪壳全局 migration: selected big-poster home, detail and fullscreen control UI; preserve phone/other themes, original player/data/native services and eight fixed-signature products; new resources isolated and audited."
+    },
+    "detail/runtime-sources.json": {
+      "before_sha256": "f72e13ebf9c637e2b13277f8125d286ed6fa4afa0ca33d3d8999fd06ffa44735",
+      "after_sha256": "6e328dedd4a7bb804339e277623be068fa15f4b7877a2fd55b4239d4563b006f",
+      "reason": "User-authorized optional TV 浪壳全局 migration: selected big-poster home, detail and fullscreen control UI; preserve phone/other themes, original player/data/native services and eight fixed-signature products; new resources isolated and audited."
+    },
+    "detail/runtime/common/com/leotv/detail/HomeTheme.java": {
+      "before_sha256": "035a6e7df87b215be1177dffa4f193736f030baa56498a55a3d5c0275e3b830b",
+      "after_sha256": "41aac79b364ac25965a0985c3e09d0dcfc7dd163937d50e3154f92bbc8f4e576",
+      "reason": "User-authorized optional TV 浪壳全局 migration: selected big-poster home, detail and fullscreen control UI; preserve phone/other themes, original player/data/native services and eight fixed-signature products; new resources isolated and audited."
+    },
+    "detail/runtime/common/com/leotv/detail/NativeRouting.java": {
+      "before_sha256": "279b763290d057435d35d07f37977f1bb1c32ad4e09629416e67a035df086e0d",
+      "after_sha256": "abf2e151086b9de52db402da97df6af9e4b846612cca47d25d691a8d2d351656",
+      "reason": "User-authorized optional TV 浪壳全局 migration: selected big-poster home, detail and fullscreen control UI; preserve phone/other themes, original player/data/native services and eight fixed-signature products; new resources isolated and audited."
+    },
+    "detail/runtime/common/com/leotv/detail/NewHome.java": {
+      "before_sha256": "64c7225ef0c23fd229b58f7d17297016e1168383b17ccc75df8d4e9c6f8689c8",
+      "after_sha256": "37c0b9b56f0faf0230627e47e86ab9bead249ed35908936ba8d36c5ed563154c",
+      "reason": "User-authorized optional TV 浪壳全局 migration: selected big-poster home, detail and fullscreen control UI; preserve phone/other themes, original player/data/native services and eight fixed-signature products; new resources isolated and audited."
+    },
+    "detail/runtime/common/com/leotv/detail/Playback.java": {
+      "before_sha256": "83b795a100a109397d8cfa711127656552acf9c322d79de15667be40aa81ccfe",
+      "after_sha256": "4c26ed9dfeb98326ad8b687e72fa1e5320577988c99c94045ce713c6f6a22ca6",
+      "reason": "User-authorized optional TV 浪壳全局 migration: selected big-poster home, detail and fullscreen control UI; preserve phone/other themes, original player/data/native services and eight fixed-signature products; new resources isolated and audited."
+    },
+    "detail/runtime/common/com/leotv/detail/TvDetailPage.java": {
+      "before_sha256": "17199e6727d1bfbc3cd285c58f409f991cfcf6acfde78eaaabbbde589feea2a7",
+      "after_sha256": "abcebe2925f789e96ffc86f1134a8d89a5697ba4d6c24170037ccaf97854449a",
+      "reason": "User-authorized optional TV 浪壳全局 migration: selected big-poster home, detail and fullscreen control UI; preserve phone/other themes, original player/data/native services and eight fixed-signature products; new resources isolated and audited."
+    },
+    "tools/build_branded.py": {
+      "before_sha256": "af34e186637de1cbfc140a1322ee323131db3c2452a3ceb1739b663a6595745f",
+      "after_sha256": "87e68b9c70f88e3d94e4de571ed857a84f190bf75ebb59e613f40d7795d4e85e",
+      "reason": "User-authorized optional TV 浪壳全局 migration: selected big-poster home, detail and fullscreen control UI; preserve phone/other themes, original player/data/native services and eight fixed-signature products; new resources isolated and audited."
+    },
+    "tools/check_build_sources.py": {
+      "before_sha256": "14addbbca3a0126dc10c1f13e3cd60d27785560450c58cd027db61da598cdac3",
+      "after_sha256": "af686aa28adbe449f3b9c7f6c9664e4e73f41c62764235ee7bf4596cf403772c",
+      "reason": "User-authorized optional TV 浪壳全局 migration: selected big-poster home, detail and fullscreen control UI; preserve phone/other themes, original player/data/native services and eight fixed-signature products; new resources isolated and audited."
+    },
+    "tools/check_home_themes.py": {
+      "before_sha256": "080e818408f713c96f1e22d70c4a02364b15c3c6026ebe12d3bd06e751101b36",
+      "after_sha256": "04b9fb2409ff28a3747e6abcb3bfdff1e04dbc0e92d34bade0f0527cb04e90d3",
+      "reason": "User-authorized optional TV 浪壳全局 migration: selected big-poster home, detail and fullscreen control UI; preserve phone/other themes, original player/data/native services and eight fixed-signature products; new resources isolated and audited."
+    },
+    "tools/check_launch_rollback.py": {
+      "before_sha256": "209a65cfae9f7931b009cab8de42dd599015403ef536f62403fa8771c0b1470c",
+      "after_sha256": "a613f48714f21acfa264efa718e35ce44a2c5d36c95e8c524ae23745cad913ec",
+      "reason": "User-authorized optional TV 浪壳全局 migration: selected big-poster home, detail and fullscreen control UI; preserve phone/other themes, original player/data/native services and eight fixed-signature products; new resources isolated and audited."
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "f9c6ac5a8aedb06e0c882724448b51dda61618c3484cbc204598416484b89587",
+      "after_sha256": "a3aad4732dd4d0adf9a37b4d02db2616471c8cd67d39b3bd181c72d2b0ebb3dd",
+      "reason": "User-authorized optional TV 浪壳全局 migration: selected big-poster home, detail and fullscreen control UI; preserve phone/other themes, original player/data/native services and eight fixed-signature products; new resources isolated and audited."
+    },
+    "tools/public_apk_audit.py": {
+      "before_sha256": "e0cb28be4e152cd97bdf748442eb8d8864a731352e669485f08b0690b9022d45",
+      "after_sha256": "f2eeab989a6bcc022226ec7347a8357f89815d6f3f424e9b02c40fac28dab307",
+      "reason": "User-authorized optional TV 浪壳全局 migration: selected big-poster home, detail and fullscreen control UI; preserve phone/other themes, original player/data/native services and eight fixed-signature products; new resources isolated and audited."
+    },
+    "tools/check_home_layout_rollback.py": {
+      "before_sha256": "263d1187ce6a949a51c5b66d17588265292ea0b17100ae5c2f6960dd0c7eca3b",
+      "after_sha256": "78c217367e247eec071e01c70422d3bb1e571ac380c1ee18f3f9ef8e26b0a11d",
+      "reason": "Keep original NewHome equality after removing only explicitly enumerated TV mode routing/lifecycle insertions; preserve every existing category and actor source block."
+    },
+    "detail/home-layout-rollback.json": {
+      "before_sha256": "167d5f2b7a8e751e9ec16d3666bd941aa73e12f444c6132d90e504a7b5cf251a",
+      "after_sha256": "effa65c40168f6652f9037fb4a821d1d0457ae18e43df88d0bba1736ca787e34",
+      "reason": "Keep original NewHome equality after removing only explicitly enumerated TV mode routing/lifecycle insertions; preserve every existing category and actor source block."
+    }
+  },
+  "authorized_667_additions": {
+    "detail/liulang/resource-lock.json": "ec03496c11ada08482384403515a5374dbeeb42927c6af775015e1fae6d45fbe",
+    "detail/liulang/source-lock.json": "7f7aad704765466dbbc67e772d8039723437e049f6b89ad25e7a9582ee0f7c51",
+    "detail/liulang/reference-res/drawable/selector_item.xml": "eb7962c4e05a190bc6aa3b819b1e05d4a7ef31d747ab09bde607b515135ff8e8",
+    "detail/liulang/reference-res/drawable/ic_vod_delete.xml": "fdbbd10687429a471971707831f4ab75c81a13508d1df2258750424caab0ae6e",
+    "detail/liulang/reference-res/drawable/bg_episode_list_bottom.xml": "6b6eb54d3b8b182c5a2a5e5e3e5515797efff2a4a1135273c5b5c59752de2c24",
+    "detail/liulang/reference-res/drawable/ic_widget_forward.xml": "6e0adee68c69bdbbf762cf3ea6053627d74c7ec3cf3c05ee9f8f2dcdc81e8457",
+    "detail/liulang/reference-res/drawable/shape_video_focused.xml": "ffab44640a84a9a86ca63895596d9f037ad3fda16c8d7e73a75e0be3032416db",
+    "detail/liulang/reference-res/drawable/selector_chip_round.xml": "7e7557e94b0fa8129afc6a7eb0dcb6e468b84d20f26825f887b12ffd25cdf6a0",
+    "detail/liulang/reference-res/drawable/shape_chip_round_activated.xml": "96fec2d2da9d65d560de5d373938b7f8f54f8c5b6eebccbf9e5f83b586da7a89",
+    "detail/liulang/reference-res/drawable/selector_config_delete_background.xml": "dd5fc9e93d6099c22009824220dbdcea94e9745e3cf12a3cfba010985d401a3f",
+    "detail/liulang/reference-res/drawable/shape_detail_item_focused.xml": "6a126417fca87629f4471ae776ed198963400dee5335e6e469c7151ee63cb40a",
+    "detail/liulang/reference-res/drawable/selector_vod.xml": "d9b0dfdc32826c8ae70dfcf54d76bf5bb87acbb31299ecd93d9ad810346d4d3b",
+    "detail/liulang/reference-res/drawable/shape_red_bar.xml": "3ee6368587898acd8693b29ed8b27dbdbcc1c4bf6d3bb49dfe79fe35712b7d8b",
+    "detail/liulang/reference-res/drawable/shape_controller.xml": "2646464be780942384eebaf8013e67c887cc374e8d7dae5e4010221cda8d8c81",
+    "detail/liulang/reference-res/drawable/shape_circle_white_focused.xml": "80bcca7c988f9b8a29fb9a0b64dfed5e6428007eadaa44b3d038308bc9582a7e",
+    "detail/liulang/reference-res/drawable/ic_detail_change.xml": "282a3248a42db2e7a861fab13495cfcd19d0342e55de05c38e8be47d7d189b4f",
+    "detail/liulang/reference-res/drawable/bg_hero_mask_v.xml": "74481c6ae858c9abc5b284fd7809deb28fa02ae22ed8dca46250a6442756d6a4",
+    "detail/liulang/reference-res/drawable/ic_site_sort.xml": "e3013f9466cfdb796c45d6a3846f4c00bd8bbfd85a95ab3a9e81f355060a8b5e",
+    "detail/liulang/reference-res/drawable/shape_chip_round_focused.xml": "2028075c2103c0adc1a32b3a72bb70327143a84b0b7a72c353a746f7a0a41e7a",
+    "detail/liulang/reference-res/drawable/selector_control.xml": "2b560d0f750935c59b607446691646cc4d3d2bef7dc3faca1a7d7af2fa3e7efe",
+    "detail/liulang/reference-res/drawable/shape_circle_white_30.xml": "7154b6147537a65474bba9edc0cd6aa8f44d9803d0a57b0cc36992d69b68b18b",
+    "detail/liulang/reference-res/drawable/shape_line_tapered.xml": "21c549f8be889983d60e175545039790382059693d636929d993b917f5b9b5fe",
+    "detail/liulang/reference-res/drawable/shape_segment_round_normal.xml": "5c93e3c686c343e4f5e78c73ef02de6eabf8915879e1c26823315a720283641e",
+    "detail/liulang/reference-res/drawable/selector_item_round_resume.xml": "de9a0e7143490838caefaf4761a6a71e0697f4ac45c55da8e5b94f426fc169bc",
+    "detail/liulang/reference-res/drawable/shape_item_focused.xml": "b2d70294305a100674bb813f98696541a184d434aff7aafe964260629c55f357",
+    "detail/liulang/reference-res/drawable/shape_segment_round_focused.xml": "52badc90a2071eccf3592fa6dd373c10823d2db6b189594c541a366010d1437d",
+    "detail/liulang/reference-res/drawable/shape_chip_activated.xml": "fd2050344f6c8223ad2e1c631ee343a17bc9f6dfd4e9ada03f64c2c5069fed58",
+    "detail/liulang/reference-res/drawable/selector_item_round.xml": "81fa01c03bdabbec9a211325c69e2b6414f25d0782efc5f171cc0750002cce76",
+    "detail/liulang/reference-res/drawable/shape_item_round_activated.xml": "c2568ed5ed5b741ed66925aba770bb1f7e4251fa6b08c7cd97122bdbecb6ca47",
+    "detail/liulang/reference-res/drawable/shape_item_round_resume_normal.xml": "49cfa809ca49b7f299592561db863a3192532af62f36db366db6f782336e3ccf",
+    "detail/liulang/reference-res/drawable/ic_home_logo.xml": "89da192abb4fc96c1b529900684f2e3cb12ae1b5dc6435a67e72478e8990b843",
+    "detail/liulang/reference-res/drawable/selector_history_delete_bg.xml": "846b45a5bc05059970c18953dbade66dd037ce81a418fbfdfb2ba33005d01007",
+    "detail/liulang/reference-res/drawable/selector_control_circle.xml": "ffb27da86df6eef330196ad5359cfd66848fd95cd336ccfe2379ccd331d17b30",
+    "detail/liulang/reference-res/drawable/shape_check_circle_on.xml": "c3a74f010240d6fe720828f00640c40c79f31880f9106538bc4590b600b4c188",
+    "detail/liulang/reference-res/drawable/shape_check_circle_off.xml": "44ff32c6e6e4f9eb30d8ca1f0e8c0f11def32f80a16bebe77d5cdedad76dc702",
+    "detail/liulang/reference-res/drawable/ic_history_ring.xml": "b134105d1773a79374d9c79e284249fdcbc50d740938d957460ecf45b065febb",
+    "detail/liulang/reference-res/drawable/shape_poster_card.xml": "db459dc76bf222b12e1fc1213b25bf6bd21604cc6755edd5908e5dda000975b1",
+    "detail/liulang/reference-res/drawable/shape_check_circle_off_focused.xml": "ad70e090ac303fe762cdb29b4abe9fd2a81064a109fb79521d6413a86b4ac2d4",
+    "detail/liulang/reference-res/drawable/ic_widget_play.xml": "5f0384cf0992a71d3f5f4bce3b4da20078a3c7bc600f06e1569c2437d4feca58",
+    "detail/liulang/reference-res/drawable/bg_tmdb_tag.xml": "9cb6a376bbdb4dc07998a1b8b667c92eac25bfd281b77140f46dc23bf2b82c31",
+    "detail/liulang/reference-res/drawable/ic_site_search.xml": "766a1288f5565fc8a7ec9755c1e0275a975ef1343c49df84d5471b0dc86da5a3",
+    "detail/liulang/reference-res/drawable/ic_detail_desc.xml": "cfdeaf3b376fd5f028f671907905e0fb464445b0a68a0b852a78048f82f71d23",
+    "detail/liulang/reference-res/drawable/shape_oval_clip.xml": "7e10af12a9174fdba3905498a358205473621b060e81c7fa3ccd00df7a3ff088",
+    "detail/liulang/reference-res/drawable/selector_episode.xml": "7e18f0e2ac950a7155501cd9db6d25854a5c25909e3bc849e4a53013120b1c99",
+    "detail/liulang/reference-res/drawable/shape_config_name.xml": "7c67c05741f579257fe7b554a119bfc7023a63c723bf539b196b775d7fb0bac5",
+    "detail/liulang/reference-res/drawable/ic_widget_error.xml": "3a3f639a31ce7b7adeb13447686e5e710b3725563893ac112d08327b394ef21e",
+    "detail/liulang/reference-res/drawable/shape_segment_round_activated.xml": "0b7644eb9cadb49e18b710a7db8002298cc0ed022fd0d6da4a8508b7d8afe405",
+    "detail/liulang/reference-res/drawable/shape_site_item_focused.xml": "06b41cd08b3a10399ac374683900859bae9aab2e9263bb8e20773216d76a3db9",
+    "detail/liulang/reference-res/drawable/shape_vod_focused.xml": "b31ac9b99791b8956f0b887a6e8f9ee7b1a486fcb0917617507ec7491fd7e36d",
+    "detail/liulang/reference-res/drawable/shape_item_round_focused.xml": "8b3c800a0a3e4569adf658eea0e512f76412ae27076ecd84391b9b49d313acdd",
+    "detail/liulang/reference-res/drawable/ic_control_keep_off.xml": "ba0cbd41bec364b3b1c6764230da4f8dea66cf37d27eab1245c018b666167983",
+    "detail/liulang/reference-res/drawable/shape_item_activated.xml": "20668c6f6776a8447745bb02b79ebc57f563f9f355934f3bcf170f6a6eeb32db",
+    "detail/liulang/reference-res/drawable/shape_chip_normal.xml": "fd2050344f6c8223ad2e1c631ee343a17bc9f6dfd4e9ada03f64c2c5069fed58",
+    "detail/liulang/reference-res/drawable/selector_detail_play.xml": "da949df31c73a87cb55a033c8722bca21f673c5e632142fbf767bfb8a2fe7aff",
+    "detail/liulang/reference-res/drawable/ic_arrow_down_circle.xml": "2887b33ce1dcf3829e706f8be9a88702cbd45acc38b3bff04ca20529c8b664e4",
+    "detail/liulang/reference-res/drawable/shape_item_round_normal.xml": "424ab7fd37c2453e7eb61cd8bfabf603fae3c60014ccf2cba375a89983bc41e7",
+    "detail/liulang/reference-res/drawable/ic_detail_keep_off.xml": "e2d0cd765faeb264907c20a983defbaa513e80b5037e096d5d3abf72324b2148",
+    "detail/liulang/reference-res/drawable/shape_detail_item_normal.xml": "a297093aa521f0500f8a101c8ffe98fa2102acc9de6561d097f169adbe9a7f39",
+    "detail/liulang/reference-res/drawable/shape_circle_dark_selected.xml": "1618ab3cc5fabf11b1f56afa714f62f1d7c6e2a7f401efe26224570b03c05f8a",
+    "detail/liulang/reference-res/drawable/shape_item_normal.xml": "ac7b38e93b1635dfcc88233ea712e702182804ca265451edadf08461ae2a85ca",
+    "detail/liulang/reference-res/drawable/shape_check_circle_on_focused.xml": "ebd138f619c59d6b96145368024801eaa8fe2dec86b2594dbe5d3390eb9e3022",
+    "detail/liulang/reference-res/drawable/selector_video.xml": "541848a8ddd6bded4b656d194e0c0af1ba0676072e9ba7d097cd651fd13953bb",
+    "detail/liulang/reference-res/drawable/selector_site_item_background.xml": "0b537dd1d2dd8a8c6fe47825e0c0dfacd27568fa5f427282d015808a75586ce9",
+    "detail/liulang/reference-res/drawable/selector_check_circle.xml": "c2e4fd0ba0cc5576855101421afbb2d53b88b34eb2e08c39be03b1dca0fed8e0",
+    "detail/liulang/reference-res/drawable/ic_play_prev.xml": "fdecba6053627f0eabaad4921c02a232b0502b403da2f46646dee5db3f7995a3",
+    "detail/liulang/reference-res/drawable/selector_detail_item.xml": "7e18f0e2ac950a7155501cd9db6d25854a5c25909e3bc849e4a53013120b1c99",
+    "detail/liulang/reference-res/drawable/shape_home_logo_focused.xml": "d0e2eb7c974f3d38ab7e1badfe78f6cdea381cdeab4bd32d0709fdf24f56ef49",
+    "detail/liulang/reference-res/drawable/shape_chip_round_normal.xml": "96fec2d2da9d65d560de5d373938b7f8f54f8c5b6eebccbf9e5f83b586da7a89",
+    "detail/liulang/reference-res/drawable/ic_play_next.xml": "54af69c3d6cd38f26c65857366605b08da87a159efeb916077461faf084d3cfb",
+    "detail/liulang/reference-res/drawable/shape_detail_item_activated.xml": "a297093aa521f0500f8a101c8ffe98fa2102acc9de6561d097f169adbe9a7f39",
+    "detail/liulang/reference-res/drawable/selector_segment_round.xml": "e77e5fb89242f44f9650d4f6465bd14c50553806e3c0ea1df8c55f237dbeabeb",
+    "detail/liulang/reference-res/drawable/bg_v2_filter_fade.xml": "096f219eb6b00d82634df4bad667c956e2a114ea08de04a260391552b49fca89",
+    "detail/liulang/reference-res/drawable/shape_widget.xml": "3eb718bfa42f3e76e6cdf27d1427e2be57dfc3720ba663da2198c77074ae9d88",
+    "detail/liulang/reference-res/drawable/shape_detail_play_focused.xml": "1119654519e310f9c8c36714cc73aabb2a40c8e1bee3baf84687409a34fd3414",
+    "detail/liulang/reference-res/drawable/bg_hero_mask_h.xml": "6f0cd658b99fd9788cb104fc21f2604474db79ea131395698f9dbd2e3a457d8a",
+    "detail/liulang/reference-res/drawable/selector_home_logo.xml": "d21dd00756e855a3bd254a33d5cec3182e5e3100ad9ccb034266ffc4df27fab9",
+    "detail/liulang/reference-res/layout/adapter_history_poster.xml": "45fd9bbb8b3ac5fc65062ea5d07f6e3f4589e4213947436862870038db8b2216",
+    "detail/liulang/reference-res/layout/adapter_vod_rect.xml": "eda7ff7f1ec53564209d3d73f1ed3e3b527be2f1ac33b25184a7c7f316c361e0",
+    "detail/liulang/reference-res/layout/view_control_vod_action.xml": "3b868c56822ad91e173609de3dfc38568bfbd95bd21eb9a70215b619f125859d",
+    "detail/liulang/reference-res/layout/adapter_vod_home_v2.xml": "227c7ad6d88eccb2e4d837934acdc6d84758852b48f66f4cb3e5ad256f127a30",
+    "detail/liulang/reference-res/layout/activity_detail.xml": "4e64fdf19d09b7abe39c1f4a7b2bf879ebd05124359335b7305dba476a4c8281",
+    "detail/liulang/reference-res/layout/adapter_episode.xml": "d0f5beda68504795e42426cc4eb0e963d9c5e5c3bdf2ca11199bfd65e9ea92da",
+    "detail/liulang/reference-res/layout/view_control_vod.xml": "7d6e141b71a01d7f5262fde9b17330eab6c25b68a3a84cd39f5c5ad0f5421d1c",
+    "detail/liulang/reference-res/layout/adapter_func_v2.xml": "9c53d5f2781601e7fabb77f346b0f2ad9fc656465dbdf8929d89600eef7b6c3e",
+    "detail/liulang/reference-res/layout/activity_video.xml": "f4c272df15e21dbfe364eeae362ca0cecadfd40c553358f257187932a06d6473",
+    "detail/liulang/reference-res/layout/fragment_history.xml": "61beb1977faf173afe3f02746975070c37f0c075a0e46fc9b1599285ff686e74",
+    "detail/liulang/reference-res/layout/activity_home_v2.xml": "6c1ad5739859c5503178d16fd991b6dd374af7d227af2b1c2d6cb482786e8e87",
+    "detail/liulang/reference-res/layout/adapter_segment.xml": "c0a879ec017f8ec2247bf4ca46055ec50cf21b452289f6e13f7027ea7970dc73",
+    "detail/liulang/reference-res/layout/adapter_type.xml": "ed05858d33041b2a074dd07f2e93cbaed150f72c7f4ad974929ceb6259ec930a",
+    "detail/liulang/reference-res/layout/view_progress.xml": "f08694df38133e01b7749916b4f04e10a14d99a7c519099728280a99730324e7",
+    "detail/liulang/reference-res/layout/overlay_focus.xml": "b70221126505980469b22f457243b903ff33c6b77a4611e8d0e2f77c62d5816f",
+    "detail/liulang/reference-res/layout/dialog_vod_home_v2.xml": "ba9d23b86e20523d5e964ff6732d83c519fd8e0bd770c9f2eb79c86a252df1b9",
+    "detail/liulang/reference-res/layout/view_widget_vod.xml": "eab2875f21ec996a7572a96e5a9d816a9e23a5c6443addbb29adf11471dd1a60",
+    "detail/liulang/reference-res/layout/adapter_flag.xml": "5f8cf9c53f36d972f879a51fbddb76ae5226e3c4fbe0c95e8e6f9afaf48192c5",
+    "detail/liulang/reference-res/color/selector_func_v2_text.xml": "426e42830bcaff9a98a4435f10a917e3d391b303970defb3928d4f07ec701293",
+    "detail/liulang/reference-res/color/selector_site_item_text.xml": "6e9f88256208fe67af1138fea5fcc6f2dcb261bb3f0b3fa56f1454123eb29466",
+    "detail/liulang/reference-res/color/selector_type_text.xml": "ebeb98030629f301b506c26961038e82b51222c7bc1da93442548a3acf109e0e",
+    "detail/liulang/reference-res/color/selector_flag_text.xml": "ebeb98030629f301b506c26961038e82b51222c7bc1da93442548a3acf109e0e",
+    "detail/liulang/reference-res/color/selector_config_item_delete.xml": "6e9f88256208fe67af1138fea5fcc6f2dcb261bb3f0b3fa56f1454123eb29466",
+    "detail/liulang/reference-res/color/text.xml": "a341813e1d6f128b20bb25571af9155405a324f52f47ac32817d1c759ba04ba9",
+    "detail/liulang/reference-res/values/selected.xml": "a00e9d4ee75cb3d2e0b481cb198f8e9228cc7e13a40347955af9092b4fdb1d28",
+    "detail/liulang/reference-res/raw/empty.json": "9e98c6b6ab636d72622d40a03933252dea69b5bf17e7503270e85e7cb5151d15",
+    "detail/liulang/reference-res/raw/preload_success.json": "281106aff07518f0db1f8e317998c8585eaef91b48967f84dc203b66adc9417b",
+    "detail/liulang/reference-res/raw/equalizer.json": "3b06dcf4ebb04e3dcc0377f53c597af9498d41d9941dbdf6e8c6616ee59b926c",
+    "detail/runtime/tv/com/leotv/detail/LiulangEpisodes.java": "06cae927e97531b45ec3e1999ec90cc847372e81fbf6136553a5ae9cf9ca8bd8",
+    "detail/runtime/tv/com/leotv/detail/LiulangDetailLayout.java": "0a66c6f43f805a7f43a344e9fffe5da0a189d1c954cf4a0ac23a70de2fa1c5b9",
+    "detail/runtime/tv/com/leotv/detail/LiulangDots.java": "81f9776561464fde7da2f3900a81a6a985a8b67915b79127c46b64ab4d9ac186",
+    "detail/runtime/tv/com/leotv/detail/LiulangHome.java": "8cf313a9ab6f1cd008d5ad26e211e1733b3e9df2a16979754c7e3c0feb881907",
+    "detail/runtime/tv/com/leotv/detail/LiulangPlayer.java": "78e9ac827973f517dcd86c1f95dbeb440ad675d985e82ac9873978d123c642f8",
+    "detail/runtime/tv/com/leotv/detail/LiulangResources.java": "7f9b0c2191607106350ccd2d3e6eec686ceaa7a3bcec169189feac4bbe3ac2ac",
+    "detail/runtime/tv/com/leotv/detail/LiulangHeroImage.java": "216e6e7141840534e8063f657a8719c30260be4a0d4d1aa122f68ebfae13a01c",
+    "detail/runtime/tv/com/leotv/detail/LiulangRoundedImage.java": "850c73f26f376ba7a2d5d78f08bca09c0ff3bfda3c811c1bbb73205dd537bb10",
+    "detail/runtime/common/com/leotv/detail/LiulangMode.java": "d8bba589908e55be9ebad89d73a99fb837826730dfe99b6c43792d83f1f6d362",
+    "detail/runtime/mobile/com/leotv/detail/LiulangDetailLayout.java": "c590f5f13c2799c862b6a452055bc28fd9875a5b2b8301c9373c5d9f3ec095a4",
+    "detail/runtime/mobile/com/leotv/detail/LiulangHome.java": "2ec70b0f7e75b6bf4ea3e79099b779473f599092498f17f9f1b82f6d4ded04a6",
+    "detail/runtime/mobile/com/leotv/detail/LiulangPlayer.java": "375a889f75909fd2df0f6dfceb75fc0d62ab9eadc54444ff1fb8f59f3401163d",
+    "tools/liulang_resources.py": "127a355e9ec56c4b288fcc406d88441c693cceaeb5e4971a90cd9e492201e229",
+    "tools/check_liulang_ui.py": "5eab897185345392756a5c81fbc6f764e5471066b9fa1a9bbc3b585a5c40c4fc",
+    "docs/LEOTV-5.3.6-667-LIULANG-GLOBAL-20261128.md": "ed124fc0bd6efe266c54b0ad4ec09a85afbc88a9646b0d8d25c4781ab3c2c35c",
+    "docs/LEOTV-LIULANG-TV-GLOBAL-UI-FEASIBILITY-20261128.md": "59bb0d1fb10e3b7ed7779c66d8dffa62f82b18a2a1e6164c11132847f2a8e371",
+    "evidence/liulang-tv-global-ui-research-20261128.json": "04ab496a9185b228bf8e7f340b066a5aaef9ea00e37addd10a06bf33b0bf9565",
+    "evidence/liulang-tv-ui-selected-abi-comparison-20261128.json": "7671c554cf4ec2b6fdd290d40f64f6674f3edca73ca5d0937bac88f6449f4eee"
   }
 }

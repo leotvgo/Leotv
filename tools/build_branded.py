@@ -35,6 +35,7 @@ from harden_overlays import compile_program, audit_program, audit_host_hooks
 from apply_launch_branding import banner_bitmap
 from check_launch_rollback import check_resources as check_launch_resources
 from apk_products import product_id, PROFILES, PRODUCTS
+from liulang_resources import payload as liulang_payload
 
 ROOT = Path(__file__).resolve().parents[1]
 BRANDING = ROOT / 'branding'
@@ -355,13 +356,14 @@ def keep_mobile_dex_string_indices_bounded(project, variant):
     return sorted(names)
 
 
-def validate_output(original_apk, output_apk, expected, files, added_asset, player_files=None):
+def validate_output(original_apk, output_apk, expected, files, added_asset, player_files=None, theme_files=None):
     with zipfile.ZipFile(original_apk) as original, zipfile.ZipFile(output_apk) as output:
         originals = {name for name in original.namelist() if not is_signature(name)}
         dex = {name for name in originals if re.fullmatch(r'classes(?:\d+)?\.dex', name)}
         removed = set(files)
         added = {item['path'] for item in files.values()} | {added_asset}
         added.update(player_files or {})
+        added.update(theme_files or {})
         added_dex = {name for name in expected if re.fullmatch(r'classes(?:\d+)?\.dex', name) and name not in originals}
         added.update(added_dex)
         names = (originals - removed) | added
@@ -527,10 +529,14 @@ def main():
             expected[spec['default_logo_asset']] = (BRANDING / spec['default_logo_asset']).read_bytes()
             expected.update(protected_dex)
             expected.update(player_files)
+            theme_files,theme_report=liulang_payload(ROOT,args.variant,args.sdk,work,log)
+            expected.update(theme_files)
             combined = work / 'combined.apk'
             with zipfile.ZipFile(apk) as original, zipfile.ZipFile(assembled) as built, zipfile.ZipFile(combined, 'w') as output:
                 if set(player_files) & set(original.namelist()):
                     raise ValueError('Player additions must not replace any original ZIP/native entry')
+                if set(theme_files)&set(original.namelist()):
+                    raise ValueError('TV theme assets must not replace original ZIP entries')
                 dex = {name: built.read(name) for name in built.namelist() if re.fullmatch(r'classes(?:\d+)?\.dex', name)}
                 if set(dex) != {name for name in original.namelist() if re.fullmatch(r'classes(?:\d+)?\.dex', name)}:
                     raise ValueError('Original multidex set changed.')
@@ -549,6 +555,8 @@ def main():
                     output.writestr(name, data, compress_type=zipfile.ZIP_STORED)
                 for name, data in player_files.items():
                     output.writestr(name, data, compress_type=zipfile.ZIP_STORED if name.startswith('lib/') else zipfile.ZIP_DEFLATED)
+                for name,data in theme_files.items():
+                    output.writestr(name,data,compress_type=zipfile.ZIP_STORED)
             aligned = work / 'aligned.apk'
             zipalign = args.sdk / 'build-tools/36.1.0/zipalign'
             run([zipalign, '-P', '16', '-f', '4', combined, aligned], log)
@@ -560,7 +568,8 @@ def main():
             run(['java', '-Xmx1536m', '-cp', str(classes) + os.pathsep + str(apktool), 'DexSemanticAudit',
                  apk, aligned, dex_report, '--expected-changes', ','.join(sorted(changed))], log)
             report = json.loads(dex_report.read_text())
-            report.update(validate_output(apk, aligned, expected, files, spec['default_logo_asset'], player_files))
+            report.update(validate_output(apk, aligned, expected, files, spec['default_logo_asset'], player_files,theme_files))
+            report['liulang_resources']=theme_report
             report.update(audit_player_zip(aligned, apk, player_files))
             with zipfile.ZipFile(aligned) as shared_zip:
                 shared_payload={name:sha256(shared_zip.read(name)) for name in shared_zip.namelist() if not is_signature(name) and not re.fullmatch(r'classes(?:\d+)?\.dex',name) and name not in player_files}
