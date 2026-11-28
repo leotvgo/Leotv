@@ -5,7 +5,7 @@ sourceSets {
     test.java.srcDirs=['src/test/java']
 }
 tasks.named('compileJava') {
-    source '../../detail/runtime/tv/com/leotv/detail/LiulangResources.java', '../../detail/runtime/tv/com/leotv/detail/LiulangStyle.java', '../../detail/runtime/tv/com/leotv/detail/LiulangHeroImage.java', '../../detail/runtime/tv/com/leotv/detail/LiulangBackdrop.java', '../../detail/runtime/tv/com/leotv/detail/LiulangDots.java', '../../detail/runtime/tv/com/leotv/detail/LiulangRoundedImage.java', '../../detail/runtime/tv/com/leotv/detail/LiulangFlow.java', '../../detail/runtime/tv/com/leotv/detail/LiulangHistoryBar.java'
+    source '../../detail/runtime/tv/com/leotv/detail/LiulangSurfaces.java', '../../detail/runtime/tv/com/leotv/detail/LiulangResources.java', '../../detail/runtime/tv/com/leotv/detail/LiulangStyle.java', '../../detail/runtime/tv/com/leotv/detail/LiulangHeroImage.java', '../../detail/runtime/tv/com/leotv/detail/LiulangBackdrop.java', '../../detail/runtime/tv/com/leotv/detail/LiulangDots.java', '../../detail/runtime/tv/com/leotv/detail/LiulangRoundedImage.java', '../../detail/runtime/tv/com/leotv/detail/LiulangFlow.java', '../../detail/runtime/tv/com/leotv/detail/LiulangHistoryBar.java'
 }
 dependencies {
     compileOnly 'org.robolectric:android-all:15-robolectric-12650502'
@@ -20,6 +20,7 @@ test {
     classpath += files(provider {fileTree(aarClasses).matching{include '**/*.jar'}})
     systemProperty 'robolectric.dependency.repo.url','https://repo.maven.apache.org/maven2'
     systemProperty 'leotv.liulang.payload',file('../../artifacts/liulang-ui-fixture').absolutePath
+    systemProperty 'leotv.liulang.preview',file('../../artifacts/liulang-preview').absolutePath
     maxHeapSize='1g'
     testLogging {events 'passed','failed';exceptionFormat 'full'}
 }

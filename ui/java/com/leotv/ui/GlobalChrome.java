@@ -74,6 +74,7 @@ public final class GlobalChrome {
     private static Drawable originalWallpaper(View view,int width,int height){if("leotv_csp_home".equals(view.getTag())||"leotv_shared_backdrop".equals(view.getTag())||"leotv_csp_shared_backdrop".equals(view.getTag()))return null;if(width>0&&height>0&&view instanceof ImageView&&(view.getClass()==ImageView.class||view.getClass().getName().equals("androidx.appcompat.widget.AppCompatImageView"))&&view.getWidth()>=width*.9f&&view.getHeight()>=height*.65f)return ((ImageView)view).getDrawable();if(view instanceof ViewGroup){ViewGroup group=(ViewGroup)view;for(int i=0;i<group.getChildCount();i++){Drawable found=originalWallpaper(group.getChildAt(i),width,height);if(found!=null)return found;}}return null;}
     public static AutoCloseable protectCategory(View list,View header,View navigation){return new CategoryViewport(list,header,navigation);}
     public static synchronized Drawable loadingBackground(android.content.Context context) {
+        Drawable theme=com.leotv.detail.LiulangSurfaces.background(context);if(theme!=null)return theme;
         if(homeColour!=null)return homeGradient();
         return hostBackdrop == null || hostBackdrop.getConstantState() == null ? null
                 : hostBackdrop.getConstantState().newDrawable(context.getResources()).mutate();
@@ -157,7 +158,8 @@ public final class GlobalChrome {
 
         @Override public void onActivityResumed(Activity activity) {
             if(com.leotv.detail.LiulangMode.redirectSearch(activity))return;
-            if(Scene.accepts(activity)){known.put(activity,true);scene(activity);}
+            boolean themed=com.leotv.detail.LiulangSurfaces.resumed(activity);
+            if(!themed&&Scene.accepts(activity)){known.put(activity,true);scene(activity);}
             if(activity.getClass().getName().equals("com.fongmi.android.tv.ui.activity.VodActivity")&&activity.getIntent().getBooleanExtra("leotv.csp.category",false)){
                 View content=activity.findViewById(android.R.id.content);if(content instanceof FrameLayout){TvCategoryChrome chrome=categories.get(activity);if(chrome==null){chrome=new TvCategoryChrome(activity,(FrameLayout)content);categories.put(activity,chrome);}chrome.resume();}return;
             }
@@ -182,12 +184,13 @@ public final class GlobalChrome {
             if (controller != null) controller.pause();
             else rememberBackground(activity);
         }
-        @Override public void onActivityDestroyed(Activity activity) { com.leotv.detail.NativeQrInput.release(activity);remove(activity);known.remove(activity);Scene scene=scenes.remove(activity);if(scene!=null)scene.close(); }
+        @Override public void onActivityDestroyed(Activity activity) { com.leotv.detail.LiulangSurfaces.destroyed(activity);com.leotv.detail.NativeQrInput.release(activity);remove(activity);known.remove(activity);Scene scene=scenes.remove(activity);if(scene!=null)scene.close(); }
         @Override public void onActivityStopped(Activity activity) {
             Controller controller = active.get(activity);
             if (controller != null) controller.trim();
         }
         @Override public void onActivityCreated(Activity activity, Bundle state) {
+            com.leotv.detail.LiulangSurfaces.created(activity);
             if (state != null && state.getBoolean(FOLLOWING, false) && activity.getIntent() != null)
                 activity.getIntent().putExtra(FOLLOWING, true);
         }

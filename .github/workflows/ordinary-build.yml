@@ -157,6 +157,7 @@ jobs:
           name: liulang-api23-resources
           path: |
             artifacts/liulang-api23-resources.json
+            artifacts/liulang-preview/*.png
             research/liulang-ui-check/build/test-results/test/*.xml
           retention-days: 14
 

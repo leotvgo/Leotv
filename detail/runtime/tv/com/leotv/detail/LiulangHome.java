@@ -35,7 +35,7 @@ final class LiulangHome implements AutoCloseable {
         this.owner=owner;activity=owner.activity;content=owner.content;res=new LiulangResources(activity);root=(ViewGroup)res.inflate("activity_home_v2",content);root.setTag("leotv_liulang_home");root.setBackgroundColor(Color.BLACK);
         hero=res.find(root,"heroBg");hero.under(res.find(root,"heroBgUnder"));hero.failed(()->posterCardFallback());poster=res.find(root,"posterCardImg");posterCard=res.find(root,"posterCard");title=res.find(root,"heroNameText");facts=res.find(root,"heroMetaText");description=res.find(root,"heroDescText");
         ImageView original=res.find(root,"heroLogoImg");ViewGroup parent=(ViewGroup)original.getParent();int at=parent.indexOfChild(original);ViewGroup.LayoutParams lp=original.getLayoutParams();parent.removeView(original);logo=new LiulangTitleArt(res,()->{boolean ready=logoReady();title.setVisibility(ready?View.GONE:View.VISIBLE);});logo.setId(res.id("heroLogoImg"));logo.setAdjustViewBounds(true);logo.setMaxWidth(res.dp(720));parent.addView(logo,at,lp);
-        loading=res.find(root,"posterProgress");empty=res.find(root,"posterEmpty");filters=res.find(root,"filterPanel");filterRows=res.find(root,"filterRows");historyPanel=res.find(root,"historyPanelContainer");homeButton=res.find(root,"homeBtn");
+        loading=res.find(root,"posterProgress");empty=res.find(root,"posterEmpty");loading.setVisibility(View.VISIBLE);empty.setVisibility(View.GONE);filters=res.find(root,"filterPanel");filterRows=res.find(root,"filterRows");historyPanel=res.find(root,"historyPanelContainer");homeButton=res.find(root,"homeBtn");
         posters=res.find(root,"recycler");types=res.find(root,"typeRecycler");nav=res.find(root,"navRecycler");
         posterItems=new ArrayObjectAdapter(new Cards());posters.setAdapter(new ItemBridgeAdapter(posterItems));posters.setItemAnimator(null);posters.setItemViewCacheSize(10);posters.setHorizontalSpacing(res.dp(16));posters.setFocusScrollStrategy(0);
         typeItems=new ArrayObjectAdapter(new Labels(false));types.setAdapter(new ItemBridgeAdapter(typeItems));types.setHorizontalSpacing(res.dp(12));types.setRowHeight(-2);types.setFocusScrollStrategy(1);types.setItemAnimator(null);
@@ -55,7 +55,7 @@ final class LiulangHome implements AutoCloseable {
         root.setVisibility(View.VISIBLE);
         SiteFeed.Site next=SiteFeed.active();Integer config=SiteFeed.configId();String key=next==null?"":config+"@@@"+next.key;
         if(!identity.equals(key)||site!=null&&next!=null&&site.raw!=next.raw){generation++;selection++;metadata.cancel();main.removeCallbacks(selectedWork);cache.clear();filterChoices.clear();folders.clear();page=null;site=next;configuration=config;identity=key;posterItems.clear();typeItems.clear();categories.clear();history(false);filter(false);hero.clear();selected=-1;loadHome();}
-        if(site==null){loading.setVisibility(View.GONE);empty.setVisibility(View.VISIBLE);title.setText("请选择站点");title.setVisibility(View.VISIBLE);}
+        if(site==null){loading.setVisibility(View.VISIBLE);empty.setVisibility(View.GONE);title.setVisibility(View.INVISIBLE);facts.setVisibility(View.INVISIBLE);description.setVisibility(View.INVISIBLE);logo.setVisibility(View.GONE);posterCard.setVisibility(View.GONE);}
         history.sync();return true;
     }
     void loadHome(){
@@ -98,7 +98,7 @@ final class LiulangHome implements AutoCloseable {
     boolean back(){if(siteSheet!=null){siteSheet.close();return true;}if(filterVisible){filter(false);types.requestFocus();return true;}if(historyVisible){if(history.resetDelete())return true;history(false);homeButton.requestFocus();return true;}if(!folders.isEmpty()){page=folders.pop();display();posters.requestFocus();return true;}long now=android.os.SystemClock.uptimeMillis();if(now-backAt<2000)activity.finish();else{backAt=now;Toast.makeText(activity,"再按一次返回退出",Toast.LENGTH_SHORT).show();}return true;}
     boolean shown(){return !closed&&active&&root.isShown();}
     boolean focus(View previous){if(previous!=null&&previous.isShown()&&NativeCspUi.descendant(previous,root)&&previous.requestFocus())return true;return posters.requestFocus();}
-    void active(boolean value){active=value;root.setVisibility(value?View.VISIBLE:View.GONE);hero.active(value);if(history!=null)history.active(value&&historyVisible);if(!value){selection++;metadata.cancel();main.removeCallbacksAndMessages(null);images.idle();}else{loadSelected();refreshImages();}}
+    void active(boolean value){active=value;if(value)root.setVisibility(View.VISIBLE);hero.active(value);if(history!=null)history.active(value&&historyVisible);if(!value){selection++;metadata.cancel();main.removeCallbacksAndMessages(null);images.idle();}else{loadSelected();refreshImages();}}
     Drawable background(){return hero.getDrawable();}
     @Override public void close(){if(closed)return;closed=true;generation++;selection++;if(siteSheet!=null)siteSheet.close();metadata.close();images.close();hero.close();logo.close();history.close();worker.shutdownNow();main.removeCallbacksAndMessages(null);TmdbArtwork.releaseOwner(this);content.removeView(root);for(Map.Entry<View,Integer> e:hidden.entrySet())if(e.getKey().getParent()!=null)e.getKey().setVisibility(e.getValue());hidden.clear();cache.clear();folders.clear();}
     final class Labels extends Presenter {

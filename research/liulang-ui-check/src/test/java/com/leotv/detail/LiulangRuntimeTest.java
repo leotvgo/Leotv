@@ -48,6 +48,30 @@ public class LiulangRuntimeTest {
         Bitmap tile=Bitmap.createBitmap(180,48,Bitmap.Config.ARGB_8888);type.draw(new Canvas(tile));assertTrue("runtime category background is visible",Color.alpha(tile.getPixel(90,5))>0);tile.recycle();
         View card=resources.inflate("adapter_vod_rect",content);measure(card,resources.dp(120),resources.dp(215));ImageView image=resources.find(card,"image");assertEquals(resources.dp(120),image.getWidth());assertEquals(resources.dp(180),image.getHeight());
     }
+    @Test public void decodedArtworkRemainsVisibleThroughTheCompleteHomeAndDetailLayouts()throws Exception{
+        for(String layout:new String[]{"activity_home_v2","activity_detail"}){
+            View root=resources.inflate(layout,content);root.setBackgroundColor(Color.BLACK);content.addView(root,new FrameLayout.LayoutParams(-1,-1));measure(root,1600,900);
+            LiulangHeroImage hero=resources.find(root,"heroBg");
+            ReflectionHelpers.setField(hero,"loader",(LiulangHeroImage.Loader)(c,p,s,r)->png(Color.BLUE));
+            try{hero.load("/fixture.jpg",false,null);awaitImage(hero);assertEquals(255,hero.getImageAlpha());hero.load("/fixture.jpg",false,null);assertEquals(255,hero.getImageAlpha());hero.active(false);assertEquals(255,hero.getImageAlpha());measure(root,1600,900);
+                Bitmap frame=Bitmap.createBitmap(1600,900,Bitmap.Config.ARGB_8888);root.draw(new Canvas(frame));
+                File output=new File(System.getProperty("leotv.liulang.preview","../../artifacts/liulang-preview"));output.mkdirs();try(FileOutputStream stream=new FileOutputStream(new File(output,layout+"-artwork.png"))){frame.compress(Bitmap.CompressFormat.PNG,100,stream);}
+                int pixel=frame.getPixel(1280,180);assertTrue(layout+" image must be visible in composed frame: "+Integer.toHexString(pixel),Color.blue(pixel)>180&&Color.red(pixel)<40);frame.recycle();
+            }finally{hero.close();content.removeView(root);}
+        }
+    }
+    @Test public void nativeLibraryUsesThemeBackdropWithoutCoveringControlsAndRestoresOnExit(){
+        Bitmap art=Bitmap.createBitmap(64,36,Bitmap.Config.ARGB_8888);art.eraseColor(Color.BLUE);LiulangBackdrop.publish(art);art.recycle();
+        ActivityController<com.fongmi.android.tv.ui.activity.KeepActivity> host=Robolectric.buildActivity(com.fongmi.android.tv.ui.activity.KeepActivity.class).setup().visible();
+        Activity nativePage=host.get();FrameLayout pane=(FrameLayout)nativePage.findViewById(android.R.id.content);FrameLayout nativeContent=new FrameLayout(nativePage);nativeContent.setBackgroundColor(Color.RED);pane.addView(nativeContent,new FrameLayout.LayoutParams(-1,-1));
+        ImageView wallpaper=new ImageView(nativePage);wallpaper.setImageDrawable(new android.graphics.drawable.ColorDrawable(Color.RED));nativeContent.addView(wallpaper,new FrameLayout.LayoutParams(-1,-1));
+        Button button=new Button(nativePage);button.setText("收藏");final boolean[] clicked={false};button.setOnClickListener(v->clicked[0]=true);nativeContent.addView(button,new FrameLayout.LayoutParams(120,60,Gravity.BOTTOM));
+        android.graphics.drawable.Drawable original=nativeContent.getBackground();
+        try{LiulangSurfaces.created(nativePage);assertTrue(LiulangSurfaces.resumed(nativePage));measure(pane,960,540);pane.getViewTreeObserver().dispatchOnPreDraw();
+            Bitmap frame=Bitmap.createBitmap(960,540,Bitmap.Config.ARGB_8888);pane.draw(new Canvas(frame));int pixel=frame.getPixel(700,100);assertTrue(Color.blue(pixel)>100&&Color.red(pixel)<30);assertTrue(button.isShown());button.performClick();assertTrue(clicked[0]);assertEquals(0f,wallpaper.getAlpha(),0);frame.recycle();
+            LiulangSurfaces.destroyed(nativePage);assertSame(original,nativeContent.getBackground());assertEquals(1f,wallpaper.getAlpha(),0);
+        }finally{LiulangSurfaces.destroyed(nativePage);host.pause().stop().destroy();}
+    }
     @Test public void identicalProgressiveHeroCallbacksKeepOneInFlightLoadAndDisplayFirstImage()throws Exception{
         byte[] png=png(Color.BLUE);AtomicInteger calls=new AtomicInteger();CountDownLatch entered=new CountDownLatch(1),release=new CountDownLatch(1);
         LiulangHeroImage hero=new LiulangHeroImage(resources,null,(context,path,source,request)->{calls.incrementAndGet();entered.countDown();release.await(3,TimeUnit.SECONDS);request.check();return png;});content.addView(hero,new FrameLayout.LayoutParams(-1,-1));

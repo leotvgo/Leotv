@@ -47,11 +47,22 @@ final class LiulangResources extends ContextWrapper {
             info.splitSourceDirs=append(info.splitSourceDirs,file.getAbsolutePath());
             info.splitPublicSourceDirs=append(info.splitPublicSourceDirs,file.getAbsolutePath());
             Resources loaded=activity.getPackageManager().getResourcesForApplication(info);
+            if(loaded.getIdentifier("activity_home_v2","layout",PACKAGE)==0)loaded=legacyResources(activity,file);
             resources=adapt(loaded,activity);
             theme=resources.newTheme();theme.setTo(activity.getTheme());
             bindings=manifest.getJSONObject("bindings");
             if(id("layout","activity_home_v2")==0)throw new IOException("TV resource package unavailable");
         }catch(Exception error){throw new IllegalStateException("浪壳界面资源未通过加载核对",error);}
+    }
+    /** API23 PackageManager can return cached host resources and ignore a copied ApplicationInfo's splits. */
+    static Resources legacyResources(Activity activity,File payload)throws Exception{
+        AssetManager assets=AssetManager.class.getDeclaredConstructor().newInstance();
+        java.lang.reflect.Method add=AssetManager.class.getMethod("addAssetPath",String.class);
+        ApplicationInfo host=activity.getApplicationInfo();
+        if(((Integer)add.invoke(assets,host.sourceDir))==0)throw new IOException("Host resources unavailable");
+        if(host.splitSourceDirs!=null)for(String split:host.splitSourceDirs)if(((Integer)add.invoke(assets,split))==0)throw new IOException("Host split resources unavailable");
+        if(((Integer)add.invoke(assets,payload.getAbsolutePath()))==0)throw new IOException("Theme resources unavailable");
+        return new Resources(assets,activity.getResources().getDisplayMetrics(),activity.getResources().getConfiguration());
     }
     static DisplayMetrics metrics(Activity activity){
         DisplayMetrics metrics=new DisplayMetrics();metrics.setTo(activity.getResources().getDisplayMetrics());

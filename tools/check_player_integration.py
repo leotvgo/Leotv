@@ -38,8 +38,9 @@ def check(root=ROOT):
     shortcut_ui=manifest.get('authorized_666_source_repairs',{})
     liulang_ui=manifest.get('authorized_667_source_repairs',{})
     comic_effects=manifest.get('authorized_668_source_repairs',{})
+    liulang_recovery=manifest.get('authorized_669_source_repairs',{})
     def expected_revision(name,previous,start=651):
-        for revision,changes in ((651,incremental),(652,current),(653,home_ui),(654,unified),(655,repaired),(656,takeover),(657,home_focus),(658,layout_rollback),(659,poster_search),(660,official_profiles),(661,playback_paths),(662,playback_fixes),(663,launch_paths),(664,startup_rollback),(665,resource_feedback),(666,glass_ui),(667,shortcut_ui),(668,liulang_ui),(669,comic_effects)):
+        for revision,changes in ((651,incremental),(652,current),(653,home_ui),(654,unified),(655,repaired),(656,takeover),(657,home_focus),(658,layout_rollback),(659,poster_search),(660,official_profiles),(661,playback_paths),(662,playback_fixes),(663,launch_paths),(664,startup_rollback),(665,resource_feedback),(666,glass_ui),(667,shortcut_ui),(668,liulang_ui),(669,comic_effects),(670,liulang_recovery)):
             if revision<start or name not in changes:continue
             repair=changes[name]
             if repair['before_sha256']!=previous or not repair.get('reason'):
@@ -110,11 +111,17 @@ def check(root=ROOT):
         if hashlib.sha256((root/name).read_bytes()).hexdigest()!=expected_revision(name,digest,669):
             raise ValueError('667 TV global mode addition differs from its reviewed source: '+name)
     for name,repair in comic_effects.items():
-        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=repair['after_sha256']:
+        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=expected_revision(name,repair['after_sha256'],670):
             raise ValueError('668 comic effects differ from their authorized scope: '+name)
     for name,digest in manifest.get('authorized_668_additions',{}).items():
-        if hashlib.sha256((root/name).read_bytes()).hexdigest()!=digest:
+        if hashlib.sha256((root/name).read_bytes()).hexdigest()!=expected_revision(name,digest,670):
             raise ValueError('668 comic artwork/source differs from its reviewed snapshot: '+name)
+    for name,repair in liulang_recovery.items():
+        if not repair.get('reason') or hashlib.sha256((root/name).read_bytes()).hexdigest()!=repair['after_sha256']:
+            raise ValueError('669 Liulang recovery differs from its authorized scope: '+name)
+    for name,digest in manifest.get('authorized_669_additions',{}).items():
+        if hashlib.sha256((root/name).read_bytes()).hexdigest()!=digest:
+            raise ValueError('669 Liulang source addition differs: '+name)
     removals=manifest.get('authorized_663_removed_sources',{})
     for name,digest in manifest.get('authorized_662_additions',{}).items():
         if name in removals:

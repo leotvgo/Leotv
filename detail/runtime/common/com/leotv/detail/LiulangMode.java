@@ -17,6 +17,6 @@ public final class LiulangMode {
         return intent.getBooleanExtra(EXTRA,false);
     }
     static void carry(Activity owner,Intent next){if(!Device.MOBILE)next.putExtra(EXTRA,session(owner));}
-    static boolean search(Activity activity,String keyword){if(!enabled(activity))return false;Intent next=new Intent().setClassName(activity.getPackageName(),"com.leotv.detail.LiulangSearchActivity");next.putExtra("keyword",keyword==null?"":keyword);activity.startActivity(next);return true;}
+    static boolean search(Activity activity,String keyword){if(!enabled(activity))return false;Intent next=new Intent().setClassName(activity.getPackageName(),"com.leotv.detail.LiulangSearchActivity");next.putExtra("keyword",keyword==null?"":keyword);next.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);activity.startActivity(next);activity.overridePendingTransition(0,0);return true;}
     public static boolean redirectSearch(Activity activity){String name=activity.getClass().getName();if(!enabled(activity)||!name.equals("com.fongmi.android.tv.ui.activity.SearchActivity")&&!name.equals("com.fongmi.android.tv.ui.activity.CollectActivity"))return false;if(!activity.getIntent().getBooleanExtra("leotv.liulang.search.redirected",false)){activity.getIntent().putExtra("leotv.liulang.search.redirected",true);search(activity,activity.getIntent().getStringExtra("keyword"));activity.finish();}return true;}
 }
