@@ -2934,7 +2934,7 @@
     },
     "detail/liulang/source-lock.json": {
       "before_sha256": "0fa8da730949fd192a01b41619f52802e6ef454f83a55fe7642ad8bd75f07bbb",
-      "after_sha256": "60ce9ae4a7d4f83c5beae45981a9f8e35e6ad321c350f57fa426176ac4e525ec",
+      "after_sha256": "86895ca6918cc9dc8ed69471bfad4c92d971d20e7892872aba57108f8d250b14",
       "reason": "User-authorized build669 TV Liulang fixes: API23 resource-loading crash, ImageView alpha visibility, startup loading state, preserved transition frame, matching native page wallpaper and retained current hero. Phone/other themes and existing playback/Danmaku unchanged."
     },
     "detail/runtime-sources.json": {
@@ -3019,7 +3019,7 @@
     },
     "detail/runtime/tv/com/leotv/detail/LiulangEpisodes.java": {
       "before_sha256": "0ad9f52b30c39a517dece717c0660043a69ac8effa27ede989ee84b9e21dd93b",
-      "after_sha256": "a91804feac189d3eae5e1cb61acb3475fa902cbe01e121c212ac2c769cfd4823",
+      "after_sha256": "f0bc6cf23a2544863ff54445d6b7b85d7d3d9eddff904e6c952311de4447a543",
       "reason": "User-authorized fixes from device testing and reference screenshots: reveal history content, route remote keys into theme, bound header/episode layout and restore card spacing while preserving metadata matched episode names."
     },
     "detail/runtime/tv/com/leotv/detail/LiulangHistory.java": {
