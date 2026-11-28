@@ -2919,7 +2919,7 @@
     },
     "README.md": {
       "before_sha256": "6e64e313c5844fb9fc5e9cd07455f21fcefa969067c8e2f65bfab96c1b3f565a",
-      "after_sha256": "192dc0196bbef515706a2e00369ad743428f483108180be4e3e62c26232b1bfb",
+      "after_sha256": "4ea16d93cb0fbf995ddc39fb730f09c6c53dcea8c4f11a073fff425da164c1a5",
       "reason": "User-authorized build669 TV Liulang fixes: API23 resource-loading crash, ImageView alpha visibility, startup loading state, preserved transition frame, matching native page wallpaper and retained current hero. Phone/other themes and existing playback/Danmaku unchanged."
     },
     "branding/AndroidManifest.xml": {
@@ -3044,7 +3044,8 @@
     "research/ui-check/src/stub/java/com/leotv/detail/LiulangSurfaces.java": "3179420f51f344e95c4a41927300e91fb17249faaf63ed9250925f474eed7fd8",
     "research/liulang-ui-check/src/stub/java/com/leotv/detail/LiulangMode.java": "a6372500d564430685e203548c1d9d77f6703d5ef55a4eefb08cc9ef29d9c8d7",
     "research/liulang-ui-check/src/stub/java/com/fongmi/android/tv/ui/activity/KeepActivity.java": "4ef4b0d788267308cc9e1cf821db90164daa93ee3b1a9c26e9e2bc6ad865b7a5",
-    "docs/LEOTV-5.3.6-669-LIULANG-ANDROID6-ARTWORK-20261128.md": "81ec4efd148648fd921f8f4293d3afea64f473021a12845b427429cd1cba7d65",
-    "detail/runtime/tv/com/leotv/detail/LiulangWallpaper.java": "544d8bbbab24f5ff23df2e5ec4315b0a1af34d70b49d88ba38cd0f223c229f17"
+    "docs/LEOTV-5.3.6-669-LIULANG-ANDROID6-ARTWORK-20261128.md": "f4dd648c86afba62f3b1ee7b4292497812af3136944d56969ce3223f452c939a",
+    "detail/runtime/tv/com/leotv/detail/LiulangWallpaper.java": "544d8bbbab24f5ff23df2e5ec4315b0a1af34d70b49d88ba38cd0f223c229f17",
+    "evidence/leotv-5.3.6-669-signed-delivery-20261128.json": "dad06a91d38e2dae19728d6d42fc7ee5f0753fc32acdfd8feefcb650b5e37523"
   }
 }
