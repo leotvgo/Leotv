@@ -2365,6 +2365,11 @@
       "before_sha256": "5320840667cbc35f766c4dbfedaff0e2e3ab7e825cf3faed25f5eb6345c35ed1",
       "after_sha256": "7b3643289f307f9319ecdfc60391e9e91ad6a94a94a28d696926db06b93863e3",
       "reason": "Align the TV UI fixture with retained content-edge entry, explicit Robolectric Activity focus and bounded paused frame advancement; verify original content focus restoration on key down."
+    },
+    "research/test_ci_release_store.py": {
+      "before_sha256": "66ddf84d0f0c5de88ff987a71cad817bff6fb967a8855384a0390b2e85770dd6",
+      "after_sha256": "6ec780e10bdb0fa895d434019c35487aa3c39356505a1a0c6513cf3c1ba52c88",
+      "reason": "Require the added phone-glass CI job before shared draft preparation and every APK matrix job; preserve release ownership and upload recovery protections."
     }
   },
   "authorized_665_additions": {
