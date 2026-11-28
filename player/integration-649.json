@@ -2360,13 +2360,18 @@
       "before_sha256": "863b6900c55961562fffcea64edcf20f8475324e8656d0d9e35a21f54ec9b251",
       "after_sha256": "0e337b3762d7cf2ccb0d40149031aa021a932e4f84ea68164b878fcd3c71bcb8",
       "reason": "2026-11-28 user-authorized build665 glass UI test: preserve version 5.3.6, native actions, API23 and eight products; add bounded glass rendering/menu readiness/scroll visibility and mandatory CI source/UI gates; retain stable build664."
+    },
+    "research/ui-check/src/test/java/com/leotv/ui/GlobalChromeTest.java": {
+      "before_sha256": "5320840667cbc35f766c4dbfedaff0e2e3ab7e825cf3faed25f5eb6345c35ed1",
+      "after_sha256": "1b2fc8e872a4118a01e8726039bd8e4931d0d51359d7106730dcb19cadc56c1f",
+      "reason": "Align the existing TV UI fixture with the retained content-edge shortcut entry and key-down return; retain native focus and glass assertions."
     }
   },
   "authorized_665_additions": {
     "docs/LEOTV-LIQUID-GLASS-DESIGN-20261128.md": "94d7695363d8e6bf17e854c638cb29b0bc26988d3c92846fe1691122fd05be6a",
     "research/ui-check/src/stub/java/com/leotv/detail/CacheMaintenance.java": "a4e1f3e4cd9611e2998b826cf55aa9b69d8178a622be8d83a28bdaa1b846a12d",
     "research/ui-check/src/stub/java/com/leotv/detail/DanmakuSettings.java": "dcc7d86d39f281088e7d04c7412d84d59c275ec44602fc22e4feee9bc2c296e1",
-    "research/ui-check/src/test/java/com/leotv/ui/PhoneGlassChromeTest.java": "93705faae075908df5f56383e001b0be8854cbe6721fb950afde41e87d0c73b9",
+    "research/ui-check/src/test/java/com/leotv/ui/PhoneGlassChromeTest.java": "4fc02ac3a6850494fc9bb1fc969319eda51769320cc4311719fedac00b9e0bf3",
     "tools/check_liquid_glass.py": "becc72a2c4e29e75dfee96401e31ec381a708ddc990152d6b0f0706b69b32318",
     "ui/java/com/leotv/ui/LiquidGlassButton.java": "6efa905ca4ea4feaa0dd4112541c2b23908a7d769888f88a9e41eecc401d0025",
     "ui/java/com/leotv/ui/PhoneGlassChrome.java": "682960edfc8b36f8c0aa29d6af74de5770d19b89950d0e115b8b029ef2dc4fee",

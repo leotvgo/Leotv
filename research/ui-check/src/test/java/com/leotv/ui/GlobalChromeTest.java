@@ -55,10 +55,14 @@ public class GlobalChromeTest {
         assertEquals(Color.GREEN,((ColorDrawable)GlobalChrome.loadingBackground(host)).getColor());
     }
     @Test public void leftEntryUsesGlassFocusAndReturnsToTheNativeControl(){
-        host.button.requestFocus();Window.Callback callback=host.getWindow().getCallback();assertTrue(callback.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_DPAD_LEFT)));
-        layout();org.robolectric.shadows.ShadowLooper.shadowMainLooper().idleFor(16,java.util.concurrent.TimeUnit.MILLISECONDS);
+        // The retained menu opens only at the first content card, not the toolbar.
+        host.toolbar.removeView(host.button);((FrameLayout)host.findViewById(310)).addView(host.button,new FrameLayout.LayoutParams(120,56));layout();
+        assertTrue(host.button.requestFocus());Window.Callback callback=host.getWindow().getCallback();assertTrue(callback.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_DPAD_LEFT)));
+        callback.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,KeyEvent.KEYCODE_DPAD_LEFT));
+        layout();org.robolectric.shadows.ShadowLooper.shadowMainLooper().idleFor(200,java.util.concurrent.TimeUnit.MILLISECONDS);
         View entry=host.findViewById(android.R.id.content).findFocus();assertNotSame(host.button,entry);assertEquals("追更日历",entry.getContentDescription());
         assertEquals(android.graphics.PixelFormat.TRANSLUCENT,entry.getBackground().getOpacity());assertTrue(entry.getScaleX()>1);
+        assertTrue(callback.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_DPAD_RIGHT)));
         callback.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,KeyEvent.KEYCODE_DPAD_RIGHT));assertTrue(host.button.hasFocus());
     }
 }

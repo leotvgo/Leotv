@@ -27,6 +27,7 @@ public class PhoneGlassChromeTest {
         org.robolectric.shadows.ShadowChoreographer.setFrameDelay(java.time.Duration.ofMillis(16));
         activity=Robolectric.buildActivity(PhoneNavigationTest.Host.class);
         activity.get().setTheme(android.R.style.Theme_Material_NoActionBar);activity.setup().visible();host=activity.get();
+        org.robolectric.shadows.ShadowLooper.shadowMainLooper().idleFor(16,java.util.concurrent.TimeUnit.MILLISECONDS);
         layout();
     }
     void attach() throws Exception {
@@ -110,8 +111,12 @@ public class PhoneGlassChromeTest {
     }
     @Test public void contentDraggingHidesTheBarWithoutChangingTheNativeLayout() throws Exception{
         attach();android.view.ViewGroup.LayoutParams params=host.navigation.getLayoutParams();int height=params.height;
-        MotionEvent down=MotionEvent.obtain(100,100,MotionEvent.ACTION_DOWN,180,350,0);glass.touch(down);down.recycle();
-        MotionEvent move=MotionEvent.obtain(100,130,MotionEvent.ACTION_MOVE,180,280,0);glass.touch(move);move.recycle();
+        android.graphics.Rect visible=new android.graphics.Rect();assertTrue("native scroll content is visible",host.scroll.getGlobalVisibleRect(visible));
+        float x=visible.exactCenterX(),y=visible.exactCenterY();
+        assertTrue("gesture starts on a vertical native scroller: "+visible,(glass.visibility.scrollAxes(controller.content,x,y)&1)!=0);
+        MotionEvent down=MotionEvent.obtain(100,100,MotionEvent.ACTION_DOWN,x,y,0);glass.touch(down);down.recycle();
+        assertTrue("content touch retains its scroll axis",(glass.visibility.axes&1)!=0);
+        MotionEvent move=MotionEvent.obtain(100,130,MotionEvent.ACTION_MOVE,x,y-70,0);glass.touch(move);move.recycle();
         assertEquals(1,glass.visibility.target,0);
         for(int i=0;i<80;i++)glass.visibility.doFrame(1_000_000_000L+i*8_333_334L);
         assertTrue(host.navigation.getTranslationY()>host.navigation.getHeight());assertSame(params,host.navigation.getLayoutParams());assertEquals(height,params.height);
