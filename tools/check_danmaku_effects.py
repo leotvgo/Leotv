@@ -11,7 +11,7 @@ from apply_native_details import method
 def check(root):
     folder=root/'detail/runtime/common/com/leotv/detail'
     effects=(folder/'DanmakuEffects.java').read_text();policy=(folder/'DanmakuEffectPolicy.java').read_text()
-    for token in ('STYLES=9','AVATAR=6','NEON_TRAIL=7','PETALS=8','extraWidth(','extraHeight(','CACHE_ENTRIES=64','CACHE_BYTES=2*1024*1024','now-lastFrame[family]>250','owner[family]!=token',
+    for token in ('STYLES=17','AVATAR=6','NEON_TRAIL=7','PETALS=8','extraWidth(','extraHeight(','CACHE_ENTRIES=64','CACHE_BYTES=2*1024*1024','now-lastFrame[family]>250','owner[family]!=token',
                   'type==1||type==4||type==5||type==6'):
         if token not in policy:raise ValueError('Stable native effect/animation bound missing: '+token)
     for token in ('options=new Options(', 'getBoolean("effects",true)', 'getBoolean("effect_animation",true)', 'getInt("effect_rate",15)',
@@ -62,7 +62,21 @@ def check(root):
     for token in ('new PathMeasure(track,true)','orbit.getPosTan','orbitLight(canvas,phase,firstLight','tint(colors[0],alpha,shade)','panel(board,inset,radius)','Path.FillType.EVEN_ODD','tile.petalOverlay','((token>>>32)&3)==0','tile.foregroundPetals','else if(style==2){','ANIMATION_FAMILIES=3'):
         if token not in effects+policy:raise ValueError('Orbit colors or varied cached backgrounds missing: '+token)
     if 'VARIANTS=8' not in avatar:raise ValueError('The eight authorized avatar variants are required')
-    return {'backplate_shapes':5,'composed_petal_overlays':True,'avatar_variants':8,'border_palettes':10,'styles':9,'reference_styles':['portrait_capsule','neon_orb_trail','falling_petals'],
+    comic=(folder/'DanmakuComic.java').read_text();art=(folder/'DanmakuComicArt.java').read_text()
+    if 'COMIC_BURST=9' not in policy or 'COMIC_FIGURE=16' not in policy or 'style<DanmakuEffectPolicy.COMIC_BURST&&' not in effects:
+        raise ValueError('Comic additions must keep original style ids and compositing boundaries')
+    if 'figure.recycle()' in comic or 'new Thread' in comic or 'postDelayed' in comic or 'canvas.drawText(text,textX,baseline,letters)' not in comic:
+        raise ValueError('Comic labels must retain original text and the bounded native frame loop')
+    records=json.loads((root/'detail/artwork/comic-20261128/provenance.json').read_text())['assets']
+    embedded=re.findall(r'"(iVBOR[A-Za-z0-9+/=]+)"',art)
+    if len(records)!=2 or len(embedded)!=2:raise ValueError('Exactly two user-supplied figure cutouts are declared')
+    for record,encoded in zip(records,embedded):
+        data=(root/record['file']).read_bytes()
+        if base64.b64decode(encoded,validate=True)!=data or hashlib.sha256(data).hexdigest()!=record['asset_sha256'] or struct.unpack('>II',data[16:24])!=(72,112) or data[25]!=6:
+            raise ValueError('Comic sticker differs from its bounded RGBA reference')
+    if 'DanmakuComicArt.PIXEL_BYTES' not in effects or 'figures[i].recycle()' not in effects or 'for(Bitmap image:figures)' not in effects:
+        raise ValueError('Figure cache must be counted and released with all other effects')
+    return {'backplate_shapes':5,'composed_petal_overlays':True,'avatar_variants':8,'border_palettes':10,'styles':17,'reference_styles':['portrait_capsule','neon_orb_trail','falling_petals'],
             'portrait_sha256':record['asset_sha256'],'default_fraction':15,'default_animation':True,'native_timeline_and_coordinates':True,
             'max_simultaneous_animations':3,'max_bitmap_bytes':2*1024*1024,'max_bitmap_entries':64,
             'native_opacity_and_font_size':True,'no_extra_frame_loop':True}

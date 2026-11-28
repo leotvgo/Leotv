@@ -2681,5 +2681,76 @@
     "research/check_liulang_mode.py": "d270448517060782de3e2a6667ed45726a36ce963daaadbd9e76fe8299268816",
     "research/ui-check/src/test/java/com/leotv/ui/LiulangVectorCompatibilityTest.java": "a0339b76d5958bff9f7af6cba4910cca251883f8eb74f629b62eb75ff3240503",
     "evidence/leotv-5.3.6-667-signed-delivery-20261128.json": "8784f0f528415b119a8b1cd22db92c007263035ee57e088e1f39ab94396a3ebb"
+  },
+  "authorized_668_source_repairs": {
+    ".github/workflows/ordinary-build.yml": {
+      "before_sha256": "c4d6535e9214d3507e6938c82cd52674ad84ffbe5484a8844d08f818d5c183b0",
+      "after_sha256": "de10e0fd970f5894386736f978c64bd91a788fe2e63636f93cc18df07b59a305",
+      "reason": "User authorized additional comic Danmaku based on seven reference images: eight new styles and two transparent user-image figures; retain original styles, global sampling and orbit/petal weights, native clock/actions/ABI, bounded cache and eight products."
+    },
+    "README.md": {
+      "before_sha256": "87e614fb6bc237e80f52942bbc80da895d41299f114322a07c35658342ed8ad9",
+      "after_sha256": "0e23652ee8b3487a0c9e1619e56cfc0ad48b6e2c01789384279a889575b8dbf4",
+      "reason": "User authorized additional comic Danmaku based on seven reference images: eight new styles and two transparent user-image figures; retain original styles, global sampling and orbit/petal weights, native clock/actions/ABI, bounded cache and eight products."
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "822a29d6a5adeda55ae0191b429db5b684c7c5041e4e763be378f34bdb11356d",
+      "after_sha256": "3d5bb949c07f2011a50bd516d3521f6526a384f6015992de9036d269fefddaaf",
+      "reason": "User authorized additional comic Danmaku based on seven reference images: eight new styles and two transparent user-image figures; retain original styles, global sampling and orbit/petal weights, native clock/actions/ABI, bounded cache and eight products."
+    },
+    "branding/release.json": {
+      "before_sha256": "0c55b98b987aa4ed3443fed59873d7e4b2ccdfcd60d3f9341c541f0458acc102",
+      "after_sha256": "f597e8e6217169d8ab4db526c5f70a179d43b63b3997b7ac48164e87e42d8f57",
+      "reason": "User authorized additional comic Danmaku based on seven reference images: eight new styles and two transparent user-image figures; retain original styles, global sampling and orbit/petal weights, native clock/actions/ABI, bounded cache and eight products."
+    },
+    "detail/runtime-sources.json": {
+      "before_sha256": "5fdeb8fd0fb296d8eb187ebdbafe080ad6b4231bc549ce4c49cfb10acae18c21",
+      "after_sha256": "26e1520bd7a9bdf7272ec4d16d7e709e13d51d71825d83d9103bb607e61283af",
+      "reason": "User authorized additional comic Danmaku based on seven reference images: eight new styles and two transparent user-image figures; retain original styles, global sampling and orbit/petal weights, native clock/actions/ABI, bounded cache and eight products."
+    },
+    "detail/runtime/common/com/leotv/detail/DanmakuEffectPolicy.java": {
+      "before_sha256": "300f86f113fe16c3ddd7ebe526a164eb7708ec22b1d56932dbfada12fac42c8c",
+      "after_sha256": "d952bee6061ee84e282215f2009ab52def5982222636f09be2ee75ddc85ab1c2",
+      "reason": "User authorized additional comic Danmaku based on seven reference images: eight new styles and two transparent user-image figures; retain original styles, global sampling and orbit/petal weights, native clock/actions/ABI, bounded cache and eight products."
+    },
+    "detail/runtime/common/com/leotv/detail/DanmakuEffects.java": {
+      "before_sha256": "6bb2334aae11a00c8a30bea42b2fa54e1f4fa58e51fa78bb7126d7232270f7ba",
+      "after_sha256": "07da020660e56502e069d3dd14bf9bb25ea466d128ae2eb143a8ed782476a512",
+      "reason": "User authorized additional comic Danmaku based on seven reference images: eight new styles and two transparent user-image figures; retain original styles, global sampling and orbit/petal weights, native clock/actions/ABI, bounded cache and eight products."
+    },
+    "research/check_danmaku_effect_policy.py": {
+      "before_sha256": "92884f380199fb055f89e0ff72788e93fe02cf5413df886ac1d6e2902ccbecde",
+      "after_sha256": "febd64677f8ef8e6c78a99abff552ed3631f812eb234c27e2df75baff83dfdf8",
+      "reason": "User authorized additional comic Danmaku based on seven reference images: eight new styles and two transparent user-image figures; retain original styles, global sampling and orbit/petal weights, native clock/actions/ABI, bounded cache and eight products."
+    },
+    "research/detail-check/src/test/java/com/leotv/detail/DanmakuEffectsTest.java": {
+      "before_sha256": "cd185c1afaf7550551a10348a522182b9bdb30e0797b32a743a64e78877b46eb",
+      "after_sha256": "38fab886e243cc5148076cdd0a87b57368655d433c272682b445c72da3bc40c6",
+      "reason": "User authorized additional comic Danmaku based on seven reference images: eight new styles and two transparent user-image figures; retain original styles, global sampling and orbit/petal weights, native clock/actions/ABI, bounded cache and eight products."
+    },
+    "research/effects-check/build.gradle": {
+      "before_sha256": "61f487484635a2327591a6486ad99af084abbf87b5e2d37ed37e40d647516c78",
+      "after_sha256": "8082df9776024dfe921ea965e243a68b1eff27a733fb2ed63a789333d1bd40a4",
+      "reason": "User authorized additional comic Danmaku based on seven reference images: eight new styles and two transparent user-image figures; retain original styles, global sampling and orbit/petal weights, native clock/actions/ABI, bounded cache and eight products."
+    },
+    "tools/check_danmaku_effects.py": {
+      "before_sha256": "41d4f412ffaed1a414237827c24e269a2207ac4aa0616d63305744eea29003b6",
+      "after_sha256": "9d1d1b3753be1b369a9d5dd2561f685737ce58a967033354465cc283ff7cb978",
+      "reason": "User authorized additional comic Danmaku based on seven reference images: eight new styles and two transparent user-image figures; retain original styles, global sampling and orbit/petal weights, native clock/actions/ABI, bounded cache and eight products."
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "a3aad4732dd4d0adf9a37b4d02db2616471c8cd67d39b3bd181c72d2b0ebb3dd",
+      "after_sha256": "a2fee3963dce76b5de473a55847916fe8351b04e2931707265016e6f28ecc670",
+      "reason": "User authorized additional comic Danmaku based on seven reference images: eight new styles and two transparent user-image figures; retain original styles, global sampling and orbit/petal weights, native clock/actions/ABI, bounded cache and eight products."
+    }
+  },
+  "authorized_668_additions": {
+    "detail/runtime/common/com/leotv/detail/DanmakuComic.java": "790eace0fff93dad94e797b21a7f27b5da2eb530cbdce0cfce556985c3098508",
+    "detail/runtime/common/com/leotv/detail/DanmakuComicArt.java": "a49454f2dbec1df070957e53578c8f77b00a989a812a2dbe9fd78d59fe474d91",
+    "research/effects-check/src/test/java/com/leotv/detail/DanmakuComicRenderTest.java": "a30b5b46c49a47a51843c93cd4cac3f5caecd356db0e1e64b3ca92d733f01396",
+    "docs/LEOTV-5.3.6-668-COMIC-DANMAKU-20261128.md": "1d22c8611fe8e84c77b1e802b20cf5ba7251a4d00b1aa40323494b40f8e874e0",
+    "detail/artwork/comic-20261128/provenance.json": "fd5b3a09f5d792328a163e9ff09d88d401f5b668a9dbe629a73139cceb0c58ca",
+    "detail/artwork/comic-20261128/suit-figure.png": "705404f8f07e276746f511017f4bb9cdd86396a11fabd40e3eb48eba04a52e2f",
+    "detail/artwork/comic-20261128/masked-figure.png": "77e9f425ea0270a292c2183470d85d0b3ef274a32e76b8cafcb670179bec9f4a"
   }
 }

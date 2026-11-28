@@ -39,6 +39,8 @@
       "detail/runtime/common/com/leotv/detail/CspRecommendation.java",
       "detail/runtime/common/com/leotv/detail/DanmakuApi.java",
       "detail/runtime/common/com/leotv/detail/DanmakuAvatar.java",
+      "detail/runtime/common/com/leotv/detail/DanmakuComic.java",
+      "detail/runtime/common/com/leotv/detail/DanmakuComicArt.java",
       "detail/runtime/common/com/leotv/detail/DanmakuControls.java",
       "detail/runtime/common/com/leotv/detail/DanmakuEffectPolicy.java",
       "detail/runtime/common/com/leotv/detail/DanmakuEffects.java",

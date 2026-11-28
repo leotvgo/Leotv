@@ -24,11 +24,11 @@ public class DanmakuEffectPolicyCheck {
   expect(!animation.acquire(11,10,0)&&!animation.acquire(21,10,1)&&!animation.acquire(31,10,2)&&!animation.acquire(40,10,3),"A family or global animation bound was exceeded");
   expect(DanmakuEffectPolicy.animationFamily(2,true)==0&&DanmakuEffectPolicy.animationFamily(DanmakuEffectPolicy.PETALS,false)==1&&DanmakuEffectPolicy.animationFamily(0,true)==1,"Requested effects must not compete with unrelated decorations");
   expect(DanmakuEffectPolicy.CACHE_ENTRIES==64&&DanmakuEffectPolicy.CACHE_BYTES==2*1024*1024,"Bitmap memory guard changed");
-  expect(DanmakuEffectPolicy.STYLES==9,"Reference screenshot styles missing");
+  expect(DanmakuEffectPolicy.STYLES==17,"Reference screenshot styles missing");
   expect(DanmakuEffectPolicy.extraWidth(DanmakuEffectPolicy.NEON_TRAIL,24)>DanmakuEffectPolicy.extraWidth(0,24),"Neon trail was not included in collision geometry");
   expect(DanmakuEffectPolicy.extraHeight(DanmakuEffectPolicy.PETALS,24)>DanmakuEffectPolicy.extraHeight(0,24),"Petal travel was not included in line geometry");
   for(int style=6;style<9;style++)expect(DanmakuEffectPolicy.animated(style),"A reference effect could not animate");
-  System.out.println("Stable effect sampling: "+count+"/10000; all nine styles, portrait/trail/petal geometry, native-format exclusions and bounded per-family animations passed.");
+  System.out.println("Stable effect sampling: "+count+"/10000; all seventeen styles, portrait/trail/petal geometry, native-format exclusions and bounded per-family animations passed.");
  }
 }'''
 

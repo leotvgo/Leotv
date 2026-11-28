@@ -34,6 +34,7 @@ public final class DanmakuEffects {
     private static long failedUntil;
     private static Bitmap portrait;
     private static final Bitmap[] portraits=new Bitmap[7];
+    private static final Bitmap[] figures=new Bitmap[2];
     private static final int[][] BORDER_PALETTES={
         {0xffffd479,0xffffb95c,0xffffe5ab},{0xffff69b7,0xffa68bff,0xff67edff},
         {0xff56ffd2,0xff5cbbff,0xffd599ff},{0xffffa55d,0xffff69bb,0xffc190ff},
@@ -60,14 +61,15 @@ public final class DanmakuEffects {
         NativeDialogs.choose(activity,"特效弹幕比例",names,selected,index->{if(index<0||index>=RATES.length)return;DanmakuSettings.prefs(activity).edit().putInt("effect_rate",RATES[index]).apply();changed(activity);updated.run();});
     }
     private static void changed(Context context){initialize(context);clear();DanmakuPlayback.effectsChanged();}
-    static synchronized void clear(){for(Tile tile:CACHE.values())if(tile.bitmap!=null)tile.bitmap.recycle();CACHE.clear();KEYS.clear();for(int i=0;i<portraits.length;i++){if(portraits[i]!=null){portraits[i].recycle();portraits[i]=null;}}if(portrait!=null){portrait.recycle();portrait=null;}ANIMATION.clear();}
+    static synchronized void clear(){for(Tile tile:CACHE.values())if(tile.bitmap!=null)tile.bitmap.recycle();CACHE.clear();KEYS.clear();for(int i=0;i<figures.length;i++){if(figures[i]!=null){figures[i].recycle();figures[i]=null;}}for(int i=0;i<portraits.length;i++){if(portraits[i]!=null){portraits[i].recycle();portraits[i]=null;}}if(portrait!=null){portrait.recycle();portrait=null;}ANIMATION.clear();}
     private static boolean hasPortrait(int variant){return variant==0?portrait!=null:portraits[variant-1]!=null;}
     private static Bitmap portrait(int variant){
         Bitmap image=variant==0?portrait:portraits[variant-1];
         if(image==null){image=DanmakuAvatar.decode(variant);if(image==null||image.getWidth()!=32||image.getHeight()!=32)throw new IllegalStateException("Invalid decorative portrait");if(variant==0)portrait=image;else portraits[variant-1]=image;}
         return image;
     }
-    private static int portraitBytes(){int bytes=portrait==null?0:portrait.getByteCount();for(Bitmap image:portraits)if(image!=null)bytes+=image.getByteCount();return bytes;}
+    private static Bitmap figure(int variant){int index=variant&1;if(figures[index]==null){figures[index]=DanmakuComicArt.decode(index);if(figures[index]==null||figures[index].getWidth()!=DanmakuComicArt.WIDTH||figures[index].getHeight()!=DanmakuComicArt.HEIGHT)throw new IllegalStateException("Invalid comic sticker");}return figures[index];}
+    private static int portraitBytes(){int bytes=portrait==null?0:portrait.getByteCount();for(Bitmap image:portraits)if(image!=null)bytes+=image.getByteCount();for(Bitmap image:figures)if(image!=null)bytes+=image.getByteCount();return bytes;}
     private static final class RenderKey {
         final int style,width,height,bits,variant,palette,plate;final boolean petals;final Object font;final String text,key;
         RenderKey(int style,int width,int height,float size,Object font,String text,int variant,int palette,boolean petals,int plate){this.plate=plate;this.petals=petals;this.palette=palette;this.style=style;this.width=width;this.height=height;bits=Float.floatToIntBits(size);this.font=font;this.text=text;this.variant=variant;key=style+":"+width+":"+height+":"+bits+":"+font+":"+variant+":"+palette+":"+petals+":"+plate+":"+text;}
@@ -103,11 +105,11 @@ public final class DanmakuEffects {
             // Oversized or unmeasured comments stay on the ordinary renderer.
             if(size<=0||height<size)return false;
             int alpha=painter.opacity.getInt(nativeStyle);
-            long token=DanmakuEffectPolicy.token(options.seed,access.time.getLong(item),text);int variant=(int)((token>>>16)&7),palette=style==2?(int)((token>>>20)%BORDER_PALETTES.length):variant;boolean petals=style!=DanmakuEffectPolicy.PETALS&&((token>>>32)&3)==0;int plate=(int)((token>>>40)%5);
+            long token=DanmakuEffectPolicy.token(options.seed,access.time.getLong(item),text);int variant=(int)((token>>>16)&7),palette=style==2?(int)((token>>>20)%BORDER_PALETTES.length):variant;boolean petals=style<DanmakuEffectPolicy.COMIC_BURST&&style!=DanmakuEffectPolicy.PETALS&&((token>>>32)&3)==0;int plate=(int)((token>>>40)%5);
             RenderKey cached=KEYS.get(item);if(cached==null||!cached.matches(style,width,height,size,nativePaint.getTypeface(),text,variant,palette,petals,plate)){cached=new RenderKey(style,width,height,size,nativePaint.getTypeface(),text,variant,palette,petals,plate);KEYS.put(item,cached);if(KEYS.size()>64)KEYS.remove(KEYS.keySet().iterator().next());}String key=cached.key;
             Tile tile=CACHE.get(key);
             if(tile==null){Paint typography=new Paint(nativePaint);typography.setTextSize(size);if(width<typography.measureText(text)+DanmakuEffectPolicy.extraWidth(style,size)-size*.4f)return false;
-                evict((style==DanmakuEffectPolicy.PETALS?0:width*height*4)+(style==DanmakuEffectPolicy.AVATAR&&!hasPortrait(variant)?DanmakuAvatar.PIXEL_BYTES:0));tile=new Tile(text,typography,width,height,style,variant,palette,petals,plate);CACHE.put(key,tile);}
+                evict((style==DanmakuEffectPolicy.PETALS?0:width*height*4)+(style==DanmakuEffectPolicy.AVATAR&&!hasPortrait(variant)?DanmakuAvatar.PIXEL_BYTES:0)+(style==DanmakuEffectPolicy.COMIC_FIGURE&&figures[variant&1]==null?DanmakuComicArt.PIXEL_BYTES:0));tile=new Tile(text,typography,width,height,style,variant,palette,petals,plate);CACHE.put(key,tile);}
             long now=SystemClock.elapsedRealtime();
             boolean moving=options.animation&&(DanmakuEffectPolicy.animated(style)||tile.petalOverlay)&&ANIMATION.acquire(token,now,DanmakuEffectPolicy.animationFamily(style,tile.petalOverlay));
             Object timer=access.timer.get(item);if(access.frameTime==null)access.frameTime=timer.getClass().getField("a");long playback=access.frameTime.getLong(timer);
@@ -150,11 +152,18 @@ public final class DanmakuEffects {
         final PathMeasure orbit;final float[] lightPosition=new float[2];final int firstLight,secondLight;
         final Shader halo,trail,petalColour;final float[] petalOffsets,petalAngles;
         final RectF mouth=new RectF();
+        final DanmakuComic comic;
         Tile(String text,Paint typography,int width,int height,int style,int variant,int palette,boolean petals,int board){
             plateVariant=board;this.style=style;this.width=width;this.height=height;petalOverlay=petals;size=typography.getTextSize();
             bitmap=style==DanmakuEffectPolicy.PETALS?null:Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
             // Native geometry is already in pixels: never rescale a text tile through bitmap density.
             if(bitmap!=null)bitmap.setDensity(Bitmap.DENSITY_NONE);Canvas canvas=bitmap==null?null:new Canvas(bitmap);
+            if(style>=DanmakuEffectPolicy.COMIC_BURST){
+                halo=trail=petalColour=null;petalOffsets=petalAngles=null;orbit=null;firstLight=secondLight=0;
+                comic=new DanmakuComic(style,variant,width,height,typography,text,style==DanmakuEffectPolicy.COMIC_FIGURE?figure(variant):null);
+                comic.base(canvas,text,typography);glyphBounds.set(comic.glyphs);return;
+            }
+            comic=null;
             halo=style==DanmakuEffectPolicy.NEON_TRAIL?new RadialGradient(size*2.45f,height*.5f,size*.7f,new int[]{0xffe3ffff,0xe067fff0,0x804bdfdc,0x003fbbcd},new float[]{0,.24f,.5f,1},Shader.TileMode.CLAMP):null;
             trail=style==DanmakuEffectPolicy.NEON_TRAIL?new LinearGradient(size*.15f,0,size*2.45f,0,new int[]{0x005761cc,0x826d46d8,0xbe53d7ed,0xff78fff0},null,Shader.TileMode.CLAMP):null;
             petalColour=(style==DanmakuEffectPolicy.PETALS||petalOverlay)?new LinearGradient(0,-size*.15f,0,size*.15f,0xffffd9eb,0xffe47cae,Shader.TileMode.CLAMP):null;
@@ -195,6 +204,7 @@ public final class DanmakuEffects {
 
         }
         void decorate(Canvas canvas,float phase,boolean moving,int opacity){
+            if(comic!=null){comic.decorate(canvas,phase,moving,opacity);return;}
             ink.setAlpha(Math.max(0,Math.min(255,opacity)));float sine=(float)Math.sin(phase*Math.PI*2),cx=size*.68f,cy=height*.5f,r=size*.34f;
             if(style==DanmakuEffectPolicy.PETALS){petals(canvas,phase,moving,opacity);}
             else if(style==2){

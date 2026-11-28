@@ -65,8 +65,16 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.14.3'
-      - name: Verify nine native effect templates, font and opacity, coordinates and cache bounds on API23
+      - name: Verify native effect templates, comic artwork, font and opacity, coordinates and cache bounds
         run: gradle --no-daemon --console=plain --max-workers=2 -p research/effects-check test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: danmaku-comic-render-check
+          path: |
+            research/effects-check/build/test-results/test/*.xml
+            artifacts/danmaku-comic-preview/*.png
+          retention-days: 14
 
   path-ui:
     needs: sources

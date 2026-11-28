@@ -2,9 +2,10 @@ package com.leotv.detail;
 
 /** Stable random sampling and animation limits, independent of the Android renderer. */
 final class DanmakuEffectPolicy {
-    static final int STYLES=9, AVATAR=6, NEON_TRAIL=7, PETALS=8, CACHE_ENTRIES=64, CACHE_BYTES=2*1024*1024;
-    static float extraWidth(int style,float size){return size*(style==NEON_TRAIL?4.2f:style==AVATAR?2f:style==PETALS?1.9f:1.7f);}
-    static float extraHeight(int style,float size){return size*(style==NEON_TRAIL?.65f:style==PETALS?.75f:style==AVATAR?.5f:.42f);}
+    static final int STYLES=17, AVATAR=6, NEON_TRAIL=7, PETALS=8, CACHE_ENTRIES=64, CACHE_BYTES=2*1024*1024;
+    static final int COMIC_BURST=9,COMIC_ZIGZAG=10,COMIC_BUBBLE=11,COMIC_SPARK=12,COMIC_QUESTION=13,COMIC_ARROW=14,COMIC_PUFF=15,COMIC_FIGURE=16;
+    static float extraWidth(int style,float size){if(style>=COMIC_BURST)return size*(style<=COMIC_ZIGZAG?3.2f:style==COMIC_BUBBLE?2.4f:3.4f);return size*(style==NEON_TRAIL?4.2f:style==AVATAR?2f:style==PETALS?1.9f:1.7f);}
+    static float extraHeight(int style,float size){if(style>=COMIC_BURST)return size*(style==COMIC_FIGURE?1.8f:1.05f);return size*(style==NEON_TRAIL?.65f:style==PETALS?.75f:style==AVATAR?.5f:.42f);}
     static long token(long seed,long time,String text){
         long value=seed^time*0x9e3779b97f4a7c15L^(long)text.hashCode()*0xbf58476d1ce4e5b9L;
         value=(value^(value>>>30))*0xbf58476d1ce4e5b9L;
@@ -16,6 +17,7 @@ final class DanmakuEffectPolicy {
         int rate=Math.max(0,Math.min(100,percent));
         if((token&Long.MAX_VALUE)%100>=rate)return -1;
         int weighted=(int)((token>>>8)%13);if(weighted<3)return 2;if(weighted<6)return PETALS;
+        if(((token>>>48)&1)!=0)return COMIC_BURST+(int)((token>>>52)%8);
         return ORDINARY_STYLES[weighted-6];
     }
     static boolean eligible(String text,int type){return text!=null&&text.length()>=2&&text.length()<=80

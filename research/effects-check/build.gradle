@@ -3,7 +3,7 @@ repositories { mavenCentral(); google() }
 sourceSets {
     main.java.srcDirs = ['src/stub/java', layout.buildDirectory.dir('generated/poster-gesture'), layout.buildDirectory.dir('generated/home-bookmarks')]
     test.java.srcDirs = ['../detail-check/src/test/java', 'src/test/java']
-    test.java.include '**/DanmakuEffectsTest.java', '**/TvDetailScrollTest.java', '**/PosterSearchTest.java', '**/HomeBookmarkTest.java'
+    test.java.include '**/DanmakuEffectsTest.java', '**/DanmakuComicRenderTest.java', '**/TvDetailScrollTest.java', '**/PosterSearchTest.java', '**/HomeBookmarkTest.java'
 }
 tasks.register('generatePosterGestureCheck', Exec) {
     inputs.file '../generate_poster_gesture_check.py'
@@ -15,7 +15,7 @@ tasks.named('compileJava') {
     dependsOn 'generatePosterGestureCheck'
     dependsOn 'generateHomeBookmarkCheck'
     source '../../detail/runtime/common/com/leotv/detail/DanmakuEffects.java', '../../detail/runtime/common/com/leotv/detail/DanmakuEffectPolicy.java', '../../detail/runtime/common/com/leotv/detail/DanmakuAvatar.java', '../../detail/runtime/common/com/leotv/detail/TvDetailScroll.java'
-    source '../../detail/runtime/common/com/leotv/detail/PosterSearch.java'
+    source '../../detail/runtime/common/com/leotv/detail/PosterSearch.java', '../../detail/runtime/common/com/leotv/detail/DanmakuComic.java', '../../detail/runtime/common/com/leotv/detail/DanmakuComicArt.java'
 }
 tasks.register('generateHomeBookmarkCheck', Exec) {
     inputs.file '../generate_home_bookmark_check.py'
@@ -45,6 +45,7 @@ tasks.register('extractAars') {
 test {
     dependsOn 'extractAars'
     classpath += files(provider { fileTree(aarClasses).matching { include '**/*.jar' } })
+    systemProperty 'leotv.comic.preview', file('../../artifacts/danmaku-comic-preview').absolutePath
     systemProperty 'robolectric.dependency.repo.url', 'https://repo.maven.apache.org/maven2'
     maxHeapSize = '1g'
     maxParallelForks = 1

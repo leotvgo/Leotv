@@ -38,7 +38,7 @@ public class DanmakuEffectsTest {
     private Bitmap portrait()throws Exception{Field field=DanmakuEffects.class.getDeclaredField("portrait");field.setAccessible(true);return (Bitmap)field.get(null);}
     private int bytes()throws Exception{java.lang.reflect.Method count=DanmakuEffects.class.getDeclaredMethod("portraitBytes");count.setAccessible(true);int bytes=((Number)count.invoke(null)).intValue();for(Object tile:cache().values()){Field f=tile.getClass().getDeclaredField("bitmap");f.setAccessible(true);Bitmap bitmap=(Bitmap)f.get(tile);if(bitmap!=null){assertFalse(bitmap.isRecycled());bytes+=bitmap.getByteCount();}}return bytes;}
 
-    @Test public void nineStylesUseNativeCoordinatesFontOpacityAndBoundedCacheOnApi23()throws Exception{
+    @Test public void seventeenStylesUseNativeCoordinatesFontOpacityAndBoundedCacheOnApi23()throws Exception{
         Context context=RuntimeEnvironment.getApplication();DanmakuSettings.prefs(context).edit().putBoolean("effects",true).putBoolean("effect_animation",true).putInt("effect_rate",15).putLong("effect_seed",1234567).commit();
         DanmakuEffects.initialize(context);DanmakuEffects.clear();
         Displayer displayer=new Displayer();displayer.a.c.setTextSize(24);
@@ -51,7 +51,7 @@ public class DanmakuEffectsTest {
                 assertTrue("Style "+style+" did not draw on the API23 Canvas; width="+item.h+", height="+item.i+", size="+item.g,style==DanmakuEffectPolicy.PETALS?!DanmakuEffects.draw(item,displayer,canvas,51,80):DanmakuEffects.draw(item,displayer,canvas,51,80));
                 assertEquals(saves,canvas.getSaveCount());assertEquals(timestamp,item.a);assertEquals("虚构炫彩弹幕",item.c);assertEquals(24,displayer.a.c.getTextSize(),0);
             }
-            assertEquals(9,cache().size());
+            assertEquals(DanmakuEffectPolicy.STYLES,cache().size());
             boolean nativePetals=false;for(Object tile:cache().values()){Field styleField=tile.getClass().getDeclaredField("style");styleField.setAccessible(true);if(styleField.getInt(tile)==DanmakuEffectPolicy.PETALS){Field bitmapField=tile.getClass().getDeclaredField("bitmap");bitmapField.setAccessible(true);assertNull("No-board petals must retain the native glyph renderer",bitmapField.get(tile));nativePetals=true;}}assertTrue(nativePetals);
 
             for(int board=0;board<5;board++){
@@ -72,7 +72,7 @@ public class DanmakuEffectsTest {
             DanmakuSettings.prefs(context).edit().putBoolean("effect_animation",false).commit();DanmakuEffects.initialize(context);
             Comment visibleOrbit=comment(displayer.a.c,2,"关闭动画也能看见双光点");DanmakuEffects.measure(visibleOrbit,displayer.a.c);RecordedCanvas staticOrbit=new RecordedCanvas(frame);assertTrue(DanmakuEffects.draw(visibleOrbit,displayer,staticOrbit,0,0));assertTrue("The dual dots cannot vanish when animation is disabled or its slot is busy",staticOrbit.dots>=6);
 
-            for(int style=6;style<9;style++){Comment item=comment(displayer.a.c,style,"关闭动画仍显示贴纸和装饰");DanmakuEffects.measure(item,displayer.a.c);assertEquals(style!=DanmakuEffectPolicy.PETALS,DanmakuEffects.draw(item,displayer,canvas,0,0));assertEquals(saves,canvas.getSaveCount());}
+            for(int style=6;style<DanmakuEffectPolicy.STYLES;style++){Comment item=comment(displayer.a.c,style,"关闭动画仍显示贴纸和装饰");DanmakuEffects.measure(item,displayer.a.c);assertEquals(style!=DanmakuEffectPolicy.PETALS,DanmakuEffects.draw(item,displayer,canvas,0,0));assertEquals(saves,canvas.getSaveCount());}
             DanmakuSettings.prefs(context).edit().putBoolean("effect_animation",true).commit();DanmakuEffects.initialize(context);
             Comment ordinary=comment(displayer.a.c,-1,"未选中的虚构弹幕");float width=ordinary.h,height=ordinary.i;DanmakuEffects.measure(ordinary,displayer.a.c);
             assertEquals(width,ordinary.h,0);assertEquals(height,ordinary.i,0);assertFalse(DanmakuEffects.draw(ordinary,displayer,canvas,0,0));

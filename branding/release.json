@@ -1,8 +1,8 @@
 {
   "channel": "prerelease",
   "version_name": "5.3.6",
-  "version_code": 667,
-  "title": "Leotv 5.3.6 / 667 TV 浪壳全局迁移测试",
+  "version_code": 668,
+  "title": "Leotv 5.3.6 / 668 漫画特效弹幕测试",
   "prerelease": true,
   "make_latest": false
 }

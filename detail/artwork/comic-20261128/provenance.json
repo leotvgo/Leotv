@@ -1,0 +1,27 @@
+{
+  "source": "User supplied reference images 1 and 2 on 2026-11-28 for additional effect Danmaku",
+  "assets": [
+    {
+      "file": "detail/artwork/comic-20261128/suit-figure.png",
+      "source_sha256": "9c44b604015e453187d4db80f0331364f7dd9de329fa98ce591bb57bf52b1abd",
+      "asset_sha256": "705404f8f07e276746f511017f4bb9cdd86396a11fabd40e3eb48eba04a52e2f",
+      "dimensions": [
+        72,
+        112
+      ],
+      "source_image": 1,
+      "processing": "Foreground extraction from user-supplied image using local GrabCut; bounded RGBA crop, no generated replacement artwork."
+    },
+    {
+      "file": "detail/artwork/comic-20261128/masked-figure.png",
+      "source_sha256": "8697b2338b625e91f844bbcd1d2c904b410f3efed1aa295b0e6dc7f0e8b20b74",
+      "asset_sha256": "77e9f425ea0270a292c2183470d85d0b3ef274a32e76b8cafcb670179bec9f4a",
+      "dimensions": [
+        72,
+        112
+      ],
+      "source_image": 2,
+      "processing": "Foreground extraction from user-supplied image using local GrabCut; bounded RGBA crop, no generated replacement artwork."
+    }
+  ]
+}
