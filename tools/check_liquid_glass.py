@@ -22,6 +22,11 @@ def check(root):
         raise ValueError('Glass surfaces must preserve native actions and API23 ripple compatibility')
     if 'delegate' not in chrome or 'method.invoke(delegate, args)' not in chrome:
         raise ValueError('Phone gestures must delegate to the retained native window callback')
+    global_chrome=(root/'ui/java/com/leotv/ui/GlobalChrome.java').read_text()
+    if 'shortcutMenu.isShown()&&shortcutMenu.hasFocus()' in global_chrome or 'pressedShortcutKey==key&&!event.isCanceled()' not in global_chrome:
+        raise ValueError('Visible TV shortcuts must own remote input and commit one uncancelled confirmation')
+    if 'view.setAlpha(' in actions or 'owner.glassScene(canvas,view)' not in actions:
+        raise ValueError('Glass capture must exclude its control without mutating native visibility or focus')
     workflow=(root/'.github/workflows/ordinary-build.yml').read_text()
     if 'phone-glass:' not in workflow or 'com.leotv.ui.PhoneGlassChromeTest' not in workflow or 'com.leotv.ui.GlobalChromeTest' not in workflow:
         raise ValueError('Phone motion, menu readiness and retained TV shortcuts must pass CI before APK preparation')

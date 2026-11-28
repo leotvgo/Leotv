@@ -85,17 +85,16 @@ final class LiquidGlassButton implements AutoCloseable,ViewTreeObserver.OnPreDra
             if(!textureAllowed||body.width()<=0||body.height()<=0)return;
             float pad=dp(14);sampleBounds.set(body);sampleBounds.inset(-pad,-pad);
             int w=Math.max(1,Math.min(80,Math.round(sampleBounds.width())));scale=w/sampleBounds.width();int h=Math.max(1,Math.min(80,Math.round(sampleBounds.height()*scale)));
-            float originalAlpha=view.getAlpha();
             try{
                 if(scene==null||scene.getWidth()!=w||scene.getHeight()!=h){release();scene=Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888);blurred=Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888);pixels=new int[w*h];scratch=new int[w*h];glass=new BitmapShader(blurred,Shader.TileMode.CLAMP,Shader.TileMode.CLAMP);}
                 scene.eraseColor(Color.TRANSPARENT);view.getLocationOnScreen(at);owner.content.getLocationOnScreen(contentAt);
                 Canvas canvas=new Canvas(scene);canvas.scale(scale,scale);canvas.translate(contentAt[0]-at[0]-sampleBounds.left,contentAt[1]-at[1]-sampleBounds.top);
-                view.setAlpha(0);owner.glassScene(canvas);
+                owner.glassScene(canvas,view);
                 scene.getPixels(pixels,0,w,0,0,w,h);int sum=0,count=0;
                 for(int i=0;i<pixels.length;i+=Math.max(1,pixels.length/24)){sum+=PhoneGlassChrome.luminance(pixels[i]);count++;}dark=count==0||sum/count<128;
                 int radius=Math.max(1,Math.round(dp(3)*scale));ProgressiveBlur.box(pixels,scratch,w,h,radius,true);ProgressiveBlur.box(scratch,pixels,w,h,radius,false);blurred.setPixels(pixels,0,w,0,0,w,h);
                 matrix.reset();matrix.setScale(1/scale,1/scale);matrix.postTranslate(sampleBounds.left,sampleBounds.top);glass.setLocalMatrix(matrix);
-            }catch(RuntimeException|OutOfMemoryError unavailable){release();}finally{view.setAlpha(originalAlpha);}
+            }catch(RuntimeException|OutOfMemoryError unavailable){release();}
         }
         void paint(Canvas canvas){
             if(body.isEmpty())return;

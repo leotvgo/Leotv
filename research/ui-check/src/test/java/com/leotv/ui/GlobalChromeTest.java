@@ -76,4 +76,47 @@ public class GlobalChromeTest {
         assertTrue(callback.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_DPAD_RIGHT)));
         callback.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,KeyEvent.KEYCODE_DPAD_RIGHT));assertTrue(host.button.hasFocus());
     }
+    private ViewGroup openShortcuts(){
+        chrome.newHome.fixtureShown=true;chrome.newHome.fixtureWake=true;
+        host.button.setFocusableInTouchMode(true);assertTrue(host.button.requestFocus());Shadows.shadowOf(host).setCurrentFocus(host.button);
+        press(KeyEvent.KEYCODE_DPAD_LEFT);layout();
+        org.robolectric.shadows.ShadowLooper.shadowMainLooper().idleFor(16,java.util.concurrent.TimeUnit.MILLISECONDS);
+        ViewGroup menu=host.findViewById(android.R.id.content).findViewWithTag("leotv_home_shortcuts");assertNotNull(menu);assertTrue(menu.isShown());return menu;
+    }
+    private void press(int code){Window.Callback callback=host.getWindow().getCallback();assertTrue(callback.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,code)));assertTrue(callback.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,code)));}
+    @Test public void visibleMenuRecoversFocusAndConsumesDirectionsAndOneConfirmAction(){
+        ViewGroup menu=openShortcuts();int keys=chrome.newHome.fixtureKeys;
+        assertTrue(host.button.requestFocus());Shadows.shadowOf(host).setCurrentFocus(host.button);assertFalse(menu.hasFocus());
+        press(KeyEvent.KEYCODE_DPAD_DOWN);assertTrue(menu.isShown());assertSame(menu.getChildAt(1),menu.findFocus());
+        press(KeyEvent.KEYCODE_DPAD_LEFT);assertTrue(menu.isShown());assertSame(menu.getChildAt(1),menu.findFocus());
+        press(KeyEvent.KEYCODE_DPAD_UP);assertSame(menu.getChildAt(0),menu.findFocus());
+        press(KeyEvent.KEYCODE_DPAD_UP);assertTrue(menu.isShown());assertSame(menu.getChildAt(0),menu.findFocus());
+        press(KeyEvent.KEYCODE_DPAD_DOWN);
+        Window.Callback callback=host.getWindow().getCallback();
+        assertTrue(callback.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_DPAD_CENTER)));
+        assertEquals(0,chrome.newHome.fixtureActions);
+        assertTrue(callback.dispatchKeyEvent(new KeyEvent(100,120,KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_DPAD_CENTER,1)));
+        assertEquals(0,chrome.newHome.fixtureActions);
+        assertTrue(callback.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,KeyEvent.KEYCODE_DPAD_CENTER)));
+        assertEquals(1,chrome.newHome.fixtureActions);assertEquals("search",chrome.newHome.fixtureAction);
+        assertFalse(menu.isShown());assertTrue(host.button.hasFocus());assertEquals(keys,chrome.newHome.fixtureKeys);
+    }
+    @Test public void canceledConfirmDoesNotClickAndRightOrBackRestoresContent(){
+        ViewGroup menu=openShortcuts();Window.Callback callback=host.getWindow().getCallback();
+        callback.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_ENTER));
+        KeyEvent canceled=KeyEvent.changeFlags(new KeyEvent(KeyEvent.ACTION_UP,KeyEvent.KEYCODE_ENTER),KeyEvent.FLAG_CANCELED);
+        assertTrue(callback.dispatchKeyEvent(canceled));assertEquals(0,chrome.newHome.fixtureActions);assertTrue(menu.isShown());
+        press(KeyEvent.KEYCODE_DPAD_RIGHT);assertFalse(menu.isShown());assertTrue(host.button.hasFocus());
+        openShortcuts();press(KeyEvent.KEYCODE_BACK);assertFalse(menu.isShown());assertTrue(host.button.hasFocus());
+    }
+    @Test public void glassCaptureNeverChangesNativeButtonAlphaOrFocus(){
+        class TracedButton extends ImageButton{
+            int alphaWrites;TracedButton(){super(host);}
+            @Override public void setAlpha(float value){alphaWrites++;super.setAlpha(value);}
+        }
+        TracedButton button=new TracedButton();button.setFocusableInTouchMode(true);button.setBackgroundColor(Color.TRANSPARENT);host.root.addView(button,new FrameLayout.LayoutParams(48,48));layout();assertTrue(button.requestFocus());
+        LiquidGlassButton glass=new LiquidGlassButton(chrome,button);
+        try{glass.surface.setBounds(0,0,48,48);glass.surface.capture();assertEquals(0,button.alphaWrites);assertTrue(button.hasFocus());assertEquals(1,button.getAlpha(),0);assertNull(chrome.glassExcluded);}
+        finally{glass.close();host.root.removeView(button);}
+    }
 }

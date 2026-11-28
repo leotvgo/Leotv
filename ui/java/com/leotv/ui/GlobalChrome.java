@@ -244,6 +244,7 @@ public final class GlobalChrome {
         final Map<ViewGroup, NativeViewport> viewports = new IdentityHashMap<>();
         final Map<Bitmap, Bitmap> softwareImages = new IdentityHashMap<>();
         Rect glassReadback;
+        View glassExcluded;
         long buttonCaptureAt;
         boolean dirty = true, discovery = true, closed, windowAdjusted, running;
         int width, height, statusHeight, navigationHeight, lastScrollX, lastScrollY, sourceArea;
@@ -901,11 +902,14 @@ public final class GlobalChrome {
 
         /** Capture only the phone glass band, excluding the glass and retained controls. */
         void glassScene(Canvas canvas) {
+            glassScene(canvas,null);
+        }
+        void glassScene(Canvas canvas,View excluded) {
             int oldX=origin[0],oldY=origin[1],oldWidth=width,oldHeight=height;
-            Rect oldReadback=glassReadback;
+            Rect oldReadback=glassReadback;View oldExcluded=glassExcluded;
             content.getLocationOnScreen(origin);width=content.getWidth();height=content.getHeight();
-            glassReadback=canvas.getClipBounds();glassReadback.offset(origin[0],origin[1]);
-            try{scene(canvas);}finally{origin[0]=oldX;origin[1]=oldY;width=oldWidth;height=oldHeight;glassReadback=oldReadback;}
+            glassReadback=canvas.getClipBounds();glassReadback.offset(origin[0],origin[1]);glassExcluded=excluded;
+            try{scene(canvas);}finally{origin[0]=oldX;origin[1]=oldY;width=oldWidth;height=oldHeight;glassReadback=oldReadback;glassExcluded=oldExcluded;}
         }
 
         private void scenePixels(Canvas canvas) {
@@ -940,7 +944,7 @@ public final class GlobalChrome {
         }
 
         private void prepareImages(View view, ArrayList<ImageSwap> swaps) {
-            if (!shown(view) || view == portal || bars.contains(view) || phoneChrome(view)) return;
+            if (!shown(view) || view == portal || bars.contains(view) || phoneChrome(view) || glassExcluded(view)) return;
             Drawable background = view.getBackground(), converted = softwareDrawable(background, view);
             if (converted != background) { swaps.add(new ImageSwap(view, background, true)); view.setBackground(converted); }
             if (view instanceof ImageView) {
@@ -952,7 +956,7 @@ public final class GlobalChrome {
         }
 
         private void drawScene(Canvas canvas, View view) {
-            if (!shown(view) || view == portal || bars.contains(view) || phoneChrome(view)) return;
+            if (!shown(view) || view == portal || bars.contains(view) || phoneChrome(view) || glassExcluded(view)) return;
             if (view == pager && visiblePage != null) {
                 drawBackground(canvas, view);
                 view.getLocationOnScreen(at); int left = at[0] - origin[0];
@@ -968,6 +972,7 @@ public final class GlobalChrome {
             boolean containsBar = false;
             for (View bar : bars) if (inside(bar, view)) containsBar = true;
             if(phone&&(inside(following.nativeNavigation,view)||following.phoneGlass!=null&&inside(following.phoneGlass.plane,view)))containsBar=true;
+            if(glassReadback!=null&&(inside(glassExcluded,view)||inside(following.shortcutMenu,view)))containsBar=true;
             if (view instanceof ViewGroup && (containsBar || view == root || inside(source, view))) {
                 drawBackground(canvas, view);
                 ViewGroup group = (ViewGroup) view;
@@ -976,6 +981,7 @@ public final class GlobalChrome {
         }
 
         private boolean phoneChrome(View view){return phone&&(view==following.nativeNavigation||following.phoneGlass!=null&&view==following.phoneGlass.plane);}
+        private boolean glassExcluded(View view){return glassReadback!=null&&(view==glassExcluded||view==following.shortcutMenu);}
 
         private void drawBackground(Canvas canvas, View view) {
             Drawable drawable = view.getBackground();
@@ -1054,6 +1060,7 @@ public final class GlobalChrome {
         final int id=View.generateViewId();
         android.widget.ImageButton button;
         android.widget.LinearLayout shortcutMenu;int menuKey=-1;
+        View pressedShortcut;int pressedShortcutKey=-1;
         final android.content.SharedPreferences shortcutPrefs;
         final Map<String,View> shortcutButtons=new java.util.LinkedHashMap<>();
         final Map<View,LiquidGlassButton> shortcutGlass=new IdentityHashMap<>();
@@ -1289,12 +1296,19 @@ public final class GlobalChrome {
             int key=event.getKeyCode();
             if(key==android.view.KeyEvent.KEYCODE_DPAD_LEFT&&event.getAction()==android.view.KeyEvent.ACTION_UP&&left){left=false;return true;}
             if(event.getAction()==android.view.KeyEvent.ACTION_UP&&key==menuKey){menuKey=-1;return true;}
-            if(shortcutMenu!=null&&shortcutMenu.isShown()&&shortcutMenu.hasFocus()){
+            if(shortcutMenu!=null&&shortcutMenu.isShown()){
+                View selected=shortcutMenu.findFocus();
+                if(selected==null||selected==shortcutMenu){selected=shortcutButtons.get(lastShortcut);if(selected==null)selected=button;if(selected!=null)selected.requestFocus();}
                 if(key==android.view.KeyEvent.KEYCODE_DPAD_UP||key==android.view.KeyEvent.KEYCODE_DPAD_DOWN){
-                    if(event.getAction()==android.view.KeyEvent.ACTION_DOWN){int index=shortcutMenu.indexOfChild(shortcutMenu.findFocus());int next=Math.max(0,Math.min(shortcutMenu.getChildCount()-1,index+(key==android.view.KeyEvent.KEYCODE_DPAD_DOWN?1:-1)));shortcutMenu.getChildAt(next).requestFocus();menuKey=key;}return true;
+                    if(event.getAction()==android.view.KeyEvent.ACTION_DOWN){cancelShortcutPress();int index=shortcutMenu.indexOfChild(selected);int next=Math.max(0,Math.min(shortcutMenu.getChildCount()-1,index+(key==android.view.KeyEvent.KEYCODE_DPAD_DOWN?1:-1)));shortcutMenu.getChildAt(next).requestFocus();menuKey=key;}return true;
                 }
                 if(key==android.view.KeyEvent.KEYCODE_DPAD_RIGHT||key==android.view.KeyEvent.KEYCODE_BACK){if(event.getAction()==android.view.KeyEvent.ACTION_DOWN){menuKey=key;restoreContentFocus();}return true;}
                 if(key==android.view.KeyEvent.KEYCODE_DPAD_LEFT)return true;
+                if(key==android.view.KeyEvent.KEYCODE_DPAD_CENTER||key==android.view.KeyEvent.KEYCODE_ENTER||key==android.view.KeyEvent.KEYCODE_NUMPAD_ENTER){
+                    if(event.getAction()==android.view.KeyEvent.ACTION_DOWN&&event.getRepeatCount()==0){cancelShortcutPress();pressedShortcut=selected;pressedShortcutKey=key;if(selected!=null)selected.setPressed(true);}
+                    else if(event.getAction()==android.view.KeyEvent.ACTION_UP){View target=pressedShortcut;boolean activate=pressedShortcutKey==key&&!event.isCanceled()&&target!=null&&target==selected&&target.isEnabled();cancelShortcutPress();if(activate)target.performClick();}
+                    return true;
+                }
             }
             if(key==android.view.KeyEvent.KEYCODE_DPAD_LEFT&&shortcutEdge()){
                 if(event.getAction()==android.view.KeyEvent.ACTION_DOWN&&event.getRepeatCount()==0){left=true;show();}
@@ -1302,6 +1316,7 @@ public final class GlobalChrome {
             }
             return false;
         }
+        void cancelShortcutPress(){if(pressedShortcut!=null)pressedShortcut.setPressed(false);pressedShortcut=null;pressedShortcutKey=-1;}
         void restoreContentFocus(){hide();View prior=previousFocus.get();if(!owner.newHome.focusContentAfterShortcut(prior)&&prior!=null&&prior.isShown()&&prior.isEnabled())prior.requestFocus();}
         void show(){
             if(shortcutMenu==null||!shortcutMenu.isShown()){View current=owner.activity.getCurrentFocus();previousFocus=new java.lang.ref.WeakReference<>(current==null?owner.content.findFocus():current);}
@@ -1323,7 +1338,7 @@ public final class GlobalChrome {
             shortcutMenu.setVisibility(View.VISIBLE);target.requestFocus();
             target.post(()->{if(!closed&&owner.running&&token==shortcutGeneration&&target.isShown()&&!shortcutMenu.hasFocus())target.requestFocus();});
         }
-        void hide(){shortcutGeneration++;if(shortcutMenu!=null)shortcutMenu.setVisibility(View.GONE);for(LiquidGlassButton surface:shortcutGlass.values())surface.pause();}
+        void hide(){shortcutGeneration++;cancelShortcutPress();if(shortcutMenu!=null)shortcutMenu.setVisibility(View.GONE);for(LiquidGlassButton surface:shortcutGlass.values())surface.pause();}
         void close(){
             closed=true;hide();dismissCalendar();
             for(LiquidGlassButton surface:shortcutGlass.values())surface.close();shortcutGlass.clear();

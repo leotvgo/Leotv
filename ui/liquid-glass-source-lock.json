@@ -1,14 +1,14 @@
 {
   "version_name": "5.3.6",
-  "version_code": 665,
+  "version_code": 666,
   "min_api": 23,
   "native_libraries_added": false,
   "ui_resources_added": false,
   "authorization": "2026-11-28: user requested building the approved phone glass/water navigation, scroll hiding and phone/TV shortcut material as a 5.3.6 test release; retain eight fixed-signature products and stable build664.",
   "sources": {
     "ui/java/com/leotv/ui/PhoneGlassChrome.java": "682960edfc8b36f8c0aa29d6af74de5770d19b89950d0e115b8b029ef2dc4fee",
-    "ui/java/com/leotv/ui/LiquidGlassButton.java": "6efa905ca4ea4feaa0dd4112541c2b23908a7d769888f88a9e41eecc401d0025",
-    "ui/java/com/leotv/ui/GlobalChrome.java": "4c4c3c0ec00fb085fd501f9ca867183643ade13a11e52604e47e4293e88eb71a",
+    "ui/java/com/leotv/ui/LiquidGlassButton.java": "2105b543b2f16318a652f9140aa929769beca28e8f179ac09c0cf0bcc155b825",
+    "ui/java/com/leotv/ui/GlobalChrome.java": "9eb17399f6fde97a1aae3dd86aac2752b6ec9d87c18f9714574a0877192994e5",
     "ui/java/com/leotv/ui/NativePhoneInsets.java": "d894923172d26a6db14fa5e5b7eb7af8a69ca7fcd9fd282a4cb341254210913e",
     "ui/java/com/leotv/ui/ProgressiveBlur.java": "0e337b3762d7cf2ccb0d40149031aa021a932e4f84ea68164b878fcd3c71bcb8",
     "detail/runtime/common/com/leotv/detail/CspHomePage.java": "148c74d096fbca4d6e8cd27e414d95a5c84a5d05171577768f28e23575f1ccb5",
@@ -24,5 +24,6 @@
     "TV focus memory and return path",
     "API23 and both ARM ABIs",
     "database, player and original native payload"
-  ]
+  ],
+  "authorized_tv_shortcut_fix": "2026-11-28 user reported TV shortcut menu losing all remote navigation/confirmation after glass UI; keep visible-menu ownership, recover focus, consume confirmation pair once, and exclude native controls from optical capture without alpha mutation."
 }

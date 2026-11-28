@@ -2384,5 +2384,60 @@
     "research/ui-check/src/stub/java/com/leotv/detail/NativeQrInput.java": "6d49ee62e55d40c0b89ceb577f299350bf909a0e0ef3faf59bdc985f875fc3a9",
     "docs/LEOTV-5.3.6-665-GLASS-UI-DELIVERY-20261128.md": "b5ba86637ac3d2d95cbdb5766627ae7e8e92c64658c204feb2da28893cc626f0",
     "evidence/leotv-5.3.6-665-signed-delivery-20261128.json": "5e71779d85d994abaecada839cbdf011c5caf8fb8d0de02654ddd0b4872eac97"
+  },
+  "authorized_666_source_repairs": {
+    "README.md": {
+      "before_sha256": "bfab0a198e5d0fd3ebd75bfe3d70492662396197065bc98261b20ec649ac4da0",
+      "after_sha256": "c3c88b36d7ab38770924ed88c3719d5faaa9e8a5d024b0eb70f4cc5640a87528",
+      "reason": "User-requested TV shortcut remote fix: visible-menu key ownership/focus recovery, one uncancelled confirmation action, non-mutating optical capture, targeted mandatory UI checks, 5.3.6 / 666 test delivery; existing functionality and stable664 preserved."
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "671d079c04952ec75450fb63c87d03f73d282dc0d33bb3f74069955b3473d9a4",
+      "after_sha256": "843cef4fe1ccbd14e435a7b1b93d3ea682483d2fdaa0d4f2e7035a37a0bdee9b",
+      "reason": "User-requested TV shortcut remote fix: visible-menu key ownership/focus recovery, one uncancelled confirmation action, non-mutating optical capture, targeted mandatory UI checks, 5.3.6 / 666 test delivery; existing functionality and stable664 preserved."
+    },
+    "branding/release.json": {
+      "before_sha256": "dd6b63ed5cecd0558cf2dff6dbb68120e176e383eb607b0d7252a964e125dce4",
+      "after_sha256": "4e6838fdc60c55483e820fbfdc8a00c755e00932d52eac2835dd2b0b462d533b",
+      "reason": "User-requested TV shortcut remote fix: visible-menu key ownership/focus recovery, one uncancelled confirmation action, non-mutating optical capture, targeted mandatory UI checks, 5.3.6 / 666 test delivery; existing functionality and stable664 preserved."
+    },
+    "research/ui-check/src/stub/java/com/leotv/detail/NewHome.java": {
+      "before_sha256": "02e21c94c70e995464e650c14fe45b2e1b89db74aa6b8e02f0084ad1b0aded64",
+      "after_sha256": "6edb6422af1f574ed92225bd5ec5a4d629ce0adf4dc09368cdb40b6471a20bcb",
+      "reason": "User-requested TV shortcut remote fix: visible-menu key ownership/focus recovery, one uncancelled confirmation action, non-mutating optical capture, targeted mandatory UI checks, 5.3.6 / 666 test delivery; existing functionality and stable664 preserved."
+    },
+    "research/ui-check/src/test/java/com/leotv/ui/GlobalChromeTest.java": {
+      "before_sha256": "7b3643289f307f9319ecdfc60391e9e91ad6a94a94a28d696926db06b93863e3",
+      "after_sha256": "6dc3e7e310ce60b58c8e471dee4539518d5cfc5b3f9a850b3952621a35a07239",
+      "reason": "User-requested TV shortcut remote fix: visible-menu key ownership/focus recovery, one uncancelled confirmation action, non-mutating optical capture, targeted mandatory UI checks, 5.3.6 / 666 test delivery; existing functionality and stable664 preserved."
+    },
+    "tools/check_liquid_glass.py": {
+      "before_sha256": "becc72a2c4e29e75dfee96401e31ec381a708ddc990152d6b0f0706b69b32318",
+      "after_sha256": "590320e35dd72e83757c684369a02f22a25cd0030d8e1d92d92927a1ecce358e",
+      "reason": "User-requested TV shortcut remote fix: visible-menu key ownership/focus recovery, one uncancelled confirmation action, non-mutating optical capture, targeted mandatory UI checks, 5.3.6 / 666 test delivery; existing functionality and stable664 preserved."
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "70c5aa89b8e380c9f40cd227d420237b1d47d2d9ddee817d788db771a7a45aac",
+      "after_sha256": "f9c6ac5a8aedb06e0c882724448b51dda61618c3484cbc204598416484b89587",
+      "reason": "User-requested TV shortcut remote fix: visible-menu key ownership/focus recovery, one uncancelled confirmation action, non-mutating optical capture, targeted mandatory UI checks, 5.3.6 / 666 test delivery; existing functionality and stable664 preserved."
+    },
+    "ui/java/com/leotv/ui/GlobalChrome.java": {
+      "before_sha256": "4c4c3c0ec00fb085fd501f9ca867183643ade13a11e52604e47e4293e88eb71a",
+      "after_sha256": "9eb17399f6fde97a1aae3dd86aac2752b6ec9d87c18f9714574a0877192994e5",
+      "reason": "User-requested TV shortcut remote fix: visible-menu key ownership/focus recovery, one uncancelled confirmation action, non-mutating optical capture, targeted mandatory UI checks, 5.3.6 / 666 test delivery; existing functionality and stable664 preserved."
+    },
+    "ui/java/com/leotv/ui/LiquidGlassButton.java": {
+      "before_sha256": "6efa905ca4ea4feaa0dd4112541c2b23908a7d769888f88a9e41eecc401d0025",
+      "after_sha256": "2105b543b2f16318a652f9140aa929769beca28e8f179ac09c0cf0bcc155b825",
+      "reason": "User-requested TV shortcut remote fix: visible-menu key ownership/focus recovery, one uncancelled confirmation action, non-mutating optical capture, targeted mandatory UI checks, 5.3.6 / 666 test delivery; existing functionality and stable664 preserved."
+    },
+    "ui/liquid-glass-source-lock.json": {
+      "before_sha256": "b1b8c643b2aa4b8d8391a96a5a74889e75be5f851778e015ff1528743e132449",
+      "after_sha256": "30984852ecb5032dda9660d98f4158f90d74723dfeaf740a15ed4585926caaf6",
+      "reason": "User-requested TV shortcut remote fix: visible-menu key ownership/focus recovery, one uncancelled confirmation action, non-mutating optical capture, targeted mandatory UI checks, 5.3.6 / 666 test delivery; existing functionality and stable664 preserved."
+    }
+  },
+  "authorized_666_additions": {
+    "docs/LEOTV-5.3.6-666-TV-SHORTCUT-INPUT-20261128.md": "d040c5b57145ad2679527a8aca44ad5eb750dab59c1eda0e6a5c288bca3e71bb"
   }
 }
