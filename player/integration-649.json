@@ -2690,7 +2690,7 @@
     },
     "README.md": {
       "before_sha256": "87e614fb6bc237e80f52942bbc80da895d41299f114322a07c35658342ed8ad9",
-      "after_sha256": "a054ddcc9043d9bcb9694a4f5469e429926a2dadf435c9cce781d3f01070f474",
+      "after_sha256": "6e64e313c5844fb9fc5e9cd07455f21fcefa969067c8e2f65bfab96c1b3f565a",
       "reason": "User-authorized combined build668: align TV Liulang with supplied original/runtime screenshots (density and resource context, hero visibility, native right site sheet, dynamic focus styling and global search), retaining existing phone/other themes, player/data, shortcut fixes and new comic effects."
     },
     "branding/AndroidManifest.xml": {
@@ -2843,7 +2843,7 @@
     "detail/runtime/common/com/leotv/detail/DanmakuComic.java": "790eace0fff93dad94e797b21a7f27b5da2eb530cbdce0cfce556985c3098508",
     "detail/runtime/common/com/leotv/detail/DanmakuComicArt.java": "a49454f2dbec1df070957e53578c8f77b00a989a812a2dbe9fd78d59fe474d91",
     "research/effects-check/src/test/java/com/leotv/detail/DanmakuComicRenderTest.java": "a30b5b46c49a47a51843c93cd4cac3f5caecd356db0e1e64b3ca92d733f01396",
-    "docs/LEOTV-5.3.6-668-COMIC-DANMAKU-20261128.md": "1d22c8611fe8e84c77b1e802b20cf5ba7251a4d00b1aa40323494b40f8e874e0",
+    "docs/LEOTV-5.3.6-668-COMIC-DANMAKU-20261128.md": "7e00047b19b9e52efbd837521719d6b8a78abf41c8991aa61bb945b402ee5562",
     "detail/artwork/comic-20261128/provenance.json": "fd5b3a09f5d792328a163e9ff09d88d401f5b668a9dbe629a73139cceb0c58ca",
     "detail/artwork/comic-20261128/suit-figure.png": "705404f8f07e276746f511017f4bb9cdd86396a11fabd40e3eb48eba04a52e2f",
     "detail/artwork/comic-20261128/masked-figure.png": "77e9f425ea0270a292c2183470d85d0b3ef274a32e76b8cafcb670179bec9f4a",
@@ -2908,6 +2908,7 @@
     "research/liulang-ui-check/src/stub/java/com/fongmi/android/tv/ui/custom/CustomUpDownView.java": "7bb40ed588559b07e84ac91775926bd19e3ff838e9c45a5ae584eee7d3100f7a",
     "research/effects-check/src/stub/java/com/leotv/detail/LiulangMode.java": "e69d309f6d5e8f37140d0a0689145c09d39b8d429fa85d9d492208293a9d898d",
     "research/ui-check/src/stub/java/com/leotv/detail/LiulangMode.java": "3cbfd07adc50cea48d902a8521cccfbc5c3f4c47ff7db5290aa38be9a2a508e2",
-    "docs/LEOTV-5.3.6-668-LIULANG-ALIGNMENT-20261128.md": "7e1721c81294179015f358d36edc4bfd816a57c4064923b541ea7def60e260c6"
+    "docs/LEOTV-5.3.6-668-LIULANG-ALIGNMENT-20261128.md": "1ae5d289c25d7be3c6467690d8313ef7f5f76728bdbd15fc14a7e619fb1eeec2",
+    "evidence/leotv-5.3.6-668-signed-delivery-20261128.json": "ebc809adda5c47bfd8baf640394ab114de8a6dec5c62a39e357162ef94dfab6a"
   }
 }
