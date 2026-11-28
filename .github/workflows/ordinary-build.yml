@@ -25,6 +25,8 @@ jobs:
         run: bash scripts/audit-release-tree.sh
       - name: Verify all four source variants and ordered native hooks
         run: python3 -B tools/check_build_sources.py
+      - name: Verify TV-only global mode and frozen playback session handoff
+        run: python3 -B research/check_liulang_mode.py
       - name: Verify pinned native sources and exact JNI build recipe
         run: python3 -B tools/check_player_native.py --sources
       - name: Verify preserved 649 sources, player variant separation and immutable input/source delivery

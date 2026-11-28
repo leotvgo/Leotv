@@ -157,6 +157,8 @@
       "detail/runtime/tv/com/leotv/detail/LiulangDots.java",
       "detail/runtime/tv/com/leotv/detail/LiulangEpisodes.java",
       "detail/runtime/tv/com/leotv/detail/LiulangHeroImage.java",
+      "detail/runtime/tv/com/leotv/detail/LiulangHistory.java",
+      "detail/runtime/tv/com/leotv/detail/LiulangHistoryBar.java",
       "detail/runtime/tv/com/leotv/detail/LiulangHome.java",
       "detail/runtime/tv/com/leotv/detail/LiulangPlayer.java",
       "detail/runtime/tv/com/leotv/detail/LiulangResources.java",

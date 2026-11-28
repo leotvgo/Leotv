@@ -28,7 +28,7 @@ final class LiulangDetailLayout implements AutoCloseable {
     }
     void extra(boolean value){extras=value;root.setVisibility(value?View.GONE:View.VISIBLE);page.scroll.setVisibility(value?View.VISIBLE:View.GONE);page.hero.setActive(value);if(value){page.playButton.requestFocus();page.scroll.scrollTo(0,0);}else{hero.active(true);sync();more.requestFocus();}}
     boolean key(KeyEvent event){if(extras){if(event.getKeyCode()==KeyEvent.KEYCODE_BACK&&!page.sitePicker.showing()&&!page.nativeEpisodes.active()){if(event.getAction()==KeyEvent.ACTION_UP&&!event.isCanceled())extra(false);return true;}return false;}View focused=page.activity.getCurrentFocus();int code=event.getKeyCode();if(page.sitePicker.showing()){if(code==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP&&!page.sitePicker.back())page.sitePicker.dismiss();return true;}if(code==19||code==20||code==21||code==22){if(event.getAction()==KeyEvent.ACTION_DOWN)page.sitePicker.moveFocus(code);return true;}return false;}if(code==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP&&!event.isCanceled())page.activity.finish();return true;}if(episodes.key(event,focused,play))return true;if(code==KeyEvent.KEYCODE_DPAD_DOWN&&NativeCspUi.descendant(focused,actions)){if(event.getAction()==KeyEvent.ACTION_DOWN)episodes.flags.requestFocus();return true;}return false;}
-    void resume(){hero.active(true);sync();episodes.focusEpisode();}
+    void resume(){page.hero.setActive(extras);hero.active(true);sync();episodes.focusEpisode();}
     void pause(){hero.active(false);}
     @Override public void close(){if(closed)return;closed=true;hero.close();logo.close();NativeCspUi.releaseHomeImage(poster);NativeCspUi.remove(root);}
 }

@@ -25,6 +25,8 @@ CLASS_MAP = {
     'com.fongmi.android.tv.ui.custom.CustomRecyclerView': 'androidx.leanback.widget.VerticalGridView',
     'androidx.recyclerview.widget.RecyclerView': 'androidx.leanback.widget.VerticalGridView',
     'com.fongmi.android.tv.ui.custom.CustomTypeView': 'TextView',
+    'com.fongmi.android.tv.ui.custom.MarqueeTextView': 'TextView',
+    'com.fongmi.android.tv.ui.custom.HistoryProgressBar': 'com.leotv.detail.LiulangHistoryBar',
     'androidx.media3.ui.PlayerSeekView': 'FrameLayout',
     'androidx.media3.ui.PlayerView': 'FrameLayout',
     'com.google.android.material.progressindicator.CircularProgressIndicator': 'ProgressBar',
@@ -91,6 +93,8 @@ def prepare(root, target):
         for item in list(style):
             if not item.get('name', '').startswith('android:'):
                 style.remove(item)
+            elif item.get('name') in ('android:layout_width','android:layout_height') and item.text in ('-1','-2'):
+                item.text={'-1':'match_parent','-2':'wrap_content'}[item.text]
     # The retained native seek widget owns its own id; the imported Control style
     # only needs a distinct, non-colliding focus reference until the bridge binds it.
     ET.SubElement(tree.getroot(), 'item', {'name': 'exo_progress', 'type': 'id'})
@@ -118,6 +122,12 @@ def payload(root, variant, sdk, work, log):
     with zipfile.ZipFile(output) as archive:
         if any(name.endswith(('.dex', '.so')) for name in archive.namelist()):
             raise ValueError('Liulang resource archive must never contain code or native libraries')
+        from android_branding import ResourceTable
+        table=ResourceTable(archive.read('resources.arsc'))
+        if table.package_name!=PACKAGE or any(int(entry['id'],16)>>24!=0x6f for entry in table.entries):
+            raise ValueError('Liulang resource package overlaps the retained host namespace')
+        if not set('layout/'+name for name in lock['layout_roots']).issubset({entry['name'] for entry in table.entries}):
+            raise ValueError('Compiled theme is missing an imported layout')
     data = output.read_bytes()
     metadata = {'package': PACKAGE, 'package_id': '0x6f', 'sha256': sha(data), 'bindings': binding}
     files = {ASSET: data, 'assets/leotv/liulang/resources.json': (json.dumps(metadata, ensure_ascii=False, separators=(',', ':')) + '\n').encode()}

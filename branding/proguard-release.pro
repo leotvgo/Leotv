@@ -39,3 +39,5 @@
 -keep class com.leotv.detail.LiulangHeroImage { public <init>(android.content.Context, android.util.AttributeSet); }
 -keep class com.leotv.detail.LiulangRoundedImage { public <init>(android.content.Context, android.util.AttributeSet); }
 -keep class com.leotv.detail.LiulangDots { public <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class com.leotv.detail.LiulangHistoryBar { public <init>(android.content.Context, android.util.AttributeSet); }
