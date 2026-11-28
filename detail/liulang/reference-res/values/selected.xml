@@ -78,4 +78,6 @@
   <string name="search_hot">热搜</string>
   <string name="search_record">历史</string>
   <string name="search_keyword">关键字…</string>
+  <string name="push_qr_title">扫码搜索</string>
+  <string name="push_clip">推送剪贴板内容</string>
 </resources>

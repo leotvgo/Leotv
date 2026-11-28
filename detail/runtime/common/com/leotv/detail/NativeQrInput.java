@@ -19,7 +19,7 @@ public final class NativeQrInput {
     private static final Handler main=new Handler(Looper.getMainLooper());
     private static final class Session {
         final WeakReference<Activity> activity;
-        final WeakReference<EditText> target;
+        final WeakReference<EditText> target;Runnable submitted;
         WeakReference<Dialog> qr=new WeakReference<>(null);
         Session(Activity activity,EditText target){this.activity=new WeakReference<>(activity);this.target=new WeakReference<>(target);}
         boolean attached(){Activity a=activity.get();EditText input=target.get();return a!=null&&!a.isFinishing()&&!a.isDestroyed()&&input!=null&&input.isAttachedToWindow()&&input.isShown();}
@@ -37,8 +37,10 @@ public final class NativeQrInput {
     private static Session current(){
         for(int i=targets.size()-1;i>=0;i--){Session session=targets.get(i);if(!session.attached()){targets.remove(i);continue;}if(session.foreground())return session;}return null;
     }
-    static void show(Activity activity,EditText target,String title){
+    static void show(Activity activity,EditText target,String title){show(activity,target,title,null);}
+    static void show(Activity activity,EditText target,String title,Runnable submitted){
         if(Device.MOBILE)return;
+        if(LiulangMode.enabled(activity)){showThemed(activity,target,submitted);return;}
         try{
             Object builder=NativeDialogs.builder(activity);android.content.Context theme=NativeDialogs.context(builder);
             View panel=NativeViews.layout(theme,"dialog_ua");
@@ -72,13 +74,26 @@ public final class NativeQrInput {
             input.requestFocus();
         }catch(ReflectiveOperationException|RuntimeException unavailable){android.widget.Toast.makeText(activity,"扫码输入暂不可用，请检查本机服务",android.widget.Toast.LENGTH_SHORT).show();}
     }
+    private static void showThemed(Activity activity,EditText target,Runnable submitted){
+        Bitmap bitmap=null;
+        try{
+            String ip=(String)Class.forName("b4.c",true,activity.getClassLoader()).getMethod("d").invoke(null);
+            int port=((Number)Class.forName("com.github.catvod.Proxy",true,activity.getClassLoader()).getMethod("getPort").invoke(null)).intValue();
+            String link="http://"+ip+":"+port+"?tab=5&input="+android.net.Uri.encode(pairing);
+            bitmap=(Bitmap)Class.forName("com.bumptech.glide.d",true,activity.getClassLoader()).getMethod("o",int.class,int.class,String.class).invoke(null,200,1,link);
+            if(bitmap==null)throw new IllegalStateException("Native QR generator unavailable");
+            Dialog dialog=LiulangQr.input(activity,bitmap);Session session=new Session(activity,target);session.submitted=submitted;session.qr=new WeakReference<>(dialog);
+            synchronized(NativeQrInput.class){for(Session previous:new java.util.ArrayList<>(targets)){Dialog old=previous.qr.get();if(old!=null&&old.isShowing())old.dismiss();}bind(activity,target);for(int i=targets.size()-1;i>=0;i--)if(targets.get(i).target.get()==target){targets.set(i,session);break;}}
+            final Bitmap qr=bitmap;dialog.setOnDismissListener(ignored->{session.qr.clear();qr.recycle();});dialog.show();LiulangQr.size(dialog,activity);
+        }catch(ReflectiveOperationException|RuntimeException unavailable){if(bitmap!=null&&!bitmap.isRecycled())bitmap.recycle();android.widget.Toast.makeText(activity,"扫码输入暂不可用，请检查本机服务",android.widget.Toast.LENGTH_SHORT).show();}
+    }
     /** Called by the dedicated action only; subscription settings keep their native route. */
     public static synchronized boolean receive(String value){
         Session session=current();if(session==null||value==null||value.length()>8192)return false;
         Activity activity=session.activity.get();EditText target=session.target.get();
         if(activity==null||target==null||!session.foreground())return false;
         main.post(()->{synchronized(NativeQrInput.class){if(current()!=session)return;}
-            EditText input=session.target.get();if(input!=null){input.setText(value);input.setSelection(input.length());Dialog dialog=session.qr.get();if(dialog!=null&&dialog.isShowing())dialog.dismiss();}});
+            EditText input=session.target.get();if(input!=null){input.setText(value);input.setSelection(input.length());Dialog dialog=session.qr.get();if(dialog!=null&&dialog.isShowing())dialog.dismiss();if(session.submitted!=null)session.submitted.run();}});
         return true;
     }
     public static synchronized String webAction(String action,java.util.Map<String,String> parameters){

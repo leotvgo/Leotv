@@ -1,0 +1,1 @@
+package com.leotv.detail;final class NativeViews {static android.view.View layout(android.content.Context c,String s){return null;}static android.view.View copy(android.view.View v,android.content.Context c){return v;}}

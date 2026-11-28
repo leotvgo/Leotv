@@ -3047,5 +3047,100 @@
     "docs/LEOTV-5.3.6-669-LIULANG-ANDROID6-ARTWORK-20261128.md": "f4dd648c86afba62f3b1ee7b4292497812af3136944d56969ce3223f452c939a",
     "detail/runtime/tv/com/leotv/detail/LiulangWallpaper.java": "544d8bbbab24f5ff23df2e5ec4315b0a1af34d70b49d88ba38cd0f223c229f17",
     "evidence/leotv-5.3.6-669-signed-delivery-20261128.json": "dad06a91d38e2dae19728d6d42fc7ee5f0753fc32acdfd8feefcb650b5e37523"
+  },
+  "authorized_670_source_repairs": {
+    "README.md": {
+      "before_sha256": "4ea16d93cb0fbf995ddc39fb730f09c6c53dcea8c4f11a073fff425da164c1a5",
+      "after_sha256": "3cef136a6f2b2e80f3de3ef6e56ba5ce9d05b52ea0598b913c28451cab09881d",
+      "reason": "User-authorized670: match Liulang search and QR input/push skins, constrain focused result posters, restore all-source presentation and remove playback favorite square background; preserve existing source/input/player contracts."
+    },
+    "branding/AndroidManifest.xml": {
+      "before_sha256": "8c9ebc9f98b3971eb010150d2ccd383150415327f700212721d7ec93350b5e70",
+      "after_sha256": "9175c56b2baf90d54784210c794900fbd5f3e21c9a5ba85df5760ed74fe7b8f5",
+      "reason": "User-authorized670: match Liulang search and QR input/push skins, constrain focused result posters, restore all-source presentation and remove playback favorite square background; preserve existing source/input/player contracts."
+    },
+    "branding/release.json": {
+      "before_sha256": "c2be4ba49f27fd74ef108c87f88ccb1e4eada59ea5b1a5ae1f6e49a3f6666a2a",
+      "after_sha256": "6d3c7bfc47c2cfead3c52b2952a870256e670425898ac6a078db5283ec31b806",
+      "reason": "User-authorized670: match Liulang search and QR input/push skins, constrain focused result posters, restore all-source presentation and remove playback favorite square background; preserve existing source/input/player contracts."
+    },
+    "detail/liulang/reference-res/values/selected.xml": {
+      "before_sha256": "01456a00ec6187c2c4b3a4ebee3c4bec4af825f338afd50ecb81902f5fe51e66",
+      "after_sha256": "d095c4cfb2bbbbf6b8d531f66ed58b63ac4ab5b75efe1c18966f9d2d2c9bc0a5",
+      "reason": "User-authorized670: match Liulang search and QR input/push skins, constrain focused result posters, restore all-source presentation and remove playback favorite square background; preserve existing source/input/player contracts."
+    },
+    "detail/liulang/resource-lock.json": {
+      "before_sha256": "ceb5b7b2412495ff03db00585e19d18997beac5861e5ba0106634aa56284da96",
+      "after_sha256": "4547250b0952acd08a964e1d8863761154d06c87c32bff01044f1de26005d805",
+      "reason": "User-authorized670: match Liulang search and QR input/push skins, constrain focused result posters, restore all-source presentation and remove playback favorite square background; preserve existing source/input/player contracts."
+    },
+    "detail/liulang/source-lock.json": {
+      "before_sha256": "cd58db4481a692a52d96a8a7a30eb784ef7651efb67880d1e0078b014f0e8457",
+      "after_sha256": "c5c26ab0cf0934a65f1a5910af4dc872a778a2b9f64f26f714d0b8e87631596b",
+      "reason": "User-authorized670: match Liulang search and QR input/push skins, constrain focused result posters, restore all-source presentation and remove playback favorite square background; preserve existing source/input/player contracts."
+    },
+    "detail/runtime-sources.json": {
+      "before_sha256": "74e1954bb9b4e55389e5b8d921b9cc5d3660fa168418eae0ee6597339146ecab",
+      "after_sha256": "52a5cf532dfc543bacc8f33edafb9d44e7cf5b841f57405faed301439adc9069",
+      "reason": "User-authorized670: match Liulang search and QR input/push skins, constrain focused result posters, restore all-source presentation and remove playback favorite square background; preserve existing source/input/player contracts."
+    },
+    "detail/runtime/common/com/leotv/detail/NativeQrInput.java": {
+      "before_sha256": "4f30ebbc7841bf3f6ecfa8c970eeed341f83733b2ccdfe4c38260453adb77e5f",
+      "after_sha256": "93017a1014992fad2e474f6e5719d64b554850248d76b89b17816a752003a1bb",
+      "reason": "User-authorized670: match Liulang search and QR input/push skins, constrain focused result posters, restore all-source presentation and remove playback favorite square background; preserve existing source/input/player contracts."
+    },
+    "detail/runtime/tv/com/leotv/detail/LiulangSearchActivity.java": {
+      "before_sha256": "d067e568f522de771bb70b29617be4a3f4a91c21478b2d8a8372f91b659ea311",
+      "after_sha256": "bc312b160df778551f70fb6b07df92ba547b811a298f6d05120311bfac980d25",
+      "reason": "User-authorized670: match Liulang search and QR input/push skins, constrain focused result posters, restore all-source presentation and remove playback favorite square background; preserve existing source/input/player contracts."
+    },
+    "detail/runtime/tv/com/leotv/detail/LiulangStyle.java": {
+      "before_sha256": "8f6f3acd984c2da666aa503bbf8c443f3508a1944afa79c6befd3230600cf4fc",
+      "after_sha256": "281ebbb5fb10467e6dd7a9c7d28464d15c492527bb564d1c9c3162983c943668",
+      "reason": "User-authorized670: match Liulang search and QR input/push skins, constrain focused result posters, restore all-source presentation and remove playback favorite square background; preserve existing source/input/player contracts."
+    },
+    "detail/runtime/tv/com/leotv/detail/LiulangSurfaces.java": {
+      "before_sha256": "cd383431dedbbb1c38e899f286d9c01e6fc02c7b9f824249a1c2613e4a21a2a7",
+      "after_sha256": "cc3472e05c8d0b9b7606a6d58c31844eecc08c31c99d0abfef83153b7af91e77",
+      "reason": "User-authorized670: match Liulang search and QR input/push skins, constrain focused result posters, restore all-source presentation and remove playback favorite square background; preserve existing source/input/player contracts."
+    },
+    "research/liulang-ui-check/build.gradle": {
+      "before_sha256": "61093d7fbc23c9d94db3912d496a81e324b464f669f7dd53eef4937f6b0e6d25",
+      "after_sha256": "8d96fb65dee2c603c443b89019a8de2f27e4ec449a468dc4c0cbb7076228ba85",
+      "reason": "User-authorized670: match Liulang search and QR input/push skins, constrain focused result posters, restore all-source presentation and remove playback favorite square background; preserve existing source/input/player contracts."
+    },
+    "research/liulang-ui-check/src/test/java/com/leotv/detail/LiulangRuntimeTest.java": {
+      "before_sha256": "45760508329c77157348651badc202f118b879f87ece91c804658a6527170440",
+      "after_sha256": "573556ede897f1b22adb531165204a4c686cdd9713b5708c7e5acd33f19c7c35",
+      "reason": "User-authorized670: match Liulang search and QR input/push skins, constrain focused result posters, restore all-source presentation and remove playback favorite square background; preserve existing source/input/player contracts."
+    },
+    "tools/check_launch_rollback.py": {
+      "before_sha256": "de4abfb60b78029be36ff9aae771676f192e29859fbde860ba5db8df7fefbe5f",
+      "after_sha256": "081da0bb8490eaa9bfb5d345baeaae26803d6be155ee0fb71190bd48993d08d0",
+      "reason": "User-authorized670: match Liulang search and QR input/push skins, constrain focused result posters, restore all-source presentation and remove playback favorite square background; preserve existing source/input/player contracts."
+    },
+    "tools/check_liulang_ui.py": {
+      "before_sha256": "887e62a07fd4cf14018ee4f8018e1cd4e5c1ef2bb4b720b175418bcb1df30168",
+      "after_sha256": "3cf411525ef9773a78d47169a6cbde1f4893f2c9f2d48ce23d221bb765052eb5",
+      "reason": "User-authorized670: match Liulang search and QR input/push skins, constrain focused result posters, restore all-source presentation and remove playback favorite square background; preserve existing source/input/player contracts."
+    },
+    "tools/check_player_integration.py": {
+      "before_sha256": "01d3622c3d7cc4f4c893d9eaa6cd79d49094dfecf8750997ac88faf153d16195",
+      "after_sha256": "cb830f3cc52f577797895c080b15d3004b6a83c91ed6f80385934a26529ac9a3",
+      "reason": "User-authorized670: match Liulang search and QR input/push skins, constrain focused result posters, restore all-source presentation and remove playback favorite square background; preserve existing source/input/player contracts."
+    }
+  },
+  "authorized_670_additions": {
+    "detail/runtime/tv/com/leotv/detail/LiulangSearchLayout.java": "6484a75082cf9cc6b8e931ceae71c1ca7e8c733feb43a6598f1d9934bdd91ba7",
+    "detail/runtime/tv/com/leotv/detail/LiulangQr.java": "465586b37751f6821495a8e498c4e27bb774ababbd40f31873af363c445aba1f",
+    "detail/runtime/mobile/com/leotv/detail/LiulangQr.java": "fbd51ce7a7579df678fcaad804377696d9c8668323482f1b476bd9e3c4619dd1",
+    "docs/LEOTV-5.3.6-670-LIULANG-SEARCH-QR-20261128.md": "2d665663cbbc9a4e10eaa08b52d35eac1b5d462479a09d71bf5e536ce28f8c3c",
+    "research/liulang-ui-check/src/stub/java/com/leotv/detail/Device.java": "bec072910cc985ad06f8a3d029de54c55355f3ca31857538eda69530b7809b38",
+    "research/liulang-ui-check/src/stub/java/com/leotv/detail/NativeDialogs.java": "5ff7484875bf551bf40ebd94dc73850c6688a4af50dd50a2f4b0e062224b4ebe",
+    "research/liulang-ui-check/src/stub/java/com/leotv/detail/NativeViews.java": "c33e5f137311639979da146cc6d6082996c1ee62c7b0a7c3080dd7bc6313a73a",
+    "detail/liulang/reference-res/drawable/shape_danmaku_search.xml": "1f2b9ce47fb76bc8b39d7123abd7f2b313bfdaaf61a633c69feafc4f07eace44",
+    "detail/liulang/reference-res/layout/dialog_push_qr.xml": "83230b32dbc32eeeb16de858124ed04e476da325cc6158da8390ff3384ee54fb",
+    "detail/liulang/reference-res/layout/activity_push.xml": "7516707b10ecf132c4bdf5be949a3f94e3c6de0ea34482541ddba99cf30e4002",
+    "detail/liulang/reference-res/layout/adapter_vod_rect_search.xml": "819f14786c4cdc6bb004c116378893b2d3cfe7a48b3eeed82e3f779d3640631e"
   }
 }

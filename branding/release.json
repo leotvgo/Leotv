@@ -1,8 +1,8 @@
 {
   "channel": "prerelease",
   "version_name": "5.3.6",
-  "version_code": 669,
-  "title": "Leotv 5.3.6 / 669 浪壳 Android6 与海报显示修复",
+  "version_code": 670,
+  "title": "Leotv 5.3.6 / 670 浪壳搜索、二维码与播放图标修复",
   "prerelease": true,
   "make_latest": false
 }

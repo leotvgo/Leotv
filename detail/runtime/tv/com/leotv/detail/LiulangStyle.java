@@ -24,7 +24,8 @@ final class LiulangStyle {
         if(name.equals("selector_detail_play")||name.equals("selector_detail_item"))return states(focus(c,4),fill(c,4,0x1affffff),fill(c,4,0x1affffff));
         if(name.equals("selector_control"))return states(focus(c,30),fill(c,38,0x1affffff),new ColorDrawable(Color.TRANSPARENT));
         if(name.equals("selector_home_logo")){GradientDrawable f=focus(c,30);f.setShape(GradientDrawable.OVAL);f.setStroke(dp(c,2),Color.WHITE);return states(new InsetDrawable(f,dp(c,2),dp(c,3),dp(c,2),dp(c,1)),null,new ColorDrawable(Color.TRANSPARENT));}
-        if(name.equals("selector_control_circle")||name.equals("selector_tmdb_search")){GradientDrawable f=focus(c,30);f.setShape(GradientDrawable.OVAL);return states(f,null,new ColorDrawable(name.equals("selector_home_logo")?Color.TRANSPARENT:0x33000000));}
+        if(name.equals("selector_control_circle")){GradientDrawable f=focus(c,30);f.setShape(GradientDrawable.OVAL);LayerDrawable layer=new LayerDrawable(new Drawable[]{f});layer.setLayerSize(0,dp(c,30),dp(c,30));layer.setLayerGravity(0,android.view.Gravity.CENTER);return states(layer,null,new ColorDrawable(Color.TRANSPARENT));}
+        if(name.equals("selector_tmdb_search")){GradientDrawable f=focus(c,30);f.setShape(GradientDrawable.OVAL);GradientDrawable normal=fill(c,30,0x33000000);normal.setShape(GradientDrawable.OVAL);return states(f,null,normal);}
         if(name.equals("selector_tmdb_key")||name.equals("selector_keyboard"))return states(focus(c,6),null,fill(c,6,0x33000000));
         if(name.equals("selector_tmdb_input"))return states(stroke(c,999,RED,0x14ffffff),null,stroke(c,999,0x33ffffff,0x14ffffff));
         if(name.equals("selector_search_danmaku"))return states(focus(c,999),null,fill(c,999,0x33000000));

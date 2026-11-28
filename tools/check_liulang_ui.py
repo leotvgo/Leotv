@@ -61,6 +61,10 @@ def check(root):
     episodes=(root/'detail/runtime/tv/com/leotv/detail/LiulangEpisodes.java').read_text()
     if 'episodes.setVerticalSpacing(res.dp(8))' not in episodes or 'setIncludeFontPadding(false)' not in episodes or 'setClipChildren(true)' not in episodes:raise ValueError('Episode rows must retain explicit spacing and contained text bounds')
     if 'root.dispatchKeyEvent(event)' not in home:raise ValueError('TV theme navigation must dispatch to its active hierarchy')
+    search=(root/'detail/runtime/tv/com/leotv/detail/LiulangSearchActivity.java').read_text()
+    if 'NativeQrInput.show(this,keyword' not in search or 'NativeQrInput.bind(this,keyword)' not in search:raise ValueError('Search keyboard must retain paired QR input')
+    if 'final Result all=new Result(null)' not in search or 'card.source.site.key' not in search:raise ValueError('All-source cards must retain their actual source identity')
+    if 'LiulangSearchLayout.poster' not in search or 'LiulangSearchLayout.header' not in search:raise ValueError('Search requires contained focus cells and reference header spacing')
     return {'theme_id':5,'tv_only':True,'min_api':23,'reference_resources':len(resources['files']),'source_files':len(lock['sources']),'original_player_and_data_retained':True,'device_validation':False}
 
 

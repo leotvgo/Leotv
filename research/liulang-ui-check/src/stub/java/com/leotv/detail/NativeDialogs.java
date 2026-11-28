@@ -1,0 +1,1 @@
+package com.leotv.detail;final class NativeDialogs {static Object builder(android.app.Activity a)throws ReflectiveOperationException{throw new ReflectiveOperationException();}static android.content.Context context(Object o){return null;}}
