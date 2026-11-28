@@ -2363,8 +2363,8 @@
     },
     "research/ui-check/src/test/java/com/leotv/ui/GlobalChromeTest.java": {
       "before_sha256": "5320840667cbc35f766c4dbfedaff0e2e3ab7e825cf3faed25f5eb6345c35ed1",
-      "after_sha256": "132aed8e0392be19367cc7053d38217778f0c4f59d23586248f91910ace3317f",
-      "reason": "Align the existing TV UI fixture with the retained content-edge shortcut entry and key-down return; retain native focus and glass assertions."
+      "after_sha256": "7b3643289f307f9319ecdfc60391e9e91ad6a94a94a28d696926db06b93863e3",
+      "reason": "Align the TV UI fixture with retained content-edge entry, explicit Robolectric Activity focus and bounded paused frame advancement; verify original content focus restoration on key down."
     }
   },
   "authorized_665_additions": {

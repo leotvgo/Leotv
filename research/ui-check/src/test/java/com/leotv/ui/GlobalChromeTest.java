@@ -59,10 +59,18 @@ public class GlobalChromeTest {
         host.toolbar.removeView(host.button);((FrameLayout)host.findViewById(310)).addView(host.button,new FrameLayout.LayoutParams(120,56));layout();
         host.button.setFocusableInTouchMode(true);
         assertTrue("reparented native content card receives focus",host.button.requestFocus());
+        // Robolectric's Activity shadow keeps its focus separately from the View tree.
+        Shadows.shadowOf(host).setCurrentFocus(host.button);
         Window.Callback callback=host.getWindow().getCallback();
         assertTrue("left from the first content card opens shortcuts",callback.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_DPAD_LEFT)));
         callback.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,KeyEvent.KEYCODE_DPAD_LEFT));
-        layout();org.robolectric.shadows.ShadowLooper.shadowMainLooper().idleFor(200,java.util.concurrent.TimeUnit.MILLISECONDS);
+        layout();
+        for(int i=0;i<16;i++){
+            org.robolectric.shadows.ShadowLooper.shadowMainLooper().idleFor(16,java.util.concurrent.TimeUnit.MILLISECONDS);
+            org.robolectric.util.ReflectionHelpers.callInstanceMethod(Choreographer.getInstance(),"doFrame",
+                    org.robolectric.util.ReflectionHelpers.ClassParameter.from(long.class,android.os.SystemClock.uptimeMillis()*1_000_000L),
+                    org.robolectric.util.ReflectionHelpers.ClassParameter.from(int.class,i));
+        }
         View entry=host.findViewById(android.R.id.content).findFocus();assertNotSame(host.button,entry);assertEquals("追更日历",entry.getContentDescription());
         assertEquals(android.graphics.PixelFormat.TRANSLUCENT,entry.getBackground().getOpacity());assertTrue(entry.getScaleX()>1);
         assertTrue(callback.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_DPAD_RIGHT)));
