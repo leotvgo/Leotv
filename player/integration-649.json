@@ -3011,6 +3011,11 @@
       "before_sha256": "0434496a8490a9a7f8507097ba8279900c8e498974f8250d33bd6c12ed4badb3",
       "after_sha256": "afacb89ce718c1ff9062de6afdaa46fd784ce9ae5680e17b874e2a834bf68fb6",
       "reason": "User-authorized build669 TV Liulang fixes: API23 resource-loading crash, ImageView alpha visibility, startup loading state, preserved transition frame, matching native page wallpaper and retained current hero. Phone/other themes and existing playback/Danmaku unchanged."
+    },
+    "research/check_liulang_mode.py": {
+      "before_sha256": "1847ddac72dde84cace5a60efdde1daaca30c048f890f662da72aed1d60f39bd",
+      "after_sha256": "9c05a1d35fc41ff9f2f848358ceda18351dcbd9be2c90ebcbeec5debd87e98d8",
+      "reason": "Keep the mode fixture API surface synchronized with Android no-animation search transition calls."
     }
   },
   "authorized_669_additions": {
