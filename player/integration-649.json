@@ -2934,7 +2934,7 @@
     },
     "detail/liulang/source-lock.json": {
       "before_sha256": "0fa8da730949fd192a01b41619f52802e6ef454f83a55fe7642ad8bd75f07bbb",
-      "after_sha256": "9ef3b36b411d21c676cf2eaaf729674d8ef9579cc54cc9842fe0c519f6667afb",
+      "after_sha256": "9baba71921052e6a672e49db1f7a5108ad9773fb65ba509968941c24000d8daa",
       "reason": "User-authorized build669 TV Liulang fixes: API23 resource-loading crash, ImageView alpha visibility, startup loading state, preserved transition frame, matching native page wallpaper and retained current hero. Phone/other themes and existing playback/Danmaku unchanged."
     },
     "detail/runtime-sources.json": {
@@ -3031,6 +3031,11 @@
       "before_sha256": "a5315a88db512a8ef52d969a7e802c0413ae1aad0aa4ec0528bc18c1f101ed3a",
       "after_sha256": "2cd741d624a14858d8457b1bf116c1c77e582c44498938ee8df8797334ea626f",
       "reason": "User-authorized fixes from device testing and reference screenshots: reveal history content, route remote keys into theme, bound header/episode layout and restore card spacing while preserving metadata matched episode names."
+    },
+    "detail/runtime/tv/com/leotv/detail/LiulangPlayer.java": {
+      "before_sha256": "3a293891c56dec1f412f95cc28fe0ee0eb6d54a44c26107c61b99c028430470e",
+      "after_sha256": "41d5841a58faac6b6f3036b1e736a95ddc079ea2bd2269802d76f7b3b359e1a9",
+      "reason": "User requested fullscreen playback theme comparison: bind theme-button UP to retained native seekbar and match reference control/widget pixel metrics while retaining original actions."
     }
   },
   "authorized_669_additions": {
