@@ -2388,7 +2388,7 @@
   "authorized_666_source_repairs": {
     "README.md": {
       "before_sha256": "bfab0a198e5d0fd3ebd75bfe3d70492662396197065bc98261b20ec649ac4da0",
-      "after_sha256": "c3c88b36d7ab38770924ed88c3719d5faaa9e8a5d024b0eb70f4cc5640a87528",
+      "after_sha256": "29216d403542c529f80dbde8e5c520eb221379286e6237a00f8b5d77c1617cf1",
       "reason": "User-requested TV shortcut remote fix: visible-menu key ownership/focus recovery, one uncancelled confirmation action, non-mutating optical capture, targeted mandatory UI checks, 5.3.6 / 666 test delivery; existing functionality and stable664 preserved."
     },
     "branding/AndroidManifest.xml": {
@@ -2438,6 +2438,7 @@
     }
   },
   "authorized_666_additions": {
-    "docs/LEOTV-5.3.6-666-TV-SHORTCUT-INPUT-20261128.md": "d040c5b57145ad2679527a8aca44ad5eb750dab59c1eda0e6a5c288bca3e71bb"
+    "docs/LEOTV-5.3.6-666-TV-SHORTCUT-INPUT-20261128.md": "ad13dc78641ccd6210b848b9c70d17febc07cd7bf83e2eea06fed6df07071799",
+    "evidence/leotv-5.3.6-666-signed-delivery-20261128.json": "0381a3843e298df50611a2ef825283e41d15774e5561b53e2d734a5899bb5af7"
   }
 }
